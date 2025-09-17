@@ -12,8 +12,15 @@ const AppRouter: React.FC = () => {
   console.log('🔄 AppRouter - hostname:', hostname);
   console.log('🔄 AppRouter - path:', path);
 
-  // Em ambiente de desenvolvimento, carregamos o painel de controle
-  if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+  // Em ambiente de desenvolvimento e Replit preview
+  if (hostname === 'localhost' || hostname.includes('127.0.0.1') || hostname.includes('replit.dev')) {
+    // 🚀 FORÇAR DOMINIOPIZZAS PARA PUBLICROUTES
+    console.log('🔍 FORÇANDO TESTE - dominiopizzas detectado!', path);
+    if (path === '/dominiopizzas') {
+      console.log('🎯 FORÇANDO PUBLICROUTES PARA DOMINIOPIZZAS');
+      return <PublicRoutes />;
+    }
+    
     // Páginas da landing page
     if (path === '/demonstracao' || path === '/cadastro') {
       return <MainRoutes />;
@@ -35,9 +42,11 @@ const AppRouter: React.FC = () => {
       console.log('🎯 Direcionando para AccountRoutes');
       return <AccountRoutes />;
     }
-    // CARDÁPIO PÚBLICO: Slugs de empresa, cardápio, pedidos, etc
-    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || /^\/[a-zA-Z0-9-]+/.test(path) || path.includes('/acompanhar-pedido/') || path.includes('/pedido/') || path === '/dominiopizzas') {
-      console.log('🎯 Direcionando para PublicRoutes - DOMINIOPIZZAS');
+    // CARDÁPIO PÚBLICO - RESTO
+    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || 
+        /^\/[a-zA-Z0-9-]+/.test(path) || 
+        path.includes('/acompanhar-pedido/') || path.includes('/pedido/')) {
+      console.log('🎯 DIRECIONANDO PARA PUBLICROUTES - OUTROS');
       return <PublicRoutes />;
     }
     console.log('🎯 Direcionando para AccountRoutes como fallback');
