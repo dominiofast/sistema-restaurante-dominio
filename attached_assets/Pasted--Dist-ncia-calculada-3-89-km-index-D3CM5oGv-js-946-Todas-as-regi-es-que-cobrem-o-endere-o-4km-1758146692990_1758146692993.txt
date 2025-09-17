@@ -1,0 +1,115 @@
+🎯 Distância calculada: 3.89 km
+index-D3CM5oGv.js:946 📊 Todas as regiões que cobrem o endereço: 4km = R$10, 5km = R$11, 6km = R$12, 7km = R$16
+index-D3CM5oGv.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-D3CM5oGv.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-D3CM5oGv.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-D3CM5oGv.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-D3CM5oGv.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-D3CM5oGv.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-D3CM5oGv.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-D3CM5oGv.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: true, asaasConfigLoading: true, paymentConfig?.accept_pix: undefined, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: true, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 ASAAS DEBUG - Query result: {data: null, error: null}
+index-D3CM5oGv.js:1097 🔍 ASAAS DEBUG - Nenhuma config encontrada
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1111 💳 Método de pagamento selecionado: {"method":"dinheiro","needsChange":false,"changeAmount":0,"cardBrand":"","cashbackApplied":0,"totalWithCashback":154.8}
+index-D3CM5oGv.js:1097 🔒 [ANTI-DUPLICATE] Criando pedido com ID único: 69992254080_1758146671571
+index-D3CM5oGv.js:1097 📊 Totais calculados: {subtotal: 144.8, taxaEntrega: 10, cashbackAplicado: 0, totalFinal: 154.8}
+index-D3CM5oGv.js:1097 📦 Criando pedido com dados: {company_id: '550e8400-e29b-41d4-a716-446655440001', nome: 'Cleber Ruiz Camargo', telefone: '69992254080', endereco: 'R. Carlota Joaquina, 1234, RO, Cacoal/RO', tipo: 'delivery', …}
+index-D3CM5oGv.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-D3CM5oGv.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-D3CM5oGv.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-D3CM5oGv.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-D3CM5oGv.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-D3CM5oGv.js:1097 ✅ Pedido criado com sucesso: {company_id: '550e8400-e29b-41d4-a716-446655440001', nome: 'Cleber Ruiz Camargo', telefone: '69992254080', endereco: 'R. Carlota Joaquina, 1234, RO, Cacoal/RO', status: 'pendente', …}
+supabase-CtTmJVah.js:23   POST https://epqppxteicfuzdblbluq.supabase.co/rest/v1/pedido_itens?columns=%22pedido_id%22%2C%22produto_id%22%2C%22nome_produto%22%2C%22quantidade%22%2C%22valor_unitario%22%2C%22valor_total%22%2C%22observacoes%22&select=* 401 (Unauthorized)
+(anônimo) @ supabase-CtTmJVah.js:23
+(anônimo) @ supabase-CtTmJVah.js:23
+a @ supabase-CtTmJVah.js:23
+Promise.then
+c @ supabase-CtTmJVah.js:23
+(anônimo) @ supabase-CtTmJVah.js:23
+Ks @ supabase-CtTmJVah.js:23
+(anônimo) @ supabase-CtTmJVah.js:23
+then @ supabase-CtTmJVah.js:1
+index-D3CM5oGv.js:1097  ❌ Erro ao criar itens do pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-D3CM5oGv.js:1097
+await in createOrder
+createOrder @ index-D3CM5oGv.js:1097
+(anônimo) @ index-D3CM5oGv.js:1111
+W @ index-D3CM5oGv.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-D3CM5oGv.js:1097  ❌ Erro ao finalizar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-D3CM5oGv.js:1097
+await in createOrder
+createOrder @ index-D3CM5oGv.js:1097
+(anônimo) @ index-D3CM5oGv.js:1111
+W @ index-D3CM5oGv.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-D3CM5oGv.js:1097  ❌ Erro ao criar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-D3CM5oGv.js:1097
+await in createOrder
+(anônimo) @ index-D3CM5oGv.js:1111
+W @ index-D3CM5oGv.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-D3CM5oGv.js:1111  ❌ Erro ao finalizar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+(anônimo) @ index-D3CM5oGv.js:1111
+await in (anônimo)
+W @ index-D3CM5oGv.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-D3CM5oGv.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-D3CM5oGv.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-D3CM5oGv.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-D3CM5oGv.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-D3CM5oGv.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-D3CM5oGv.js:1097 🔍 FINAL DEBUG - Estado atual: 
