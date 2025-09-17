@@ -47,11 +47,10 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
   });
 
   try {
-    // 🔧 FORÇA uso do endpoint local para evitar redirecionamentos
-    const apiUrl = window.location.hostname.includes('replit.dev') || window.location.hostname === 'localhost' 
-      ? '/api/orders'  // Relativo em desenvolvimento
-      : `${window.location.protocol}//${window.location.host}/api/orders`; // Absoluto
-      
+    // 🎯 ENDPOINT PROFISSIONAL: Sempre usar /api/orders relativo com override opcional
+    const base = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+    const apiUrl = `${base}/api/orders`; // Se base=='' => same-origin /api/orders
+    
     console.log('🎯 Usando endpoint:', apiUrl);
     
     const response = await fetch(apiUrl, {

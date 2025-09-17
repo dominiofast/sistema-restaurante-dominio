@@ -1,29 +1,48 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Configurações do Supabase - usando as credenciais do projeto
-const SUPABASE_URL = process.env.SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
+// Configurações do Supabase - usando as variáveis padrão do projeto
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // Healthcheck endpoint
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      ok: true,
+      hasServiceRole: !!SUPABASE_SERVICE_ROLE_KEY,
+      hasUrl: !!SUPABASE_URL,
+      timestamp: new Date().toISOString(),
+      environment: 'serverless'
+    });
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   try {
     console.log('🚀 === CRIAÇÃO DE PEDIDO SERVER-SIDE ===');
     
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      console.error('❌ Variáveis de ambiente não configuradas');
-      return res.status(500).json({ error: 'Configuração ausente' });
+      console.error('❌ Variáveis de ambiente não configuradas:', {
+        hasUrl: !!SUPABASE_URL,
+        hasServiceRole: !!SUPABASE_SERVICE_ROLE_KEY,
+        viteUrl: process.env.VITE_SUPABASE_URL,
+        regularUrl: process.env.SUPABASE_URL
+      });
+      return res.status(500).json({ 
+        error: 'Configuração ausente',
+        details: 'VITE_SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY não configuradas'
+      });
     }
 
     // CLIENT COM SERVICE ROLE - SEM LIMITAÇÕES RLS!

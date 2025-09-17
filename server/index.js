@@ -24,6 +24,17 @@ const supabaseAdmin = createClient(
   }
 );
 
+// HEALTHCHECK ENDPOINT
+app.get('/api/orders', (req, res) => {
+  res.json({
+    ok: true,
+    hasServiceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    hasUrl: !!process.env.VITE_SUPABASE_URL,
+    timestamp: new Date().toISOString(),
+    environment: 'express'
+  });
+});
+
 // ENDPOINT PARA CRIAR PEDIDOS DE FORMA SEGURA
 app.post('/api/orders', async (req, res) => {
   console.log('🚀 API /orders - Recebendo pedido:', {
