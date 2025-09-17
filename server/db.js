@@ -14,7 +14,7 @@ export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 export const db = drizzle({ client: pool });
 
 // Query functions for orders
-export async function createPedido(pedidoData: any) {
+export async function createPedido(pedidoData) {
   const { company_id, numero_pedido, nome, telefone, endereco, status, total, pagamento, tipo, observacoes } = pedidoData;
   
   const query = `
@@ -31,7 +31,7 @@ export async function createPedido(pedidoData: any) {
   return result.rows[0];
 }
 
-export async function createPedidoItem(itemData: any) {
+export async function createPedidoItem(itemData) {
   const { pedido_id, produto_id, nome_produto, quantidade, valor_unitario, valor_total, observacoes } = itemData;
   
   const query = `
@@ -47,7 +47,7 @@ export async function createPedidoItem(itemData: any) {
   return result.rows[0];
 }
 
-export async function createPedidoItemAdicional(adicionalData: any) {
+export async function createPedidoItemAdicional(adicionalData) {
   const { pedido_item_id, categoria_nome, nome_adicional, quantidade, valor_unitario, valor_total } = adicionalData;
   
   const query = `
