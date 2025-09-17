@@ -35,8 +35,8 @@ const AppRouter: React.FC = () => {
       console.log('🎯 Direcionando para AccountRoutes');
       return <AccountRoutes />;
     }
-    // Se a URL contém /cardapio/ ou um número, vai para o cardápio público
-    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || path.match(/^\/[a-zA-Z0-9-]+$/) || path.includes('/acompanhar-pedido/') || path.includes('/pedido/')) {
+    // Se a URL contém /cardapio/ ou um número, ou slugs de empresa vai para o cardápio público
+    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || /^\/[a-zA-Z0-9-]+/.test(path) || path.includes('/acompanhar-pedido/') || path.includes('/pedido/')) {
       console.log('🎯 Direcionando para PublicRoutes');
       return <PublicRoutes />;
     }
