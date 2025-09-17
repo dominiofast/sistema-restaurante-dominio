@@ -62,3 +62,38 @@ export async function createPedidoItemAdicional(adicionalData) {
   
   return result.rows[0];
 }
+
+// Authentication functions
+export async function authenticateUser(email, password) {
+  // Import bcrypt dinamicamente para evitar problemas de bundling
+  const bcrypt = await import('bcryptjs');
+  
+  const query = `
+    SELECT id, email, name, role, password, created_at
+    FROM users 
+    WHERE email = $1
+  `;
+  
+  const result = await pool.query(query, [email]);
+  
+  if (result.rows.length === 0) {
+    return null; // Usuário não encontrado
+  }
+  
+  const user = result.rows[0];
+  
+  // Verificar senha
+  if (!user.password) {
+    return null; // Usuário sem senha
+  }
+  
+  const isValidPassword = bcrypt.compareSync(password, user.password);
+  
+  if (!isValidPassword) {
+    return null; // Senha incorreta
+  }
+  
+  // Retornar usuário sem senha
+  const { password: _, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+}

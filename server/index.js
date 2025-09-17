@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { createPedido, createPedidoItem, createPedidoItemAdicional } from './db.js';
+import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,6 +24,56 @@ app.get('/api/orders', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: 'express'
   });
+});
+
+// ENDPOINT DE LOGIN/AUTENTICAÇÃO
+app.post('/api/login', async (req, res) => {
+  console.log('🔐 API /login - Tentativa de login:', { email: req.body.email });
+
+  try {
+    const { email, password } = req.body;
+
+    // Validação básica
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email e senha são obrigatórios'
+      });
+    }
+
+    // Autenticar usuário
+    const user = await authenticateUser(email, password);
+
+    if (!user) {
+      console.log('❌ Login falhou - credenciais inválidas');
+      return res.status(401).json({
+        success: false,
+        error: 'Email ou senha incorretos'
+      });
+    }
+
+    console.log('✅ Login realizado com sucesso:', { email: user.email, role: user.role });
+
+    // Retornar dados do usuário (sem senha)
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        created_at: user.created_at
+      },
+      message: 'Login realizado com sucesso'
+    });
+
+  } catch (error) {
+    console.error('💥 API /login - Erro interno:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro interno do servidor'
+    });
+  }
 });
 
 // ENDPOINT PARA CRIAR PEDIDOS DE FORMA SEGURA
