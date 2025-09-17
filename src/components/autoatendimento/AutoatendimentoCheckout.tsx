@@ -10,6 +10,7 @@ import { usePagamentoEntregaConfigPDV } from '@/hooks/usePagamentoEntregaConfigP
 import { AutoatendimentoPixModal } from './AutoatendimentoPixModal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { createOrder as createOrderViaGateway } from '@/services/orderGateway';
 
 interface AutoatendimentoCheckoutProps {
   companyId: string;
@@ -79,20 +80,20 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
 
   const createOrder = async () => {
     try {
-      // Preparar dados do pedido para a edge function
+      // 🚀 NOVA SOLUÇÃO: OrderGateway com endpoint seguro
       const pedidoData = {
         companyId: companyId,
         cliente: {
           nome: customerData.name,
           telefone: customerData.phone
         },
-        carrinho: carrinho.map(item => ({
-          id: item.produto.id,
-          name: item.produto.name,
-          price: item.produto.is_promotional && item.produto.promotional_price 
+        itens: carrinho.map(item => ({
+          produto_id: item.produto.id,
+          nome: item.produto.name,
+          preco: item.produto.is_promotional && item.produto.promotional_price 
             ? item.produto.promotional_price 
             : item.produto.price,
-          quantity: item.quantidade,
+          quantidade: item.quantidade,
           adicionais: item.adicionais ? Object.keys(item.adicionais).map(adicionalId => ({
             id: adicionalId,
             name: item.adicionais![adicionalId].name,
@@ -102,24 +103,27 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         })),
         total: total,
         forma_pagamento: selectedPayment,
-        tipo_pedido: 'autoatendimento',
+        tipo: 'autoatendimento',
         observacoes: `Pedido realizado via Kiosk - ${new Date().toLocaleString()}`
       };
 
-      console.log('📝 Criando pedido:', pedidoData);
+      console.log('📝 Criando pedido via OrderGateway:', pedidoData);
 
-      // SOLUÇÃO LOCAL: Usar função local em vez da edge function quebrada
-      const { criarPedidoLocal } = await import('@/utils/criarPedidoLocal');
-      const data = await criarPedidoLocal(pedidoData);
+      // 🎯 ENDPOINT SEGURO COM SERVICE ROLE
+      const result = await createOrderViaGateway(pedidoData);
       
-      console.log('✅ Pedido criado com sucesso via função local:', data);
+      if (!result.success) {
+        throw new Error(result.error || 'Erro ao criar pedido');
+      }
+      
+      console.log('✅ Pedido criado com sucesso via OrderGateway:', result);
 
       // Limpar carrinho
       limparCarrinho();
 
       // Chamar callback de sucesso
       onComplete({
-        orderId: data.pedido_id,
+        orderId: result.pedido.id,
         customerData,
         total,
         paymentMethod: selectedPayment
@@ -133,20 +137,20 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
 
   const handlePixSuccess = async (pixData: any) => {
     try {
-      // Criar pedido com dados do PIX
+      // 🚀 NOVA SOLUÇÃO: OrderGateway com endpoint seguro
       const pedidoData = {
         companyId: companyId,
         cliente: {
           nome: customerData.name,
           telefone: customerData.phone
         },
-        carrinho: carrinho.map(item => ({
-          id: item.produto.id,
-          name: item.produto.name,
-          price: item.produto.is_promotional && item.produto.promotional_price 
+        itens: carrinho.map(item => ({
+          produto_id: item.produto.id,
+          nome: item.produto.name,
+          preco: item.produto.is_promotional && item.produto.promotional_price 
             ? item.produto.promotional_price 
             : item.produto.price,
-          quantity: item.quantidade,
+          quantidade: item.quantidade,
           adicionais: item.adicionais ? Object.keys(item.adicionais).map(adicionalId => ({
             id: adicionalId,
             name: item.adicionais![adicionalId].name,
@@ -156,23 +160,25 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         })),
         total: total,
         forma_pagamento: 'pix',
-        tipo_pedido: 'autoatendimento',
-        pix_data: pixData,
+        tipo: 'autoatendimento',
         observacoes: `Pedido PIX via Kiosk - ${new Date().toLocaleString()}`
       };
 
-      // SOLUÇÃO LOCAL: Usar função local em vez da edge function quebrada  
-      const { criarPedidoLocal } = await import('@/utils/criarPedidoLocal');
-      const data = await criarPedidoLocal(pedidoData);
+      // 🎯 ENDPOINT SEGURO COM SERVICE ROLE
+      const result = await createOrderViaGateway(pedidoData);
       
-      console.log('✅ Pedido PIX criado com sucesso via função local:', data);
+      if (!result.success) {
+        throw new Error(result.error || 'Erro ao criar pedido PIX');
+      }
+      
+      console.log('✅ Pedido PIX criado com sucesso via OrderGateway:', result);
 
       // Limpar carrinho
       limparCarrinho();
 
       // Chamar callback de sucesso
       onComplete({
-        orderId: data.pedido_id,
+        orderId: result.pedido.id,
         customerData,
         total,
         paymentMethod: 'pix',

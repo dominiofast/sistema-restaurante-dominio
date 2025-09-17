@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import type { ClientePublico, CheckoutStep, DeliveryInfo } from './useCheckoutFlow';
+import { createOrder as createOrderViaGateway } from '@/services/orderGateway';
 
 // Tipos para as dependências do hook
 interface CheckoutHandlersDependencies {
@@ -147,7 +148,41 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
         console.log('🔄 Callback para atualizar cashback executado');
       };
 
-      const result = await createOrder(orderData, onCashbackUpdate);
+      // 🚀 NOVA SOLUÇÃO: OrderGateway com endpoint seguro
+      console.log('📦 Criando pedido via OrderGateway seguro:', orderData);
+      
+      const pedidoData = {
+        companyId: company.id,
+        cliente: {
+          nome: orderData.cliente.nome,
+          telefone: orderData.cliente.telefone
+        },
+        endereco: orderData.endereco,
+        itens: orderData.carrinho.map((item: any) => ({
+          produto_id: item.id,
+          nome: item.name,
+          preco: item.price,
+          quantidade: item.quantity,
+          adicionais: item.adicionais || []
+        })),
+        total: deliveryInfo.taxaEntrega ? (deliveryInfo.taxaEntrega + 50) : 50, // calcular total
+        forma_pagamento: orderData.paymentMethod || 'dinheiro',
+        tipo: deliveryInfo.tipo || 'delivery',
+        observacoes: null
+      };
+      
+      const result = await createOrderViaGateway(pedidoData);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Erro ao criar pedido');
+      }
+      
+      console.log('✅ Pedido criado com sucesso via OrderGateway:', result);
+      
+      // Executar callback para atualizar cashback se necessário
+      if (onCashbackUpdate) {
+        onCashbackUpdate();
+      }
 
       // Redirecionar para página de acompanhamento
       const numeroPedido = result.pedido.numero_pedido || result.pedido.id;
