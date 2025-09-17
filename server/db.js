@@ -97,3 +97,41 @@ export async function authenticateUser(email, password) {
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
+
+// Create superadmin user
+export async function createSuperadmin() {
+  try {
+    // Verificar se já existe
+    const existingQuery = `SELECT id, email, role FROM users WHERE email = 'contato@dominio.tech'`;
+    const existingResult = await pool.query(existingQuery);
+
+    if (existingResult.rows.length > 0) {
+      return {
+        exists: true,
+        user: existingResult.rows[0]
+      };
+    }
+
+    // Criar superadmin
+    const createQuery = `
+      INSERT INTO users (email, name, role, password, created_at, updated_at) 
+      VALUES ($1, $2, $3, $4, NOW(), NOW()) 
+      RETURNING id, email, name, role, created_at
+    `;
+    
+    const result = await pool.query(createQuery, [
+      'contato@dominio.tech',
+      'Super Admin',
+      'super_admin',
+      '$2b$12$4oSZ5n71CDm/rytk1RgTLOvg3ktRXjOjsYBU5XAY8th0tsUFACMZ6'
+    ]);
+
+    return {
+      exists: false,
+      user: result.rows[0]
+    };
+
+  } catch (error) {
+    throw new Error(`Erro ao criar superadmin: ${error.message}`);
+  }
+}

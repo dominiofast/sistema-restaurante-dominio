@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser } from './db.js';
+import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,53 +76,35 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// ENDPOINT PARA CRIAR SUPERADMIN (apenas em desenvolvimento)
+// ENDPOINT PARA CRIAR SUPERADMIN
 app.post('/api/create-superadmin', async (req, res) => {
   console.log('👑 API /create-superadmin - Criando superadmin');
 
   try {
-    // Verificar se já existe um superadmin
-    const existingQuery = `SELECT * FROM users WHERE email = 'contato@dominio.tech'`;
-    const existingResult = await pool.query(existingQuery);
+    const result = await createSuperadmin();
 
-    if (existingResult.rows.length > 0) {
+    if (result.exists) {
+      console.log('✅ Superadmin já existe:', result.user);
       return res.json({
         success: true,
         message: 'Superadmin já existe',
-        user: {
-          email: existingResult.rows[0].email,
-          role: existingResult.rows[0].role
-        }
+        user: result.user
       });
     }
 
-    // Criar superadmin
-    const createQuery = `
-      INSERT INTO users (email, name, role, password, created_at, updated_at) 
-      VALUES ($1, $2, $3, $4, NOW(), NOW()) 
-      RETURNING id, email, name, role, created_at
-    `;
-    
-    const result = await pool.query(createQuery, [
-      'contato@dominio.tech',
-      'Super Admin',
-      'super_admin',
-      '$2b$12$4oSZ5n71CDm/rytk1RgTLOvg3ktRXjOjsYBU5XAY8th0tsUFACMZ6'
-    ]);
-
-    console.log('✅ Superadmin criado com sucesso:', result.rows[0]);
+    console.log('✅ Superadmin criado com sucesso:', result.user);
 
     res.json({
       success: true,
       message: 'Superadmin criado com sucesso',
-      user: result.rows[0]
+      user: result.user
     });
 
   } catch (error) {
     console.error('💥 API /create-superadmin - Erro:', error);
     res.status(500).json({
       success: false,
-      error: 'Erro ao criar superadmin'
+      error: error.message
     });
   }
 });
