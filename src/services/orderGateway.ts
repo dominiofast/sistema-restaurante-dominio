@@ -47,7 +47,14 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
   });
 
   try {
-    const response = await fetch('/api/orders', {
+    // 🔧 FORÇA uso do endpoint local para evitar redirecionamentos
+    const apiUrl = window.location.hostname.includes('replit.dev') || window.location.hostname === 'localhost' 
+      ? '/api/orders'  // Relativo em desenvolvimento
+      : `${window.location.protocol}//${window.location.host}/api/orders`; // Absoluto
+      
+    console.log('🎯 Usando endpoint:', apiUrl);
+    
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
