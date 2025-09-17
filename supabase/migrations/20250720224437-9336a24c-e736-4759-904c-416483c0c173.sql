@@ -21,7 +21,7 @@ INSERT INTO ai_global_config (
     is_active
 ) 
 SELECT 
-    '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',
+    'YOUR_OPENAI_API_KEY_HERE',
     'gpt-4.1-2025-04-14',
     0.7,
     200,
