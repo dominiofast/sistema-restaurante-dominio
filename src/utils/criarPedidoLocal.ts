@@ -191,9 +191,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
               categoria_nome: 'Adicional',
               nome_adicional: adicional.name,
               quantidade: adicional.quantity,
-              valor_unitario: adicional.price,
-              valor_total: valorTotalAdicional
-            })
+              valor_unitario: adicional.price.toString(),
+              valor_total: valorTotalAdicional.toString()
+            } as any)
 
           if (adicionalError) {
             console.error('❌ ERRO ao salvar adicional:', adicionalError)
