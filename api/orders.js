@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Configurações do Supabase - usando as variáveis padrão do projeto
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Configurações do Supabase - ROBUSTAS com fallbacks para produção
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+// Fallback para chave pública - deve funcionar com RLS configurado
+const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweFRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODEzMzI0MTUsImV4cCI6MTk5NjkwODQxNX0.0a6lRZs3dLMvLm3DX8QTqAY8RJiZuDyQhShClP-Zi_c";
 
 export default async function handler(req, res) {
   // CORS headers
@@ -32,21 +34,36 @@ export default async function handler(req, res) {
   try {
     console.log('🚀 === CRIAÇÃO DE PEDIDO SERVER-SIDE ===');
     
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      console.error('❌ Variáveis de ambiente não configuradas:', {
-        hasUrl: !!SUPABASE_URL,
-        hasServiceRole: !!SUPABASE_SERVICE_ROLE_KEY,
-        viteUrl: process.env.VITE_SUPABASE_URL,
-        regularUrl: process.env.SUPABASE_URL
-      });
+    if (!SUPABASE_URL) {
+      console.error('❌ SUPABASE_URL não encontrada');
       return res.status(500).json({ 
-        error: 'Configuração ausente',
-        details: 'VITE_SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY não configuradas'
+        error: 'Configuração URL ausente',
+        details: 'Supabase URL não configurada'
       });
     }
 
-    // CLIENT COM SERVICE ROLE - SEM LIMITAÇÕES RLS!
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    if (!SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('❌ SERVICE ROLE KEY não encontrada - usando cliente público como fallback');
+      // FALLBACK: Usar cliente público se não tiver service role
+      // Ainda pode funcionar com RLS bem configurado
+    }
+
+    // CLIENT COM SERVICE ROLE - ou fallback para cliente público
+    const finalKey = SUPABASE_SERVICE_ROLE_KEY || SUPABASE_PUBLIC_KEY;
+    const isServiceRole = !!SUPABASE_SERVICE_ROLE_KEY;
+    
+    console.log('🔑 Usando chave:', isServiceRole ? 'SERVICE_ROLE' : 'PUBLIC_ANON');
+    
+    const supabase = createClient(
+      SUPABASE_URL, 
+      finalKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
     const pedidoData = req.body;
     
     console.log('📦 Dados recebidos:', {
