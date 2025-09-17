@@ -1,0 +1,67 @@
+🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: true, asaasConfigLoading: true, paymentConfig?.accept_pix: undefined, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 ASAAS DEBUG - Query result: {data: null, error: null}
+index-Df4gVWb4.js:1097 🔍 ASAAS DEBUG - Nenhuma config encontrada
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: true, asaasConfigLoading: false, paymentConfig?.accept_pix: undefined, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-Df4gVWb4.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-Df4gVWb4.js:1111 💳 Método de pagamento selecionado: {"method":"dinheiro","needsChange":false,"changeAmount":0,"cardBrand":"","cashbackApplied":0,"totalWithCashback":71.9}
+index-Df4gVWb4.js:1111 📦 Criando pedido via OrderGateway seguro: {cliente: {…}, endereco: '', carrinho: Array(1), company: {…}, deliveryInfo: {…}, …}
+index-Df4gVWb4.js:1111 🚀 OrderGateway - Criando pedido via endpoint seguro
+index-Df4gVWb4.js:1111 📦 Dados: {companyId: '550e8400-e29b-41d4-a716-446655440001', cliente: 'Cleber Ruiz Camargo', itens: 1, total: 58}
+index-Df4gVWb4.js:1111   POST https://pedido.dominio.tech/api/orders 500 (Internal Server Error)
+KI @ index-Df4gVWb4.js:1111
+(anônimo) @ index-Df4gVWb4.js:1111
+W @ index-Df4gVWb4.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-Df4gVWb4.js:1111  ❌ Erro na resposta do servidor: {error: 'Configuração ausente'}
+KI @ index-Df4gVWb4.js:1111
+await in KI
+(anônimo) @ index-Df4gVWb4.js:1111
+W @ index-Df4gVWb4.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-Df4gVWb4.js:1111  💥 OrderGateway - Erro ao criar pedido: Error: Configuração ausente
+    at KI (index-Df4gVWb4.js:1111:23440)
+    at async index-Df4gVWb4.js:1111:25274
+KI @ index-Df4gVWb4.js:1111
+await in KI
+(anônimo) @ index-Df4gVWb4.js:1111
+W @ index-Df4gVWb4.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anônimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-Df4gVWb4.js:1111  ❌ Erro ao finalizar pedido: Error: Configuração ausente
+    at index-Df4gVWb4.js:1111:25306
