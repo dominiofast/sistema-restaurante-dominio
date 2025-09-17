@@ -1,0 +1,56 @@
+# EditorConfig ajuda a manter estilos de codificação consistentes
+# entre diferentes editores e IDEs
+# editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+# Arquivos SQL
+[*.sql]
+indent_size = 4
+# Sugere salvar em database/
+file_location = database/
+
+# Scripts PowerShell
+[*.ps1]
+indent_size = 4
+# Sugere salvar em scripts/powershell/
+file_location = scripts/powershell/
+
+# Scripts Batch
+[*.bat]
+end_of_line = crlf
+indent_size = 4
+# Sugere salvar em scripts/batch/
+file_location = scripts/batch/
+
+# JavaScript/TypeScript
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+quote_type = single
+
+# Arquivos de teste
+[test*.{html,js}]
+# Sugere salvar em test-files/
+file_location = test-files/
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+# Sugere salvar em docs/
+file_location = docs/
+
+# Configurações
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# Makefiles
+[Makefile]
+indent_style = tab

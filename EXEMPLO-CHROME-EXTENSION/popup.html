@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp IA Controller</title>
+    <style>
+        body {
+            width: 320px;
+            min-height: 400px;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5;
+        }
+        
+        .header {
+            background: #00a884;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e1e1e1;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .status-dot.connected {
+            background: #00a884;
+        }
+        
+        .status-dot.disconnected {
+            background: #ff3333;
+        }
+        
+        .status-text {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .status-details {
+            font-size: 12px;
+            color: #667781;
+            margin-left: 22px;
+        }
+        
+        .config-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e1e1e1;
+        }
+        
+        .section-title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #111b21;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            font-size: 12px;
+            color: #667781;
+            margin-bottom: 4px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d7db;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00a884;
+        }
+        
+        .btn {
+            background: #00a884;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #008069;
+        }
+        
+        .btn:disabled {
+            background: #8696a0;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #00a884;
+            border: 1px solid #00a884;
+            margin-top: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f2f5;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            font-size: 16px;
+            color: #00a884;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #667781;
+        }
+        
+        .alert {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .alert.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #8696a0;
+            border-top: 1px solid #e1e1e1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 IA Controller</h1>
+        <p>Controle do Assistente para WhatsApp Web</p>
+    </div>
+    
+    <div class="content">
+        <!-- Status da Conexão -->
+        <div class="status-card">
+            <div class="status-indicator">
+                <div class="status-dot" id="connectionStatus"></div>
+                <span class="status-text" id="connectionText">Verificando...</span>
+            </div>
+            <div class="status-details" id="connectionDetails">
+                Verificando conexão com o sistema...
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="pausedCount">-</div>
+                    <div class="stat-label">Pausados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="activeCount">-</div>
+                    <div class="stat-label">Ativos</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Configurações -->
+        <div class="config-section">
+            <div class="section-title">⚙️ Configurações</div>
+            
+            <div id="alertContainer"></div>
+            
+            <div class="form-group">
+                <label for="companyId">ID da Empresa:</label>
+                <input type="text" id="companyId" placeholder="uuid-da-empresa">
+            </div>
+            
+            <div class="form-group">
+                <label for="companySlug">Slug da Empresa:</label>
+                <input type="text" id="companySlug" placeholder="nome-da-empresa">
+            </div>
+            
+            <div class="form-group">
+                <label for="apiUrl">URL da API:</label>
+                <input type="text" id="apiUrl" value="https://conta.dominio.tech/api">
+            </div>
+            
+            <button class="btn" id="saveConfig">💾 Salvar Configurações</button>
+            <button class="btn btn-secondary" id="testConnection">🔍 Testar Conexão</button>
+        </div>
+        
+        <!-- Ações Rápidas -->
+        <div class="config-section">
+            <div class="section-title">⚡ Ações Rápidas</div>
+            
+            <button class="btn" id="refreshData">🔄 Atualizar Dados</button>
+            <button class="btn btn-secondary" id="clearCache">🗑️ Limpar Cache</button>
+        </div>
+        
+        <!-- Informações Atual -->
+        <div class="config-section" id="currentChatInfo" style="display: none;">
+            <div class="section-title">💬 Chat Atual</div>
+            <div id="currentChatDetails"></div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div>WhatsApp IA Controller v1.0.0</div>
+        <div>Desenvolvido para Domínio Pizzas</div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

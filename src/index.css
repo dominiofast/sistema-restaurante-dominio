@@ -1,0 +1,423 @@
+
+/* Import sidebar styles */
+@import './styles/sidebar.css';
+/* Import cardápio público styles */
+@import './styles/cardapio-publico.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ERP Multi-tenant Design System - dominio.tech */
+
+@layer base {
+  :root {
+    /* Esquema de cores profissional corporativo */
+    --background: 210 29 97; /* #F7FAFC - background neutro HSL */
+    --foreground: 213 32 17; /* #2D3748 - texto principal HSL */
+
+    --card: 0 0 100; /* #FFFFFF - branco puro HSL */
+    --card-foreground: 213 32 17; /* #2D3748 - texto principal HSL */
+
+    --popover: 0 0 100; /* #FFFFFF - branco puro HSL */
+    --popover-foreground: 213 32 17; /* #2D3748 - texto principal HSL */
+
+    --primary: 215 66 30; /* #224276 - azul corporativo HSL */
+    --primary-foreground: 0 0 100; /* #FFFFFF - branco HSL */
+
+    --secondary: 194 100 50; /* #00D4FF - azul cyan links HSL */
+    --secondary-foreground: 215 66 30; /* #224276 - azul corporativo HSL */
+
+    --muted: 210 29 97; /* #F7FAFC - background neutro HSL */
+    --muted-foreground: 211 25 43; /* #6B7C93 - textos secundários HSL */
+
+    --accent: 208 100 94; /* #E8F4FF - azul claro para destaques HSL */
+    --accent-foreground: 215 66 30; /* #224276 - azul corporativo HSL */
+
+    --destructive: 354 70 54; /* #DC3545 - erro HSL */
+    --destructive-foreground: 0 0 100; /* #FFFFFF - branco HSL */
+
+    --border: 212 20 89; /* #E3E8EF - border padrão HSL */
+    --input: 212 20 89; /* #E3E8EF - border input HSL */
+    --ring: 194 100 50; /* #00D4FF - azul cyan focus HSL */
+
+    --radius: 0.5rem;
+
+    /* Cores Primárias Domínio Tech */
+    --dominio-blue-primary: 217 54 30; /* #224276 azul principal HSL */
+    --dominio-blue-cyan: 195 100 50; /* #00D4FF azul cyan HSL */
+    
+    /* Cores Secundárias */
+    --dominio-blue-dark: 217 60 22; /* #1A3556 azul escuro HSL */
+    --dominio-blue-medium: 217 39 58; /* #5E88C3 azul médio HSL */
+    --dominio-blue-light: 195 100 94; /* #E8F4FF azul claro HSL */
+    
+    /* Cores de Apoio */
+    --dominio-text-primary: 214 32 20; /* #2D3748 texto principal HSL */
+    --dominio-text-secondary: 214 16 50; /* #6B7C93 texto secundário HSL */
+    --dominio-background-neutral: 210 29 97; /* #F7FAFC background neutro HSL */
+    --dominio-white: 0 0 100; /* #FFFFFF branco HSL */
+    
+    /* Cores Funcionais */
+    --dominio-success: 134 61 41; /* #28A745 sucesso HSL */
+    --dominio-warning: 51 100 66; /* #FFC107 alerta HSL */
+    --dominio-error: 354 70 54; /* #DC3545 erro HSL */
+
+    /* Sidebar em cores da marca */
+    --sidebar-background: 217 54 30 !important; /* azul principal HSL */
+    --sidebar-foreground: 0 0 100 !important; /* branco HSL */
+    --sidebar-primary: 195 100 50 !important; /* cyan para itens ativos HSL */
+    --sidebar-primary-foreground: 217 54 30 !important; /* azul principal HSL */
+    --sidebar-accent: 217 60 22 !important; /* azul escuro para hover HSL */
+    --sidebar-accent-foreground: 0 0 100 !important; /* branco HSL */
+    --sidebar-border: 217 60 22 !important; /* azul escuro HSL */
+    --sidebar-ring: 195 100 50 !important; /* cyan HSL */
+
+    /* Aliases para compatibilidade */
+    --primary-blue: 217 54 30; /* azul principal HSL */
+    --light-blue: 195 100 94; /* azul claro HSL */
+    --medium-blue: 217 39 58; /* azul médio HSL */
+    --neutral-gray: 210 29 97; /* background neutro HSL */
+    --brand-coral: 195 100 50; /* usando cyan como destaque HSL */
+  }
+
+  .dark {
+    --background: 0 0 0; /* preto HSL */
+    --foreground: 0 0 100; /* branco HSL */
+
+    --card: 222 47 11; /* cinza escuro HSL */
+    --card-foreground: 210 40 98; /* branco HSL */
+
+    --popover: 222 47 11; /* cinza escuro HSL */
+    --popover-foreground: 210 40 98; /* branco HSL */
+
+    --primary: 0 0 100; /* branco HSL */
+    --primary-foreground: 0 0 0; /* preto HSL */
+
+    --secondary: 217 33 17; /* cinza médio HSL */
+    --secondary-foreground: 210 40 98; /* branco HSL */
+
+    --muted: 217 33 17; /* cinza médio HSL */
+    --muted-foreground: 215 20 65; /* cinza claro HSL */
+
+    --accent: 217 33 17; /* cinza médio HSL */
+    --accent-foreground: 210 40 98; /* branco HSL */
+
+    --destructive: 0 84 60; /* vermelho HSL */
+    --destructive-foreground: 210 40 98; /* branco HSL */
+
+    --border: 217 33 17; /* cinza médio HSL */
+    --input: 217 33 17; /* cinza médio HSL */
+    --ring: 215 66 30; /* azul da marca HSL */
+    
+    /* Sidebar em modo escuro - mantém cores da marca */
+    --sidebar-background: 215 66 8 !important; /* azul escuro HSL */
+    --sidebar-foreground: 210 40 98 !important; /* branco HSL */
+    --sidebar-primary: 12 92 53 !important; /* coral HSL */
+    --sidebar-primary-foreground: 0 0 0 !important; /* preto HSL */
+    --sidebar-accent: 215 50 12 !important; /* azul escuro HSL */
+    --sidebar-accent-foreground: 210 40 98 !important; /* branco HSL */
+    --sidebar-border: 215 50 12 !important; /* azul escuro HSL */
+    --sidebar-ring: 12 92 53 !important; /* coral HSL */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background-color: hsl(var(--neutral-gray)) !important; /* cinza claro agradável */
+    min-height: 100%;
+  }
+
+  body {
+    background: hsl(var(--light-blue));
+    color: hsl(var(--primary-blue));
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    font-weight: 400;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    background-color: hsl(var(--neutral-gray)) !important; /* cinza claro agradável */
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-inter font-semibold tracking-tight;
+    color: hsl(var(--foreground)) !important; /* usar a variável HSL */
+  }
+
+  /* Tipografia melhorada para cardápio de brigadeiros */
+  .cardapio-empresa-nome {
+    @apply font-inter font-medium text-lg md:text-xl;
+  }
+  
+  .cardapio-categoria-titulo {
+    @apply font-inter font-semibold text-lg md:text-xl tracking-tight;
+  }
+  
+  .cardapio-produto-nome {
+    @apply font-inter font-medium text-lg md:text-xl leading-tight;
+  }
+  
+  .cardapio-produto-descricao {
+    @apply font-inter font-normal text-sm md:text-base leading-relaxed;
+  }
+  
+  .cardapio-produto-preco {
+    @apply font-inter font-bold text-lg md:text-xl tracking-wide text-brand-coral-500;
+  }
+  
+  .cardapio-info-auxiliar {
+    @apply font-inter font-normal text-sm opacity-60;
+  }
+}
+
+@layer components {
+  .dominio-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary-blue)), hsl(var(--primary-blue))) !important; /* azul da marca */
+  }
+  
+  .dominio-card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+  }
+  
+  .dominio-sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors;
+  }
+
+  .dominio-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid hsl(var(--primary-blue)); /* azul da marca */
+    border-top: 4px solid hsl(var(--brand-coral)); /* coral da marca */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-brand {
+    0%, 100% { 
+      background-color: hsl(var(--ice-blue)); /* azul muito claro */
+      transform: scale(1);
+    }
+    50% { 
+      background-color: hsl(var(--sky-blue)); /* azul claro */
+      transform: scale(1.05);
+    }
+  }
+
+  .dominio-pulse {
+    animation: pulse-brand 2s ease-in-out infinite;
+  }
+
+  /* Cores personalizadas da marca */
+  .bg-dominio-primary {
+    background-color: hsl(var(--brand-blue-primary)) !important; /* azul escuro da marca */
+  }
+  
+  .bg-dominio-secondary {
+    background-color: hsl(var(--brand-coral)) !important; /* coral da marca */
+  }
+  
+  .text-dominio-primary {
+    color: hsl(var(--primary-blue)) !important; /* azul da marca */
+  }
+  
+  .text-dominio-secondary {
+    color: hsl(var(--brand-coral)) !important; /* coral da marca */
+  }
+
+  .text-dominio-light {
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  /* Forçar estilos do sidebar com cores da marca */
+  [data-sidebar] {
+    background-color: hsl(var(--brand-blue-primary)) !important; /* azul escuro da marca */
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  [data-sidebar] * {
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  [data-sidebar] svg {
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  [data-sidebar] button {
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  [data-sidebar] button:hover {
+    background-color: hsl(var(--brand-coral)) !important; /* coral da marca */
+    color: hsl(0 0 100) !important; /* branco */
+  }
+
+  [data-sidebar] button:hover svg {
+    color: hsl(0 0 100) !important; /* branco */
+  }
+
+  /* Classes específicas do sidebar */
+  .sidebar-content {
+    background-color: hsl(var(--brand-blue-primary)) !important; /* azul escuro da marca */
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  .sidebar-item {
+    color: hsl(210 40 98) !important; /* cinza muito claro */
+  }
+
+  .sidebar-item:hover {
+    background-color: hsl(var(--brand-coral)) !important; /* coral da marca */
+    color: hsl(0 0 100) !important; /* branco */
+  }
+
+  .sidebar-item:hover svg {
+    color: hsl(0 0 100) !important; /* branco */
+  }
+
+  /* Botões com cores da marca */
+  .btn-brand-primary {
+    background-color: hsl(var(--brand-coral)) !important; /* coral */
+    color: hsl(0 0 100) !important;
+    border: none !important;
+  }
+
+  .btn-brand-primary:hover {
+    background-color: hsl(12 92 45) !important; /* coral mais escuro no hover */
+  }
+
+  .btn-brand-secondary {
+    background-color: hsl(var(--brand-blue-primary)) !important; /* azul escuro */
+    color: hsl(0 0 100) !important;
+    border: none !important;
+  }
+
+  .btn-brand-secondary:hover {
+    background-color: hsl(215 66 5) !important; /* azul mais escuro no hover */
+  }
+
+  /* ... keep existing code (animations, scrollbar, transitions, etc) */
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+
+  /* Scrollbar personalizada - ULTRA DISCRETA */
+  ::-webkit-scrollbar {
+    width: 2px !important;
+    height: 2px !important;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.2) !important;
+    border-radius: 1px !important;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.4) !important;
+  }
+
+  /* Forçar scrollbars discretas em todos os elementos */
+  * {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(148, 163, 184, 0.2) transparent !important;
+  }
+
+  /* Estilos para drag and drop */
+  .dragging {
+    opacity: 0.5;
+  }
+
+  /* Transições suaves - simplificadas */
+  * {
+    transition-property: background-color, border-color, color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Forçar todas as bordas sem cor específica para serem cinzas */
+  [class*="border"]:not([class*="border-"]) {
+    border-color: hsl(var(--border)) !important;
+  }
+  
+  /* Garantir que bordas padrão sejam cinzas */
+  .border {
+    border-color: hsl(var(--border)) !important;
+  }
+  
+  .border-t {
+    border-top-color: hsl(var(--border)) !important;
+  }
+  
+  .border-b {
+    border-bottom-color: hsl(var(--border)) !important;
+  }
+  
+  .border-l {
+    border-left-color: hsl(var(--border)) !important;
+  }
+  
+  .border-r {
+    border-right-color: hsl(var(--border)) !important;
+  }
+
+  /* Header customizado com azul da marca */
+  .header-brand {
+    background-color: hsl(var(--primary-blue)) !important; /* azul da marca */
+  }
+}

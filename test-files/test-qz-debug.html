@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug QZ Tray - Análise Completa</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Debug QZ Tray - Análise Completa</h1>
+    <div id="status">Iniciando diagnóstico...</div>
+    <button onclick="runFullDiagnostic()">Executar Diagnóstico Completo</button>
+    <button onclick="clearLogs()">Limpar Logs</button>
+    
+    <h3>Logs Detalhados:</h3>
+    <div id="logs" style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; font-family: monospace; font-size: 12px;"></div>
+
+    <script>
+        let logCount = 0;
+        
+        function log(level, message, details = null) {
+            const logs = document.getElementById('logs');
+            const div = document.createElement('div');
+            const timestamp = new Date().toISOString();
+            logCount++;
+            
+            let color = 'black';
+            let bgColor = 'transparent';
+            switch(level) {
+                case 'success': color = 'green'; break;
+                case 'error': color = 'red'; bgColor = '#ffe6e6'; break;
+                case 'warning': color = 'orange'; bgColor = '#fff3cd'; break;
+                case 'info': color = 'blue'; break;
+                case 'debug': color = 'gray'; break;
+            }
+            
+            div.innerHTML = `<strong>[${logCount}] ${timestamp}</strong> <span style="color: ${color}; background-color: ${bgColor}; padding: 2px;">[${level.toUpperCase()}]</span> ${message}`;
+            div.style.marginBottom = '5px';
+            div.style.borderBottom = '1px solid #eee';
+            div.style.paddingBottom = '3px';
+            
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+            
+            // Log no console também
+            console.log(`[${level}] ${message}`, details || '');
+            
+            if (details) {
+                const detailsDiv = document.createElement('div');
+                detailsDiv.innerHTML = `<pre style="margin: 5px 0; padding: 5px; background: #f5f5f5; font-size: 11px;">${JSON.stringify(details, null, 2)}</pre>`;
+                logs.appendChild(detailsDiv);
+            }
+        }
+
+        function updateStatus(message, color = 'black') {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.color = color;
+            status.style.fontWeight = 'bold';
+        }
+        
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+            logCount = 0;
+        }
+
+        // Verificar ambiente
+        function checkEnvironment() {
+            log('info', '=== VERIFICAÇÃO DO AMBIENTE ===');
+            log('info', 'User Agent: ' + navigator.userAgent);
+            log('info', 'Protocolo: ' + window.location.protocol);
+            log('info', 'Host: ' + window.location.host);
+            log('info', 'URL: ' + window.location.href);
+            log('info', 'Cookies habilitados: ' + navigator.cookieEnabled);
+            log('info', 'WebSocket suportado: ' + (typeof WebSocket !== 'undefined'));
+            
+            // Verificar Mixed Content
+            if (window.location.protocol === 'https:') {
+                log('warning', 'Página HTTPS detectada - possível problema de Mixed Content com QZ Tray');
+            } else {
+                log('success', 'Página HTTP - sem problemas de Mixed Content');
+            }
+        }
+
+        // Testar conectividade básica
+        async function testBasicConnectivity() {
+            log('info', '=== TESTE DE CONECTIVIDADE BÁSICA ===');
+            
+            // Teste HTTP na porta 8181
+            try {
+                log('info', 'Testando HTTP na porta 8181...');
+                const response = await fetch('http://localhost:8181', {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                log('success', `HTTP 8181 - Status: ${response.status || 'opaque'}`);
+            } catch (error) {
+                log('error', 'HTTP 8181 falhou: ' + error.message);
+            }
+            
+            // Teste HTTP na porta 8182 (SSL)
+            try {
+                log('info', 'Testando HTTPS na porta 8182...');
+                const response = await fetch('https://localhost:8182', {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                log('success', `HTTPS 8182 - Status: ${response.status || 'opaque'}`);
+            } catch (error) {
+                log('error', 'HTTPS 8182 falhou: ' + error.message);
+            }
+        }
+
+        // Testar WebSocket direto
+        function testWebSocketDirect() {
+            return new Promise((resolve) => {
+                log('info', '=== TESTE WEBSOCKET DIRETO ===');
+                
+                const ws = new WebSocket('ws://localhost:8181');
+                let resolved = false;
+                
+                const timeout = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        log('error', 'WebSocket timeout (5s)');
+                        ws.close();
+                        resolve(false);
+                    }
+                }, 5000);
+                
+                ws.onopen = function() {
+                    if (!resolved) {
+                        log('success', 'WebSocket conectado!');
+                        
+                        // Enviar comando de versão
+                        const versionCmd = {
+                            call: 'getVersion',
+                            params: []
+                        };
+                        log('info', 'Enviando comando getVersion...');
+                        ws.send(JSON.stringify(versionCmd));
+                    }
+                };
+                
+                ws.onmessage = function(event) {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        
+                        log('success', 'Resposta recebida: ' + event.data);
+                        try {
+                            const response = JSON.parse(event.data);
+                            if (response.result) {
+                                log('success', 'Versão QZ Tray: ' + response.result);
+                                updateStatus('✅ QZ Tray Funcionando - v' + response.result, 'green');
+                            }
+                        } catch (e) {
+                            log('warning', 'Resposta não é JSON válido');
+                        }
+                        
+                        ws.close();
+                        resolve(true);
+                    }
+                };
+                
+                ws.onerror = function(error) {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        log('error', 'Erro WebSocket: ' + error);
+                        resolve(false);
+                    }
+                };
+                
+                ws.onclose = function(event) {
+                    log('info', `WebSocket fechado - Código: ${event.code}, Razão: ${event.reason || 'N/A'}`);
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        resolve(false);
+                    }
+                };
+            });
+        }
+
+        // Verificar se QZ Tray library está carregada
+        function checkQZLibrary() {
+            log('info', '=== VERIFICAÇÃO DA LIBRARY QZ TRAY ===');
+            
+            if (typeof window.qz === 'undefined') {
+                log('error', 'window.qz não está definido - library não carregada');
+                return false;
+            }
+            
+            log('success', 'window.qz encontrado');
+            
+            // Verificar propriedades principais
+            const props = ['websocket', 'security', 'api', 'printers'];
+            props.forEach(prop => {
+                if (window.qz[prop]) {
+                    log('success', `window.qz.${prop} disponível`);
+                } else {
+                    log('error', `window.qz.${prop} NÃO disponível`);
+                }
+            });
+            
+            return true;
+        }
+
+        // Diagnóstico completo
+        async function runFullDiagnostic() {
+            updateStatus('🔍 Executando diagnóstico...', 'orange');
+            clearLogs();
+            
+            log('info', 'INICIANDO DIAGNÓSTICO COMPLETO DO QZ TRAY');
+            log('info', '=' .repeat(50));
+            
+            // 1. Verificar ambiente
+            checkEnvironment();
+            
+            // 2. Verificar library
+            const hasLibrary = checkQZLibrary();
+            
+            // 3. Testar conectividade
+            await testBasicConnectivity();
+            
+            // 4. Testar WebSocket direto
+            const wsWorking = await testWebSocketDirect();
+            
+            // 5. Resultado final
+            log('info', '=' .repeat(50));
+            log('info', 'RESULTADO DO DIAGNÓSTICO:');
+            
+            if (wsWorking) {
+                log('success', '✅ QZ Tray está funcionando corretamente!');
+                updateStatus('✅ QZ Tray OK', 'green');
+            } else {
+                log('error', '❌ QZ Tray não está funcionando');
+                updateStatus('❌ QZ Tray com problemas', 'red');
+                
+                log('info', 'POSSÍVEIS SOLUÇÕES:');
+                log('info', '1. Verificar se QZ Tray está rodando');
+                log('info', '2. Reiniciar QZ Tray');
+                log('info', '3. Verificar firewall/antivírus');
+                log('info', '4. Verificar se a porta 8181 está livre');
+            }
+        }
+
+        // Executar diagnóstico automaticamente
+        window.onload = function() {
+            setTimeout(runFullDiagnostic, 500);
+        };
+    </script>
+</body>
+</html>

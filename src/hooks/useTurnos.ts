@@ -1,0 +1,178 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+
+export interface Turno {
+  id: string;
+  company_id: string;
+  numero_turno: number;
+  data_abertura: string;
+  data_fechamento?: string;
+  usuario_abertura?: string;
+  usuario_fechamento?: string;
+  status: string;
+  observacoes?: string;
+  caixa_id?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export function useTurnos() {
+  const { toast } = useToast();
+  const { currentCompany } = useAuth();
+  const [turnoAtual, setTurnoAtual] = useState<Turno | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const companyId = currentCompany?.id;
+
+  // Buscar turno ativo atual
+  const buscarTurnoAtual = async () => {
+    if (!companyId) return;
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('turnos')
+        .select('*')
+        .eq('company_id', companyId)
+        .eq('status', 'aberto')
+        .order('data_abertura', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Erro ao buscar turno atual:', error);
+        return;
+      }
+
+      setTurnoAtual(data);
+    } catch (error) {
+      console.error('Erro ao buscar turno atual:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Abrir novo turno
+  const abrirTurno = async (observacoes?: string) => {
+    if (!companyId) {
+      toast({
+        title: "Erro",
+        description: "Empresa não identificada",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Fechar turno anterior se existir
+      if (turnoAtual) {
+        await fecharTurno(turnoAtual.id);
+      }
+
+      // Buscar próximo número de turno
+      const { data: proximoNumero, error: numeroError } = await supabase
+        .rpc('get_next_turno_number_for_company', {
+          company_uuid: companyId
+        });
+
+      if (numeroError) {
+        throw numeroError;
+      }
+
+      // Criar novo turno
+      const { data, error } = await supabase
+        .from('turnos')
+        .insert({
+          company_id: companyId,
+          numero_turno: proximoNumero,
+          usuario_abertura: 'Usuário Atual', // TODO: pegar do contexto de autenticação
+          observacoes,
+          status: 'aberto'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setTurnoAtual(data);
+      
+      toast({
+        title: "Turno Aberto",
+        description: `Turno ${proximoNumero} iniciado com sucesso!`,
+      });
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao abrir turno:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao abrir turno",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fechar turno
+  const fecharTurno = async (turnoId: string, observacoes?: string) => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('turnos')
+        .update({
+          status: 'fechado',
+          data_fechamento: new Date().toISOString(),
+          usuario_fechamento: 'Usuário Atual', // TODO: pegar do contexto de autenticação
+          observacoes
+        })
+        .eq('id', turnoId);
+
+      if (error) {
+        throw error;
+      }
+
+      setTurnoAtual(null);
+      
+      toast({
+        title: "Turno Fechado",
+        description: "Turno encerrado com sucesso!",
+      });
+    } catch (error) {
+      console.error('Erro ao fechar turno:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao fechar turno",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Verificar se há turno ativo
+  const temTurnoAtivo = (): boolean => {
+    return turnoAtual !== null && turnoAtual.status === 'aberto';
+  };
+
+  // Buscar turno atual quando a empresa mudar
+  useEffect(() => {
+    if (companyId) {
+      buscarTurnoAtual();
+    }
+  }, [companyId]);
+
+  return {
+    turnoAtual,
+    loading,
+    abrirTurno,
+    fecharTurno,
+    buscarTurnoAtual,
+    temTurnoAtivo,
+  };
+}

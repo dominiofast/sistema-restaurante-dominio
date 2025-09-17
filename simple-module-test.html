@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Módulo Simples</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/simple-test.js"></script>
+    <script>
+        console.log('HTML carregado');
+        
+        // Forçar logs para aparecer
+        setTimeout(() => {
+            console.log('Verificando conteúdo do root após 1 segundo:', document.getElementById('root').innerHTML);
+        }, 1000);
+        
+        // Capturar todos os tipos de erro
+        window.addEventListener('error', function(e) {
+            console.error('ERRO CAPTURADO:', e);
+            alert('Erro: ' + e.message);
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('PROMISE REJEITADA:', e);
+            alert('Promise rejeitada: ' + e.reason);
+        });
+    </script>
+</body>
+</html>

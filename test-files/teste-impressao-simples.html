@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste QZ Tray - Simples e Direto</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>🖨️ Teste Direto QZ Tray</h1>
+    
+    <div id="status">Verificando QZ Tray...</div>
+    
+    <button onclick="conectar()" style="padding: 10px 20px; font-size: 16px;">
+        1. CONECTAR QZ TRAY
+    </button>
+    
+    <button onclick="listarImpressoras()" style="padding: 10px 20px; font-size: 16px;">
+        2. LISTAR IMPRESSORAS
+    </button>
+    
+    <button onclick="imprimirTeste()" style="padding: 10px 20px; font-size: 16px;">
+        3. IMPRIMIR TESTE
+    </button>
+    
+    <div id="resultado" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script src="https://unpkg.com/qz-tray@2.2.5" crossorigin="anonymous"></script>
+    <script>
+        // Configuração super simples
+        let impressoraSelecionada = null;
+        
+        function log(msg) {
+            document.getElementById('resultado').innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        function conectar() {
+            log('🔄 Tentando conectar...');
+            
+            if (!qz.websocket.isActive()) {
+                qz.websocket.connect().then(function() {
+                    log('✅ CONECTADO!');
+                    document.getElementById('status').innerHTML = '✅ QZ Tray Conectado!';
+                }).catch(function(e) {
+                    log('❌ ERRO: ' + e);
+                    document.getElementById('status').innerHTML = '❌ Erro: ' + e;
+                });
+            } else {
+                log('✅ Já está conectado!');
+            }
+        }
+        
+        function listarImpressoras() {
+            log('🔄 Listando impressoras...');
+            
+            qz.printers.find().then(function(printers) {
+                log('📋 Impressoras encontradas: ' + printers.length);
+                printers.forEach(function(printer, index) {
+                    log((index + 1) + '. ' + printer);
+                });
+                
+                // Pega a primeira impressora térmica ou a primeira da lista
+                impressoraSelecionada = printers.find(p => 
+                    p.toLowerCase().includes('termica') || 
+                    p.toLowerCase().includes('thermal') ||
+                    p.toLowerCase().includes('mp-4200')
+                ) || printers[0];
+                
+                log('🎯 Impressora selecionada: ' + impressoraSelecionada);
+            }).catch(function(e) {
+                log('❌ Erro ao listar: ' + e);
+            });
+        }
+        
+        function imprimirTeste() {
+            if (!impressoraSelecionada) {
+                log('❌ Selecione uma impressora primeiro!');
+                return;
+            }
+            
+            log('🖨️ Imprimindo em: ' + impressoraSelecionada);
+            
+            var config = qz.configs.create(impressoraSelecionada);
+            var data = [
+                'TESTE DE IMPRESSAO\n',
+                '==================\n',
+                'Data: ' + new Date().toLocaleString() + '\n',
+                'QZ Tray Funcionando!\n',
+                '\n\n\n\n\n'
+            ];
+            
+            qz.print(config, data).then(function() {
+                log('✅ IMPRESSÃO ENVIADA!');
+            }).catch(function(e) {
+                log('❌ Erro na impressão: ' + e);
+            });
+        }
+        
+        // Tenta conectar automaticamente ao carregar
+        window.onload = function() {
+            setTimeout(conectar, 1000);
+        };
+    </script>
+</body>
+</html>

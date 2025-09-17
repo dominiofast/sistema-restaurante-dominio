@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Company ID - Domínio Pizzas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2196F3; }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .copy-box {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            position: relative;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #1976D2; }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 5px;
+            border: 1px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Como Encontrar o Company ID da Domínio Pizzas</h1>
+        
+        <div class="step">
+            <h2>Passo 1: Acesse o SQL Editor do Supabase</h2>
+            <p>Clique no link abaixo para abrir o SQL Editor do seu projeto:</p>
+            <a href="https://app.supabase.com/project/epqppxteicfuzdblbluq/sql/new" target="_blank">
+                <button>Abrir SQL Editor →</button>
+            </a>
+        </div>
+        
+        <div class="step">
+            <h2>Passo 2: Cole e Execute esta Query</h2>
+            <div class="copy-box" id="query">
+SELECT 
+    id as "🔑 Company ID",
+    name as "🏢 Nome da Empresa",
+    slug as "🌐 Slug",
+    CASE 
+        WHEN active = true THEN '✅ Ativa'
+        ELSE '❌ Inativa'
+    END as "📊 Status"
+FROM companies
+WHERE 
+    LOWER(name) LIKE '%dominio%' 
+    OR LOWER(name) LIKE '%domínio%'
+ORDER BY name;</div>
+            <button onclick="copyQuery()">📋 Copiar Query</button>
+        </div>
+        
+        <div class="step">
+            <h2>Passo 3: Execute e Copie o ID</h2>
+            <p>1. Cole a query no editor</p>
+            <p>2. Clique em <strong>Run</strong> (ou pressione Ctrl+Enter)</p>
+            <p>3. Copie o valor da coluna <code>🔑 Company ID</code></p>
+        </div>
+        
+        <div class="result">
+            <h3>📍 Onde Usar o Company ID:</h3>
+            <p>No app Monitor de Impressão, cole o ID no campo:</p>
+            <code>ID da Empresa: [cole aqui o UUID]</code>
+            
+            <h3>🎯 Exemplo de Company ID:</h3>
+            <code>550e8400-e29b-41d4-a716-446655440001</code>
+        </div>
+        
+        <div class="step" style="background: #fff3e0; border-color: #ff9800;">
+            <h3>💡 Dica Extra: Ver TODAS as Empresas</h3>
+            <p>Se não encontrar "Domínio Pizzas", use esta query para listar todas:</p>
+            <div class="copy-box">
+SELECT id, name FROM companies ORDER BY name;</div>
+        </div>
+    </div>
+    
+    <script>
+        function copyQuery() {
+            const query = document.getElementById('query').textContent;
+            navigator.clipboard.writeText(query).then(() => {
+                alert('✅ Query copiada!');
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Agente IA</title>
+</head>
+<body>
+    <h1>Teste Agente IA Conversa</h1>
+    <button onclick="testarAgente()">Testar Agente</button>
+    <div id="resultado"></div>
+
+    <script>
+    async function testarAgente() {
+        const resultado = document.getElementById('resultado');
+        resultado.innerHTML = 'Testando...';
+        
+        try {
+            const response = await fetch('https://epqppxteicfuzdblbluq.supabase.co/functions/v1/agente-ia-conversa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userMessage: "Olá, quero fazer um pedido",
+                    customerPhone: "5511999999999",
+                    customerName: "Teste",
+                    slug_empresa: "quadrata-pizzas"
+                })
+            });
+            
+            const data = await response.json();
+            resultado.innerHTML = `
+                <h3>Resposta (${response.status}):</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        } catch (error) {
+            resultado.innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+        }
+    }
+    </script>
+</body>
+</html>

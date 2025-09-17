@@ -1,0 +1,7 @@
+
+# Netlify redirects file
+# Cardápio público - todas as rotas /cardapio/* devem ser redirecionadas para index.html
+/cardapio/* /index.html 200
+
+# Todas as outras rotas SPA
+/* /index.html 200

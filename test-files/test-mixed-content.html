@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Mixed Content - QZ Tray</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Teste de Mixed Content - QZ Tray</h1>
+    <div id="info"></div>
+    <div id="status"></div>
+    <button onclick="testMixedContent()">Testar Mixed Content</button>
+    <div id="logs"></div>
+
+    <script>
+        function log(message, color = 'black') {
+            const logs = document.getElementById('logs');
+            const p = document.createElement('p');
+            p.innerHTML = new Date().toLocaleTimeString() + ': ' + message;
+            p.style.color = color;
+            logs.appendChild(p);
+        }
+
+        function showInfo() {
+            const info = document.getElementById('info');
+            const protocol = window.location.protocol;
+            const host = window.location.host;
+            
+            info.innerHTML = `
+                <h3>Informações da Página:</h3>
+                <p><strong>Protocolo:</strong> ${protocol}</p>
+                <p><strong>Host:</strong> ${host}</p>
+                <p><strong>URL Completa:</strong> ${window.location.href}</p>
+                <p><strong>Mixed Content:</strong> ${protocol === 'https:' ? 'POSSÍVEL PROBLEMA' : 'OK (HTTP)'}</p>
+            `;
+        }
+
+        function testMixedContent() {
+            log('Iniciando teste de Mixed Content...');
+            
+            // Verificar protocolo
+            const isHTTPS = window.location.protocol === 'https:';
+            if (isHTTPS) {
+                log('⚠️ Página está em HTTPS - Mixed Content pode bloquear WebSocket HTTP', 'orange');
+                log('💡 Solução: Configurar browser para permitir conteúdo inseguro', 'blue');
+            } else {
+                log('✅ Página está em HTTP - Mixed Content não é problema', 'green');
+            }
+
+            // Testar fetch para porta 8181
+            log('Testando conectividade HTTP para porta 8181...');
+            fetch('http://localhost:8181')
+                .then(response => {
+                    log('✅ Resposta HTTP recebida da porta 8181', 'green');
+                })
+                .catch(error => {
+                    if (error.message.includes('Mixed Content')) {
+                        log('❌ ERRO: Mixed Content bloqueou a requisição', 'red');
+                        log('💡 Configure o browser para permitir conteúdo inseguro', 'blue');
+                    } else {
+                        log('⚠️ Erro na requisição: ' + error.message, 'orange');
+                    }
+                });
+
+            // Testar WebSocket
+            log('Testando WebSocket para ws://localhost:8181...');
+            try {
+                const ws = new WebSocket('ws://localhost:8181');
+                
+                ws.onopen = function() {
+                    log('✅ WebSocket conectado com sucesso!', 'green');
+                    ws.close();
+                };
+                
+                ws.onerror = function(error) {
+                    log('❌ Erro no WebSocket: ' + error, 'red');
+                };
+                
+                ws.onclose = function(event) {
+                    if (event.code === 1006) {
+                        log('❌ WebSocket fechado abruptamente (código 1006)', 'red');
+                        log('💡 Possível bloqueio de Mixed Content ou firewall', 'blue');
+                    } else {
+                        log('WebSocket fechado (código: ' + event.code + ')', 'gray');
+                    }
+                };
+                
+                // Timeout para detectar problemas
+                setTimeout(() => {
+                    if (ws.readyState === WebSocket.CONNECTING) {
+                        log('⏰ Timeout na conexão WebSocket', 'red');
+                        ws.close();
+                    }
+                }, 5000);
+                
+            } catch (error) {
+                log('❌ Erro ao criar WebSocket: ' + error.message, 'red');
+            }
+        }
+
+        // Executar testes automaticamente
+        window.onload = function() {
+            showInfo();
+            setTimeout(testMixedContent, 1000);
+        };
+    </script>
+</body>
+</html>

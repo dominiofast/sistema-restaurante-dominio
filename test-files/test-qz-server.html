@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste QZ Tray via Servidor</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Teste QZ Tray via Servidor HTTP</h1>
+    <div id="status">Carregando...</div>
+    <button onclick="testConnection()">Testar Conexão</button>
+    <button onclick="testWebSocket()">Testar WebSocket Direto</button>
+    <div id="logs" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 10px;"></div>
+
+    <script>
+        function log(level, message) {
+            const logs = document.getElementById('logs');
+            const p = document.createElement('p');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            let color = 'black';
+            switch(level) {
+                case 'success': color = 'green'; break;
+                case 'error': color = 'red'; break;
+                case 'warning': color = 'orange'; break;
+                case 'info': color = 'blue'; break;
+            }
+            
+            p.innerHTML = `[${timestamp}] <strong>${level.toUpperCase()}:</strong> ${message}`;
+            p.style.color = color;
+            logs.appendChild(p);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function updateStatus(message, color = 'black') {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.color = color;
+        }
+
+        // Teste de WebSocket direto
+        async function testWebSocket() {
+            log('info', 'Testando WebSocket direto na porta 8181...');
+            
+            try {
+                const ws = new WebSocket('ws://localhost:8181');
+                
+                ws.onopen = function() {
+                    log('success', 'WebSocket conectado!');
+                    updateStatus('✅ WebSocket Conectado', 'green');
+                    
+                    // Enviar mensagem de teste
+                    ws.send(JSON.stringify({
+                        call: 'getVersion',
+                        params: []
+                    }));
+                };
+                
+                ws.onmessage = function(event) {
+                    log('success', 'Resposta recebida: ' + event.data);
+                    try {
+                        const response = JSON.parse(event.data);
+                        if (response.result) {
+                            log('success', 'Versão QZ Tray: ' + response.result);
+                        }
+                    } catch (e) {
+                        log('warning', 'Resposta não é JSON válido');
+                    }
+                };
+                
+                ws.onerror = function(error) {
+                    log('error', 'Erro no WebSocket: ' + error);
+                    updateStatus('❌ Erro WebSocket', 'red');
+                };
+                
+                ws.onclose = function(event) {
+                    log('info', `WebSocket fechado. Código: ${event.code}, Razão: ${event.reason}`);
+                };
+                
+            } catch (error) {
+                log('error', 'Erro ao criar WebSocket: ' + error.message);
+                updateStatus('❌ Erro WebSocket', 'red');
+            }
+        }
+
+        // Teste de conexão HTTP
+        async function testConnection() {
+            log('info', 'Testando conectividade HTTP na porta 8181...');
+            
+            try {
+                const response = await fetch('http://localhost:8181', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                log('success', `HTTP Status: ${response.status}`);
+                
+                const text = await response.text();
+                log('info', 'Resposta HTTP: ' + text.substring(0, 200));
+                
+                updateStatus('✅ HTTP OK', 'green');
+                
+            } catch (error) {
+                log('error', 'Erro HTTP: ' + error.message);
+                updateStatus('❌ Erro HTTP', 'red');
+            }
+        }
+
+        // Verificar informações do navegador
+        function checkBrowserInfo() {
+            log('info', 'Navegador: ' + navigator.userAgent);
+            log('info', 'Protocolo da página: ' + window.location.protocol);
+            log('info', 'Host da página: ' + window.location.host);
+            log('info', 'URL completa: ' + window.location.href);
+            
+            // Verificar se é HTTPS
+            if (window.location.protocol === 'https:') {
+                log('warning', 'Página carregada via HTTPS - pode haver problemas de Mixed Content');
+            } else {
+                log('info', 'Página carregada via HTTP - sem problemas de Mixed Content');
+            }
+        }
+
+        // Executar verificações quando a página carregar
+        window.onload = function() {
+            updateStatus('Pronto para testes', 'blue');
+            checkBrowserInfo();
+            
+            // Executar testes automaticamente
+            setTimeout(() => {
+                testConnection();
+                setTimeout(() => {
+                    testWebSocket();
+                }, 2000);
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

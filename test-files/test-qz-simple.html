@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste QZ Tray Simples</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Teste QZ Tray - Conexão Simples</h1>
+    <div id="status">Iniciando...</div>
+    <button onclick="testSimpleConnection()">Testar Conexão Simples</button>
+    <button onclick="testWithTimeout()">Testar com Timeout</button>
+    <button onclick="testMultiplePorts()">Testar Múltiplas Portas</button>
+    
+    <div id="logs" style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 10px; font-family: monospace;"></div>
+
+    <script>
+        function log(message, color = 'black') {
+            const logs = document.getElementById('logs');
+            const div = document.createElement('div');
+            const timestamp = new Date().toLocaleTimeString();
+            div.innerHTML = `[${timestamp}] ${message}`;
+            div.style.color = color;
+            div.style.marginBottom = '3px';
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+            console.log(message);
+        }
+
+        function updateStatus(message, color = 'black') {
+            document.getElementById('status').innerHTML = message;
+            document.getElementById('status').style.color = color;
+        }
+
+        // Teste de conexão mais simples possível
+        function testSimpleConnection() {
+            log('=== TESTE CONEXÃO SIMPLES ===', 'blue');
+            updateStatus('Testando...', 'orange');
+            
+            const ws = new WebSocket('ws://localhost:8181');
+            
+            ws.onopen = function() {
+                log('✅ WebSocket ABERTO!', 'green');
+                updateStatus('✅ Conectado!', 'green');
+                
+                // Enviar comando mais simples
+                log('Enviando comando ping...', 'blue');
+                ws.send('ping');
+            };
+            
+            ws.onmessage = function(event) {
+                log('📨 Mensagem recebida: ' + event.data, 'green');
+                
+                // Tentar comando de versão
+                log('Enviando comando getVersion...', 'blue');
+                const cmd = JSON.stringify({
+                    call: 'getVersion',
+                    params: []
+                });
+                ws.send(cmd);
+            };
+            
+            ws.onerror = function(error) {
+                log('❌ ERRO WebSocket: ' + error, 'red');
+                updateStatus('❌ Erro na conexão', 'red');
+            };
+            
+            ws.onclose = function(event) {
+                log(`🔒 WebSocket FECHADO - Código: ${event.code}, Razão: ${event.reason || 'N/A'}`, 'orange');
+                if (event.code !== 1000) {
+                    updateStatus('❌ Conexão fechada inesperadamente', 'red');
+                }
+            };
+        }
+
+        // Teste com timeout
+        function testWithTimeout() {
+            log('=== TESTE COM TIMEOUT ===', 'blue');
+            updateStatus('Testando com timeout...', 'orange');
+            
+            const ws = new WebSocket('ws://localhost:8181');
+            let connected = false;
+            
+            // Timeout de 10 segundos
+            const timeout = setTimeout(() => {
+                if (!connected) {
+                    log('⏰ TIMEOUT - Conexão demorou mais de 10s', 'red');
+                    updateStatus('❌ Timeout', 'red');
+                    ws.close();
+                }
+            }, 10000);
+            
+            ws.onopen = function() {
+                connected = true;
+                clearTimeout(timeout);
+                log('✅ Conectado dentro do timeout!', 'green');
+                updateStatus('✅ Conectado!', 'green');
+                
+                // Teste de echo
+                ws.send('test-echo');
+            };
+            
+            ws.onmessage = function(event) {
+                log('📨 Resposta: ' + event.data, 'green');
+            };
+            
+            ws.onerror = function(error) {
+                clearTimeout(timeout);
+                log('❌ Erro: ' + error, 'red');
+                updateStatus('❌ Erro', 'red');
+            };
+            
+            ws.onclose = function(event) {
+                clearTimeout(timeout);
+                log(`🔒 Fechado - ${event.code}: ${event.reason || 'N/A'}`, 'orange');
+            };
+        }
+
+        // Teste múltiplas portas
+        async function testMultiplePorts() {
+            log('=== TESTE MÚLTIPLAS PORTAS ===', 'blue');
+            updateStatus('Testando múltiplas portas...', 'orange');
+            
+            const ports = [
+                { port: 8181, protocol: 'ws', name: 'HTTP' },
+                { port: 8182, protocol: 'wss', name: 'HTTPS' },
+                { port: 8080, protocol: 'ws', name: 'Alt HTTP' },
+                { port: 8443, protocol: 'wss', name: 'Alt HTTPS' }
+            ];
+            
+            for (const config of ports) {
+                await testPort(config);
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1s entre testes
+            }
+        }
+        
+        function testPort(config) {
+            return new Promise((resolve) => {
+                log(`Testando ${config.name} (${config.protocol}://localhost:${config.port})...`, 'blue');
+                
+                const ws = new WebSocket(`${config.protocol}://localhost:${config.port}`);
+                let resolved = false;
+                
+                const timeout = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        log(`❌ ${config.name} - Timeout`, 'red');
+                        ws.close();
+                        resolve(false);
+                    }
+                }, 3000);
+                
+                ws.onopen = function() {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        log(`✅ ${config.name} - CONECTADO!`, 'green');
+                        updateStatus(`✅ ${config.name} funcionando!`, 'green');
+                        ws.close();
+                        resolve(true);
+                    }
+                };
+                
+                ws.onerror = function(error) {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        log(`❌ ${config.name} - Erro: ${error}`, 'red');
+                        resolve(false);
+                    }
+                };
+                
+                ws.onclose = function(event) {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        log(`❌ ${config.name} - Fechado: ${event.code}`, 'red');
+                        resolve(false);
+                    }
+                };
+            });
+        }
+
+        // Executar teste automático
+        window.onload = function() {
+            updateStatus('Pronto para testes', 'blue');
+            log('Página carregada. Clique nos botões para testar.', 'blue');
+            
+            // Executar teste simples automaticamente
+            setTimeout(testSimpleConnection, 1000);
+        };
+    </script>
+</body>
+</html>

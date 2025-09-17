@@ -1,0 +1,26 @@
+body {
+  /* Removed opacity fade-in effect for instant loading */
+}
+
+/* Remove autofill yellow background */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #222 !important;
+}
+
+/* Remove yellow on invalid fields */
+input:invalid, textarea:invalid, select:invalid {
+  box-shadow: none !important;
+  border-color: #e5e7eb !important;
+}
+
+/* Branding color on focus */
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary-color, #1B365D) !important;
+  outline: none !important;
+}
+
+/* Removed loaded class - no longer needed */

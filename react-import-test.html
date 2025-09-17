@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Importação React</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/react-import-test.js"></script>
+    <script>
+        console.log('HTML de teste React carregado');
+        
+        // Capturar todos os tipos de erro
+        window.addEventListener('error', function(e) {
+            console.error('ERRO CAPTURADO:', e);
+            document.getElementById('root').innerHTML += '<div style="color: red; padding: 10px; border: 1px solid red; margin: 10px;">ERRO: ' + e.message + '</div>';
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('PROMISE REJEITADA:', e);
+            document.getElementById('root').innerHTML += '<div style="color: orange; padding: 10px; border: 1px solid orange; margin: 10px;">PROMISE REJEITADA: ' + e.reason + '</div>';
+        });
+    </script>
+</body>
+</html>

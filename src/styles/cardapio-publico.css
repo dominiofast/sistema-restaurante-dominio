@@ -1,0 +1,192 @@
+/* Estilos para o Cardápio Digital Público - Scroll Sutil e Elegante */
+
+/* Esconder scrollbar em todos os navegadores */
+.cardapio-scroll-hidden {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.cardapio-scroll-hidden::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari e Opera */
+}
+
+/* Scrollbar sutil para áreas específicas */
+.cardapio-scroll-sutil {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: thin;  /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;  /* Firefox */
+}
+
+.cardapio-scroll-sutil::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.cardapio-scroll-sutil::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cardapio-scroll-sutil::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.cardapio-scroll-sutil::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar invisível mas funcional */
+.cardapio-scroll-invisivel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cardapio-scroll-invisivel::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Indicador de scroll para mobile */
+.cardapio-scroll-indicator {
+  position: relative;
+}
+
+.cardapio-scroll-indicator::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cardapio-scroll-indicator.has-scroll::after {
+  opacity: 1;
+}
+
+/* Animação suave de scroll */
+.cardapio-smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
+}
+
+/* Estilos específicos para o modal do carrinho */
+.cart-modal-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  max-height: 50vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cart-modal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Estilos específicos para o modal de checkout */
+.checkout-modal-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.checkout-modal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Estilos para navegação de categorias */
+.categoria-nav-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.categoria-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.categoria-nav-scroll > * {
+  scroll-snap-align: start;
+}
+
+/* Adicionar padding no bottom para compensar a remoção da scrollbar */
+.cardapio-content-padding {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+/* Transições suaves para todos os elementos de scroll */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Desabilitar scroll bounce no iOS */
+.no-bounce {
+  overscroll-behavior: contain;
+}
+
+/* Melhorar performance de scroll */
+.scroll-performance {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Estilos globais para o cardápio público */
+.cardapio-publico {
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.cardapio-publico *::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.cardapio-publico *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cardapio-publico *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.cardapio-publico *::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Override para remover completamente em mobile */
+@media (max-width: 768px) {
+  .cardapio-publico *::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .cardapio-publico * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Ocultar qualquer badge circular indevido no cardápio público */
+.cardapio-publico .absolute.-top-1.-right-1,
+.cardapio-publico .absolute.-top-2.-right-2,
+.cardapio-publico [class*="absolute"][class*="-top"][class*="-right"],
+.cardapio-publico .rounded-full.bg-red-500,
+.cardapio-publico .rounded-full.bg-red-600,
+.cardapio-publico .badge.absolute {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

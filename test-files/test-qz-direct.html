@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Direto QZ Tray</title>
+    <script src="./src/utils/qz-tray-official.js"></script>
+</head>
+<body>
+    <h1>Teste de Conexão QZ Tray</h1>
+    <div id="status">Carregando...</div>
+    <button onclick="testConnection()">Testar Conexão</button>
+    <div id="logs"></div>
+
+    <script>
+        function log(message) {
+            const logs = document.getElementById('logs');
+            logs.innerHTML += '<p>' + new Date().toLocaleTimeString() + ': ' + message + '</p>';
+        }
+
+        function updateStatus(message, color = 'black') {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.style.color = color;
+        }
+
+        async function testConnection() {
+            try {
+                log('Iniciando teste de conexão...');
+                
+                // Verificar se QZ está disponível
+                if (typeof qz === 'undefined') {
+                    throw new Error('QZ Tray library não carregada');
+                }
+                log('✅ QZ Tray library carregada');
+
+                // Configurar certificado vazio para desenvolvimento
+                qz.security.setCertificatePromise(() => Promise.resolve(''));
+                log('✅ Certificado configurado');
+
+                // Configurar assinatura simples
+                qz.security.setSignaturePromise((toSign, resolve) => {
+                    resolve('');
+                });
+                log('✅ Assinatura configurada');
+
+                // Tentar conectar
+                if (!qz.websocket.isActive()) {
+                    log('Conectando ao QZ Tray...');
+                    await qz.websocket.connect();
+                }
+
+                if (qz.websocket.isActive()) {
+                    updateStatus('✅ CONECTADO', 'green');
+                    log('✅ Conexão estabelecida com sucesso!');
+                    
+                    // Obter versão
+                    try {
+                        const version = await qz.websocket.getVersion();
+                        log('📋 Versão QZ Tray: ' + version);
+                    } catch (e) {
+                        log('⚠️ Não foi possível obter a versão');
+                    }
+
+                    // Listar impressoras
+                    try {
+                        const printers = await qz.printers.find();
+                        log('🖨️ Impressoras encontradas: ' + printers.length);
+                        printers.forEach(printer => {
+                            log('  - ' + printer);
+                        });
+                    } catch (e) {
+                        log('⚠️ Erro ao listar impressoras: ' + e.message);
+                    }
+                } else {
+                    updateStatus('❌ FALHA NA CONEXÃO', 'red');
+                    log('❌ Falha na conexão');
+                }
+            } catch (error) {
+                updateStatus('❌ ERRO: ' + error.message, 'red');
+                log('❌ Erro: ' + error.message);
+                console.error('Erro detalhado:', error);
+            }
+        }
+
+        // Testar automaticamente quando a página carregar
+        window.onload = function() {
+            setTimeout(testConnection, 1000);
+        };
+    </script>
+</body>
+</html>

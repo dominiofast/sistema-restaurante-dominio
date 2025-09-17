@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Impressão Térmica - Web Serial API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .connected { background: #4CAF50; color: white; }
+        .disconnected { background: #f44336; color: white; }
+        .log {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .commands {
+            margin: 20px 0;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖨️ Impressão Térmica com Web Serial API</h1>
+        <p>Conexão direta com impressora térmica - sem QZ Tray!</p>
+        
+        <div id="status" class="status disconnected">
+            ❌ Desconectado
+        </div>
+        
+        <div class="controls">
+            <button id="btnConnect" onclick="conectarImpressora()">
+                🔌 Conectar Impressora
+            </button>
+            <button id="btnDisconnect" onclick="desconectar()" disabled>
+                ❌ Desconectar
+            </button>
+        </div>
+        
+        <div class="commands">
+            <h3>📝 Comandos Rápidos:</h3>
+            <button onclick="imprimirTexto('TESTE DE IMPRESSÃO\n================\n\n')">
+                Teste Simples
+            </button>
+            <button onclick="imprimirCupomExemplo()">
+                Cupom Exemplo
+            </button>
+            <button onclick="cortarPapel()">
+                ✂️ Cortar Papel
+            </button>
+            <button onclick="abrirGaveta()">
+                💰 Abrir Gaveta
+            </button>
+            
+            <h3>✍️ Texto Personalizado:</h3>
+            <textarea id="textoCustom" rows="4" placeholder="Digite o texto para imprimir..."></textarea>
+            <button onclick="imprimirCustom()">
+                🖨️ Imprimir Texto
+            </button>
+        </div>
+        
+        <div class="log" id="log">
+            <strong>📋 Log de Atividades:</strong><br>
+        </div>
+    </div>
+
+    <script>
+        let port = null;
+        let writer = null;
+        let reader = null;
+        
+        // Função para adicionar log
+        function log(mensagem, tipo = 'info') {
+            const logDiv = document.getElementById('log');
+            const hora = new Date().toLocaleTimeString();
+            const cor = tipo === 'error' ? 'red' : tipo === 'success' ? 'green' : 'black';
+            logDiv.innerHTML += `<span style="color: ${cor}">[${hora}] ${mensagem}</span><br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        // Verificar suporte do navegador
+        if (!('serial' in navigator)) {
+            log('❌ Este navegador não suporta Web Serial API!', 'error');
+            log('Use Chrome ou Edge versão 89 ou superior', 'error');
+            document.getElementById('btnConnect').disabled = true;
+        }
+        
+        // Conectar à impressora
+        async function conectarImpressora() {
+            try {
+                log('🔍 Solicitando porta serial...');
+                
+                // Solicita ao usuário para selecionar a porta
+                port = await navigator.serial.requestPort();
+                
+                // Abre a porta com configurações para impressora térmica
+                await port.open({ 
+                    baudRate: 9600,  // Taxa padrão para impressoras térmicas
+                    dataBits: 8,
+                    stopBits: 1,
+                    parity: 'none'
+                });
+                
+                // Configura writer e reader
+                const textEncoder = new TextEncoderStream();
+                const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+                writer = textEncoder.writable.getWriter();
+                
+                // Atualiza interface
+                document.getElementById('status').className = 'status connected';
+                document.getElementById('status').innerHTML = '✅ Conectado';
+                document.getElementById('btnConnect').disabled = true;
+                document.getElementById('btnDisconnect').disabled = false;
+                
+                log('✅ Conectado com sucesso!', 'success');
+                
+                // Inicializa impressora
+                await inicializarImpressora();
+                
+            } catch (erro) {
+                log(`❌ Erro ao conectar: ${erro.message}`, 'error');
+            }
+        }
+        
+        // Desconectar
+        async function desconectar() {
+            try {
+                if (writer) {
+                    await writer.close();
+                    writer = null;
+                }
+                if (port) {
+                    await port.close();
+                    port = null;
+                }
+                
+                document.getElementById('status').className = 'status disconnected';
+                document.getElementById('status').innerHTML = '❌ Desconectado';
+                document.getElementById('btnConnect').disabled = false;
+                document.getElementById('btnDisconnect').disabled = true;
+                
+                log('Desconectado', 'info');
+            } catch (erro) {
+                log(`Erro ao desconectar: ${erro.message}`, 'error');
+            }
+        }
+        
+        // Enviar comando ESC/POS
+        async function enviarComando(comando) {
+            if (!writer) {
+                log('❌ Impressora não conectada!', 'error');
+                return;
+            }
+            
+            try {
+                await writer.write(comando);
+                log(`📤 Comando enviado: ${comando.replace(/\n/g, '\\n').substring(0, 50)}...`);
+            } catch (erro) {
+                log(`❌ Erro ao enviar: ${erro.message}`, 'error');
+            }
+        }
+        
+        // Comandos ESC/POS
+        const ESC = '\x1B';
+        const GS = '\x1D';
+        
+        // Inicializar impressora
+        async function inicializarImpressora() {
+            await enviarComando(ESC + '@'); // Reset
+            await enviarComando(ESC + 'M' + '\x00'); // Fonte padrão
+            log('🖨️ Impressora inicializada');
+        }
+        
+        // Imprimir texto
+        async function imprimirTexto(texto) {
+            await enviarComando(texto);
+        }
+        
+        // Cortar papel
+        async function cortarPapel() {
+            await enviarComando(GS + 'V' + '\x41' + '\x00');
+            log('✂️ Comando de corte enviado');
+        }
+        
+        // Abrir gaveta
+        async function abrirGaveta() {
+            await enviarComando(ESC + 'p' + '\x00' + '\x0A' + '\x00');
+            log('💰 Comando para abrir gaveta enviado');
+        }
+        
+        // Imprimir cupom exemplo
+        async function imprimirCupomExemplo() {
+            // Centralizar
+            await enviarComando(ESC + 'a' + '\x01');
+            
+            // Texto grande
+            await enviarComando(ESC + '!' + '\x30');
+            await imprimirTexto('PIZZARIA EXEMPLO\n');
+            
+            // Texto normal
+            await enviarComando(ESC + '!' + '\x00');
+            await imprimirTexto('Rua Exemplo, 123\n');
+            await imprimirTexto('Tel: (11) 1234-5678\n');
+            await imprimirTexto('=====================================\n');
+            
+            // Alinhar à esquerda
+            await enviarComando(ESC + 'a' + '\x00');
+            
+            // Itens
+            await imprimirTexto('\nPEDIDO #0001\n');
+            await imprimirTexto('Data: ' + new Date().toLocaleString() + '\n\n');
+            
+            await imprimirTexto('1x Pizza Calabresa              35,00\n');
+            await imprimirTexto('1x Refrigerante 2L              10,00\n');
+            await imprimirTexto('-------------------------------------\n');
+            
+            // Negrito
+            await enviarComando(ESC + 'E' + '\x01');
+            await imprimirTexto('TOTAL:                          45,00\n');
+            await enviarComando(ESC + 'E' + '\x00');
+            
+            await imprimirTexto('\n\n');
+            
+            // Centralizar novamente
+            await enviarComando(ESC + 'a' + '\x01');
+            await imprimirTexto('Obrigado pela preferência!\n');
+            
+            // Espaço e corte
+            await imprimirTexto('\n\n\n\n');
+            await cortarPapel();
+            
+            log('📄 Cupom exemplo impresso!', 'success');
+        }
+        
+        // Imprimir texto customizado
+        async function imprimirCustom() {
+            const texto = document.getElementById('textoCustom').value;
+            if (texto) {
+                await imprimirTexto(texto + '\n\n\n');
+                await cortarPapel();
+                log('📄 Texto personalizado impresso!', 'success');
+            }
+        }
+        
+        // Detectar quando a impressora é desconectada
+        if ('serial' in navigator) {
+            navigator.serial.addEventListener('disconnect', (e) => {
+                log('🔌 Impressora desconectada fisicamente', 'error');
+                desconectar();
+            });
+        }
+    </script>
+</body>
+</html> 

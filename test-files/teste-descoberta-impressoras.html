@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste - Descoberta Automática de Impressoras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2196F3; }
+        .metodo {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        .metodo h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover { background: #1976D2; }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .resultado {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .impressora-card {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        .info {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Descoberta Automática de Impressoras</h1>
+        
+        <div class="info">
+            <h3>ℹ️ Como funciona:</h3>
+            <ul>
+                <li><strong>Impressoras Windows:</strong> Lista impressoras instaladas no Windows</li>
+                <li><strong>Escaneamento de Rede:</strong> Procura impressoras nos IPs comuns (192.168.x.100-110, 192.168.x.200-210)</li>
+                <li><strong>Broadcast UDP:</strong> Envia mensagem para toda a rede (mais lento)</li>
+            </ul>
+        </div>
+        
+        <div class="metodo">
+            <h2>📋 Método 1: Listar Impressoras Windows</h2>
+            <p>Mostra todas as impressoras instaladas no Windows (USB e Rede)</p>
+            <button onclick="descobrirWindows()">Buscar Impressoras Windows</button>
+            <div id="resultado-windows" class="resultado"></div>
+        </div>
+        
+        <div class="metodo">
+            <h2>🌐 Método 2: Escanear Rede Local</h2>
+            <p>Procura impressoras em IPs comuns da sua rede (pode demorar ~30 segundos)</p>
+            <button onclick="escanearRede()">Escanear Rede</button>
+            <div id="resultado-rede" class="resultado"></div>
+        </div>
+        
+        <div class="metodo">
+            <h2>🎯 Método 3: Testar IP Específico</h2>
+            <p>Teste se um IP específico tem uma impressora</p>
+            <input type="text" id="ip-teste" placeholder="192.168.1.100" value="192.168.1.100">
+            <button onclick="testarIP()">Testar IP</button>
+            <div id="resultado-ip" class="resultado"></div>
+        </div>
+        
+        <div class="metodo">
+            <h2>🚀 Método 4: Descoberta Completa</h2>
+            <p>Executa todos os métodos de descoberta (recomendado)</p>
+            <button onclick="descobrirTodas()">Descobrir Todas</button>
+            <div id="resultado-todas" class="resultado"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulação das funções (em produção, usaria o módulo real)
+        
+        function descobrirWindows() {
+            const resultado = document.getElementById('resultado-windows');
+            resultado.textContent = 'Buscando impressoras Windows...\n\n';
+            
+            // Simular descoberta
+            setTimeout(() => {
+                resultado.innerHTML = `
+<div class="impressora-card">
+    <strong>💻 HP LaserJet Pro M404n</strong><br>
+    Porta: USB001<br>
+    Tipo: USB<br>
+    Status: Pronta
+</div>
+<div class="impressora-card">
+    <strong>🌐 Bematech MP-4200 TH</strong><br>
+    IP: 192.168.1.105<br>
+    Porta: 9100<br>
+    Tipo: Rede
+</div>
+<div class="impressora-card">
+    <strong>🌐 Epson TM-T20</strong><br>
+    IP: 192.168.1.200<br>
+    Porta: 9100<br>
+    Tipo: Rede
+</div>`;
+            }, 1000);
+        }
+        
+        function escanearRede() {
+            const resultado = document.getElementById('resultado-rede');
+            resultado.textContent = 'Escaneando rede local...\n';
+            resultado.textContent += 'Testando 192.168.1.100-110...\n';
+            resultado.textContent += 'Testando 192.168.1.200-210...\n\n';
+            
+            // Simular escaneamento
+            let progresso = 0;
+            const interval = setInterval(() => {
+                progresso += 10;
+                resultado.textContent += `Progresso: ${progresso}%\n`;
+                
+                if (progresso >= 100) {
+                    clearInterval(interval);
+                    resultado.innerHTML += `
+<br><strong>✅ Impressoras encontradas:</strong>
+
+<div class="impressora-card">
+    <strong>🖨️ Impressora em 192.168.1.105</strong><br>
+    Porta: 9100 (aberta)<br>
+    Modelo: Bematech MP-4200 (identificado)<br>
+    Status: Online
+</div>
+<div class="impressora-card">
+    <strong>🖨️ Impressora em 192.168.1.200</strong><br>
+    Porta: 9100 (aberta)<br>
+    Modelo: Não identificado<br>
+    Status: Online
+</div>`;
+                }
+            }, 500);
+        }
+        
+        function testarIP() {
+            const ip = document.getElementById('ip-teste').value;
+            const resultado = document.getElementById('resultado-ip');
+            
+            if (!ip) {
+                resultado.textContent = '❌ Digite um IP válido';
+                return;
+            }
+            
+            resultado.textContent = `Testando ${ip}...\n\n`;
+            
+            // Simular teste
+            setTimeout(() => {
+                if (ip === '192.168.1.105' || ip === '192.168.1.200') {
+                    resultado.innerHTML = `
+<div class="impressora-card">
+    <strong>✅ Impressora encontrada!</strong><br>
+    IP: ${ip}<br>
+    Porta 9100: Aberta<br>
+    Modelo: ${ip === '192.168.1.105' ? 'Bematech MP-4200' : 'Genérica ESC/POS'}<br>
+    <br>
+    <button onclick="alert('Impressora configurada!')">Usar esta impressora</button>
+</div>`;
+                } else {
+                    resultado.textContent = `❌ Nenhuma impressora encontrada em ${ip}\n\nPortas testadas: 9100, 515, 631, 80`;
+                }
+            }, 1500);
+        }
+        
+        function descobrirTodas() {
+            const resultado = document.getElementById('resultado-todas');
+            resultado.textContent = '🔍 Iniciando descoberta completa...\n\n';
+            
+            let etapa = 1;
+            const etapas = [
+                '📋 Buscando impressoras Windows...',
+                '🌐 Escaneando rede local...',
+                '📡 Enviando broadcast UDP...',
+                '✅ Descoberta concluída!'
+            ];
+            
+            const interval = setInterval(() => {
+                if (etapa <= etapas.length) {
+                    resultado.textContent += etapas[etapa - 1] + '\n';
+                    etapa++;
+                } else {
+                    clearInterval(interval);
+                    resultado.innerHTML += `
+<br><strong>📊 Resumo da descoberta:</strong>
+
+<div class="impressora-card">
+    <strong>1. HP LaserJet Pro M404n</strong><br>
+    Tipo: USB (Windows)<br>
+    Porta: USB001
+</div>
+<div class="impressora-card">
+    <strong>2. Bematech MP-4200 TH</strong><br>
+    Tipo: Rede<br>
+    IP: 192.168.1.105 | Porta: 9100
+</div>
+<div class="impressora-card">
+    <strong>3. Epson TM-T20</strong><br>
+    Tipo: Rede<br>
+    IP: 192.168.1.200 | Porta: 9100
+</div>
+
+<strong>Total: 3 impressoras encontradas</strong>`;
+                }
+            }, 1000);
+        }
+        
+        // Mostrar IPs da rede local
+        window.onload = function() {
+            // Esta é uma demonstração - em produção, o app real detectaria o IP
+            const info = document.querySelector('.info');
+            info.innerHTML += `
+                <p><strong>Sua rede local:</strong> 192.168.1.x</p>
+                <p><strong>IPs que serão testados:</strong></p>
+                <ul>
+                    <li>192.168.1.100 até 192.168.1.110</li>
+                    <li>192.168.1.200 até 192.168.1.210</li>
+                </ul>
+            `;
+        };
+    </script>
+</body>
+</html> 

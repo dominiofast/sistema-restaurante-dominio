@@ -1,0 +1,152 @@
+/* Estilos para garantir que o header do chat fique sempre visível */
+
+/* Container principal do chat */
+.chat-container {
+  height: 100vh;
+  padding-top: 64px; /* Altura do cabeçalho da aplicação */
+  display: flex;
+  background-color: #f8fafc;
+  overflow: hidden;
+  min-height: calc(100vh - 64px); /* Garantir que o rodapé fique visível */
+  margin-top: -64px; /* Remove o espaço entre o cabeçalho da aplicação e o container */
+}
+
+/* Área principal do chat */
+.chat-main-area {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #f8fafc;
+  margin-top: 64px; /* Compensa o margin-top negativo do container */
+}
+
+/* Header do chat */
+.chat-header {
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  margin-top: -64px; /* Remove o espaço entre o cabeçalho da aplicação e o header do chat */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Wizard do pedido */
+.chat-wizard {
+  position: absolute;
+  top: 80px; /* Posicionado abaixo do cabeçalho da aplicação */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  max-width: 448px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .chat-container {
+    padding-top: 56px; /* Altura menor em dispositivos móveis */
+    min-height: calc(100vh - 56px); /* Garantir que o rodapé fique visível */
+    margin-top: -56px; /* Remove o espaço entre o cabeçalho da aplicação e o container no mobile */
+  }
+  
+  .chat-main-area {
+    margin-top: 56px; /* Compensa o margin-top negativo do container no mobile */
+  }
+  
+  .chat-header {
+    margin-top: -56px; /* Remove o espaço entre o cabeçalho da aplicação e o header do chat no mobile */
+    padding: 12px 16px;
+    min-height: 64px;
+  }
+  
+  .chat-wizard {
+    top: 72px;
+    margin: 0 16px;
+    max-width: calc(100% - 32px);
+    border-radius: 8px;
+  }
+}
+
+/* Garantir que o rodapé fique visível */
+.chat-container {
+  min-height: calc(100vh - 64px); /* Altura total menos o cabeçalho */
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    min-height: calc(100vh - 56px); /* Altura total menos o cabeçalho mobile */
+  }
+}
+
+/* Melhorias visuais adicionais */
+.chat-container {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* Scrollbar personalizada */
+.chat-main-area ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-main-area ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.chat-main-area ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.chat-main-area ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animações suaves */
+.chat-header {
+  transition: all 0.2s ease-in-out;
+}
+
+.chat-wizard {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Melhorias para o tema escuro (se necessário) */
+@media (prefers-color-scheme: dark) {
+  .chat-container {
+    background-color: #0f172a;
+  }
+  
+  .chat-header {
+    background-color: #1e293b;
+    border-bottom-color: #334155;
+  }
+  
+  .chat-wizard {
+    background-color: #1e293b;
+    border-color: #334155;
+  }
+}

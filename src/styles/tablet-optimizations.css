@@ -1,0 +1,257 @@
+/* Otimizações específicas para tablets de 8 polegadas */
+
+/* Breakpoint específico para tablets de 8 polegadas (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Melhorar tamanho de toque para elementos interativos */
+  .tablet-touch-optimized {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Aumentar espaçamento entre elementos para melhor usabilidade */
+  .tablet-spacing {
+    gap: 1rem;
+  }
+
+  /* Otimizar tamanho de fonte para tablets */
+  .tablet-text {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.5;
+  }
+
+  .tablet-text-lg {
+    font-size: 1.25rem; /* 20px */
+  }
+
+  .tablet-text-xl {
+    font-size: 1.5rem; /* 24px */
+  }
+
+  /* Melhorar contraste e visibilidade */
+  .tablet-high-contrast {
+    color: #1f2937;
+    background-color: #ffffff;
+  }
+
+  /* Otimizar botões para tablets */
+  .tablet-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    min-height: 3rem;
+  }
+
+  /* Melhorar grid para tablets */
+  .tablet-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Otimizar cards para tablets */
+  .tablet-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Melhorar navegação para tablets */
+  .tablet-nav {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .tablet-nav-item {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  /* Otimizar inputs para tablets */
+  .tablet-input {
+    padding: 0.75rem 1rem;
+    font-size: 1.125rem;
+    border-radius: 0.5rem;
+    min-height: 3rem;
+  }
+
+  /* Melhorar modais para tablets */
+  .tablet-modal {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 1rem;
+  }
+
+  /* Otimizar scroll para tablets */
+  .tablet-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+
+  .tablet-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .tablet-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .tablet-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+
+  /* Melhorar feedback visual para toque */
+  .tablet-touch-feedback {
+    transition: all 0.2s ease;
+  }
+
+  .tablet-touch-feedback:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+
+  /* Otimizar espaçamentos específicos para tablets */
+  .tablet-p-4 {
+    padding: 1rem;
+  }
+
+  .tablet-p-6 {
+    padding: 1.5rem;
+  }
+
+  .tablet-p-8 {
+    padding: 2rem;
+  }
+
+  .tablet-m-4 {
+    margin: 1rem;
+  }
+
+  .tablet-m-6 {
+    margin: 1.5rem;
+  }
+
+  .tablet-m-8 {
+    margin: 2rem;
+  }
+
+  /* Melhorar hierarquia visual para tablets */
+  .tablet-heading-1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .tablet-heading-2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .tablet-heading-3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* Otimizar ícones para tablets */
+  .tablet-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .tablet-icon-lg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .tablet-icon-xl {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  /* Melhorar acessibilidade para tablets */
+  .tablet-focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  /* Otimizar animações para tablets */
+  .tablet-animate {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Melhorar responsividade de imagens */
+  .tablet-image {
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+
+  /* Otimizar layout flexível para tablets */
+  .tablet-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .tablet-flex-col {
+    flex-direction: column;
+  }
+
+  .tablet-flex-row {
+    flex-direction: row;
+  }
+
+  /* Melhorar contraste de texto */
+  .tablet-text-primary {
+    color: #1f2937;
+  }
+
+  .tablet-text-secondary {
+    color: #6b7280;
+  }
+
+  .tablet-text-muted {
+    color: #9ca3af;
+  }
+
+  /* Otimizar bordas e sombras */
+  .tablet-border {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+  }
+
+  .tablet-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .tablet-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Otimizações específicas para orientação landscape em tablets */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .tablet-landscape-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .tablet-landscape-nav {
+    flex-direction: row;
+    height: auto;
+  }
+}
+
+/* Otimizações específicas para orientação portrait em tablets */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .tablet-portrait-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .tablet-portrait-nav {
+    flex-direction: column;
+    height: 100vh;
+  }
+}

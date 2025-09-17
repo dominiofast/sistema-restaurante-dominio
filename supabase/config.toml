@@ -1,0 +1,104 @@
+project_id = "epqppxteicfuzdblbluq"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://epqppxteicfuzdblbluq.supabase.co"]
+jwt_expiry = 3600
+enable_signup = true
+
+[functions]
+
+[functions.criar-pedido-pdv]
+verify_jwt = false
+
+[functions.criar-pedido]
+verify_jwt = false
+
+[functions.criar-pedido-publico]
+verify_jwt = false
+
+[functions.imprimir-cupom]
+verify_jwt = false
+
+[functions.send-whatsapp-message]
+verify_jwt = false
+
+[functions.send-password-reset]
+verify_jwt = false
+
+[functions.send-confirmation-email]
+verify_jwt = false
+
+[functions.secure-password-manager]
+verify_jwt = false
+
+[functions.agente-ia-conversa]
+verify_jwt = false
+
+[functions.test-agente]
+verify_jwt = false
+
+[functions.test-simple]
+verify_jwt = false
+
+[functions.whatsapp-webhook]
+verify_jwt = false
+
+[functions.test-whatsapp-webhook]
+verify_jwt = false
+
+[functions.trigger-password-migration]
+verify_jwt = false
+
+[functions.download-chunked-file]
+verify_jwt = false
+
+[functions.auto-print-pedido]
+verify_jwt = false
+
+[functions.push_prompt_to_edge]
+verify_jwt = false
+
+[functions.printnode-proxy]
+verify_jwt = false
+
+[functions.process-whatsapp-campaigns]
+verify_jwt = false
+
+[functions.ai-auto-setup]
+verify_jwt = false
+
+[functions.sync-assistant]
+verify_jwt = false
+
+[functions.check-trigger-status]
+verify_jwt = false
+
+[functions.fix-300graus-delivery]
+verify_jwt = false
+
+[functions.create-asaas-payment]
+verify_jwt = false
+
+[functions.check-asaas-payment]
+verify_jwt = false
+
+[functions.google-maps-proxy]
+verify_jwt = false
+
+[functions.apply-global-template]
+verify_jwt = false
+
+[functions.fix-horarios-reais]
+verify_jwt = false
+
+[functions.get-maps-config]
+verify_jwt = false

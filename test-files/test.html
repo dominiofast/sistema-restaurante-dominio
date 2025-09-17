@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste React</title>
+</head>
+<body>
+    <div id="test-root"></div>
+    <script>
+        console.log('Script carregado');
+        document.getElementById('test-root').innerHTML = '<h1>Teste funcionando!</h1>';
+        
+        // Verificar se o elemento root da aplicação existe
+        const appRoot = document.getElementById('root');
+        if (appRoot) {
+            console.log('Elemento root encontrado:', appRoot);
+        } else {
+            console.log('Elemento root NÃO encontrado');
+        }
+        
+        // Verificar se há erros no console
+        window.addEventListener('error', function(e) {
+            console.error('Erro capturado:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promise rejeitada:', e.reason);
+        });
+    </script>
+</body>
+</html>

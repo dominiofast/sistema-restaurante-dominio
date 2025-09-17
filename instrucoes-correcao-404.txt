@@ -1,0 +1,47 @@
+==============================================
+CORRECAO DO ERRO 404 - AI_AGENT_CONFIG
+==============================================
+
+PROBLEMA IDENTIFICADO:
+A tabela 'ai_agent_config' pode nao existir ou estar mal configurada.
+Isso causa erro 404 ao tentar acessar as configuracoes do agente IA.
+
+SOLUCAO:
+1. Abra o Supabase SQL Editor
+2. Copie todo o conteudo do arquivo 'corrigir-ai-agent-config.sql'
+3. Cole no SQL Editor
+4. Clique em 'Run' ou pressione Ctrl+Enter
+5. Aguarde a execucao completa
+
+O QUE O SCRIPT FAZ:
+- Cria a tabela ai_agent_config (se nao existir)
+- Configura indices para performance
+- Aplica politicas RLS corretas
+- Migra dados da tabela antiga (se existir)
+- Verifica se tudo esta funcionando
+
+APOS EXECUTAR O SCRIPT:
+1. Faca refresh da pagina (F5)
+2. Tente acessar: Configuracao -> Agente IA
+3. O erro 404 deve estar resolvido
+
+IMPORTANTE:
+- Execute o script no SQL Editor do Supabase
+- Aguarde todas as mensagens de confirmacao
+- Se houver erros, copie a mensagem e reporte
+
+APOS A CORRECAO, VOCE PODERA:
+- Acessar as configuracoes do agente IA
+- Configurar mensagens de boas-vindas
+- Personalizar o comportamento do agente
+- Usar a configuracao automatica
+
+SUPORTE:
+Se o problema persistir, verifique:
+1. Se voce tem permissoes adequadas no Supabase
+2. Se a migracao foi executada completamente
+3. Se ha mensagens de erro no console do navegador
+
+==============================================
+Script SQL: corrigir-ai-agent-config.sql
+==============================================

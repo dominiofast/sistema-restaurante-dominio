@@ -1,0 +1,47 @@
+# Robots.txt para Dominio.tech
+# Otimizado para SEO e indexação
+
+# Google Bot - Permitir tudo
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing Bot - Permitir tudo
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Twitter Bot - Para cards do Twitter
+User-agent: Twitterbot
+Allow: /
+
+# Facebook Bot - Para Open Graph
+User-agent: facebookexternalhit
+Allow: /
+
+# LinkedIn Bot
+User-agent: LinkedInBot
+Allow: /
+
+# WhatsApp Bot
+User-agent: WhatsApp
+Allow: /
+
+# Todos os outros bots
+User-agent: *
+Allow: /
+Crawl-delay: 2
+
+# Bloquear áreas administrativas sensíveis
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /reset-password
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /src/
+Disallow: /node_modules/
+
+# Sitemap
+Sitemap: https://dominio.tech/sitemap.xml
+Sitemap: https://www.dominio.tech/sitemap.xml

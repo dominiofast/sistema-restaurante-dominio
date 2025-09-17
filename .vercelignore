@@ -1,0 +1,10 @@
+# Arquivos a serem ignorados no deploy Vercel
+build-debug.js
+build-production.js
+verify-build.js
+test-vercel-build.js
+*.log
+.env.local
+.env.development
+.DS_Store
+Thumbs.db

@@ -1,0 +1,64 @@
+
+/* Sidebar Animations and Enhancements */
+
+/* Clean scrollbar for sidebar - ULTRA DISCRETA */
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 1px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+/* For Firefox */
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.15) transparent;
+}
+
+/* Menu item hover effects - REMOVIDO */
+
+/* Badge pulse animation - REMOVIDO */
+
+/* Sidebar slide animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.sidebar-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Icon rotation on expand */
+.rotate-icon {
+  transition: transform 0.3s ease;
+}
+
+.rotate-icon-expanded {
+  transform: rotate(180deg);
+}
+
+/* Active menu item subtle highlight - REMOVIDO */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar-mobile {
+    width: 100%;
+    max-width: 320px;
+  }
+}
