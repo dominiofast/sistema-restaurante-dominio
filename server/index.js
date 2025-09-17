@@ -123,7 +123,10 @@ app.post('/api/orders', async (req, res) => {
         console.log(`✅ Item simulado criado: ${itemProcessado.nome_produto}`);
       }
       
-      itensSalvos.push(itemProcessado);
+      // Só adicionar à lista de "salvos" se realmente foi salvo no banco
+      if (itemProcessado && itemProcessado.id && !itemProcessado.id.startsWith('temp_')) {
+        itensSalvos.push(itemProcessado);
+      }
 
       // 4. SALVAR ADICIONAIS (se existirem)
       if (item.adicionais && item.adicionais.length > 0) {
@@ -133,7 +136,7 @@ app.post('/api/orders', async (req, res) => {
           const { error: adicionalError } = await supabaseAdmin
             .from('pedido_item_adicionais')
             .insert({
-              pedido_item_id: itemSalvo.id,
+              pedido_item_id: itemProcessado.id,
               categoria_nome: 'Adicional',
               nome_adicional: adicional.name,
               quantidade: adicional.quantity,
