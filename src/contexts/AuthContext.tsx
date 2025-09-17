@@ -419,165 +419,58 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       console.log('AuthProvider: Iniciando processo de login...');
       
-      // Rate limiting - verificar tentativas de login
-      const { data: rateLimitResult } = await supabase.rpc('check_login_rate_limit_enhanced', {
-        p_identifier: email.trim().toLowerCase(),
-        p_type: 'email',
-        p_max_attempts: 5,
-        p_window_minutes: 15,
-        p_block_minutes: 30
-      });
-      
-      if (!rateLimitResult || !(rateLimitResult as any)?.allowed) {
-        const reason = (rateLimitResult as any)?.reason === 'blocked' ? 
-          'Email temporariamente bloqueado por excesso de tentativas' :
-          'Muitas tentativas de login. Tente novamente em alguns minutos';
-        throw new Error(reason);
-      }
-      
-      // Primeiro, verificar se é uma credencial de empresa
-      console.log('AuthProvider: Verificando credenciais de empresa...');
-      
-      try {
-        // Consulta simplificada primeiro
-        const { data: credentials, error: credError } = await supabase
-          .from('company_credentials')
-          .select('*')
-          .eq('email', email.trim())
-          .maybeSingle();
-          
-        console.log('AuthProvider: Consulta credenciais resultado:', { 
-          found: !!credentials,
-          error: credError?.message,
-          email_procurado: email.trim()
-        });
-        
-        if (credError) {
-          console.error('AuthProvider: Erro na consulta credenciais:', credError);
-        }
-        
-        if (credentials && !credError) {
-          console.log('AuthProvider: Credencial encontrada, buscando empresa...');
-          
-          // Buscar a empresa separadamente
-          const { data: company, error: companyError } = await supabase
-            .from('companies')
-            .select('*')
-            .eq('id', credentials.company_id)
-            .single();
-            
-          console.log('AuthProvider: Empresa encontrada:', { 
-            found: !!company,
-            error: companyError?.message,
-            company_name: company?.name
-          });
-          
-          if (company && !companyError) {
-            // Logs de senha removidos por segurança
-            
-            // Verificar senha - considerar se está hashada ou não
-            let isPasswordValid = false;
-            if (credentials.is_hashed) {
-              // Senha hashada - usar edge function para verificação segura
-              const response = await supabase.functions.invoke('secure-password-manager', {
-                body: {
-                  action: 'secure_login',
-                  email: email.trim().toLowerCase(),
-                  password
-                }
-              });
-              isPasswordValid = response.data?.success || false;
-            } else {
-              // Senha em texto plano - comparação direta (INSEGURO - MIGRAR URGENTE)
-              console.warn('⚠️ SEGURANÇA: Senha em texto plano detectada - migração necessária');
-              isPasswordValid = password === credentials.password_hash;
-            }
-            if (isPasswordValid) {
-              console.log('AuthProvider: Senha correta! Fazendo login da empresa...');
-              
-              // Criar um usuário "fake" para a empresa
-              const fakeUser: AuthUser = {
-                id: credentials.company_id,
-                email: credentials.email,
-                name: company.name,
-                role: 'admin',
-                company_domain: company.domain,
-                user_metadata: {
-                  company_id: credentials.company_id
-                }
-              };
-              
-              setUser(fakeUser);
-              setCurrentCompany(company);
-              setCompanyId(credentials.company_id);
-              
-              // Salvar no localStorage para persistência
-              localStorage.setItem('company_auth', JSON.stringify({
-                user: fakeUser,
-                company: company,
-                timestamp: Date.now()
-              }));
-              
-              console.log('AuthProvider: Login da empresa realizado com sucesso!');
-              clearTimeout(loginTimeout);
-              setIsLoading(false);
-              return;
-            } else {
-              console.log('AuthProvider: Senha incorreta para empresa');
-              throw new Error('Senha incorreta para a empresa.');
-            }
-          }
-        }
-        
-        console.log('AuthProvider: Não é credencial de empresa, tentando Supabase Auth...');
-      } catch (companyError) {
-        console.log('AuthProvider: Erro ao verificar credenciais de empresa:', companyError);
-        // Se der erro na verificação de empresa, continua para o Supabase Auth
-      }
-      
-      // Se não for empresa, tentar login normal do Supabase
-      console.log('AuthProvider: Tentando login com Supabase...');
-      
       // Limpar estado de autenticação antes do login
       cleanupAuthState();
       
-      // Tentar logout global primeiro para limpar qualquer sessão existente
-      try {
-        await supabase.auth.signOut({ scope: 'global' });
-        console.log('AuthProvider: Logout prévio realizado');
-      } catch (err) {
-        console.log('AuthProvider: Erro no logout prévio (ignorado):', err);
-      }
+      // LOGIN POSTGRESQL - Usar endpoint nativo
+      console.log('AuthProvider: Enviando request de login para PostgreSQL...');
       
-      // Aguardar um momento para garantir que o logout foi processado
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Log da tentativa de login
-      console.log('AuthProvider: Enviando request de login...');
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password: password
+        })
       });
       
-      console.log('AuthProvider: Response do login:', {
-        hasData: !!data,
-        hasUser: !!data?.user,
-        hasSession: !!data?.session,
-        errorMessage: error?.message,
-        errorStatus: error?.status
+      const result = await response.json();
+      
+      console.log('AuthProvider: Response do login PostgreSQL:', {
+        success: result.success,
+        hasUser: !!result.user,
+        status: response.status
       });
       
-      if (error) {
-        console.error('AuthProvider: Erro detalhado no login:', {
-          message: error.message,
-          status: error.status,
-          name: error.name
-        });
-        throw error;
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro no login');
       }
       
-      console.log('AuthProvider: Login realizado com sucesso!');
+      // Criar usuário autenticado com dados do PostgreSQL
+      const authUser: AuthUser = {
+        id: result.user.id,
+        email: result.user.email,
+        name: result.user.name,
+        role: result.user.role,
+        user_metadata: {
+          company_id: result.user.company_id || null
+        }
+      };
+      
+      setUser(authUser);
+      
+      // Salvar no localStorage para persistência
+      localStorage.setItem('user_auth', JSON.stringify({
+        user: authUser,
+        timestamp: Date.now()
+      }));
+      
+      console.log('AuthProvider: Login PostgreSQL realizado com sucesso!', {
+        email: authUser.email,
+        role: authUser.role
+      });
       
     } catch (error) {
       console.error('AuthProvider: Erro no login:', error);
