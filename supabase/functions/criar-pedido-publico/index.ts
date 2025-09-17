@@ -232,8 +232,16 @@ Deno.serve(async (req) => {
     // DEBUG: Log do carrinho completo
     console.log('🛒 DEBUG: Carrinho completo recebido:', JSON.stringify(pedidoData.carrinho, null, 2))
 
+    // Contadores para relatório final
+    let itensProcessados = 0
+    let itensSalvos = 0
+    let itensComProdutoId = 0
+    let itensSemProdutoId = 0
+    const warnings = []
+
     // Salvar itens do pedido
     for (const item of pedidoData.carrinho) {
+      itensProcessados++
       console.log('🔍 DEBUG: Processando item:', JSON.stringify(item, null, 2))
       const valorTotalItem = item.price * item.quantity
       
@@ -246,6 +254,75 @@ Deno.serve(async (req) => {
         valor_total: valorTotalItem
       })
 
+      // VALIDAÇÃO: Verificar se produto existe antes de inserir
+      const { data: produtoExiste, error: produtoError } = await supabase
+        .from('produtos')
+        .select('id')
+        .eq('id', item.id)
+        .eq('company_id', pedidoData.companyId)
+        .single()
+
+      if (produtoError || !produtoExiste) {
+        console.error('⚠️ PRODUTO NÃO ENCONTRADO - inserindo sem produto_id:', {
+          produto_id: item.id,
+          nome: item.name,
+          error: produtoError
+        })
+        
+        // Inserir item SEM produto_id (permitir null)
+        const { data: itemSalvo, error: itemError } = await supabase
+          .from('pedido_itens')
+          .insert({
+            pedido_id: novoPedido.id,
+            produto_id: null, // NULL em vez de ID inválido
+            nome_produto: item.name,
+            quantidade: item.quantity,
+            valor_unitario: item.price,
+            valor_total: valorTotalItem
+          })
+          .select()
+          .single()
+
+        if (itemError) {
+          console.error('❌ ERRO ao salvar item sem produto_id:', itemError)
+          continue
+        }
+
+        itensSalvos++
+        itensSemProdutoId++
+        warnings.push(`Item "${item.name}" salvo sem produto_id (produto não encontrado)`)
+        console.log('✅ Item salvo SEM produto_id:', {
+          item_id: itemSalvo.id,
+          nome: item.name,
+          quantidade: item.quantity,
+          valor: valorTotalItem
+        })
+
+        // Processar adicionais do item se existirem
+        if (item.adicionais && item.adicionais.length > 0) {
+          for (const adicional of item.adicionais) {
+            const valorTotalAdicional = adicional.price * adicional.quantity
+            const { error: adicionalError } = await supabase
+              .from('pedido_item_adicionais')
+              .insert({
+                pedido_item_id: itemSalvo.id,
+                categoria_nome: 'Adicional',
+                nome_adicional: adicional.name,
+                quantidade: adicional.quantity,
+                valor_unitario: adicional.price,
+                valor_total: valorTotalAdicional
+              })
+            if (adicionalError) {
+              console.error('❌ ERRO ao salvar adicional:', adicionalError)
+            } else {
+              console.log('✅ Adicional salvo (produto inexistente):', adicional.name)
+            }
+          }
+        }
+        continue
+      }
+
+      // Produto existe - inserir normalmente
       const { data: itemSalvo, error: itemError } = await supabase
         .from('pedido_itens')
         .insert({
@@ -268,6 +345,8 @@ Deno.serve(async (req) => {
         continue
       }
 
+      itensSalvos++
+      itensComProdutoId++
       console.log('✅ Item salvo:', {
         item_id: itemSalvo.id,
         nome: item.name,
@@ -416,7 +495,16 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Resposta de sucesso
+    // Log estatísticas finais
+    console.log('📊 ESTATÍSTICAS FINAIS:', {
+      itens_processados: itensProcessados,
+      itens_salvos: itensSalvos,
+      itens_com_produto_id: itensComProdutoId,
+      itens_sem_produto_id: itensSemProdutoId,
+      warnings_count: warnings.length
+    })
+
+    // Resposta de sucesso COM ESTATÍSTICAS
     return new Response(
       JSON.stringify({
         success: true,
@@ -425,7 +513,13 @@ Deno.serve(async (req) => {
         total: pedidoData.total,
         status: 'analise',
         message: 'Pedido criado com sucesso',
-        empresa: company.name
+        empresa: company.name,
+        // ESTATÍSTICAS ADICIONADAS
+        itens_processados: itensProcessados,
+        itens_salvos: itensSalvos,
+        itens_com_produto_id: itensComProdutoId,
+        itens_sem_produto_id: itensSemProdutoId,
+        warnings: warnings
       }),
       { 
         status: 201, 
