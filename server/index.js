@@ -76,6 +76,57 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// ENDPOINT PARA CRIAR SUPERADMIN (apenas em desenvolvimento)
+app.post('/api/create-superadmin', async (req, res) => {
+  console.log('👑 API /create-superadmin - Criando superadmin');
+
+  try {
+    // Verificar se já existe um superadmin
+    const existingQuery = `SELECT * FROM users WHERE email = 'contato@dominio.tech'`;
+    const existingResult = await pool.query(existingQuery);
+
+    if (existingResult.rows.length > 0) {
+      return res.json({
+        success: true,
+        message: 'Superadmin já existe',
+        user: {
+          email: existingResult.rows[0].email,
+          role: existingResult.rows[0].role
+        }
+      });
+    }
+
+    // Criar superadmin
+    const createQuery = `
+      INSERT INTO users (email, name, role, password, created_at, updated_at) 
+      VALUES ($1, $2, $3, $4, NOW(), NOW()) 
+      RETURNING id, email, name, role, created_at
+    `;
+    
+    const result = await pool.query(createQuery, [
+      'contato@dominio.tech',
+      'Super Admin',
+      'super_admin',
+      '$2b$12$4oSZ5n71CDm/rytk1RgTLOvg3ktRXjOjsYBU5XAY8th0tsUFACMZ6'
+    ]);
+
+    console.log('✅ Superadmin criado com sucesso:', result.rows[0]);
+
+    res.json({
+      success: true,
+      message: 'Superadmin criado com sucesso',
+      user: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('💥 API /create-superadmin - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro ao criar superadmin'
+    });
+  }
+});
+
 // ENDPOINT PARA CRIAR PEDIDOS DE FORMA SEGURA
 app.post('/api/orders', async (req, res) => {
   console.log('🚀 API /orders - Recebendo pedido:', {
