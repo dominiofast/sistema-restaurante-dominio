@@ -248,13 +248,46 @@ export const usePedidosRealtimeRobust = () => {
             console.log('🔄 usePedidosRealtimeRobust: Pedido atualizado via realtime:', payload.new);
             setPedidos(prev => prev.map(p => {
               if (p.id === payload.new.id) {
+                // Definir precedência de status (analise < producao < pronto < entregue)
+                const statusPrecedence: Record<string, number> = {
+                  'analise': 1,
+                  'producao': 2, 
+                  'pronto': 3,
+                  'entregue': 4,
+                  'cancelado': 0  // Status especial
+                };
+                
+                const currentTimestamp = new Date(p.updated_at || 0).getTime();
+                const newTimestamp = new Date(payload.new.updated_at || 0).getTime();
+                const timeDiff = Math.abs(newTimestamp - currentTimestamp);
+                
+                const currentPrecedence = statusPrecedence[p.status] || 0;
+                const newStatus = mapPDVStatus(payload.new.status || 'analise');
+                const newPrecedence = statusPrecedence[newStatus] || 0;
+                
+                // Se a atualização é mais antiga OU tem precedência menor em janela de 30s, ignorar
+                if (newTimestamp < currentTimestamp || 
+                   (timeDiff < 30000 && newPrecedence < currentPrecedence)) {
+                  console.log('⚠️ usePedidosRealtimeRobust: Ignorando atualização de baixa precedência:', {
+                    pedidoId: p.id,
+                    statusAtual: p.status,
+                    statusNovo: newStatus,
+                    precedenciaAtual: currentPrecedence,
+                    precedenciaNova: newPrecedence,
+                    timeDiff,
+                    timestampAtual: p.updated_at,
+                    timestampNovo: payload.new.updated_at
+                  });
+                  return p; // Não atualizar
+                }
+                
                 const updatedPedido = {
                   ...p,
                   numero_pedido: payload.new.numero_pedido,
                   nome: payload.new.nome || 'Cliente não informado',
                   telefone: payload.new.telefone || '',
                   endereco: payload.new.endereco || '',
-                  status: mapPDVStatus(payload.new.status || 'analise'),
+                  status: newStatus,
                   tipo: payload.new.tipo || 'delivery',
                   total: Number(payload.new.total) || 0,
                   pagamento: payload.new.pagamento || '',
