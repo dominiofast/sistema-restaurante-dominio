@@ -108,17 +108,11 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
 
       console.log('📝 Criando pedido:', pedidoData);
 
-      // Chamar edge function para criar pedido
-      const { data, error } = await supabase.functions.invoke('criar-pedido-publico', {
-        body: pedidoData
-      });
-
-      if (error) {
-        console.error('❌ Erro na edge function:', error);
-        throw new Error('Erro ao criar pedido');
-      }
-
-      console.log('✅ Pedido criado com sucesso:', data);
+      // SOLUÇÃO LOCAL: Usar função local em vez da edge function quebrada
+      const { criarPedidoLocal } = await import('@/utils/criarPedidoLocal');
+      const data = await criarPedidoLocal(pedidoData);
+      
+      console.log('✅ Pedido criado com sucesso via função local:', data);
 
       // Limpar carrinho
       limparCarrinho();
@@ -167,16 +161,11 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         observacoes: `Pedido PIX via Kiosk - ${new Date().toLocaleString()}`
       };
 
-      const { data, error } = await supabase.functions.invoke('criar-pedido-publico', {
-        body: pedidoData
-      });
-
-      if (error) {
-        console.error('❌ Erro ao criar pedido PIX:', error);
-        throw new Error('Erro ao criar pedido PIX');
-      }
-
-      console.log('✅ Pedido PIX criado com sucesso:', data);
+      // SOLUÇÃO LOCAL: Usar função local em vez da edge function quebrada  
+      const { criarPedidoLocal } = await import('@/utils/criarPedidoLocal');
+      const data = await criarPedidoLocal(pedidoData);
+      
+      console.log('✅ Pedido PIX criado com sucesso via função local:', data);
 
       // Limpar carrinho
       limparCarrinho();
