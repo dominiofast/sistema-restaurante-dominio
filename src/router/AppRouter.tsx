@@ -31,13 +31,13 @@ const AppRouter: React.FC = () => {
         path.startsWith('/whatsapp') || path.startsWith('/chat') || path.startsWith('/kds') ||
         path.startsWith('/cashback') || path.startsWith('/agente-ia') || path.startsWith('/config') ||
         path.startsWith('/teste-') || path.startsWith('/ferramentas') || path.startsWith('/tools') ||
-        path.startsWith('/demo-navigation') || path.startsWith('/reset-password') || path.startsWith('/auth/') || path === '/auth' || path === '/' || path === '/sync-test') {
+        path.startsWith('/demo-navigation') || path.startsWith('/reset-password') || path.startsWith('/auth/') || path === '/auth' || path === '/sync-test') {
       console.log('🎯 Direcionando para AccountRoutes');
       return <AccountRoutes />;
     }
-    // Se a URL contém /cardapio/ ou um número, ou slugs de empresa vai para o cardápio público
-    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || /^\/[a-zA-Z0-9-]+/.test(path) || path.includes('/acompanhar-pedido/') || path.includes('/pedido/')) {
-      console.log('🎯 Direcionando para PublicRoutes');
+    // CARDÁPIO PÚBLICO: Slugs de empresa, cardápio, pedidos, etc
+    if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || /^\/[a-zA-Z0-9-]+/.test(path) || path.includes('/acompanhar-pedido/') || path.includes('/pedido/') || path === '/dominiopizzas') {
+      console.log('🎯 Direcionando para PublicRoutes - DOMINIOPIZZAS');
       return <PublicRoutes />;
     }
     console.log('🎯 Direcionando para AccountRoutes como fallback');

@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Configurações - SERVICE ROLE para evitar limitações de RLS
-const SUPABASE_URL = process.env.SUPABASE_URL;
+// Configurações do Supabase - usando as credenciais do projeto
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export default async function handler(req, res) {
