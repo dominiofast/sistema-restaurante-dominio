@@ -1,0 +1,543 @@
+ 🏠 App.tsx - hostname: pedido.dominio.tech path: /dominiopizzas
+ 🎯 App.tsx - isLandingPage: false
+ 🔐 App.tsx - Carregando com AuthProvider
+ 🎯 useAutoPrint - Hook iniciado, currentCompany: null
+ 🚀 useAutoPrint useEffect executado
+ 🏢 currentCompany: null
+ ❌ useAutoPrint - Empresa não encontrada, currentCompany: null
+ AuthProvider: Inicializando autenticação...
+ AuthProvider: Verificando sessão existente...
+ 🎯 useAutoPrint - Hook iniciado, currentCompany: null
+ AuthProvider: Limpando subscription
+ 🔍 DynamicMetaTagsService - getSlugFromPath chamado para pathname: /dominiopizzas
+ 🔍 DynamicMetaTagsService - pathSegments: Array(1)
+ 🔍 DynamicMetaTagsService - firstSegment: dominiopizzas é rota conhecida? false
+ 🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug: dominiopizzas
+ 🔍 DynamicMetaTagsService - getCompanyBySlug chamado para: dominiopizzas
+ 🔍 DynamicMetaTagsService - Searching by slug/domain: dominiopizzas
+ 🔍 StoreContext State: Object
+dominiopizzas:1 <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes">
+ 🔍 DynamicMetaTagsService - Query result: Object
+ ✅ DynamicMetaTagsService - Empresa encontrada: Object
+ 🔄 AppRouter - hostname: pedido.dominio.tech
+ 🔄 AppRouter - path: /dominiopizzas
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🔍 Buscando empresa com slug: dominiopizzas
+ 🔍 useCompanyData - Buscando por slug/domain: dominiopizzas
+ 🔄 Carregando dados do cliente salvos: Object
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ ✅ Empresa encontrada: Domínio Pizzas
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🎨 usePublicBrandingNew - Buscando branding público para: 550e8400-e29b-41d4-a716-446655440001
+ 🔍 usePublicBrandingNew - Base query setup for active companies
+ 🔍 usePublicBrandingNew - Searching by ID (UUID): 550e8400-e29b-41d4-a716-446655440001
+ ✅ Meta tags atualizadas para: Object
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ ✅ Categorias carregadas: 7
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🔍 usePublicBrandingNew - Query result: Object
+ ✅ usePublicBrandingNew - Empresa encontrada: Object
+ 🎨 Dados de branding encontrados: Object
+ 🕐 Verificando horário: Object
+ ⏰ Verificando período: Object
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🕐 Verificando horário: Object
+ ⏰ Verificando período: Object
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🖼️ URLs extraídas: Object
+ ✅ Branding final para o header: Object
+ ✅ Branding final montado: Object
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ ✅ Produtos carregados: 28
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🎉 Renderizando cardápio público com sucesso!
+ 🎨 Branding final: Object
+ [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+ [usePublicPixelConfig] Resolvido slug: dominiopizzas
+ 🕐 DEBUG HORÁRIO: Object
+ Checking schedule: Object
+ [usePublicPixelConfig] Config do pixel: null
+ [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🎉 Renderizando cardápio público com sucesso!
+ 🎨 Branding final: Object
+ [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🎉 Renderizando cardápio público com sucesso!
+ 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+ [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+ 🔍 Buscando adicionais para produto: cbc75df6-fc30-41ac-b83a-aff24693571e
+ 📋 Categorias encontradas: 4
+ 🍕 Buscando adicionais para categoria: Sabores Pizzas..
+ ✅ Adicionais encontrados: 42 para categoria: Sabores Pizzas..
+ 🍕 Buscando adicionais para categoria: Adicionais Pizza Grande:
+ ✅ Adicionais encontrados: 15 para categoria: Adicionais Pizza Grande:
+ 🍕 Buscando adicionais para categoria: Bordas Pizza Grande
+ ✅ Adicionais encontrados: 9 para categoria: Bordas Pizza Grande
+ 🍕 Buscando adicionais para categoria: Deseja ketchup, maionese?
+ ✅ Adicionais encontrados: 2 para categoria: Deseja ketchup, maionese?
+ 🎉 Total de categorias com adicionais: 4
+ 🔍 Buscando dados dos adicionais: (4) ['e138ea27-9ac1-4e36-92e6-4981ab1e5dd5', '8b4e69bf-ae7b-4206-9715-55f0d597cfbe', 'f8d9307b-c194-4ac7-98a2-e8fe64c0d9ab', 'dd7e910a-5346-4a96-9467-c73259ca6b0b']
+ ✅ IDs válidos para processamento: (4) ['e138ea27-9ac1-4e36-92e6-4981ab1e5dd5', '8b4e69bf-ae7b-4206-9715-55f0d597cfbe', 'f8d9307b-c194-4ac7-98a2-e8fe64c0d9ab', 'dd7e910a-5346-4a96-9467-c73259ca6b0b']
+ ✅ Adicional encontrado: 5 Queijos
+ ✅ Adicional encontrado: Atum
+ ✅ Adicional encontrado: Sem Borda, Obrigado
+ ✅ Adicional encontrado: Sim! Me envie Ketchup e Maionese.
+ 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas
+ 🔍 CardapioPublico iniciado com slug: dominiopizzas
+ 🎉 Renderizando cardápio público com sucesso!
+ 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+ [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+ 🔍 DynamicMetaTagsService - getSlugFromPath chamado para pathname: /dominiopizzas/produto-adicionado
+ 🔍 DynamicMetaTagsService - pathSegments: (2) ['dominiopizzas', 'produto-adicionado']
+ 🔍 DynamicMetaTagsService - firstSegment: dominiopizzas é rota conhecida? false
+ 🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug: dominiopizzas
+ 🔍 DynamicMetaTagsService - getCompanyBySlug chamado para: dominiopizzas
+ 🔍 DynamicMetaTagsService - Searching by slug/domain: dominiopizzas
+ 🔍 DynamicMetaTagsService - Query result: {data: {…}, error: null}
+ ✅ DynamicMetaTagsService - Empresa encontrada: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', slug: 'dominiopizzas', logo: '🍕', domain: 'dominiopizzas', …}
+ 🔄 AppRouter - hostname: pedido.dominio.tech
+ 🔄 AppRouter - path: /dominiopizzas/produto-adicionado
+ 🎨 usePublicBrandingNew - Buscando branding público para: dominiopizzas
+ 🔍 usePublicBrandingNew - Base query setup for active companies
+ 🔍 usePublicBrandingNew - Searching by slug/domain: dominiopizzas
+index-xQHBOKkR.js:643 🔍 usePublicBrandingNew - Query result: {company: {…}, companyError: null}
+index-xQHBOKkR.js:643 ✅ usePublicBrandingNew - Empresa encontrada: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', domain: 'dominiopizzas', slug: 'dominiopizzas', status: 'active'}
+index-xQHBOKkR.js:1083 🕐 Verificando horário: {fusoHorario: 'America/Porto_Velho', diaAtual: 3, horaAtual: '17:35', horaAtualCompleta: 1055}
+index-xQHBOKkR.js:1083 ⏰ Verificando período: {periodo: '00:00:00 - 23:30:00', inicioCompleto: 0, fimCompleto: 1410, horaAtualCompleta: 1055}
+index-xQHBOKkR.js:643 🎨 Dados de branding encontrados: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', logo_file_id: '2e1c45dc-7b41-42b4-b661-789a11d9cfad', banner_file_id: '113a03df-219f-4a9a-924e-9286df020160', show_logo: true, …}
+index-xQHBOKkR.js:643 🖼️ URLs extraídas: {logoUrl: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', bannerUrl: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png'}
+index-xQHBOKkR.js:643 ✅ Branding final para o header: {logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', show_logo: true, show_banner: true}
+index-xQHBOKkR.js:643 ✅ Branding final montado: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1083 🔍 Buscando empresa com slug: dominiopizzas
+index-xQHBOKkR.js:1083 🔍 useCompanyData - Buscando por slug/domain: dominiopizzas
+index-xQHBOKkR.js:1111 🔄 Carregando dados do cliente salvos: {nome: 'Cleber Ruiz Camargo', telefone: '69992254080'}
+index-xQHBOKkR.js:1111 🛒 Detectada rota de carrinho: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🛒 Aguardando dados carregarem...
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - getSlugFromPath chamado para pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - pathSegments: (2) ['dominiopizzas', 'carrinho']
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - firstSegment: dominiopizzas é rota conhecida? false
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug: dominiopizzas
+index-xQHBOKkR.js:1114 🔍 DynamicMetaTagsService - getCompanyBySlug chamado para: dominiopizzas
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - Searching by slug/domain: dominiopizzas
+index-xQHBOKkR.js:1121 🔍 DynamicMetaTagsService - Query result: {data: {…}, error: null}
+index-xQHBOKkR.js:1121 ✅ DynamicMetaTagsService - Empresa encontrada: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', slug: 'dominiopizzas', logo: '🍕', domain: 'dominiopizzas', …}
+index-xQHBOKkR.js:1114 🔄 AppRouter - hostname: pedido.dominio.tech
+index-xQHBOKkR.js:1114 🔄 AppRouter - path: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1083 🔍 Buscando empresa com slug: dominiopizzas
+index-xQHBOKkR.js:1083 🔍 useCompanyData - Buscando por slug/domain: dominiopizzas
+index-xQHBOKkR.js:1111 🔄 Carregando dados do cliente salvos: {nome: 'Cleber Ruiz Camargo', telefone: '69992254080'}
+index-xQHBOKkR.js:1111 🛒 Detectada rota de carrinho: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🛒 Aguardando dados carregarem...
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1083 ✅ Empresa encontrada: Domínio Pizzas
+index-xQHBOKkR.js:1083 ✅ Empresa encontrada: Domínio Pizzas
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:643 🎨 usePublicBrandingNew - Buscando branding público para: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:643 🔍 usePublicBrandingNew - Base query setup for active companies
+index-xQHBOKkR.js:643 🔍 usePublicBrandingNew - Searching by ID (UUID): 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1111 🛒 Detectada rota de carrinho: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🛒 Aguardando dados carregarem...
+index-xQHBOKkR.js:1097 ✅ Meta tags atualizadas para: {title: 'Domínio Pizzas - Cardápio Digital', description: 'Confira o cardápio completo de Domínio Pizzas. Peça online com praticidade e rapidez!', url: 'https://pedido.dominio.tech/dominiopizzas/carrinho'}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1083 ✅ Categorias carregadas: 7
+index-xQHBOKkR.js:643 🔍 usePublicBrandingNew - Query result: {company: {…}, companyError: null}
+index-xQHBOKkR.js:643 ✅ usePublicBrandingNew - Empresa encontrada: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', domain: 'dominiopizzas', slug: 'dominiopizzas', status: 'active'}
+index-xQHBOKkR.js:1083 ✅ Categorias carregadas: 7
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1083 🕐 Verificando horário: {fusoHorario: 'America/Porto_Velho', diaAtual: 3, horaAtual: '17:35', horaAtualCompleta: 1055}
+index-xQHBOKkR.js:1083 ⏰ Verificando período: {periodo: '00:00:00 - 23:30:00', inicioCompleto: 0, fimCompleto: 1410, horaAtualCompleta: 1055}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:643 🎨 Dados de branding encontrados: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', logo_file_id: '2e1c45dc-7b41-42b4-b661-789a11d9cfad', banner_file_id: '113a03df-219f-4a9a-924e-9286df020160', show_logo: true, …}
+index-xQHBOKkR.js:1083 🕐 Verificando horário: {fusoHorario: 'America/Porto_Velho', diaAtual: 3, horaAtual: '17:35', horaAtualCompleta: 1055}
+index-xQHBOKkR.js:1083 ⏰ Verificando período: {periodo: '00:00:00 - 23:30:00', inicioCompleto: 0, fimCompleto: 1410, horaAtualCompleta: 1055}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:643 🖼️ URLs extraídas: {logoUrl: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', bannerUrl: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png'}
+index-xQHBOKkR.js:643 ✅ Branding final para o header: {logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', show_logo: true, show_banner: true}
+index-xQHBOKkR.js:643 ✅ Branding final montado: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1097 ✅ Produtos carregados: 28
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1097 ✅ Produtos carregados: 28
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:703 [usePublicPixelConfig] Resolvido slug: dominiopizzas
+index-xQHBOKkR.js:1111 🛒 Detectada rota de carrinho: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🛒 Abrindo carrinho automaticamente
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🛒 Item do carrinho: {id: 'cbc75df6-fc30-41ac-b83a-aff24693571e-8b4e69bf-ae7b…b1e5dd5:1,f8d9307b-c194-4ac7-98a2-e8fe64c0d9ab:1-', produto: {…}, quantidade: 2, adicionais: {…}, preco_unitario: 76.9, …}
+index-xQHBOKkR.js:1097 🛒 Observações do item: undefined
+index-xQHBOKkR.js:703 [usePublicPixelConfig] Config do pixel: null
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🕐 DEBUG HORÁRIO: {utcTime: '2025-09-17T21:35:53.686Z', fusoHorario: 'America/Porto_Velho', timeInTimezone: 'Wed Sep 17 2025 17:35:53 GMT-0400 (Hora padrão do Amazonas)', currentDayOfWeek: 3, nomeDia: 'quarta', …}
+index-xQHBOKkR.js:1097 Checking schedule: {currentTime: '17:35', scheduleStart: '00:00', scheduleEnd: '23:30', isInRange: true}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🛒 Item do carrinho: {id: 'cbc75df6-fc30-41ac-b83a-aff24693571e-8b4e69bf-ae7b…b1e5dd5:1,f8d9307b-c194-4ac7-98a2-e8fe64c0d9ab:1-', produto: {…}, quantidade: 1, adicionais: {…}, preco_unitario: 76.9, …}
+index-xQHBOKkR.js:1097 🛒 Observações do item: undefined
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:1111 🔍 CheckoutModal - company: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', domain: 'dominiopizzas', logo: '🍕', plan: 'enterprise', …}
+index-xQHBOKkR.js:1111 🔍 CheckoutModal - company.id: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1111 🔍 CheckoutModal - company.id válido: true
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Buscando regiões para company: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Regiões carregadas: 0
+index-xQHBOKkR.js:946 Buscando regiões para company: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Regiões carregadas: 0
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Regiões encontradas: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Regiões carregadas: 7
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Regiões encontradas: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 useDeliveryFeeCalculator - Regiões carregadas: 7
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 🔍 Validando endereço: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+index-xQHBOKkR.js:946 🏪 Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 📍 Regiões configuradas: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:946 🔍 === VALIDAÇÃO GEOGRÁFICA DETALHADA ===
+index-xQHBOKkR.js:946 🔍 Endereço recebido: {logradouro: 'R. Carlota Joaquina', numero: '1234', bairro: 'RO', cidade: 'Cacoal', estado: 'RO', …}
+index-xQHBOKkR.js:946 🔍 Total de regiões para validar: 7
+index-xQHBOKkR.js:946 🔍 Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:946 🔍 --- Validando região 1 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: '2be72bda', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 1km)
+index-xQHBOKkR.js:946 🔍 Endereço FORA da região 1
+index-xQHBOKkR.js:946 🔍 --- Validando região 2 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'fffb5376', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 2km)
+index-xQHBOKkR.js:946 🔍 Endereço FORA da região 2
+index-xQHBOKkR.js:946 🔍 --- Validando região 3 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'a27a78f2', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 3km)
+index-xQHBOKkR.js:946 🔍 Endereço FORA da região 3
+index-xQHBOKkR.js:946 🔍 --- Validando região 4 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'cf297c99', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 4km)
+index-xQHBOKkR.js:946 🔍 Endereço DENTRO da região 4
+index-xQHBOKkR.js:946 ✅ Endereço DENTRO da área de atendimento - Calculando taxa...
+index-xQHBOKkR.js:946 === CALCULANDO TAXA DE ENTREGA ===
+index-xQHBOKkR.js:946 Endereço recebido: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+index-xQHBOKkR.js:946 Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:946 Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Total de regiões: 7
+index-xQHBOKkR.js:946 Regiões ativas: 7
+index-xQHBOKkR.js:946 📍 Região 1: {id: '2be72bda', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 2: {id: 'fffb5376', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 3: {id: 'a27a78f2', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 4: {id: 'cf297c99', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 5: {id: 'f9173526', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 6: {id: 'e7672f2c', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 7: {id: '7ff8134a', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 🔍 Buscando por bairro: RO
+ 🔍 Buscando por coordenadas: -11.4628357 -61.4694132
+ 🔍 Distância para região 2be72bda-2525-4726-b0fd-27b3280b6173: 3.89km (raio: 1km, valor: R$ 7)
+ 🔍 Distância para região fffb5376-9200-411b-9ef1-66042362f4f8: 3.89km (raio: 2km, valor: R$ 8)
+ 🔍 Distância para região a27a78f2-3f5e-468b-99b7-be199bf4f91f: 3.89km (raio: 3km, valor: R$ 9)
+ 🔍 Distância para região cf297c99-5b29-46c7-981b-ee200350b6a8: 3.89km (raio: 4km, valor: R$ 10)
+ 🔍 Distância para região f9173526-c982-4711-825d-6336df76f771: 3.89km (raio: 5km, valor: R$ 11)
+ 🔍 Distância para região e7672f2c-a5d1-4321-9203-b92ddef4b5be: 3.89km (raio: 6km, valor: R$ 12)
+ 🔍 Distância para região 7ff8134a-15fb-402f-a31b-3176669c8bcf: 3.89km (raio: 7km, valor: R$ 16)
+ ✅ ENCONTRADO POR RAIO (MAIS ESPECÍFICA) - Região: {id: 'cf297c99-5b29-46c7-981b-ee200350b6a8', company_id: '550e8400-e29b-41d4-a716-446655440001', tipo: 'raio', centro_lat: -11.4360957, centro_lng: -61.4463932, …} Taxa: 10
+ 🎯 Distância calculada: 3.89 km
+ 📊 Todas as regiões que cobrem o endereço: 4km = R$10, 5km = R$11, 6km = R$12, 7km = R$16
+ 💰 Taxa calculada: 10
+ ✅ Endereço VÁLIDO - Taxa: 10 (qualquer valor é válido)
+ === CALCULANDO TAXA DE ENTREGA ===
+ Endereço recebido: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+ Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ Company ID: 550e8400-e29b-41d4-a716-446655440001
+ Total de regiões: 7
+ Regiões ativas: 7
+ 📍 Região 1: {id: '2be72bda', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 2: {id: 'fffb5376', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 3: {id: 'a27a78f2', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 4: {id: 'cf297c99', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 5: {id: 'f9173526', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 6: {id: 'e7672f2c', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 📍 Região 7: {id: '7ff8134a', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+ 🔍 Buscando por bairro: RO
+ 🔍 Buscando por coordenadas: -11.4628357 -61.4694132
+ 🔍 Distância para região 2be72bda-2525-4726-b0fd-27b3280b6173: 3.89km (raio: 1km, valor: R$ 7)
+ 🔍 Distância para região fffb5376-9200-411b-9ef1-66042362f4f8: 3.89km (raio: 2km, valor: R$ 8)
+ 🔍 Distância para região a27a78f2-3f5e-468b-99b7-be199bf4f91f: 3.89km (raio: 3km, valor: R$ 9)
+ 🔍 Distância para região cf297c99-5b29-46c7-981b-ee200350b6a8: 3.89km (raio: 4km, valor: R$ 10)
+ 🔍 Distância para região f9173526-c982-4711-825d-6336df76f771: 3.89km (raio: 5km, valor: R$ 11)
+ 🔍 Distância para região e7672f2c-a5d1-4321-9203-b92ddef4b5be: 3.89km (raio: 6km, valor: R$ 12)
+ 🔍 Distância para região 7ff8134a-15fb-402f-a31b-3176669c8bcf: 3.89km (raio: 7km, valor: R$ 16)
+ ✅ ENCONTRADO POR RAIO (MAIS ESPECÍFICA) - Região: {id: 'cf297c99-5b29-46c7-981b-ee200350b6a8', company_id: '550e8400-e29b-41d4-a716-446655440001', tipo: 'raio', centro_lat: -11.4360957, centro_lng: -61.4463932, …} Taxa: 10
+ 🎯 Distância calculada: 3.89 km
+ 📊 Todas as regiões que cobrem o endereço: 4km = R$10, 5km = R$11, 6km = R$12, 7km = R$16
+ 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+ 🔍 CheckoutModal RECEIVED - typeof companyId: string
+ 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+ 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+ 🔍 CheckoutModal RECEIVED - typeof companyId: string
+ 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+ 🔍 Validando endereço: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+ 🏪 Company ID: 550e8400-e29b-41d4-a716-446655440001
+ 📍 Regiões configuradas: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🔍 === VALIDAÇÃO GEOGRÁFICA DETALHADA ===
+ 🔍 Endereço recebido: {logradouro: 'R. Carlota Joaquina', numero: '1234', bairro: 'RO', cidade: 'Cacoal', estado: 'RO', …}
+ 🔍 Total de regiões para validar: 7
+ 🔍 Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🔍 --- Validando região 1 ---
+ 🔍 Região: {id: '2be72bda', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+ 🔍 Distância calculada: 3.89km (raio: 1km)
+ 🔍 Endereço FORA da região 1
+ 🔍 --- Validando região 2 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'fffb5376', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 2km)
+index-xQHBOKkR.js:946 🔍 Endereço FORA da região 2
+index-xQHBOKkR.js:946 🔍 --- Validando região 3 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'a27a78f2', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 3km)
+index-xQHBOKkR.js:946 🔍 Endereço FORA da região 3
+index-xQHBOKkR.js:946 🔍 --- Validando região 4 ---
+index-xQHBOKkR.js:946 🔍 Região: {id: 'cf297c99', nome: null, tipo: 'raio', status: true, centro_lat: -11.4360957, …}
+index-xQHBOKkR.js:946 🔍 Distância calculada: 3.89km (raio: 4km)
+index-xQHBOKkR.js:946 🔍 Endereço DENTRO da região 4
+index-xQHBOKkR.js:946 ✅ Endereço DENTRO da área de atendimento - Calculando taxa...
+index-xQHBOKkR.js:946 === CALCULANDO TAXA DE ENTREGA ===
+index-xQHBOKkR.js:946 Endereço recebido: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+index-xQHBOKkR.js:946 Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:946 Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Total de regiões: 7
+index-xQHBOKkR.js:946 Regiões ativas: 7
+index-xQHBOKkR.js:946 📍 Região 1: {id: '2be72bda', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 2: {id: 'fffb5376', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 3: {id: 'a27a78f2', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 4: {id: 'cf297c99', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 5: {id: 'f9173526', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 6: {id: 'e7672f2c', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 7: {id: '7ff8134a', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 🔍 Buscando por bairro: RO
+index-xQHBOKkR.js:946 🔍 Buscando por coordenadas: -11.4628357 -61.4694132
+index-xQHBOKkR.js:946 🔍 Distância para região 2be72bda-2525-4726-b0fd-27b3280b6173: 3.89km (raio: 1km, valor: R$ 7)
+index-xQHBOKkR.js:946 🔍 Distância para região fffb5376-9200-411b-9ef1-66042362f4f8: 3.89km (raio: 2km, valor: R$ 8)
+index-xQHBOKkR.js:946 🔍 Distância para região a27a78f2-3f5e-468b-99b7-be199bf4f91f: 3.89km (raio: 3km, valor: R$ 9)
+index-xQHBOKkR.js:946 🔍 Distância para região cf297c99-5b29-46c7-981b-ee200350b6a8: 3.89km (raio: 4km, valor: R$ 10)
+index-xQHBOKkR.js:946 🔍 Distância para região f9173526-c982-4711-825d-6336df76f771: 3.89km (raio: 5km, valor: R$ 11)
+index-xQHBOKkR.js:946 🔍 Distância para região e7672f2c-a5d1-4321-9203-b92ddef4b5be: 3.89km (raio: 6km, valor: R$ 12)
+index-xQHBOKkR.js:946 🔍 Distância para região 7ff8134a-15fb-402f-a31b-3176669c8bcf: 3.89km (raio: 7km, valor: R$ 16)
+index-xQHBOKkR.js:946 ✅ ENCONTRADO POR RAIO (MAIS ESPECÍFICA) - Região: {id: 'cf297c99-5b29-46c7-981b-ee200350b6a8', company_id: '550e8400-e29b-41d4-a716-446655440001', tipo: 'raio', centro_lat: -11.4360957, centro_lng: -61.4463932, …} Taxa: 10
+index-xQHBOKkR.js:946 🎯 Distância calculada: 3.89 km
+index-xQHBOKkR.js:946 📊 Todas as regiões que cobrem o endereço: 4km = R$10, 5km = R$11, 6km = R$12, 7km = R$16
+index-xQHBOKkR.js:946 💰 Taxa calculada: 10
+index-xQHBOKkR.js:946 ✅ Endereço VÁLIDO - Taxa: 10 (qualquer valor é válido)
+index-xQHBOKkR.js:946 === CALCULANDO TAXA DE ENTREGA ===
+index-xQHBOKkR.js:946 Endereço recebido: {id: '058072f1-afa8-433e-b386-7dedc908b337', company_id: '550e8400-e29b-41d4-a716-446655440001', customer_name: 'Cleber RC', customer_phone: '69992254080', logradouro: 'R. Carlota Joaquina', …}
+index-xQHBOKkR.js:946 Regiões disponíveis: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+index-xQHBOKkR.js:946 Company ID: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:946 Total de regiões: 7
+index-xQHBOKkR.js:946 Regiões ativas: 7
+index-xQHBOKkR.js:946 📍 Região 1: {id: '2be72bda', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 2: {id: 'fffb5376', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 3: {id: 'a27a78f2', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 4: {id: 'cf297c99', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 5: {id: 'f9173526', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 6: {id: 'e7672f2c', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 📍 Região 7: {id: '7ff8134a', tipo: 'raio', nome: 'Sem nome', bairro: 'N/A', cidade: 'N/A', …}
+index-xQHBOKkR.js:946 🔍 Buscando por bairro: RO
+index-xQHBOKkR.js:946 🔍 Buscando por coordenadas: -11.4628357 -61.4694132
+index-xQHBOKkR.js:946 🔍 Distância para região 2be72bda-2525-4726-b0fd-27b3280b6173: 3.89km (raio: 1km, valor: R$ 7)
+index-xQHBOKkR.js:946 🔍 Distância para região fffb5376-9200-411b-9ef1-66042362f4f8: 3.89km (raio: 2km, valor: R$ 8)
+index-xQHBOKkR.js:946 🔍 Distância para região a27a78f2-3f5e-468b-99b7-be199bf4f91f: 3.89km (raio: 3km, valor: R$ 9)
+index-xQHBOKkR.js:946 🔍 Distância para região cf297c99-5b29-46c7-981b-ee200350b6a8: 3.89km (raio: 4km, valor: R$ 10)
+index-xQHBOKkR.js:946 🔍 Distância para região f9173526-c982-4711-825d-6336df76f771: 3.89km (raio: 5km, valor: R$ 11)
+index-xQHBOKkR.js:946 🔍 Distância para região e7672f2c-a5d1-4321-9203-b92ddef4b5be: 3.89km (raio: 6km, valor: R$ 12)
+index-xQHBOKkR.js:946 🔍 Distância para região 7ff8134a-15fb-402f-a31b-3176669c8bcf: 3.89km (raio: 7km, valor: R$ 16)
+index-xQHBOKkR.js:946 ✅ ENCONTRADO POR RAIO (MAIS ESPECÍFICA) - Região: {id: 'cf297c99-5b29-46c7-981b-ee200350b6a8', company_id: '550e8400-e29b-41d4-a716-446655440001', tipo: 'raio', centro_lat: -11.4360957, centro_lng: -61.4463932, …} Taxa: 10
+index-xQHBOKkR.js:946 🎯 Distância calculada: 3.89 km
+index-xQHBOKkR.js:946 📊 Todas as regiões que cobrem o endereço: 4km = R$10, 5km = R$11, 6km = R$12, 7km = R$16
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - companyId: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1097 🔍 CheckoutModal RECEIVED - typeof companyId: string
+index-xQHBOKkR.js:1097 🔍 CheckoutModal - validCompanyId para hooks: 550e8400-e29b-41d4-a716-446655440001
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: true, asaasConfigLoading: true, paymentConfig?.accept_pix: undefined, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: true, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 ASAAS DEBUG - Query result: {data: null, error: null}
+index-xQHBOKkR.js:1097 🔍 ASAAS DEBUG - Nenhuma config encontrada
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1111 💳 Método de pagamento selecionado: {"method":"cartao","needsChange":false,"changeAmount":0,"cardBrand":"","cashbackApplied":0,"totalWithCashback":86.9}
+index-xQHBOKkR.js:1097 🔒 [ANTI-DUPLICATE] Criando pedido com ID único: 69992254080_1758144971341
+index-xQHBOKkR.js:1097 📊 Totais calculados: {subtotal: 76.9, taxaEntrega: 10, cashbackAplicado: 0, totalFinal: 86.9}
+index-xQHBOKkR.js:1097 📦 Criando pedido com dados: {company_id: '550e8400-e29b-41d4-a716-446655440001', nome: 'Cleber Ruiz Camargo', telefone: '69992254080', endereco: 'R. Carlota Joaquina, 1234, RO, Cacoal/RO', tipo: 'delivery', …}
+index-xQHBOKkR.js:1111 🔍 CardapioPublico - company_slug: dominiopizzas pathname: /dominiopizzas/carrinho
+index-xQHBOKkR.js:1111 🔍 CardapioPublico iniciado com slug: dominiopizzas
+index-xQHBOKkR.js:1111 🎉 Renderizando cardápio público com sucesso!
+index-xQHBOKkR.js:1111 🎨 Branding final: {id: '9f03109a-8144-4465-89a0-906d2cfb2608', company_id: '550e8400-e29b-41d4-a716-446655440001', company_name: 'Domínio Pizzas', logo_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…29b-41d4-a716-446655440001/logo_1757695954499.png', banner_url: 'https://epqppxteicfuzdblbluq.supabase.co/storage/v…b-41d4-a716-446655440001/banner_1751423752670.png', …}
+index-xQHBOKkR.js:703 [FacebookPixel] Skipping injection: config ausente/inativa ou sem pixel_id null
+index-xQHBOKkR.js:1097 🔍 FINAL DEBUG - Estado atual: {companyId: '550e8400-e29b-41d4-a716-446655440001', paymentConfigLoading: false, asaasConfigLoading: false, paymentConfig?.accept_pix: false, asaasConfig available: false, …}
+index-xQHBOKkR.js:1097 ✅ Pedido criado com sucesso: {company_id: '550e8400-e29b-41d4-a716-446655440001', nome: 'Cleber Ruiz Camargo', telefone: '69992254080', endereco: 'R. Carlota Joaquina, 1234, RO, Cacoal/RO', status: 'pendente', …}
+supabase-CtTmJVah.js:23  POST https://epqppxteicfuzdblbluq.supabase.co/rest/v1/pedido_itens?columns=%22pedido_id%22%2C%22produto_id%22%2C%22nome_produto%22%2C%22quantidade%22%2C%22valor_unitario%22%2C%22valor_total%22%2C%22observacoes%22&select=* 401 (Unauthorized)
+(anónimo) @ supabase-CtTmJVah.js:23
+(anónimo) @ supabase-CtTmJVah.js:23
+a @ supabase-CtTmJVah.js:23
+Promise.then
+c @ supabase-CtTmJVah.js:23
+(anónimo) @ supabase-CtTmJVah.js:23
+Ks @ supabase-CtTmJVah.js:23
+(anónimo) @ supabase-CtTmJVah.js:23
+then @ supabase-CtTmJVah.js:1
+index-xQHBOKkR.js:1097 ❌ Erro ao criar itens do pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-xQHBOKkR.js:1097
+await in createOrder
+createOrder @ index-xQHBOKkR.js:1097
+(anónimo) @ index-xQHBOKkR.js:1111
+W @ index-xQHBOKkR.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anónimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-xQHBOKkR.js:1097 ❌ Erro ao finalizar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-xQHBOKkR.js:1097
+await in createOrder
+createOrder @ index-xQHBOKkR.js:1097
+(anónimo) @ index-xQHBOKkR.js:1111
+W @ index-xQHBOKkR.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anónimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-xQHBOKkR.js:1097 ❌ Erro ao criar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+createOrder @ index-xQHBOKkR.js:1097
+await in createOrder
+(anónimo) @ index-xQHBOKkR.js:1111
+W @ index-xQHBOKkR.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anónimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
+index-xQHBOKkR.js:1111 ❌ Erro ao finalizar pedido: {code: '42501', details: null, hint: null, message: 'permission denied for table notification_logs'}
+(anónimo) @ index-xQHBOKkR.js:1111
+await in (anónimo)
+W @ index-xQHBOKkR.js:1097
+await in W
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anónimo) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29
