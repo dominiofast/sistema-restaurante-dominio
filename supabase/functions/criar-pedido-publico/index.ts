@@ -229,10 +229,23 @@ Deno.serve(async (req) => {
       itens_count: pedidoData.carrinho.length
     })
 
+    // DEBUG: Log do carrinho completo
+    console.log('🛒 DEBUG: Carrinho completo recebido:', JSON.stringify(pedidoData.carrinho, null, 2))
+
     // Salvar itens do pedido
     for (const item of pedidoData.carrinho) {
+      console.log('🔍 DEBUG: Processando item:', JSON.stringify(item, null, 2))
       const valorTotalItem = item.price * item.quantity
       
+      console.log('💾 DEBUG: Tentando inserir item:', {
+        pedido_id: novoPedido.id,
+        produto_id: item.id,
+        nome_produto: item.name,
+        quantidade: item.quantity,
+        valor_unitario: item.price,
+        valor_total: valorTotalItem
+      })
+
       const { data: itemSalvo, error: itemError } = await supabase
         .from('pedido_itens')
         .insert({
@@ -247,7 +260,11 @@ Deno.serve(async (req) => {
         .single()
 
       if (itemError) {
-        console.error('❌ Erro ao salvar item:', itemError)
+        console.error('❌ ERRO CRÍTICO ao salvar item:', {
+          error: itemError,
+          item: item,
+          pedido_id: novoPedido.id
+        })
         continue
       }
 
