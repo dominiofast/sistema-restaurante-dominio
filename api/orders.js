@@ -1,10 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+// ENDPOINT SERVERLESS DESABILITADO - Sistema migrado para PostgreSQL Express
+// Este arquivo foi mantido apenas para compatibilidade com deployments antigos
 
-// Configurações do Supabase - ROBUSTAS com fallbacks para produção
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "https://epqppxteicfuzdblbluq.supabase.co";
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
-// Fallback para chave pública - deve funcionar com RLS configurado
-const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweFRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODEzMzI0MTUsImV4cCI6MTk5NjkwODQxNX0.0a6lRZs3dLMvLm3DX8QTqAY8RJiZuDyQhShClP-Zi_c";
+console.warn('⚠️ API Serverless Supabase desabilitada - use /api/orders do Express PostgreSQL');
 
 export default async function handler(req, res) {
   // CORS headers
@@ -16,16 +13,14 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Healthcheck endpoint
-  if (req.method === 'GET') {
-    return res.status(200).json({
-      ok: true,
-      hasServiceRole: !!SUPABASE_SERVICE_ROLE_KEY,
-      hasUrl: !!SUPABASE_URL,
-      timestamp: new Date().toISOString(),
-      environment: 'serverless'
-    });
-  }
+  // MIGRAÇÃO: Redirecionar para PostgreSQL Express endpoint
+  return res.status(301).json({
+    migrated: true,
+    message: 'Sistema migrado para PostgreSQL - use /api/orders do Express',
+    new_endpoint: '/api/orders',
+    timestamp: new Date().toISOString(),
+    environment: 'serverless-deprecated'
+  });
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
