@@ -6,7 +6,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCardapio } from '@/hooks/useCardapio';
 import { Produto, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 import { GruposAssociadosTab } from './adicionais/GruposAssociadosTab';
 import { NovoGrupoTab } from './adicionais/NovoGrupoTab';
 import { NovaOpcaoTab } from './adicionais/NovaOpcaoTab';
@@ -35,13 +50,7 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
 
   const fetchProdutoCategoriasAdicionais = async () => {
     try {
-      const { data, error } = await supabase
-        .from('produto_categorias_adicionais')
-        .select('*')
-        .eq('produto_id', produto.id)
-        .order('order_position', { ascending: true });
-      
-      if (error) throw error;
+      const data = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produto.id}`);
       setProdutoCategoriasAdicionais(data || []);
       
       // Também atualizar os dados globais para garantir sincronização

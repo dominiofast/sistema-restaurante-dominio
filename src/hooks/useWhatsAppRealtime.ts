@@ -314,9 +314,9 @@ export const useWhatsAppRealtime = ({
             // Notificação removida - agora é gerenciada pelo GlobalWhatsAppNotificationProvider
           }
         }
-      )
+      // )
       // .on( // DESABILITADO
-        'postgres_changes',
+      //   'postgres_changes',
         {
           event: 'UPDATE',
           schema: 'public',

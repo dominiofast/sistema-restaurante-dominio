@@ -5,7 +5,22 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 import { Produto, CategoriaAdicional, Adicional, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useCardapio } from '@/hooks/useCardapio';
 import { useAdicionaisCRUD } from '@/hooks/useAdicionaisCRUD';
@@ -200,12 +215,10 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
 
         // Atualizar as posições no banco usando atualizações individuais
         for (const update of updates) {
-          const { error: updateError } = await supabase
-            .from('produto_categorias_adicionais')
-            .update({ order_position: update.order_position })
-            .eq('id', update.id);
-          
-          if (updateError) throw updateError;
+          await apiRequest(`/api/produto-categorias-adicionais/${update.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ order_position: update.order_position })
+          });
         }
 
         toast({
@@ -323,12 +336,10 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         )
       );
 
-      const { error } = await supabase
-        .from('adicionais')
-        .update({ is_active: isActive } as any)
-        .eq('id', adicionalId);
-
-      if (error) throw error;
+      await apiRequest(`/api/adicionais/${adicionalId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_active: isActive })
+      });
 
       toast({
         title: "Status alterado",

@@ -5,7 +5,22 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Copy } from 'lucide-react';
 import { Produto } from '@/types/cardapio';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 
 interface CopiarAdicionaisTabProps {
   produto: Produto;
@@ -27,23 +42,19 @@ export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
     try {
       setLoading(true);
       
-      const { data: categoriasParaCopiar, error } = await supabase
-        .from('produto_categorias_adicionais')
-        .select('*')
-        .eq('produto_id', produtoParaCopiar);
-
-      if (error) throw error;
+      const categoriasParaCopiar = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produtoParaCopiar}`);
 
       for (const categoria of categoriasParaCopiar || []) {
-        await supabase
-          .from('produto_categorias_adicionais')
-          .insert([{
+        await apiRequest('/api/produto-categorias-adicionais', {
+          method: 'POST',
+          body: JSON.stringify({
             produto_id: produto.id,
             categoria_adicional_id: categoria.categoria_adicional_id,
             is_required: categoria.is_required,
             min_selection: categoria.min_selection,
             max_selection: categoria.max_selection
-          }]);
+          })
+        });
       }
 
       onRefresh();

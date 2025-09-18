@@ -256,13 +256,14 @@ Obrigado pela preferencia!
             }
           }, 5000); // Aumentado para 5 segundos
         }
-      )
-      // .subscribe( // DESABILITADO(status) => {
-        console.log('📡 Status da subscrição do canal:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Canal de escuta configurado com sucesso!');
-        }
-      });
+        // )
+        // .subscribe( // DESABILITADO
+        // (status) => {
+        //   console.log('📡 Status da subscrição do canal:', status);
+        //   if (status === 'SUBSCRIBED') {
+        //     console.log('✅ Canal de escuta configurado com sucesso!');
+        //   }
+        // });
 
     return () => {
       console.log('🔕 Removendo escuta de novos pedidos');
