@@ -196,7 +196,7 @@ export const usePedidosRealTime = () => {
     };
   };
 
-  // Buscar pedidos iniciais
+  // Buscar pedidos iniciais via API Neon
   const fetchPedidos = async () => {
     if (!currentCompany?.id) {
       setPedidos([]);
@@ -208,44 +208,37 @@ export const usePedidosRealTime = () => {
       setLoading(true);
       setError(null);
 
-      console.log('🔍 KDS: Buscando pedidos para empresa:', currentCompany.id);
-      console.log('🔍 KDS: currentCompany completo:', currentCompany);
+      console.log('🔍 KDS: Buscando pedidos via API Neon para empresa:', currentCompany.id);
 
-      // BUSCAR TODOS OS PEDIDOS PRIMEIRO PARA DEBUGAR
-      const { data: allPedidos, error: allError } = await supabase
-        .from('pedidos')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .order('created_at', { ascending: false });
-        
-      console.log('🔍 KDS: TODOS OS PEDIDOS encontrados:', allPedidos?.length || 0);
-      console.log('🔍 KDS: TODOS OS PEDIDOS - dados:', allPedidos);
+      // Buscar todos os pedidos primeiro para debugar
+      const allResponse = await fetch(`/api/pedidos?company_id=${currentCompany.id}`);
+      const allResult = await allResponse.json();
       
-      // Agora filtrar por status
-      const { data, error } = await supabase
-        .from('pedidos')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .in('status', ['analise', 'producao', 'pronto']) // Apenas pedidos ativos no KDS
-        .order('created_at', { ascending: true });
-        
-      console.log('🔍 KDS: Query executada - company_id:', currentCompany.id);
-      console.log('🔍 KDS: Resultado da query - pedidos encontrados:', data?.length || 0);
-      console.log('🔍 KDS: Dados completos da query:', data);
+      if (allResponse.ok && allResult.success) {
+        console.log('🔍 KDS: TODOS OS PEDIDOS encontrados via API:', allResult.data?.length || 0);
+        console.log('🔍 KDS: TODOS OS PEDIDOS - dados:', allResult.data);
+      }
+      
+      // Agora filtrar por status (analise, producao, pronto)
+      const activeStatuses = ['analise', 'producao', 'pronto'];
+      const filteredPedidos = (allResult.data || []).filter((pedido: any) => 
+        activeStatuses.includes(pedido.status)
+      );
+      
+      console.log('🔍 KDS: Pedidos filtrados por status ativo:', filteredPedidos.length);
+      console.log('🔍 KDS: Status filtrados:', activeStatuses);
 
-      if (error) throw error;
-
-      console.log('📋 KDS: Pedidos encontrados no banco:', data?.length || 0);
+      console.log('📋 KDS: Pedidos encontrados no banco via API:', filteredPedidos.length);
 
       const pedidosKDS = await Promise.all(
-        (data || []).map(pedido => convertToKDSFormat(pedido))
+        filteredPedidos.map((pedido: any) => convertToKDSFormat(pedido))
       );
       
       setPedidos(pedidosKDS);
       
-      console.log('🍽️ KDS: Pedidos processados e carregados:', pedidosKDS.length);
+      console.log('🍽️ KDS: Pedidos processados e carregados via API:', pedidosKDS.length);
     } catch (err: any) {
-      console.error('❌ KDS: Erro ao carregar pedidos:', err);
+      console.error('❌ KDS: Erro ao carregar pedidos via API:', err);
       setError(err.message);
     } finally {
       setLoading(false);
