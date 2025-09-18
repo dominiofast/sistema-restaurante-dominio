@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin } from './db.js';
+import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin, getPedidosByCompany, updatePedidoStatus } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,6 +38,79 @@ app.get('/api/orders', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: 'express'
   });
+});
+
+// 📋 ENDPOINT PARA BUSCAR PEDIDOS
+app.get('/api/pedidos', async (req, res) => {
+  console.log('📋 API /pedidos - Buscando pedidos:', { 
+    companyId: req.query.company_id,
+    query: req.query 
+  });
+
+  try {
+    const { company_id } = req.query;
+
+    if (!company_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'company_id é obrigatório'
+      });
+    }
+
+    const pedidos = await getPedidosByCompany(company_id);
+
+    console.log(`✅ Pedidos encontrados: ${pedidos.length}`);
+
+    res.json({
+      success: true,
+      data: pedidos,
+      count: pedidos.length
+    });
+
+  } catch (error) {
+    console.error('💥 API /pedidos - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// 🔄 ENDPOINT PARA ATUALIZAR STATUS DO PEDIDO
+app.put('/api/pedidos/:id/status', async (req, res) => {
+  console.log('🔄 API PUT /pedidos/:id/status - Atualizando status:', {
+    pedidoId: req.params.id,
+    status: req.body.status
+  });
+
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        error: 'Status é obrigatório'
+      });
+    }
+
+    const pedidoAtualizado = await updatePedidoStatus(parseInt(id), status);
+
+    console.log(`✅ Status atualizado com sucesso: ${pedidoAtualizado.id} -> ${pedidoAtualizado.status}`);
+
+    res.json({
+      success: true,
+      data: pedidoAtualizado,
+      message: `Status atualizado para: ${status}`
+    });
+
+  } catch (error) {
+    console.error('💥 API PUT /pedidos/:id/status - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 // ENDPOINT DE LOGIN/AUTENTICAÇÃO
