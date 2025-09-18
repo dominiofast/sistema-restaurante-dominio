@@ -43,3 +43,4 @@ node test-cockroachdb.js
 3. Atualize o servidor para usar CockroachDB
 4. Faça o deploy com a nova configuração
 
+

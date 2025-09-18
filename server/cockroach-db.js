@@ -113,3 +113,4 @@ export async function authenticateCockroachUser(email, password) {
   return userWithoutPassword;
 }
 
+
