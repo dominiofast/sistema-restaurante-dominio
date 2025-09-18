@@ -41,11 +41,15 @@ export const cleanupAuthState = () => {
             name.includes('sb-') || 
             name.includes('auth') ||
             name.includes('session')) {
-          console.log('🍪 Removendo cookie:', name)
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          try {
+            console.log('🍪 Removendo cookie:', name)
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          } catch (error) { 
+            console.error('Error:', error) 
+          }
         }
-       catch (error) { console.error('Error:', error) }})
+      })
     } catch (cookieError) {
       console.warn('⚠️ Erro ao limpar cookies:', cookieError)
     }
@@ -53,5 +57,5 @@ export const cleanupAuthState = () => {
     console.log('✅ Estado de autenticação limpo com sucesso!')
   } catch (error) {
     console.error('❌ Erro durante limpeza de estado:', error)
-
+  }
 };
