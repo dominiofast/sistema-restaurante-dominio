@@ -44,12 +44,12 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
   // Verificar status da conexão
   const checkConnection = useCallback(async (): Promise<boolean> => {
     try {
-      if (!checkQZAvailability()) {;
+      if (!checkQZAvailability()) {
         setIsConnected(false);
         return false;
       }
 
-       catch (error) { console.error('Error:', error); }const active = window.qz.websocket.isActive();
+      const active = window.qz.websocket.isActive();
       setIsConnected(active);
       setLastConnectionCheck(new Date());
       

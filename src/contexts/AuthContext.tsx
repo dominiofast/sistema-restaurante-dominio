@@ -125,7 +125,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               if (existingCompany && isMounted()) {
                 setCurrentCompany(existingCompany);
                 setCompanyId(existingCompany.id);
-              }  catch (error) { console.error('Error:', error); }else {
+              }
+            } else {
                 localStorage.removeItem('super_admin_selected_company');
               }
             } else {

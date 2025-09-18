@@ -102,7 +102,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
     else if (document.hidden) {
       // Aguardar usuário voltar à aba para mostrar popup
       const showWhenVisible = () => {
-        if (!document.hidden) {;
+        if (!document.hidden) {
           setCurrentNotification(message);
           scheduleAutoHide();
           document.removeEventListener('visibilitychange', showWhenVisible);

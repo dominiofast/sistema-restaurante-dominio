@@ -45,7 +45,7 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
     domain: company.domain,
     status: company.status,
     plan: company.plan || 'standard',
-    user_count: company.user_count || 0;
+    user_count: company.user_count || 0
   });
   
   // Enhanced initialization with validation

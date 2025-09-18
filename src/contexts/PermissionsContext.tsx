@@ -93,7 +93,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         return;
       }
 
-       catch (error) { console.error('Error:', error); }// Buscar permissões via role (DESABILITADO - sistema migrado para PostgreSQL)
+      // Buscar permissões via role (DESABILITADO - sistema migrado para PostgreSQL)
       // const { data, error } = await supabase
       //   .from('roles')
       //   .select(`
