@@ -22,7 +22,7 @@ interface Company {
   slug?: string;
   plan?: string;
   userCount?: number;
-
+}
 
 /**
  * Cache para empresas carregadas
