@@ -20,8 +20,12 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { Pool } from '@neondatabase/serverless';
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
 import dotenv from 'dotenv';
+
+// Configurar WebSocket para Neon
+neonConfig.webSocketConstructor = ws;
 
 dotenv.config();
 
@@ -235,9 +239,13 @@ async function executarImportacao() {
   console.log('🔌 Testando conexões...');
   
   try {
-    // Testar Supabase
-    const { data, error } = await supabase.from('users').select('count').limit(1);
-    if (error) throw new Error(`Supabase: ${error.message}`);
+    // Testar Supabase com uma tabela que provavelmente existe
+    const { data, error } = await supabase.from('companies').select('count').limit(1);
+    if (error) {
+      // Se companies não existir, tenta auth.users
+      const { data: authData, error: authError } = await supabase.auth.admin.listUsers();
+      if (authError) throw new Error(`Supabase: ${authError.message}`);
+    }
     console.log('   ✅ Supabase conectado');
     
     // Testar Neon
