@@ -59,7 +59,7 @@ const navigationSections: NavSection[] = [
         icon: Users,
         permission: 'users.read',
         description: 'Gerenciar clientes'
-      }
+
     ]
   },
   {
@@ -85,7 +85,7 @@ const navigationSections: NavSection[] = [
         icon: Calculator,
         permission: 'cashier.read',
         description: 'Gestão de caixa'
-      }
+
     ]
   },
   {
@@ -111,7 +111,7 @@ const navigationSections: NavSection[] = [
         icon: Code,
         superAdminOnly: true,
         description: 'Editor unificado de prompts e configurações'
-      }
+
     ]
   },
   {
@@ -149,14 +149,14 @@ const navigationSections: NavSection[] = [
         description: 'Sistema de links curtos'
       },
     ]
-  }
+
 ];
 
 export const PermissionBasedNavigation: React.FC = () => {
   const location = useLocation();
   const { hasPermission } = usePermissions();
 
-  const renderNavItem = (item: NavItem) => {
+  const renderNavItem = (item: NavItem) => {;
     const isActive = location.pathname === item.path;
     const Icon = item.icon;
 
@@ -176,7 +176,7 @@ export const PermissionBasedNavigation: React.FC = () => {
             <div className="text-xs text-gray-500">{item.description}</div>
           )}
         </div>
-      </Link>
+      </Link>;
     );
 
     // Verificar permissões específicas
@@ -215,7 +215,7 @@ export const PermissionBasedNavigation: React.FC = () => {
 
   const renderSection = (section: NavSection) => {
     // Verificar se pelo menos um item da seção é visível
-    const hasVisibleItems = section.items.some(item => {
+    const hasVisibleItems = section.items.some(item => {;
       if (item.superAdminOnly) return hasPermission('*'); // Super admin
       if (item.adminOnly) return hasPermission('users.read'); // Algum admin
       if (item.permission) return hasPermission(item.permission);
@@ -223,7 +223,7 @@ export const PermissionBasedNavigation: React.FC = () => {
         return item.requireAll 
           ? item.permissions.every(p => hasPermission(p))
           : item.permissions.some(p => hasPermission(p));
-      }
+
       return true;
     });
 

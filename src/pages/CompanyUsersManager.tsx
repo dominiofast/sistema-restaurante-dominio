@@ -25,7 +25,7 @@ interface CompanyUser {
   role?: string;
 }
 
-const CompanyUsersManager = () => {
+const CompanyUsersManager = () => {;
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -46,7 +46,7 @@ const CompanyUsersManager = () => {
   const [editPassword, setEditPassword] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
 
-  const openEdit = (u: CompanyUser) => {
+  const openEdit = (u: CompanyUser) => {;
     setEditingUserId(u.id);
     setEditName(u.name || "");
     setEditEmail(u.email);
@@ -54,7 +54,7 @@ const CompanyUsersManager = () => {
     setEditPassword("");
   };
 
-  const cancelEdit = () => {
+  const cancelEdit = () => {;
     setEditingUserId(null);
     setEditName("");
     setEditEmail("");
@@ -62,11 +62,11 @@ const CompanyUsersManager = () => {
     setEditPassword("");
   };
 
-  const saveUserEdits = async () => {
+  const saveUserEdits = async () => {;
     if (!editingUserId) return;
     try {
       setSavingEdit(true);
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('update-user-admin', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           user_id: editingUserId,
           company_id: selectedCompanyId,
@@ -86,13 +86,13 @@ const CompanyUsersManager = () => {
       cancelEdit();
       if (selectedCompanyId) {
         loadCompanyUsers(selectedCompanyId);
-      }
+
     } catch (e: any) {
       console.error("Erro ao atualizar usuário:", e);
       toast({ title: "Erro", description: e.message || "Falha ao atualizar usuário", variant: "destructive" });
     } finally {
       setSavingEdit(false);
-    }
+
   };
 
   useEffect(() => {
@@ -105,20 +105,14 @@ const CompanyUsersManager = () => {
     } else {
       setUsers([]);
       setSelectedCompany(null);
-    }
+
   }, [selectedCompanyId]);
 
   const loadCompanies = async () => {
-    try {
+    try {;
       setLoading(true);
       
-      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //"companies")
-        /* .select\( REMOVIDO */ ; //"id, name, domain, status")
-        /* .eq\( REMOVIDO */ ; //"status", "active")
-        /* .order\( REMOVIDO */ ; //"name");
-
-      if (companiesError) throw companiesError;
+      const companiesData = null as any; const companiesError = null as any;
 
       setCompanies(companiesData || []);
     } catch (error) {
@@ -130,11 +124,11 @@ const CompanyUsersManager = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const loadCompanyUsers = async (companyId: string) => {
-    try {
+    try {;
       setLoadingUsers(true);
       
       // Encontrar empresa selecionada
@@ -142,9 +136,7 @@ const CompanyUsersManager = () => {
       setSelectedCompany(company || null);
 
       // Buscar usuários reais via Edge Function
-      const { data: usersResponse, error: usersError } = await /* supabase REMOVIDO */ null; //functions.invoke('get-company-users', {
-        body: { company_id: companyId }
-      });
+      const usersResponse = null as any; const usersError = null as any;
 
       if (usersError) throw usersError;
       if (!usersResponse.success) throw new Error(usersResponse.error);
@@ -159,10 +151,10 @@ const CompanyUsersManager = () => {
       });
     } finally {
       setLoadingUsers(false);
-    }
+
   };
 
-  const createUser = async (e: React.FormEvent) => {
+  const createUser = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (!selectedCompanyId || !email || !password || !name) {
@@ -172,13 +164,13 @@ const CompanyUsersManager = () => {
         variant: "destructive",
       });
       return;
-    }
+
 
     try {
       setCreating(true);
 
       // Criar usuário via Edge Function diretamente
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-user-directly', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           email,
           password,
@@ -190,11 +182,11 @@ const CompanyUsersManager = () => {
 
       if (error) {
         throw error;
-      }
+
 
       if (!data?.success) {
         throw new Error(data?.error || 'Erro ao criar usuário');
-      }
+
 
       toast({
         title: "Sucesso",
@@ -217,12 +209,12 @@ const CompanyUsersManager = () => {
       });
     } finally {
       setCreating(false);
-    }
+
   };
 
   const resetUserPassword = async (userEmail: string, userName: string) => {
-    try {
-      const { error } = await /* supabase REMOVIDO */ null; //auth.resetPasswordForEmail(userEmail, {
+    try {;
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         redirectTo: `${window.location.origin}/reset-password`,
       });
 
@@ -239,10 +231,10 @@ const CompanyUsersManager = () => {
         description: error.message || "Erro ao enviar email de reset",
         variant: "destructive",
       });
-    }
+
   };
 
-  const handleBackToCompanies = () => {
+  const handleBackToCompanies = () => {;
     setSelectedCompanyId("");
     setSelectedCompany(null);
     setUsers([]);
@@ -254,7 +246,7 @@ const CompanyUsersManager = () => {
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto py-8 space-y-8">

@@ -3,7 +3,7 @@ import { Produto } from '@/types/cardapio';
 import { FeaturedProductCard } from './FeaturedProductCard';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {
+const applyOpacity = (color: string, opacity: number) => {;
   const hex = color.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -12,14 +12,14 @@ const applyOpacity = (color: string, opacity: number) => {
 };
 
 // Função para otimizar URLs de imagem do Supabase
-const getOptimizedImageUrl = (url: string | undefined, width: number = 340): string => {
+const getOptimizedImageUrl = (url: string | undefined, width: number = 340): string => {;
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
-  if (url.includes('/* supabase REMOVIDO */ null; //co') && url.includes('/storage/')) {
+  if (url.includes('
     const baseUrl = url.split('?')[0];
     return `${baseUrl}?width=${width}&height=${width}&resize=cover&quality=85`;
-  }
+
   
   return url;
 };
@@ -31,7 +31,7 @@ interface FeaturedCarouselProps {
   textColor: string;
   onProductClick: (produto: Produto) => void;
   companyId?: string;
-}
+
 
 export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
   produtosDestaque,
@@ -43,7 +43,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
 }) => {
   if (produtosDestaque.length === 0) {
     return null;
-  }
+
 
   return (
     <section className="mt-4 sm:mt-6">
@@ -57,11 +57,11 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
             const hasDiscount = produto.is_promotional && 
               produto.promotional_price && 
               produto.promotional_price < produto.price && 
-              produto.price > 0 && 
+              produto.price > 0 && ;
               produto.promotional_price > 0;
 
             const discountPercentage = hasDiscount 
-              ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100)
+              ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100);
               : 0;
 
             return (

@@ -17,7 +17,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       className="relative w-full min-h-[147px] md:min-h-[200px] bg-gray-200 flex items-center justify-center overflow-hidden pt-8"
       style={{ 
         backgroundImage: `url('${(bannerUrl || '').trim() || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1170&q=80'}')`, 
-        backgroundSize: 'cover', 
+// backgroundSize: 'cover',
         backgroundPosition: 'center', 
         backgroundRepeat: 'no-repeat' 
       }}

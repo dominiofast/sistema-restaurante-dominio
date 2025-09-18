@@ -24,7 +24,7 @@ export async function searchCepByAddress(
       throw new Error('UF, cidade e logradouro são obrigatórios');
     }
 
-    // Limpar e formatar os parâmetros
+     catch (error) { console.error('Error:', error); }// Limpar e formatar os parâmetros
     const ufLimpo = uf.trim().toUpperCase();
     const cidadeLimpa = cidade.trim();
     const logradouroLimpo = logradouro.trim();
@@ -66,7 +66,7 @@ export async function searchCepByAddress(
   } catch (error) {
     console.error('Erro ao buscar CEP por endereço:', error);
     throw error;
-  }
+
 }
 
 /**
@@ -79,7 +79,7 @@ export async function searchAddressByCep(cep: string): Promise<ViaCepResponse | 
       throw new Error('CEP deve ter 8 dígitos');
     }
 
-    console.log('Buscando endereço para CEP:', cleanCep);
+     catch (error) { console.error('Error:', error); }console.log('Buscando endereço para CEP:', cleanCep);
     const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
     
     if (!response.ok) {
@@ -97,7 +97,7 @@ export async function searchAddressByCep(cep: string): Promise<ViaCepResponse | 
   } catch (error) {
     console.error('Erro ao buscar endereço por CEP:', error);
     throw error;
-  }
+
 }
 
 /**
@@ -107,7 +107,7 @@ export function formatCep(cep: string): string {
   const cleanCep = cep.replace(/\D/g, '');
   if (cleanCep.length === 8) {
     return cleanCep.replace(/(\d{5})(\d{3})/, '$1-$2');
-  }
+
   return cleanCep;
 }
 
@@ -149,5 +149,5 @@ export const ESTADOS_BRASILEIROS = [
   { uf: 'SC', nome: 'Santa Catarina' },
   { uf: 'SP', nome: 'São Paulo' },
   { uf: 'SE', nome: 'Sergipe' },
-  { uf: 'TO', nome: 'Tocantins' }
+  { uf: 'TO', nome: 'Tocantins' };
 ];

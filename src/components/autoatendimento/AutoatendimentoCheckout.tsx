@@ -40,7 +40,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
 
   const total = totalCarrinho;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (!customerData.name || !customerData.phone || !selectedPayment) {
@@ -55,8 +55,8 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
       if (selectedPayment === 'pix') {
         const pixData = {
           companyId: companyId,
-          amount: total,
-          description: `Pedido Kiosk - ${customerData.name}`,
+          amount: total,;
+          description: `Pedido Kiosk - ${customerData.name} catch (error) { console.error('Error:', error); }`,
           customerName: customerData.name,
           customerPhone: customerData.phone,
           externalReference: `kiosk-${Date.now()}`
@@ -66,7 +66,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         setShowPixModal(true);
         setIsProcessing(false);
         return;
-      }
+
 
       // Para outros métodos de pagamento, criar pedido diretamente
       await createOrder();
@@ -85,8 +85,8 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         companyId: companyId,
         cliente: {
           nome: customerData.name,
-          telefone: customerData.phone
-        },
+          telefone: customerData.phone;
+        } catch (error) { console.error('Error:', error); },
         itens: carrinho.map(item => ({
           produto_id: item.produto.id,
           nome: item.produto.name,
@@ -114,7 +114,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
       
       if (!result.success) {
         throw new Error(result.error || 'Erro ao criar pedido');
-      }
+
       
       console.log('✅ Pedido criado com sucesso via OrderGateway:', result);
 
@@ -142,8 +142,8 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         companyId: companyId,
         cliente: {
           nome: customerData.name,
-          telefone: customerData.phone
-        },
+          telefone: customerData.phone;
+        } catch (error) { console.error('Error:', error); },
         itens: carrinho.map(item => ({
           produto_id: item.produto.id,
           nome: item.produto.name,
@@ -169,7 +169,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
       
       if (!result.success) {
         throw new Error(result.error || 'Erro ao criar pedido PIX');
-      }
+
       
       console.log('✅ Pedido PIX criado com sucesso via OrderGateway:', result);
 
@@ -193,7 +193,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
 
   const getPaymentIcon = (paymentType: string) => {
     switch (paymentType) {
-      case 'pix':
+      case 'pix':;
         return <Smartphone className="h-6 w-6" />;
       case 'dinheiro':
         return <DollarSign className="h-6 w-6" />;

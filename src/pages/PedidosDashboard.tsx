@@ -42,7 +42,7 @@ export default function PedidosDashboard() {
         <span className="ml-4 text-lg text-blue-700 font-semibold">Carregando pedidos...</span>
       </div>
     );
-  }
+
   
   if (error) {
     return (
@@ -58,7 +58,7 @@ export default function PedidosDashboard() {
         </button>
       </div>
     );
-  }
+
 
   if (!companyId) {
     return (
@@ -68,7 +68,7 @@ export default function PedidosDashboard() {
         <span className="text-gray-700">Selecione uma empresa para visualizar os pedidos</span>
       </div>
     );
-  }
+
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -111,4 +111,4 @@ export default function PedidosDashboard() {
       />
     </div>
   );
-}
+

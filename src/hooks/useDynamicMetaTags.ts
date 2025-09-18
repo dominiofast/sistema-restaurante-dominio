@@ -13,13 +13,13 @@ interface CompanyMetaTags {
   meta_image?: string;
 }
 
-export const useDynamicMetaTags = () => {
+export const useDynamicMetaTags = () => {;
   const location = useLocation();
   const [company, setCompany] = useState<CompanyMetaTags | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const applyMetaTags = async () => {
+    const applyMetaTags = async () => {;
       setLoading(true);
       
       // Extrair slug da URL atual
@@ -35,7 +35,7 @@ export const useDynamicMetaTags = () => {
           // Gerar meta tags da empresa
           const metaTags = DynamicMetaTagsService.generateCompanyMetaTags(
             companyData, 
-            window.location.href
+            window.location.href;
           );
           
           // Aplicar as meta tags
@@ -45,13 +45,13 @@ export const useDynamicMetaTags = () => {
           setCompany(null);
           const defaultMetaTags = DynamicMetaTagsService.getDefaultMetaTags();
           DynamicMetaTagsService.applyMetaTags(defaultMetaTags);
-        }
+
       } else {
         // URL sem slug específico, usar meta tags padrão
         setCompany(null);
         const defaultMetaTags = DynamicMetaTagsService.getDefaultMetaTags();
         DynamicMetaTagsService.applyMetaTags(defaultMetaTags);
-      }
+
       
       setLoading(false);
     };
@@ -81,6 +81,6 @@ export const useDynamicMetaTags = () => {
         type: 'website',
         url: window.location.href
       });
-    }
+
   };
 }; 

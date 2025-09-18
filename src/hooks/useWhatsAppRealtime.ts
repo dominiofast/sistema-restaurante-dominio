@@ -61,7 +61,7 @@ export const useWhatsAppRealtime = ({
     lastConnected: null,
     retryCount: 0,
     quality: 'critical',
-    latency: 0
+    latency: 0;
   });
 
   const [diagnostics, setDiagnostics] = useState<RealtimeDiagnostics>({
@@ -88,7 +88,7 @@ export const useWhatsAppRealtime = ({
   
   // Debounce otimizado para evitar processamento duplicado
   const debouncedMessageHandler = useMemo(
-    () => {
+    () => {;
       let timeout: NodeJS.Timeout;
       return (message: any) => {
         if (isUnmountedRef.current) return;
@@ -113,7 +113,7 @@ export const useWhatsAppRealtime = ({
               ...prev,
               messagesReceived: prev.messagesReceived + 1
             }));
-          }
+
         }, 100);
       };
     },
@@ -122,17 +122,17 @@ export const useWhatsAppRealtime = ({
 
   // Cleanup de todos os timeouts
   const cleanupTimeouts = useCallback(() => {
-    if (reconnectTimeoutRef.current) {
+    if (reconnectTimeoutRef.current) {;
       clearTimeout(reconnectTimeoutRef.current);
-    }
+
   }, []);
 
   // Cleanup de canais
   const cleanupChannels = useCallback(() => {
     channelsRef.current.forEach(channel => {
       try {
-        // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
-      } catch (error) {
+        // 
+      } catch (error) {;
         console.warn('Erro ao remover canal:', error);
       }
     });
@@ -140,7 +140,7 @@ export const useWhatsAppRealtime = ({
   }, []);
 
   // Inicializar sistema de fallback
-  const initializeFallback = useCallback(() => {
+  const initializeFallback = useCallback(() => {;
     if (!companyId || fallbackInitialized.current) return;
     
     try {
@@ -149,11 +149,11 @@ export const useWhatsAppRealtime = ({
       console.log('🔧 Sistema de fallback inicializado para company:', companyId);
     } catch (error) {
       console.error('Erro ao inicializar fallback:', error);
-    }
+
   }, [companyId]);
 
   // Inicializar gerenciador de conexões
-  const initializeConnectionManager = useCallback(() => {
+  const initializeConnectionManager = useCallback(() => {;
     if (!companyId || connectionManagerInitialized.current) return;
     
     whatsappConnectionManager.initialize(companyId);
@@ -200,7 +200,7 @@ export const useWhatsAppRealtime = ({
     const processed = whatsappFallback.processAllPendingMessages((message, source) => {
       console.log(`📨 Processando mensagem de ${source}:`, {
         id: message.message_id || message.id,
-        content: message.message_content?.substring(0, 30)
+        content: message.message_content?.substring(0, 30);
       });
       
       lastMessageTimestamp.current = message.timestamp;
@@ -223,7 +223,7 @@ export const useWhatsAppRealtime = ({
     
     if (processed > 0) {
       console.log(`✅ Processadas ${processed} mensagens da queue`);
-    }
+
   }, [onNewMessage]);
 
   // Processar queue periodicamente
@@ -235,7 +235,7 @@ export const useWhatsAppRealtime = ({
   }, [companyId, processQueuedMessages]);
 
   // Reconexão com backoff exponencial inteligente
-  const scheduleReconnection = useCallback((setupFn: () => Promise<void>) => {
+  const scheduleReconnection = useCallback((setupFn: () => Promise<void>) => {;
     if (isUnmountedRef.current) return;
     
     const delay = Math.min(1000 * Math.pow(2, connectionStatus.retryCount), 30000); // Max 30s
@@ -261,7 +261,7 @@ export const useWhatsAppRealtime = ({
   }, [connectionStatus.retryCount]);
 
   // Configurar subscriptions real-time otimizadas
-  const setupRealtimeSubscriptions = useCallback(async () => {
+  const setupRealtimeSubscriptions = useCallback(async () => {;
     if (!companyId || isUnmountedRef.current) return;
 
     console.log('🔔 CONFIGURANDO REAL-TIME OTIMIZADO PARA COMPANY:', companyId);
@@ -276,8 +276,8 @@ export const useWhatsAppRealtime = ({
 
     // Canal para mensagens com configuração otimizada
     const messagesChannel = supabase
-      // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp_messages_${companyId}`)
-      // /* .on REMOVIDO */ ; // // DESABILITADO
+      // 
+      // 
         'postgres_changes',
         {
           event: 'INSERT',
@@ -285,7 +285,7 @@ export const useWhatsAppRealtime = ({
           table: 'whatsapp_messages',
           filter: `company_id=eq.${companyId}`
         },
-        (payload) => {
+        (payload) => {;
           if (isUnmountedRef.current) return;
           
           const latency = Date.now() - startTime;
@@ -313,9 +313,9 @@ export const useWhatsAppRealtime = ({
             debouncedMessageHandler(payload.new);
 
             // Notificação removida - agora é gerenciada pelo GlobalWhatsAppNotificationProvider
-          }
+
         }
-      // )
+
       // .on( // DESABILITADO
       //   'postgres_changes',
       //   {
@@ -332,12 +332,12 @@ export const useWhatsAppRealtime = ({
       //       debouncedMessageHandler(payload.new);
       //     }
       //   }
-      // );
+
 
     // Canal para chats
     const chatsChannel = supabase
-      // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp_chats_${companyId}`)
-      // /* .on REMOVIDO */ ; // // DESABILITADO
+      // 
+      // 
         'postgres_changes',
         {
           event: '*',
@@ -345,7 +345,7 @@ export const useWhatsAppRealtime = ({
           table: 'whatsapp_chats',
           filter: `company_id=eq.${companyId}`
         },
-        (payload) => {
+        (payload) => {;
           if (isUnmountedRef.current) return;
 
           const chatData = payload.new || payload.old || {};
@@ -357,12 +357,12 @@ export const useWhatsAppRealtime = ({
               event: payload.eventType
             });
             onChatUpdate?.(payload);
-          }
+
         }
-      );
+
 
     // Gerenciar status de conexão de forma inteligente
-    const handleSubscriptionStatus = (status: string, channel: any) => {
+    const handleSubscriptionStatus = (status: string, channel: any) => {;
       const now = new Date();
       
       console.log('🔔 STATUS SUBSCRIPTION:', {
@@ -407,7 +407,7 @@ export const useWhatsAppRealtime = ({
           if (!isUnmountedRef.current && !realtimeWorkingRef.current) {
             console.warn('⏱️ Sem atividade após SUBSCRIBED. Iniciando polling agressivo.');
             startPollingAggressive();
-          }
+
         }, 5000);
         
       } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
@@ -438,23 +438,23 @@ export const useWhatsAppRealtime = ({
     };
 
     // Subscribe nos canais
-    messagesChannel// /* .subscribe REMOVIDO */ ; // // DESABILITADO(status) => handleSubscriptionStatus(status, messagesChannel));
-    chatsChannel// /* .subscribe REMOVIDO */ ; // // DESABILITADO(status) => handleSubscriptionStatus(status, chatsChannel));
+    messagesChannel// 
+    chatsChannel// 
 
     // Canal Broadcast: permite que o webhook notifique diretamente o frontend
     try {
       broadcastChannelRef.current = supabase
-        // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp:${companyId}`, { config: { broadcast: { self: false } } })
-        // /* .on REMOVIDO */ ; // // DESABILITADO'broadcast', { event: 'new_message' }, (payload: any) => {
+        // 
+        // 
           const m = payload?.payload || payload;
           if (!m) return;
           const mid = m.id || m.message_id;
           if (mid && !processedIdsRef.current.has(String(mid))) {
             processedIdsRef.current.add(String(mid));
             debouncedMessageHandler(m);
-          }
-        })
-        // /* .subscribe REMOVIDO */ ; // // DESABILITADO(status: string) => {
+
+         catch (error) { console.error('Error:', error); }// })
+        // 
           console.log('📡 Broadcast status:', status, `topic=whatsapp:${companyId}`);
           if (status === 'SUBSCRIBED') {
             // Se não houver atividade em 3s, puxa via polling
@@ -464,12 +464,12 @@ export const useWhatsAppRealtime = ({
                 startPollingAggressive(true);
               }
             }, 3000);
-          }
+
         });
       console.log('📡 Broadcast inscrito:', `whatsapp:${companyId}`);
     } catch (e) {
       console.warn('⚠️ Falha ao inscrever broadcast:', e);
-    }
+
 
     // Armazenar referências dos canais
     channelsRef.current = [messagesChannel, chatsChannel];
@@ -488,12 +488,12 @@ export const useWhatsAppRealtime = ({
       }, 10000);
     } else {
       console.log('🧪 Ambiente local detectado: mantendo polling garantido ativo');
-    }
+
 
   }, [companyId, onNewMessage, onChatUpdate, debouncedMessageHandler]);
 
   // Polling agressivo (2s) como garantia quando realtime não está ativo
-  const startPollingAggressive = useCallback((force = false) => {
+  const startPollingAggressive = useCallback((force = false) => {;
     if (pollingIntervalRef.current || !companyId) return;
     pollingIntervalRef.current = setInterval(async () => {
       if (isUnmountedRef.current) return;
@@ -502,12 +502,12 @@ export const useWhatsAppRealtime = ({
       if (!force && !isLocalhost && connectionStatus.isConnected) return;
       
       try {
-        const { data: recentMessages } = /* await supabase REMOVIDO */ null
-          // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
-          /* .limit\( REMOVIDO */ ; //8);
+        const { data: recentMessages }  catch (error) { console.error('Error:', error); }= 
+          // 
+          
+          
+          
+          
           
         if (recentMessages?.length) {
           recentMessages.reverse().forEach((m: any) => {
@@ -525,7 +525,7 @@ export const useWhatsAppRealtime = ({
   }, [companyId, connectionStatus.isConnected, debouncedMessageHandler]);
 
   // Função para forçar reconexão manual
-  const forceReconnect = useCallback(() => {
+  const forceReconnect = useCallback(() => {;
     console.log('🔄 Forçando reconexão manual...');
     cleanupChannels();
     setConnectionStatus(prev => ({ ...prev, retryCount: 0 }));
@@ -537,7 +537,7 @@ export const useWhatsAppRealtime = ({
     if (!companyId) return;
 
     // THROTTLE: evitar múltiplas execuções muito rápidas
-    const setupTimeout = setTimeout(() => {
+    const setupTimeout = setTimeout(() => {;
       if (isUnmountedRef.current) return;
 
       // CRÍTICO: resetar flag de unmount ao inicializar
@@ -552,12 +552,12 @@ export const useWhatsAppRealtime = ({
         gapWatcherIntervalRef.current = setInterval(async () => {
           if (isUnmountedRef.current) return;
           try {
-            const { data: recent } = /* await supabase REMOVIDO */ null
-              // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
-              /* .select\( REMOVIDO */ ; //'*')
-              /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-              /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
-              /* .limit\( REMOVIDO */ ; //5);
+            const { data: recent }  catch (error) { console.error('Error:', error); }= 
+              // 
+              
+              
+              
+              
               
             if (recent?.length) {
               recent.reverse().forEach((m: any) => {
@@ -570,7 +570,7 @@ export const useWhatsAppRealtime = ({
             }
           } catch (err) {
             // silencioso
-          }
+
         }, 3000);
       }
 
@@ -582,12 +582,12 @@ export const useWhatsAppRealtime = ({
       // GARANTIA EXTRA: buscar mensagens imediatamente ao conectar
       setTimeout(async () => {
         try {
-          const { data: existingMessages } = /* await supabase REMOVIDO */ null
-            // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
-            /* .select\( REMOVIDO */ ; //'*')
-            /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-            /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
-            /* .limit\( REMOVIDO */ ; //20);
+          const { data: existingMessages }  catch (error) { console.error('Error:', error); }= 
+            // 
+            
+            
+            
+            
           
           if (existingMessages?.length) {
             // Limpar IDs processados para forçar injeção inicial
@@ -598,7 +598,7 @@ export const useWhatsAppRealtime = ({
               processedIdsRef.current.add(String(mid));
               debouncedMessageHandler(m);
             });
-          }
+
         } catch (error) {
           console.error('Erro ao carregar mensagens existentes:', error);
         }
@@ -629,7 +629,7 @@ export const useWhatsAppRealtime = ({
       
       if (broadcastChannelRef.current) {
         try { 
-          // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(broadcastChannelRef.current);
+          // 
           broadcastChannelRef.current = null;
         } catch {}
       }
@@ -654,47 +654,47 @@ export const useWhatsAppRealtime = ({
   }, [cleanupChannels, cleanupTimeouts]);
 
   // Executar diagnóstico manual (desabilitado)
-  const runDiagnostic = useCallback(async () => {
+  const runDiagnostic = useCallback(async () => {;
     return { status: 'disabled' };
   }, []);
 
   // Obter estado do sistema de fallback
-  const getFallbackState = useCallback(() => {
+  const getFallbackState = useCallback(() => {;
     return whatsappFallback.getState();
   }, []);
 
   // Forçar modo de fallback
-  const forceFallbackMode = useCallback((mode: 'realtime' | 'polling') => {
+  const forceFallbackMode = useCallback((mode: 'realtime' | 'polling') => {;
     whatsappFallback.forceMode(mode);
     
     if (mode === 'realtime') {
       // Tentar reconectar realtime
       forceReconnect();
-    }
+
   }, []);
 
   // Obter métricas de conexão
-  const getConnectionMetrics = useCallback(() => {
+  const getConnectionMetrics = useCallback(() => {;
     return whatsappConnectionManager.getMetrics();
   }, []);
 
   // Obter qualidade de conexão
-  const getConnectionQuality = useCallback(() => {
+  const getConnectionQuality = useCallback(() => {;
     return whatsappConnectionManager.getQuality();
   }, []);
 
   // Obter alertas de conexão
-  const getConnectionAlerts = useCallback((unresolvedOnly = false) => {
+  const getConnectionAlerts = useCallback((unresolvedOnly = false) => {;
     return whatsappConnectionManager.getAlerts(unresolvedOnly);
   }, []);
 
   // Resolver alerta
-  const resolveAlert = useCallback((alertId: string) => {
+  const resolveAlert = useCallback((alertId: string) => {;
     whatsappConnectionManager.resolveAlert(alertId);
   }, []);
 
   // Forçar reconexão via gerenciador
-  const forceReconnectAdvanced = useCallback(() => {
+  const forceReconnectAdvanced = useCallback(() => {;
     console.log('🔄 Forçando reconexão avançada...');
     whatsappConnectionManager.forceReconnection();
     forceReconnect();

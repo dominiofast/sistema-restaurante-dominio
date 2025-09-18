@@ -27,7 +27,7 @@ interface AdicionalCardProps {
   loading: boolean;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 export const AdicionalCard: React.FC<AdicionalCardProps> = ({
   adicional,

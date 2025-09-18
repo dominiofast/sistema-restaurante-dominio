@@ -44,21 +44,21 @@ export function useAddressForm(
         company_id: currentCompany?.id || ''
       });
       setTaxaEntrega(0);
-    }
+
   }, [editingAddress, isOpen, currentCompany?.id]);
 
   useEffect(() => {
     const calcularTaxa = async () => {
-      if (address.bairro || address.cidade || address.cep) {
+      if (address.bairro || address.cidade || address.cep) {;
         const taxa = await calculateDeliveryFee(address);
         setTaxaEntrega(taxa);
-      }
+
     };
     
     calcularTaxa();
   }, [address.bairro, address.cidade, address.cep, address.latitude, address.longitude, calculateDeliveryFee]);
 
-  const fetchAddressByCep = async (cep: string) => {
+  const fetchAddressByCep = async (cep: string) => {;
     console.log('fetchAddressByCep chamado com CEP:', cep);
     const cleanCep = cep.replace(/\D/g, '');
     console.log('CEP limpo:', cleanCep, 'Tamanho:', cleanCep.length);
@@ -66,7 +66,7 @@ export function useAddressForm(
     if (cleanCep.length !== 8) {
       console.log('CEP inválido, deve ter 8 dígitos');
       return;
-    }
+
 
     try {
       console.log('Iniciando busca...');
@@ -83,21 +83,21 @@ export function useAddressForm(
           cidade: result.cidade,
           estado: result.estado,
           latitude: result.latitude,
-          longitude: result.longitude
-        };
+          longitude: result.longitude;
+        } catch (error) { console.error('Error:', error); };
         console.log('Endereço atualizado:', updatedAddress);
         setAddress(updatedAddress);
       } else {
         console.log('Nenhum resultado encontrado para o CEP');
-      }
+
     } catch (error) {
       console.error('Erro ao buscar CEP:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const handleCepChange = (value: string) => {
+  const handleCepChange = (value: string) => {;
     console.log('handleCepChange chamado com:', value);
     
     // Remove todos os caracteres não numéricos
@@ -108,12 +108,12 @@ export function useAddressForm(
     let formattedCep = cleanValue;
     if (cleanValue.length > 5) {
       formattedCep = cleanValue.replace(/(\d{5})(\d{1,3})/, '$1-$2');
-    }
+
     
     // Limitar a 9 caracteres (00000-000)
     if (formattedCep.length > 9) {
       formattedCep = formattedCep.substring(0, 9);
-    }
+
     
     console.log('CEP formatado:', formattedCep);
     setAddress(prev => ({ ...prev, cep: formattedCep }));
@@ -122,10 +122,10 @@ export function useAddressForm(
     if (cleanValue.length === 8) {
       console.log('Iniciando busca por CEP:', cleanValue);
       fetchAddressByCep(cleanValue);
-    }
+
   };
 
-  const handleSave = async (): Promise<CustomerAddress> => {
+  const handleSave = async (): Promise<CustomerAddress> => {;
     console.log('handleSave chamado');
     console.log('Endereço atual:', address);
     console.log('Customer name:', customerName);
@@ -139,23 +139,23 @@ export function useAddressForm(
         bairro: address.bairro
       });
       throw new Error('Por favor, preencha todos os campos obrigatórios');
-    }
+
 
     if (!currentCompany?.id) {
       console.log('Company ID não encontrado');
       throw new Error('Company ID é obrigatório');
-    }
+
 
     // Se não há telefone/nome do cliente, solicitar
     if (!customerPhone || !customerName) {
       throw new Error('É necessário informar o telefone e nome do cliente antes de salvar o endereço');
-    }
+
 
     const addressData = {
       ...address,
       customer_name: customerName,
       customer_phone: customerPhone,
-      company_id: currentCompany.id
+      company_id: currentCompany.id;
     };
     
     console.log('Dados do endereço para salvar:', addressData);
@@ -166,16 +166,16 @@ export function useAddressForm(
       if (editingAddress?.id) {
         console.log('Atualizando endereço existente...');
         result = await updateAddress(editingAddress.id, addressData);
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         console.log('Salvando novo endereço...');
         result = await saveAddress(addressData);
-      }
+
       console.log('Resultado do salvamento:', result);
       return result;
     } catch (error) {
       console.error('Erro no salvamento:', error);
       throw error;
-    }
+
   };
 
   return {
@@ -187,4 +187,4 @@ export function useAddressForm(
     handleSave,
     fetchAddressByCep
   };
-}
+

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 // SUPABASE REMOVIDO
-export const ResetPassword = () => {
+export const ResetPassword = () => {;
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -32,35 +32,28 @@ export const ResetPassword = () => {
     if (accessToken && refreshToken) {
       console.log('Setting session with tokens...');
       // Configurar a sessão automaticamente
-      /* supabase REMOVIDO */ null; //auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      }).then(({ data, error }) => {
-        if (error) {
-          console.error('Error setting session:', error);
-          setError('Link de recuperação inválido ou expirado.');
-        } else {
-          console.log('Session set successfully:', data);
-        }
-      });
+      // supabase.auth.setSession({
+      //   access_token: accessToken,
+      //   refresh_token: refreshToken,
+// 
     } else {
       console.log('No tokens found, checking current session...');
       // Verificar se já temos uma sessão ativa
-      /* supabase REMOVIDO */ null; //auth.getSession().then(({ data: { session }, error }) => {
-        if (error) {
-          console.error('Error getting session:', error);
-        }
-        if (!session) {
-          console.log('No active session, redirecting to login...');
-          setError('Link de recuperação inválido. Solicite um novo link.');
-        } else {
-          console.log('Active session found:', session);
-        }
-      });
+      const error = null; const session = null;
+      
+      if (error) {
+        console.error('Error getting session:', error);
+      }
+      if (!session) {
+        console.log('No active session, redirecting to login...');
+        setError('Link de recuperação inválido. Solicite um novo link.');
+      } else {
+        console.log('Active session found:', session);
+      }
     }
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     setError(null);
     setSuccess(null);
@@ -68,17 +61,17 @@ export const ResetPassword = () => {
     if (password !== confirmPassword) {
       setError('As senhas não coincidem.');
       return;
-    }
+
 
     if (password.length < 6) {
       setError('A senha deve ter pelo menos 6 caracteres.');
       return;
-    }
+
 
     setIsLoading(true);
 
     try {
-      const { error } = await /* supabase REMOVIDO */ null; //auth.updateUser({
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         password: password
       });
 
@@ -93,7 +86,7 @@ export const ResetPassword = () => {
       setError(error.message || 'Erro ao alterar senha. Tente novamente.');
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   return (

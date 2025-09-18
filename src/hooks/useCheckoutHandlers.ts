@@ -25,7 +25,7 @@ interface CheckoutHandlersDependencies {
   salvarCliente: (cliente: ClientePublico) => void;
   createOrder: (orderData: any, callback?: () => void) => Promise<any>;
   limparCarrinho: () => void;
-}
+
 
 // Interface para os handlers retornados
 interface CheckoutHandlers {
@@ -34,7 +34,7 @@ interface CheckoutHandlers {
   handleTrocarConta: () => void;
   handleCheckoutComplete: (deliveryData: { tipo: 'delivery' | 'pickup'; endereco?: any; taxaEntrega?: number }) => void;
   handlePaymentComplete: (paymentMethod: string) => Promise<void>;
-}
+
 
 /**
  * Hook customizado para gerenciar as funções de manipulação do checkout
@@ -78,10 +78,10 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     clientePersistente,
     salvarCliente,
     createOrder,
-    limparCarrinho
+    limparCarrinho;
   } = deps;
 
-  const handleCheckout = useCallback(() => {
+  const handleCheckout = useCallback(() => {;
     setCartOpen(false);
     
     // Se tem dados salvos, usar diretamente e ir direto para checkout
@@ -94,7 +94,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     }
   }, [temDadosSalvos, clientePersistente, setCartOpen, setCliente, setEndereco, setStep]);
 
-  const handleIdentificacaoComplete = useCallback((nome: string, telefone: string) => {
+  const handleIdentificacaoComplete = useCallback((nome: string, telefone: string) => {;
     const dadosCliente = { nome, telefone };
     setCliente(dadosCliente);
     salvarCliente(dadosCliente);
@@ -102,7 +102,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     setStep('checkout');
   }, [setCliente, salvarCliente, setStep]);
 
-  const handleTrocarConta = useCallback(() => {
+  const handleTrocarConta = useCallback(() => {;
     setCliente(null);
     setStep('identificacao');
   }, [setCliente, setStep]);
@@ -115,7 +115,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     // A navegação só deve acontecer quando o usuário cancelar ou finalizar o pedido
   }, [setDeliveryInfo, setStep]);
 
-  const handlePaymentComplete = useCallback(async (paymentMethod: string) => {
+  const handlePaymentComplete = useCallback(async (paymentMethod: string) => {;
     console.log('💳 Método de pagamento selecionado:', paymentMethod);
     
     if (!cliente || !company || !deliveryInfo) {
@@ -140,11 +140,11 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
         company,
         deliveryInfo,
         paymentMethod,
-        cashbackAplicado
+        cashbackAplicado;
       };
 
       const onCashbackUpdate = () => {
-        // Este callback será chamado após o pedido ser criado para recarregar o saldo
+        // Este callback será chamado após o pedido ser criado para recarregar o saldo;
         console.log('🔄 Callback para atualizar cashback executado');
       };
 
@@ -168,7 +168,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
         total: deliveryInfo.taxaEntrega ? (deliveryInfo.taxaEntrega + 50) : 50, // calcular total
         forma_pagamento: orderData.paymentMethod || 'dinheiro',
         tipo: deliveryInfo.tipo || 'delivery',
-        observacoes: null
+        observacoes: null;
       };
       
       const result = await createOrderViaGateway(pedidoData);

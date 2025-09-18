@@ -23,16 +23,11 @@ export function MigrationControlPanel() {
   const [syncing, setSyncing] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
-  const loadCompanies = async () => {
+  const loadCompanies = async () => {;
     console.log('🔍 Iniciando carregamento de empresas...');
     try {
       // Primeira query: buscar os assistants
-      const { data: assistantsData, error: assistantsError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_assistants')
-        /* .select\( REMOVIDO */ ; //'company_id, use_direct_mode, assistant_id')
-        /* .eq\( REMOVIDO */ ; //'is_active', true);
-
-      console.log('📊 Assistants data:', assistantsData);
+      const assistantsData = null as any; const assistantsError = null as any;
       console.log('❌ Assistants error:', assistantsError);
 
       if (assistantsError) throw assistantsError;
@@ -44,14 +39,11 @@ export function MigrationControlPanel() {
         return;
       }
 
-      // Buscar dados das empresas
+       catch (error) { console.error('Error:', error); }// Buscar dados das empresas
       const companyIds = assistantsData.map(a => a.company_id);
       console.log('🏢 Company IDs:', companyIds);
       
-      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, slug')
-        .in('id', companyIds);
+      const companiesData = null as any; const companiesError = null as any;
 
       console.log('🏢 Companies data:', companiesData);
       console.log('❌ Companies error:', companiesError);
@@ -59,7 +51,7 @@ export function MigrationControlPanel() {
       if (companiesError) throw companiesError;
 
       // Combinar os dados
-      const combinedData = assistantsData.map(assistant => {
+      const combinedData = assistantsData.map(assistant => {;
         const company = companiesData?.find(c => c.id === assistant.company_id);
         return {
           id: assistant.company_id,
@@ -87,16 +79,16 @@ export function MigrationControlPanel() {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const toggleCompanyMode = async (companyId: string, enabled: boolean) => {
+  const toggleCompanyMode = async (companyId: string, enabled: boolean) => {;
     setMigrating(companyId);
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_assistants')
-        /* .update\( REMOVIDO */ ; //{ use_direct_mode: enabled })
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -117,7 +109,7 @@ export function MigrationControlPanel() {
       // Recalcular progresso
       setTimeout(() => {
         const updatedCompanies = companies.map(c => 
-          c.id === companyId ? { ...c, use_direct_mode: enabled } : c
+          c.id === companyId ? { ...c, use_direct_mode: enabled } : c;
         );
         const directCount = updatedCompanies.filter(c => c.use_direct_mode).length;
         setProgress((directCount / updatedCompanies.length) * 100);
@@ -132,10 +124,10 @@ export function MigrationControlPanel() {
       });
     } finally {
       setMigrating(null);
-    }
+
   };
 
-  const migrateAllToDirectMode = async () => {
+  const migrateAllToDirectMode = async () => {;
     const legacyCompanies = companies.filter(c => !c.use_direct_mode);
     
     if (legacyCompanies.length === 0) {
@@ -144,7 +136,7 @@ export function MigrationControlPanel() {
         description: 'Todas as empresas já estão no modo direto',
       });
       return;
-    }
+
 
     setMigrating('ALL');
     
@@ -154,7 +146,7 @@ export function MigrationControlPanel() {
         await new Promise(resolve => setTimeout(resolve, 500)); // Throttle
       }
       
-      toast({
+       catch (error) { console.error('Error:', error); }toast({
         title: 'Migração completa!',
         description: `${legacyCompanies.length} empresas migradas para modo direto`,
       });
@@ -162,15 +154,15 @@ export function MigrationControlPanel() {
       console.error('Erro na migração em lote:', error);
     } finally {
       setMigrating(null);
-    }
+
   };
 
-  const syncAssistantWithOpenAI = async (companyId: string, companySlug: string) => {
+  const syncAssistantWithOpenAI = async (companyId: string, companySlug: string) => {;
     setSyncing(companyId);
     try {
       console.log('🔄 Iniciando sincronização com OpenAI...');
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('sync-assistant-fixed', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { 
           company_id: companyId,
           slug: companySlug 
@@ -205,7 +197,7 @@ export function MigrationControlPanel() {
       });
     } finally {
       setSyncing(null);
-    }
+
   };
 
   useEffect(() => {
@@ -220,7 +212,7 @@ export function MigrationControlPanel() {
         </CardContent>
       </Card>
     );
-  }
+
 
   const directModeCount = companies.filter(c => c.use_direct_mode).length;
   const legacyCount = companies.length - directModeCount;

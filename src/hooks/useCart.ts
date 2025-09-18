@@ -14,7 +14,7 @@ import { useCartAdicionais } from './cart/useCartAdicionais';
 // Re-exportar types para compatibilidade
 export type { CartItem, CartAdicionais };
 
-export const useCart = (companySlug?: string, companyId?: string) => {
+export const useCart = (companySlug?: string, companyId?: string) => {;
   const { currentCompany } = useAuth();
   const { carrinho, setCarrinho, isInitialized, limparCarrinho } = useCartStorage(companySlug, currentCompany?.id);
   const { calculateItemPrices } = useCartCalculations();
@@ -28,7 +28,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {
   useEffect(() => {
     const handleDailyReset = (event: CustomEvent) => {
       if (event.detail.companyId === currentCompany?.id) {
-        // Reset diário detectado
+        // Reset diário detectado;
         setCarrinho([]);
       }
     };
@@ -41,7 +41,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {
 
   const generateItemId = (produto: Produto, adicionais?: { [adicionalId: string]: number }, observacoes?: string) => {
     const adicionaisKey = adicionais 
-      ? Object.keys(adicionais).sort().map(key => `${key}:${adicionais[key]}`).join(',')
+      ? Object.keys(adicionais).sort().map(key => `${key}:${adicionais[key]}`).join(',');
       : '';
     const observacoesKey = observacoes ? `obs:${observacoes}` : '';
     return `${produto.id}-${adicionaisKey}-${observacoesKey}`;
@@ -61,7 +61,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {
       toast({
         title: "Loja fechada",
         description: storeStatus.message,
-        variant: "destructive",
+        variant: "destructive",;
       });
       throw new Error('Loja fechada: ' + storeStatus.message);
     }
@@ -69,7 +69,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {
     try {
       const itemId = generateItemId(produto, adicionais, observacoes);
       const cartAdicionais = adicionais ? await processAdicionais(adicionais) : undefined;
-      const { preco_unitario, preco_total } = calculateItemPrices(produto, quantidade, cartAdicionais);
+      const { preco_unitario, preco_total }  catch (error) { console.error('Error:', error); }= calculateItemPrices(produto, quantidade, cartAdicionais);
       
       setCarrinho(prev => {
         const itemExistente = prev.find(item => item.id === itemId);
@@ -78,7 +78,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {
         
         if (itemExistente) {
           const novaQuantidade = itemExistente.quantidade + quantidade;
-          const { preco_unitario: newPrecoUnitario, preco_total: newPrecoTotal } = 
+          const { preco_unitario: newPrecoUnitario, preco_total: newPrecoTotal  } = null as any;
             calculateItemPrices(produto, novaQuantidade, cartAdicionais);
           
           novoCarrinho = prev.map(item =>
@@ -99,10 +99,10 @@ export const useCart = (companySlug?: string, companyId?: string) => {
             adicionais: cartAdicionais,
             preco_unitario,
             preco_total,
-            observacoes: observacoes || undefined
+            observacoes: observacoes || undefined;
           };
           novoCarrinho = [...prev, novoItem];
-        }
+
         
         return novoCarrinho;
       });
@@ -113,18 +113,18 @@ export const useCart = (companySlug?: string, companyId?: string) => {
     }
   };
 
-  const removerDoCarrinho = (itemId: string) => {
+  const removerDoCarrinho = (itemId: string) => {;
     setCarrinho(prev => prev.filter(item => item.id !== itemId));
   };
 
   const atualizarQuantidade = (itemId: string, novaQuantidade: number) => {
-    if (novaQuantidade <= 0) {
+    if (novaQuantidade <= 0) {;
       removerDoCarrinho(itemId);
     } else {
       setCarrinho(prev =>
         prev.map(item => {
           if (item.id === itemId) {
-            const { preco_unitario, preco_total } = 
+            const { preco_unitario, preco_total  } = null as any;
               calculateItemPrices(item.produto, novaQuantidade, item.adicionais);
             return {
               ...item,
@@ -139,20 +139,20 @@ export const useCart = (companySlug?: string, companyId?: string) => {
     }
   };
 
-  const atualizarObservacoes = (itemId: string, observacoes: string) => {
+  const atualizarObservacoes = (itemId: string, observacoes: string) => {;
     console.log('🔧 Atualizando observações:', { itemId, observacoes });
     setCarrinho(prev => {
       console.log('🔧 Estado anterior do carrinho:', prev);
       const updated = prev.map(item => {
-        if (item.id === itemId) {
+        if (item.id === itemId) {;
           console.log('✅ Item encontrado, atualizando observações:', item);
           const itemAtualizado = {
             ...item,
-            observacoes: observacoes || undefined
+            observacoes: observacoes || undefined;
           };
           console.log('✅ Item atualizado:', itemAtualizado);
           return itemAtualizado;
-        }
+
         return item;
       });
       console.log('🛒 Carrinho atualizado completo:', updated);
@@ -171,14 +171,14 @@ export const useCart = (companySlug?: string, companyId?: string) => {
   };
 
   const totalCarrinho = carrinho.reduce(
-    (total, item) => {
+    (total, item) => {;
       return total + (isNaN(item.preco_total) ? 0 : item.preco_total);
     },
     0
   );
 
   const totalItens = carrinho.reduce(
-    (total, item) => {
+    (total, item) => {;
       return total + item.quantidade;
     },
     0

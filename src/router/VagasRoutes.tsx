@@ -5,7 +5,7 @@ import VagasIndexPage from '../components/vagas/VagasIndexPage';
 import PublicVagasPage from '../components/vagas/PublicVagasPage';
 import VagaPublica from '../components/vagas/VagaPublica';
 
-const VagasRoutes = () => {
+const VagasRoutes = () => {;
   console.log('VagasRoutes loaded');
   
   return (

@@ -37,14 +37,14 @@ export const ClienteImportModal: React.FC<ClienteImportModalProps> = ({
   // Prevenir navegação durante importação
   useEffect(() => {
     if (importing || step === 'processing') {
-      const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const handleBeforeUnload = (e: BeforeUnloadEvent) => {;
         e.preventDefault();
         e.returnValue = 'Há uma importação em andamento. Tem certeza que deseja sair? Você perderá o progresso.';
         return e.returnValue;
       };
 
       const handlePopState = () => {
-        if (importing) {
+        if (importing) {;
           const confirmLeave = window.confirm('Há uma importação em andamento. Tem certeza que deseja sair? Você perderá o progresso.');
           if (!confirmLeave) {
             window.history.pushState(null, '', window.location.href);
@@ -58,19 +58,19 @@ export const ClienteImportModal: React.FC<ClienteImportModalProps> = ({
       // Adicionar estado ao histórico para capturar navegação
       if (importing) {
         window.history.pushState(null, '', window.location.href);
-      }
+
 
       return () => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
         window.removeEventListener('popstate', handlePopState);
       };
-    }
+
   }, [importing, step]);
 
   const downloadTemplate = () => {
     const csvContent = `Nome do Cliente,Número Telefone,Quantidade de Pedidos,Dias de Inatividade
 João Silva,11999999999,5,10
-Maria Santos,11888888888,12,3
+Maria Santos,11888888888,12,3;
 Pedro Costa,11777777777,0,45`;
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -81,18 +81,18 @@ Pedro Costa,11777777777,0,45`;
     URL.revokeObjectURL(link.href);
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {;
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.type !== 'text/csv' && !selectedFile.name.endsWith('.csv')) {
         toast.error('Por favor, selecione um arquivo CSV válido');
         return;
-      }
+
       setFile(selectedFile);
-    }
+
   };
 
-  const parseCSV = (csvText: string): any[] => {
+  const parseCSV = (csvText: string): any[] => {;
     const lines = csvText.split('\n').filter(line => line.trim());
     if (lines.length < 2) return [];
 
@@ -125,44 +125,44 @@ Pedro Costa,11777777777,0,45`;
           row[header] = values[index] || null;
         });
         data.push(row);
-      }
-    }
+
+
 
     return data;
   };
 
-  const validateClienteData = (cliente: any): string[] => {
+  const validateClienteData = (cliente: any): string[] => {;
     const errors: string[] = [];
     
     if (!cliente['Nome do Cliente'] || cliente['Nome do Cliente'].trim() === '') {
       errors.push('Nome do Cliente é obrigatório');
-    }
+
     
     if (!cliente['Número Telefone'] || cliente['Número Telefone'].toString().replace(/\D/g, '').length < 10) {
       errors.push('Número Telefone deve ter pelo menos 10 dígitos');
-    }
+
     
     const quantidadePedidos = parseInt(cliente['Quantidade de Pedidos']);
     if (isNaN(quantidadePedidos) || quantidadePedidos < 0) {
       errors.push('Quantidade de Pedidos deve ser um número válido');
-    }
+
     
     const diasInatividade = parseInt(cliente['Dias de Inatividade']);
     if (isNaN(diasInatividade) || diasInatividade < 0) {
       errors.push('Dias de Inatividade deve ser um número válido');
-    }
+
 
     return errors;
   };
 
-  const processImport = async () => {
+  const processImport = async () => {;
     if (!file || !currentCompany?.id) return;
 
     // Check file size (max 10MB for large imports)
     if (file.size > 10 * 1024 * 1024) {
       toast.error('Arquivo muito grande. Máximo de 10MB permitido.');
       return;
-    }
+
 
     setImporting(true);
     setStep('processing');
@@ -179,13 +179,13 @@ Pedro Costa,11777777777,0,45`;
         toast.error('Máximo de 10.000 registros permitidos por importação.');
         setImporting(false);
         return;
-      }
+
       
-      if (clientesData.length === 0) {
+       catch (error) { console.error('Error:', error); }if (clientesData.length === 0) {
         toast.error('Nenhum dado válido encontrado no arquivo CSV. Verifique o formato.');
         setImporting(false);
         return;
-      }
+
       
       const status: ImportStatus = {
         total: clientesData.length,
@@ -230,7 +230,7 @@ Pedro Costa,11777777777,0,45`;
               cidade: null,
               estado: null,
               cep: null,
-              status: 'ativo'
+              status: 'ativo';
             };
             
             console.log('Cliente preparado para inserção:', clienteData);
@@ -245,10 +245,10 @@ Pedro Costa,11777777777,0,45`;
           try {
             console.log('Inserindo cliente:', cliente.nome);
             
-            const { data, error } = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'clientes')
-              /* .insert\( REMOVIDO */ ; //cliente)
-              /* .select\( REMOVIDO */ ; //);
+            const { data, error }  catch (error) { console.error('Error:', error); }= 
+              
+              
+              
 
             if (error) {
               console.error('Erro detalhado do Supabase:', {
@@ -261,7 +261,7 @@ Pedro Costa,11777777777,0,45`;
             } else {
               console.log('Cliente inserido com sucesso:', data);
               status.success++;
-            }
+
           } catch (err: any) {
             console.error('Erro inesperado completo:', {
               message: err.message,
@@ -277,26 +277,26 @@ Pedro Costa,11777777777,0,45`;
         
         // Small delay between batches
         await new Promise(resolve => setTimeout(resolve, 100));
-      }
+
 
       setStep('complete');
       toast.success(`Importação concluída! ${status.success} clientes importados com sucesso.`);
       
       if (status.errors.length > 0) {
         toast.warning(`${status.errors.length} registros com erro. Verifique os detalhes.`);
-      }
+
 
     } catch (error: any) {
       toast.error('Erro ao processar arquivo: ' + error.message);
     } finally {
       setImporting(false);
-    }
+
   };
 
   const handleClose = () => {
-    if (step === 'complete') {
+    if (step === 'complete') {;
       onImportComplete();
-    }
+
     setFile(null);
     setImportStatus(null);
     setStep('upload');

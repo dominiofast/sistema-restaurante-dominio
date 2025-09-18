@@ -10,7 +10,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -18,9 +18,9 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
 
-export const useAdicionaisCRUD = () => {
+
+export const useAdicionaisCRUD = () => {;
   const { toast } = useToast();
   const { fetchAdicionais } = useCardapio();
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export const useAdicionaisCRUD = () => {
     is_available: true
   });
 
-  const handleIniciarCriacaoAdicional = (categoriaId: string) => {
+  const handleIniciarCriacaoAdicional = (categoriaId: string) => {;
     setCriandoAdicional(categoriaId);
     setNovoAdicional({
       name: '',
@@ -56,7 +56,7 @@ export const useAdicionaisCRUD = () => {
       toast({
         title: "Erro",
         description: "Nome do adicional é obrigatório",
-        variant: "destructive",
+        variant: "destructive",;
       });
       return;
     }
@@ -71,7 +71,7 @@ export const useAdicionaisCRUD = () => {
           price: novoAdicional.price,
           categoria_adicional_id: categoriaId,
           is_available: novoAdicional.is_available
-        })
+        } catch (error) { console.error('Error:', error); })
       });
 
       toast({
@@ -103,12 +103,12 @@ export const useAdicionaisCRUD = () => {
     }
   };
 
-  const handleEditAdicional = (adicional: Adicional) => {
+  const handleEditAdicional = (adicional: Adicional) => {;
     setEditandoAdicional(adicional.id);
     setAdicionalEditado({ ...adicional });
   };
 
-  const handleSaveAdicional = async () => {
+  const handleSaveAdicional = async () => {;
     if (!editandoAdicional || !adicionalEditado.name) return;
 
     try {
@@ -120,7 +120,7 @@ export const useAdicionaisCRUD = () => {
           name: adicionalEditado.name,
           price: Number(adicionalEditado.price),
           description: adicionalEditado.description
-        })
+        } catch (error) { console.error('Error:', error); })
       });
 
       toast({
@@ -144,12 +144,12 @@ export const useAdicionaisCRUD = () => {
     }
   };
 
-  const handleDeleteAdicional = async (adicionalId: string) => {
+  const handleDeleteAdicional = async (adicionalId: string) => {;
     if (!confirm('Tem certeza que deseja excluir este adicional?')) return;
 
     try {
       setLoading(true);
-      await apiRequest(`/api/adicionais/${adicionalId}`, {
+      await apiRequest(`/api/adicionais/${adicionalId} catch (error) { console.error('Error:', error); }`, {
         method: 'DELETE'
       });
 
@@ -174,13 +174,13 @@ export const useAdicionaisCRUD = () => {
     }
   };
 
-  const handleImageUpload = async (file: File, adicionalId: string) => {
+  const handleImageUpload = async (file: File, adicionalId: string) => {;
     if (!file) return;
 
     try {
       setLoading(true);
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
+      const fileName = `${Date.now()} catch (error) { console.error('Error:', error); }-${Math.random()}.${fileExt}`;
       const filePath = `adicionais/${fileName}`;
 
       // Upload de imagem via API
@@ -191,7 +191,7 @@ export const useAdicionaisCRUD = () => {
       
       const uploadResponse = await fetch('/api/upload', {
         method: 'POST',
-        body: formData
+        body: formData;
       });
       
       if (!uploadResponse.ok) {
@@ -228,7 +228,7 @@ export const useAdicionaisCRUD = () => {
     }
   };
 
-  const handleCancelarEdicao = () => {
+  const handleCancelarEdicao = () => {;
     setEditandoAdicional(null);
     setAdicionalEditado({});
     setCriandoAdicional(null);

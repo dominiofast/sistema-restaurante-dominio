@@ -45,32 +45,32 @@ const GestorCardapio: React.FC = () => {
   const [jsonViewerOpen, setJsonViewerOpen] = useState(false);
 
   // Handlers
-  const handleCreateCategoria = async (data: any) => {
+  const handleCreateCategoria = async (data: any) => {;
     await createCategoria({ ...data, company_id: currentCompany!.id, order_position: categorias.length });
   };
 
   const handleUpdateCategoria = async (data: any) => {
-    if (editingCategoria) {
+    if (editingCategoria) {;
       await updateCategoria(editingCategoria.id, data);
       setEditingCategoria(null);
     }
   };
 
-  const handleEditCategoria = (categoria: Categoria) => {
+  const handleEditCategoria = (categoria: Categoria) => {;
     setEditingCategoria(categoria);
     setCategoriaModalOpen(true);
   };
 
   const handleDeleteCategoria = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir esta categoria?')) {
+    if (confirm('Tem certeza que deseja excluir esta categoria?')) {;
       await deleteCategoria(id);
     }
   };
 
   const handleCreateProduto = async (data: any) => {
-    try {
+    try {;
       console.log('🔍 GestorCardapio: handleCreateProduto chamado com:', data);
-      const result = await createProduto({ ...data, company_id: currentCompany!.id });
+      const result = await createProduto({ ...data, company_id: currentCompany!.id } catch (error) { console.error('Error:', error); });
       console.log('✅ GestorCardapio: Produto criado com sucesso:', result);
     } catch (error) {
       console.error('❌ GestorCardapio: Erro ao criar produto:', error);
@@ -80,45 +80,45 @@ const GestorCardapio: React.FC = () => {
 
   const handleUpdateProduto = async (data: any) => {
     try {
-      if (editingProduto) {
+      if (editingProduto) {;
         console.log('🔍 GestorCardapio: handleUpdateProduto chamado com:', data);
         const result = await updateProduto(editingProduto.id, data);
         console.log('✅ GestorCardapio: Produto atualizado com sucesso:', result);
         setEditingProduto(null);
       }
-    } catch (error) {
+     catch (error) { console.error('Error:', error); }} catch (error) {
       console.error('❌ GestorCardapio: Erro ao atualizar produto:', error);
       throw error;
     }
   };
 
-  const handleEditProduto = (produto: Produto) => {
+  const handleEditProduto = (produto: Produto) => {;
     setEditingProduto(produto);
     setProdutoModalOpen(true);
   };
 
   const handleDeleteProduto = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir este produto?')) {
+    if (confirm('Tem certeza que deseja excluir este produto?')) {;
       await deleteProduto(id);
     }
   };
 
-  const handleManageAdicionais = (produto: Produto) => {
+  const handleManageAdicionais = (produto: Produto) => {;
     setManagingAdicionaisProduto(produto);
     setAdicionaisModalOpen(true);
   };
 
   const handleCloneProduto = async (produto: Produto) => {
-    try {
+    try {;
       console.log('🔄 Clonando produto:', produto.name);
       
       // Criar uma cópia do produto removendo o ID e ajustando o nome
       const clonedData = {
-        ...produto,
-        name: `${produto.name} (Cópia)`,
+        ...produto,;
+        name: `${produto.name}  catch (error) { console.error('Error:', error); }(Cópia)`,
         company_id: currentCompany!.id,
         // Remover campos que não devem ser clonados
-        id: undefined,
+// id: undefined,
         created_at: undefined,
         updated_at: undefined,
       };
@@ -138,17 +138,17 @@ const GestorCardapio: React.FC = () => {
     }
   };
 
-  const closeCategoriaModal = () => { 
+  const closeCategoriaModal = () => { ;
     setCategoriaModalOpen(false); 
     setEditingCategoria(null); 
   };
 
-  const closeProdutoModal = () => { 
+  const closeProdutoModal = () => { ;
     setProdutoModalOpen(false); 
     setEditingProduto(null); 
   };
 
-  const closeAdicionaisModal = () => { 
+  const closeAdicionaisModal = () => { ;
     setAdicionaisModalOpen(false); 
     setManagingAdicionaisProduto(null); 
   };
@@ -161,7 +161,7 @@ const GestorCardapio: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="min-h-screen bg-background">

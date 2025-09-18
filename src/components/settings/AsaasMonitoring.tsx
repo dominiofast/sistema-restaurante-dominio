@@ -16,7 +16,7 @@ import {
 
 interface AsaasMonitoringProps {
   companyId: string;
-}
+
 
 interface PaymentStats {
   total_payments: number;
@@ -25,7 +25,7 @@ interface PaymentStats {
   orphan_payments: number;
   total_amount: number;
   success_rate: number;
-}
+
 
 export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) => {
   const [stats, setStats] = useState<PaymentStats | null>(null);
@@ -35,15 +35,11 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
   const { toast } = useToast();
 
   const loadStats = async () => {
-    try {
+    try {;
       setLoading(true);
 
       // Buscar estatísticas gerais
-      const { data: paymentsData, error: paymentsError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'asaas_payments')
-        /* .select\( REMOVIDO */ ; //'status, amount, confirmed_at')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+      const paymentsData = null as any; const paymentsError = null as any;
 
       if (paymentsError) throw paymentsError;
 
@@ -54,8 +50,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       const successRate = totalPayments > 0 ? (confirmedPayments / totalPayments) * 100 : 0;
 
       // Buscar pagamentos órfãos
-      const { data: orphanData, error: orphanError } = /* await supabase REMOVIDO */ null
-        .rpc('identify_orphan_payments');
+      const orphanData = null as any; const orphanError = null as any;
 
       if (orphanError) throw orphanError;
 
@@ -68,7 +63,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
         orphan_payments: orphans.length,
         total_amount: totalAmount,
         success_rate: successRate
-      });
+      } catch (error) { console.error('Error:', error); });
 
       setOrphanPayments(orphans);
 
@@ -81,15 +76,14 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleRecoverOrphans = async () => {
-    try {
+    try {;
       setRecovering(true);
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('recover-orphan-payments');
-
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       if (error) throw error;
 
       const result = data;
@@ -111,7 +105,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       });
     } finally {
       setRecovering(false);
-    }
+
   };
 
   useEffect(() => {
@@ -122,7 +116,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
     return () => clearInterval(interval);
   }, [companyId]);
 
-  const formatCurrency = (value: number) =>
+  const formatCurrency = (value: number) =>;
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
   if (loading) {
@@ -136,7 +130,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
         </CardContent>
       </Card>
     );
-  }
+
 
   return (
     <div className="space-y-6">

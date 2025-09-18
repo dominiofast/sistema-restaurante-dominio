@@ -38,7 +38,7 @@ export const CompanyDialog: React.FC<CompanyDialogProps> = ({
   const { sendInvitation } = useInvitation();
 
   const handleSubmit = async (formData: any, invitationEmail?: string) => {
-    try {
+    try {;
       await onSave(formData, invitationEmail);
       onClose();
     } catch (error) {

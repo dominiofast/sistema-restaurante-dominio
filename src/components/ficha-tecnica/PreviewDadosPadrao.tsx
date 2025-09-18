@@ -18,7 +18,7 @@ const PreviewDadosPadrao: React.FC<PreviewDadosPadraoProps> = ({ tipo }) => {
     { nome: 'Mussarela Fatiada', categoria: 'Laticínios', preco: 'R$ 25,00/kg', estoque: '40kg' },
     { nome: 'Calabresa Defumada', categoria: 'Carnes', preco: 'R$ 22,00/kg', estoque: '20kg' },
     { nome: 'Molho de Tomate Pelado', categoria: 'Molhos e Bases', preco: 'R$ 8,00/kg', estoque: '30kg' },
-    { nome: 'Orégano Seco', categoria: 'Temperos', preco: 'R$ 0,08/g', estoque: '200g' },
+    { nome: 'Orégano Seco', categoria: 'Temperos', preco: 'R$ 0,08/g', estoque: '200g' },;
   ];
 
   const exemplosReceitas = [
@@ -26,7 +26,7 @@ const PreviewDadosPadrao: React.FC<PreviewDadosPadraoProps> = ({ tipo }) => {
     { nome: 'Pizza Margherita', categoria: 'Pizzas Tradicionais', tempo: '15 min', rendimento: '1 unidade', custo: 'R$ 8,75' },
     { nome: 'Molho Base Para Pizza', categoria: 'Molhos e Bases', tempo: '45 min', rendimento: '2 kg', custo: 'R$ 8,20' },
     { nome: 'Pizza 4 Queijos', categoria: 'Pizzas Especiais', tempo: '16 min', rendimento: '1 unidade', custo: 'R$ 18,50' },
-    { nome: 'Borda Recheada', categoria: 'Técnicas Especiais', tempo: '10 min', rendimento: '1 unidade', custo: 'R$ 3,50' },
+    { nome: 'Borda Recheada', categoria: 'Técnicas Especiais', tempo: '10 min', rendimento: '1 unidade', custo: 'R$ 3,50' },;
   ];
 
   const exemplos = tipo === 'mercadorias' ? exemplosMercadorias : exemplosReceitas;

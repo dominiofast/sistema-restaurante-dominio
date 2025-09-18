@@ -19,7 +19,7 @@ interface Vaga {
   config_id: string;
   company_id: string;
   apply_url?: string;
-}
+
 
 interface VagasListProps {
   vagas: Vaga[];
@@ -27,7 +27,7 @@ interface VagasListProps {
   onNewVaga: () => void;
   onEdit: (vaga: Vaga) => void;
   onDelete: (vaga: Vaga) => void;
-}
+
 
 export const VagasList: React.FC<VagasListProps> = ({
   vagas,
@@ -52,7 +52,7 @@ export const VagasList: React.FC<VagasListProps> = ({
         </Button>
       </div>
     );
-  }
+
 
   return (
     <div className="space-y-4">

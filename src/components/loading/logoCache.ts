@@ -8,14 +8,14 @@ interface LogoCacheEntry {
   /** Optimized URL for specific size */
   optimizedUrl: string;
   /** Natural dimensions of the logo */
-  naturalDimensions: { width: number; height: number };
+  naturalDimensions: { width: number; height: number } catch (error) { console.error('Error:', error); };
   /** Calculated aspect ratio */
   aspectRatio: number;
   /** Timestamp when cached */
   timestamp: number;
   /** Size this entry was optimized for */
   targetSize: number;
-}
+
 
 interface LogoDimensionCache {
   /** Logo URL as key */
@@ -23,7 +23,7 @@ interface LogoDimensionCache {
     /** Different sizes cached for this logo */
     [size: number]: LogoCacheEntry;
   };
-}
+
 
 class LogoCacheManager {
   private cache: LogoDimensionCache = {};
@@ -50,7 +50,7 @@ class LogoCacheManager {
     }
 
     return entry;
-  }
+
 
   /**
    * Set cached entry for a logo URL and size
@@ -67,7 +67,7 @@ class LogoCacheManager {
       ...entry,
       timestamp: Date.now()
     };
-  }
+
 
   /**
    * Get natural dimensions for a logo (any size)
@@ -85,7 +85,7 @@ class LogoCacheManager {
       height: firstEntry.naturalDimensions.height,
       aspectRatio: firstEntry.aspectRatio
     };
-  }
+
 
   /**
    * Cache natural dimensions for a logo
@@ -101,7 +101,7 @@ class LogoCacheManager {
         const dimensions = {
           width: img.naturalWidth,
           height: img.naturalHeight,
-          aspectRatio: img.naturalWidth / img.naturalHeight
+          aspectRatio: img.naturalWidth / img.naturalHeight;
         };
 
         // Cache with a dummy size entry
@@ -118,7 +118,7 @@ class LogoCacheManager {
       img.onerror = () => reject(new Error('Failed to load image'));
       img.src = logoUrl;
     });
-  }
+
 
   /**
    * Clear expired entries and enforce max entries limit
@@ -183,7 +183,7 @@ class LogoCacheManager {
    */
   clear(): void {
     this.cache = {};
-  }
+
 
   /**
    * Get cache statistics
@@ -201,7 +201,7 @@ class LogoCacheManager {
       totalEntries,
       cacheSize: JSON.stringify(this.cache).length
     };
-  }
+
 
   /**
    * Preload and cache a logo
@@ -213,12 +213,12 @@ class LogoCacheManager {
 
       // Then preload different sizes
       const preloadPromises = sizes.map(size => {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>((resolve) => {;
           const img = new Image();
           img.onload = () => resolve();
           img.onerror = () => resolve(); // Don't fail the whole preload
           img.src = logoUrl; // In a real implementation, this would be the optimized URL
-        });
+        } catch (error) { console.error('Error:', error); });
       });
 
       await Promise.all(preloadPromises);
@@ -226,7 +226,7 @@ class LogoCacheManager {
       console.warn('Failed to preload logo:', logoUrl, error);
     }
   }
-}
+
 
 // Global cache instance
 export const logoCache = new LogoCacheManager();
@@ -242,6 +242,6 @@ export const useLogoCache = () => {
     cacheNaturalDimensions: logoCache.cacheNaturalDimensions.bind(logoCache),
     clear: logoCache.clear.bind(logoCache),
     getStats: logoCache.getStats.bind(logoCache),
-    preload: logoCache.preload.bind(logoCache)
+    preload: logoCache.preload.bind(logoCache);
   };
 };

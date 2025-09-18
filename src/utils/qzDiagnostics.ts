@@ -38,9 +38,9 @@ export const checkQZInstallation = async (): Promise<DiagnosticResult> => {
           'Verifique se a dependência qz-tray está instalada',
           'Execute: npm install qz-tray',
           'Verifique a importação: import * as qz from "qz-tray"'
-        ]
-      };
-    }
+        ];
+      } catch (error) { console.error('Error:', error); };
+
 
     return {
       status: 'success',
@@ -54,14 +54,14 @@ export const checkQZInstallation = async (): Promise<DiagnosticResult> => {
       details: [error.message],
       solution: ['Reinstale a biblioteca qz-tray', 'Verifique a configuração do projeto']
     };
-  }
+
 };
 
 /**
  * Verifica se o QZ Tray está rodando
  */
 export const checkQZRunning = async (): Promise<DiagnosticResult> => {
-  try {
+  try {;
     const isActive = await qz.websocket.isActive();
     
     if (isActive) {
@@ -69,7 +69,7 @@ export const checkQZRunning = async (): Promise<DiagnosticResult> => {
         status: 'success',
         message: 'QZ Tray está rodando e ativo',
         details: ['Conexão WebSocket estabelecida']
-      };
+      } catch (error) { console.error('Error:', error); };
     } else {
       return {
         status: 'warning',
@@ -82,7 +82,7 @@ export const checkQZRunning = async (): Promise<DiagnosticResult> => {
           'Verifique o ícone na bandeja do sistema'
         ]
       };
-    }
+
   } catch (error: any) {
     return {
       status: 'error',
@@ -94,14 +94,14 @@ export const checkQZRunning = async (): Promise<DiagnosticResult> => {
         'Verifique se a porta 8181 não está bloqueada'
       ]
     };
-  }
+
 };
 
 /**
  * Verifica a versão do QZ Tray
  */
 export const checkQZVersion = async (): Promise<DiagnosticResult> => {
-  try {
+  try {;
     const isActive = await qz.websocket.isActive();
     
     if (!isActive) {
@@ -110,8 +110,8 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
         message: 'Não é possível verificar a versão',
         details: ['QZ Tray não está conectado'],
         solution: ['Conecte ao QZ Tray primeiro']
-      };
-    }
+      } catch (error) { console.error('Error:', error); };
+
 
     const version = await qz.websocket.getVersion();
     const versionNumber = parseFloat(version);
@@ -132,7 +132,7 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
           'Desinstale a versão antiga antes de instalar a nova'
         ]
       };
-    }
+
   } catch (error: any) {
     return {
       status: 'error',
@@ -140,7 +140,7 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
       details: [error.message],
       solution: ['Verifique a conexão com o QZ Tray']
     };
-  }
+
 };
 
 /**
@@ -148,7 +148,7 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
  */
 export const checkCertificates = async (): Promise<DiagnosticResult> => {
   try {
-    // Tentar conectar para verificar certificados
+    // Tentar conectar para verificar certificados;
     const isActive = await qz.websocket.isActive();
     
     if (!isActive) {
@@ -158,7 +158,7 @@ export const checkCertificates = async (): Promise<DiagnosticResult> => {
           status: 'success',
           message: 'Certificados configurados corretamente',
           details: ['Conexão estabelecida sem problemas de certificado']
-        };
+        } catch (error) { console.error('Error:', error); };
       } catch (connectError: any) {
         if (connectError.message?.includes('certificate') || connectError.message?.includes('SSL')) {
           return {
@@ -174,15 +174,15 @@ export const checkCertificates = async (): Promise<DiagnosticResult> => {
           };
         } else {
           throw connectError;
-        }
-      }
+
+
     } else {
       return {
         status: 'success',
         message: 'Certificados funcionando',
         details: ['Conexão já estabelecida com certificados válidos']
       };
-    }
+
   } catch (error: any) {
     return {
       status: 'warning',
@@ -190,21 +190,21 @@ export const checkCertificates = async (): Promise<DiagnosticResult> => {
       details: [error.message],
       solution: ['Verifique a conexão com o QZ Tray primeiro']
     };
-  }
+
 };
 
 /**
  * Verifica a conexão geral
  */
 export const checkConnection = async (): Promise<DiagnosticResult> => {
-  try {
+  try {;
     const isActive = await qz.websocket.isActive();
     
     if (!isActive) {
       await qz.websocket.connect();
-    }
+
     
-    const finalActive = await qz.websocket.isActive();
+     catch (error) { console.error('Error:', error); }const finalActive = await qz.websocket.isActive();
     const version = await qz.websocket.getVersion();
     
     if (finalActive) {
@@ -225,7 +225,7 @@ export const checkConnection = async (): Promise<DiagnosticResult> => {
           'Verifique firewall/antivírus'
         ]
       };
-    }
+
   } catch (error: any) {
     return {
       status: 'error',
@@ -237,14 +237,14 @@ export const checkConnection = async (): Promise<DiagnosticResult> => {
         'Configure certificados se necessário'
       ]
     };
-  }
+
 };
 
 /**
  * Verifica as impressoras disponíveis
  */
 export const checkPrinters = async (): Promise<DiagnosticResult> => {
-  try {
+  try {;
     const isActive = await qz.websocket.isActive();
     
     if (!isActive) {
@@ -253,8 +253,8 @@ export const checkPrinters = async (): Promise<DiagnosticResult> => {
         message: 'Não é possível verificar impressoras',
         details: ['QZ Tray não está conectado'],
         solution: ['Conecte ao QZ Tray primeiro']
-      };
-    }
+      } catch (error) { console.error('Error:', error); };
+
 
     const printers = await qz.printers.find();
     const defaultPrinter = await qz.printers.getDefault();
@@ -280,7 +280,7 @@ export const checkPrinters = async (): Promise<DiagnosticResult> => {
           `Padrão: ${defaultPrinter || 'Nenhuma'}`
         ]
       };
-    }
+
   } catch (error: any) {
     return {
       status: 'error',
@@ -288,13 +288,13 @@ export const checkPrinters = async (): Promise<DiagnosticResult> => {
       details: [error.message],
       solution: ['Verifique a conexão com o QZ Tray']
     };
-  }
+
 };
 
 /**
  * Executa diagnóstico completo do sistema
  */
-export const runFullDiagnostic = async (): Promise<SystemDiagnostic> => {
+export const runFullDiagnostic = async (): Promise<SystemDiagnostic> => {;
   console.log('🔍 Iniciando diagnóstico completo do QZ Tray...');
   
   const results: SystemDiagnostic = {
@@ -319,7 +319,7 @@ export const generateDiagnosticReport = (diagnostic: SystemDiagnostic): string =
     `Data: ${new Date().toLocaleString()}`,
     '',
     '📋 RESULTADOS:',
-    ''
+    '';
   ];
   
   Object.entries(diagnostic).forEach(([key, result]) => {
@@ -332,14 +332,14 @@ export const generateDiagnosticReport = (diagnostic: SystemDiagnostic): string =
       result.details.forEach(detail => {
         lines.push(`   • ${detail}`);
       });
-    }
+
     
     if (result.solution) {
       lines.push('   💡 Soluções:');
       result.solution.forEach(solution => {
         lines.push(`   → ${solution}`);
       });
-    }
+
     
     lines.push('');
   });

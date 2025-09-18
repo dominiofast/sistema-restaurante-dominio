@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { OrderCreationService, OrderData } from '@/services/orderCreationService';
 import { trackPurchase } from '@/utils/facebookPixel';
 
-export const useOrderCreation = () => {
+export const useOrderCreation = () => {;
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [createdOrderId, setCreatedOrderId] = useState<string | null>(null);
 
   const createOrder = async (orderData: OrderData, onCashbackUpdate?: () => void) => {
     // ANTI-DUPLICAÇÃO: Verificar se já está criando um pedido
-    if (isCreatingOrder) {
+    if (isCreatingOrder) {;
       console.warn('⚠️ [ANTI-DUPLICATE] Tentativa de criar pedido enquanto outro está sendo processado');
       throw new Error('Já existe um pedido sendo processado. Aguarde...');
     }
@@ -17,7 +17,7 @@ export const useOrderCreation = () => {
     
     try {
       // ANTI-DUPLICAÇÃO: Gerar identificador único para este pedido
-      const orderUniqueId = `${orderData.cliente.telefone}_${Date.now()}`;
+      const orderUniqueId = `${orderData.cliente.telefone} catch (error) { console.error('Error:', error); }_${Date.now()}`;
       console.log('🔒 [ANTI-DUPLICATE] Criando pedido com ID único:', orderUniqueId);
       
       const result = await OrderCreationService.createOrder(orderData);

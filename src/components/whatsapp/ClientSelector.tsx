@@ -31,25 +31,25 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
 
   // Carregar clientes
   useEffect(() => {
-    const fetchClients = async () => {
+    const fetchClients = async () => {;
       if (!currentCompany?.id) return;
 
       try {
         setLoading(true);
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'clientes')
-          /* .select\( REMOVIDO */ ; //'id, nome, telefone, email, status')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
           .not('telefone', 'is', null)
           .neq('telefone', '')
-          /* .order\( REMOVIDO */ ; //'nome', { ascending: true });
+          
 
         if (error) throw error;
         
         // Converter id para string se necessário
         const clientsWithStringId = (data || []).map(client => ({
           ...client,
-          id: client.id.toString()
+          id: client.id.toString();
         }));
         
         setClients(clientsWithStringId);
@@ -59,7 +59,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
         toast.error('Erro ao carregar lista de clientes');
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchClients();
@@ -70,12 +70,12 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
     const filtered = clients.filter(client => 
       client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.telefone.includes(searchTerm) ||
-      (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase()));
     );
     setFilteredClients(filtered);
   }, [searchTerm, clients]);
 
-  const handleToggleContact = (client: Cliente) => {
+  const handleToggleContact = (client: Cliente) => {;
     const isSelected = selectedContacts.some(c => c.id === client.id);
     
     if (isSelected) {
@@ -86,14 +86,14 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
   };
 
   const handleSelectAll = () => {
-    if (selectedContacts.length === filteredClients.length) {
+    if (selectedContacts.length === filteredClients.length) {;
       onContactsChange([]);
     } else {
       onContactsChange(filteredClients);
     }
   };
 
-  const isContactSelected = (clientId: string) => {
+  const isContactSelected = (clientId: string) => {;
     return selectedContacts.some(c => c.id === clientId);
   };
 

@@ -13,7 +13,7 @@ export interface AsaasConfig {
   webhook_token: string | null;
   created_at: string | null;
   updated_at: string | null;
-}
+
 
 export interface AsaasConfigData {
   api_key: string;
@@ -22,9 +22,9 @@ export interface AsaasConfigData {
   is_active: boolean;
   sandbox_mode: boolean;
   webhook_token: string;
-}
 
-export const useAsaasConfig = (companyId?: string) => {
+
+export const useAsaasConfig = (companyId?: string) => {;
   const [config, setConfig] = useState<AsaasConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,15 +38,15 @@ export const useAsaasConfig = (companyId?: string) => {
     }
 
     const loadConfig = async () => {
-      try {
+      try {;
         setLoading(true);
         setError(null);
 
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'asaas_config')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
 
         if (error) {
           console.error('Erro ao carregar configuração do Asaas:', error);
@@ -59,7 +59,7 @@ export const useAsaasConfig = (companyId?: string) => {
         setError('Erro inesperado ao carregar configuração');
       } finally {
         setLoading(false);
-      }
+
     };
 
     loadConfig();
@@ -71,22 +71,22 @@ export const useAsaasConfig = (companyId?: string) => {
       toast({
         title: 'Erro',
         description: 'ID da empresa não encontrado',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return false;
     }
 
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'asaas_config')
-        /* .upsert\( REMOVIDO */ ; //{
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           company_id: companyId,
           ...configData,
         }, {
           onConflict: 'company_id'
         })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao salvar configuração do Asaas:', error);
@@ -96,7 +96,7 @@ export const useAsaasConfig = (companyId?: string) => {
           variant: 'destructive',
         });
         return false;
-      }
+
 
       setConfig(data);
       toast({
@@ -123,14 +123,14 @@ export const useAsaasConfig = (companyId?: string) => {
         toast({
           title: 'Formato inválido',
           description: 'API Key de sandbox deve conter o identificador de teste',
-          variant: 'destructive',
-        });
+          variant: 'destructive',;
+        } catch (error) { console.error('Error:', error); });
         return false;
-      }
+
 
       // Teste de conectividade - listar clientes (endpoint simples)
       const baseUrl = sandboxMode 
-        ? 'https://sandbox.asaas.com/api/v3'
+        ? 'https://sandbox.asaas.com/api/v3';
         : 'https://www.asaas.com/api/v3';
 
       const response = await fetch(`${baseUrl}/customers?limit=1`, {
@@ -138,7 +138,7 @@ export const useAsaasConfig = (companyId?: string) => {
         headers: {
           'access_token': apiKey,
           'Content-Type': 'application/json',
-        },
+        },;
       });
 
       if (response.ok) {
@@ -155,7 +155,7 @@ export const useAsaasConfig = (companyId?: string) => {
           variant: 'destructive',
         });
         return false;
-      }
+
     } catch (err) {
       console.error('Erro ao testar credenciais:', err);
       toast({

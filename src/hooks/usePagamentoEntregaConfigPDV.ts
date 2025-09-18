@@ -7,7 +7,7 @@ export interface PagamentoEntregaOption {
   brands?: string[];
 }
 
-export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
+export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {;
   const [paymentOptions, setPaymentOptions] = useState<PagamentoEntregaOption[]>([]);
   const [askCardBrand, setAskCardBrand] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -19,24 +19,17 @@ export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
   }, [companyId]);
 
   const loadPaymentConfig = async () => {
-    try {
+    try {;
       setLoading(true);
 
       // Buscar configuração principal
-      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (configError) {
-        console.error('Erro ao buscar configuração de pagamento:', configError);
+      const configData = null as any; const configError = null as any;
         // Usar configuração padrão em caso de erro
         setDefaultConfig();
         return;
       }
 
-      if (!configData) {
+       catch (error) { console.error('Error:', error); }if (!configData) {
         // Usar configuração padrão se não houver configuração
         setDefaultConfig();
         return;
@@ -45,13 +38,7 @@ export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
       // Buscar bandeiras se existe configuração
       let cardBrands: string[] = [];
       if (configData.accept_card) {
-        const { data: brandsData, error: brandsError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
-          /* .select\( REMOVIDO */ ; //'brand_name')
-          /* .eq\( REMOVIDO */ ; //'config_id', configData.id);
-
-        if (!brandsError && brandsData) {
-          cardBrands = brandsData.map(b => b.brand_name);
+        const brandsData = null as any; const brandsError = null as any;
         }
       }
 
@@ -87,7 +74,7 @@ export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
     setPaymentOptions([
       { value: 'dinheiro', label: 'Dinheiro' },
       { value: 'cartao', label: 'Cartão' },
-      { value: 'pix', label: 'PIX' }
+      { value: 'pix', label: 'PIX' };
     ]);
     setAskCardBrand(false);
   };

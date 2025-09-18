@@ -73,7 +73,7 @@ class CircuitBreaker {
         console.log('✅ [CircuitBreaker] Operation successful, circuit closed');
       }
       
-      return result;
+       catch (error) { console.error('Error:', error); }return result;
     } catch (error) {
       this.recordFailure();
       throw error;
@@ -93,11 +93,11 @@ class CircuitBreaker {
   private reset(): void {
     this.failures = 0;
     this.state = 'closed';
-  }
+
 
   getState(): string {
     return this.state;
-  }
+
 }
 
 /**
@@ -117,7 +117,7 @@ export async function retryWithBackoff<T>(
 
   for (let attempt = 1; attempt <= finalConfig.maxAttempts; attempt++) {
     try {
-      console.log(`🔄 [Retry] Attempt ${attempt}/${finalConfig.maxAttempts}`);
+      console.log(`🔄 [Retry] Attempt ${attempt} catch (error) { console.error('Error:', error); }/${finalConfig.maxAttempts}`);
       
       const result = await operation();
       
@@ -136,14 +136,14 @@ export async function retryWithBackoff<T>(
       if (attempt < finalConfig.maxAttempts) {
         const delay = Math.min(
           finalConfig.baseDelay * Math.pow(finalConfig.backoffMultiplier, attempt - 1),
-          finalConfig.maxDelay
+          finalConfig.maxDelay;
         );
         
         console.log(`⏳ [Retry] Waiting ${delay}ms before next attempt`);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
-  }
+
 
   return {
     success: false,
@@ -167,7 +167,7 @@ export async function executeWithCircuitBreaker<T>(
       data: result,
       attempts: 1,
       recoveryMethod: 'circuit-breaker'
-    };
+    } catch (error) { console.error('Error:', error); };
   } catch (error) {
     return {
       success: false,
@@ -175,7 +175,7 @@ export async function executeWithCircuitBreaker<T>(
       attempts: 1,
       recoveryMethod: 'circuit-breaker'
     };
-  }
+
 }
 
 /**
@@ -202,7 +202,7 @@ export async function recoverFromError<T>(
         return circuitResult;
       }
       
-      console.warn(`⚠️ [ErrorRecovery] Circuit breaker failed for: ${context}`);
+       catch (error) { console.error('Error:', error); }console.warn(`⚠️ [ErrorRecovery] Circuit breaker failed for: ${context}`);
     }
 
     // Then try with retry mechanism
@@ -233,7 +233,7 @@ export async function recoverFromError<T>(
         data: fallbackData,
         attempts: 1,
         recoveryMethod: 'fallback'
-      };
+      } catch (error) { console.error('Error:', error); };
     } catch (fallbackError) {
       return {
         success: false,
@@ -262,7 +262,7 @@ export function categorizeError(error: Error): {
       isRetryable: true,
       severity: 'medium'
     };
-  }
+
   
   // Database errors
   if (message.includes('pgrst') || message.includes('database') || message.includes('sql')) {
@@ -271,7 +271,7 @@ export function categorizeError(error: Error): {
       isRetryable: true,
       severity: 'high'
     };
-  }
+
   
   // Permission errors
   if (message.includes('permission') || message.includes('unauthorized') || message.includes('forbidden')) {
@@ -280,7 +280,7 @@ export function categorizeError(error: Error): {
       isRetryable: false,
       severity: 'high'
     };
-  }
+
   
   // Validation errors
   if (message.includes('validation') || message.includes('invalid') || message.includes('constraint')) {
@@ -289,7 +289,7 @@ export function categorizeError(error: Error): {
       isRetryable: false,
       severity: 'medium'
     };
-  }
+
   
   // Unknown errors
   return {
@@ -364,7 +364,7 @@ export function getUserFriendlyErrorMessage(error: Error, context?: string): {
           { label: 'Recarregar página', action: 'reload' }
         ]
       };
-  }
+
 }
 
 /**
@@ -387,7 +387,7 @@ export function logError(
     category,
     severity,
     timestamp: new Date().toISOString(),
-    ...additionalData
+    ...additionalData;
   };
   
   // Use appropriate logging level based on severity
@@ -404,5 +404,5 @@ export function logError(
     case 'low':
       console.info('ℹ️ [LOW ERROR]', logData);
       break;
-  }
+
 }

@@ -48,7 +48,7 @@ export default function Caixa() {
   const [filtros, setFiltros] = useState({ data: '', tipo: 'todos', busca: '' });
 
   const handleAbrirCaixa = async () => {
-    if (valorAbertura <= 0) {
+    if (valorAbertura <= 0) {;
       return;
     }
     
@@ -58,7 +58,7 @@ export default function Caixa() {
     }
   };
 
-  const handleFecharCaixa = async () => {
+  const handleFecharCaixa = async () => {;
     const sucesso = await fecharCaixa(observacoesFechamento);
     if (sucesso) {
       setModalFechar(false);
@@ -67,14 +67,14 @@ export default function Caixa() {
   };
 
   const handleSalvarLancamento = async () => {
-    if (!novo.descricao || !novo.categoria || !novo.forma_pagamento || novo.valor <= 0) {
+    if (!novo.descricao || !novo.categoria || !novo.forma_pagamento || novo.valor <= 0) {;
       return;
     }
 
     const lancamentoData = {
       ...novo,
       data_lancamento: new Date().toISOString().split('T')[0],
-      hora_lancamento: new Date().toTimeString().split(' ')[0].slice(0, 5)
+      hora_lancamento: new Date().toTimeString().split(' ')[0].slice(0, 5);
     };
 
     const sucesso = await adicionarLancamento(lancamentoData);
@@ -92,7 +92,7 @@ export default function Caixa() {
   };
 
   // Filtrar lançamentos
-  const lancamentosFiltrados = lancamentos.filter(l => {
+  const lancamentosFiltrados = lancamentos.filter(l => {;
     if (filtros.data && l.data_lancamento !== filtros.data) return false;
     if (filtros.tipo && filtros.tipo !== 'todos' && l.tipo !== filtros.tipo) return false;
     if (filtros.busca && !l.descricao.toLowerCase().includes(filtros.busca.toLowerCase()) && 

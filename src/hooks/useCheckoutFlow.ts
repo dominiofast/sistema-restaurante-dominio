@@ -17,7 +17,7 @@ interface CheckoutFlowState {
   cliente: ClientePublico | null;
   endereco: string;
   deliveryInfo: DeliveryInfo;
-}
+
 
 // Interface para as ações do checkout
 interface CheckoutFlowActions {
@@ -25,7 +25,7 @@ interface CheckoutFlowActions {
   setCliente: (cliente: ClientePublico | null) => void;
   setEndereco: (endereco: string) => void;
   setDeliveryInfo: (info: DeliveryInfo) => void;
-}
+
 
 /**
  * Hook customizado para gerenciar o estado do fluxo de checkout
@@ -46,7 +46,7 @@ interface CheckoutFlowActions {
  * ```
  */
 export const useCheckoutFlow = (): CheckoutFlowState & CheckoutFlowActions => {
-  // Estados extraídos do CardapioPublico - mantendo valores iniciais idênticos
+  // Estados extraídos do CardapioPublico - mantendo valores iniciais idênticos;
   const [step, setStep] = useState<CheckoutStep>('cart');
   const [cliente, setCliente] = useState<ClientePublico | null>(null);
   const [endereco, setEndereco] = useState<string>('');

@@ -22,11 +22,11 @@ export const FormasEntregaPDV = ({ value, onChange }: { value: string; onChange:
       }
 
       try {
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'delivery_methods')
-          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .single\( REMOVIDO */ ; //);
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
 
         if (error) {
           console.error('Erro ao buscar formas de entrega:', error);
@@ -45,17 +45,17 @@ export const FormasEntregaPDV = ({ value, onChange }: { value: string; onChange:
     }
 
     const createDefaultDeliveryMethods = async () => {
-      try {
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'delivery_methods')
-          /* .insert\( REMOVIDO */ ; //{
+      try {;
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
             company_id: currentCompany!.id,
             delivery: false,
             pickup: true,  // Padrão: sempre permitir retirada
-            eat_in: false
+// eat_in: false
           })
-          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-          /* .single\( REMOVIDO */ ; //);
+          
+          
 
         if (error) {
           console.error('Erro ao criar configuração padrão:', error);

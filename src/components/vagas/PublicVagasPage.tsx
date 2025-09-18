@@ -9,7 +9,7 @@ import SearchSection from './SearchSection';
 import JobListingsSection from './JobListingsSection';
 import CallToActionSection from './CallToActionSection';
 
-const PublicVagasPage = () => {
+const PublicVagasPage = () => {;
   const { slug } = useParams<{ slug: string }>();
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [filteredVagas, setFilteredVagas] = useState<Vaga[]>([]);
@@ -21,7 +21,7 @@ const PublicVagasPage = () => {
 
   useEffect(() => {
     const fetchVagasAndConfig = async () => {
-      if (!slug) {
+      if (!slug) {;
         console.log('No slug provided');
         setError("Página não encontrada.");
         setLoading(false);
@@ -32,36 +32,19 @@ const PublicVagasPage = () => {
         console.log('Fetching config for slug:', slug);
         
         // Buscar configuração da página de vagas
-        const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'rh_vagas_config')
-          /* .select\( REMOVIDO */ ; //`
-            *,
-            companies!inner(name)
-          `)
-          /* .eq\( REMOVIDO */ ; //'slug', slug)
-          /* .eq\( REMOVIDO */ ; //'is_active', true)
-          /* .single\( REMOVIDO */ ; //);
-        
-        console.log('Config data:', configData, 'Error:', configError);
+        const configData = null as any; const configError = null as any;
         
         if (configError) {
           console.error('Config error:', configError);
           throw new Error('Página de vagas não encontrada ou não configurada.');
         }
 
-        if (!configData || !configData.companies) {
+         catch (error) { console.error('Error:', error); }if (!configData || !configData.companies) {
           throw new Error('Configuração inválida ou empresa não encontrada.');
         }
 
         // Buscar vagas da empresa
-        const { data: vagasData, error: vagasError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'rh_vagas')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', configData.company_id)
-          /* .eq\( REMOVIDO */ ; //'is_active', true)
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
-
-        console.log('Vagas data:', vagasData, 'Error:', vagasError);
+        const vagasData = null as any; const vagasError = null as any;
 
         if (vagasError) {
           console.error('Vagas error:', vagasError);
@@ -160,7 +143,7 @@ const PublicVagasPage = () => {
   const titleColor = config.title_color || '#FFFFFF';
   
   const dynamicStyles = {
-    '--primary-color': primaryColor,
+    '--primary-color': primaryColor,;
   } as React.CSSProperties;
 
   return (

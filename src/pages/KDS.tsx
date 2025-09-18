@@ -7,7 +7,7 @@ import { ProBadge } from '@/components/ui/pro-badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const KDS = () => {
+const KDS = () => {;
   const [showFilters, setShowFilters] = useState(false);
   const [visualizacao, setVisualizacao] = useState(1);
   const [telaInteira, setTelaInteira] = useState(false);
@@ -30,18 +30,18 @@ const KDS = () => {
       'retirada': true,
       'mesa': true,
       'autoatendimento': true  // ✅ Adicionar autoatendimento
-    }
+
   });
 
   // Converter pedidos para formato de balcões
-  const convertPedidosParaBalcoes = () => {
+  const convertPedidosParaBalcoes = () => {;
     console.log('🏪 KDS - Convertendo pedidos para balcões:', pedidos?.length || 0);
     console.log('🏪 KDS - Pedidos brutos:', pedidos);
     
     if (!pedidos || pedidos.length === 0) {
       console.log('❌ KDS - Nenhum pedido encontrado');
       return [];
-    }
+
 
     return pedidos
       .filter(pedido => filtros.statusAtivos[pedido.status] && filtros.tiposAtivos[pedido.tipo])
@@ -76,12 +76,12 @@ const KDS = () => {
                 itensFormatados.push(`    + ${adicional.qtd || 1} ${adicional.nome.toUpperCase()}`);
               });
             });
-          }
+
           
           // Adicionar observações do item se existirem
           if (item.observacoes) {
             itensFormatados.push(`  💬 ${item.observacoes}`);
-          }
+
           
           // Adicionar linha em branco entre itens
           itensFormatados.push('');
@@ -91,7 +91,7 @@ const KDS = () => {
         if (pedido.observacoes) {
           itensFormatados.push('');
           itensFormatados.push(`💬 OBS: ${pedido.observacoes}`);
-        }
+
 
         return {
           id: pedido.id,
@@ -108,7 +108,7 @@ const KDS = () => {
   // Mapear status para locais
   const getLocalFromStatus = (status: string) => {
     switch (status) {
-      case 'analise':
+      case 'analise':;
         return 'COZINHA 1';
       case 'producao':
         return 'COZINHA 2';
@@ -116,7 +116,7 @@ const KDS = () => {
         return 'COPA';
       default:
         return 'CAIXA';
-    }
+
   };
 
   // Gerar balcões a partir dos pedidos reais
@@ -126,7 +126,7 @@ const KDS = () => {
   const balcoesFiltrados = todosBalcoes;
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = () => {;
       setLarguraTela(window.innerWidth - 32);
     };
     
@@ -135,7 +135,7 @@ const KDS = () => {
       setLarguraTela(window.innerWidth - 32);
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
-    }
+
   }, []);
 
   // Reset página quando mudar visualização
@@ -149,7 +149,7 @@ const KDS = () => {
       statusAtivos: {
         ...prev.statusAtivos,
         [status]: !prev.statusAtivos[status]
-      }
+      };
     }));
   };
 
@@ -159,12 +159,12 @@ const KDS = () => {
       tiposAtivos: {
         ...prev.tiposAtivos,
         [tipo]: !prev.tiposAtivos[tipo]
-      }
+      };
     }));
   };
 
   // Função para avançar status do pedido
-  const avancarPedido = async (balcao: any) => {
+  const avancarPedido = async (balcao: any) => {;
     if (!balcao.pedidoOriginal) return;
     
     try {
@@ -173,7 +173,7 @@ const KDS = () => {
       
       if (pedido.status === 'analise') {
         novoStatus = 'producao';
-      } else if (pedido.status === 'producao') {
+      }  catch (error) { console.error('Error:', error); }else if (pedido.status === 'producao') {
         novoStatus = 'pronto';
       } else if (pedido.status === 'pronto') {
         novoStatus = 'entregue'; // Remove do KDS
@@ -182,23 +182,23 @@ const KDS = () => {
       await atualizarStatus(pedido.id, novoStatus);
     } catch (error) {
       console.error('Erro ao avançar pedido:', error);
-    }
+
   };
 
   const toggleTelaInteira = () => {
-    if (!document.fullscreenElement) {
+    if (!document.fullscreenElement) {;
       document.documentElement.requestFullscreen();
       setTelaInteira(true);
     } else {
       document.exitFullscreen();
       setTelaInteira(false);
-    }
+
   };
 
   const fecharKDS = () => {
-    if (window.confirm('Tem certeza que deseja fechar o KDS?')) {
+    if (window.confirm('Tem certeza que deseja fechar o KDS?')) {;
       window.close();
-    }
+
   };
 
   return (

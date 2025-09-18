@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 // SUPABASE REMOVIDO
-const TesteAgentePedidos = () => {
+const TesteAgentePedidos = () => {;
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
@@ -29,7 +29,7 @@ const TesteAgentePedidos = () => {
             quantidade: 1
           }
         ]
-      }
+
     ],
     observacoes: 'Teste do agente IA'
   });
@@ -39,7 +39,7 @@ const TesteAgentePedidos = () => {
       toast({
         title: "Erro",
         description: "Token é obrigatório",
-        variant: "destructive"
+        variant: "destructive";
       });
       return;
     }
@@ -47,7 +47,7 @@ const TesteAgentePedidos = () => {
     setLoading(true);
     
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('criar-pedido', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: pedidoData,
         headers: {
           'Authorization': `Bearer ${token}`
@@ -62,7 +62,7 @@ const TesteAgentePedidos = () => {
           variant: "destructive"
         });
         return;
-      }
+
 
       toast({
         title: "Sucesso!",
@@ -83,7 +83,7 @@ const TesteAgentePedidos = () => {
     }
   };
 
-  const updateItem = (index: number, field: string, value: any) => {
+  const updateItem = (index: number, field: string, value: any) => {;
     const newItens = [...pedidoData.itens];
     newItens[index] = { ...newItens[index], [field]: value };
     setPedidoData({ ...pedidoData, itens: newItens });
@@ -235,7 +235,7 @@ const TesteAgentePedidos = () => {
             <p className="text-lg font-semibold">
               Total: R$ {pedidoData.itens.reduce((acc, item) => {
                 const subtotalItem = item.preco_unitario * item.quantidade;
-                const subtotalAdicionais = item.adicionais?.reduce((accAd, ad) => 
+                const subtotalAdicionais = item.adicionais?.reduce((accAd, ad) => ;
                   accAd + (ad.preco * ad.quantidade), 0) || 0;
                 return acc + subtotalItem + subtotalAdicionais;
               }, 0).toFixed(2)}

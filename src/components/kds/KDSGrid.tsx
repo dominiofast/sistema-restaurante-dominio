@@ -27,7 +27,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
   // Pedidos da página atual
   const pedidosPaginaAtual = pedidos.slice(
     paginaAtual * balcoesPorPagina,
-    (paginaAtual + 1) * balcoesPorPagina
+    (paginaAtual + 1) * balcoesPorPagina;
   );
 
   // Para modo 2 fileiras: distribuir entre linha 1 e linha 2
@@ -54,7 +54,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                 />
               ))}
               {/* Preenche espaços vazios se necessário */}
-              {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - primeiraLinha.length }).map((_, index) => (
+              {Array
                 <div key={`empty-top-${index}`} className="flex-1"></div>
               ))}
             </div>
@@ -73,7 +73,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                     />
                   ))}
                   {/* Preenche espaços vazios se necessário */}
-                  {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - segundaLinha.length }).map((_, index) => (
+                  {Array
                     <div key={`empty-bottom-${index}`} className="flex-1"></div>
                   ))}
                 </>
@@ -118,7 +118,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="h-[calc(100vh-140px)] flex flex-col">
@@ -136,7 +136,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                 />
               ))}
               {/* Preenche espaços vazios se necessário */}
-              {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - pedidosPaginaAtual.length }).map((_, index) => (
+              {Array
                 <div key={`empty-${index}`} className="flex-1"></div>
               ))}
             </>

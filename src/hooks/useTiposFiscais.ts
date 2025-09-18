@@ -20,7 +20,7 @@ export function useTiposFiscais() {
   // Memoizar a função com useCallback para evitar re-renders infinitos
   const buscarTiposFiscais = useCallback(async () => {
     // Se não há empresa, não fazer nada
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       setTiposFiscais([]);
       setLoading(false);
       setError(null);
@@ -31,7 +31,7 @@ export function useTiposFiscais() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/tipos-fiscais?company_id=${currentCompany.id}`, {
+      const response = await fetch(`/api/tipos-fiscais?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -64,7 +64,7 @@ export function useTiposFiscais() {
       body: JSON.stringify({
         ...dados,
         company_id: currentCompany.id
-      })
+      });
     });
 
     if (!response.ok) {
@@ -84,7 +84,7 @@ export function useTiposFiscais() {
     const response = await fetch('/api/tipos-fiscais', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, ...dados })
+      body: JSON.stringify({ id, ...dados });
     });
 
     if (!response.ok) {
@@ -106,7 +106,7 @@ export function useTiposFiscais() {
   const deletarTipoFiscal = useCallback(async (id: string) => {
     const response = await fetch(`/api/tipos-fiscais?id=${id}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' };
     });
 
     if (!response.ok) {

@@ -27,7 +27,7 @@ export function FacebookPixelConfig() {
     }
   }, [config]);
   
-  const handleSave = async () => {
+  const handleSave = async () => {;
     setIsSaving(true);
     await saveConfig({
       pixel_id: pixelId,
@@ -40,7 +40,7 @@ export function FacebookPixelConfig() {
   };
 
   const status = config?.is_active 
-    ? { text: "Ativo", color: "text-green-500", Icon: CheckCircle }
+    ? { text: "Ativo", color: "text-green-500", Icon: CheckCircle };
     : { text: "Inativo", color: "text-gray-500", Icon: AlertCircle };
 
   return (
@@ -141,4 +141,3 @@ export function FacebookPixelConfig() {
       </Card>
     </div>
   );
-} 

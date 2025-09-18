@@ -24,7 +24,7 @@ export interface PedidoNFCe {
     tipo: string;
     valor: number;
   }>;
-}
+
 
 export interface NFCeResponse {
   success: boolean;
@@ -32,12 +32,12 @@ export interface NFCeResponse {
   chave?: string;
   url?: string;
   error?: string;
-}
+
 
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
-}
+
 
 class FocusNFeService {
   /**
@@ -54,7 +54,7 @@ class FocusNFeService {
     if (/^(\d)\1+$/.test(cnpj)) return false;
     
     // Validação dos dígitos verificadores
-    const calcularDigito = (cnpj: string, posicoes: number[]) => {
+    const calcularDigito = (cnpj: string, posicoes: number[]) => {;
       let soma = 0;
       for (let i = 0; i < posicoes.length; i++) {
         soma += parseInt(cnpj[i]) * posicoes[i];
@@ -70,7 +70,7 @@ class FocusNFeService {
     const segundoDigito = calcularDigito(cnpj, posicoesSegundo);
     
     return parseInt(cnpj[12]) === primeiroDigito && parseInt(cnpj[13]) === segundoDigito;
-  }
+
 
   /**
    * Valida NCM
@@ -81,18 +81,18 @@ class FocusNFeService {
     
     // Verifica se tem 8 dígitos
     return ncm.length === 8 && /^\d{8}$/.test(ncm);
-  }
+
 
   /**
    * Valida configuração fiscal completa
    */
   async validarConfiguracaoFiscalCompleta(companyId: string): Promise<ValidationResult> {
     try {
-      const { data: fiscalConfig, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_fiscal_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
+      const { data: fiscalConfig, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       const erros: string[] = [];
 
@@ -154,8 +154,8 @@ class FocusNFeService {
         valid: false, 
         errors: ['Erro ao validar configurações: ' + error.message] 
       };
-    }
-  }
+
+
 
   /**
    * Valida dados do pedido
@@ -165,7 +165,7 @@ class FocusNFeService {
 
     if (!dadosPedido.numero_pedido) {
       erros.push('Número do pedido é obrigatório');
-    }
+
 
     if (!dadosPedido.itens || dadosPedido.itens.length === 0) {
       erros.push('Pelo menos um item é obrigatório');
@@ -187,7 +187,7 @@ class FocusNFeService {
           erros.push(`Item ${index + 1}: NCM inválido`);
         }
       });
-    }
+
 
     if (!dadosPedido.pagamentos || dadosPedido.pagamentos.length === 0) {
       erros.push('Pelo menos uma forma de pagamento é obrigatória');
@@ -201,7 +201,7 @@ class FocusNFeService {
     }
 
     return { valid: erros.length === 0, errors: erros };
-  }
+
 
   /**
    * Mapeia CST/CSOSN baseado no regime tributário
@@ -233,8 +233,8 @@ class FocusNFeService {
         '90': '90', // Outras
       };
       return mapaCST[situacaoTributaria || '40'] || '40';
-    }
-  }
+
+
 
   /**
    * Converte dados do pedido interno para formato da Focus NFe
@@ -260,13 +260,13 @@ class FocusNFeService {
       icms_origem: item.origem_produto || "0",
       icms_situacao_tributaria: item.cst_csosn || "102",
       valor_desconto: 0.00,
-      valor_total_tributos: item.quantidade * item.preco_unitario * 0.307 // Estimativa de 30.7% de tributos
+      valor_total_tributos: item.quantidade * item.preco_unitario * 0.307 // Estimativa de 30.7% de tributos;
     }));
 
     // Mapear formas de pagamento
     const formas_pagamento = dadosPedido.pagamentos.map(pag => ({
       forma_pagamento: FocusNFeService.mapearTipoPagamento(pag.tipo),
-      valor_pagamento: pag.valor
+      valor_pagamento: pag.valor;
     }));
 
     // Calcular totais
@@ -289,7 +289,7 @@ class FocusNFeService {
       inscricao_estadual_emitente: fiscalConfig.inscricao_estadual || "ISENTO",
       
       // Dados da operação (obrigatórios)
-      data_emissao: dataEmissao,
+// data_emissao: dataEmissao,
       natureza_operacao: "VENDA AO CONSUMIDOR",
       tipo_documento: "1", // Nota de saída
       presenca_comprador: "1", // Operação presencial
@@ -304,7 +304,7 @@ class FocusNFeService {
       valor_total: parseFloat(valor_total.toFixed(2)),
       
       // Arrays de dados
-      items: items,
+// items: items,
       formas_pagamento: formas_pagamento
     };
 
@@ -332,7 +332,7 @@ class FocusNFeService {
     }
 
     return payload;
-  }
+
 
   /**
    * Mapeia códigos de erro da Focus NFe para mensagens amigáveis
@@ -368,8 +368,8 @@ class FocusNFeService {
         return 'Erro interno da API Focus NFe: ' + message;
       default:
         return `Erro ${status}: ${message}`;
-    }
-  }
+
+
 
   /**
    * Gera uma NFCe para um pedido
@@ -382,21 +382,11 @@ class FocusNFeService {
         return {
           success: false,
           error: 'Configuração fiscal inválida: ' + configValidation.errors.join(', ')
-        };
+        } catch (error) { console.error('Error:', error); };
       }
 
       // Buscar dados fiscais da empresa
-      const { data: fiscalConfig, error: fiscalError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_fiscal_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (fiscalError || !fiscalConfig) {
-        return {
-          success: false,
-          error: 'Configuração fiscal não encontrada'
-        };
+      const fiscalConfig = null as any; const fiscalError = null as any;
       }
 
       // Validar dados do pedido
@@ -431,12 +421,12 @@ class FocusNFeService {
         company_id: companyId,
         pedido_id: pedidoId,
         dados_pedido: dadosPedido,
-        payload_focus_nfe: payloadFocusNFe
+        payload_focus_nfe: payloadFocusNFe;
       };
 
       console.log('📤 Body completo da requisição:', JSON.stringify(requestBody, null, 2));
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
+      const { data, error } = await Promise.resolve();
         body: requestBody
       });
 
@@ -460,15 +450,15 @@ class FocusNFeService {
         success: false,
         error: error.message || 'Erro de comunicação'
       };
-    }
-  }
+
+
 
   /**
    * Consulta o status de uma NFCe
    */
   async consultarNFCe(companyId: string, chave: string): Promise<NFCeResponse> {
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           action: 'consultar-nfce',
           company_id: companyId,
@@ -491,8 +481,8 @@ class FocusNFeService {
         success: false,
         error: error.message || 'Erro de comunicação'
       };
-    }
-  }
+
+
 
   /**
    * Cancela uma NFCe
@@ -503,10 +493,10 @@ class FocusNFeService {
         return {
           success: false,
           error: 'Justificativa deve ter pelo menos 15 caracteres'
-        };
+        } catch (error) { console.error('Error:', error); };
       }
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
+      const { data, error } = await Promise.resolve();
         body: {
           action: 'cancelar-nfce',
           company_id: companyId,
@@ -530,20 +520,20 @@ class FocusNFeService {
         success: false,
         error: error.message || 'Erro de comunicação'
       };
-    }
-  }
+
+
 
   /**
    * Busca logs de NFCe de uma empresa
    */
   async buscarLogsNFCe(companyId: string, limit: number = 50) {
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'nfce_logs')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //limit);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar logs de NFCe:', error);
@@ -554,8 +544,8 @@ class FocusNFeService {
     } catch (error: any) {
       console.error('Erro ao buscar logs:', error);
       return { success: false, error: error.message };
-    }
-  }
+
+
 
   /**
    * Exemplo de dados de pedido para testes (agora mais completo)
@@ -602,7 +592,7 @@ class FocusNFeService {
         }
       ]
     };
-  }
+
 
   /**
    * Mapeia tipos de pagamento do sistema para códigos da NFCe
@@ -620,7 +610,7 @@ class FocusNFeService {
     };
     
     return mapeamento[tipo] || '99'; // Outros
-  }
+
 
   /**
    * Formatar CNPJ para exibição
@@ -628,7 +618,7 @@ class FocusNFeService {
   static formatarCNPJ(cnpj: string): string {
     const numeros = cnpj.replace(/[^\d]/g, '');
     return numeros.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
-  }
+
 
   /**
    * Formatar NCM para exibição
@@ -636,8 +626,8 @@ class FocusNFeService {
   static formatarNCM(ncm: string): string {
     const numeros = ncm.replace(/[^\d]/g, '');
     return numeros.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
-  }
-}
+
+
 
 // Instância singleton do serviço
 export const focusNFeService = new FocusNFeService();

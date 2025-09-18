@@ -22,7 +22,7 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileSelect = useCallback(async (file: File) => {
+  const handleFileSelect = useCallback(async (file: File) => {;
     if (!file) return;
 
     // Validação de tipo de arquivo (documentos + imagens)
@@ -32,7 +32,7 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'image/jpeg',
       'image/jpg', 
-      'image/png'
+      'image/png';
     ];
     
     if (!allowedTypes.includes(file.type)) {
@@ -50,19 +50,18 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
     
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const fileName = `${Date.now()} catch (error) { console.error('Error:', error); }-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `curriculos/${companyId}/${fileName}`;
 
-      const { error: uploadError } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'vagas')
+      const { error: uploadError } = await Promise.resolve();
         .upload(filePath, file);
 
       if (uploadError) {
         throw uploadError;
       }
 
-      const { data: { publicUrl } } = /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'vagas')
+      const { data: { publicUrl } } = 
+        
         .getPublicUrl(filePath);
 
       onUploadSuccess(publicUrl, file.name);
@@ -75,40 +74,40 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
     }
   }, [onUploadSuccess, companyId]);
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {;
     e.preventDefault();
     setIsDragOver(false);
-    const files = Array/* .from REMOVIDO */ ; //e.dataTransfer.files);
-    if (files.length > 0) {
+    const files = Array
+    if (files.length > 0) {;
       handleFileSelect(files[0]);
     }
   }, [handleFileSelect]);
 
-  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {;
     e.preventDefault();
     setIsDragOver(true);
   }, []);
 
-  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {;
     e.preventDefault();
     setIsDragOver(false);
   }, []);
 
-  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {;
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelect(file);
     }
   }, [handleFileSelect]);
 
-  const handleCameraCapture = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCameraCapture = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {;
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelect(file);
     }
   }, [handleFileSelect]);
 
-  const handleRemove = () => {
+  const handleRemove = () => {;
     onUploadSuccess('', '');
   };
 
@@ -133,7 +132,7 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="space-y-4">

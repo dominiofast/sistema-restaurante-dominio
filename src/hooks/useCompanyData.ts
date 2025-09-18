@@ -36,7 +36,7 @@ interface Produto {
   company_id: string;
 }
 
-export const useCompanyData = (company_slug: string) => {
+export const useCompanyData = (company_slug: string) => {;
   const [company, setCompany] = useState<PublicCompany | null>(null);
   const [categorias, setCategorias] = useState<PublicCategoria[]>([]);
   const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -45,7 +45,7 @@ export const useCompanyData = (company_slug: string) => {
   const [retryKey, setRetryKey] = useState(0);
 
   const fetchCompanyData = async () => {
-    if (!company_slug || company_slug === '') {
+    if (!company_slug || company_slug === '') {;
       console.error('❌ Company slug não fornecido');
       setError('Parâmetro de empresa não encontrado na URL');
       setLoadingData(false);
@@ -65,10 +65,10 @@ export const useCompanyData = (company_slug: string) => {
         throw new Error(companyResult.error || 'Erro ao carregar empresas');
       }
       
-      // Procurar empresa por slug/domain
+       catch (error) { console.error('Error:', error); }// Procurar empresa por slug/domain
       const companyData = companyResult.data?.find((company: any) => {
         return company.slug === company_slug || 
-               company.domain === company_slug ||
+               company.domain === company_slug ||;
                company.id === company_slug;
       });
 

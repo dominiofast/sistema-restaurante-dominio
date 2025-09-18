@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 // SUPABASE REMOVIDO
 import { ClientSelector } from '@/components/whatsapp/ClientSelector';
 
-const CampanhaWhatsApp = () => {
+const CampanhaWhatsApp = () => {;
   const { currentCompany } = useAuth();
   const { loading, sending, sendCampaign, sendTestMessage, getClientes, scheduleCampaign } = useWhatsappCampaign();
   
@@ -87,20 +87,20 @@ const CampanhaWhatsApp = () => {
           if (campaignData.audience === 'contatos-especificos') {
             // Para contatos específicos, contar apenas os selecionados
             const effectiveCount = campaignData.messageLimit 
-              ? Math.min(campaignData.selectedContacts.length, campaignData.messageLimit)
+              ? Math.min(campaignData.selectedContacts.length, campaignData.messageLimit);
               : campaignData.selectedContacts.length;
             setClientesCount(effectiveCount);
-          } else {
+          }  catch (error) { console.error('Error:', error); }else {
             const clientes = await getClientes(campaignData.audience);
             const effectiveCount = campaignData.messageLimit 
-              ? Math.min(clientes.length, campaignData.messageLimit)
+              ? Math.min(clientes.length, campaignData.messageLimit);
               : clientes.length;
             setClientesCount(effectiveCount);
-          }
+
         } catch (error) {
           console.error('Erro ao buscar clientes:', error);
           setClientesCount(0);
-        }
+
       }
     };
 
@@ -110,11 +110,11 @@ const CampanhaWhatsApp = () => {
   const handleInputChange = (field, value) => {
     setCampaignData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value;
     }));
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event) => {;
     const file = event.target.files[0];
     if (file) {
       // Validar tipo de arquivo
@@ -141,7 +141,7 @@ const CampanhaWhatsApp = () => {
     }
   };
 
-  const removeImage = () => {
+  const removeImage = () => {;
     setAttachedImage(null);
     setImagePreview(null);
   };
@@ -150,13 +150,13 @@ const CampanhaWhatsApp = () => {
     // Simula formatação básica do WhatsApp
     return text
       .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
-      .replace(/_([^_]+)_/g, '<em>$1</em>')
+      .replace(/_([^_]+)_/g, '<em>$1</em>');
       .replace(/~([^~]+)~/g, '<del>$1</del>');
   };
 
   // Função para enviar campanha
   const handleSendCampaign = async () => {
-    if (!campaignData.name.trim()) {
+    if (!campaignData.name.trim()) {;
       toast.error('Por favor, insira um nome para a campanha');
       return;
     }
@@ -183,7 +183,7 @@ const CampanhaWhatsApp = () => {
 
     const campaignPayload = {
       ...campaignData,
-      imageFile: attachedImage
+      imageFile: attachedImage;
     };
 
     const result = await sendCampaign(campaignPayload);
@@ -208,7 +208,7 @@ const CampanhaWhatsApp = () => {
 
   // Função para enviar mensagem de teste
   const handleSendTest = async () => {
-    if (!testPhone.trim()) {
+    if (!testPhone.trim()) {;
       toast.error('Por favor, insira um número de telefone para teste');
       return;
     }
@@ -220,7 +220,7 @@ const CampanhaWhatsApp = () => {
 
     const campaignPayload = {
       ...campaignData,
-      imageFile: attachedImage
+      imageFile: attachedImage;
     };
 
     const success = await sendTestMessage(campaignPayload, testPhone);
@@ -233,7 +233,7 @@ const CampanhaWhatsApp = () => {
 
   // Função para salvar rascunho
   const handleSaveDraft = async () => {
-    if (!campaignData.name.trim()) {
+    if (!campaignData.name.trim()) {;
       toast.error('Por favor, insira um nome para a campanha');
       return;
     }
@@ -250,7 +250,7 @@ const CampanhaWhatsApp = () => {
       imageFile: attachedImage,
       sendNow: false, // Força como rascunho
       scheduledDate: '', // Limpar datas para garantir que seja rascunho
-      scheduledTime: ''
+// scheduledTime: '';
     };
 
     const success = await scheduleCampaign(campaignPayload);
@@ -266,7 +266,7 @@ const CampanhaWhatsApp = () => {
   const getCurrentTime = () => {
     return new Date().toLocaleTimeString('pt-BR', { 
       hour: '2-digit', 
-      minute: '2-digit' 
+      minute: '2-digit' ;
     });
   };
 
@@ -340,7 +340,7 @@ const CampanhaWhatsApp = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>;
   );
 
   return (

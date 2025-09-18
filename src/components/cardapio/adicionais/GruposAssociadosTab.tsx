@@ -12,7 +12,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -20,7 +20,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
+
 import { Produto, CategoriaAdicional, Adicional, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useCardapio } from '@/hooks/useCardapio';
 import { useAdicionaisCRUD } from '@/hooks/useAdicionaisCRUD';
@@ -64,7 +64,7 @@ interface SortableCategoriaProps {
   children: React.ReactNode;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 const SortableCategoria: React.FC<SortableCategoriaProps> = ({ categoria, children }) => {
   const {
@@ -78,7 +78,7 @@ const SortableCategoria: React.FC<SortableCategoriaProps> = ({ categoria, childr
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -103,7 +103,7 @@ interface SortableAdicionalProps {
   children: React.ReactNode;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, children }) => {
   const {
@@ -117,7 +117,7 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -142,7 +142,7 @@ interface GruposAssociadosTabProps {
   adicionais: Adicional[];
   produtoCategoriasAdicionais: ProdutoCategoriaAdicional[];
   onRefresh: () => void;
-}
+
 
 
 export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
@@ -179,11 +179,11 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    });
   );
 
   // Handlers para drag and drop
-  const handleDragEndCategorias = async (event: DragEndEvent) => {
+  const handleDragEndCategorias = async (event: DragEndEvent) => {;
     const { active, over } = event;
     
     if (!over || active.id === over.id) return;
@@ -205,12 +205,12 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         // 2. Persistir nova ordem no banco de dados
         const updates = newOrder.map((categoria, index) => {
           const associacao = produtoCategoriasAdicionais.find(
-            pca => pca.categoria_adicional_id === categoria?.id
+            pca => pca.categoria_adicional_id === categoria?.id;
           );
           return {
             id: associacao?.id,
             order_position: index + 1
-          };
+          } catch (error) { console.error('Error:', error); };
         }).filter(update => update.id);
 
         // Atualizar as posições no banco usando atualizações individuais
@@ -219,7 +219,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
             method: 'PATCH',
             body: JSON.stringify({ order_position: update.order_position })
           });
-        }
+
 
         toast({
           title: "Reordenação salva",
@@ -240,11 +240,11 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         });
       } finally {
         // Usar loading dos hooks CRUD se necessário
-      }
-    }
+
+
   };
 
-  const handleDragEndAdicionais = async (event: DragEndEvent, categoriaId: string) => {
+  const handleDragEndAdicionais = async (event: DragEndEvent, categoriaId: string) => {;
     const { active, over } = event;
     
     if (!over || active.id === over.id) return;
@@ -261,7 +261,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         toast({
           title: "Reordenação",
           description: `Adicional reordenado com sucesso!`,
-        });
+        } catch (error) { console.error('Error:', error); });
       } catch (error) {
         console.error('Erro ao reordenar adicionais:', error);
         toast({
@@ -269,60 +269,60 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
           description: "Não foi possível reordenar o adicional",
           variant: "destructive",
         });
-      }
-    }
+
+
   };
 
   // Usar funções dos hooks CRUD  
-  const handleEditarCategoria = (categoria: CategoriaAdicional) => {
+  const handleEditarCategoria = (categoria: CategoriaAdicional) => {;
     categoriasCRUD.handleEditarCategoria(categoria, produtoCategoriasAdicionais);
   };
 
-  const handleSalvarEdicaoCategoria = async () => {
+  const handleSalvarEdicaoCategoria = async () => {;
     const success = await categoriasCRUD.handleSalvarEdicaoCategoria();
     if (success) {
       onRefresh();
-    }
+
   };
 
-  const desassociarCategoriaAdicional = async (associacaoId: string) => {
+  const desassociarCategoriaAdicional = async (associacaoId: string) => {;
     const success = await categoriasCRUD.desassociarCategoriaAdicional(associacaoId);
     if (success) {
       onRefresh();
-    }
+
   };
 
-  const handleCancelarEdicao = () => {
+  const handleCancelarEdicao = () => {;
     categoriasCRUD.handleCancelarEdicao();
     adicionaisCRUD.handleCancelarEdicao();
   };
 
-  const handleCriarAdicional = async (categoriaId: string) => {
+  const handleCriarAdicional = async (categoriaId: string) => {;
     const success = await adicionaisCRUD.handleCriarAdicional(categoriaId);
     if (success) {
       onRefresh();
-    }
+
   };
 
-  const handleSaveAdicional = async () => {
+  const handleSaveAdicional = async () => {;
     const success = await adicionaisCRUD.handleSaveAdicional();
     if (success) {
       onRefresh();
-    }
+
   };
 
-  const handleDeleteAdicional = async (adicionalId: string) => {
+  const handleDeleteAdicional = async (adicionalId: string) => {;
     const success = await adicionaisCRUD.handleDeleteAdicional(adicionalId);
     if (success) {
       onRefresh();
-    }
+
   };
 
-  const handleImageUpload = async (file: File, adicionalId: string) => {
+  const handleImageUpload = async (file: File, adicionalId: string) => {;
     const success = await adicionaisCRUD.handleImageUpload(file, adicionalId);
     if (success) {
       onRefresh();
-    }
+
   };
 
   const handleToggleAdicionalStatus = async (adicionalId: string, isActive: boolean) => {
@@ -331,8 +331,8 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
       setAdicionaisLocal(prev => 
         prev.map(adicional => 
           adicional.id === adicionalId 
-            ? { ...adicional, is_active: isActive }
-            : adicional
+            ? { ...adicional, is_active: isActive };
+             catch (error) { console.error('Error:', error); }: adicional
         )
       );
 
@@ -363,7 +363,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         description: "Não foi possível alterar o status do adicional",
         variant: "destructive",
       });
-    }
+
   };
 
   // Estado local para os grupos associados para permitir reordenação em tempo real
@@ -376,14 +376,14 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
   // Atualizar estado local quando as props mudarem
   useEffect(() => {
     const novasCategorias = produtoCategoriasAdicionais.map(pca => 
-      categoriasAdicionais.find(ca => ca.id === pca.categoria_adicional_id)
+      categoriasAdicionais.find(ca => ca.id === pca.categoria_adicional_id);
     ).filter(Boolean);
     setCategoriasAssociadasLocal(novasCategorias);
   }, [produtoCategoriasAdicionais, categoriasAdicionais]);
 
   const adicionaisPorCategoria = useMemo(() => {
     return (categoriaId: string) => {
-      // Usar o estado local em vez do hook para ter as atualizações em tempo real
+      // Usar o estado local em vez do hook para ter as atualizações em tempo real;
       const adicionaisExistentes = adicionaisLocal.filter(a => a.categoria_adicional_id === categoriaId);
       return adicionaisExistentes.sort((a, b) => {
         const aOrder = a.order_position ?? 999;
@@ -424,7 +424,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
             <div className="space-y-6">
               {categoriasAssociadasLocal.map((categoria, index) => {
                 const associacao = produtoCategoriasAdicionais.find(
-                  pca => pca.categoria_adicional_id === categoria?.id
+                  pca => pca.categoria_adicional_id === categoria?.id;
                 );
                 const adicionaisCategoria = adicionaisPorCategoria(categoria?.id || '');
                 const estaEditando = categoriasCRUD.editandoCategoria === categoria?.id;

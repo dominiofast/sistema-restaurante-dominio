@@ -91,7 +91,7 @@ const FacebookPixelInjector: React.FC<{ companySlug?: string }> = ({ companySlug
     <img height="1" width="1" style="display:none" alt="facebook pixel pageview"
       src="https://www.facebook.com/tr?id=${encodeURIComponent(
         config.pixel_id
-      )}&ev=PageView&noscript=1" />
+      )}&ev=PageView&noscript=1" />;
   `;
 
   return <noscript dangerouslySetInnerHTML={{ __html: noscriptHtml }} />;

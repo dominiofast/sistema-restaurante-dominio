@@ -64,10 +64,10 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
         is_active: true,
         tipo_fiscal_id: '',
       });
-    }
+
   }, [categoria, reset]);
 
-  const handleFormSubmit = async (data: FormData) => {
+  const handleFormSubmit = async (data: FormData) => {;
     console.log('🔍 CategoriaForm: Dados do formulário:', data);
     console.log('🔍 CategoriaForm: Erros do formulário:', errors);
     
@@ -75,12 +75,12 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
     if (Object.keys(errors).length > 0) {
       console.error('❌ CategoriaForm: Formulário tem erros:', errors);
       return;
-    }
+
     
     // Converter string vazia para null para campos UUID
     const cleanedData = {
       ...data,
-      tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,
+      tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,;
     };
     
     console.log('🔍 CategoriaForm: Dados limpos:', cleanedData);
@@ -91,7 +91,7 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
     } catch (error) {
       console.error('❌ CategoriaForm: Erro ao salvar:', error);
       throw error;
-    }
+
   };
 
   const isActive = watch('is_active');

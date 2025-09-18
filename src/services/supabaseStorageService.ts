@@ -12,7 +12,7 @@ const CURRICULOS_BUCKET = 'curriculos';
  * @throws Lança um erro se o upload falhar.
  */
 export const uploadFileToSupabase = async (file: File, companyId: string): Promise<string> => {
-  if (!file || !companyId) {
+  if (!file || !companyId) {;
     throw new Error('Arquivo e ID da empresa são obrigatórios.');
   }
 
@@ -23,8 +23,7 @@ export const uploadFileToSupabase = async (file: File, companyId: string): Promi
   console.log(`[Supabase] Iniciando upload para o bucket '${CURRICULOS_BUCKET}'...`);
   console.log(`[Supabase] Caminho do arquivo: ${fileName}`);
 
-  const { data, error } = await /* supabase REMOVIDO */ null; //storage
-    /* .from REMOVIDO */ ; //CURRICULOS_BUCKET)
+  const { data, error } = await Promise.resolve();
     .upload(fileName, file, {
       cacheControl: '3600', // Cache de 1 hora
       upsert: false, // Não sobrescrever se o arquivo já existir (improvável com timestamp)
@@ -38,8 +37,7 @@ export const uploadFileToSupabase = async (file: File, companyId: string): Promi
   console.log('[Supabase] Upload concluído. Obtendo URL pública...');
 
   // Após o upload, obtemos a URL pública para o arquivo.
-  const { data: urlData } = /* supabase REMOVIDO */ null; //storage
-    /* .from REMOVIDO */ ; //CURRICULOS_BUCKET)
+  const { data: urlData  } = null as any;
     .getPublicUrl(data.path);
 
   if (!urlData || !urlData.publicUrl) {

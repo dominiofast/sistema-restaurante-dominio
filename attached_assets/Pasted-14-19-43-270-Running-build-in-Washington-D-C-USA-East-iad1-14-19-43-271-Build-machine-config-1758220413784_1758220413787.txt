@@ -1,0 +1,96 @@
+14:19:43.270 Running build in Washington, D.C., USA (East) – iad1
+14:19:43.271 Build machine configuration: 4 cores, 8 GB
+14:19:43.286 Cloning github.com/dominiofast/sistema-restaurante-dominio (Branch: main, Commit: f9a2db4)
+14:19:44.445 Cloning completed: 1.159s
+14:19:44.644 Found .vercelignore
+14:19:44.657 Removed 4 ignored files defined in .vercelignore
+14:19:44.657   /scripts/nodejs/build-debug.js
+14:19:44.657   /scripts/nodejs/build-production.js
+14:19:44.657   /scripts/nodejs/test-vercel-build.js
+14:19:44.657   /scripts/nodejs/verify-build.js
+14:19:44.737 Restored build cache from previous deployment (Fpu2LJDvWhrE1qYqC1LL2qzPVLZS)
+14:19:45.364 Running "vercel build"
+14:19:45.770 Vercel CLI 48.0.2
+14:19:46.640 Warning: Detected "engines": { "node": ">=18.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: http://vercel.link/node-version
+14:19:46.645 Running "install" command: `npm install`...
+14:19:48.678 
+14:19:48.678 up to date, audited 605 packages in 2s
+14:19:48.678 
+14:19:48.678 118 packages are looking for funding
+14:19:48.679   run `npm fund` for details
+14:19:48.706 
+14:19:48.706 6 vulnerabilities (5 moderate, 1 high)
+14:19:48.707 
+14:19:48.707 To address issues that do not require attention, run:
+14:19:48.707   npm audit fix
+14:19:48.707 
+14:19:48.707 To address all issues (including breaking changes), run:
+14:19:48.707   npm audit fix --force
+14:19:48.707 
+14:19:48.707 Run `npm audit` for details.
+14:19:48.949 
+14:19:48.949 > vite_react_shadcn_ts@0.0.0 build
+14:19:48.950 > vite build
+14:19:48.950 
+14:19:49.345 [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+14:19:49.411 transforming...
+14:19:50.094 Error processing file src/contexts/AuthContext.tsx: SyntaxError: Unexpected token (312:10)
+14:19:50.094     at constructor (/vercel/path0/node_modules/@babel/parser/lib/index.js:367:19)
+14:19:50.094     at TypeScriptParserMixin.raise (/vercel/path0/node_modules/@babel/parser/lib/index.js:6630:19)
+14:19:50.094     at TypeScriptParserMixin.unexpected (/vercel/path0/node_modules/@babel/parser/lib/index.js:6650:16)
+14:19:50.094     at TypeScriptParserMixin.parseExprAtom (/vercel/path0/node_modules/@babel/parser/lib/index.js:11447:16)
+14:19:50.094     at TypeScriptParserMixin.parseExprAtom (/vercel/path0/node_modules/@babel/parser/lib/index.js:4797:20)
+14:19:50.095     at TypeScriptParserMixin.parseExprSubscripts (/vercel/path0/node_modules/@babel/parser/lib/index.js:11081:23)
+14:19:50.095     at TypeScriptParserMixin.parseUpdate (/vercel/path0/node_modules/@babel/parser/lib/index.js:11066:21)
+14:19:50.095     at TypeScriptParserMixin.parseMaybeUnary (/vercel/path0/node_modules/@babel/parser/lib/index.js:11046:23)
+14:19:50.095     at TypeScriptParserMixin.parseMaybeUnary (/vercel/path0/node_modules/@babel/parser/lib/index.js:9857:18)
+14:19:50.095     at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/vercel/path0/node_modules/@babel/parser/lib/index.js:10899:61) {
+14:19:50.095   code: 'BABEL_PARSER_SYNTAX_ERROR',
+14:19:50.095   reasonCode: 'UnexpectedToken',
+14:19:50.095   loc: Position { line: 312, column: 10, index: 10746 },
+14:19:50.095   pos: 10746,
+14:19:50.095   syntaxPlugin: undefined
+14:19:50.095 }
+14:19:50.098 Error processing file src/contexts/PermissionsContext.tsx: SyntaxError: Unexpected token (70:12)
+14:19:50.098     at constructor (/vercel/path0/node_modules/@babel/parser/lib/index.js:367:19)
+14:19:50.098     at TypeScriptParserMixin.raise (/vercel/path0/node_modules/@babel/parser/lib/index.js:6630:19)
+14:19:50.098     at TypeScriptParserMixin.unexpected (/vercel/path0/node_modules/@babel/parser/lib/index.js:6650:16)
+14:19:50.099     at TypeScriptParserMixin.parseIdentifierName (/vercel/path0/node_modules/@babel/parser/lib/index.js:12209:12)
+14:19:50.099     at TypeScriptParserMixin.parseIdentifier (/vercel/path0/node_modules/@babel/parser/lib/index.js:12187:23)
+14:19:50.099     at TypeScriptParserMixin.parseBindingAtom (/vercel/path0/node_modules/@babel/parser/lib/index.js:7389:17)
+14:19:50.099     at TypeScriptParserMixin.parseBindingAtom (/vercel/path0/node_modules/@babel/parser/lib/index.js:9962:18)
+14:19:50.099     at TypeScriptParserMixin.parseMaybeDefault (/vercel/path0/node_modules/@babel/parser/lib/index.js:7477:39)
+14:19:50.099     at TypeScriptParserMixin.parseMaybeDefault (/vercel/path0/node_modules/@babel/parser/lib/index.js:9992:24)
+14:19:50.099     at TypeScriptParserMixin.parseObjectProperty (/vercel/path0/node_modules/@babel/parser/lib/index.js:11956:37) {
+14:19:50.099   code: 'BABEL_PARSER_SYNTAX_ERROR',
+14:19:50.099   reasonCode: 'UnexpectedToken',
+14:19:50.099   loc: Position { line: 70, column: 12, index: 2123 },
+14:19:50.099   pos: 2123,
+14:19:50.100   syntaxPlugin: undefined
+14:19:50.100 }
+14:19:50.166 [32m✓[39m 31 modules transformed.
+14:19:50.168 [31mx[39m Build failed in 793ms
+14:19:50.169 [31merror during build:
+14:19:50.169 [31m[vite:esbuild] Transform failed with 1 error:
+14:19:50.169 /vercel/path0/src/contexts/PermissionsContext.tsx:70:12: ERROR: Expected identifier but found "'2'"[31m
+14:19:50.169 file: [36m/vercel/path0/src/contexts/PermissionsContext.tsx:70:12[31m
+14:19:50.169 [33m
+14:19:50.169 [33mExpected identifier but found "'2'"[33m
+14:19:50.169 68 |      return Promise.resolve([]);
+14:19:50.169 69 |    },
+14:19:50.169 70 |        { id: '2', name: 'Ver Pedidos', slug: 'view-orders', module: 'orders', action: 'view' },
+14:19:50.169    |              ^
+14:19:50.169 71 |        { id: '3', name: 'Gerenciar Cardápio', slug: 'manage-menu', module: 'menu', action: 'manage' },
+14:19:50.170 72 |      ]);
+14:19:50.170 [31m
+14:19:50.170     at failureErrorWithLog (/vercel/path0/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+14:19:50.170     at /vercel/path0/node_modules/vite/node_modules/esbuild/lib/main.js:755:50
+14:19:50.170     at responseCallbacks.<computed> (/vercel/path0/node_modules/vite/node_modules/esbuild/lib/main.js:622:9)
+14:19:50.170     at handleIncomingPacket (/vercel/path0/node_modules/vite/node_modules/esbuild/lib/main.js:677:12)
+14:19:50.170     at Socket.readFromStdout (/vercel/path0/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+14:19:50.170     at Socket.emit (node:events:519:28)
+14:19:50.170     at addChunk (node:internal/streams/readable:561:12)
+14:19:50.170     at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+14:19:50.170     at Readable.push (node:internal/streams/readable:392:5)
+14:19:50.170     at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)[39m
+14:19:50.190 Error: Command "npm run build" exited with 1

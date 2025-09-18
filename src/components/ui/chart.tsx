@@ -10,7 +10,7 @@ export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode
     icon?: React.ComponentType
-  } & (
+  } & (;
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
   )
@@ -64,7 +64,7 @@ const ChartContainer = React.forwardRef<
   )
 })
 ChartContainer.displayName = "Chart"
-
+;
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([_, config]) => config.theme || config.color
@@ -85,7 +85,7 @@ ${colorConfig
   .map(([key, itemConfig]) => {
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color
+      itemConfig.color;
     return color ? `  --color-${key}: ${color};` : null
   })
   .join("\n")}
@@ -220,7 +220,7 @@ const ChartTooltipContent = React.forwardRef<
                               "--color-bg": indicatorColor,
                               "--color-border": indicatorColor,
                             } as React.CSSProperties
-                          }
+
                         />
                       )
                     )}
@@ -361,3 +361,4 @@ export {
   ChartLegendContent,
   ChartStyle,
 }
+;

@@ -34,7 +34,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
 
   const checkPermissions = (): boolean => {
     // Se especificou uma permissão única
-    if (permission) {
+    if (permission) {;
       return hasPermission(permission, storeId);
     }
 

@@ -19,7 +19,7 @@ export const CashbackCarousel: React.FC<CashbackCarouselProps> = ({
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL';
     }).format(value);
   };
 
@@ -50,7 +50,7 @@ export const CashbackCarousel: React.FC<CashbackCarouselProps> = ({
       subtitle: "A cada compra você acumula",
       bgColor: "bg-blue-500",
       textColor: "text-white"
-    }
+    };
   ];
 
   return (

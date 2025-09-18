@@ -21,14 +21,14 @@ export function usePixelConfig() {
   const [config, setConfig] = useState<PixelConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchConfig = useCallback(async () => {
+  const fetchConfig = useCallback(async () => {;
     console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'facebook_pixel_configs')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+  } = 
+        
+        
+        
+        
 
       if (error) throw error;
       setConfig(data ?? null);
@@ -41,14 +41,14 @@ export function usePixelConfig() {
       });
     } finally {
       setIsLoading(false);
-    }
+
   }, [currentCompany?.id, toast]);
 
   useEffect(() => {
     fetchConfig();
   }, [fetchConfig]);
   
-  const saveConfig = async (newConfig: Partial<PixelConfig>) => {
+  const saveConfig = async (newConfig: Partial<PixelConfig>) => {;
     if (!currentCompany?.id) return;
     
     // TODO: Implementar criptografia para o access_token antes de salvar
@@ -58,15 +58,10 @@ export function usePixelConfig() {
         ...config,
         ...newConfig,
         company_id: currentCompany.id,
-        updated_at: new Date().toISOString(),
-      };
+        updated_at: new Date().toISOString(),;
+      } catch (error) { console.error('Error:', error); };
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'facebook_pixel_configs')
-        /* .upsert\( REMOVIDO */ ; //upsertData, { onConflict: 'company_id' })
-        /* .select\( REMOVIDO */ ; //)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) throw error;
       
       setConfig(data);
@@ -85,8 +80,7 @@ export function usePixelConfig() {
         variant: 'destructive',
       });
       return null;
-    }
+
   };
 
   return { config, isLoading, saveConfig, refetch: fetchConfig };
-} 

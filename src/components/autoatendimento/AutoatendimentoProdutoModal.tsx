@@ -50,11 +50,11 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
   const toggleCategory = (categoriaId: string) => {
     setExpandedCategories(prev => ({
       ...prev,
-      [categoriaId]: !prev[categoriaId]
+      [categoriaId]: !prev[categoriaId];
     }));
   };
 
-  const getTotalSelectedInCategory = (categoriaId: string) => {
+  const getTotalSelectedInCategory = (categoriaId: string) => {;
     const categoria = categorias.find(cat => cat.id === categoriaId);
     if (!categoria) return 0;
     
@@ -63,12 +63,12 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
     }, 0);
   };
 
-  const scrollToNextRequiredCategory = (currentCategoriaId: string) => {
+  const scrollToNextRequiredCategory = (currentCategoriaId: string) => {;
     const currentIndex = categorias.findIndex(cat => cat.id === currentCategoriaId);
     const nextRequiredCategory = categorias.find((cat, index) => 
       index > currentIndex && 
       cat.is_required && 
-      getTotalSelectedInCategory(cat.id) < (cat.min_selection || 1)
+      getTotalSelectedInCategory(cat.id) < (cat.min_selection || 1);
     );
     
     if (nextRequiredCategory) {
@@ -79,7 +79,7 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
     }
   };
 
-  const addAdicional = (adicionalId: string, categoria: any) => {
+  const addAdicional = (adicionalId: string, categoria: any) => {;
     const currentQuantity = selectedAdicionais[adicionalId] || 0;
     
     if (categoria.selection_type === 'single') {
@@ -122,13 +122,13 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
           setTimeout(() => scrollToNextRequiredCategory(categoria.id), 300);
         }
       }
-    }
+
   };
 
   const calcularTotalAdicionais = () => {
     return Object.entries(selectedAdicionais).reduce((total, [adicionalId, quantidade]) => {
       const adicional = categorias
-        .flatMap(cat => cat.adicionais)
+        .flatMap(cat => cat.adicionais);
         .find(add => add.id === adicionalId);
       return total + (adicional?.price || 0) * quantidade;
     }, 0);
@@ -136,7 +136,7 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
 
   const calcularPrecoTotal = () => {
     const precoBase = produto.is_promotional && produto.promotional_price 
-      ? produto.promotional_price 
+      ? produto.promotional_price ;
       : produto.price;
     const precoTotal = precoBase * quantidade;
     const precoAdicionais = calcularTotalAdicionais() * quantidade;
@@ -145,16 +145,16 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
 
   const handleAddToCart = () => {
     if (produto) {
-      // Adicionar múltiplas vezes se quantidade > 1
+      // Adicionar múltiplas vezes se quantidade > 1;
       for (let i = 0; i < quantidade; i++) {
         onAddToCart(produto, selectedAdicionais, observacoes);
       }
       onClose();
-    }
+
   };
 
   // Verificar se categorias obrigatórias foram preenchidas
-  const canAddToCart = () => {
+  const canAddToCart = () => {;
     if (!categorias || categorias.length === 0) return true;
     
     return categorias.every(categoria => {

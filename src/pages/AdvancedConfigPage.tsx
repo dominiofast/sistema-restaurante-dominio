@@ -41,13 +41,13 @@ interface ConfigAgenteIA {
   message_limit: number;
   working_hours: string;
   habilitar_lancamento_pedidos: boolean;
-}
+
 
 interface StatusConexao {
   openai: boolean;
   whatsapp: boolean;
   supabase: boolean;
-}
+
 
 // ---------------------------------------------------------------------------
 // CONFIGURAÇÃO INICIAL
@@ -100,20 +100,14 @@ const AdvancedConfigPage: React.FC = () => {
   // Verificar conexões das APIs
   const verificarConexoes = async () => {
     try {
-      // Testar conexão Supabase
-      const { error: supabaseError } = await /* supabase REMOVIDO */ null; //from('ai_agent_config')/* .select\( REMOVIDO */ ; //'id')/* .limit\( REMOVIDO */ ; //1);
+      // Testar conexão Supabase;
+      const { error: supabaseError }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }));
 
       // Testar OpenAI via edge function
       try {
-        const { data: testData, error: testError } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
-          body: { 
-            slug_empresa: 'test', 
-            user_message: 'teste conexão',
-            historico: []
-          }
-        });
-        console.log('Teste OpenAI:', { testData, testError });
+        const testData = null as any; const testError = null as any;
+        console.log('Teste OpenAI:', { testData, testError } catch (error) { console.error('Error:', error); });
         setStatusConexao(prev => ({ ...prev, openai: testData?.resposta && !testError }));
       } catch (error) {
         console.error('Erro teste OpenAI:', error);
@@ -121,7 +115,7 @@ const AdvancedConfigPage: React.FC = () => {
       }
 
       // Verificar integração WhatsApp
-      const { data: whatsappData } = await /* supabase REMOVIDO */ null; //from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'id, webhook')/* .limit\( REMOVIDO */ ; //1);
+      const { data: whatsappData } = await Promise.resolve();
       const hasWhatsapp = whatsappData && whatsappData.length > 0;
       const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook');
       setStatusConexao(prev => ({ 
@@ -130,25 +124,18 @@ const AdvancedConfigPage: React.FC = () => {
       }));
     } catch (error) {
       console.error('Erro ao verificar conexões:', error);
-    }
+
   };
 
   // Carregar dados iniciais
-  const carregarDados = async () => {
+  const carregarDados = async () => {;
     setLoading(true);
     try {
       // Buscar configuração do agente
-      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (configError && configError.code !== 'PGRST116') {
-        throw configError;
+      const configData = null as any; const configError = null as any;
       }
 
-      if (configData) {
+       catch (error) { console.error('Error:', error); }if (configData) {
         setConfig({
           ...configData,
           sales_phrases: typeof configData.sales_phrases === 'string' 
@@ -164,7 +151,7 @@ const AdvancedConfigPage: React.FC = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   useEffect(() => {
@@ -172,30 +159,30 @@ const AdvancedConfigPage: React.FC = () => {
     verificarConexoes();
   }, []);
 
-  const salvarConfig = async () => {
+  const salvarConfig = async () => {;
     setSaving(true);
     try {
       if (!config.agent_name) {
         throw new Error('Nome do assistente é obrigatório');
       }
 
-      const configParaSalvar = {
+       catch (error) { console.error('Error:', error); }const configParaSalvar = {
         ...config,
-        company_id: config.company_id || 'default-company'
+        company_id: config.company_id || 'default-company';
       };
 
       let resultado;
       if (config.id) {
-        resultado = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'ai_agent_config')
-          /* .update\( REMOVIDO */ ; //configParaSalvar)
-          /* .eq\( REMOVIDO */ ; //'id', config.id);
+        resultado = 
+          
+          
+          
       } else {
-        resultado = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'ai_agent_config')
-          /* .insert\( REMOVIDO */ ; //configParaSalvar)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
+        resultado = 
+          
+          
+          
+          
       }
 
       if (resultado.error) throw resultado.error;
@@ -213,26 +200,19 @@ const AdvancedConfigPage: React.FC = () => {
       });
     } finally {
       setSaving(false);
-    }
+
   };
 
-  const testarAgente = async () => {
+  const testarAgente = async () => {;
     if (!testMessage.trim()) return;
     
     setTestResponse('Processando...');
     try {
       // Buscar o slug da empresa atual
-      const { data: company, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'slug')
-        /* .eq\( REMOVIDO */ ; //'id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (companyError || !company?.slug) {
-        throw new Error('Slug da empresa não encontrado');
+      const company = null as any; const companyError = null as any;
       }
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
+       catch (error) { console.error('Error:', error); }const { data, error } = await Promise.resolve();
         body: {
           slug_empresa: company.slug,
           user_message: testMessage,
@@ -244,12 +224,12 @@ const AdvancedConfigPage: React.FC = () => {
       setTestResponse(data?.resposta || 'Resposta não recebida');
     } catch (error: any) {
       setTestResponse(`Erro: ${error.message}`);
-    }
+
   };
 
   const gerarPromptPreview = () => {
     const frases = typeof config.sales_phrases === 'string' 
-      ? config.sales_phrases.split('\n').filter(f => f.trim())
+      ? config.sales_phrases.split('\n').filter(f => f.trim());
       : [];
 
     return `Você é ${config.agent_name || 'Assistente'} da empresa.

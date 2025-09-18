@@ -67,12 +67,12 @@ export const HorarioStepNovo: React.FC = () => {
   }, [loading, horario, horariosDias]);
 
   // Handlers
-  const toggleDia = (dia: number) => {
+  const toggleDia = (dia: number) => {;
     setDiasAtivos(prev => prev.includes(dia) ? prev.filter(d => d !== dia) : [...prev, dia]);
   };
 
   const handleHorarioChange = (dia: number, idx: number, campo: 'inicio'|'fim', valor: string) => {
-    setHorarios(prev => {
+    setHorarios(prev => {;
       const novo = { ...prev };
       novo[dia][idx][campo] = valor;
       return novo;
@@ -80,7 +80,7 @@ export const HorarioStepNovo: React.FC = () => {
   };
 
   const addHorario = (dia: number) => {
-    setHorarios(prev => {
+    setHorarios(prev => {;
       const novo = { ...prev };
       novo[dia].push({inicio: '', fim: ''});
       return novo;
@@ -88,7 +88,7 @@ export const HorarioStepNovo: React.FC = () => {
   };
 
   const removeHorario = (dia: number, idx: number) => {
-    setHorarios(prev => {
+    setHorarios(prev => {;
       const novo = { ...prev };
       novo[dia] = novo[dia].filter((_, i) => i !== idx);
       if (novo[dia].length === 0) novo[dia] = [{inicio: '', fim: ''}];
@@ -96,7 +96,7 @@ export const HorarioStepNovo: React.FC = () => {
     });
   };
 
-  const handleSalvar = async () => {
+  const handleSalvar = async () => {;
     setSalvando(true);
     setSucesso(false);
     setErroSalvar(null);
@@ -115,7 +115,7 @@ export const HorarioStepNovo: React.FC = () => {
         [0,1,2,3,4,5,6].reduce((acc, d) => {
           if (diasAtivos.includes(d)) acc[d] = horarios[d];
           return acc;
-        }, {} as Record<number, {inicio: string, fim: string}[]>)
+        } catch (error) { console.error('Error:', error); }, {} as Record<number, {inicio: string, fim: string}[]>)
       );
       setSucesso(true);
       setTimeout(() => setSucesso(false), 3000);

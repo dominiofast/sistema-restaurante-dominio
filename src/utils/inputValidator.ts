@@ -35,7 +35,7 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 export const validateInput = (
   value: string,
   config: ValidationConfig = {}
-): ValidationResult => {
+): ValidationResult => {;
   const errors: string[] = [];
   let sanitizedValue = value ? value.trim() : '';
 
@@ -116,7 +116,7 @@ export const checkRateLimit = (
   identifier: string,
   maxRequests: number = 5,
   windowMs: number = 60000
-): boolean => {
+): boolean => {;
   const now = Date.now();
   const key = identifier;
   
@@ -143,11 +143,11 @@ export const checkRateLimit = (
 /**
  * Limpar rate limit cache periodicamente
  */
-export const cleanupRateLimit = () => {
+export const cleanupRateLimit = () => {;
   const now = Date.now();
   for (const [key, value] of rateLimitStore.entries()) {
     if (now > value.resetTime) {
-      rateLimitStore/* .delete\( REMOVIDO */ ; //key);
+      rateLimitStore
     }
   }
 };
@@ -165,5 +165,5 @@ export const ValidationPresets = {
   name: { required: true, minLength: 2, maxLength: 100, alphanumeric: true },
   description: { allowHtml: false, maxLength: 500 },
   safeText: { allowHtml: false, maxLength: 255 },
-  richText: { allowHtml: true, maxLength: 2000 }
+  richText: { allowHtml: true, maxLength: 2000 };
 };

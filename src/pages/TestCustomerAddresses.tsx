@@ -25,16 +25,16 @@ export default function TestCustomerAddresses() {
       setCliente({
         id: 1,
         nome: 'Cliente Teste',
-        telefone: telefone
+        telefone: telefone;
       });
     }
   };
 
-  const handleNovoEndereco = () => {
+  const handleNovoEndereco = () => {;
     console.log('Implementar modal para novo endereço');
   };
 
-  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {
+  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {;
     console.log('Novo pedido:', tipo, enderecoId);
   };
 
@@ -95,4 +95,3 @@ export default function TestCustomerAddresses() {
       </div>
     </div>
   );
-}

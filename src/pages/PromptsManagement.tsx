@@ -27,7 +27,7 @@ interface Company {
   slug: string;
   domain: string;
   status: string;
-}
+
 
 interface PromptData {
   agent_slug: string;
@@ -35,7 +35,7 @@ interface PromptData {
   vars: any;
   version: number;
   updated_at: string;
-}
+
 
 export default function PromptsManagement() {
   const navigate = useNavigate();
@@ -63,47 +63,32 @@ export default function PromptsManagement() {
         </Card>
       </div>
     );
-  }
+
 
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
-    try {
+    try {;
       setLoading(true);
       
       // Carregar empresas
-      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, slug, domain, status')
-        /* .order\( REMOVIDO */ ; //'name');
-
-      if (companiesError) throw companiesError;
+      const companiesData = null as any; const companiesError = null as any;
       setCompanies(companiesData || []);
 
       // Carregar prompts de todas as empresas
-      const { data: promptsData, error: promptsError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_prompts')
-        /* .select\( REMOVIDO */ ; //'*');
-
-      if (promptsError) throw promptsError;
+      const promptsData = null as any; const promptsError = null as any;
       
-      const promptsMap: Record<string, PromptData> = {};
+      const promptsMap: Record<string, PromptData> = {} catch (error) { console.error('Error:', error); };
       (promptsData || []).forEach(prompt => {
         promptsMap[prompt.agent_slug] = prompt;
       });
       setPrompts(promptsMap);
 
       // Carregar template global
-      const { data: globalData, error: globalError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_global_prompt_template')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .single\( REMOVIDO */ ; //);
+      const globalData = null as any; const globalError = null as any;
 
-      if (!globalError && globalData) {
-        setGlobalTemplate(globalData);
-      }
 
     } catch (error: any) {
       toast({
@@ -113,15 +98,15 @@ export default function PromptsManagement() {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.slug.toLowerCase().includes(searchTerm.toLowerCase())
+    company.slug.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
-  const getPromptStatus = (companySlug: string) => {
+  const getPromptStatus = (companySlug: string) => {;
     const prompt = prompts[companySlug];
     if (!prompt) return 'missing';
     if (prompt.template.length < 100) return 'incomplete';
@@ -130,7 +115,7 @@ export default function PromptsManagement() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'complete':
+      case 'complete':;
         return <Badge className="bg-green-100 text-green-800"><CheckCircle className="w-3 h-3 mr-1" />Completo</Badge>;
       case 'incomplete':
         return <Badge className="bg-yellow-100 text-yellow-800"><AlertCircle className="w-3 h-3 mr-1" />Incompleto</Badge>;
@@ -138,19 +123,19 @@ export default function PromptsManagement() {
         return <Badge className="bg-red-100 text-red-800"><Clock className="w-3 h-3 mr-1" />Faltando</Badge>;
       default:
         return <Badge variant="outline">Desconhecido</Badge>;
-    }
+
   };
 
   const updateGlobalTemplate = async (newTemplate: string) => {
-    try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_global_prompt_template')
-        /* .update\( REMOVIDO */ ; //{
+    try {;
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           template: newTemplate,
           is_active: true,
           updated_at: new Date().toISOString()
         })
-        /* .eq\( REMOVIDO */ ; //'id', globalTemplate?.id);
+        
 
       if (error) throw error;
 
@@ -167,14 +152,14 @@ export default function PromptsManagement() {
         description: error.message,
         variant: "destructive"
       });
-    }
+
   };
 
   const applyGlobalTemplate = async () => {
-    try {
+    try {;
       setApplyingTemplate(true);
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('apply-global-template', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { companiesToUpdate: 'all' }
       });
 
@@ -195,20 +180,19 @@ export default function PromptsManagement() {
       });
     } finally {
       setApplyingTemplate(false);
-    }
+
   };
 
   const fixHorariosReais = async () => {
-    try {
+    try {;
       setApplyingTemplate(true);
       
       toast({
         title: "🚨 CORREÇÃO URGENTE INICIADA",
         description: "Aplicando horários reais aos prompts...",
-      });
+      } catch (error) { console.error('Error:', error); });
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('fix-horarios-reais');
-
+      const { data, error } = await Promise.resolve();
       if (error) throw error;
 
       toast({
@@ -226,7 +210,7 @@ export default function PromptsManagement() {
       });
     } finally {
       setApplyingTemplate(false);
-    }
+
   };
 
   const formatDate = (dateString: string) => {
@@ -235,7 +219,7 @@ export default function PromptsManagement() {
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit';
     });
   };
 
@@ -247,7 +231,7 @@ export default function PromptsManagement() {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -505,4 +489,4 @@ export default function PromptsManagement() {
       )}
     </div>
   );
-}
+

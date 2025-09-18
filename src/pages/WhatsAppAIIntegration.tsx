@@ -24,7 +24,7 @@ interface WhatsAppIntegration {
   instance_key: string;
   token: string;
   webhook?: string;
-}
+
 
 interface AIPrompt {
   id: string;
@@ -33,7 +33,7 @@ interface AIPrompt {
   vars: any;
   version: number;
   updated_at: string;
-}
+
 
 export default function WhatsAppAIIntegration() {
   const { currentCompany } = useAuth();
@@ -50,30 +50,17 @@ export default function WhatsAppAIIntegration() {
     }
   }, [currentCompany]);
 
-  const loadIntegrationData = async () => {
+  const loadIntegrationData = async () => {;
     if (!currentCompany) return;
 
     setLoading(true);
     try {
       // Carregar integração WhatsApp
-      const { data: whatsappData, error: whatsappError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_integrations')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'purpose', 'primary')
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (whatsappError) throw whatsappError;
+      const whatsappData = null as any; const whatsappError = null as any;
       setWhatsappIntegration(whatsappData);
 
       // Carregar prompt IA
-      const { data: promptData, error: promptError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_prompts')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'agent_slug', 'agente-ia-conversa')
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (promptError) throw promptError;
+      const promptData = null as any; const promptError = null as any;
       setAiPrompt(promptData);
 
     } catch (error: any) {
@@ -87,7 +74,7 @@ export default function WhatsAppAIIntegration() {
     }
   };
 
-  const testIntegration = async () => {
+  const testIntegration = async () => {;
     if (!whatsappIntegration || !currentCompany) return;
 
     setTesting(true);
@@ -95,7 +82,7 @@ export default function WhatsAppAIIntegration() {
 
     try {
       // Simular uma mensagem de teste
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           slug_empresa: currentCompany.slug || 'test',
           user_message: 'oi',
@@ -125,8 +112,8 @@ export default function WhatsAppAIIntegration() {
   };
 
   const syncPromptToEdgeConfig = async () => {
-    try {
-      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('push_prompt_to_edge', {
+    try {;
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { agent_slug: 'agente-ia-conversa' }
       });
 
@@ -154,7 +141,7 @@ export default function WhatsAppAIIntegration() {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
@@ -399,4 +386,3 @@ export default function WhatsAppAIIntegration() {
       </div>
     </div>
   );
-}

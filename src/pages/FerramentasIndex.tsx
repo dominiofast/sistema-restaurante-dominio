@@ -46,14 +46,14 @@ const FerramentasIndex: React.FC = () => {
       icone: <TestTube className="h-8 w-8" />,
       status: '✅ Funcionando',
       cor: 'border-yellow-200 bg-yellow-50'
-    }
+    };
   ];
 
-  const abrirFerramenta = (url: string) => {
+  const abrirFerramenta = (url: string) => {;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const irParaFerramenta = (url: string) => {
+  const irParaFerramenta = (url: string) => {;
     window.location.href = url;
   };
 

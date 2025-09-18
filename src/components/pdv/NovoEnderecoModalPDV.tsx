@@ -30,7 +30,7 @@ export const NovoEnderecoModalPDV: React.FC<NovoEnderecoModalPDVProps> = ({
     handleSave
   } = useAddressForm(editingAddress, isOpen, customerName, customerPhone);
 
-  const handleSalvar = async () => {
+  const handleSalvar = async () => {;
     console.log('=== INICIANDO PROCESSO DE SALVAMENTO DE ENDEREÇO ===');
     console.log('handleSalvar do modal chamado');
     console.log('Endereço no modal:', address);
@@ -56,10 +56,10 @@ export const NovoEnderecoModalPDV: React.FC<NovoEnderecoModalPDVProps> = ({
       
       const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar endereço. Tente novamente.';
       alert(errorMessage);
-    }
+
   };
 
-  const handleAdicionarFormaEntrega = () => {
+  const handleAdicionarFormaEntrega = () => {;
     console.log('handleAdicionarFormaEntrega chamado');
     // Por enquanto, vamos fazer a mesma ação do salvar
     handleSalvar();

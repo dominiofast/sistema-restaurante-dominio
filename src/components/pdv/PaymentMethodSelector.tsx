@@ -38,7 +38,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     );
   }
 
-  const getCardBrands = () => {
+  const getCardBrands = () => {;
     const cartaoOption = paymentOptions.find(option => option.value === 'cartao');
     return cartaoOption?.brands || [];
   };

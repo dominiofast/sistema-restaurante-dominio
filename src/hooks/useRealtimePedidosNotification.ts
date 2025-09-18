@@ -15,7 +15,7 @@ interface PedidoNotification {
   created_at: string;
 }
 
-export const useRealtimePedidosNotification = (companyId?: string) => {
+export const useRealtimePedidosNotification = (companyId?: string) => {;
   const [novoPedido, setNovoPedido] = useState<PedidoNotification | null>(null);
   const [pedidosPendentes, setPedidosPendentes] = useState<number>(0);
 
@@ -26,11 +26,11 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
 
     // Buscar pedidos pendentes iniciais
     const fetchPedidosPendentes = async () => {
-      try {
-        const { data, error } = /* await supabase REMOVIDO */ null
-          // /* .from REMOVIDO */ ; // // DESABILITADO'pedidos')
-          /* .select\( REMOVIDO */ ; //'id')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+      try {;
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          // 
+          
+          
           .in('status', ['analise', 'aceito']);
 
         if (!error && data) {
@@ -38,15 +38,15 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
         }
       } catch (error) {
         console.error('Erro ao buscar pedidos pendentes:', error);
-      }
+
     };
 
     fetchPedidosPendentes();
 
     // Configurar listener em tempo real para novos pedidos
     const channel = supabase
-      // /* .channel REMOVIDO */ ; // // DESABILITADO'pedidos-realtime')
-      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
+      // 
+      // // 
         'postgres_changes',
         {
           event: 'INSERT',
@@ -54,7 +54,7 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           table: 'pedidos',
           filter: `company_id=eq.${companyId}`
         },
-        (payload) => {
+        (payload) => {;
           const novoPedidoData = payload.new as PedidoNotification;
           
           // Atualizar contador
@@ -82,7 +82,7 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
               break;
             default:
               mensagem = `Novo pedido #${novoPedidoData.numero_pedido || novoPedidoData.id} - ${novoPedidoData.nome}`;
-          }
+
 
           // Toast com som
           toast.success(mensagem, {
@@ -110,12 +110,12 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
             oscillator.stop(audioContext.currentTime + 0.3);
           } catch (error) {
             console.log('🔔 Novo pedido recebido!');
-          }
+
 
           console.log('🔔 Novo pedido recebido:', novoPedidoData);
         }
       )
-      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
+      // // 
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -129,7 +129,7 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           // Se o pedido foi finalizado ou cancelado, diminuir contador
           if (['finalizado', 'cancelado', 'entregue'].includes(pedidoAtualizado.status)) {
             setPedidosPendentes(prev => Math.max(0, prev - 1));
-          }
+
           
           // Se mudou para aceito/em preparo, manter no contador mas notificar
           if (pedidoAtualizado.status === 'aceito') {
@@ -137,22 +137,22 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
               description: `${pedidoAtualizado.nome} - R$ ${pedidoAtualizado.total.toFixed(2)}`,
               duration: 5000,
             });
-          }
+
         }
       )
-      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
+      // // 
 
     // Cleanup
     return () => {
-      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
+      // 
     };
   }, [companyId]);
 
-  const marcarPedidoComoVisto = () => {
+  const marcarPedidoComoVisto = () => {;
     setNovoPedido(null);
   };
 
-  const resetarContador = () => {
+  const resetarContador = () => {;
     setPedidosPendentes(0);
   };
 

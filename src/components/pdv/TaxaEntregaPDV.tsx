@@ -6,7 +6,7 @@ interface TaxaEntregaPDVProps {
 }
 
 export const TaxaEntregaPDV: React.FC<TaxaEntregaPDVProps> = ({ value = 0, onChange }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const newValue = parseFloat(e.target.value) || 0;
     onChange?.(newValue);
   };

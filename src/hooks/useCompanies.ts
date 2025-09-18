@@ -24,7 +24,7 @@ interface CompanyFormData {
   user_count: number;
 }
 
-export const useCompanies = () => {
+export const useCompanies = () => {;
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
@@ -54,7 +54,7 @@ export const useCompanies = () => {
 
   // Create company mutation
   const createCompanyMutation = useMutation({
-    mutationFn: async (companyData: CompanyFormData) => {
+    mutationFn: async (companyData: CompanyFormData) => {;
       console.log('🏢 useCompanies: Criando empresa via API...');
       
       const response = await fetch('/api/companies', {
@@ -69,7 +69,7 @@ export const useCompanies = () => {
           plan: companyData.plan,
           status: companyData.status,
           user_count: companyData.user_count,
-        })
+        });
       });
       
       const result = await response.json();
@@ -99,7 +99,7 @@ export const useCompanies = () => {
 
   // Update company mutation
   const updateCompanyMutation = useMutation({
-    mutationFn: async ({ id, ...updates }: CompanyFormData & { id: string }) => {
+    mutationFn: async ({ id, ...updates }: CompanyFormData & { id: string }) => {;
       console.log('🏢 useCompanies: Atualizando empresa via API...');
       
       const response = await fetch(`/api/companies/${id}`, {
@@ -114,7 +114,7 @@ export const useCompanies = () => {
           plan: updates.plan,
           status: updates.status,
           user_count: updates.user_count,
-        })
+        });
       });
       
       const result = await response.json();
@@ -143,11 +143,11 @@ export const useCompanies = () => {
 
   // Delete company mutation
   const deleteCompanyMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: string) => {;
       console.log('🏢 useCompanies: Deletando empresa via API...');
       
       const response = await fetch(`/api/companies/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE';
       });
       
       const result = await response.json();
@@ -188,7 +188,7 @@ export const useCompanies = () => {
   };
 };
 
-export const useCompanyDetails = (companyId?: string) => {
+export const useCompanyDetails = (companyId?: string) => {;
   const { currentCompany } = useAuth();
   const targetId = companyId || currentCompany?.id;
 

@@ -11,7 +11,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, billingType }) => {
   const period = billingType === 'monthly' ? '/mês' : '/mês (cobrado anualmente)';
 
   const getCardStyle = () => {
-    if (plan.type === 'trial') {
+    if (plan.type === 'trial') {;
       return 'bg-[hsl(var(--dominio-success))] text-white shadow-[0_4px_20px_rgba(40,167,69,0.15)]';
     }
     if (plan.badge) {
@@ -21,7 +21,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, billingType }) => {
   };
 
   const getButtonStyle = () => {
-    if (plan.type === 'trial') {
+    if (plan.type === 'trial') {;
       return 'bg-white/20 border-2 border-white/30 text-white hover:bg-white/30 hover:border-white/50 backdrop-blur-sm';
     }
     if (plan.badge) {

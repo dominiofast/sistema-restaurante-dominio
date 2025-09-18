@@ -9,7 +9,7 @@ import { useAutoPrint } from './useAutoPrint';
 import { STATUS } from '../constants/pedidos';
 import { filtrarPorIntervalo, filtrarCanceladosPorIntervalo } from '../utils/pedidosUtils';
 
-export const usePedidosDashboardLogic = () => {
+export const usePedidosDashboardLogic = () => {;
   const [busca, setBusca] = useState('');
   const [tipoSelecionado, setTipoSelecionado] = useState('todos');
   const [pedidoSelecionado, setPedidoSelecionado] = useState<number | null>(null);
@@ -36,7 +36,7 @@ export const usePedidosDashboardLogic = () => {
 
   // Processar dados uma única vez para evitar re-renders
   const dadosProcessados = useMemo(() => {
-    if (pedidos.length === 0) {
+    if (pedidos.length === 0) {;
       return { pedidosPorStatus: STATUS.reduce((acc, s) => ({ ...acc, [s.key]: [] }), {}) };
     }
 
@@ -70,7 +70,7 @@ export const usePedidosDashboardLogic = () => {
     const pedidosEntreguesFiltrados = filtrarPorIntervalo(pedidosEntregues, intervaloHorasEntregue);
 
     const pedidosPorStatus = STATUS.reduce((acc, s) => {
-      if (s.key === 'entregue') {
+      if (s.key === 'entregue') {;
         acc[s.key] = pedidosEntreguesFiltrados;
       } else {
         const pedidosParaStatus = pedidosFiltrados.filter(p => p.status === s.key);
@@ -93,7 +93,7 @@ export const usePedidosDashboardLogic = () => {
   }, [pedidos, tipoSelecionado, busca, intervaloHorasEntregue]);
 
   // Callbacks otimizados com atualização otimista
-  const onDragEnd = useCallback(async (event: DragEndEvent) => {
+  const onDragEnd = useCallback(async (event: DragEndEvent) => {;
     const { active, over } = event;
     
     if (!over) {
@@ -128,15 +128,15 @@ export const usePedidosDashboardLogic = () => {
   }, [updatePedidoStatus, pedidos]);
 
   const onSelectPedido = useCallback((pedidoId: number) => {
-    // Navegar para o PDV com o pedido selecionado na mesma guia
+    // Navegar para o PDV com o pedido selecionado na mesma guia;
     navigate(`/pdv?pedido_id=${pedidoId}`);
   }, [navigate]);
 
-  const onCloseModal = useCallback(() => {
+  const onCloseModal = useCallback(() => {;
     setPedidoSelecionado(null);
   }, []);
 
-  const onStatusChange = useCallback(async (pedidoId: number, novoStatus: string) => {
+  const onStatusChange = useCallback(async (pedidoId: number, novoStatus: string) => {;
     console.log('🔄 Status Change: Atualizando status do pedido', { pedidoId, novoStatus });
     
     // Chamar a função de atualização que já faz a atualização otimista
@@ -147,7 +147,7 @@ export const usePedidosDashboardLogic = () => {
   // Função para testar campainha
   const testarCampainha = useCallback(() => {
     if (audioEnabled && userInteracted) {
-      // Criar um áudio temporário para teste
+      // Criar um áudio temporário para teste;
       const testAudio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSs');
       testAudio.volume = 1.0;
       testAudio.play().then(() => {

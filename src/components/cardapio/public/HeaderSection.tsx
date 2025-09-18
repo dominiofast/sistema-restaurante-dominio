@@ -18,7 +18,7 @@ interface HeaderSectionProps {
   primaryColor: string;
   textColor: string;
   customerPhone?: string;
-}
+
 
 export const HeaderSection: React.FC<HeaderSectionProps> = ({
   company,

@@ -224,6 +224,6 @@ export const LandingFooter = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </footer>;
   );
 };

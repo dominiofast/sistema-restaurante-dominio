@@ -79,13 +79,13 @@ const TestCustomerAddresses = lazy(() => import("@/pages/TestCustomerAddresses")
 const ProtectedAppLayout = () => (
   <ProtectedRoute>
     <AppLayout />
-  </ProtectedRoute>
+  </ProtectedRoute>;
 );
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
+  </div>;
 );
 
 const AccountRoutes = () => {
@@ -192,7 +192,7 @@ const AccountRoutes = () => {
       {/* Rota não encontrada */}
       <Route path="*" element={<NotFound />} />
     </Routes>
-    </Suspense>
+    </Suspense>;
   );
 };
 

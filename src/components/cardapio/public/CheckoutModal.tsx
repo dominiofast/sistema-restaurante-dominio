@@ -27,7 +27,7 @@ interface CartAdicionais {
     price: number;
     quantity: number;
   };
-}
+
 
 interface Produto {
   id: string;
@@ -37,7 +37,7 @@ interface Produto {
   promotional_price?: number;
   is_promotional?: boolean;
   image?: string;
-}
+
 
 interface CartItem {
   id: string;
@@ -46,12 +46,12 @@ interface CartItem {
   adicionais?: CartAdicionais;
   preco_unitario: number;
   preco_total: number;
-}
+
 
 interface ClientePublico {
   nome: string;
   telefone: string;
-}
+
 
 interface CustomerAddress {
   id: string;
@@ -62,7 +62,7 @@ interface CustomerAddress {
   complemento?: string;
   cidade?: string;
   estado?: string;
-}
+
 
 interface CheckoutModalProps {
   carrinho: CartItem[];
@@ -76,7 +76,7 @@ interface CheckoutModalProps {
   cliente: ClientePublico;
   endereco: string;
   onTrocarConta: () => void;
-}
+
 
 const CheckoutModal: React.FC<CheckoutModalProps> = ({
   carrinho,
@@ -117,12 +117,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       if (!validCompanyId) return null;
       
       // Primeiro, tentar buscar as configurações existentes
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
-        /* .single\( REMOVIDO */ ; //);
-      
+      const { data, error  } = null as any;
       if (error) {
         if (error.code === 'PGRST116') {
           // Não encontrou registro - criar automaticamente
@@ -145,34 +140,22 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
             // Domínio - ambos
             defaultDelivery = true;
             defaultPickup = true;
-          }
+
           
           // Criar registro com valores padrão
-          const { data: newData, error: insertError } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'delivery_methods')
-            /* .insert\( REMOVIDO */ ; //{
-              company_id: validCompanyId,
-              delivery: defaultDelivery,
-              pickup: defaultPickup,
-              eat_in: false
-            })
-            /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-            /* .single\( REMOVIDO */ ; //);
-          
-          if (insertError) {
-            console.error('Erro ao criar configurações:', insertError);
+          const newData = null as any; const insertError = null as any;
             // Se falhar ao criar, usar padrões
             return {
               delivery: defaultDelivery,
               pickup: defaultPickup,
               eat_in: false
             };
-          }
+
           
           return newData;
-        }
+
         throw error;
-      }
+
       
       return data;
     },
@@ -181,7 +164,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     gcTime: 0, // Sem garbage collection
     refetchOnMount: true, // Sempre refetch ao montar
     refetchOnWindowFocus: true, // Refetch ao focar janela
-    retry: 3,
+// retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
@@ -206,7 +189,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     } else {
       // Nenhuma opção disponível (não deveria acontecer)
       setSelectedOption(null);
-    }
+
   }, [deliveryMethods, showDelivery, showPickup, selectedOption]);
 
   // Validação automática de endereço quando há endereço salvo
@@ -220,7 +203,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       console.log('🔍 Buscando coordenadas para:', endereco);
       
       // Construir endereço completo para geocoding
-      const enderecoCompleto = `${endereco}, Santo Antônio, Cacoal, RO, Brasil`;
+      const enderecoCompleto = `${endereco} catch (error) { console.error('Error:', error); }, Santo Antônio, Cacoal, RO, Brasil`;
       console.log('🔍 Endereço completo para geocoding:', enderecoCompleto);
       
       // Usar coordenadas padrão de Cacoal como fallback
@@ -244,13 +227,13 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           setAddressValidationError(result.message || 'Endereço fora da área de atendimento');
         } else {
           setAddressValidationError(null);
-        }
+
       }).catch(error => {
         console.error('❌ Erro na validação automática:', error);
       });
     } catch (error) {
       console.error('❌ Erro ao preparar endereço para validação:', error);
-    }
+
   }, [endereco, cliente, validCompanyId, validateAddress]);
 
   // Validar e ajustar opção selecionada quando configurações mudam
@@ -263,14 +246,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
         setSelectedOption('pickup');
       } else {
         setSelectedOption(null);
-      }
+
     } else if (selectedOption === 'pickup' && !showPickup) {
       if (showDelivery) {
         setSelectedOption('delivery');
       } else {
         setSelectedOption(null);
-      }
-    }
+
+
   }, [deliveryMethods, selectedOption, showDelivery, showPickup]);
 
   // Calcular taxa e validar endereço automaticamente quando endereço for selecionado
@@ -278,7 +261,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     const calcularTaxaEValidar = async () => {
       if (selectedOption === 'delivery' && selectedAddress) {
         try {
-          // Validar se o endereço está dentro da área de atendimento
+          // Validar se o endereço está dentro da área de atendimento;
           const validationResult = await validateAddress(selectedAddress);
           
           if (!validationResult.isValid) {
@@ -289,12 +272,12 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
               title: "Endereço fora da área de atendimento",
               description: errorMessage,
               variant: "destructive",
-            });
+            } catch (error) { console.error('Error:', error); });
             setSelectedAddress(null);
             setSelectedOption(null);
             setTaxaEntrega(0);
             return;
-          }
+
           
           // Se válido, limpar erro e calcular a taxa
           setAddressValidationError(null);
@@ -310,10 +293,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           setSelectedAddress(null);
           setSelectedOption(null);
           setTaxaEntrega(0);
-        }
+
       } else {
         setTaxaEntrega(0);
-      }
+
     };
     
     calcularTaxaEValidar();
@@ -325,12 +308,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     queryFn: async () => {
       if (!validCompanyId) return [];
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_addresses')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
-        /* .eq\( REMOVIDO */ ; //'hide_from_customers', false);
-      
+      const { data, error  } = null as any;
       if (error) throw error;
       return data || [];
     },
@@ -346,18 +324,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       const cleanPhone = cliente.telefone.replace(/\D/g, '');
       if (cleanPhone.length < 10) return [];
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
-        /* .eq\( REMOVIDO */ ; //'customer_phone', cleanPhone)
+      const { data, error  } = null as any;
         .not('customer_phone', 'is', null)
         .neq('customer_phone', '');
       
       if (error) {
         console.error('Erro ao buscar endereços:', error);
         return [];
-      }
+
       return data || [];
     },
     enabled: !!validCompanyId && !!cliente.telefone && cliente.telefone.length >= 10,
@@ -369,20 +343,20 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       onPedidoFinalizado({
         tipo: selectedOption,
         endereco: selectedOption === 'delivery' ? selectedAddress : undefined,
-        taxaEntrega: selectedOption === 'delivery' ? taxaEntrega : 0
+        taxaEntrega: selectedOption === 'delivery' ? taxaEntrega : 0;
       });
-    }
+
   };
 
-  const handleNovoEndereco = () => {
+  const handleNovoEndereco = () => {;
     setShowNewAddressModal(true);
   };
 
   const handleConfirmarNovoEndereco = async (enderecoData: any) => {
-    try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .insert\( REMOVIDO */ ; //{
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           company_id: validCompanyId,
           customer_name: cliente.nome,
           customer_phone: cliente.telefone,
@@ -394,14 +368,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           cidade: enderecoData.cidade,
           estado: enderecoData.estado
         })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao salvar endereço:', error);
         alert('Erro ao salvar endereço. Tente novamente.');
         return;
-      }
+
 
       setSelectedAddress(data);
       
@@ -413,15 +387,15 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     } catch (err) {
       console.error('Erro ao salvar endereço:', err);
       alert('Erro ao salvar endereço. Tente novamente.');
-    }
+
   };
 
-  const handleDeleteAddress = async (addressId: string) => {
+  const handleDeleteAddress = async (addressId: string) => {;
     setDeletingAddressId(addressId);
     
     try {
       // Usar a função RPC específica para exclusão no cardápio público
-      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('delete_customer_address_public', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         p_address_id: addressId,
         p_company_id: validCompanyId,
         p_customer_phone: cliente.telefone.replace(/\D/g, '')
@@ -435,13 +409,13 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           variant: "destructive"
         });
         return;
-      }
+
 
       // Se o endereço deletado era o selecionado, limpar seleção
       if (selectedAddress?.id === addressId) {
         setSelectedAddress(null);
         setSelectedOption(null);
-      }
+
 
       // Atualizar a lista de endereços
       await queryClient.invalidateQueries({
@@ -462,24 +436,24 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       });
     } finally {
       setDeletingAddressId(null);
-    }
+
   };
 
   const formatAddress = (address: CustomerAddress) => {
     const parts = [
       address.logradouro,
       address.numero,
-      address.bairro
+      address.bairro;
     ].filter(Boolean);
     
     if (address.cidade && address.estado) {
       parts.push(`${address.cidade}/${address.estado}`);
-    }
+
     
     return parts.join(', ');
   };
 
-  const canContinue = (selectedOption === 'pickup' && showPickup) || 
+  const canContinue = (selectedOption === 'pickup' && showPickup) || ;
                       (selectedOption === 'delivery' && showDelivery && selectedAddress);
 
   return (

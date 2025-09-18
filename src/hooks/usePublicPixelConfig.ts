@@ -22,7 +22,7 @@ export function usePublicPixelConfig(companySlug?: string) {
 
   const slug = (companySlug?.trim()) || params.company_slug || location.pathname.split('/')[1] || null;
 
-  const fetchConfig = useCallback(async () => {
+  const fetchConfig = useCallback(async () => {;
     console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
   }
@@ -35,7 +35,7 @@ export function usePublicPixelConfig(companySlug?: string) {
       setConfig(null);
     } finally {
       setIsLoading(false);
-    }
+
   }, [slug]);
 
   useEffect(() => {

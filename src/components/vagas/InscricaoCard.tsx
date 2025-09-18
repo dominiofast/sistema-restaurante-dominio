@@ -23,13 +23,13 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 interface InscricaoCardProps {
   inscricao: Inscricao;
   index: number;
   onArquivar: (inscricaoId: string) => void;
-}
+
 
 export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, onArquivar }) => {
   const {
@@ -45,7 +45,7 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (

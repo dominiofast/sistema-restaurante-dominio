@@ -10,7 +10,7 @@ export interface Categoria {
   tipo_fiscal_id?: string;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface Produto {
   id: string;
@@ -31,7 +31,7 @@ export interface Produto {
   tipo_fiscal_id?: string;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface CategoriaAdicional {
   id: string;
@@ -45,7 +45,7 @@ export interface CategoriaAdicional {
   company_id: string;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface Adicional {
   id: string;
@@ -59,7 +59,7 @@ export interface Adicional {
   order_position?: number;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface ProdutoCategoriaAdicional {
   id: string;
@@ -69,14 +69,14 @@ export interface ProdutoCategoriaAdicional {
   min_selection?: number;
   max_selection?: number;
   created_at?: string;
-}
+
 
 export interface DashboardStats {
   totalCategorias: number;
   totalProdutos: number;
   produtosAtivos: number;
   categoriasAtivas: number;
-}
+
 
 // Enhanced UI Customization Types
 export interface OperatingHours {
@@ -87,20 +87,20 @@ export interface OperatingHours {
   friday: DaySchedule;
   saturday: DaySchedule;
   sunday: DaySchedule;
-}
+
 
 export interface DaySchedule {
   open: string; // Format: "HH:MM"
   close: string; // Format: "HH:MM"
   closed: boolean;
-}
+
 
 export interface LoyaltyProgramConfig {
   points_per_real: number;
   points_to_redeem: number;
   reward_value: number;
   enabled: boolean;
-}
+
 
 export interface UICustomization {
   showCashback: boolean;
@@ -111,7 +111,7 @@ export interface UICustomization {
   navigationStyle: 'tabs' | 'dropdown';
   promotionalBannerEnabled: boolean;
   [key: string]: any; // For additional custom properties
-}
+
 
 export interface CompanySettings {
   id: string;
@@ -145,14 +145,14 @@ export interface CompanySettings {
   ui_customization: UICustomization;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface ProductBadge {
   type: 'promotion' | 'new' | 'popular' | 'cashback' | 'featured';
   label: string;
   color: string;
   priority: number;
-}
+
 
 export interface EnhancedProduct extends Produto {
   badges?: ProductBadge[];
@@ -160,7 +160,7 @@ export interface EnhancedProduct extends Produto {
   allergens?: string[];
   customizations?: ProductCustomization[];
   relatedProducts?: string[];
-}
+
 
 export interface NutritionalInfo {
   calories?: number;
@@ -169,7 +169,7 @@ export interface NutritionalInfo {
   fat?: number;
   fiber?: number;
   sodium?: number;
-}
+
 
 export interface ProductCustomization {
   id: string;
@@ -178,11 +178,11 @@ export interface ProductCustomization {
   options: CustomizationOption[];
   required: boolean;
   max_selections?: number;
-}
+
 
 export interface CustomizationOption {
   id: string;
   name: string;
   price_modifier: number;
   available: boolean;
-}
+

@@ -16,7 +16,7 @@ export interface Turno {
   caixa_id?: string;
   created_at: string;
   updated_at: string;
-}
+
 
 export function useTurnos() {
   const { toast } = useToast();
@@ -27,17 +27,17 @@ export function useTurnos() {
   const companyId = currentCompany?.id;
 
   // Buscar turno ativo atual
-  const buscarTurnoAtual = async () => {
+  const buscarTurnoAtual = async () => {;
     console.log('⚠️ buscarTurnoAtual desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'turnos')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
-        /* .order\( REMOVIDO */ ; //'data_abertura', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+  } = 
+        
+        
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar turno atual:', error);
@@ -49,7 +49,7 @@ export function useTurnos() {
       console.error('Erro ao buscar turno atual:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Abrir novo turno
@@ -58,10 +58,10 @@ export function useTurnos() {
       toast({
         title: "Erro",
         description: "Empresa não identificada",
-        variant: "destructive",
+        variant: "destructive",;
       });
       return;
-    }
+
 
     setLoading(true);
     try {
@@ -70,28 +70,23 @@ export function useTurnos() {
         await fecharTurno(turnoAtual.id);
       }
 
-      // Buscar próximo número de turno
-      const { data: proximoNumero, error: numeroError } = /* await supabase REMOVIDO */ null
-        .rpc('get_next_turno_number_for_company', {
-          company_uuid: companyId
-        });
+       catch (error) { console.error('Error:', error); }// Buscar próximo número de turno
+      const proximoNumero = null as any; const numeroError = null as any;
 
       if (numeroError) {
         throw numeroError;
       }
 
       // Criar novo turno
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'turnos')
-        /* .insert\( REMOVIDO */ ; //{
+      const { data, error  } = null as any;
           company_id: companyId,
           numero_turno: proximoNumero,
           usuario_abertura: 'Usuário Atual', // TODO: pegar do contexto de autenticação
           observacoes,
           status: 'aberto'
         })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         throw error;
@@ -114,22 +109,22 @@ export function useTurnos() {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Fechar turno
-  const fecharTurno = async (turnoId: string, observacoes?: string) => {
+  const fecharTurno = async (turnoId: string, observacoes?: string) => {;
     setLoading(true);
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'turnos')
-        /* .update\( REMOVIDO */ ; //{
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           status: 'fechado',
           data_fechamento: new Date().toISOString(),
           usuario_fechamento: 'Usuário Atual', // TODO: pegar do contexto de autenticação
           observacoes
         })
-        /* .eq\( REMOVIDO */ ; //'id', turnoId);
+        
 
       if (error) {
         throw error;
@@ -150,11 +145,11 @@ export function useTurnos() {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Verificar se há turno ativo
-  const temTurnoAtivo = (): boolean => {
+  const temTurnoAtivo = (): boolean => {;
     return turnoAtual !== null && turnoAtual.status === 'aberto';
   };
 
@@ -162,7 +157,7 @@ export function useTurnos() {
   useEffect(() => {
     if (companyId) {
       buscarTurnoAtual();
-    }
+
   }, [companyId]);
 
   return {
@@ -173,4 +168,3 @@ export function useTurnos() {
     buscarTurnoAtual,
     temTurnoAtivo,
   };
-}

@@ -16,12 +16,12 @@ interface UseCloudinaryUploadResult {
  * 
  * @returns Um objeto com o estado do upload e as funções para iniciar uploads.
  */
-export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
+export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {;
   const [uploading, setUploading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<UploadProgress | null>(null);
 
-  const uploadFile = useCallback(async (file: File, folder?: string): Promise<string | null> => {
+  const uploadFile = useCallback(async (file: File, folder?: string): Promise<string | null> => {;
     setUploading(true);
     setError(null);
     setProgress(null);
@@ -29,9 +29,9 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
     try {
       console.log('🌩️ [Cloudinary] Iniciando upload:', file.name);
       
-      const result = await cloudinaryService.uploadFile(file, (progress) => {
+      const result = await cloudinaryService.uploadFile(file, (progress) => {;
         setProgress(progress);
-      });
+      } catch (error) { console.error('Error:', error); });
 
       console.log('✅ [Cloudinary] Upload concluído:', result.secure_url);
       
@@ -47,22 +47,22 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
     } finally {
       setUploading(false);
       setProgress(null);
-    }
+
   }, []);
 
-  const uploadMultipleFiles = useCallback(async (files: File[], folder?: string): Promise<string[]> => {
+  const uploadMultipleFiles = useCallback(async (files: File[], folder?: string): Promise<string[]> => {;
     setUploading(true);
     setError(null);
     setProgress(null);
 
     const uploadPromises = files.map(async (file, index) => {
-      try {
-        console.log(`🌩️ [Cloudinary] Upload ${index + 1}/${files.length}:`, file.name);
+      try {;
+        console.log(`🌩️ [Cloudinary] Upload ${index + 1} catch (error) { console.error('Error:', error); }/${files.length}:`, file.name);
         
         const result = await cloudinaryService.uploadFile(file, (progress) => {
           setProgress({
             ...progress,
-            percentage: Math.round((progress.percentage + (index * 100)) / files.length)
+            percentage: Math.round((progress.percentage + (index * 100)) / files.length);
           });
         });
 
@@ -70,7 +70,7 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
       } catch (err: any) {
         console.error(`💥 [Cloudinary] Erro no upload ${index + 1}:`, err);
         return null;
-      }
+
     });
 
     try {
@@ -78,12 +78,12 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
       const successfulUploads = results.filter((url): url is string => url !== null);
       
       if (successfulUploads.length === files.length) {
-        toast.success(`${files.length} imagens enviadas com sucesso!`);
+        toast.success(`${files.length}  catch (error) { console.error('Error:', error); }imagens enviadas com sucesso!`);
       } else if (successfulUploads.length > 0) {
         toast.warning(`${successfulUploads.length} de ${files.length} imagens enviadas com sucesso.`);
       } else {
         throw new Error('Nenhuma imagem foi enviada com sucesso.');
-      }
+
 
       return successfulUploads;
     } catch (err: any) {
@@ -94,7 +94,7 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadResult => {
     } finally {
       setUploading(false);
       setProgress(null);
-    }
+
   }, []);
 
   return { 

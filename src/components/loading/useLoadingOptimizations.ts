@@ -10,7 +10,7 @@ export const useLoadingOptimizations = (): LoadingOptimizations => {
   const [optimizations, setOptimizations] = useState<LoadingOptimizations>({
     prefersReducedMotion: false,
     shouldUseGPUAcceleration: true,
-    isHighPerformanceDevice: true
+    isHighPerformanceDevice: true;
   });
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const useLoadingOptimizations = (): LoadingOptimizations => {
 
     // Detect device performance capabilities
     const isHighPerformanceDevice = (() => {
-      // Check for hardware concurrency (CPU cores)
+      // Check for hardware concurrency (CPU cores);
       const cores = navigator.hardwareConcurrency || 4;
       
       // Check for device memory (if available)
@@ -28,7 +28,7 @@ export const useLoadingOptimizations = (): LoadingOptimizations => {
       
       // Check for connection speed
       const connection = (navigator as any).connection;
-      const isSlowConnection = connection && 
+      const isSlowConnection = connection && ;
         (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g');
       
       return cores >= 4 && memory >= 4 && !isSlowConnection;
@@ -48,7 +48,7 @@ export const useLoadingOptimizations = (): LoadingOptimizations => {
       setOptimizations(prev => ({
         ...prev,
         prefersReducedMotion: e.matches,
-        shouldUseGPUAcceleration: !e.matches && prev.isHighPerformanceDevice
+        shouldUseGPUAcceleration: !e.matches && prev.isHighPerformanceDevice;
       }));
     };
 

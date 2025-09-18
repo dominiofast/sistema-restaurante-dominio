@@ -10,7 +10,7 @@ const tiposContrato = [
   { value: 'CLT', label: 'CLT' },
   { value: 'PJ', label: 'PJ' },
   { value: 'Estágio', label: 'Estágio' },
-  { value: 'Temporário', label: 'Temporário' },
+  { value: 'Temporário', label: 'Temporário' },;
 ];
 
 export default function VagasPublicas() {
@@ -128,4 +128,4 @@ export default function VagasPublicas() {
       </footer>
     </div>
   );
-}
+

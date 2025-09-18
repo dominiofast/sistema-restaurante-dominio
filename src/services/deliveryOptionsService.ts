@@ -26,11 +26,11 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
     }
 
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -47,9 +47,9 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
           });
           
           return defaultOptions;
-        }
+
         throw error;
-      }
+
 
       const options: DeliveryOptions = {
         delivery: !!data.delivery,
@@ -59,7 +59,7 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
 
       if (!this.validateDeliveryOptions(options)) {
         console.warn(`Company ${companyId} has no delivery options enabled`);
-      }
+
 
       this.cache.set(companyId, {
         data: options,
@@ -82,20 +82,20 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
 
   validateDeliveryOptions(options: DeliveryOptions): boolean {
     return options.delivery || options.pickup || options.eat_in;
-  }
+
 
   invalidateCache(companyId: string): void {
-    this.cache/* .delete\( REMOVIDO */ ; //companyId);
-  }
+    this.cache
+
 
   clearCache(): void {
     this.cache.clear();
-  }
+
 
   async forceRefresh(companyId: string): Promise<DeliveryOptions> {
     this.invalidateCache(companyId);
     return this.getDeliveryOptions(companyId);
-  }
+
 }
 
 export const deliveryOptionsService = new DeliveryOptionsServiceImpl();

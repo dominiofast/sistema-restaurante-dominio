@@ -12,11 +12,11 @@ interface UseSupabaseUploadResult {
  *
  * @returns Um objeto com o estado do upload e a função para iniciar o upload.
  */
-export const useSupabaseUpload = (): UseSupabaseUploadResult => {
+export const useSupabaseUpload = (): UseSupabaseUploadResult => {;
   const [uploading, setUploading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const uploadFile = useCallback(async (file: File, companyId: string): Promise<string | null> => {
+  const uploadFile = useCallback(async (file: File, companyId: string): Promise<string | null> => {;
     setUploading(true);
     setError(null);
 

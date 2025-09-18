@@ -10,7 +10,7 @@ export const useVirtualScroll = <T>(
   items: T[],
   containerRef: RefObject<HTMLElement>,
   options: UseVirtualScrollOptions
-) => {
+) => {;
   const { itemHeight, containerHeight, buffer = 3 } = options;
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -18,7 +18,7 @@ export const useVirtualScroll = <T>(
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
   const endIndex = Math.min(
     items.length - 1,
-    Math.ceil((scrollTop + containerHeight) / itemHeight) + buffer
+    Math.ceil((scrollTop + containerHeight) / itemHeight) + buffer;
   );
 
   // Items visíveis com buffer
@@ -31,7 +31,7 @@ export const useVirtualScroll = <T>(
   const offsetY = startIndex * itemHeight;
 
   // Handler de scroll otimizado
-  const handleScroll = useCallback((e: Event) => {
+  const handleScroll = useCallback((e: Event) => {;
     const target = e.target as HTMLElement;
     setScrollTop(target.scrollTop);
   }, []);

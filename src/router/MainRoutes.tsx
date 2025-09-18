@@ -17,7 +17,7 @@ const MainRoutes = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<NotFound />} />
-    </Routes>
+    </Routes>;
   );
 };
 

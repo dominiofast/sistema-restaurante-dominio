@@ -36,7 +36,7 @@ export function PrintExample() {
         { nome: 'Batata Frita Grande', quantidade: 1, preco: 15.00 }
       ],
       formaPagamento: 'PIX',
-      config: printConfig
+      config: printConfig;
     };
 
     await printReceipt(testData, '550e8400-e29b-41d4-a716-446655440001');
@@ -83,7 +83,7 @@ const printData = {
     width: ${printConfig.width},
     removeAccents: ${printConfig.removeAccents},
     marginLeft: ${printConfig.marginLeft}
-  }
+  };
 };
 
 // Imprimir

@@ -39,31 +39,15 @@ export class CardapioJsonService {
 
       // Buscar categorias ativas
       console.log('🔍 Buscando categorias...');
-      const { data: categorias, error: categoriasError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'categorias')
-        /* .select\( REMOVIDO */ ; //'id, name, description')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
-
-      if (categoriasError) {
-        console.error('❌ Erro ao buscar categorias:', categoriasError);
+      const categorias = null as any; const categoriasError = null as any;
         return null;
       }
 
-      console.log('✅ Categorias encontradas:', categorias?.length || 0);
+       catch (error) { console.error('Error:', error); }console.log('✅ Categorias encontradas:', categorias?.length || 0);
 
       // Buscar produtos disponíveis
       console.log('🔍 Buscando produtos...');
-      const { data: produtos, error: produtosError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'produtos')
-        /* .select\( REMOVIDO */ ; //'id, name, description, price, promotional_price, is_promotional, categoria_id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'is_available', true)
-        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
-
-      if (produtosError) {
-        console.error('❌ Erro ao buscar produtos:', produtosError);
+      const produtos = null as any; const produtosError = null as any;
         return null;
       }
 
@@ -71,29 +55,7 @@ export class CardapioJsonService {
 
       // Buscar relações produto-categoria adicional
       console.log('🔍 Buscando categorias adicionais...');
-      const { data: produtoCategorias, error: produtoCategoriasError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
-        /* .select\( REMOVIDO */ ; //`
-          produto_id,
-          categoria_adicional_id,
-          is_required,
-          min_selection,
-          max_selection,
-          categorias_adicionais!inner(
-            id,
-            name,
-            description,
-            selection_type,
-            min_selection,
-            max_selection,
-            is_required,
-            company_id
-          )
-        `)
-        /* .eq\( REMOVIDO */ ; //'categorias_adicionais.company_id', companyId);
-
-      if (produtoCategoriasError) {
-        console.error('❌ Erro ao buscar categorias adicionais:', produtoCategoriasError);
+      const produtoCategorias = null as any; const produtoCategoriasError = null as any;
         // Não retornar null aqui, apenas continuar sem categorias adicionais
       }
 
@@ -101,24 +63,7 @@ export class CardapioJsonService {
 
       // Buscar adicionais ativos
       console.log('🔍 Buscando adicionais...');
-      const { data: adicionais, error: adicionaisError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'adicionais')
-        /* .select\( REMOVIDO */ ; //`
-          id, 
-          name, 
-          description, 
-          price, 
-          categoria_adicional_id, 
-          order_position,
-          categorias_adicionais!inner(company_id)
-        `)
-        /* .eq\( REMOVIDO */ ; //'is_available', true)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .eq\( REMOVIDO */ ; //'categorias_adicionais.company_id', companyId)
-        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
-
-      if (adicionaisError) {
-        console.error('❌ Erro ao buscar adicionais:', adicionaisError);
+      const adicionais = null as any; const adicionaisError = null as any;
         // Não retornar null aqui, apenas continuar sem adicionais
       }
 
@@ -132,7 +77,7 @@ export class CardapioJsonService {
         
         // Obter preço (promocional se disponível)
         const precoFinal = produto.is_promotional && produto.promotional_price 
-          ? produto.promotional_price 
+          ? produto.promotional_price ;
           : produto.price;
 
         const produtoJson: ProdutoJson = {
@@ -144,7 +89,7 @@ export class CardapioJsonService {
 
         // Buscar categorias adicionais para este produto
         const categoriasAdicionaisDoProduto = produtoCategorias?.filter(
-          pc => pc.produto_id === produto.id
+          pc => pc.produto_id === produto.id;
         ) || [];
 
         if (categoriasAdicionaisDoProduto.length > 0) {
@@ -157,7 +102,7 @@ export class CardapioJsonService {
 
             // Buscar adicionais desta categoria
             const adicionaisDaCategoria = adicionais?.filter(
-              a => a.categoria_adicional_id === categoriaAdicional.id
+              a => a.categoria_adicional_id === categoriaAdicional.id;
             ) || [];
 
             if (adicionaisDaCategoria.length > 0) {
@@ -178,18 +123,18 @@ export class CardapioJsonService {
                 opcoesObrigatorias.push(grupo);
               } else {
                 opcoesOpcionais.push(grupo);
-              }
-            }
+
+
           });
 
           if (opcoesObrigatorias.length > 0) {
             produtoJson.opcoesObrigatorias = opcoesObrigatorias;
-          }
+
 
           if (opcoesOpcionais.length > 0) {
             produtoJson.opcoesOpcionais = opcoesOpcionais;
-          }
-        }
+
+
 
         return produtoJson;
       }) || [];
@@ -210,8 +155,8 @@ export class CardapioJsonService {
     } catch (error) {
       console.error('❌ ERRO GERAL no generateCardapioJson:', error);
       return null;
-    }
-  }
+
+
 
   /**
    * Formata o JSON do cardápio para texto legível para a IA
@@ -219,7 +164,7 @@ export class CardapioJsonService {
   static formatJsonToText(cardapioJson: CardapioJson): string {
     if (!cardapioJson || cardapioJson.produtos.length === 0) {
       return 'Nenhum produto disponível no momento.';
-    }
+
 
     let texto = `CARDÁPIO COMPLETO (${cardapioJson.totalProdutos} produtos):\n\n`;
 
@@ -244,7 +189,7 @@ export class CardapioJsonService {
     });
 
     return texto;
-  }
+
 
   /**
    * Salva o JSON do cardápio em um arquivo para download
@@ -255,13 +200,13 @@ export class CardapioJsonService {
       if (!cardapioJson) return null;
 
       const jsonString = JSON.stringify(cardapioJson, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' });
+      const blob = new Blob([jsonString], { type: 'application/json' } catch (error) { console.error('Error:', error); });
       const url = URL.createObjectURL(blob);
       
       return url;
     } catch (error) {
       console.error('❌ Erro ao salvar JSON:', error);
       return null;
-    }
-  }
+
+
 }

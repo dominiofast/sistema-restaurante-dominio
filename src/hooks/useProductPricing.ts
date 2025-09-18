@@ -14,7 +14,7 @@ export const useProductPricing = (produtoId: string | undefined, basePrice: numb
   const [pricing, setPricing] = useState<ProductPricing>({
     minimumPrice: basePrice,
     hasRequired: false,
-    loading: true
+    loading: true;
   });
 
   useEffect(() => {
@@ -28,8 +28,8 @@ export const useProductPricing = (produtoId: string | undefined, basePrice: numb
     }
 
     const calculatePricing = async () => {
-      try {
-        setPricing(prev => ({ ...prev, loading: true }));
+      try {;
+        setPricing(prev => ({ ...prev, loading: true } catch (error) { console.error('Error:', error); }));
 
         // Verificar se tem adicionais obrigatórios em paralelo com o cálculo do preço mínimo
         const [hasRequired, minimumPrice] = await Promise.all([
@@ -49,7 +49,7 @@ export const useProductPricing = (produtoId: string | undefined, basePrice: numb
           hasRequired: false,
           loading: false
         });
-      }
+
     };
 
     calculatePricing();

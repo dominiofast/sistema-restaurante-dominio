@@ -28,7 +28,7 @@ export interface Pedido {
       }>;
     };
   }>;
-}
+
 
 export interface PedidoItem {
   id: string;
@@ -40,7 +40,7 @@ export interface PedidoItem {
   valor_total: number;
   observacoes: string;
   created_at: string;
-}
+
 
 export interface AdicionalItem {
   id?: number;
@@ -48,7 +48,7 @@ export interface AdicionalItem {
   nome_adicional: string;
   quantidade: number;
   valor_total: number;
-}
+
 
 export interface PedidoCompleto {
   id: number;
@@ -79,4 +79,4 @@ export interface PedidoCompleto {
       }>;
     };
   }>;
-}
+

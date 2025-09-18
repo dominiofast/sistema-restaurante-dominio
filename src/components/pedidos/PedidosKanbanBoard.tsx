@@ -32,7 +32,7 @@ interface PedidosKanbanBoardProps {
     pedidosEmAnalise: number;
     pararCampainha: () => void;
   };
-}
+
 
 interface DroppableColumnProps {
   status: any;
@@ -43,7 +43,7 @@ interface DroppableColumnProps {
   campainhaInfo?: any;
   intervaloHorasEntregue: 1 | 6 | 24;
   setIntervaloHorasEntregue: (horas: 1 | 6 | 24) => void;
-}
+
 
 const DroppableColumn: React.FC<DroppableColumnProps> = ({ 
   status, 
@@ -164,11 +164,11 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
         distance: 5, // Reduzido para melhor responsividade
       },
     }),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor);
   );
   
   // Filtrar status habilitados usando configurações salvas no localStorage
-  const statusHabilitados = useMemo(() => {
+  const statusHabilitados = useMemo(() => {;
     const savedConfigs = localStorage.getItem('statusConfigs');
     if (savedConfigs) {
       const configs = JSON.parse(savedConfigs);
@@ -200,7 +200,7 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
     };
   }, []);
 
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = (event: DragStartEvent) => {;
     const { active } = event;
     const pedidoId = Number(active.id);
     
@@ -208,13 +208,13 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
     
     // Encontrar o pedido ativo
     const pedido = Object.values(pedidosPorStatus)
-      .flat()
+      .flat();
       .find(p => p.id === pedidoId);
       
     setActivePedido(pedido || null);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {;
     const { active, over } = event;
     
     console.log('🔴 Drag End:', { 

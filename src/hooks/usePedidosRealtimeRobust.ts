@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Pedido } from '@/types/pedidos';
 
-export const usePedidosRealtimeRobust = () => {
+export const usePedidosRealtimeRobust = () => {;
   const { currentCompany } = useAuth();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ export const usePedidosRealtimeRobust = () => {
       'preparando': 'producao',
       'prontos_entrega': 'pronto',
       'analise': 'analise',  // Manter analise como analise
-      'pendente': 'analise'  // Mapear pendente para analise também
+      'pendente': 'analise'  // Mapear pendente para analise também;
     };
     return statusMap[status] || status;
   };
@@ -36,7 +36,7 @@ export const usePedidosRealtimeRobust = () => {
 
     console.log('🔍 DEBUG: Company ID exists, proceeding with fetch', { companyId });
 
-    const fetchPedidos = async () => {
+    const fetchPedidos = async () => {;
       console.log('🔄 usePedidosRealtimeRobust: Fetching pedidos for company:', companyId);
       
       // Só mostra loading se não temos dados ainda ou se é a primeira vez carregando para esta empresa
@@ -48,7 +48,7 @@ export const usePedidosRealtimeRobust = () => {
       
       try {
         // Usar nova API REST do PostgreSQL
-        const response = await fetch(`/api/pedidos?company_id=${companyId}`);
+        const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error); }`);
         const result = await response.json();
         
         if (!result.success) {
@@ -59,7 +59,7 @@ export const usePedidosRealtimeRobust = () => {
         console.log('✅ usePedidosRealtimeRobust: Pedidos fetched successfully:', data.length);
         
         // Transformar os dados para garantir compatibilidade
-        const transformedPedidos = data.map((pedido: any) => {
+        const transformedPedidos = data.map((pedido: any) => {;
           const statusOriginal = pedido.status || 'analise';
           const statusMapeado = mapPDVStatus(statusOriginal);
           
@@ -107,7 +107,7 @@ export const usePedidosRealtimeRobust = () => {
     console.log('ℹ️ Real-time desabilitado, usando polling a cada 30s');
     
     // Polling a cada 30 segundos para updates
-    const interval = setInterval(() => {
+    const interval = setInterval(() => {;
       fetchPedidos();
     }, 30000);
 
@@ -117,11 +117,11 @@ export const usePedidosRealtimeRobust = () => {
     };
   }, [companyId]);
 
-  const updatePedidoStatus = useCallback(async (pedidoId: number, newStatus: string) => {
+  const updatePedidoStatus = useCallback(async (pedidoId: number, newStatus: string) => {;
     if (!companyId) return;
     
     try {
-      console.log('🔄 usePedidosRealtimeRobust: Iniciando atualização de status:', { pedidoId, newStatus });
+      console.log('🔄 usePedidosRealtimeRobust: Iniciando atualização de status:', { pedidoId, newStatus } catch (error) { console.error('Error:', error); });
       
       // Atualização otimista - atualiza o estado local imediatamente
       setPedidos(prev => prev.map(p => {
@@ -142,7 +142,7 @@ export const usePedidosRealtimeRobust = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: newStatus });
       });
       
       const result = await response.json();
@@ -175,7 +175,7 @@ export const usePedidosRealtimeRobust = () => {
     }
   }, [companyId]);
 
-  const reloadPedidos = useCallback(async () => {
+  const reloadPedidos = useCallback(async () => {;
     if (!companyId) return;
     
     console.log('🔄 usePedidosRealtimeRobust: Reload manual solicitado');
@@ -183,7 +183,7 @@ export const usePedidosRealtimeRobust = () => {
     setError(null);
     
     try {
-      const response = await fetch(`/api/pedidos?company_id=${companyId}`);
+      const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error); }`);
       const result = await response.json();
       
       if (!result.success) {
@@ -194,7 +194,7 @@ export const usePedidosRealtimeRobust = () => {
       console.log('✅ usePedidosRealtimeRobust: Pedidos recarregados:', data.length);
       
       // Transformar os dados
-      const transformedPedidos = data.map((pedido: any) => {
+      const transformedPedidos = data.map((pedido: any) => {;
         const statusOriginal = pedido.status || 'analise';
         const statusMapeado = mapPDVStatus(statusOriginal);
         

@@ -32,7 +32,7 @@ const statusConfig = {
   analise: { label: 'Em análise', color: 'text-orange-600', bg: 'bg-orange-100' },
   producao: { label: 'Em produção', color: 'text-blue-600', bg: 'bg-blue-100' },
   pronto: { label: 'Pronto para entrega', color: 'text-green-600', bg: 'bg-green-100' },
-  entregue: { label: 'Entregue', color: 'text-gray-600', bg: 'bg-gray-100' },
+  entregue: { label: 'Entregue', color: 'text-gray-600', bg: 'bg-gray-100' },;
 };
 
 interface PagamentoParcial {
@@ -73,7 +73,7 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
   const status = statusConfig[pedido.status as keyof typeof statusConfig] || statusConfig.analise;
   
   // Gerar formas de pagamento disponíveis baseadas na configuração da empresa
-  const formasPagamentoDisponiveis = (() => {
+  const formasPagamentoDisponiveis = (() => {;
     const formas: string[] = [];
     if (pagamentoConfig?.accept_cash) formas.push('Dinheiro');
     if (pagamentoConfig?.accept_pix) formas.push('Pix');
@@ -102,12 +102,12 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
   })));
   
   // Melhorar a busca pela taxa de entrega - buscar por diferentes variações
-  const taxaEntregaItem = pedido.itens.find(item => {
+  const taxaEntregaItem = pedido.itens.find(item => {;
     const nomeItem = item.nome.toLowerCase();
     console.log('🔍 DEBUG - Verificando item:', nomeItem);
     const isMatch = nomeItem.includes('taxa') || 
                    nomeItem.includes('entrega') || 
-                   nomeItem === 'taxa de entrega' ||
+                   nomeItem === 'taxa de entrega' ||;
                    nomeItem === 'delivery';
     console.log('🎯 DEBUG - Item match:', isMatch);
     return isMatch;
@@ -140,7 +140,7 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
     }
   }, [showPagamentoModal, pedido?.id]); // Adicionado pedido.id para reinicializar quando mudada o pedido
 
-  const adicionarPagamento = () => {
+  const adicionarPagamento = () => {;
     const novoId = (pagamentos.length + 1).toString();
     setPagamentos([...pagamentos, {
       id: novoId,
@@ -150,21 +150,21 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
   };
 
   const removerPagamento = (id: string) => {
-    if (pagamentos.length > 1) {
+    if (pagamentos.length > 1) {;
       setPagamentos(pagamentos.filter(p => p.id !== id));
     }
   };
 
   const atualizarPagamento = (id: string, campo: 'forma' | 'valor', valor: string | number) => {
     setPagamentos(pagamentos.map(p => 
-      p.id === id ? { ...p, [campo]: valor } : p
+      p.id === id ? { ...p, [campo]: valor } : p;
     ));
   };
 
   const totalPagamentos = pagamentos.reduce((acc, p) => acc + Number(p.valor), 0);
   const diferenca = pedido ? pedido.total - totalPagamentos : 0;
 
-  const handleRegistrarPagamentos = async () => {
+  const handleRegistrarPagamentos = async () => {;
     console.log('🔄 Iniciando registro de pagamentos...', { caixaAtual, pagamentos, diferenca });
     
     if (!caixaAtual) {
@@ -187,7 +187,7 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
     }
 
     try {
-      console.log('📝 Iniciando loop de pagamentos...', { totalPagamentos: pagamentos.length });
+      console.log('📝 Iniciando loop de pagamentos...', { totalPagamentos: pagamentos.length } catch (error) { console.error('Error:', error); });
       
       // Registrar cada pagamento no caixa
       for (const pagamento of pagamentos) {
@@ -201,7 +201,7 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
           descricao: `Pagamento Pedido #${pedido.numero_pedido || pedido.id} - ${pedido.nome}${pagamentos.length > 1 ? ` (${pagamento.forma})` : ''}`,
           data_lancamento: new Date().toISOString().split('T')[0],
           hora_lancamento: new Date().toTimeString().split(' ')[0].slice(0, 5),
-          observacoes: `Cliente: ${pedido.nome}, Telefone: ${pedido.telefone}`
+          observacoes: `Cliente: ${pedido.nome}, Telefone: ${pedido.telefone}`;
         };
         
         console.log('📋 Dados do lançamento:', dadosLancamento);

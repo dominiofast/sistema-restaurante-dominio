@@ -18,7 +18,7 @@ export function useClientePublico() {
   const [error, setError] = useState<string | null>(null);
 
   // Busca cliente pelo telefone (removendo caracteres não numéricos)
-  const buscarPorTelefone = async (telefone: string, companyId?: string) => {
+  const buscarPorTelefone = async (telefone: string, companyId?: string) => {;
     setLoading(true);
     setError(null);
     try {
@@ -28,16 +28,16 @@ export function useClientePublico() {
       console.log('🔍 Buscando cliente por telefone:', telefoneNumeros, 'na empresa:', companyId);
       
       let query = supabase
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'telefone', telefoneNumeros);
+        
+        
+        
       
       // Se foi fornecido companyId, filtrar por empresa
       if (companyId) {
-        query = query/* .eq\( REMOVIDO */ ; //'company_id', companyId);
+        query = query
       }
       
-      const { data, error } = await query/* .maybeSingle\( REMOVIDO */ ; //);
+       catch (error) { console.error('Error:', error); }const { data, error } = await query
         
       if (error && error.code !== 'PGRST116') { // PGRST116 = não encontrado
         throw error;
@@ -53,11 +53,11 @@ export function useClientePublico() {
       return null;
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Cadastra cliente com nome e telefone apenas se não existir (com company_id)
-  const cadastrarCliente = async (nome: string, telefone: string, companyId?: string) => {
+  const cadastrarCliente = async (nome: string, telefone: string, companyId?: string) => {;
     setLoading(true);
     setError(null);
     try {
@@ -75,7 +75,7 @@ export function useClientePublico() {
         return clienteExistente;
       }
       
-      // Se não foi fornecido companyId, não cadastra (precisa de empresa)
+       catch (error) { console.error('Error:', error); }// Se não foi fornecido companyId, não cadastra (precisa de empresa)
       if (!companyId) {
         console.warn('⚠️ Company ID necessário para cadastrar cliente');
         return null;
@@ -83,12 +83,7 @@ export function useClientePublico() {
       
       console.log('📝 Cadastrando novo cliente:', { nome, telefone: telefoneNumeros, company_id: companyId });
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .insert\( REMOVIDO */ ; //[{ nome, telefone: telefoneNumeros, company_id: companyId }])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-        
+      const { data, error  } = null as any;
       if (error) throw error;
       
       console.log('✅ Cliente cadastrado com sucesso:', data);
@@ -100,7 +95,7 @@ export function useClientePublico() {
       return null;
     } finally {
       setLoading(false);
-    }
+
   };
 
   return {

@@ -1,9 +1,9 @@
 // SUPABASE REMOVIDO
 export const testWhatsAppIntegration = async () => {
-  try {
+  try {;
     console.log('🧪 Iniciando teste completo da integração...');
     
-    const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('test-whatsapp-status', {
+    const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       body: {}
     });
     
@@ -18,5 +18,5 @@ export const testWhatsAppIntegration = async () => {
   } catch (error) {
     console.error('❌ Erro ao executar teste:', error);
     return { success: false, error: (error as Error).message };
-  }
+
 };

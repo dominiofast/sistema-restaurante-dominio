@@ -8,11 +8,11 @@
 // Configuração simplificada e otimizada para desenvolvimento
 export const configureQZForDevelopment = async () => {
   try {
-    if (typeof window === 'undefined' || !window.qz) {
+    if (typeof window === 'undefined' || !window.qz) {;
       throw new Error('QZ Tray não está disponível');
     }
 
-    // Configurar certificado vazio para desenvolvimento (síncrono)
+     catch (error) { console.error('Error:', error); }// Configurar certificado vazio para desenvolvimento (síncrono)
     window.qz.security.setCertificatePromise(() => {
       return Promise.resolve('');
     });
@@ -26,13 +26,13 @@ export const configureQZForDevelopment = async () => {
           return;
         }
         
-        // Hash simples e rápido
+         catch (error) { console.error('Error:', error); }// Hash simples e rápido
         const simpleHash = toSign.length.toString(36) + Date.now().toString(36).slice(-4);
         resolve(btoa(simpleHash));
       } catch (error) {
         // Fallback imediato
         resolve('');
-      }
+
     });
 
     console.log('✅ QZ Tray configurado para desenvolvimento local');
@@ -40,11 +40,11 @@ export const configureQZForDevelopment = async () => {
   } catch (error: any) {
     console.warn('⚠️ Erro na configuração do QZ Tray:', error.message);
     return false;
-  }
+
 };
 
 // Função para diagnosticar problemas de assinatura
-export const diagnoseSignatureIssues = async () => {
+export const diagnoseSignatureIssues = async () => {;
   const issues = [];
   const solutions = [];
   
@@ -52,7 +52,7 @@ export const diagnoseSignatureIssues = async () => {
     if (typeof window === 'undefined' || !window.qz) {
       issues.push('QZ Tray não está disponível');
       solutions.push('Verifique se o QZ Tray está instalado e rodando');
-      return { issues, solutions };
+      return { issues, solutions } catch (error) { console.error('Error:', error); };
     }
 
     // Verificar se as funções de segurança estão definidas
@@ -74,7 +74,7 @@ export const diagnoseSignatureIssues = async () => {
     try {
       window.qz.security.setSignaturePromise((toSign: string, resolve: (signature: string) => void) => {
         resolve('');
-      });
+      } catch (error) { console.error('Error:', error); });
       console.log('✅ Assinatura configurada com sucesso');
     } catch (error) {
       issues.push('Erro ao configurar assinatura: ' + error.message);
@@ -85,8 +85,8 @@ export const diagnoseSignatureIssues = async () => {
     try {
       if (!window.qz.websocket.isActive()) {
         await window.qz.websocket.connect();
-      }
-      console.log('✅ Conexão testada com sucesso');
+
+       catch (error) { console.error('Error:', error); }console.log('✅ Conexão testada com sucesso');
     } catch (error) {
       issues.push('Erro na conexão: ' + error.message);
       solutions.push('Verifique se o QZ Tray está rodando na porta correta (8181/8182)');
@@ -97,17 +97,17 @@ export const diagnoseSignatureIssues = async () => {
     issues.push('Erro geral no diagnóstico: ' + error.message);
     solutions.push('Reinicie o QZ Tray e recarregue a página');
     return { issues, solutions };
-  }
+
 };
 
 // Configuração alternativa mais simples
 export const configureQZSimple = async () => {
   try {
-    if (typeof window === 'undefined' || !window.qz) {
+    if (typeof window === 'undefined' || !window.qz) {;
       throw new Error('QZ Tray não está disponível');
     }
 
-    // Configuração mínima para desenvolvimento
+     catch (error) { console.error('Error:', error); }// Configuração mínima para desenvolvimento
     window.qz.security.setCertificatePromise(() => Promise.resolve(''));
     window.qz.security.setSignaturePromise((toSign: string, resolve: (signature: string) => void) => {
       resolve('');
@@ -118,13 +118,13 @@ export const configureQZSimple = async () => {
   } catch (error: any) {
     console.warn('⚠️ Erro na configuração simples do QZ Tray:', error.message);
     return false;
-  }
+
 };
 
 // Função para conectar ao QZ Tray com configuração de desenvolvimento
 export const connectQZDevelopment = async () => {
   try {
-    // Tentar configuração simples primeiro
+    // Tentar configuração simples primeiro;
     let configured = await configureQZSimple();
     
     // Se falhar, tentar configuração padrão
@@ -133,7 +133,7 @@ export const connectQZDevelopment = async () => {
       configured = await configureQZForDevelopment();
     }
     
-    if (!configured) {
+     catch (error) { console.error('Error:', error); }if (!configured) {
       throw new Error('Não foi possível configurar o QZ Tray');
     }
     
@@ -159,7 +159,7 @@ export const connectQZDevelopment = async () => {
         console.log('📋 Versão do QZ Tray:', version);
       } catch (versionError) {
         console.log('📋 Conectado ao QZ Tray (versão não disponível)');
-      }
+
     } else {
       console.error('❌ Falha na conexão com QZ Tray');
     }
@@ -168,19 +168,19 @@ export const connectQZDevelopment = async () => {
   } catch (error: any) {
     console.error('❌ Erro ao conectar QZ Tray:', error.message);
     return false;
-  }
+
 };
 
 // Função para testar impressão
 export const testPrint = async (printerName?: string) => {
   try {
-    // Garantir conexão
+    // Garantir conexão;
     const connected = await connectQZDevelopment();
     if (!connected) {
       throw new Error('Não foi possível conectar ao QZ Tray');
     }
 
-    // Obter impressoras disponíveis
+     catch (error) { console.error('Error:', error); }// Obter impressoras disponíveis
     const printers = await window.qz.printers.find();
     console.log('🖨️ Impressoras disponíveis:', printers);
     
@@ -202,7 +202,7 @@ export const testPrint = async (printerName?: string) => {
       '==================\n',
       'Data: ' + new Date().toLocaleString() + '\n',
       'QZ Tray funcionando!\n',
-      '\n\n\n'
+      '\n\n\n';
     ];
 
     // Imprimir
@@ -213,7 +213,7 @@ export const testPrint = async (printerName?: string) => {
   } catch (error: any) {
     console.error('❌ Erro no teste de impressão:', error.message);
     return false;
-  }
+
 };
 
 // Função para diagnosticar problemas
@@ -226,7 +226,7 @@ export const diagnoseQZ = async () => {
     errors: [] as string[],
     success: false,
     message: '',
-    details: ''
+    details: '';
   };
 
   try {
@@ -240,15 +240,15 @@ export const diagnoseQZ = async () => {
       return diagnosis;
     }
 
-    // Tentar conectar
+     catch (error) { console.error('Error:', error); }// Tentar conectar
     try {
       const connected = await connectQZDevelopment();
       diagnosis.connected = connected;
       
       if (!connected) {
         diagnosis.errors.push('Não foi possível conectar ao QZ Tray');
-      }
-    } catch (error: any) {
+
+     catch (error) { console.error('Error:', error); }} catch (error: any) {
       diagnosis.errors.push(`Erro na conexão: ${error.message}`);
     }
 
@@ -258,14 +258,14 @@ export const diagnoseQZ = async () => {
         diagnosis.version = await window.qz.websocket.getVersion();
       } catch (error: any) {
         diagnosis.errors.push(`Erro ao obter versão: ${error.message}`);
-      }
+
 
       // Obter impressoras
       try {
         diagnosis.printers = await window.qz.printers.find();
       } catch (error: any) {
         diagnosis.errors.push(`Erro ao buscar impressoras: ${error.message}`);
-      }
+
     }
 
     // Definir sucesso e mensagens
@@ -281,7 +281,7 @@ export const diagnoseQZ = async () => {
     diagnosis.errors.push(`Erro geral: ${error.message}`);
     diagnosis.message = 'Erro durante diagnóstico';
     diagnosis.details = error.message;
-  }
+
 
   return diagnosis;
 };

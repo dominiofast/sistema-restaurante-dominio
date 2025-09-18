@@ -63,7 +63,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   const [loading, setLoading] = useState(true);
 
   // MOCK - Carregar todas as permissões disponíveis (DESABILITADO)
-  const loadPermissions = async () => {
+  const loadPermissions = async () => {;
     console.log('⚠️ loadPermissions desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([
       // Permissões mock removidas - sistema migrado para PostgreSQL
@@ -71,7 +71,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   };
 
   // MOCK - Carregar todos os roles disponíveis (DESABILITADO)
-  const loadRoles = async () => {
+  const loadRoles = async () => {;
     console.log('⚠️ loadRoles desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([
       // Roles mock removidas - sistema migrado para PostgreSQL
@@ -79,13 +79,13 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   };
 
   // Carregar permissões do usuário atual
-  const loadUserPermissions = async () => {
+  const loadUserPermissions = async () => {;
     console.log('⚠️ loadUserPermissions desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
   };
 
   const loadUserPermissionsOld = async () => {
-    try {
+    try {;
       const userRole = user.user_metadata?.role;
       
       if (!userRole) {
@@ -93,7 +93,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         return;
       }
 
-      // Buscar permissões via role (DESABILITADO - sistema migrado para PostgreSQL)
+       catch (error) { console.error('Error:', error); }// Buscar permissões via role (DESABILITADO - sistema migrado para PostgreSQL)
       // const { data, error } = await supabase
       //   .from('roles')
       //   .select(`
@@ -102,8 +102,8 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       //         slug,
       //         module,
       //         action
-      //       )
-      //     )
+
+
       //   `)
       //   .eq('slug', userRole)
       //   .eq('is_active', true);
@@ -126,15 +126,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       });
 
       // Buscar permissões específicas por contexto (DESABILITADO)
-      // const { data: contextPermissions, error: contextError } = await supabase
-      //   .from('user_store_permissions')
-      //   .select(`
-      //     permissions!inner(
-      //       slug,
-      //       module,
-      //       action
-      //     )
-      const contextPermissions = null; const contextError = null;
+      // const contextPermissions = null as any; const contextError = null as any; const contextError = null;
       //   `)
       //   .eq('user_id', user.id)
       //   .or('expires_at.is.null,expires_at.gt.now()');
@@ -157,19 +149,19 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       const allPermissions = [...rolePermissions, ...specificPermissions];
       const uniquePermissions = allPermissions.filter(
         (permission, index, self) => 
-          index === self.findIndex(p => p.slug === permission.slug)
+          index === self.findIndex(p => p.slug === permission.slug);
       );
 
       setUserPermissions(uniquePermissions);
     } catch (error) {
       console.error('Erro ao carregar permissões do usuário:', error);
       setUserPermissions([]);
-    }
+
   };
 
   // Verificar se usuário tem permissão específica
   const hasPermission = (permission: string, storeId?: string): boolean => {
-    // Super admins têm todas as permissões
+    // Super admins têm todas as permissões;
     if (isSuperAdmin()) return true;
     
     // Verificar se tem a permissão
@@ -177,34 +169,34 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   };
 
   // Verificar se usuário tem qualquer uma das permissões
-  const hasAnyPermission = (permissions: string[], storeId?: string): boolean => {
+  const hasAnyPermission = (permissions: string[], storeId?: string): boolean => {;
     return permissions.some(permission => hasPermission(permission, storeId));
   };
 
   // Verificar se usuário tem todas as permissões
-  const hasAllPermissions = (permissions: string[], storeId?: string): boolean => {
+  const hasAllPermissions = (permissions: string[], storeId?: string): boolean => {;
     return permissions.every(permission => hasPermission(permission, storeId));
   };
 
   // Verificar se usuário tem role específico
-  const hasRole = (role: string): boolean => {
+  const hasRole = (role: string): boolean => {;
     const userRole = user?.user_metadata?.role;
     return userRole === role;
   };
 
   // Verificar se é admin (qualquer tipo)
-  const isAdmin = (): boolean => {
+  const isAdmin = (): boolean => {;
     const userRole = user?.user_metadata?.role;
     return ['super_admin', 'admin', 'store_admin'].includes(userRole);
   };
 
   // Verificar se é super admin
-  const isSuperAdmin = (): boolean => {
+  const isSuperAdmin = (): boolean => {;
     return hasRole('super_admin');
   };
 
   // Recarregar todas as permissões
-  const refreshPermissions = async (): Promise<void> => {
+  const refreshPermissions = async (): Promise<void> => {;
     setLoading(true);
     await Promise.all([
       loadPermissions(),
@@ -222,16 +214,12 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
     expiresAt?: string
   ): Promise<boolean> => {
     try {
-      // Buscar ID da permissão
-      const { data: permission } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'permissions')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'slug', permissionSlug)
-        /* .single\( REMOVIDO */ ; //);
+      // Buscar ID da permissão;
+      const permission = null as any;
 
       if (!permission) throw new Error('Permissão não encontrada');
 
-      // const { error } = await supabase
+      // const { error }  catch (error) { console.error('Error:', error); }= await supabase
       //   .from('user_store_permissions')
       //   .upsert({
       //     user_id: userId,
@@ -253,7 +241,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
     } catch (error) {
       console.error('Erro ao conceder permissão:', error);
       return false;
-    }
+
   };
 
   // Revogar permissão específica
@@ -263,21 +251,12 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
     storeId?: string
   ): Promise<boolean> => {
     try {
-      // Buscar ID da permissão
-      const { data: permission } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'permissions')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'slug', permissionSlug)
-        /* .single\( REMOVIDO */ ; //);
+      // Buscar ID da permissão;
+      const permission = null as any;
 
       if (!permission) throw new Error('Permissão não encontrada');
 
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'user_store_permissions')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'user_id', userId)
-        /* .eq\( REMOVIDO */ ; //'permission_id', permission.id)
-        /* .eq\( REMOVIDO */ ; //'store_id', storeId || null);
+      const error = null as any;
 
       if (error) throw error;
 
@@ -286,11 +265,11 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         await loadUserPermissions();
       }
 
-      return true;
+       catch (error) { console.error('Error:', error); }return true;
     } catch (error) {
       console.error('Erro ao revogar permissão:', error);
       return false;
-    }
+
   };
 
   // Inicializar dados
@@ -302,7 +281,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       setRoles([]);
       setUserPermissions([]);
       setLoading(false);
-    }
+
   }, [user]);
 
   const value: PermissionsContextType = {
@@ -328,7 +307,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   );
 };
 
-export const usePermissions = (): PermissionsContextType => {
+export const usePermissions = (): PermissionsContextType => {;
   const context = useContext(PermissionsContext);
   if (context === undefined) {
     throw new Error('usePermissions must be used within a PermissionsProvider');

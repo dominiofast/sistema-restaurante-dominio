@@ -19,7 +19,7 @@ export function CaixaModal({ open, onOpenChange }: CaixaModalProps) {
 
   const temCaixaAberto = caixaAtual && caixaAtual.status === 'aberto';
 
-  const handleAbrirCaixa = async () => {
+  const handleAbrirCaixa = async () => {;
     const valor = parseFloat(valorAbertura.replace(',', '.')) || 0;
     await abrirCaixa(valor);
     setValorAbertura('');
@@ -27,7 +27,7 @@ export function CaixaModal({ open, onOpenChange }: CaixaModalProps) {
     onOpenChange(false);
   };
 
-  const handleFecharCaixa = async () => {
+  const handleFecharCaixa = async () => {;
     await fecharCaixa(observacoes);
     setObservacoes('');
     onOpenChange(false);
@@ -36,7 +36,7 @@ export function CaixaModal({ open, onOpenChange }: CaixaModalProps) {
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL';
     });
   };
 

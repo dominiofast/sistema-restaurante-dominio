@@ -18,10 +18,10 @@ export const DominioPrinterDebug: React.FC = () => {
     { url: 'http://localhost:3001/health', name: 'Health Check (v2.0.1)' },
     { url: 'http://localhost:3001/api/status', name: 'Status API' },
     { url: 'http://localhost:3001/printers', name: 'Printers Direct' },
-    { url: 'http://localhost:3001/api/printers', name: 'Printers API' },
+    { url: 'http://localhost:3001/api/printers', name: 'Printers API' },;
   ];
 
-  const testEndpoints = async () => {
+  const testEndpoints = async () => {;
     setIsChecking(true);
     setResults([]);
     
@@ -34,14 +34,14 @@ export const DominioPrinterDebug: React.FC = () => {
       }]);
 
       try {
-        console.log(`🧪 Testando: ${endpoint.url}`);
+        console.log(`🧪 Testando: ${endpoint.url} catch (error) { console.error('Error:', error); }`);
         
         const response = await fetch(endpoint.url, {
           method: 'GET',
           mode: 'cors',
           headers: {
             'Content-Type': 'application/json',
-          },
+          },;
         });
 
         if (response.ok) {
@@ -70,7 +70,7 @@ export const DominioPrinterDebug: React.FC = () => {
                 }
               : r
           ));
-        }
+
       } catch (error: any) {
         console.error(`💥 Erro em ${endpoint.name}:`, error);
         
@@ -80,21 +80,21 @@ export const DominioPrinterDebug: React.FC = () => {
                 endpoint: endpoint.name,
                 status: 'error',
                 message: `Erro de conexão: ${error.message}`
-              }
+
             : r
         ));
-      }
+
 
       // Pequena pausa entre testes
       await new Promise(resolve => setTimeout(resolve, 300));
-    }
+
     
     setIsChecking(false);
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'success':
+      case 'success':;
         return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'error':
         return <XCircle className="w-4 h-4 text-red-500" />;
@@ -102,12 +102,12 @@ export const DominioPrinterDebug: React.FC = () => {
         return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
       default:
         return null;
-    }
+
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'success':
+      case 'success':;
         return <Badge variant="default" className="bg-green-500">Conectado</Badge>;
       case 'error':
         return <Badge variant="destructive">Erro</Badge>;
@@ -115,7 +115,7 @@ export const DominioPrinterDebug: React.FC = () => {
         return <Badge variant="secondary">Testando...</Badge>;
       default:
         return null;
-    }
+
   };
 
   return (

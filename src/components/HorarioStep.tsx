@@ -16,7 +16,7 @@ const diasSemana = [
   { label: 'Q', nome: 'Quarta', value: 3 },
   { label: 'Q', nome: 'Quinta', value: 4 },
   { label: 'S', nome: 'Sexta', value: 5 },
-  { label: 'S', nome: 'Sábado', value: 6 },
+  { label: 'S', nome: 'Sábado', value: 6 },;
 ];
 
 export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
@@ -60,12 +60,12 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
       });
 
       setHorarios(novoHorarios);
-    }
+
   }, [horario, horariosDias]);
 
   if (loading) {
     return <div>Carregando horários...</div>;
-  }
+
 
   if (error) {
     return (
@@ -76,7 +76,7 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
         </AlertDescription>
       </Alert>
     );
-  }
+
 
   return (
     <div className="space-y-6">

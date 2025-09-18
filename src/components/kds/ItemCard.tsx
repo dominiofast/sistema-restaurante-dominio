@@ -28,7 +28,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     }
   }, [itemId, isClickable]);
 
-  const loadItemStatus = async () => {
+  const loadItemStatus = async () => {;
     if (!itemId) return;
     
     try {
@@ -39,7 +39,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     }
   };
 
-  const handleStatusUpdate = async (newStatus: ItemStatus) => {
+  const handleStatusUpdate = async (newStatus: ItemStatus) => {;
     if (!itemId || !isClickable) return;
 
     try {
@@ -53,7 +53,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getStatusIcon = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return <Clock className="h-4 w-4 text-orange-500" />;
       case 'em_producao':
         return <PlayCircle className="h-4 w-4 text-blue-500" />;
@@ -68,7 +68,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getStatusColor = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return 'border-l-orange-400 bg-orange-50';
       case 'em_producao':
         return 'border-l-blue-400 bg-blue-50';
@@ -83,7 +83,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getNextStatus = (current: ItemStatus): ItemStatus | null => {
     switch (current) {
-      case 'pendente':
+      case 'pendente':;
         return 'em_producao';
       case 'em_producao':
         return 'pronto';
@@ -96,7 +96,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getStatusLabel = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return 'Pendente';
       case 'em_producao':
         return 'Produzindo';
@@ -112,7 +112,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   // Função para agrupar adicionais por categoria
   const groupAdicionaisByCategory = (adicionais: Array<{nome: string; qtd?: number; valor: number; categoria?: string}>) => {
     const grouped = adicionais.reduce((acc, adicional) => {
-      // Usar nome real da categoria, apenas com limpeza básica
+      // Usar nome real da categoria, apenas com limpeza básica;
       let categoria = adicional.categoria || 'Outros';
       
       // Remove apenas emojis comuns, mantendo o nome original

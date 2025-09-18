@@ -28,7 +28,7 @@ export const AutoatendimentoCarrinho: React.FC<AutoatendimentoCarrinhoProps> = (
   const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
-    if (newQuantity <= 0) {
+    if (newQuantity <= 0) {;
       removerDoCarrinho(itemId);
     } else {
       atualizarQuantidade(itemId, newQuantity);
@@ -59,7 +59,7 @@ export const AutoatendimentoCarrinho: React.FC<AutoatendimentoCarrinhoProps> = (
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">

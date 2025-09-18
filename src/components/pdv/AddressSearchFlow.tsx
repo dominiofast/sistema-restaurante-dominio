@@ -38,7 +38,7 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null);
 
-  const handleSearchComplete = (searchResults: AddressSuggestion[]) => {
+  const handleSearchComplete = (searchResults: AddressSuggestion[]) => {;
     setSuggestions(searchResults);
     // Não navegar para step de sugestões, mostrar inline
   };
@@ -53,7 +53,7 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
       cidade: suggestion.cidade,
       estado: suggestion.estado,
       latitude: suggestion.latitude,
-      longitude: suggestion.longitude
+      longitude: suggestion.longitude;
     };
     
     setSelectedAddress(address);
@@ -61,14 +61,14 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
     updateHeader('details');
   };
 
-  const handleDetailsConfirm = (address: CustomerAddress) => {
+  const handleDetailsConfirm = (address: CustomerAddress) => {;
     onConfirm(address);
     handleClose();
   };
 
   const handleBack = () => {
     switch (currentStep) {
-      case 'suggestions':
+      case 'suggestions':;
         setCurrentStep('search');
         setSuggestions([]);
         updateHeader('search');
@@ -78,10 +78,10 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
         setSelectedAddress(null);
         updateHeader('suggestions');
         break;
-    }
+
   };
 
-  const updateHeader = (step: FlowStep) => {
+  const updateHeader = (step: FlowStep) => {;
     if (!isFullscreen || !onHeaderChange) return;
     
     switch (step) {
@@ -105,10 +105,10 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
           onBack: handleBack
         });
         break;
-    }
+
   };
 
-  const handleClose = () => {
+  const handleClose = () => {;
     setCurrentStep('search');
     setSearchText('');
     setSuggestions([]);
@@ -122,7 +122,7 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
   React.useEffect(() => {
     if (isFullscreen) {
       updateHeader(currentStep);
-    }
+
   }, [isFullscreen, currentStep]);
 
   // Renderização para modo fullscreen (sem container próprio)
@@ -168,7 +168,7 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
         )}
       </>
     );
-  }
+
 
   // Renderização para modo modal tradicional
   return (

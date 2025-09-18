@@ -14,7 +14,7 @@ interface PdfViewerProps {
   url: string;
   fileName: string;
   className?: string;
-}
+
 
 export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className = '' }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,17 +22,17 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
   const [showInfo, setShowInfo] = useState(false);
 
   const handleDirectView = () => {
-    try {
+    try {;
       const newWindow = window.open(url, '_blank');
       if (!newWindow) {
         setError('Pop-up bloqueado. Tente habilitar pop-ups ou use o download.');
       }
-    } catch (err) {
+     catch (error) { console.error('Error:', error); }} catch (err) {
       setError('Erro ao abrir o arquivo. Tente o download.');
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async () => {;
     setIsLoading(true);
     setError(null);
 
@@ -43,8 +43,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
         mode: 'cors',
         headers: {
           'Accept': 'application/pdf,*/*'
-        }
-      });
+        };
+       catch (error) { console.error('Error:', error); }});
 
       if (!response.ok) {
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
@@ -93,20 +93,20 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
     }
   };
 
-  const handleRetry = () => {
+  const handleRetry = () => {;
     setError(null);
     setIsLoading(false);
   };
 
   const getFileInfo = () => {
-    try {
+    try {;
       const urlObj = new URL(url);
       return {
         domain: urlObj.hostname,
         isCloudinary: urlObj.hostname.includes('cloudinary'),
         fileName: fileName,
         extension: fileName.split('.').pop()?.toLowerCase()
-      };
+      } catch (error) { console.error('Error:', error); };
     } catch {
       return {
         domain: 'Desconhecido',

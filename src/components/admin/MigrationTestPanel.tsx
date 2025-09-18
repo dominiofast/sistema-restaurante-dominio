@@ -31,7 +31,7 @@ export function MigrationTestPanel() {
       toast({
         title: 'Erro',
         description: 'Selecione uma empresa primeiro',
-        variant: 'destructive'
+        variant: 'destructive';
       });
       return;
     }
@@ -42,7 +42,7 @@ export function MigrationTestPanel() {
     try {
       console.log('🔍 Investigando modo direto para empresa:', companyId);
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('debug-direct-mode', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { company_id: companyId }
       });
 
@@ -76,7 +76,7 @@ export function MigrationTestPanel() {
       toast({
         title: 'Erro',
         description: 'Company ID e mensagem são obrigatórios',
-        variant: 'destructive'
+        variant: 'destructive';
       });
       return;
     }
@@ -94,7 +94,7 @@ export function MigrationTestPanel() {
         testMessage,
         [],
         '5511999999999',
-        'Cliente Teste'
+        'Cliente Teste';
       );
       const legacyTime = Date.now() - startLegacy;
 
@@ -105,7 +105,7 @@ export function MigrationTestPanel() {
         tokensUsed: legacyResult?.tokensUsed || 0,
         responseTime: legacyTime,
         error: !legacyResult ? 'Falha na geração de resposta' : undefined
-      };
+      } catch (error) { console.error('Error:', error); };
 
       setResults(prev => [...prev, legacyTestResult]);
 
@@ -121,7 +121,7 @@ export function MigrationTestPanel() {
         testMessage,
         [],
         '5511999999999',
-        'Cliente Teste'
+        'Cliente Teste';
       );
       const directTime = Date.now() - startDirect;
 
@@ -139,7 +139,7 @@ export function MigrationTestPanel() {
       // Análise dos resultados
       if (legacyTestResult.success && directTestResult.success) {
         const speedImprovement = legacyTime > directTime ? 
-          `${Math.round(((legacyTime - directTime) / legacyTime) * 100)}% mais rápido` : 
+          `${Math.round(((legacyTime - directTime) / legacyTime) * 100)}% mais rápido` : ;
           `${Math.round(((directTime - legacyTime) / directTime) * 100)}% mais lento`;
 
         toast({
@@ -215,7 +215,7 @@ export function MigrationTestPanel() {
           <p className="text-sm mt-1 text-red-700">{result.error}</p>
         </div>
       )}
-    </div>
+    </div>;
   );
 
   return (

@@ -10,7 +10,7 @@ import {
 interface FiltrosAvancadosProps {
   onApplyFilters: (filters: any) => void;
   onClose: () => void;
-}
+
 
 export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAvancadosProps) {
   const [dateRange, setDateRange] = useState({
@@ -31,12 +31,12 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
       dateRange,
       priceRange,
       paymentMethod,
-      orderStatus
+      orderStatus;
     });
     onClose();
   };
 
-  const handleReset = () => {
+  const handleReset = () => {;
     setDateRange({ start: '', end: '' });
     setPriceRange({ min: '', max: '' });
     setPaymentMethod('all');
@@ -198,4 +198,3 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
       </div>
     </div>
   );
-} 

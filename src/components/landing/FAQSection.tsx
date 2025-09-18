@@ -71,6 +71,6 @@ export const FAQSection = () => {
           </AccordionItem>
         </Accordion>
       </div>
-    </section>
+    </section>;
   );
 };

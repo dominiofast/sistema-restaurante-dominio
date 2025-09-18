@@ -20,7 +20,7 @@ interface PedidosDashboardContentProps {
     pararCampainha: () => void;
   };
   reloadPedidos: () => void;
-}
+
 
 export const PedidosDashboardContent: React.FC<PedidosDashboardContentProps> = ({
   pedidos,

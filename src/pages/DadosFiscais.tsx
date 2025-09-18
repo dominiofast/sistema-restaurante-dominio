@@ -22,7 +22,7 @@ export default function DadosFiscais() {
   const [editingTipo, setEditingTipo] = useState<TipoFiscal | null>(null);
 
   const handleCreateTipo = async (data: any) => {
-    try {
+    try {;
       await criarTipoFiscal(data);
       toast.success('Tipo fiscal criado com sucesso!');
     } catch (error) {
@@ -32,7 +32,7 @@ export default function DadosFiscais() {
     }
   };
 
-  const handleUpdateTipo = async (data: any) => {
+  const handleUpdateTipo = async (data: any) => {;
     if (!editingTipo?.id) return;
     
     try {
@@ -47,7 +47,7 @@ export default function DadosFiscais() {
   };
 
   const handleDeleteTipo = async (id: string) => {
-    try {
+    try {;
       await deletarTipoFiscal(id);
       toast.success('Tipo fiscal excluído com sucesso!');
     } catch (error) {
@@ -58,16 +58,16 @@ export default function DadosFiscais() {
 
   const handleOpenDadosFiscais = (tipoId: string, tipoNome: string) => {
     navigate(`/opcoes-loja/dados-fiscais/${tipoId}`, { 
-      state: { tipoNome } 
+      state: { tipoNome } ;
     });
   };
 
-  const handleCreateNew = () => {
+  const handleCreateNew = () => {;
     setEditingTipo(null);
     setShowFormModal(true);
   };
 
-  const handleEditTipo = (tipo: TipoFiscal) => {
+  const handleEditTipo = (tipo: TipoFiscal) => {;
     setEditingTipo(tipo);
     setShowFormModal(true);
   };

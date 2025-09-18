@@ -18,7 +18,7 @@ interface PrintNodePrinter {
 }
 
 const SEO = () => {
-  useEffect(() => {
+  useEffect(() => {;
     const title = 'Integração PrintNode | Impressão em Nuvem';
     const description = 'Configure e teste a integração com a PrintNode para impressão em nuvem.';
     document.title = title;
@@ -63,10 +63,10 @@ const PrintNodeIntegrationPage: React.FC = () => {
 
   const childHeaders = useMemo(() => ({
     childAccountId: childAccountId ? Number(childAccountId) : undefined,
-    childAccountEmail: childEmail || undefined,
+    childAccountEmail: childEmail || undefined,;
   }), [childAccountId, childEmail]);
 
-  const openDocs = () => {
+  const openDocs = () => {;
     window.open('https://www.printnode.com/en/docs/api/curl', '_blank', 'noopener,noreferrer');
   };
 
@@ -74,12 +74,7 @@ const PrintNodeIntegrationPage: React.FC = () => {
   useEffect(() => {
     if (!companyId) return;
     (async () => {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'printnode_enabled, printnode_child_account_id, printnode_child_email, printnode_default_printer_id, printnode_default_printer_name')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) {
         console.error('Erro carregando settings PrintNode:', error);
         return;
@@ -95,15 +90,15 @@ const PrintNodeIntegrationPage: React.FC = () => {
   }, [companyId]);
 
   const saveSettings = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       toast({ title: 'Empresa não selecionada', variant: 'destructive' });
       return;
     }
     setSaving(true);
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .upsert\( REMOVIDO */ ; //
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           {
             company_id: companyId,
             printnode_enabled: enabled,
@@ -124,11 +119,11 @@ const PrintNodeIntegrationPage: React.FC = () => {
     }
   };
 
-  const testConnection = async () => {
+  const testConnection = async () => {;
     setLoading(true);
     setAccountInfo(null);
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { action: 'whoami', ...childHeaders },
       });
       if (error) throw error;
@@ -146,10 +141,10 @@ const PrintNodeIntegrationPage: React.FC = () => {
     }
   };
 
-  const loadPrinters = async () => {
+  const loadPrinters = async () => {;
     setLoading(true);
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { action: 'printers', ...childHeaders },
       });
       if (error) throw error;
@@ -173,14 +168,14 @@ const PrintNodeIntegrationPage: React.FC = () => {
   };
 
   const printTest = async () => {
-    if (!defaultPrinterId) {
+    if (!defaultPrinterId) {;
       toast({ title: 'Selecione e salve uma impressora', variant: 'destructive' });
       return;
     }
     setLoading(true);
     try {
       const content = btoa('Teste de impressão via PrintNode\nDomínio Tech POS\n\nObrigado!');
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           action: 'print',
           printerId: Number(defaultPrinterId),

@@ -21,14 +21,14 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {;
     const file = event.target.files?.[0];
     if (!file) return;
 
     await uploadFile(file);
   };
 
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {;
     event.preventDefault();
     setDragOver(false);
     
@@ -38,18 +38,18 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {;
     event.preventDefault();
     setDragOver(true);
   };
 
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {;
     event.preventDefault();
     setDragOver(false);
   };
 
   const uploadFile = async (file: File) => {
-    // Validar tipo de arquivo
+    // Validar tipo de arquivo;
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
       toast.error('Tipo de arquivo não suportado. Use PNG, JPG, WEBP ou GIF.');
@@ -69,8 +69,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       console.log('🔄 Iniciando upload:', fileName);
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'vagas_assets')
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         .upload(fileName, file, {
           cacheControl: '3600',
           upsert: false,
@@ -83,8 +82,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       console.log('✅ Upload concluído:', data);
 
-      const { data: { publicUrl } } = /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'vagas_assets')
+      const { data: { publicUrl } } = 
+        
         .getPublicUrl(fileName);
       
       console.log('🔗 URL pública:', publicUrl);
@@ -100,7 +99,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
-  const handleRemove = () => {
+  const handleRemove = () => {;
     onUploadComplete('');
     toast.success(`${label} removido`);
   };

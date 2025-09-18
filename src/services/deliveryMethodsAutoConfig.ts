@@ -31,17 +31,10 @@ export async function autoCreateDeliveryMethods(
   companySlug?: string
 ): Promise<AutoConfigResult> {
   try {
-    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug });
+    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug } catch (error) { console.error('Error:', error); });
 
     // Verificar se já existe registro (double-check)
-    const { data: existing, error: checkError } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'delivery_methods')
-      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-      /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-      /* .single\( REMOVIDO */ ; //);
-
-    if (existing && !checkError) {
-      console.log('✅ [AutoConfig] Registro já existe, retornando configuração existente');
+    const existing = null as any; const checkError = null as any;
       return {
         success: true,
         data: {
@@ -50,7 +43,7 @@ export async function autoCreateDeliveryMethods(
         },
         created: false
       };
-    }
+
 
     // Obter configuração baseada nas regras de negócio
     const config = getAutoCreationConfig(companyName, companySlug);
@@ -58,40 +51,14 @@ export async function autoCreateDeliveryMethods(
     console.log('📝 [AutoConfig] Criando registro com configuração:', config);
 
     // Criar o registro
-    const { data: newRecord, error: insertError } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'delivery_methods')
-      /* .insert\( REMOVIDO */ ; //{
-        company_id: companyId,
-        delivery: config.delivery,
-        pickup: config.pickup,
-        eat_in: config.eat_in
-      })
-      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-      /* .single\( REMOVIDO */ ; //);
-
-    if (insertError) {
-      console.error('❌ [AutoConfig] Erro ao inserir registro:', insertError);
+    const newRecord = null as any; const insertError = null as any;
       
       // Verificar se é erro de duplicata (race condition)
       if (insertError.code === '23505') {
         console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente');
         
         // Tentar buscar o registro que foi criado
-        const { data: raceData, error: raceError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'delivery_methods')
-          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .single\( REMOVIDO */ ; //);
-
-        if (raceData && !raceError) {
-          return {
-            success: true,
-            data: {
-              ...raceData,
-              source: 'database'
-            },
-            created: false
-          };
+        const raceData = null as any; const raceError = null as any;
         }
       }
 
@@ -99,13 +66,13 @@ export async function autoCreateDeliveryMethods(
         success: false,
         error: `Erro ao criar configurações: ${insertError.message}`,
       };
-    }
+
 
     console.log('✅ [AutoConfig] Registro criado com sucesso:', newRecord);
 
     const resultConfig = {
       ...newRecord,
-      source: 'auto-created' as const
+      source: 'auto-created' as const;
     };
 
     // Record auto-creation event
@@ -123,7 +90,7 @@ export async function autoCreateDeliveryMethods(
       success: false,
       error: `Erro inesperado: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
     };
-  }
+
 }
 
 /**
@@ -143,19 +110,9 @@ export async function ensureDeliveryMethodsExist(
   const context = `ensureDeliveryMethods for ${companyName || companyId}`;
   
   const operation = async (): Promise<DeliveryMethodsConfig> => {
-    // Primeiro, tentar buscar configuração existente
-    const { data: existing, error: fetchError } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'delivery_methods')
-      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-      /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-      /* .single\( REMOVIDO */ ; //);
+    // Primeiro, tentar buscar configuração existente;
+    const existing = null as any; const fetchError = null as any;
 
-    if (existing && !fetchError) {
-      return {
-        ...existing,
-        source: 'database'
-      };
-    }
 
     // Se não existe, auto-criar
     if (fetchError?.code === 'PGRST116') {
@@ -165,17 +122,17 @@ export async function ensureDeliveryMethodsExist(
       
       if (result.success && result.data) {
         return result.data;
-      }
+
       
       // Se falhou ao criar, lançar erro para tentar recovery
       throw new Error(`Auto-creation failed: ${result.error}`);
-    }
+
 
     // Outros erros
     throw fetchError || new Error('Unknown fetch error');
   };
 
-  const fallback = (): DeliveryMethodsConfig => {
+  const fallback = (): DeliveryMethodsConfig => {;
     console.warn('⚠️ [EnsureConfig] Usando configuração de fallback');
     const fallbackConfig = getAutoCreationConfig(companyName, companySlug);
     return {
@@ -191,15 +148,15 @@ export async function ensureDeliveryMethodsExist(
       context,
       retryConfig: {
         maxAttempts: 2, // Menos tentativas para operações de configuração
-        baseDelay: 1000,
+// baseDelay: 1000,
         maxDelay: 3000
-      }
-    }
+
+    };
   );
 
   if (recoveryResult.success && recoveryResult.data) {
     return recoveryResult.data;
-  }
+
 
   // Se tudo falhou, log do erro e usar fallback final
   if (recoveryResult.error) {
@@ -210,7 +167,7 @@ export async function ensureDeliveryMethodsExist(
       attempts: recoveryResult.attempts,
       recoveryMethod: recoveryResult.recoveryMethod
     });
-  }
+
 
   // Fallback final garantido
   return fallback();
@@ -234,7 +191,7 @@ export async function batchCreateDeliveryMethods(
       results.push({
         companyId: company.id,
         result
-      });
+      } catch (error) { console.error('Error:', error); });
     } catch (error) {
       results.push({
         companyId: company.id,
@@ -243,8 +200,8 @@ export async function batchCreateDeliveryMethods(
           error: error instanceof Error ? error.message : 'Erro desconhecido'
         }
       });
-    }
-  }
+
+
 
   return results;
 }
@@ -262,21 +219,21 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
 }> {
   try {
     let query = supabase
-      /* .from REMOVIDO */ ; //'delivery_methods')
-      /* .select\( REMOVIDO */ ; //'company_id, delivery, pickup, eat_in');
+      
+      
 
     if (companyId) {
-      query = query/* .eq\( REMOVIDO */ ; //'company_id', companyId);
-    }
+      query = query
 
-    const { data: allConfigs, error: fetchError } = await query;
+
+     catch (error) { console.error('Error:', error); }const allConfigs = null as any; const fetchError = null as any;
 
     if (fetchError) {
       throw fetchError;
-    }
+
 
     const toRepair = allConfigs?.filter(config => 
-      !config.delivery && !config.pickup && !config.eat_in
+      !config.delivery && !config.pickup && !config.eat_in;
     ) || [];
 
     console.log(`🔧 [Repair] Encontradas ${toRepair.length} configurações para reparar`);
@@ -287,13 +244,13 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
     for (const config of toRepair) {
       try {
         // Habilitar pickup como padrão para configurações inválidas
-        const { error: updateError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'delivery_methods')
-          /* .update\( REMOVIDO */ ; //{
+        const { error: updateError }  catch (error) { console.error('Error:', error); }= 
+          
+          
             pickup: true,
             updated_at: new Date().toISOString()
           })
-          /* .eq\( REMOVIDO */ ; //'company_id', config.company_id);
+          
 
         if (updateError) {
           errors.push({
@@ -309,8 +266,8 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
           companyId: config.company_id,
           error: error instanceof Error ? error.message : 'Erro desconhecido'
         });
-      }
-    }
+
+
 
     return { repaired, errors };
 
@@ -323,5 +280,5 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
         error: error instanceof Error ? error.message : 'Erro desconhecido'
       }]
     };
-  }
+
 }

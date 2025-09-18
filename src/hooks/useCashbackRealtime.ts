@@ -14,13 +14,13 @@ interface CashbackRealtimeHookReturn {
   pendente: boolean;
   valorPendente: number;
   fetchSaldo: () => Promise<void>;
-}
+
 
 export const useCashbackRealtime = (
   companyId: string,
   customerPhone?: string,
   totalPedido: number = 0
-): CashbackRealtimeHookReturn => {
+): CashbackRealtimeHookReturn => {;
   const [saldoDisponivel, setSaldoDisponivel] = useState(0);
   const [loading, setLoading] = useState(false);
   const [aplicado, setAplicado] = useState(false);
@@ -29,7 +29,7 @@ export const useCashbackRealtime = (
   const [valorPendente, setValorPendente] = useState(0);
 
   const fetchSaldo = async () => {
-    if (!customerPhone || !companyId) {
+    if (!customerPhone || !companyId) {;
       setSaldoDisponivel(0);
       return;
     }
@@ -46,7 +46,7 @@ export const useCashbackRealtime = (
     }
   };
 
-  const aplicarCashback = async (valor: number, pedidoId?: number): Promise<boolean> => {
+  const aplicarCashback = async (valor: number, pedidoId?: number): Promise<boolean> => {;
     if (!customerPhone || !companyId || valor <= 0) return false;
 
     // Verificar se tem saldo suficiente usando função segura
@@ -66,7 +66,7 @@ export const useCashbackRealtime = (
     return true;
   };
 
-  const marcarPendente = (valor: number) => {
+  const marcarPendente = (valor: number) => {;
     const valorAUsar = Math.min(saldoDisponivel, valor);
     if (valorAUsar <= 0) return;
     
@@ -76,7 +76,7 @@ export const useCashbackRealtime = (
     setValorAplicado(0);
   };
 
-  const removerCashback = () => {
+  const removerCashback = () => {;
     setAplicado(false);
     setValorAplicado(0);
     setPendente(false);
@@ -94,8 +94,8 @@ export const useCashbackRealtime = (
 
     // Configurar real-time subscription para transações
     const transactionChannel = supabase
-      // /* .channel REMOVIDO */ ; // // DESABILITADO'cashback-transactions-changes')
-      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
+      // 
+      // // 
         'postgres_changes',
         {
           event: '*',
@@ -103,18 +103,18 @@ export const useCashbackRealtime = (
           table: 'cashback_transactions',
           filter: `company_id=eq.${companyId},customer_phone=eq.${customerPhone}`
         },
-        (payload) => {
+        (payload) => {;
           console.log('💰 [REALTIME] Transação de cashback alterada:', payload);
           // Recarregar saldo quando houver mudanças nas transações
           fetchSaldo();
         }
       )
-      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
+      // // 
 
     // Configurar real-time subscription para saldos
     const balanceChannel = supabase
-      // /* .channel REMOVIDO */ ; // // DESABILITADO'cashback-balance-changes')
-      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
+      // 
+      // // 
         'postgres_changes',
         {
           event: '*',
@@ -122,7 +122,7 @@ export const useCashbackRealtime = (
           table: 'customer_cashback',
           filter: `company_id=eq.${companyId},customer_phone=eq.${customerPhone}`
         },
-        (payload) => {
+        (payload) => {;
           console.log('💰 [REALTIME] Saldo de cashback alterado:', payload);
       if (payload.eventType === 'UPDATE' && payload.new) {
         // Atualizar saldo diretamente sem nova consulta
@@ -133,12 +133,12 @@ export const useCashbackRealtime = (
           }
         }
       )
-      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
+      // // 
 
     return () => {
       console.log('💰 [REALTIME] Desconectando canais de cashback');
-      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(transactionChannel);
-      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(balanceChannel);
+      // 
+      // 
     };
   }, [customerPhone, companyId]);
 

@@ -6,7 +6,7 @@ export interface ValidationResult {
 }
 
 export function useCompanyFiscalValidation() {
-  const validarConfiguracao = (fiscalConfig: CompanyFiscalConfig | null): ValidationResult => {
+  const validarConfiguracao = (fiscalConfig: CompanyFiscalConfig | null): ValidationResult => {;
     if (!fiscalConfig) return { valid: false, errors: ['Configuração não encontrada'] };
     
     const errors: string[] = [];

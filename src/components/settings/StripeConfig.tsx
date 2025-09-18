@@ -22,7 +22,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface StripeConfigProps {
   companyId: string;
-}
+
 
 export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
   const { config, loading, error, saveConfig, testCredentials } = useStripeConfig(companyId);
@@ -59,11 +59,11 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
   const handleInputChange = (field: keyof StripeConfigData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value;
     }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     setSaving(true);
     try {
       await saveConfig(formData);
@@ -77,7 +77,7 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
       toast({
         title: 'Dados incompletos',
         description: 'Preencha as chaves para testar as credenciais',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return;
     }
@@ -97,7 +97,7 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         <span className="ml-2">Carregando configurações do Stripe...</span>
       </div>
     );
-  }
+
 
   if (error) {
     return (
@@ -108,7 +108,7 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         </AlertDescription>
       </Alert>
     );
-  }
+
 
   return (
     <div className="space-y-6">

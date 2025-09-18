@@ -20,40 +20,29 @@ export interface HorarioDia {
   created_at: string;
 }
 
-const useHorario = (companyId?: string) => {
+const useHorario = (companyId?: string) => {;
   const [horario, setHorario] = useState<HorarioFuncionamento | null>(null);
   const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchHorario = useCallback(async () => {
+  const fetchHorario = useCallback(async () => {;
     if (!companyId) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horario_funcionamento')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (horarioError && horarioError.code !== 'PGRST116') throw horarioError;
+      const horarioData = null as any; const horarioError = null as any;
       
       if (horarioData) {
         const horarioTyped: HorarioFuncionamento = {
           ...horarioData,
           tipo_disponibilidade: horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'agendados' | 'fechado'
-        };
+        } catch (error) { console.error('Error:', error); };
         setHorario(horarioTyped);
 
-        const { data: horariosDiasData, error: horariosDiasError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'horarios_dias')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id);
-
-        if (horariosDiasError) throw horariosDiasError;
+        const horariosDiasData = null as any; const horariosDiasError = null as any;
         
         const diasTyped: HorarioDia[] = (horariosDiasData || []).map(dia => ({
           id: dia.id,
@@ -65,15 +54,15 @@ const useHorario = (companyId?: string) => {
           created_at: dia.created_at
         }));
         setHorariosDias(diasTyped);
-      }
+
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
-    }
+
   }, [companyId]);
 
-  const refetch = useCallback(async () => {
+  const refetch = useCallback(async () => {;
     await fetchHorario();
   }, [fetchHorario]);
 
@@ -84,32 +73,20 @@ const useHorario = (companyId?: string) => {
   return { horario, horariosDias, loading, error, refetch };
 };
 
-export const useHorarioFuncionamento = (companyId?: string) => {
+export const useHorarioFuncionamento = (companyId?: string) => {;
   const { horario, horariosDias, loading, error, refetch } = useHorario(companyId);
 
-  const salvarHorarios = async (fuso: string, tipo: string, horarios: Record<number, {inicio: string, fim: string}[]>) => {
+  const salvarHorarios = async (fuso: string, tipo: string, horarios: Record<number, {inicio: string, fim: string}[]>) => {;
     if (!companyId) throw new Error('Company ID é obrigatório');
     
     try {
-      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horario_funcionamento')
-        /* .upsert\( REMOVIDO */ ; //{
-          company_id: companyId,
-          fuso_horario: fuso,
-          tipo_disponibilidade: tipo,
-        }, {
-          onConflict: 'company_id'
-        })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (horarioError) throw horarioError;
+      const horarioData = null as any; const horarioError = null as any;
 
       // Clear existing horarios_dias
-      /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horarios_dias')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id);
+      
+        
+        
+        
 
       // Insert new horarios_dias
       const horariosToInsert = Object.entries(horarios)
@@ -122,22 +99,19 @@ export const useHorarioFuncionamento = (companyId?: string) => {
               dia_semana: parseInt(dia),
               horario_inicio: h.inicio,
               horario_fim: h.fim,
-              ativo: true
-            }))
+              ativo: true;
+            } catch (error) { console.error('Error:', error); }))
         );
 
       if (horariosToInsert.length > 0) {
-        const { error: diasError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'horarios_dias')
-          /* .insert\( REMOVIDO */ ; //horariosToInsert);
-
+        const { error: diasError  } = null as any;
         if (diasError) throw diasError;
-      }
+
 
       await refetch();
     } catch (err: any) {
       throw err;
-    }
+
   };
 
   return {

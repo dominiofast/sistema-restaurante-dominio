@@ -10,7 +10,7 @@ export interface Vaga {
   requirements?: string;
   benefits?: string;
   created_at: string;
-}
+
 
 export interface PageConfig {
   page_title: string;
@@ -20,4 +20,4 @@ export interface PageConfig {
   company_name: string;
   title_color: string;
   company_id: string;
-}
+

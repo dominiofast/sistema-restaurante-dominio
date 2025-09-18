@@ -19,7 +19,7 @@ export const PagamentoDinheiroPDV: React.FC<PagamentoDinheiroPDVProps> = ({
       tipo: 'dinheiro',
       valorRecebido: parseFloat(valorRecebido),
       troco: troco > 0 ? troco : 0,
-      observacoes
+      observacoes;
     });
   };
 

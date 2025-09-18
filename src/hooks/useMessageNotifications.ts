@@ -14,7 +14,7 @@ interface UseMessageNotificationsProps {
   companyId?: string;
 }
 
-export const useMessageNotifications = ({ companyId }: UseMessageNotificationsProps) => {
+export const useMessageNotifications = ({ companyId }: UseMessageNotificationsProps) => {;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     enabled: true,
@@ -38,7 +38,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   }, [companyId]);
 
   // Salvar preferências
-  const savePreferences = useCallback((newPrefs: Partial<NotificationPreferences>) => {
+  const savePreferences = useCallback((newPrefs: Partial<NotificationPreferences>) => {;
     const updated = { ...preferences, ...newPrefs };
     setPreferences(updated);
     if (companyId) {
@@ -48,7 +48,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
 
   // Monitorar visibilidade da página
   useEffect(() => {
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = () => {;
       setIsPageVisible(!document.hidden);
     };
 
@@ -65,7 +65,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
 
   // Solicitar permissão para notificações
   const requestPermission = useCallback(async () => {
-    if ('Notification' in window) {
+    if ('Notification' in window) {;
       const result = await Notification.requestPermission();
       setPermission(result);
       return result;
@@ -74,7 +74,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   }, []);
 
   // Criar elemento de áudio para sons personalizados
-  const createAudioElement = useCallback((sound: NotificationSound) => {
+  const createAudioElement = useCallback((sound: NotificationSound) => {;
     if (sound === 'none') return null;
 
     const audio = new Audio();
@@ -98,7 +98,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   }, []);
 
   // Reproduzir som de notificação
-  const playNotificationSound = useCallback((sound: NotificationSound) => {
+  const playNotificationSound = useCallback((sound: NotificationSound) => {;
     if (sound === 'none') return;
 
     try {
@@ -106,7 +106,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
       if (audio) {
         audio.play().catch(error => {
           console.warn('Erro ao reproduzir som de notificação:', error);
-        });
+        } catch (error) { console.error('Error:', error); });
       }
     } catch (error) {
       console.warn('Erro ao criar áudio de notificação:', error);
@@ -114,7 +114,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   }, [createAudioElement]);
 
   // Mostrar notificação do sistema
-  const showSystemNotification = useCallback((title: string, body: string, icon?: string) => {
+  const showSystemNotification = useCallback((title: string, body: string, icon?: string) => {;
     if (permission !== 'granted') return;
 
     try {
@@ -123,9 +123,9 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
         icon: icon || '/favicon.ico',
         badge: '/favicon.ico',
         tag: 'whatsapp-message', // Evita múltiplas notificações
-        requireInteraction: false,
-        silent: preferences.sound === 'none'
-      });
+// requireInteraction: false,
+        silent: preferences.sound === 'none';
+      } catch (error) { console.error('Error:', error); });
 
       // Auto-fechar após 5 segundos
       setTimeout(() => {
@@ -147,7 +147,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   const notify = useCallback((
     senderName: string,
     message: string,
-    options?: {
+    options?: {;
       avatar?: string;
       chatId?: string;
       priority?: 'low' | 'normal' | 'high';
@@ -202,7 +202,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   // Notificação rápida para mensagens importantes
   const notifyImportant = useCallback((
     senderName: string,
-    message: string,
+    message: string,;
     options?: { avatar?: string; chatId?: string }
   ) => {
     // Ignorar preferências para notificações importantes
@@ -235,7 +235,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
   }, [permission, playNotificationSound, showSystemNotification]);
 
   // Silenciar temporariamente
-  const muteTemporarily = useCallback((minutes: number = 15) => {
+  const muteTemporarily = useCallback((minutes: number = 15) => {;
     const originalEnabled = preferences.enabled;
     savePreferences({ enabled: false });
 

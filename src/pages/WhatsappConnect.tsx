@@ -35,7 +35,7 @@ export const WhatsappConnect: React.FC = () => {
   const logsContainerRef = useRef<HTMLDivElement>(null);
 
   // Adicionar log
-  const addLog = (level: string, message: string) => {
+  const addLog = (level: string, message: string) => {;
     const timestamp = new Date().toLocaleTimeString('pt-BR');
     const newLog = { timestamp, level, message };
     setLogs(prev => [...prev, newLog]);
@@ -48,14 +48,14 @@ export const WhatsappConnect: React.FC = () => {
     }, 100);
   };
 
-  const clearLogs = () => {
+  const clearLogs = () => {;
     setLogs([]);
     addLog('info', 'Logs limpos');
   };
 
   useEffect(() => {
     const fetchIntegration = async () => {
-      if (!currentCompany?.id) {
+      if (!currentCompany?.id) {;
         setError('Nenhuma empresa selecionada.');
         setLoading(false);
         setIntegration(null);
@@ -70,14 +70,7 @@ export const WhatsappConnect: React.FC = () => {
       setQrCodeUrl(null);
       setWhatsappStatus({ connected: false });
       
-const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_integrations')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'purpose', selectedPurpose)
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+const { data, error  } = null as any;
       if (error) {
         addLog('error', `Erro ao buscar integração (${selectedPurpose}): ${error.message || 'desconhecido'}`);
       }
@@ -92,13 +85,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
       
       // Verificar se a outra instância usa a mesma instance_key (o que faria conectar o mesmo número)
       const otherPurpose = selectedPurpose === 'primary' ? 'marketing' : 'primary';
-      const { data: other } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_integrations')
-        /* .select\( REMOVIDO */ ; //'instance_key, host, token, control_id, purpose')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'purpose', otherPurpose)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data: other  } = null as any;
       setOtherIntegration(other as any);
 
       if (other?.instance_key && other.instance_key === (data as any).instance_key) {
@@ -143,14 +130,14 @@ const { data, error } = /* await supabase REMOVIDO */ null
     }
   }, [integration]);
 
-  const checkWhatsappStatus = async () => {
+  const checkWhatsappStatus = async () => {;
     if (!integration) return;
     
     addLog('info', 'Verificando status da conexão...');
     
     try {
       // Endpoint correto conforme documentação da Mega API
-      const url = `https://${integration.host}/rest/instance/${integration.instance_key}`;
+      const url = `https://${integration.host} catch (error) { console.error('Error:', error); }/rest/instance/${integration.instance_key}`;
       console.log('🔍 Verificando status no endpoint:', url);
       
       const response = await fetch(url, {
@@ -158,7 +145,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
         headers: {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
-        }
+        };
       });
       
       console.log('📡 Status da resposta:', response.status, response.statusText);
@@ -234,7 +221,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
     }
   };
 
-  const generateQrCode = async () => {
+  const generateQrCode = async () => {;
     if (!integration) return;
     // Segurança: garantir que a integração corresponde ao propósito selecionado
     if (integration.purpose && integration.purpose !== selectedPurpose) {
@@ -250,12 +237,12 @@ const { data, error } = /* await supabase REMOVIDO */ null
     
     const endpoints = [
       `/rest/instance/qrcode/${integration.instance_key}`,
-      `/rest/instance/qrcode_base64/${integration.instance_key}`
+      `/rest/instance/qrcode_base64/${integration.instance_key}`;
     ];
     
     for (const endpoint of endpoints) {
       try {
-        console.log(`Tentando endpoint: https://${integration.host}${endpoint}`);
+        console.log(`Tentando endpoint: https://${integration.host} catch (error) { console.error('Error:', error); }${endpoint}`);
         
         const url = `https://${integration.host}${endpoint}`;
         const response = await fetch(url, {
@@ -263,7 +250,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
           headers: {
             'Authorization': `Bearer ${integration.token}`,
             'Content-Type': 'application/json'
-          }
+          };
         });
         
         console.log(`Status da resposta: ${response.status} ${response.statusText}`);
@@ -312,7 +299,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
     setConnecting(false);
   };
 
-  const disconnectWhatsapp = async () => {
+  const disconnectWhatsapp = async () => {;
     if (!integration) return;
     setDisconnecting(true);
     setError(null);
@@ -321,7 +308,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
     
     try {
       // Endpoint correto conforme documentação da Mega API
-      const url = `https://${integration.host}/rest/instance/${integration.instance_key}/logout`;
+      const url = `https://${integration.host} catch (error) { console.error('Error:', error); }/rest/instance/${integration.instance_key}/logout`;
       console.log('🔌 Desconectando WhatsApp no endpoint:', url);
       
       const response = await fetch(url, {
@@ -329,7 +316,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
         headers: {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
-        }
+        };
       });
       
       console.log('📡 Status da desconexão:', response.status, response.statusText);
@@ -382,7 +369,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
         </div>
       </div>
     );
-  }
+
 
   if (error && !integration) {
     return (
@@ -422,7 +409,7 @@ const { data, error } = /* await supabase REMOVIDO */ null
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="min-h-screen bg-background">

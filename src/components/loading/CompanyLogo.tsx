@@ -30,7 +30,7 @@ export const CompanyLogo: React.FC<EnhancedCompanyLogoProps> = ({
   const finalSize = size || currentBreakpoint.logoSize;
 
   // Determine classes CSS baseadas no contexto e breakpoints
-  const getContextClasses = () => {
+  const getContextClasses = () => {;
     const classes = [styles['logo-container']];
     
     // Add responsive classes if enabled
@@ -50,8 +50,8 @@ export const CompanyLogo: React.FC<EnhancedCompanyLogoProps> = ({
         classes.push(styles['loading-logo-enhanced']);
       } else {
         classes.push(styles['company-branding-logo']);
-      }
-    }
+
+
     
     classes.push(styles['no-crop']);
     classes.push(styles['logo-optimized']);

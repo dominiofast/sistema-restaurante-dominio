@@ -20,14 +20,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({ primaryColor, onSearch })
     { value: 'CLT', label: 'CLT' },
     { value: 'PJ', label: 'PJ' },
     { value: 'Estágio', label: 'Estágio' },
-    { value: 'Temporário', label: 'Temporário' },
+    { value: 'Temporário', label: 'Temporário' },;
   ];
 
   const handleSearch = () => {
     onSearch({ 
       busca, 
       tipoContrato: tipoContrato === 'todos' ? '' : tipoContrato, 
-      localizacao 
+      localizacao ;
     });
   };
 

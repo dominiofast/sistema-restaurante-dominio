@@ -19,7 +19,7 @@ export function useCustomerAddressManager({ customerPhone, companyId }: UseCusto
     }
   }, [customerPhone, companyId, fetchAddressesByPhone]);
 
-  const handleDeleteAddress = async (addressId: string): Promise<boolean> => {
+  const handleDeleteAddress = async (addressId: string): Promise<boolean> => {;
     setDeletingId(addressId);
     
     try {
@@ -28,7 +28,7 @@ export function useCustomerAddressManager({ customerPhone, companyId }: UseCusto
       toast({
         title: "Endereço excluído",
         description: "O endereço foi removido com sucesso.",
-      });
+      } catch (error) { console.error('Error:', error); });
       
       return true;
     } catch (error) {
@@ -47,7 +47,7 @@ export function useCustomerAddressManager({ customerPhone, companyId }: UseCusto
   };
 
   const refreshAddresses = () => {
-    if (customerPhone && customerPhone.length >= 10 && companyId) {
+    if (customerPhone && customerPhone.length >= 10 && companyId) {;
       fetchAddressesByPhone(customerPhone, companyId);
     }
   };

@@ -35,12 +35,7 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
         console.log('🔍 Buscando cliente no PDV com telefone:', telefoneNumeros);
         
         // Buscar cliente pelo telefone
-        const { data: clientes, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'clientes')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'telefone', telefoneNumeros)
-          /* .limit\( REMOVIDO */ ; //1);
-          
+        const { data: clientes, error  } = null as any;
         if (!error && clientes && clientes.length > 0) {
           console.log('✅ Cliente encontrado no PDV:', clientes[0]);
           // Se existe, preencher nome automaticamente
@@ -50,19 +45,12 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
           console.log('📝 Cadastrando novo cliente no PDV');
           
           // Se não existe, cadastrar novo cliente
-          const { data: novoCliente, error: insertError } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'clientes')
-            /* .insert\( REMOVIDO */ ; //{ nome: customerName || 'Cliente', telefone: telefoneNumeros, company_id: currentCompany.id })
-            /* .select\( REMOVIDO */ ; //)
-            /* .single\( REMOVIDO */ ; //);
-            
-          if (!insertError && novoCliente) {
-            console.log('✅ Cliente cadastrado no PDV:', novoCliente);
+          const novoCliente = null as any; const insertError = null as any;
           }
         }
-      }
+
       fetchAddressesByPhone(customerPhone, currentCompany?.id);
-    }
+
     buscarOuCadastrarCliente();
   }, [customerPhone]);
 
@@ -71,7 +59,7 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
       ...newAddress,
       id: Date.now().toString(),
       customer_name: customerName,
-      customer_phone: customerPhone
+      customer_phone: customerPhone;
     };
     
     onAddressSelect(addressWithId);
@@ -80,15 +68,15 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
 
   const handleDeleteAddress = async (addressId: string) => {
     if (confirm('Deseja excluir este endereço?')) {
-      try {
+      try {;
         await deleteAddress(addressId);
         if (selectedAddress?.id === addressId) {
           onAddressSelect(null);
-        }
-      } catch (error) {
+
+       catch (error) { console.error('Error:', error); }} catch (error) {
         console.error('Erro ao excluir endereço:', error);
-      }
-    }
+
+
   };
 
   if (loading) {
@@ -97,7 +85,7 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
         Carregando endereços...
       </div>
     );
-  }
+
 
   return (
     <div className="space-y-3">

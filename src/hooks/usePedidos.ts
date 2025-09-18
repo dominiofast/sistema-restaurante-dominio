@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useStore } from '@/contexts/StoreContext';
 import { Pedido } from '@/types/pedidos';
 
-export const usePedidos = () => {
+export const usePedidos = () => {;
   const { currentCompany } = useAuth();
   const { selectedStore } = useStore();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
@@ -16,7 +16,7 @@ export const usePedidos = () => {
     console.log('usePedidos: useEffect triggered via API Neon', { companyId, selectedStore: selectedStore?.name });
     
     const fetchPedidos = async () => {
-      if (!companyId) {
+      if (!companyId) {;
         console.log('usePedidos: No company ID, clearing pedidos');
         setPedidos([]);
         setLoading(false);
@@ -30,10 +30,10 @@ export const usePedidos = () => {
       try {
         // Usar empresa selecionada ou atual
         const targetCompanyId = (selectedStore?.id && selectedStore.id !== companyId) 
-          ? selectedStore.id 
+          ? selectedStore.id ;
           : companyId;
 
-        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId}`);
+        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId} catch (error) { console.error('Error:', error); }`);
         const result = await response.json();
         
         if (!response.ok || !result.success) {
@@ -117,16 +117,16 @@ export const usePedidos = () => {
     };
   }, [companyId, selectedStore?.id]); // Reagir também à mudança de empresa
 
-  const updatePedidoStatus = async (pedidoId: number, newStatus: string) => {
+  const updatePedidoStatus = async (pedidoId: number, newStatus: string) => {;
     if (!companyId) return;
     
     try {
-      console.log('usePedidos: Updating pedido status via API:', { pedidoId, newStatus });
+      console.log('usePedidos: Updating pedido status via API:', { pedidoId, newStatus } catch (error) { console.error('Error:', error); });
       
       const response = await fetch('/api/pedidos', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: pedidoId, status: newStatus })
+        body: JSON.stringify({ id: pedidoId, status: newStatus });
       });
       
       const result = await response.json();
@@ -149,21 +149,21 @@ export const usePedidos = () => {
   };
 
   // Função para recarregar pedidos manualmente
-  const reloadPedidos = () => {
+  const reloadPedidos = () => {;
     console.log('usePedidos: Manual reload triggered');
     setLoading(true);
     setError(null);
     
     // Força nova busca
-    const fetchPedidos = async () => {
+    const fetchPedidos = async () => {;
       if (!companyId) return;
       
       try {
         const targetCompanyId = (selectedStore?.id && selectedStore.id !== companyId) 
-          ? selectedStore.id 
+          ? selectedStore.id ;
           : companyId;
 
-        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId}`);
+        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId} catch (error) { console.error('Error:', error); }`);
         const result = await response.json();
         
         if (!response.ok || !result.success) {

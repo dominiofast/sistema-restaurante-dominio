@@ -56,7 +56,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
     }
   }, [selectedCliente, open]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (!currentCompany?.id) {
@@ -91,12 +91,12 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
     
     try {
       // Verificar se cliente já existe
-      const { data: existingCustomer } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_cashback')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'customer_phone', formData.customer_phone)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data: existingCustomer }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       let newSaldoDisponivel = 0;
       let newSaldoTotal = 0;
@@ -111,16 +111,14 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
           newSaldoTotal = existingCustomer.saldo_total_acumulado; // Total acumulado não diminui com débito
         }
 
-        const { error: updateError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'customer_cashback')
-          /* .update\( REMOVIDO */ ; //{
+        const { error: updateError  } = null as any;
             saldo_disponivel: newSaldoDisponivel,
             saldo_total_acumulado: newSaldoTotal,
             customer_name: formData.customer_name || existingCustomer.customer_name,
             updated_at: new Date().toISOString()
           })
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .eq\( REMOVIDO */ ; //'customer_phone', formData.customer_phone);
+          
+          
 
         if (updateError) throw updateError;
       } else {
@@ -138,9 +136,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         newSaldoDisponivel = valor;
         newSaldoTotal = valor;
 
-        const { error: insertError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'customer_cashback')
-          /* .insert\( REMOVIDO */ ; //{
+        const { error: insertError  } = null as any;
             company_id: currentCompany.id,
             customer_phone: formData.customer_phone,
             customer_name: formData.customer_name || null,
@@ -152,9 +148,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
       }
 
       // Registrar transação
-      const { error: transactionError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cashback_transactions')
-        /* .insert\( REMOVIDO */ ; //{
+      const { error: transactionError  } = null as any;
           company_id: currentCompany.id,
           customer_phone: formData.customer_phone,
           customer_name: formData.customer_name || null,
@@ -196,33 +190,33 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
     }
   };
 
-  const formatCurrency = (value: string) => {
+  const formatCurrency = (value: string) => {;
     const numericValue = value.replace(/\D/g, '');
     const formatted = (parseFloat(numericValue) / 100).toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2;
     });
     return formatted;
   };
 
-  const handleValueChange = (value: string) => {
+  const handleValueChange = (value: string) => {;
     const numericValue = value.replace(/\D/g, '');
     const formattedValue = (parseFloat(numericValue || '0') / 100).toFixed(2);
     setFormData(prev => ({ ...prev, valor: formattedValue }));
   };
 
-  const searchCustomerByPhone = async (phone: string) => {
+  const searchCustomerByPhone = async (phone: string) => {;
     if (!phone || !currentCompany?.id) return;
 
     setSearchingCustomer(true);
     try {
       // Primeiro buscar na tabela de cashback
-      const { data: cashbackCustomer } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_cashback')
-        /* .select\( REMOVIDO */ ; //'customer_name, customer_phone, saldo_disponivel')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'customer_phone', phone)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data: cashbackCustomer }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (cashbackCustomer && cashbackCustomer.customer_name) {
         setFormData(prev => ({ 
@@ -234,13 +228,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
       }
 
       // Se não encontrou, buscar na tabela de clientes
-      const { data: cliente } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'nome, telefone')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'telefone', phone)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data: cliente  } = null as any;
       if (cliente) {
         setFormData(prev => ({ 
           ...prev, 

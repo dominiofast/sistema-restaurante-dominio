@@ -15,9 +15,9 @@ export class AIConversationLogger {
   ): Promise<void> {
     try {
       // Salva mensagem do usuário
-      /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_conversation_logs')
-        /* .insert\( REMOVIDO */ ; //{
+      
+        
+        
           company_id: companyId,
           customer_phone: customerPhone,
           customer_name: customerName,
@@ -25,12 +25,12 @@ export class AIConversationLogger {
           message_content: userMessage,
           tokens_used: 0,
           response_time_ms: 0
-        });
+        } catch (error) { console.error('Error:', error); });
 
       // Salva resposta da IA
-      /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_conversation_logs')
-        /* .insert\( REMOVIDO */ ; //{
+      
+        
+        
           company_id: companyId,
           customer_phone: customerPhone,
           customer_name: customerName,
@@ -41,6 +41,6 @@ export class AIConversationLogger {
         });
     } catch (error) {
       console.error('Erro ao salvar log da conversa:', error);
-    }
-  }
-}
+
+
+

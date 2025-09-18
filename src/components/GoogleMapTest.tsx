@@ -6,7 +6,7 @@ const containerStyle = {
   width: "100%",
   height: "200px",
   borderRadius: "8px",
-  overflow: "hidden",
+  overflow: "hidden",;
 };
 
 export const GoogleMapTest: React.FC = () => {

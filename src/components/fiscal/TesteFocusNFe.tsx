@@ -14,7 +14,7 @@ export const TesteFocusNFe: React.FC = () => {
   const [erro, setErro] = useState<string | null>(null);
 
   const testarNFCe = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       setErro('Nenhuma empresa selecionada');
       return;
     }
@@ -26,20 +26,20 @@ export const TesteFocusNFe: React.FC = () => {
     try {
       // Primeiro teste: chamar função de teste simples
       console.log('Testando função básica...');
-      const testResponse = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-test', {
+      const testResponse = await Promise.resolve();
         body: {
           test: true,
           company_id: currentCompany.id,
           timestamp: Date.now()
-        }
-      });
+        };
+       catch (error) { console.error('Error:', error); }});
 
       console.log('Resposta do teste:', testResponse);
 
       if (testResponse.error) {
         setErro('Erro no teste básico: ' + testResponse.error.message);
         return;
-      }
+
 
       // Criar dados de teste
       const dadosTeste = {
@@ -62,14 +62,14 @@ export const TesteFocusNFe: React.FC = () => {
             cst_csosn: "102",
             aliquota_icms: 0.00,
             origem_produto: "0"
-          }
+
         ],
         pagamentos: [
           {
             tipo: "dinheiro",
             valor: 25.90
-          }
-        ]
+
+        ];
       };
 
       console.log('Testando NFCe com dados:', dadosTeste);
@@ -81,7 +81,7 @@ export const TesteFocusNFe: React.FC = () => {
         setResultado(result);
       } else {
         setErro(result.error || 'Erro desconhecido');
-      }
+
     } catch (error: any) {
       console.error('Erro no teste:', error);
       setErro(error.message || 'Erro ao testar NFCe');

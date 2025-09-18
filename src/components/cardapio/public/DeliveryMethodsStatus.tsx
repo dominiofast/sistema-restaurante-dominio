@@ -46,7 +46,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
         </span>
       </div>
     );
-  }
+
 
   // Error state
   if (error && !deliveryMethods) {
@@ -82,7 +82,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
         </div>
       </div>
     );
-  }
+
 
   // Success states with different sources
   if (deliveryMethods) {
@@ -128,8 +128,8 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
 
       default:
         return null;
-    }
-  }
+
+
 
   return null;
 };
@@ -186,7 +186,7 @@ export const DeliveryOptionsSummary: React.FC<{
 
   if (options.length === 0) {
     return null;
-  }
+
 
   return (
     <div className="p-3 bg-green-50 border border-green-200 rounded-lg mb-3">

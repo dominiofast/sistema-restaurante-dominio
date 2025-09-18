@@ -38,7 +38,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   // Event listener para o botão flutuante
   React.useEffect(() => {
     const handleFinalizarPedidoEvent = () => {
-      if (carrinho.length > 0) {
+      if (carrinho.length > 0) {;
         setShowPagamentoModal(true);
       }
     };
@@ -51,17 +51,17 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   }, [carrinho.length]); // Dependência para recalcular quando o carrinho mudar
 
   // Função para buscar cliente pelo telefone
-  const buscarClientePorTelefone = async (telefone: string) => {
+  const buscarClientePorTelefone = async (telefone: string) => {;
     if (!telefone || telefone.length < 10 || !companyId) return;
     
     try {
       // Buscar na tabela clientes
-      const { data: cliente, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'telefone', telefone)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data: cliente, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar cliente:', error);
@@ -77,19 +77,19 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
       }
     } catch (error) {
       console.error('Erro ao buscar cliente:', error);
-    }
+
   };
 
   // Função para buscar endereços do cliente
-  const buscarEnderecosCliente = async () => {
+  const buscarEnderecosCliente = async () => {;
     if (!telefoneCliente || !companyId) return [];
     
     try {
-      const { data: enderecos, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'customer_phone', telefoneCliente);
+      const { data: enderecos, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar endereços:', error);
@@ -100,11 +100,11 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     } catch (error) {
       console.error('Erro ao buscar endereços:', error);
       return [];
-    }
+
   };
 
   // Handler para mudança no telefone
-  const handleTelefoneChange = (value: string) => {
+  const handleTelefoneChange = (value: string) => {;
     setTelefoneCliente(value);
     
     // Sempre limpar cliente e endereços quando trocar telefone
@@ -114,20 +114,20 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     // Se limpar o telefone, apenas retornar
     if (!value) {
       return;
-    }
+
 
     // Buscar cliente automaticamente quando o telefone tiver pelo menos 10 caracteres
     if (value.length >= 10) {
       buscarClientePorTelefone(value);
-    }
+
   };
 
   // Handler para o botão Entrega
   const handleEntregaClick = async () => {
-    if (!telefoneCliente) {
+    if (!telefoneCliente) {;
       alert('Digite o telefone do cliente primeiro');
       return;
-    }
+
 
     const enderecos = await buscarEnderecosCliente();
     
@@ -135,23 +135,23 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
       alert('Nenhum endereço encontrado para este cliente. Cadastre um novo endereço.');
       // Aqui poderia abrir um modal para cadastrar novo endereço
       return;
-    }
+
 
     // Aqui você pode mostrar os endereços em um modal ou dropdown
     console.log('Endereços encontrados:', enderecos);
     setShowEnderecoModal(true);
   };
 
-  const handleFinalizarPedido = () => {
+  const handleFinalizarPedido = () => {;
     if (carrinho.length === 0) return;
     setShowPagamentoModal(true);
   };
 
   const handleConfirmarPagamento = async (pagamento: any) => {
-    if (!companyId) {
+    if (!companyId) {;
       alert('Erro: Empresa não identificada');
       return;
-    }
+
 
     setProcessandoPedido(true);
     
@@ -161,29 +161,10 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         totalCarrinho,
         itensCount: carrinho.length,
         pagamento
-      });
+      } catch (error) { console.error('Error:', error); });
 
       // Criar o pedido na tabela pedidos com status 'analise'
-      const { data: pedido, error: pedidoError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedidos')
-        /* .insert\( REMOVIDO */ ; //[{
-          company_id: companyId,
-          nome: nomeCliente || 'Balcão',
-          telefone: telefoneCliente || '',
-          endereco: 'Consumo Local',
-          observacoes: '',
-          pagamento: `${pagamento.tipo}${pagamento.bandeiraCartao ? ` - ${pagamento.bandeiraCartao}` : ''}`,
-          total: totalCarrinho,
-          status: 'analise', // Alterado de 'preparando' para 'analise'
-          tipo: 'balcao',
-          horario: new Date().toLocaleTimeString('pt-BR'),
-          origem: 'pdv'
-        }])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (pedidoError) {
-        console.error('❌ Erro ao criar pedido:', pedidoError);
+      const pedido = null as any; const pedidoError = null as any;
         throw pedidoError;
       }
 
@@ -205,18 +186,12 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           ? item.produto.promotional_price 
           : item.produto.price,
         valor_total: item.preco_total,
-        observacoes: null
+        observacoes: null;
       }));
 
       console.log('📦 Inserindo itens do pedido:', itensParaInserir.length);
 
-      const { data: itensInseridos, error: itensError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_itens')
-        /* .insert\( REMOVIDO */ ; //itensParaInserir)
-        /* .select\( REMOVIDO */ ; //);
-
-      if (itensError) {
-        console.error('❌ Erro ao inserir itens:', itensError);
+      const itensInseridos = null as any; const itensError = null as any;
         throw itensError;
       }
 
@@ -231,15 +206,13 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           // Buscar dados completos dos adicionais para obter a categoria
           const adicionaisCompletos = await Promise.all(
             Object.entries(item.adicionais).map(async ([adicionalId, adicionalData]) => {
-              const { data: adicionalCompleto } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'adicionais')
-                /* .select\( REMOVIDO */ ; //`
+              const { data: adicionalCompleto  } = null as any;
                   id,
                   name,
                   categorias_adicionais!inner(name)
                 `)
-                /* .eq\( REMOVIDO */ ; //'id', adicionalId)
-                /* .single\( REMOVIDO */ ; //);
+                
+                
 
               return {
                 pedido_item_id: itemInserido.id,
@@ -248,17 +221,14 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
                 categoria_nome: adicionalCompleto?.categorias_adicionais?.name || 'Outros',
                 quantidade: adicionalData.quantity,
                 valor_unitario: adicionalData.price,
-                valor_total: adicionalData.price * adicionalData.quantity
+                valor_total: adicionalData.price * adicionalData.quantity;
               };
             })
           );
 
           console.log('🧩 Inserindo adicionais para item:', itemInserido.id);
 
-          const { error: adicionaisError } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'pedido_item_adicionais')
-            /* .insert\( REMOVIDO */ ; //adicionaisCompletos);
-
+          const { error: adicionaisError  } = null as any;
           if (adicionaisError) {
             console.error('❌ Erro ao inserir adicionais:', adicionaisError);
           } else {
@@ -278,17 +248,17 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
       alert('Erro ao finalizar pedido. Tente novamente.');
     } finally {
       setProcessandoPedido(false);
-    }
+
   };
 
   const handleNovaVenda = () => {
-    // Limpar carrinho (precisará ser implementado no hook useCart)
+    // Limpar carrinho (precisará ser implementado no hook useCart);
     carrinho.forEach(item => onRemoverItem(item.id));
     setPedidoId(null);
   };
 
   const handleImprimirVenda = () => {
-    // Implementar impressão quando necessário
+    // Implementar impressão quando necessário;
     console.log('Imprimir venda:', pedidoId);
   };
 

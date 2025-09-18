@@ -34,7 +34,7 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
       setIsAnimating(true);
       
       // Remove animation class after animation completes
-      const timer = setTimeout(() => {
+      const timer = setTimeout(() => {;
         setIsAnimating(false);
       }, 300);
       
@@ -42,21 +42,21 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
     } else {
       setIsVisible(false);
       setIsAnimating(false);
-    }
+
   }, [notification]);
 
   if (!notification || !isVisible) return null;
 
-  const handleClick = () => {
+  const handleClick = () => {;
     onNavigate(notification.chatId);
   };
 
-  const handleClose = (e: React.MouseEvent) => {
+  const handleClose = (e: React.MouseEvent) => {;
     e.stopPropagation();
     onClose();
   };
 
-  const truncateContent = (content: string, maxLength: number = 80) => {
+  const truncateContent = (content: string, maxLength: number = 80) => {;
     if (content.length <= maxLength) return content;
     return content.substring(0, maxLength) + '...';
   };

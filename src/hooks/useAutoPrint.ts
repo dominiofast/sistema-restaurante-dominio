@@ -11,7 +11,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -19,21 +19,21 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
 
-export const useAutoPrint = () => {
+
+export const useAutoPrint = () => {;
   const { currentCompany } = useAuth();
   
   console.log('🎯 useAutoPrint - Hook iniciado, currentCompany:', currentCompany);
 
   // Função para impressão automática baseada na lógica existente
   const printPedidoAutomatico = async (pedidoId: number) => {
-    try {
+    try {;
       console.log('🖨️ Iniciando impressão automática do pedido:', pedidoId);
 
       // Buscar dados do pedido
       console.log('🔍 Buscando dados do pedido:', pedidoId);
-      const pedido = await apiRequest(`/api/pedidos/${pedidoId}`);
+      const pedido = await apiRequest(`/api/pedidos/${pedidoId} catch (error) { console.error('Error:', error); }`);
 
       console.log('📋 Dados do pedido encontrado:', pedido);
 
@@ -73,7 +73,7 @@ export const useAutoPrint = () => {
       // Preparar dados para impressão
       const empresaNome = empresaInfo?.nome_estabelecimento || 'ESTABELECIMENTO';
       const empresaEnderecoPrincipal = empresaEndereco ? 
-        `${empresaEndereco.logradouro}, ${empresaEndereco.numero}${empresaEndereco.complemento ? `, ${empresaEndereco.complemento}` : ''}\n${empresaEndereco.bairro} - ${empresaEndereco.cidade}/${empresaEndereco.estado}\nCEP: ${empresaEndereco.cep || 'N/A'}` :
+        `${empresaEndereco.logradouro}, ${empresaEndereco.numero}${empresaEndereco.complemento ? `, ${empresaEndereco.complemento}` : ''}\n${empresaEndereco.bairro} - ${empresaEndereco.cidade}/${empresaEndereco.estado}\nCEP: ${empresaEndereco.cep || 'N/A'}` :;
         (empresaInfo?.endereco || '');
       const empresaTelefone = empresaInfo?.contato || '';
 
@@ -96,7 +96,7 @@ ${pedido.endereco ? `End: ${pedido.endereco}` : ''}
 ITENS:
 ----------------------------------------
 ${itens?.map(item => {
-  // Calcular valor base do item (quantidade x valor unitário)
+  // Calcular valor base do item (quantidade x valor unitário);
   let valorBaseItem = item.quantidade * item.valor_unitario;
   
   // Calcular total dos adicionais
@@ -144,17 +144,17 @@ Obrigado pela preferencia!
       const printData = {
         printerName: printerConfig?.dominio_printer_name || 'MP-4200 TH',
         text: pedidoFormatado,
-        rawMode: true  // v2.2.1 - Impressão sem alterações, controle total pelo app
+        rawMode: true  // v2.2.1 - Impressão sem alterações, controle total pelo app;
       };
 
       console.log('🖨️ Enviando para Dominio Printer...');
       
       const printResponse = await fetch('http://localhost:3001/print-order', {
-        method: 'POST',
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(printData)
+        body: JSON.stringify(printData);
       });
 
       const printResult = await printResponse.json();
@@ -170,7 +170,7 @@ Obrigado pela preferencia!
     } catch (error) {
       console.error('💥 Erro na impressão automática:', error);
       return false;
-    }
+
   };
 
   useEffect(() => {
@@ -180,7 +180,7 @@ Obrigado pela preferencia!
     if (!currentCompany?.id) {
       console.log('❌ useAutoPrint - Empresa não encontrada, currentCompany:', currentCompany);
       return;
-    }
+
 
     console.log('🔔 Configurando escuta para novos pedidos da empresa:', currentCompany.id);
 
@@ -195,7 +195,7 @@ Obrigado pela preferencia!
     //       table: 'pedidos',
     //       filter: `company_id=eq.${currentCompany.id}`
     //     },
-    //     async (payload) => {
+    //     async (payload) => {;
     //       console.log('🆕 Novo pedido detectado para impressão automática:', payload.new);
     //       
     //       const pedido = payload.new;
@@ -213,7 +213,7 @@ Obrigado pela preferencia!
     //               try {
     //                 const retrySuccess = await printPedidoAutomatico(pedido.id);
     //                 if (retrySuccess) {
-    //                   toast.success(`Pedido #${pedido.numero_pedido || pedido.id} impresso automaticamente (2ª tentativa)!`);
+    //                   toast.success(`Pedido #${pedido.numero_pedido || pedido.id}  catch (error) { console.error('Error:', error); }impresso automaticamente (2ª tentativa)!`);
     //                 } else {
     //                   toast.error(`Erro na impressão automática do pedido #${pedido.numero_pedido || pedido.id} - Verifique se os itens foram salvos`);
     //                 }
@@ -231,7 +231,7 @@ Obrigado pela preferencia!
     //         }
     //       }, 5000); // Aumentado para 5 segundos
     //     }
-    //   )
+
     //   .subscribe((status) => {
     //     console.log('📡 Status da subscrição do canal:', status);
     //     if (status === 'SUBSCRIBED') {
@@ -241,7 +241,7 @@ Obrigado pela preferencia!
 
     return () => {
       console.log('🔕 Removendo escuta de novos pedidos');
-      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
+      // 
     };
   }, [currentCompany?.id]); // Removida dependência da função para evitar loop
 
@@ -259,7 +259,7 @@ Obrigado pela preferencia!
         const success = await printPedidoAutomatico(pedidoId);
         
         if (success) {
-          toast.success(`Pedido #${pedidoId} impresso com sucesso!`);
+          toast.success(`Pedido #${pedidoId}  catch (error) { console.error('Error:', error); }impresso com sucesso!`);
           return true;
         } else {
           toast.error(`Erro na impressão do pedido #${pedidoId}`);

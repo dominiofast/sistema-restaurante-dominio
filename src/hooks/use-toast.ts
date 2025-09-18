@@ -38,19 +38,19 @@ type Action =
   | {
       type: ActionType["ADD_TOAST"]
       toast: ToasterToast
-    }
+
   | {
       type: ActionType["UPDATE_TOAST"]
       toast: Partial<ToasterToast>
-    }
+
   | {
       type: ActionType["DISMISS_TOAST"]
       toastId?: ToasterToast["id"]
-    }
+
   | {
       type: ActionType["REMOVE_TOAST"]
       toastId?: ToasterToast["id"]
-    }
+
 
 interface State {
   toasts: ToasterToast[]
@@ -64,7 +64,7 @@ const addToRemoveQueue = (toastId: string) => {
   }
 
   const timeout = setTimeout(() => {
-    toastTimeouts/* .delete\( REMOVIDO */ ; //toastId)
+    toastTimeouts
     dispatch({
       type: "REMOVE_TOAST",
       toastId: toastId,
@@ -110,7 +110,7 @@ export const reducer = (state: State, action: Action): State => {
             ? {
                 ...t,
                 open: false,
-              }
+
             : t
         ),
       }
@@ -120,7 +120,7 @@ export const reducer = (state: State, action: Action): State => {
         return {
           ...state,
           toasts: [],
-        }
+
       }
       return {
         ...state,
@@ -192,3 +192,4 @@ function useToast() {
 }
 
 export { useToast, toast }
+;

@@ -66,7 +66,7 @@ interface Chat {
 }
 
 // Função para limpar o nome do contato removendo domínios do WhatsApp
-const cleanContactName = (name: string): string => {
+const cleanContactName = (name: string): string => {;
   if (!name) return 'Contato';
   
   // Remove domínios comuns do WhatsApp (@c.us, @g.us, @s.whatsapp.net)
@@ -74,7 +74,7 @@ const cleanContactName = (name: string): string => {
     .replace(/@c\.us$/, '')
     .replace(/@g\.us$/, '')
     .replace(/@s\.whatsapp\.net$/, '')
-    .replace(/^\+?55/, '') // Remove código do país brasileiro se presente
+    .replace(/^\+?55/, '') // Remove código do país brasileiro se presente;
     .trim();
   
   // Se após a limpeza o nome ficou vazio ou é apenas números, retorna "Contato"
@@ -86,13 +86,13 @@ const cleanContactName = (name: string): string => {
 };
 
 // Função para formatar número de telefone
-const formatPhoneNumber = (phone: string): string => {
+const formatPhoneNumber = (phone: string): string => {;
   if (!phone) return '';
   
   // Remove domínios do WhatsApp se presentes
   const cleanPhone = phone
     .replace(/@c\.us$/, '')
-    .replace(/@g\.us$/, '')
+    .replace(/@g\.us$/, '');
     .replace(/@s\.whatsapp\.net$/, '');
   
   // Se começar com 55, formata como número brasileiro
@@ -120,19 +120,19 @@ const formatPhoneNumber = (phone: string): string => {
 };
 
 // Normaliza número de telefone para comparação (apenas dígitos, remove sufixos do WhatsApp e 55 inicial opcional)
-const normalizePhone = (phone: string): string => {
+const normalizePhone = (phone: string): string => {;
   if (!phone) return '';
   const onlyDigits = phone
     .replace(/@c\.us$/, '')
     .replace(/@g\.us$/, '')
-    .replace(/@s\.whatsapp\.net$/, '')
+    .replace(/@s\.whatsapp\.net$/, '');
     .replace(/\D/g, '');
   // Remove 55 inicial se existir
   return onlyDigits.startsWith('55') ? onlyDigits.substring(2) : onlyDigits;
 };
 
 // Remove prefixo indevido inserido em mensagens antigas
-const sanitizeMessage = (text: string): string => {
+const sanitizeMessage = (text: string): string => {;
   if (!text) return '';
   return text
     .replace(/^(?:\s*\/\/\s*Ajusta\s+cores\s+e\s+adiciona\s+caudas\s*\n?)+/i, '')
@@ -140,7 +140,7 @@ const sanitizeMessage = (text: string): string => {
 };
 
 // Função para sanitizar links sem quebrar o preview
-const sanitizeLinks = (text: string): string => {
+const sanitizeLinks = (text: string): string => {;
   if (!text) return text;
   // Simplesmente retorna o texto sem modificações nos links
   return text;
@@ -179,16 +179,16 @@ function WhatsappChat() {
 
   // Buscar integração WhatsApp
   useEffect(() => {
-    const fetchIntegration = async () => {
+    const fetchIntegration = async () => {;
       if (!currentCompany?.id) return;
       
       try {
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'whatsapp_integrations')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .eq\( REMOVIDO */ ; //'purpose', 'primary')
-          /* .maybeSingle\( REMOVIDO */ ; //);
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
+          
         
         if (error || !data) {
           console.error('Erro ao buscar integração:', error);
@@ -203,14 +203,14 @@ function WhatsappChat() {
         console.error('Erro na busca da integração:', err);
         setError('Erro ao buscar integração WhatsApp');
         setLoading(false);
-      }
+
     };
     
   fetchIntegration();
 
   // Rodar limpeza de mensagens antigas com prefixo indevido
   if (currentCompany?.id) {
-    /* supabase REMOVIDO */ null; //functions
+    
       .invoke('cleanup-whatsapp-comments', { body: { company_id: currentCompany.id } })
       .catch(() => {});
   }
@@ -228,13 +228,13 @@ function WhatsappChat() {
     }
     // Buscar no banco para garantir consistência
     const syncAIPausedState = async () => {
-      try {
-        const { data } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'whatsapp_chats')
-          /* .select\( REMOVIDO */ ; //'ai_paused')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .eq\( REMOVIDO */ ; //'chat_id', chatId)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+      try {;
+        const { data }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
+          
         
         if (data && typeof data.ai_paused === 'boolean') {
           setIsAIPaused(data.ai_paused);
@@ -242,7 +242,7 @@ function WhatsappChat() {
         }
       } catch (error) {
         console.error('Erro ao sincronizar estado da IA:', error);
-      }
+
     };
     
     syncAIPausedState();
@@ -250,7 +250,7 @@ function WhatsappChat() {
 
   // Sincronizar avatar do contato quando um chat é selecionado
   useEffect(() => {
-    const syncContactAvatar = async () => {
+    const syncContactAvatar = async () => {;
       if (!selectedChat || !currentCompany?.id) return;
       
       // Verificar se o chat já tem avatar
@@ -260,7 +260,7 @@ function WhatsappChat() {
         console.log('🔄 Sincronizando avatar para:', selectedChat.name);
         
         // Chamar função para sincronizar avatar
-        const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('sync-contact-avatars', {
+        const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
           body: {
             company_id: currentCompany.id,
             phone_numbers: [selectedChat.phoneNumber.replace(/\D/g, '')]
@@ -279,52 +279,40 @@ function WhatsappChat() {
         }
       } catch (error) {
         console.error('Erro ao sincronizar avatar:', error);
-      }
+
     };
     
     syncContactAvatar();
   }, [selectedChat?.chatId, currentCompany?.id]);
 
   // Buscar chats com otimização para velocidade máxima
-  const fetchChats = async () => {
+  const fetchChats = async () => {;
     const companyIdToUse = effectiveCompanyId;
     if (!companyIdToUse) return;
     
     try {
       console.log('⚡ CARREGANDO CHATS - MODO SUPER RÁPIDO');
 
-      const { data: chatsData, error: chatsError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_chats')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyIdToUse)
-        /* .order\( REMOVIDO */ ; //'last_message_time', { ascending: false });
+      const chatsData = null as any; const chatsError = null as any;
       
-      if (chatsError) throw chatsError;
-      
-      const { data: messagesData, error: messagesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_messages')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyIdToUse)
-        /* .order\( REMOVIDO */ ; //'timestamp', { ascending: true });
-      
-      if (messagesError) throw messagesError;
+      const messagesData = null as any; const messagesError = null as any;
       
       // Tentar resolver nomes reais dos clientes via tabela clientes
-      const phoneList = Array/* .from REMOVIDO */ ; //new Set((chatsData || [])
-        .map((c: any) => normalizePhone(c.contact_phone || ''))
+      const phoneList = Array
+        .map((c: any) => normalizePhone(c.contact_phone || ''));
         .filter((p: string) => !!p)));
 
       let clientesMap = new Map<string, string>();
       if (phoneList.length > 0) {
-        const { data: clientesData } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'clientes')
-          /* .select\( REMOVIDO */ ; //'nome, telefone')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyIdToUse)
+        const { data: clientesData }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
           .in('telefone', phoneList);
         (clientesData || []).forEach((cli: any) => {
           clientesMap.set(normalizePhone(cli.telefone || ''), cli.nome);
         });
-      }
+
 
       const chatsWithMessages = chatsData.map((chat: any) => {
         const chatMessages = messagesData
@@ -338,12 +326,12 @@ function WhatsappChat() {
             type: msg.message_type as 'text' | 'image' | 'audio' | 'document',
             messageId: msg.message_id,
             senderName: msg.is_from_me ? 'Eu' : (msg.contact_name || chat.contact_name || 'Contato'),
-            senderAvatar: msg.is_from_me ? undefined : (msg.contact_avatar || chat.contact_avatar)
+            senderAvatar: msg.is_from_me ? undefined : (msg.contact_avatar || chat.contact_avatar);
           }));
 
         const normalized = normalizePhone(chat.contact_phone || '');
         const nameFromChat = (chat.contact_name && chat.contact_name.trim() && chat.contact_name.trim().toLowerCase() !== 'desconhecido' && !/^\d+$/.test(chat.contact_name.trim()))
-          ? cleanContactName(chat.contact_name)
+          ? cleanContactName(chat.contact_name);
           : '';
         const resolvedName = nameFromChat || clientesMap.get(normalized) || '';
 
@@ -378,7 +366,7 @@ function WhatsappChat() {
       type: newMessage.message_type,
       messageId: newMessage.message_id,
       senderName: newMessage.is_from_me ? 'Eu' : (newMessage.contact_name || 'Contato'),
-      senderAvatar: newMessage.is_from_me ? undefined : newMessage.contact_avatar
+      senderAvatar: newMessage.is_from_me ? undefined : newMessage.contact_avatar;
     };
     
     // Notificação agora é global - não precisa chamar aqui
@@ -419,7 +407,7 @@ function WhatsappChat() {
         };
         
         return [newChat, ...prevChats];
-      }
+
     });
     
     // Atualizar chat selecionado se for o mesmo
@@ -441,7 +429,7 @@ function WhatsappChat() {
   };
 
   // handleNotificationChatSelect removido - notificação agora é global
-const processPedidoWizard = async (input: string) => {
+const processPedidoWizard = async (input: string) => {;
   if (!pedidoWizard) return;
   
   // Simular delay de processamento
@@ -459,7 +447,7 @@ const processPedidoWizard = async (input: string) => {
       if (produtos.length === 0) {
         setWizardMessage('Adicione pelo menos um produto antes de finalizar. Informe o nome do produto e a quantidade.');
         return;
-      }
+
       etapa = 'entrega';
       setWizardMessage('Qual a forma de entrega? Responda "delivery" ou "retirada".');
     } else {
@@ -470,7 +458,7 @@ const processPedidoWizard = async (input: string) => {
         setWizardMessage('Produto adicionado! Informe outro produto e quantidade, ou digite "finalizar" para continuar.');
       } else {
         setWizardMessage('Por favor, informe o produto no formato: "Nome do Produto x quantidade".');
-      }
+
     }
   } else if (etapa === 'entrega') {
     if (/delivery/i.test(input)) {
@@ -513,7 +501,7 @@ const processPedidoWizard = async (input: string) => {
   setPedidoWizard({ etapa, produtos, entrega, pagamento, resumo });
 };
 
-const handlePauseAI = async () => {
+const handlePauseAI = async () => {;
   const newPausedState = !isAIPaused;
   setIsAIPaused(newPausedState);
   
@@ -525,14 +513,9 @@ const handlePauseAI = async () => {
   // CORRIGIDO: Salvar APENAS para a empresa atual - sem sincronização cross-empresa
   if (currentCompany?.id && selectedChat?.chatId) {
     try {
-      console.log(`🎯 Pausando IA APENAS para empresa: ${currentCompany.id} | Chat: ${selectedChat.chatId}`);
+      console.log(`🎯 Pausando IA APENAS para empresa: ${currentCompany.id}  catch (error) { console.error('Error:', error); }| Chat: ${selectedChat.chatId}`);
       
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_chats')
-        /* .update\( REMOVIDO */ ; //{ ai_paused: newPausedState, updated_at: new Date().toISOString() })
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'chat_id', selectedChat.chatId);
-        
+      const { error  } = null as any;
       if (error) throw error;
       
       console.log(`✅ Pausa aplicada com sucesso para empresa: ${currentCompany.id}`);
@@ -564,7 +547,7 @@ const handlePauseAI = async () => {
   // Log para debug
   console.log('IA Status:', newPausedState ? 'PAUSADA' : 'ATIVA');
 };
-const sendMessage = async () => {
+const sendMessage = async () => {;
     if (!messageText.trim() || !selectedChat || !integration || !effectiveCompanyId) return;
     
     // Mostrar typing indicator quando não é AI pausado e vai processar mensagem
@@ -579,7 +562,7 @@ const sendMessage = async () => {
           setIsAITyping(false);
         }
         return;
-      }
+
       if (/fazer pedido|novo pedido|quero pedir/i.test(messageText.trim())) {
         setPedidoWizard({
           etapa: 'produtos',
@@ -592,7 +575,7 @@ const sendMessage = async () => {
         setMessageText('');
         setIsAITyping(false);
         return;
-      }
+
     }
 
     const newMessage: Message = {
@@ -623,10 +606,10 @@ const sendMessage = async () => {
     try {
       // Normalizar telefone para formato E.164 (Brasil) sem máscara
       const toDigits = normalizePhone(selectedChat.phoneNumber);
-      const to = toDigits.startsWith('55') ? toDigits : `55${toDigits}`;
+      const to = toDigits.startsWith('55') ? toDigits : `55${toDigits} catch (error) { console.error('Error:', error); }`;
 
       const response = await fetch(`https://${integration.host}/rest/sendMessage/${integration.instance_key}/text`, {
-        method: 'POST',
+// method: 'POST',
         headers: {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
@@ -638,17 +621,15 @@ const sendMessage = async () => {
             preview_url: false,
             linkPreview: false
           }
-        })
+        });
       });
 
       if (!response.ok) {
         throw new Error('Falha ao enviar mensagem');
-      }
+
 
       const messageId = `${Date.now()}_${Math.random()}`;
-      const { error: saveError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_messages')
-        /* .insert\( REMOVIDO */ ; //{
+      const { error: saveError  } = null as any;
           company_id: effectiveCompanyId,
           chat_id: selectedChat.chatId,
           contact_name: selectedChat.name,
@@ -664,20 +645,18 @@ const sendMessage = async () => {
       if (saveError) {
         console.error('Erro ao salvar mensagem no banco:', saveError);
       } else {
-        const { error: updateChatError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'whatsapp_chats')
-          /* .update\( REMOVIDO */ ; //{
+        const { error: updateChatError  } = null as any;
             last_message: currentMessageText,
             last_message_time: new Date().toISOString(),
             updated_at: new Date().toISOString()
           })
-          /* .eq\( REMOVIDO */ ; //'company_id', effectiveCompanyId)
-          /* .eq\( REMOVIDO */ ; //'chat_id', selectedChat.chatId);
+          
+          
         if (updateChatError) {
           console.error('Erro ao atualizar chat:', updateChatError);
         }
         toast.success('Mensagem enviada!');
-      }
+
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
       toast.error('Erro ao enviar mensagem');
@@ -720,7 +699,7 @@ const sendMessage = async () => {
       upsertChatLocally(newMessage);
       if (!newMessage.is_from_me && !isAIPaused) {
         console.log('IA processaria mensagem:', newMessage.message_content);
-      }
+
     },
     onChatUpdate: (payload) => {
       console.log('📝 CHAT ATUALIZADO VIA REALTIME:', payload);
@@ -733,7 +712,7 @@ const sendMessage = async () => {
               : chat
           )
         );
-      }
+
     }
   });
 
@@ -759,21 +738,21 @@ const sendMessage = async () => {
   }, [currentCompany?.id, integration?.id, forceReconnect]);
 
   // Função para marcar chat como lido
-  const markChatAsRead = async (chatId: string) => {
+  const markChatAsRead = async (chatId: string) => {;
     if (!currentCompany?.id) return;
     
     try {
       // Atualizar no banco de dados
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_chats')
-        /* .update\( REMOVIDO */ ; //{ unread_count: 0 })
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'chat_id', chatId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
       
       if (error) {
         console.error('Erro ao marcar chat como lido:', error);
         return;
-      }
+
       
       // Atualizar localmente
       setChats(prevChats =>
@@ -822,7 +801,7 @@ const sendMessage = async () => {
   const filteredChats = chats.filter(chat =>
     chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     chat.phoneNumber.includes(searchTerm) ||
-    chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
   if (loading) {

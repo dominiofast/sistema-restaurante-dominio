@@ -31,15 +31,15 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
 
   // Produtos da categoria selecionada
   const produtosFiltrados = categoriaSelecionada
-    ? produtos.filter(p => p.categoria_id === categoriaSelecionada)
+    ? produtos.filter(p => p.categoria_id === categoriaSelecionada);
     : produtos.filter(p => p.destaque);
 
-  const obterQuantidadeProduto = (produtoId: string) => {
+  const obterQuantidadeProduto = (produtoId: string) => {;
     const item = carrinho.find(item => item.produto.id === produtoId);
     return item ? item.quantidade : 0;
   };
 
-  const handleSelecionarProduto = (produto: Produto) => {
+  const handleSelecionarProduto = (produto: Produto) => {;
     console.log('🛍️ Produto selecionado:', produto.name);
     setProdutoSelecionado(produto);
     setModalAberto(true);
@@ -50,8 +50,8 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
     adicionais: { [adicionalId: string]: number }, 
     observacoes?: string
   ) => {
-    try {
-      console.log('🛒 Adicionando ao carrinho:', { produto: produto.name, adicionais, observacoes });
+    try {;
+      console.log('🛒 Adicionando ao carrinho:', { produto: produto.name, adicionais, observacoes } catch (error) { console.error('Error:', error); });
       await adicionarAoCarrinho(produto, 1, observacoes, adicionais);
     } catch (error) {
       console.error('Erro ao adicionar ao carrinho:', error);

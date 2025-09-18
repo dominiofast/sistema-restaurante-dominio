@@ -24,13 +24,13 @@ export const usePublicBranding = ({
   updateFavicon = true,
   updateTitle = true,
   pageTitle = 'Cardápio Digital'
-}: UsePublicBrandingOptions) => {
+}: UsePublicBrandingOptions) => {;
   const { branding, loading, error } = usePublicBrandingNew(companyIdentifier);
   
   // Update favicon if enabled
   const faviconControls = useDynamicFavicon({
     logoUrl: updateFavicon ? branding?.logo_url : undefined,
-    companyName: branding?.company_name
+    companyName: branding?.company_name;
   });
 
   // Update page title
@@ -75,7 +75,7 @@ const updateMetaTags = ({
   logoUrl,
   primaryColor,
   description
-}: {
+}: {;
   companyName?: string;
   logoUrl?: string;
   primaryColor?: string;
@@ -113,7 +113,7 @@ const updateMetaTags = ({
 /**
  * Helper function to update or create meta tags
  */
-const updateMetaTag = (name: string, content: string) => {
+const updateMetaTag = (name: string, content: string) => {;
   let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
   
   if (!meta) {

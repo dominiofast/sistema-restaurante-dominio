@@ -2,7 +2,7 @@ import { useState } from 'react';
 // SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
-export const useInvitation = () => {
+export const useInvitation = () => {;
   const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
 
@@ -11,14 +11,14 @@ export const useInvitation = () => {
       toast({
         title: 'Erro',
         description: 'Email e ID da empresa são obrigatórios',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return false;
     }
 
     setIsSending(true);
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-user-invitation', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           email,
           companyId,
@@ -48,18 +48,16 @@ export const useInvitation = () => {
   };
 
   const fetchExistingEmail = async (companyId: string): Promise<string | null> => {
-    try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'user_companies')
-        /* .select\( REMOVIDO */ ; //'user_id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (data?.user_id) {
-        const { data: userData, error: userError } = await /* supabase REMOVIDO */ null; //auth.admin.getUserById(data.user_id);
-        if (userData?.user?.email) {
-          return userData.user.email;
+        const userData = null as any; const userError = null as any;
         }
       }
       return null;

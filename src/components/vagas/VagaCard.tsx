@@ -20,14 +20,14 @@ interface Vaga {
   config_id: string;
   company_id: string;
   apply_url?: string;
-}
+
 
 interface VagaCardProps {
   vaga: Vaga;
   currentCompanySlug?: string;
   onEdit: (vaga: Vaga) => void;
   onDelete: (vaga: Vaga) => void;
-}
+
 
 export const VagaCard: React.FC<VagaCardProps> = ({
   vaga,
@@ -36,7 +36,7 @@ export const VagaCard: React.FC<VagaCardProps> = ({
   onDelete
 }) => {
   console.log('VagaCard props:', { vaga, currentCompanySlug, onEdit, onDelete });
-  const getStatusColor = (isActive: boolean) => {
+  const getStatusColor = (isActive: boolean) => {;
     return isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700';
   };
 
@@ -46,7 +46,7 @@ export const VagaCard: React.FC<VagaCardProps> = ({
       'part-time': 'Meio Período',
       'contract': 'Contrato',
       'freelance': 'Freelance',
-      'internship': 'Estágio'
+      'internship': 'Estágio';
     };
     return types[type] || type;
   };

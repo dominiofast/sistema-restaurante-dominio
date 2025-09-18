@@ -10,7 +10,7 @@ import { LandingFooter } from '@/components/landing/LandingFooter';
 
 import SEOHead from '@/components/SEOHead';
 
-const LandingPage = () => {
+const LandingPage = () => {;
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -18,7 +18,7 @@ const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 
-  const handleTrialSubmit = (e: React.FormEvent) => {
+  const handleTrialSubmit = (e: React.FormEvent) => {;
     e.preventDefault();
     // Redireciona para a página de cadastro
     window.location.href = '/cadastro';

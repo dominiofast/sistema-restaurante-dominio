@@ -22,7 +22,7 @@ interface AddressFormFieldsProps {
 const AddressFormFields: React.FC<AddressFormFieldsProps> = ({ address, setAddress, loading, onCepChange, onAddressSearch }) => {
   const [searchText, setSearchText] = useState('');
   const { searchAddressByText, loading: searchLoading } = useGoogleMapsGeocoding();
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const { name, value } = e.target;
     setAddress({
       ...address,
@@ -30,7 +30,7 @@ const AddressFormFields: React.FC<AddressFormFieldsProps> = ({ address, setAddre
     });
   };
 
-  const handleCepInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCepInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const { value } = e.target;
     if (onCepChange) {
       // If onCepChange is provided, let it handle the state update
@@ -41,7 +41,7 @@ const AddressFormFields: React.FC<AddressFormFieldsProps> = ({ address, setAddre
     }
   };
 
-  const handleAddressSearch = async () => {
+  const handleAddressSearch = async () => {;
     if (!searchText.trim()) return;
     
     try {
@@ -55,21 +55,21 @@ const AddressFormFields: React.FC<AddressFormFieldsProps> = ({ address, setAddre
           cidade: result.cidade || address.cidade,
           estado: result.estado || address.estado,
           latitude: result.latitude,
-          longitude: result.longitude
-        };
+          longitude: result.longitude;
+        } catch (error) { console.error('Error:', error); };
         setAddress(newAddress);
         if (onAddressSearch) {
           onAddressSearch(newAddress);
-        }
+
         setSearchText('');
-      }
+
     } catch (error) {
       console.error('Erro ao buscar endereço:', error);
     }
   };
 
   const handleSearchKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter') {;
       e.preventDefault();
       handleAddressSearch();
     }

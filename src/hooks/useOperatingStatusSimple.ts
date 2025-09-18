@@ -8,14 +8,14 @@ interface OperatingStatus {
   message: string;
 }
 
-export const useOperatingStatusSimple = (companyId?: string) => {
+export const useOperatingStatusSimple = (companyId?: string) => {;
   const { horario, horariosDias, loading } = useHorarioFuncionamento(companyId);
   const [operatingStatus, setOperatingStatus] = useState<OperatingStatus>({
     status: 'closed',
     message: 'Carregando...'
   });
 
-  const findNextOpenTime = (horarios: any[], diaAtual: number, horaAtual: string): string | null => {
+  const findNextOpenTime = (horarios: any[], diaAtual: number, horaAtual: string): string | null => {;
     const diasSemana = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
     
     // Primeiro, verificar se há mais horários hoje depois da hora atual
@@ -51,7 +51,7 @@ export const useOperatingStatusSimple = (companyId?: string) => {
     if (!horario) {
       return {
         status: 'closed',
-        message: 'Horários não configurados'
+        message: 'Horários não configurados';
       };
     }
 
@@ -80,7 +80,7 @@ export const useOperatingStatusSimple = (companyId?: string) => {
       const utcTime = now.toISOString();
       
       // Conversão correta para o fuso horário
-      const timeInTimezone = new Date(now.toLocaleString("en-US", {timeZone: fusoHorario}));
+      const timeInTimezone = new Date(now.toLocaleString("en-US", {timeZone: fusoHorario} catch (error) { console.error('Error:', error); }));
       const currentDayOfWeek = timeInTimezone.getDay();
       const currentTimeString = timeInTimezone.toTimeString().slice(0, 5);
       
@@ -98,7 +98,7 @@ export const useOperatingStatusSimple = (companyId?: string) => {
       });
 
       const todaySchedules = horariosDias.filter(h => 
-        h.dia_semana === currentDayOfWeek && h.ativo
+        h.dia_semana === currentDayOfWeek && h.ativo;
       );
 
       if (todaySchedules.length === 0) {
@@ -109,7 +109,7 @@ export const useOperatingStatusSimple = (companyId?: string) => {
         };
       }
 
-      const isOpenNow = todaySchedules.some(schedule => {
+      const isOpenNow = todaySchedules.some(schedule => {;
         const inicio = schedule.horario_inicio.slice(0, 5); // Remove segundos se houver
         const fim = schedule.horario_fim.slice(0, 5); // Remove segundos se houver
         

@@ -87,6 +87,6 @@ export const TestimonialsSection = () => {
           </Card>
         </div>
       </div>
-    </section>
+    </section>;
   );
 };

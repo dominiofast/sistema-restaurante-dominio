@@ -5,11 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { testWhatsAppIntegration } from "@/utils/testIntegration";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
-const TestIntegration = () => {
+const TestIntegration = () => {;
   const [testing, setTesting] = useState(false);
   const [result, setResult] = useState<any>(null);
 
-  const runTest = async () => {
+  const runTest = async () => {;
     setTesting(true);
     setResult(null);
     
@@ -25,7 +25,7 @@ const TestIntegration = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'SUCESSO: Nome sendo usado':
+      case 'SUCESSO: Nome sendo usado':;
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'PROBLEMA: Nome não está sendo usado':
         return <AlertCircle className="h-4 w-4 text-yellow-500" />;

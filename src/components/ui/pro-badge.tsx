@@ -16,19 +16,19 @@ export const ProBadge: React.FC<ProBadgeProps> = ({
     const sizeClasses = {
         sm: 'text-xs px-1.5 py-0.5 gap-1',
         md: 'text-sm px-2 py-1 gap-1.5',
-        lg: 'text-base px-3 py-1.5 gap-2'
+        lg: 'text-base px-3 py-1.5 gap-2';
     };
 
     const iconSizes = {
         sm: 'h-3 w-3',
         md: 'h-4 w-4',
-        lg: 'h-5 w-5'
+        lg: 'h-5 w-5';
     };
 
     const variantClasses = {
         default: 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm',
         outline: 'border-2 border-amber-400 text-amber-600 bg-amber-50',
-        minimal: 'bg-amber-100 text-amber-700'
+        minimal: 'bg-amber-100 text-amber-700';
     };
 
     return (

@@ -22,7 +22,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTurnos } from '@/hooks/useTurnos';
 import { useCaixa } from '@/hooks/useCaixa';
 
-export const Dashboard = () => {
+export const Dashboard = () => {;
   const { user, currentCompany, logout } = useAuth();
   const { temTurnoAtivo } = useTurnos();
   const { caixaAtual } = useCaixa();

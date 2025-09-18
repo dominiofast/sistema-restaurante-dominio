@@ -37,18 +37,16 @@ interface PrintJobData {
   };
 }
 
-export const usePrinter = () => {
+export const usePrinter = () => {;
   const [isPrinting, setIsPrinting] = useState(false);
   const dominioPrinter = useDominioPrinter();
   
   // Salvar configuração da impressora
   const savePrinterConfig = async (config: PrinterConfig, companyId: string) => {
-    try {
-      console.log('💾 Salvando configuração da impressora:', { config, companyId });
+    try {;
+      console.log('💾 Salvando configuração da impressora:', { config, companyId } catch (error) { console.error('Error:', error); });
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .upsert\( REMOVIDO */ ; //{
+      const { data, error  } = null as any;
           company_id: companyId,
           printer_type: config.type,
           printer_ip: config.ip,
@@ -58,12 +56,12 @@ export const usePrinter = () => {
         }, {
           onConflict: 'company_id'
         })
-        /* .select\( REMOVIDO */ ; //);
+        
         
       if (error) {
         console.error('❌ Erro ao salvar configuração:', error);
         throw error;
-      }
+
       
       console.log('✅ Configuração salva com sucesso:', data);
       toast.success('Configuração de impressora salva!');
@@ -71,38 +69,38 @@ export const usePrinter = () => {
       console.error('💥 Erro no salvamento:', error);
       toast.error('Erro ao salvar configuração');
       throw error;
-    }
+
   };
   
   // Buscar configuração salva
   const getPrinterConfig = async (companyId: string): Promise<PrinterConfig | null> => {
-    try {
+    try {;
       console.log('🔍 Buscando configuração da impressora para company_id:', companyId);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'printer_type, printer_ip, printer_port, printer_name, dominio_printer_name')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //); // Usar maybeSingle() em vez de single()
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
         
       if (error) {
         console.error('❌ Erro ao buscar configuração:', error);
         return null;
-      }
+
       
       console.log('📄 Dados encontrados:', data);
       
       if (!data) {
         console.log('⚠️ Nenhuma configuração encontrada para esta empresa');
         return null;
-      }
+
       
       const config = {
         type: data.printer_type as PrinterType || 'network',
         ip: data.printer_ip,
         port: data.printer_port,
         name: data.printer_name,
-        dominioPrinterName: data.dominio_printer_name
+        dominioPrinterName: data.dominio_printer_name;
       };
       
       console.log('✅ Configuração carregada:', config);
@@ -110,7 +108,7 @@ export const usePrinter = () => {
     } catch (error) {
       console.error('Erro na busca de configuração:', error);
       return null;
-    }
+
   };
 
   // Converter dados para formato do Dominio Printer
@@ -124,7 +122,7 @@ export const usePrinter = () => {
       })),
       total: data.itens.reduce((total, item) => total + (item.quantidade * item.preco), 0),
       customer: data.cliente?.nome,
-      table: data.numeroPedido
+      table: data.numeroPedido;
     };
   };
 
@@ -141,13 +139,13 @@ export const usePrinter = () => {
         name: item.nome,
         quantity: item.quantidade,
         observations: item.observacoes || ''
-      }))
+      }));
     };
   };
   
   // Imprimir cupom
   const printReceipt = async (data: PrintJobData, companyId: string) => {
-    try {
+    try {;
       setIsPrinting(true);
       
       const config = await getPrinterConfig(companyId);
@@ -158,15 +156,15 @@ export const usePrinter = () => {
         console.log('❌ Nenhuma configuração encontrada para company_id:', companyId);
         toast.error('Configure a impressora primeiro');
         return false;
-      }
+
       
-      console.log('🔍 Validando configuração:');
+       catch (error) { console.error('Error:', error); }console.log('🔍 Validando configuração:');
       console.log('  - Tipo:', config.type);
       console.log('  - IP:', config.ip);
       console.log('  - Dominio Printer Name:', config.dominioPrinterName);
       
       // Verificar se a configuração é válida
-      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || 
+      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || ;
                            (config.type === 'network' && config.ip);
       
       console.log('✅ Configuração válida?', isValidConfig);
@@ -179,7 +177,7 @@ export const usePrinter = () => {
           toast.error('IP da impressora não configurado. Configure o IP da impressora.');
         }
         return false;
-      }
+
 
       // Adicionar configurações padrão se não fornecidas
       const printData = {
@@ -189,7 +187,7 @@ export const usePrinter = () => {
           removeAccents: true,
           marginLeft: 0,
           ...data.config
-        }
+        };
       };
 
       if (config.type === 'dominio' && config.dominioPrinterName) {
@@ -198,7 +196,7 @@ export const usePrinter = () => {
         return await dominioPrinter.printReceipt(config.dominioPrinterName, receipt);
       } else if (config.type === 'network' && config.ip) {
         // Usar impressão de rede via Edge Function
-        const { data: response, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+        const { data: response, error } = await Promise.resolve();
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,
@@ -219,7 +217,7 @@ export const usePrinter = () => {
       } else {
         toast.error('Configuração de impressora inválida');
         return false;
-      }
+
       
     } catch (error: any) {
       console.error('Erro ao imprimir:', error);
@@ -227,7 +225,7 @@ export const usePrinter = () => {
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   };
   
   // Imprimir comanda
@@ -237,7 +235,7 @@ export const usePrinter = () => {
     itens: Array<any>,
     companyId: string
   ) => {
-    try {
+    try {;
       setIsPrinting(true);
       
       const config = await getPrinterConfig(companyId);
@@ -247,17 +245,17 @@ export const usePrinter = () => {
         console.log('❌ Nenhuma configuração encontrada');
         toast.error('Configure a impressora primeiro');
         return false;
-      }
+
       
-      // Verificar se a configuração é válida
-      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || 
+       catch (error) { console.error('Error:', error); }// Verificar se a configuração é válida
+      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || ;
                            (config.type === 'network' && config.ip);
       
       if (!isValidConfig) {
         console.log('❌ Configuração inválida:', config);
         toast.error('Configuração de impressora incompleta. Verifique as configurações.');
         return false;
-      }
+
 
       if (config.type === 'dominio' && config.dominioPrinterName) {
         // Usar Dominio Printer
@@ -265,7 +263,7 @@ export const usePrinter = () => {
         return await dominioPrinter.printKitchenOrder(config.dominioPrinterName, order);
       } else if (config.type === 'network' && config.ip) {
         // Usar impressão de rede via Edge Function
-        const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+        const { error } = await Promise.resolve();
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,
@@ -285,19 +283,19 @@ export const usePrinter = () => {
       } else {
         toast.error('Configuração de impressora inválida');
         return false;
-      }
+
       
     } catch (error: any) {
       toast.error('Erro ao imprimir comanda');
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   };
   
   // Testar impressora
   const testPrinter = async (companyId: string) => {
-    try {
+    try {;
       console.log('🧪 Iniciando teste de impressão para company_id:', companyId);
       
       // Buscar configuração salva do banco
@@ -308,17 +306,17 @@ export const usePrinter = () => {
         console.log('❌ Nenhuma configuração encontrada para teste');
         toast.error('Configure a impressora primeiro');
         return false;
-      }
+
       
-      // Verificar se a configuração é válida
-      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || 
+       catch (error) { console.error('Error:', error); }// Verificar se a configuração é válida
+      const isValidConfig = (config.type === 'dominio' && config.dominioPrinterName) || ;
                            (config.type === 'network' && config.ip);
       
       if (!isValidConfig) {
         console.log('❌ Configuração inválida para teste:', config);
         toast.error('Configuração de impressora incompleta. Verifique as configurações.');
         return false;
-      }
+
       
       console.log('✅ Configuração válida, executando teste...');
       
@@ -327,7 +325,7 @@ export const usePrinter = () => {
         return await dominioPrinter.testPrint(config.dominioPrinterName, 'Teste do Sistema de Impressão');
       } else if (config.type === 'network' && config.ip) {
         console.log('🌐 Testando impressora de rede:', config.ip + ':' + config.port);
-        const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+        const { data, error } = await Promise.resolve();
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,
@@ -352,22 +350,22 @@ export const usePrinter = () => {
           return true;
         }
         return false;
-      }
+
       return false;
     } catch (error) {
       console.error('💥 Erro ao testar impressora:', error);
       toast.error('Erro ao testar impressora');
       return false;
-    }
+
   };
 
   // Verificar status do Dominio Printer
-  const checkDominioStatus = async () => {
+  const checkDominioStatus = async () => {;
     return await dominioPrinter.checkStatus();
   };
 
   // Obter impressoras do Dominio Printer
-  const getDominioPrinters = async () => {
+  const getDominioPrinters = async () => {;
     return await dominioPrinter.getPrinters();
   };
   

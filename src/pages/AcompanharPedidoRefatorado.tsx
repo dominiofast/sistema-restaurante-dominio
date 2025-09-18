@@ -13,7 +13,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         color: 'text-green-600',
         bgColor: 'bg-green-100',
         text: 'Pedido Confirmado',
-        description: 'Seu pedido foi aceito e está sendo preparado'
+        description: 'Seu pedido foi aceito e está sendo preparado';
       };
     
     case 'analise':
@@ -43,7 +43,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
     case 'pronto_entrega':
     case 'ready':
       const descricaoPronto = tipoPedido === 'delivery' 
-        ? 'Pedido pronto, logo sairá para entrega'
+        ? 'Pedido pronto, logo sairá para entrega';
         : 'Pedido pronto, pode vir retirar';
       
       return {
@@ -94,7 +94,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         text: status || 'Status não identificado',
         description: 'Verificando status do pedido'
       };
-  }
+
 };
 
 export const AcompanharPedidoRefatorado: React.FC = () => {
@@ -115,7 +115,7 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   // Error state
   if (error) {
@@ -132,7 +132,7 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   // No pedido found
   if (!pedido) {
@@ -149,7 +149,7 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   const statusInfo = getStatusInfo(pedido.status, pedido.tipo);
   const StatusIcon = statusInfo.icon;

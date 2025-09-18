@@ -29,7 +29,7 @@ interface CustomerAddressManagerProps {
   onNovoEndereco: () => void;
   onFechar: () => void;
   onDeleteAddress: (addressId: string) => Promise<boolean>;
-}
+
 
 export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
   cliente,
@@ -45,7 +45,7 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
   const [validatingAddressId, setValidatingAddressId] = React.useState<string | null>(null);
   const [deletingAddressId, setDeletingAddressId] = React.useState<string | null>(null);
 
-  const handleDeliveryClick = async (endereco: CustomerAddress) => {
+  const handleDeliveryClick = async (endereco: CustomerAddress) => {;
     if (!endereco.id) return;
     
     setValidatingAddressId(endereco.id);
@@ -60,7 +60,7 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
           title: "Endereço fora da área de atendimento",
           description: validation.message || "Este endereço não está mais dentro da nossa área de entrega.",
           variant: "destructive"
-        });
+        } catch (error) { console.error('Error:', error); });
         return;
       }
       
@@ -76,10 +76,10 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
       });
     } finally {
       setValidatingAddressId(null);
-    }
+
   };
 
-  const handleDeleteAddress = async (addressId: string) => {
+  const handleDeleteAddress = async (addressId: string) => {;
     setDeletingAddressId(addressId);
     
     try {
@@ -89,7 +89,7 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
         toast({
           title: "Endereço excluído",
           description: "O endereço foi removido com sucesso.",
-        });
+        } catch (error) { console.error('Error:', error); });
       } else {
         toast({
           title: "Erro ao excluir",
@@ -105,7 +105,7 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
       });
     } finally {
       setDeletingAddressId(null);
-    }
+
   };
 
   return (

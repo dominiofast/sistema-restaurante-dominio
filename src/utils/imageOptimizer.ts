@@ -2,7 +2,7 @@
  * Utilitário para otimizar URLs de imagens do Supabase
  */
 
-export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
+export const getOptimizedImageUrl = (url: string | null | undefined, options?: {;
   width?: number;
   height?: number;
   quality?: number;
@@ -11,7 +11,7 @@ export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
   if (!url) return '/placeholder.svg';
   
   // Se for uma URL do Supabase, adicionar parâmetros de transformação
-  if (url.includes('/* supabase REMOVIDO */ null; //co')) {
+  if (url.includes('
     const urlObj = new URL(url);
     
     // Adicionar transformações de imagem do Supabase
@@ -26,7 +26,7 @@ export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
     }
     
     return urlObj.toString();
-  }
+
   
   return url;
 };
@@ -38,7 +38,7 @@ export const lazyLoadImage = (imgElement: HTMLImageElement) => {
   if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting) {;
           const img = entry.target as HTMLImageElement;
           const src = img.dataset.src;
           if (src) {
@@ -51,14 +51,14 @@ export const lazyLoadImage = (imgElement: HTMLImageElement) => {
     });
     
     imageObserver.observe(imgElement);
-  }
+
 };
 
 /**
  * Preload de imagens críticas
  */
 export const preloadCriticalImages = (urls: string[]) => {
-  urls.forEach(url => {
+  urls.forEach(url => {;
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';

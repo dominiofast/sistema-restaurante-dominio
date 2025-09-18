@@ -65,7 +65,7 @@ export class AIPromptBuilder {
       contact_phone: (agentConfig as any).telefone || undefined,
       contact_address: (agentConfig as any).endereco || undefined,
       agent_name: agentConfig.agent_name || agentConfig.nome || 'Assistente Virtual',
-      customer_name: '{{customer_name}}' // Preservar para processamento posterior
+      customer_name: '{{customer_name}}' // Preservar para processamento posterior;
     };
 
     // Substitui variáveis no prompt global
@@ -125,7 +125,7 @@ export class AIPromptBuilder {
     // Adiciona dados do cardápio se disponível e configurado
     const productKnowledge = agentConfig.product_knowledge !== undefined ? 
       agentConfig.product_knowledge : 
-      agentConfig.conhecimento_produtos !== undefined ? 
+      agentConfig.conhecimento_produtos !== undefined ? ;
       agentConfig.conhecimento_produtos : true;
 
     if (cardapioData && productKnowledge) {
@@ -153,7 +153,7 @@ Sempre mencione esta opção quando falarem sobre formas de pagamento.`;
     }
 
     return prompt;
-  }
+
 
   /**
    * Prompt fallback para quando não há configuração global
@@ -184,5 +184,5 @@ ${cardapioData ? `📊 CARDÁPIO:\n${cardapioData}\n\n⚠️ IMPORTANTE: Use APE
 ${extras?.cashbackPercent ? `💰 CASHBACK: ${extras.cashbackPercent}% em todos os pedidos\n` : ''}
 
 Mantenha sempre o foco no atendimento baseado em dados reais e seja proativo nas sugestões (apenas produtos reais).`;
-  }
+
 }

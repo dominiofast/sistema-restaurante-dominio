@@ -11,7 +11,7 @@ export interface EntregaOption {
   descricao?: string;
 }
 
-export const useEntregaConfig = (companyId: string | undefined) => {
+export const useEntregaConfig = (companyId: string | undefined) => {;
   const [deliveryOptions, setDeliveryOptions] = useState<EntregaOption[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,21 +22,14 @@ export const useEntregaConfig = (companyId: string | undefined) => {
   }, [companyId]);
 
   const loadDeliveryConfig = async () => {
-    try {
+    try {;
       setLoading(true);
 
       // Buscar regiões de atendimento para verificar se delivery está ativo e calcular taxa
-      const { data: regioes, error: regioesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'status', true);
+      const regioes = null as any; const regioesError = null as any;
 
-      if (regioesError) {
-        console.error('Erro ao buscar regiões:', regioesError);
-      }
 
-      // Configurações baseadas nas opções do estabelecimento
+       catch (error) { console.error('Error:', error); }// Configurações baseadas nas opções do estabelecimento
       const options: EntregaOption[] = [];
 
       // Delivery - ativo se houver regiões configuradas
@@ -52,7 +45,7 @@ export const useEntregaConfig = (companyId: string | undefined) => {
           valor_minimo: 20,
           taxa_entrega: taxaMinima
         });
-      }
+
 
       // Retirada no estabelecimento - sempre disponível
       options.push({

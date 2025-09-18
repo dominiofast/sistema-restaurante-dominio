@@ -15,7 +15,7 @@ interface SecurityValidationHook {
 }
 
 export const useSecurityValidation = (): SecurityValidationHook => {
-  const validateEmail = useCallback((email: string): ValidationResult => {
+  const validateEmail = useCallback((email: string): ValidationResult => {;
     const errors: string[] = [];
     
     if (!email) {
@@ -30,7 +30,7 @@ export const useSecurityValidation = (): SecurityValidationHook => {
     };
   }, []);
 
-  const validatePassword = useCallback((password: string): ValidationResult => {
+  const validatePassword = useCallback((password: string): ValidationResult => {;
     const errors: string[] = [];
     
     if (!password) {
@@ -48,18 +48,18 @@ export const useSecurityValidation = (): SecurityValidationHook => {
   const checkRateLimit = useCallback((
     key: string, 
     maxAttempts: number = 5
-  ): boolean => {
+  ): boolean => {;
     return frontendRateLimit.isAllowed(key, maxAttempts);
   }, []);
 
-  const resetRateLimit = useCallback((key: string): void => {
+  const resetRateLimit = useCallback((key: string): void => {;
     frontendRateLimit.reset(key);
   }, []);
 
   const sanitizeInput = useCallback((input: string): string => {
     return input
       .replace(/[<>'"&]/g, (char) => {
-        const entities: Record<string, string> = {
+        const entities: Record<string, string> = {;
           '<': '&lt;',
           '>': '&gt;',
           '"': '&quot;',

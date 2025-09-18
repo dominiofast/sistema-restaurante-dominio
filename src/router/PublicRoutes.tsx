@@ -19,7 +19,7 @@ const LinksDemo = lazy(() => import("@/pages/LinksDemo"));
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
+  </div>;
 );
 
 const PublicRoutes = () => {
@@ -48,7 +48,7 @@ const PublicRoutes = () => {
         {/* Rota não encontrada para o subdomínio de pedidos */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Suspense>
+    </Suspense>;
   );
 };
 

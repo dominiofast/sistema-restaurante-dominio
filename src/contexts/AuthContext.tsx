@@ -73,7 +73,7 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   getCompanyData: () => null,
-  reloadCompanies: async () => {},
+  reloadCompanies: async () => {}
 });
 
 export const useAuth = () => {
@@ -125,7 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               if (existingCompany && isMounted()) {
                 setCurrentCompany(existingCompany);
                 setCompanyId(existingCompany.id);
-              } else {
+              }  catch (error) { console.error('Error:', error); }else {
                 localStorage.removeItem('super_admin_selected_company');
               }
             } else {
@@ -134,8 +134,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           } catch (error) {
             console.error('AuthProvider: Erro ao restaurar empresa selecionada:', error);
             localStorage.removeItem('super_admin_selected_company');
-          }
-        }
+
+
       } else {
         // Para usuários regulares, selecionar automaticamente se há apenas uma empresa
         if (loadedCompanies.length === 1 && isMounted()) {
@@ -148,8 +148,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           toast.error('Usuário não tem empresa associada. Entre em contato com o suporte.', {
             duration: 5000
           });
-        }
-      }
+
+
       
     } catch (error) {
       console.error('AuthProvider: Erro ao carregar empresas:', error);
@@ -157,15 +157,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setCompanies([]);
         setCurrentCompany(null);
         setCompanyId(null);
-      }
-    }
+
+
   }, [isMounted]);
 
   const reloadCompanies = useCallback(async () => {
-    if (!isMounted() || !user) {
+    if (!isMounted() || !user) {;
       console.warn('AuthContext: Tentativa de recarregar empresas com contexto inválido');
       return;
-    }
+
     
     console.log('AuthContext: Forçando recarregamento das empresas...');
     
@@ -181,32 +181,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } finally {
       if (isMounted()) {
         setIsLoading(false);
-      }
-    }
+
+
   }, [user, loadCompanies, isMounted]);
 
   // Função para forçar refresh dos metadados do usuário
-  const refreshUserMetadata = useCallback(async () => {
+  const refreshUserMetadata = useCallback(async () => {;
     console.log('AuthContext: Forçando refresh dos metadados do usuário...');
     try {
-      const { data: { session }, error } = await /* supabase REMOVIDO */ null; //auth.getSession();
+      const session = null as any; const error = null as any;
       if (error) {
         console.error('Erro ao obter sessão:', error);
         return;
-      }
+
       
-      if (session?.user) {
+       catch (error) { console.error('Error:', error); }if (session?.user) {
         // Forçar refresh do token
-        const { data: refreshData, error: refreshError } = await /* supabase REMOVIDO */ null; //auth.refreshSession();
+        const refreshData = null as any; const refreshError = null as any;
         if (refreshError) {
-          console.error('Erro ao fazer refresh da sessão:', refreshError);
+          console.error('Erro no refresh:', refreshError);
         } else {
           console.log('Refresh da sessão realizado com sucesso');
-        }
-      }
+
+
     } catch (error) {
       console.error('Erro ao fazer refresh dos metadados:', error);
-    }
+
   }, []);
 
   // Estado para controlar se já foi inicializado
@@ -217,10 +217,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Timeout de segurança para evitar loading infinito
     const timeout = registerTimeout(setTimeout(() => {
-      if (isMounted() && isLoading) {
+      if (isMounted() && isLoading) {;
         console.warn('AuthProvider: Timeout de inicialização atingido, forçando parada do loading');
         setIsLoading(false);
-      }
+
     }, 10000)); // 10 segundos timeout
     
     return () => {
@@ -251,17 +251,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setIsLoading(false);
             setIsInitialized(true);
             lastUserIdRef.current = parsed.user.id;
-          }
-          return;
+
+           catch (error) { console.error('Error:', error); }return;
         } else {
           // Remover sessão expirada
           localStorage.removeItem('company_auth');
-        }
+
       } catch (error) {
         console.error('AuthProvider: Erro ao restaurar sessão de empresa:', error);
         localStorage.removeItem('company_auth');
-      }
-    }
+
+
     
     // Verificar localStorage primeiro (para login PostgreSQL)
     const userAuth = localStorage.getItem('user_auth');
@@ -276,29 +276,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setIsLoading(false);
             setIsInitialized(true);
             lastUserIdRef.current = parsed.user.id;
-          }
-          return;
+
+           catch (error) { console.error('Error:', error); }return;
         } else {
           // Remover sessão expirada
           localStorage.removeItem('user_auth');
-        }
+
       } catch (error) {
         console.error('AuthProvider: Erro ao restaurar sessão PostgreSQL:', error);
         localStorage.removeItem('user_auth');
-      }
-    }
+
+
     
     // Configurar listener de autenticação do Supabase apenas uma vez
     const setupAuth = async () => {
       try {
-        // Verificar sessão existente do Supabase primeiro
-        const { data: { session: existingSession } } = await /* supabase REMOVIDO */ null; //auth.getSession();
+        // Verificar sessão existente do Supabase primeiro;
+        const { data: { session: existingSession }  catch (error) { console.error('Error:', error); }} = await Promise.resolve();
         console.log('AuthProvider: Verificando sessão existente...');
         
         // Processar sessão existente se houver
         if (existingSession?.user && isMountedLocal && isMounted()) {
           await processAuthUser(existingSession, 'INITIAL_SESSION', isMountedLocal);
-        }
+
         
         // Configurar listener apenas se não há subscription ativa
         if (!subscriptionRef.current) {
@@ -310,16 +310,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         //     console.log('AuthProvider: Auth state changed:', event);
         //     await processAuthUser(session, event, isMountedLocal);
         //   }
-        // );
+
         const authSubscription = null;
           
           subscriptionRef.current = registerSubscription(authSubscription);
-        }
+
         
         // Se não há sessão, parar loading
         if (!existingSession && isMountedLocal && isMounted()) {
           setIsLoading(false);
-        }
+
         
         setIsInitialized(true);
         
@@ -328,12 +328,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (isMountedLocal && isMounted()) {
           setIsLoading(false);
           setIsInitialized(true);
-        }
-      }
+
+
     };
 
     // Função para processar usuário autenticado
-    const processAuthUser = async (session: any, event: string, mounted: boolean) => {
+    const processAuthUser = async (session: any, event: string, mounted: boolean) => {;
       if (!mounted || !isMounted()) return;
       
       setSession(session);
@@ -344,7 +344,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.log('AuthProvider: Usuário já processado, ignorando evento:', event);
           if (mounted) setIsLoading(false);
           return;
-        }
+
         
         // Acessar os metadados diretamente do objeto user
         const userMeta = (session.user as any).raw_user_meta_data || {};
@@ -358,7 +358,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (session.user.email === 'suporte@dominio.tech' || session.user.email === 'contato@dominio.tech') {
           role = 'super_admin';
           company_domain = 'all';
-        }
+
         
         const authUser: AuthUser = {
           id: session.user.id,
@@ -375,7 +375,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         // Carregar empresas apenas quando necessário
         const shouldLoadCompanies = event === 'SIGNED_IN' || 
-                                   (event === 'INITIAL_SESSION' && !user) ||
+                                   (event === 'INITIAL_SESSION' && !user) ||;
                                    lastUserIdRef.current !== session.user.id;
         
         if (mounted && shouldLoadCompanies && isMounted()) {
@@ -384,7 +384,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Usar timeout mais curto e com cleanup adequado
           const loadTimeout = registerTimeout(setTimeout(async () => {
             if (mounted && isMounted()) {
-              try {
+              try {;
                 await loadCompanies(authUser);
               } catch (error) {
                 console.error('AuthProvider: Erro ao carregar empresas:', error);
@@ -400,8 +400,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Para outros eventos, apenas parar loading
           if (mounted && isMounted()) {
             setIsLoading(false);
-          }
-        }
+
+
       } else {
         // Usuário deslogado
         if (mounted) {
@@ -411,8 +411,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setCompanies([]);
           setIsLoading(false);
           lastUserIdRef.current = null;
-        }
-      }
+
+
     };
 
     setupAuth();
@@ -424,23 +424,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('AuthProvider: Limpando subscription');
         subscriptionRef.current.unsubscribe();
         subscriptionRef.current = null;
-      }
+
     };
   }, [isInitialized, isMounted, registerTimeout, registerSubscription]); // Dependências otimizadas
 
   const login = async (email: string, password: string) => {
-    if (!isMounted()) {
+    if (!isMounted()) {;
       throw new Error('Componente foi desmontado durante o login');
-    }
+
     
     setIsLoading(true);
     
     // Timeout de segurança para evitar loading infinito
-    const loginTimeout = registerTimeout(setTimeout(() => {
+    const loginTimeout = registerTimeout(setTimeout(() => {;
       console.warn('AuthProvider: Timeout de login atingido, forçando parada do loading');
       if (isMounted()) {
         setIsLoading(false);
-      }
+
     }, 15000)); // 15 segundos timeout
     
     try {
@@ -455,8 +455,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           email: email.trim(),
           password: password
@@ -473,7 +473,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Erro no login');
-      }
+
       
       // Criar usuário autenticado com dados do PostgreSQL
       const authUser: AuthUser = {
@@ -483,7 +483,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         role: result.user.role,
         user_metadata: {
           company_id: result.user.company_id || null
-        }
+
       };
       
       setUser(authUser);
@@ -506,21 +506,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       clearRegisteredTimeout(loginTimeout);
       if (isMounted()) {
         setIsLoading(false);
-      }
-    }
+
+
   };
 
   const signOut = async () => {
-    try {
+    try {;
       console.log('AuthProvider: Fazendo logout...');
       
       // Limpar subscription
       if (subscriptionRef.current) {
         subscriptionRef.current.unsubscribe();
         subscriptionRef.current = null;
-      }
+
       
-      // Limpar cache do otimizador
+       catch (error) { console.error('Error:', error); }// Limpar cache do otimizador
       authOptimizer.clearCache();
       authOptimizer.clearLoadingPromises();
       
@@ -541,25 +541,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsInitialized(false);
       lastUserIdRef.current = null;
       
-      const { error } = await /* supabase REMOVIDO */ null; //auth.signOut({ scope: 'global' });
+      const error = null as any;
       
       if (error) {
         console.error('AuthProvider: Erro no logout:', error);
-      }
+
       
       // Redirecionar para login
       window.location.href = '/login';
     } catch (error) {
       console.error('AuthProvider: Erro no logout:', error);
       window.location.href = '/login';
-    }
+
   };
 
-  const logout = async () => {
+  const logout = async () => {;
     await signOut();
   };
 
-  const selectCompany = (company: Company) => {
+  const selectCompany = (company: Company) => {;
     setCurrentCompany(company);
     setCompanyId(company.id);
     
@@ -571,19 +571,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         timestamp: Date.now()
       }));
       console.log('AuthProvider: Super admin selecionou empresa:', company.name);
-    }
+
   };
 
-  const switchCompany = (companyId: string) => {
+  const switchCompany = (companyId: string) => {;
     const company = companies.find(c => c.id === companyId);
     if (company) {
       setCurrentCompany(company);
       setCompanyId(company.id);
-    }
+
   };
 
   const exitCompanyMode = () => {
-    // Limpar seleção de empresa para super admins
+    // Limpar seleção de empresa para super admins;
     localStorage.removeItem('super_admin_selected_company');
     localStorage.removeItem('selected_company'); // Limpar também a chave antiga se existir
     
@@ -594,7 +594,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     console.log('AuthProvider: Saindo do modo de empresa');
   };
 
-  const getCompanyData = (): CompanyData | null => {
+  const getCompanyData = (): CompanyData | null => {;
     if (!currentCompany) return null;
 
     return {
@@ -618,7 +618,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           type: 'product',
           description: 'Produto adicionado ao cardápio',
           time: 'há 1 hora',
-        }
+
       ]
     };
   };
@@ -636,7 +636,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     getCompanyData,
-    reloadCompanies,
+    reloadCompanies,;
   };
 
   return (

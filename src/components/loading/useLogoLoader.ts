@@ -27,7 +27,7 @@ export const useLogoLoader = (
   const {
     maxRetries = 2,
     loadTimeout = 10000,
-    enableRetry = true
+    enableRetry = true;
   } = options;
 
   const [state, setState] = useState<LogoLoadingState>({
@@ -43,14 +43,14 @@ export const useLogoLoader = (
       hasError: false,
       isLoaded: false,
       retryCount: 0,
-      error: undefined
+      error: undefined;
     });
   }, []);
 
   const loadImage = useCallback((url: string, attempt: number = 0): Promise<void> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {;
       const img = new Image();
-      const timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(() => {;
         img.onload = null;
         img.onerror = null;
         reject(new Error('Timeout loading image'));
@@ -68,7 +68,7 @@ export const useLogoLoader = (
 
       // Add cache busting for retries
       const cacheBustUrl = attempt > 0 
-        ? `${url}${url.includes('?') ? '&' : '?'}retry=${attempt}&t=${Date.now()}`
+        ? `${url}${url.includes('?') ? '&' : '?'}retry=${attempt}&t=${Date.now()}`;
         : url;
       
       img.src = cacheBustUrl;
@@ -80,7 +80,7 @@ export const useLogoLoader = (
       ...prev,
       isLoading: true,
       hasError: false,
-      retryCount: attempt
+      retryCount: attempt;
     }));
 
     try {
@@ -91,7 +91,7 @@ export const useLogoLoader = (
         hasError: false,
         isLoaded: true,
         error: undefined
-      }));
+      } catch (error) { console.error('Error:', error); }));
     } catch (error) {
       const loadingError: LoadingError = {
         type: error instanceof Error && error.message.includes('Timeout') ? 'timeout' : 'network',
@@ -114,14 +114,14 @@ export const useLogoLoader = (
           isLoaded: false,
           error: loadingError
         }));
-      }
-    }
+
+
   }, [loadImage, maxRetries, enableRetry]);
 
   const retry = useCallback(() => {
-    if (logoUrl && state.hasError) {
+    if (logoUrl && state.hasError) {;
       attemptLoad(logoUrl, 0);
-    }
+
   }, [logoUrl, state.hasError, attemptLoad]);
 
   // Start loading when logoUrl changes
@@ -131,7 +131,7 @@ export const useLogoLoader = (
       attemptLoad(logoUrl, 0);
     } else {
       reset();
-    }
+
   }, [logoUrl, attemptLoad, reset]);
 
   return {
@@ -145,7 +145,7 @@ export const useLogoLoader = (
  * Utility function to preload logos for better performance
  */
 export const preloadLogo = (logoUrl: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {;
     const img = new Image();
     img.onload = () => resolve();
     img.onerror = () => reject(new Error('Failed to preload logo'));
@@ -157,7 +157,7 @@ export const preloadLogo = (logoUrl: string): Promise<void> => {
  * Utility function to check if an image URL is valid
  */
 export const isValidImageUrl = (url: string): boolean => {
-  try {
+  try {;
     const parsedUrl = new URL(url);
     return ['http:', 'https:', 'data:'].includes(parsedUrl.protocol);
   } catch {
@@ -172,7 +172,7 @@ export const getOptimizedImageUrl = (
   url: string, 
   size: number, 
   format: 'webp' | 'avif' | 'auto' = 'auto'
-): string => {
+): string => {;
   if (!url || !isValidImageUrl(url)) return url;
   
   try {
@@ -185,10 +185,10 @@ export const getOptimizedImageUrl = (
       parsedUrl.searchParams.set('c', 'fit');
       if (format !== 'auto') {
         parsedUrl.searchParams.set('f', format);
-      }
-    } else if (parsedUrl.hostname.includes('imagekit.io')) {
+
+     catch (error) { console.error('Error:', error); }} else if (parsedUrl.hostname.includes('imagekit.io')) {
       parsedUrl.searchParams.set('tr', `w-${size},h-${size},c-maintain_ratio`);
-    }
+
     
     return parsedUrl.toString();
   } catch {

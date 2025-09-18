@@ -33,7 +33,7 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
       toast({
         title: 'Erro',
         description: 'Usuário ou empresa não identificados',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return;
     }
@@ -49,7 +49,7 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
           currentCompany.id, 
           user.id
         );
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         resultado = await FichasTecnicasDefaultService.carregarReceitasPadrao(
           currentCompany.id, 
           user.id
@@ -89,14 +89,14 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
 
   const getTitulo = () => {
     return tipo === 'mercadorias' 
-      ? 'Carregar Ingredientes Padrão' 
+      ? 'Carregar Ingredientes Padrão' ;
       : 'Carregar Receitas Padrão';
   };
 
-  const getDescricao = () => {
+  const getDescricao = () => {;
     const itemNome = tipo === 'mercadorias' ? 'ingredientes' : 'receitas';
     const exemplos = tipo === 'mercadorias' 
-      ? 'farinha de trigo, mussarela, calabresa, molho de tomate, etc.'
+      ? 'farinha de trigo, mussarela, calabresa, molho de tomate, etc.';
       : 'massa de pizza, molho base, pizza margherita, pizza calabresa, etc.';
 
     return (

@@ -39,7 +39,7 @@ interface ConnectionStatusProps {
   getFallbackState?: () => any;
   forceFallbackMode?: (mode: 'realtime' | 'polling') => void;
   onRunDiagnostic?: () => Promise<any>;
-}
+
 
 // Componente simples para status inline
 export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
@@ -52,7 +52,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
 }) => {
   const getStatusColor = () => {
     if (isConnected) {
-      switch (quality) {
+      switch (quality) {;
         case 'excellent': return 'text-green-600';
         case 'good': return 'text-blue-600';
         case 'poor': return 'text-yellow-600';
@@ -62,13 +62,13 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
     return isReconnecting ? 'text-yellow-600' : 'text-red-600';
   };
 
-  const getStatusIcon = () => {
+  const getStatusIcon = () => {;
     if (isConnected) return <Wifi className="h-3 w-3" />;
     if (isReconnecting) return <RefreshCw className="h-3 w-3 animate-spin" />;
     return <WifiOff className="h-3 w-3" />;
   };
 
-  const getStatusText = () => {
+  const getStatusText = () => {;
     if (isConnected) return `Online (${latency}ms)`;
     if (isReconnecting) return `Reconectando... (${retryCount}/5)`;
     return 'Desconectado';
@@ -119,7 +119,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
 
   // Atualizar dados periodicamente
   useEffect(() => {
-    const updateData = () => {
+    const updateData = () => {;
       if (getConnectionMetrics) setMetrics(getConnectionMetrics());
       if (getConnectionQuality) setQualityData(getConnectionQuality());
       if (getConnectionAlerts) setAlerts(getConnectionAlerts(true)); // Apenas não resolvidos
@@ -132,7 +132,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   }, [getConnectionMetrics, getConnectionQuality, getConnectionAlerts, getFallbackState]);
 
   const getQualityColor = (level: string) => {
-    switch (level) {
+    switch (level) {;
       case 'excellent': return 'text-green-600 bg-green-50 border-green-200';
       case 'good': return 'text-blue-600 bg-blue-50 border-blue-200';
       case 'poor': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
@@ -142,7 +142,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   };
 
   const getQualityIcon = (level: string) => {
-    switch (level) {
+    switch (level) {;
       case 'excellent': return <CheckCircle className="h-4 w-4" />;
       case 'good': return <Wifi className="h-4 w-4" />;
       case 'poor': return <AlertTriangle className="h-4 w-4" />;
@@ -151,7 +151,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
     }
   };
 
-  const runDiagnostic = async () => {
+  const runDiagnostic = async () => {;
     if (!onRunDiagnostic) return;
     
     setIsRunningDiagnostic(true);
@@ -410,7 +410,7 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
           return {
             bg: 'bg-green-100 border-green-200 text-green-800',
             icon: <Wifi className="h-4 w-4" />,
-            message: `Conectado - Qualidade excelente (${latency}ms)`
+            message: `Conectado - Qualidade excelente (${latency}ms)`;
           };
         case 'good':
           return {

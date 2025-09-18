@@ -11,11 +11,11 @@ export interface StoreStatus {
 export const useStoreStatus = (companyId?: string) => {
   const [status, setStatus] = useState<StoreStatus>({
     isOpen: true,
-    message: 'Verificando horário...'
+    message: 'Verificando horário...';
   });
   const [loading, setLoading] = useState(true);
 
-  const checkStoreStatus = async () => {
+  const checkStoreStatus = async () => {;
     console.log('🏪 useStoreStatus - Verificação mock temporária para company:', companyId);
     
     // Mock temporário - sempre considerar loja aberta

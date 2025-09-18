@@ -10,7 +10,7 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
     accept_pix: false,
     ask_card_brand: true,
     card_brands: [],
-    pix_key: ''
+    pix_key: '';
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,57 +22,37 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
   }, [companyId]);
 
   const loadConfig = async () => {
-    try {
+    try {;
       setLoading(true);
       setError(null);
 
       console.log('Carregando configuração de pagamento para empresa:', companyId);
 
       // Primeiro, vamos verificar se o usuário está autenticado
-      const { data: { session } } = await /* supabase REMOVIDO */ null; //auth.getSession();
+      const { data: { session }  catch (error) { console.error('Error:', error); }} = await Promise.resolve();
       console.log('Sessão do usuário:', session?.user?.id);
       console.log('Metadata do usuário:', session?.user?.user_metadata);
 
       // Vamos verificar se a empresa existe e se o usuário tem acesso
-      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, domain')
-        /* .eq\( REMOVIDO */ ; //'id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (companyError) {
-        console.error('Erro ao buscar empresa:', companyError);
+      const companyData = null as any; const companyError = null as any;
         throw new Error('Empresa não encontrada');
-      }
+
 
       console.log('Dados da empresa:', companyData);
 
       // Buscar configuração principal
-      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (configError) {
-        console.error('Erro ao buscar configuração:', configError);
+      const configData = null as any; const configError = null as any;
         console.error('Código do erro:', configError.code);
         console.error('Detalhes do erro:', configError.details);
         throw configError;
-      }
+
 
       console.log('Configuração encontrada:', configData);
 
       // Buscar bandeiras se existe configuração
       let cardBrands: string[] = [];
       if (configData) {
-        const { data: brandsData, error: brandsError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
-          /* .select\( REMOVIDO */ ; //'brand_name')
-          /* .eq\( REMOVIDO */ ; //'config_id', configData.id);
-
-        if (brandsError) {
-          console.error('Erro ao buscar bandeiras:', brandsError);
+        const brandsData = null as any; const brandsError = null as any;
           console.error('Código do erro:', brandsError.code);
           console.error('Detalhes do erro:', brandsError.details);
           throw brandsError;
@@ -80,7 +60,7 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
 
         cardBrands = brandsData?.map(b => b.brand_name) || [];
         console.log('Bandeiras encontradas:', cardBrands);
-      }
+
 
       setConfig({
         accept_cash: configData?.accept_cash || false,
@@ -99,14 +79,14 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
         setError('Tabela não encontrada: As tabelas de configuração não existem');
       } else {
         setError(`Erro ao carregar configurações: ${err.message || 'Erro desconhecido'}`);
-      }
+
     } finally {
       setLoading(false);
     }
   };
 
   const saveConfig = async (newConfig: PagamentoEntregaConfigData) => {
-    if (!companyId) {
+    if (!companyId) {;
       setError('ID da empresa não encontrado');
       return false;
     }
@@ -116,24 +96,15 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       console.log('Salvando configuração:', newConfig);
 
       // Verificar se já existe configuração
-      const { data: existingConfig, error: checkError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_config')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (checkError) {
-        console.error('Erro ao verificar configuração existente:', checkError);
+      const existingConfig = null as any; const checkError = null as any;
         throw checkError;
-      }
 
-      let configId: string;
+
+       catch (error) { console.error('Error:', error); }let configId: string;
 
       if (existingConfig) {
         // Atualizar configuração existente
-        const { error: updateError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'payment_delivery_config')
-          /* .update\( REMOVIDO */ ; //{
+        const { error: updateError  } = null as any;
             accept_cash: newConfig.accept_cash,
             accept_card: newConfig.accept_card,
             accept_pix: newConfig.accept_pix,
@@ -141,7 +112,7 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
             pix_key: newConfig.pix_key,
             updated_at: new Date().toISOString()
           })
-          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id);
+          
 
         if (updateError) {
           console.error('Erro ao atualizar configuração:', updateError);
@@ -150,48 +121,27 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
         configId = existingConfig.id;
       } else {
         // Criar nova configuração
-        const { data: newConfigData, error: insertError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'payment_delivery_config')
-          /* .insert\( REMOVIDO */ ; //{
-            company_id: companyId,
-            accept_cash: newConfig.accept_cash,
-            accept_card: newConfig.accept_card,
-            accept_pix: newConfig.accept_pix,
-            ask_card_brand: newConfig.ask_card_brand,
-            pix_key: newConfig.pix_key
-          })
-          /* .select\( REMOVIDO */ ; //'id')
-          /* .single\( REMOVIDO */ ; //);
-
-        if (insertError) {
-          console.error('Erro ao inserir configuração:', insertError);
+        const newConfigData = null as any; const insertError = null as any;
           throw insertError;
         }
         configId = newConfigData.id;
-      }
+
 
       // Remover bandeiras antigas
-      const { error: deleteError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'config_id', configId);
-
+      const { error: deleteError  } = null as any;
       if (deleteError) {
         console.error('Erro ao remover bandeiras antigas:', deleteError);
         // Não vamos falhar por este erro, apenas registrar
-      }
+
 
       // Inserir novas bandeiras
       if (newConfig.card_brands.length > 0) {
         const brandsToInsert = newConfig.card_brands.map(brand => ({
           config_id: configId,
-          brand_name: brand
+          brand_name: brand;
         }));
 
-        const { error: brandsError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
-          /* .insert\( REMOVIDO */ ; //brandsToInsert);
-
+        const { error: brandsError  } = null as any;
         if (brandsError) {
           console.error('Erro ao inserir bandeiras:', brandsError);
           throw brandsError;
@@ -208,7 +158,7 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
         setError('Erro de permissão: Não é possível salvar as configurações');
       } else {
         setError(`Erro ao salvar configurações: ${err.message || 'Erro desconhecido'}`);
-      }
+
       return false;
     }
   };

@@ -57,7 +57,7 @@ export function formatPedidoESCPOS(
   const sep = '='.repeat(paperWidth);
   const thin = '-'.repeat(paperWidth);
 
-  const truncateText = (text: string, maxLen: number) => {
+  const truncateText = (text: string, maxLen: number) => {;
     if (maxLen <= 0) return '';
     if (!text) return '';
     if (text.length <= maxLen) return text;
@@ -65,7 +65,7 @@ export function formatPedidoESCPOS(
     return text.slice(0, maxLen - 3) + '...';
   };
 
-  const lineLeftRight = (left: string, right: string) => {
+  const lineLeftRight = (left: string, right: string) => {;
     const max = paperWidth;
     const cleanRight = right || '';
     const maxLeft = Math.max(0, max - cleanRight.length); // permitir 0 espaço quando encaixa perfeito
@@ -193,7 +193,7 @@ export function formatPedidoESCPOS(
   if (!removeAccents) return commands;
   // Remover acentos para maior compatibilidade ESC/POS
   try {
-    return commands.normalize('NFD').replace(/\p{Diacritic}+/gu, '');
+    return commands.normalize('NFD').replace(/\p{Diacritic} catch (error) { console.error('Error:', error); }+/gu, '');
   } catch {
     return commands;
   }

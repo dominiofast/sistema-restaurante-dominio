@@ -3,7 +3,7 @@ import { Produto } from '@/types/cardapio';
 import { formatPriceDisplay } from '@/utils/priceCalculation';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {
+const applyOpacity = (color: string, opacity: number) => {;
   const hex = color.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -12,11 +12,11 @@ const applyOpacity = (color: string, opacity: number) => {
 };
 
 // Função para otimizar URLs de imagem do Supabase
-const getOptimizedImageUrl = (url: string | undefined, width: number = 250): string => {
+const getOptimizedImageUrl = (url: string | undefined, width: number = 250): string => {;
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
-  if (url.includes('/* supabase REMOVIDO */ null; //co') && url.includes('/storage/')) {
+  if (url.includes('
     // O Supabase Storage suporta transformações de imagem
     const baseUrl = url.split('?')[0]; // Remove query params existentes
     return `${baseUrl}?width=${width}&height=${Math.round(width * 0.8)}&resize=contain&quality=85`;
@@ -47,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   companyId
 }) => {
   const basePrice = produto.is_promotional && produto.promotional_price 
-    ? produto.promotional_price 
+    ? produto.promotional_price ;
     : produto.price;
   
   const finalMinimumPrice = minimumPrice || basePrice;
@@ -57,7 +57,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       return (
         <div className="flex items-center gap-2">
           <div className="h-4 w-16 bg-gray-200 animate-pulse rounded"></div>
-        </div>
+        </div>;
       );
     }
 
@@ -72,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       // Calcular percentual de desconto apenas se houver diferença real entre os preços e preços > 0
       const discountPercentage = produto.promotional_price < produto.price && produto.price > 0 && produto.promotional_price > 0
-        ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100)
+        ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100);
         : null;
 
       return (

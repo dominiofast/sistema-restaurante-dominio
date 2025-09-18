@@ -11,7 +11,7 @@ export const OperatingHours: React.FC<OperatingHoursProps> = ({
   operatingHours,
   primaryColor
 }) => {
-  const getCurrentDaySchedule = () => {
+  const getCurrentDaySchedule = () => {;
     if (!operatingHours) return null;
     
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -21,7 +21,7 @@ export const OperatingHours: React.FC<OperatingHoursProps> = ({
     return operatingHours[dayName];
   };
 
-  const isCurrentlyOpen = () => {
+  const isCurrentlyOpen = () => {;
     const schedule = getCurrentDaySchedule();
     if (!schedule || schedule.closed) return false;
 
@@ -31,7 +31,7 @@ export const OperatingHours: React.FC<OperatingHoursProps> = ({
     return currentTime >= schedule.open && currentTime <= schedule.close;
   };
 
-  const getNextOpenTime = () => {
+  const getNextOpenTime = () => {;
     if (!operatingHours) return null;
 
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -52,7 +52,7 @@ export const OperatingHours: React.FC<OperatingHoursProps> = ({
     return null;
   };
 
-  const formatTime = (time: string) => {
+  const formatTime = (time: string) => {;
     const [hours, minutes] = time.split(':');
     const hour = parseInt(hours);
     const period = hour >= 12 ? 'PM' : 'AM';
@@ -108,7 +108,7 @@ export const OperatingHours: React.FC<OperatingHoursProps> = ({
           {isOpen 
             ? `Até ${formatTime(schedule.close)}`
             : `Abre às ${formatTime(schedule.open)}`
-          }
+
         </span>
       </div>
     </div>

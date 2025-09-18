@@ -18,12 +18,12 @@ D3d3dy5leGFtcGxlLmNvbTEmMCQGCSqGSIb3DQEJARYXYWRtaW5AZXhhbXBsZS5j
 b20wHhcNMjQwMTAxMDAwMDAwWhcNMjUwMTAxMDAwMDAwWjCBoTELMAkGA1UEBhMC
 VVMxCzAJBgNVBAgMAk5ZMREwDwYDVQQHDAhCdWZmYWxvMRowGAYDVQQKDBFFeGFt
 cGxlIENvbXBhbnkxFDASBgNVBAsMC0V4YW1wbGUgT3JnMRgwFgYDVQQDDA93d3cu
-ZXhhbXBsZS5jb20xJjAkBgkqhkiG9w0BCQEWF2FkbWluQGV4YW1wbGUuY29tMA==
+ZXhhbXBsZS5jb20xJjAkBgkqhkiG9w0BCQEWF2FkbWluQGV4YW1wbGUuY29tMA==;
 -----END CERTIFICATE-----`;
 
 // Chave privada (exemplo - substitua pela sua chave real)
 const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3...
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3...;
 -----END PRIVATE KEY-----`;
 
 /**
@@ -34,9 +34,9 @@ export const configureCertificates = async (): Promise<void> => {
     // Para desenvolvimento local, usar certificados mais simples
     // Configurar certificado público
     qz.security.setCertificatePromise(function(resolve: (cert: string) => void) {
-      // Para desenvolvimento, pode usar certificado vazio ou auto-assinado
+      // Para desenvolvimento, pode usar certificado vazio ou auto-assinado;
       resolve(PUBLIC_CERTIFICATE);
-    });
+    } catch (error) { console.error('Error:', error); });
 
     // Configurar chave privada para assinatura
     qz.security.setSignaturePromise(function(toSign: string, resolve: (signature: string) => void) {
@@ -56,7 +56,7 @@ export const configureCertificates = async (): Promise<void> => {
     console.error('❌ Erro ao configurar certificados QZ Tray:', error);
     // Não fazer throw para não bloquear a conexão em desenvolvimento
     console.warn('⚠️ Continuando sem certificados para desenvolvimento local');
-  }
+
 };
 
 /**
@@ -64,21 +64,21 @@ export const configureCertificates = async (): Promise<void> => {
  */
 export const verifyCertificates = async (): Promise<boolean> => {
   try {
-    // Tenta conectar com os certificados configurados
+    // Tenta conectar com os certificados configurados;
     await qz.websocket.connect();
     const isActive = await qz.websocket.isActive();
     
     if (isActive) {
       console.log('✅ Certificados verificados - conexão estabelecida');
       return true;
-    } else {
+    }  catch (error) { console.error('Error:', error); }else {
       console.warn('⚠️ Conexão não ativa - verifique os certificados');
       return false;
     }
   } catch (error) {
     console.error('❌ Erro na verificação dos certificados:', error);
     return false;
-  }
+
 };
 
 /**
@@ -104,7 +104,7 @@ export const PRODUCTION_SETUP_INSTRUCTIONS = {
     title: "Testar Conexão",
     description: "Verifique se a conexão funciona corretamente em produção",
     test: "await qz.websocket.connect()"
-  }
+  };
 };
 
 export default {

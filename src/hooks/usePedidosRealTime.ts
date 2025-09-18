@@ -13,7 +13,7 @@ export interface ItemPedido {
     valor: number;
     categoria?: string;
   }>;
-}
+
 
 export interface PedidoKDS {
   id: number;
@@ -31,9 +31,9 @@ export interface PedidoKDS {
   itens: ItemPedido[];
   observacoes?: string;
   fonte?: string;
-}
 
-export const usePedidosRealTime = () => {
+
+export const usePedidosRealTime = () => {;
   const { currentCompany } = useAuth();
   const [pedidos, setPedidos] = useState<PedidoKDS[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +44,7 @@ export const usePedidosRealTime = () => {
   console.log('🏢 usePedidosRealTime: currentCompany.id:', currentCompany?.id);
 
   // Função para calcular tempo decorrido
-  const calculateElapsedTime = (createdAt: string): number => {
+  const calculateElapsedTime = (createdAt: string): number => {;
     const now = new Date();
     const created = new Date(createdAt);
     return Math.floor((now.getTime() - created.getTime()) / (1000 * 60)); // em minutos
@@ -52,13 +52,13 @@ export const usePedidosRealTime = () => {
 
   // Função para buscar itens reais do pedido com adicionais via API
   const fetchPedidoItens = async (pedidoId: number): Promise<ItemPedido[]> => {
-    try {
+    try {;
       console.log('🔍 Buscando itens do pedido via API:', pedidoId);
       
       // Para simplicidade inicial, retornar item genérico
       // TODO: Implementar API de pedido_itens quando necessário
       return [{
-        nome: `Pedido #${pedidoId}`,
+        nome: `Pedido #${pedidoId} catch (error) { console.error('Error:', error); }`,
         qtd: 1,
         valor: 0,
         observacoes: undefined,
@@ -74,11 +74,11 @@ export const usePedidosRealTime = () => {
         observacoes: 'Erro ao carregar detalhes',
         adicionais: []
       }];
-    }
+
   };
 
   // Função para converter dados do banco para formato KDS
-  const convertToKDSFormat = async (pedidoDB: any): Promise<PedidoKDS> => {
+  const convertToKDSFormat = async (pedidoDB: any): Promise<PedidoKDS> => {;
     console.log('🔄 KDS: Convertendo pedido para formato KDS via API:', pedidoDB);
     
     const itens = await fetchPedidoItens(pedidoDB.id);
@@ -109,11 +109,11 @@ export const usePedidosRealTime = () => {
 
   // Buscar pedidos iniciais via API Neon
   const fetchPedidos = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       setPedidos([]);
       setLoading(false);
       return;
-    }
+
 
     try {
       setLoading(true);
@@ -122,7 +122,7 @@ export const usePedidosRealTime = () => {
       console.log('🔍 KDS: Buscando pedidos via API Neon para empresa:', currentCompany.id);
 
       // Buscar todos os pedidos primeiro para debugar
-      const allResponse = await fetch(`/api/pedidos?company_id=${currentCompany.id}`);
+      const allResponse = await fetch(`/api/pedidos?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`);
       const allResult = await allResponse.json();
       
       if (allResponse.ok && allResult.success) {
@@ -135,7 +135,7 @@ export const usePedidosRealTime = () => {
       // Agora filtrar por status (analise, producao, pronto)
       const activeStatuses = ['analise', 'producao', 'pronto'];
       const filteredPedidos = (allResult.data || []).filter((pedido: any) => 
-        activeStatuses.includes(pedido.status)
+        activeStatuses.includes(pedido.status);
       );
       
       console.log('🔍 KDS: Pedidos filtrados por status ativo:', filteredPedidos.length);
@@ -144,7 +144,7 @@ export const usePedidosRealTime = () => {
       console.log('📋 KDS: Pedidos encontrados no banco via API:', filteredPedidos.length);
 
       const pedidosKDS = await Promise.all(
-        filteredPedidos.map((pedido: any) => convertToKDSFormat(pedido))
+        filteredPedidos.map((pedido: any) => convertToKDSFormat(pedido));
       );
       
       setPedidos(pedidosKDS);
@@ -155,7 +155,7 @@ export const usePedidosRealTime = () => {
       setError(err.message);
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Configurar polling para simular real-time (removido Supabase)
@@ -167,7 +167,7 @@ export const usePedidosRealTime = () => {
     fetchPedidos();
 
     // Polling para simular real-time
-    const pollingInterval = setInterval(() => {
+    const pollingInterval = setInterval(() => {;
       console.log('🔄 KDS: Polling para atualizações...');
       fetchPedidos();
     }, 15000); // 15 segundos para KDS (mais frequente)
@@ -178,13 +178,13 @@ export const usePedidosRealTime = () => {
     };
   }, [currentCompany?.id]);
 
-  const updatePedidoStatus = async (pedidoId: number, novoStatus: string) => {
+  const updatePedidoStatus = async (pedidoId: number, novoStatus: string) => {;
     console.log('🔄 KDS: Atualizando status do pedido via API:', pedidoId, '->', novoStatus);
     
     try {
       const response = await fetch('/api/pedidos', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',;
+        headers: { 'Content-Type': 'application/json' } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({ 
           id: pedidoId, 
           status: novoStatus
@@ -207,30 +207,30 @@ export const usePedidosRealTime = () => {
     } catch (error: any) {
       console.error('❌ KDS: Erro ao atualizar status via API:', error);
       setError(error.message);
-    }
+
   };
 
-  const marcarPronto = async (pedidoId: number) => {
+  const marcarPronto = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'pronto');
   };
 
-  const iniciarProducao = async (pedidoId: number) => {
+  const iniciarProducao = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'producao');
   };
 
-  const cancelarPedido = async (pedidoId: number) => {
+  const cancelarPedido = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'cancelado');
   };
 
-  const entregarPedido = async (pedidoId: number) => {
+  const entregarPedido = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'entregue');
   };
 
-  const rejeitarPedido = async (pedidoId: number) => {
+  const rejeitarPedido = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'rejeitado');
   };
 
-  const aceitarPedido = async (pedidoId: number) => {
+  const aceitarPedido = async (pedidoId: number) => {;
     await updatePedidoStatus(pedidoId, 'producao');
   };
 

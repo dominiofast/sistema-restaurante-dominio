@@ -9,7 +9,7 @@ import { CashbackCardAdaptive } from '@/components/cashback/CashbackCardAdaptive
 import { CompanyLogo } from '@/components/loading/CompanyLogo';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {
+const applyOpacity = (color: string, opacity: number) => {;
   const hex = color.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -21,7 +21,7 @@ interface Company {
   id: string;
   name: string;
   min_order_value?: number;
-}
+
 
 interface Branding {
   logo_url?: string;
@@ -32,13 +32,13 @@ interface Branding {
   accent_color?: string;
   text_color?: string;
   background_color?: string;
-}
+
 
 interface CompanyHeaderProps {
   company: Company & { slug?: string };
   branding?: Branding | null;
   onShare: () => void;
-}
+
 
 export const CompanyHeader: React.FC<CompanyHeaderProps> = ({ company, branding, onShare }) => {
   const { status, message, nextChange, loading } = useOperatingStatus(company.id);
@@ -51,7 +51,7 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({ company, branding,
 
   // Configuração de cashback vem do hook agora
 
-  const formatCurrency = (value: number | undefined) => {
+  const formatCurrency = (value: number | undefined) => {;
     if (value === undefined || value === null) return '';
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };

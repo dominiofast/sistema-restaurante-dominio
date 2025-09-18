@@ -32,16 +32,16 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
 
   // Carregar campanhas salvas
   useEffect(() => {
-    const fetchCampaigns = async () => {
+    const fetchCampaigns = async () => {;
       if (!currentCompany?.id) return;
 
       try {
         setLoading(true);
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'whatsapp_campaigns')
-          /* .select\( REMOVIDO */ ; //'id, name, message, audience, status, created_at, scheduled_date, is_active, country')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
 
         if (error) throw error;
         
@@ -51,23 +51,23 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
         toast.error('Erro ao carregar campanhas salvas');
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchCampaigns();
   }, [currentCompany?.id]);
 
   const handleDeleteCampaign = async (campaignId: string) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {
+    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {;
       return;
-    }
+
 
     try {
       setDeleting(campaignId);
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_campaigns')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', campaignId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -78,7 +78,7 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
       toast.error('Erro ao excluir campanha');
     } finally {
       setDeleting(null);
-    }
+
   };
 
   const handleLoadCampaign = (campaign: Campaign) => {
@@ -91,7 +91,7 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
       scheduledTime: campaign.scheduled_date ? campaign.scheduled_date.split('T')[1]?.slice(0, 5) : '',
       sendNow: false,
       messageLimit: null, // Resetar limite
-      selectedContacts: []
+      selectedContacts: [];
     };
     
     onLoadCampaign(campaignData);
@@ -99,7 +99,7 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
     toast.success('Campanha carregada para edição');
   };
 
-  const getStatusColor = (status: string, isActive: boolean) => {
+  const getStatusColor = (status: string, isActive: boolean) => {;
     if (!isActive) return 'bg-gray-100 text-gray-600';
     
     switch (status) {
@@ -113,10 +113,10 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-600';
-    }
+
   };
 
-  const getStatusText = (status: string, isActive: boolean) => {
+  const getStatusText = (status: string, isActive: boolean) => {;
     if (!isActive) return 'Inativa';
     
     switch (status) {
@@ -130,7 +130,7 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
         return 'Falha';
       default:
         return status;
-    }
+
   };
 
   return (

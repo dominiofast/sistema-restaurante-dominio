@@ -27,7 +27,7 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 const InscricoesVagas: React.FC = () => {
   const { companyId, currentCompany, user } = useAuth();
@@ -54,23 +54,23 @@ const InscricoesVagas: React.FC = () => {
     console.log('- Inscricoes data:', inscricoes);
   }, [user, companyId, currentCompany, loading, inscricoes]);
 
-  const onSelectInscricao = useCallback((inscricao: Inscricao) => {
+  const onSelectInscricao = useCallback((inscricao: Inscricao) => {;
     setSelectedInscricao(inscricao);
     setDetailsOpen(true);
   }, []);
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = useCallback(() => {;
     console.log('Recarregando inscrições manualmente...');
     fetchInscricoes();
   }, [fetchInscricoes]);
 
-  const handleArquivar = useCallback((inscricaoId: string) => {
+  const handleArquivar = useCallback((inscricaoId: string) => {;
     arquivarInscricao(inscricaoId);
   }, [arquivarInscricao]);
 
   if (loading) {
     return <InscricoesLoadingState />;
-  }
+
 
   return (
     <div className="space-y-6">

@@ -14,7 +14,7 @@ interface NewMessageNotificationProps {
   onClose: () => void;
   onChatSelect: (chatId: string) => void;
   isVisible: boolean;
-}
+
 
 export const NewMessageNotification: React.FC<NewMessageNotificationProps> = ({
   message,
@@ -29,17 +29,17 @@ export const NewMessageNotification: React.FC<NewMessageNotificationProps> = ({
       setShow(true);
       
       // Auto-dismiss after 5 seconds
-      const timeout = setTimeout(() => {
+      const timeout = setTimeout(() => {;
         handleClose();
       }, 5000);
 
       return () => clearTimeout(timeout);
     } else {
       setShow(false);
-    }
+
   }, [isVisible, message]);
 
-  const handleClose = () => {
+  const handleClose = () => {;
     setShow(false);
     setTimeout(() => {
       onClose();
@@ -47,13 +47,13 @@ export const NewMessageNotification: React.FC<NewMessageNotificationProps> = ({
   };
 
   const handleClick = () => {
-    if (message) {
+    if (message) {;
       onChatSelect(message.chatId);
       handleClose();
-    }
+
   };
 
-  const truncateMessage = (text: string, maxLength = 80) => {
+  const truncateMessage = (text: string, maxLength = 80) => {;
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };

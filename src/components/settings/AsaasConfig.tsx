@@ -23,7 +23,7 @@ import { AsaasMonitoring } from './AsaasMonitoring';
 
 interface AsaasConfigProps {
   companyId: string;
-}
+
 
 export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
   const { config, loading, error, saveConfig, testCredentials } = useAsaasConfig(companyId);
@@ -58,11 +58,11 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
   const handleInputChange = (field: keyof AsaasConfigData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value;
     }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     setSaving(true);
     try {
       await saveConfig(formData);
@@ -76,7 +76,7 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
       toast({
         title: 'Dados incompletos',
         description: 'Preencha a API Key para testar',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return;
     }
@@ -96,7 +96,7 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
         <span className="ml-2">Carregando configurações do Asaas...</span>
       </div>
     );
-  }
+
 
   if (error) {
     return (
@@ -107,7 +107,7 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
         </AlertDescription>
       </Alert>
     );
-  }
+
 
   return (
     <div className="space-y-6">

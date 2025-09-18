@@ -2,20 +2,20 @@
 import { useState, useEffect } from 'react';
 import { Company, WhatsappIntegration, CompanyIntegrations, WhatsappPurpose } from '@/types/whatsapp';
 
-export const useWhatsappIntegrations = () => {
+export const useWhatsappIntegrations = () => {;
   const [companies, setCompanies] = useState<Company[]>([]);
   const [integrations, setIntegrations] = useState<Record<string, CompanyIntegrations>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = async () => {;
     setLoading(true);
     try {
       const response = await fetch('/api/companies', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error); },
       });
 
       if (!response.ok) {
@@ -34,10 +34,10 @@ export const useWhatsappIntegrations = () => {
       setError('Erro ao buscar empresas.');
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const buildMap = (rows: any[] = []): Record<string, CompanyIntegrations> => {
+  const buildMap = (rows: any[] = []): Record<string, CompanyIntegrations> => {;
     const map: Record<string, CompanyIntegrations> = {};
     companies.forEach(c => {
       map[c.id] = { primary: null, marketing: null };
@@ -51,14 +51,14 @@ export const useWhatsappIntegrations = () => {
     return map;
   };
 
-  const fetchIntegrations = async () => {
+  const fetchIntegrations = async () => {;
     console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = // await // /* supabase REMOVIDO */ null; // // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'*'); // DESABILITADO
+  } = // await // 
     setIntegrations({});
   };
 
-  const saveIntegration = async (form: Partial<WhatsappIntegration>, selectedCompanyId: string) => {
+  const saveIntegration = async (form: Partial<WhatsappIntegration>, selectedCompanyId: string) => {;
     const defaultWebhook = 'https://dominio.tech/api/webhook';
     const payload: Partial<WhatsappIntegration> = { 
       ...form, 
@@ -73,25 +73,25 @@ export const useWhatsappIntegrations = () => {
     if (form.id || existingIntegration) {
       // Atualizar integração existente
       const updateId = form.id || existingIntegration?.id;
-      const { error } = /* await supabase REMOVIDO */ null
-        // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_integrations')
-        /* .update\( REMOVIDO */ ; //payload as any)
-        /* .eq\( REMOVIDO */ ; //'id', updateId);
+      const { error  } = null as any;
+        // 
+        
+        
       if (error) throw error;
       return 'Integração atualizada com sucesso.';
     } else {
       // Criar nova integração
-      const { error } = /* await supabase REMOVIDO */ null
-        // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_integrations')
-        /* .insert\( REMOVIDO */ ; //[payload as any]);
+      const { error  } = null as any;
+        // 
+        
       if (error) throw error;
       return 'Integração criada com sucesso.';
-    }
+
   };
 
-  const refreshIntegrations = async () => {
+  const refreshIntegrations = async () => {;
     console.log('⚠️ useWhatsappIntegrations: refreshIntegrations desabilitado - sistema usa PostgreSQL');
-    // const { data } = // await // /* supabase REMOVIDO */ null; // // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'*'); // DESABILITADO
+    // const { data } = // await // 
     setIntegrations({});
   };
 

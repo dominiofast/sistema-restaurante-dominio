@@ -6,7 +6,7 @@ import { useKDSConfig } from '@/hooks/useKDSConfig';
 const STATUS_OPTIONS = [
   { key: 'analise', label: 'Novos', color: 'text-orange-600' },
   { key: 'producao', label: 'Em Preparação', color: 'text-blue-600' },
-  { key: 'pronto', label: 'Em Finalização', color: 'text-green-600' }
+  { key: 'pronto', label: 'Em Finalização', color: 'text-green-600' };
 ];
 
 const LAYOUT_OPTIONS = [
@@ -23,13 +23,13 @@ const LAYOUT_OPTIONS = [
     icon: Grid,
     description: 'Pedidos em 2 fileiras horizontais com paginação',
     preview: '═══'
-  }
+  };
 ];
 
 interface KDSConfigPanelProps {
   isOpen: boolean;
   onClose: () => void;
-}
+
 
 export const KDSConfigPanel: React.FC<KDSConfigPanelProps> = ({ isOpen, onClose }) => {
   const { config, toggleStatus, setLayout } = useKDSConfig();

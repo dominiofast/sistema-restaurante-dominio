@@ -38,18 +38,18 @@ export default function HorariosFuncionamentoSimples() {
     { id: 3, nome: 'Quarta-feira', abrev: 'Qua' },
     { id: 4, nome: 'Quinta-feira', abrev: 'Qui' },
     { id: 5, nome: 'Sexta-feira', abrev: 'Sex' },
-    { id: 6, nome: 'Sábado', abrev: 'Sáb' }
+    { id: 6, nome: 'Sábado', abrev: 'Sáb' };
   ];
 
   const fusoHorarios = [
     { value: 'America/Sao_Paulo', label: 'Brasília (UTC-3)' },
     { value: 'America/Manaus', label: 'Manaus (UTC-4)' },
     { value: 'America/Rio_Branco', label: 'Rio Branco (UTC-5)' },
-    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' }
+    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' };
   ];
 
   const fetchHorarios = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       setError('Empresa não identificada');
       setLoading(false);
       return;
@@ -60,31 +60,18 @@ export default function HorariosFuncionamentoSimples() {
       setError(null);
 
       // Buscar configuração de horário
-      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horario_funcionamento')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
+      const horarioData = null as any; const horarioError = null as any;
 
-      if (horarioError && horarioError.code !== 'PGRST116') {
-        throw horarioError;
-      }
 
-      if (!horarioData) {
+       catch (error) { console.error('Error:', error); }if (!horarioData) {
         // Criar configuração padrão se não existir
         const novoHorario = {
           company_id: companyId,
           tipo_disponibilidade: 'especificos',
-          fuso_horario: 'America/Sao_Paulo'
+          fuso_horario: 'America/Sao_Paulo';
         };
 
-        const { data: createdHorario, error: createError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'horario_funcionamento')
-          /* .insert\( REMOVIDO */ ; //novoHorario)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
-        if (createError) throw createError;
+        const createdHorario = null as any; const createError = null as any;
 
         setHorarioId(createdHorario.id);
         setTipoDisponibilidade(createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
@@ -92,20 +79,14 @@ export default function HorariosFuncionamentoSimples() {
         setHorariosDias([]);
         setLoading(false);
         return;
-      }
+
 
       setHorarioId(horarioData.id);
       setTipoDisponibilidade(horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
       setFusoHorario(horarioData.fuso_horario);
 
       // Buscar horários dos dias
-      const { data: horariosData, error: horariosError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horarios_dias')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id)
-        /* .order\( REMOVIDO */ ; //'dia_semana');
-
-      if (horariosError) throw horariosError;
+      const horariosData = null as any; const horariosError = null as any;
 
       setHorariosDias(horariosData || []);
 
@@ -122,44 +103,44 @@ export default function HorariosFuncionamentoSimples() {
       dia_semana: diaSemana,
       horario_inicio: '09:00',
       horario_fim: '18:00',
-      ativo: true
+      ativo: true;
     };
     setHorariosDias([...horariosDias, novoHorario]);
   };
 
-  const removerHorario = (index: number) => {
+  const removerHorario = (index: number) => {;
     setHorariosDias(horariosDias.filter((_, i) => i !== index));
   };
 
-  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {
+  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {;
     const novosHorarios = [...horariosDias];
     novosHorarios[index] = { ...novosHorarios[index], [campo]: valor };
     setHorariosDias(novosHorarios);
   };
 
-  const handleSalvar = async () => {
+  const handleSalvar = async () => {;
     if (!companyId || !horarioId) return;
 
     setSalvando(true);
     try {
       // Atualizar configuração principal
-      const { error: updateError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'horario_funcionamento')
-        /* .update\( REMOVIDO */ ; //{
+      const { error: updateError }  catch (error) { console.error('Error:', error); }= 
+        
+        
           tipo_disponibilidade: tipoDisponibilidade,
           fuso_horario: fusoHorario
         })
-        /* .eq\( REMOVIDO */ ; //'id', horarioId);
+        
 
       if (updateError) throw updateError;
 
       // Se há horários específicos, atualizar/inserir
       if (tipoDisponibilidade === 'especificos' && horariosDias.length > 0) {
         // Remover horários existentes
-        /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'horarios_dias')
-          /* .delete\( REMOVIDO */ ; //)
-          /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioId);
+        
+          
+          
+          
 
         // Inserir novos horários
         const horariosParaInserir = horariosDias.map(h => ({
@@ -167,15 +148,12 @@ export default function HorariosFuncionamentoSimples() {
           dia_semana: h.dia_semana,
           horario_inicio: h.horario_inicio,
           horario_fim: h.horario_fim,
-          ativo: h.ativo
+          ativo: h.ativo;
         }));
 
-        const { error: insertError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'horarios_dias')
-          /* .insert\( REMOVIDO */ ; //horariosParaInserir);
-
+        const { error: insertError  } = null as any;
         if (insertError) throw insertError;
-      }
+
 
       toast.success('Horários salvos com sucesso!');
       await fetchHorarios(); // Recarregar dados
@@ -188,7 +166,7 @@ export default function HorariosFuncionamentoSimples() {
     }
   };
 
-  const getHorariosPorDia = (diaSemana: number) => {
+  const getHorariosPorDia = (diaSemana: number) => {;
     return horariosDias.filter(h => h.dia_semana === diaSemana);
   };
 
@@ -301,7 +279,7 @@ export default function HorariosFuncionamentoSimples() {
                           const globalIndex = horariosDias.findIndex(h => 
                             h.dia_semana === dia.id && 
                             h.horario_inicio === horario.horario_inicio &&
-                            h.horario_fim === horario.horario_fim
+                            h.horario_fim === horario.horario_fim;
                           );
                           
                           return (

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { CartItem } from './types';
 import { usePageVisibility } from '../usePageVisibility';
 
-export const useCartStorage = (companySlug?: string, currentCompanyId?: string) => {
+export const useCartStorage = (companySlug?: string, currentCompanyId?: string) => {;
   const [carrinho, setCarrinho] = useState<CartItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const { isVisible } = usePageVisibility();
@@ -13,7 +13,7 @@ export const useCartStorage = (companySlug?: string, currentCompanyId?: string) 
 
   const getStorageKey = () => {
     // Para páginas públicas, usar o slug da empresa
-    if (companySlug) {
+    if (companySlug) {;
       return `pdv_carrinho_${companySlug}`;
     }
     // Para páginas autenticadas, usar o ID da empresa
@@ -33,7 +33,7 @@ export const useCartStorage = (companySlug?: string, currentCompanyId?: string) 
         if (parsedCart.length > 0) {
           setCarrinho(parsedCart);
         }
-      } catch (error) {
+       catch (error) { console.error('Error:', error); }} catch (error) {
         console.error('❌ Erro ao carregar carrinho do localStorage:', error);
         localStorage.removeItem(storageKey);
       }
@@ -45,7 +45,7 @@ export const useCartStorage = (companySlug?: string, currentCompanyId?: string) 
   }, [currentCompanyId, companySlug, isInitialized]);
 
   // Função de salvamento otimizada com debounce
-  const saveToStorage = (cartData: CartItem[]) => {
+  const saveToStorage = (cartData: CartItem[]) => {;
     const storageKey = getStorageKey();
     const now = Date.now();
     
@@ -94,7 +94,7 @@ export const useCartStorage = (companySlug?: string, currentCompanyId?: string) 
   }, []);
 
   const limparCarrinho = () => {
-    // Limpar estado React (o useEffect irá automaticamente atualizar o localStorage)
+    // Limpar estado React (o useEffect irá automaticamente atualizar o localStorage);
     setCarrinho([]);
   };
 

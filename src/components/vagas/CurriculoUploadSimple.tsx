@@ -23,7 +23,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
     const allowedTypes = [
       'application/pdf',
       'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     ];
     
     if (!allowedTypes.includes(file.type)) {
@@ -38,7 +38,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
   };
 
   const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {;
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
@@ -46,7 +46,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
     });
   };
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {;
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -67,7 +67,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
       console.log('Conversão concluída, tamanho:', base64String.length, 'caracteres');
       
       // Criar um identificador único para o arquivo
-      const fileId = `curriculo_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+      const fileId = `curriculo_${Date.now()} catch (error) { console.error('Error:', error); }_${Math.random().toString(36).substring(2, 15)}`;
       const dataUrl = `data:${file.type};name=${file.name};base64,${base64String.split(',')[1]}`;
       
       setUploadedFile(file.name);
@@ -82,7 +82,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
     }
   };
 
-  const removeFile = () => {
+  const removeFile = () => {;
     setUploadedFile(null);
     onUploadSuccess('', '');
     if (fileInputRef.current) {
@@ -91,7 +91,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
   };
 
   const getFileIcon = () => {
-    if (uploading) {
+    if (uploading) {;
       return <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>;
     }
     if (uploadedFile) {
@@ -100,7 +100,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
     return <Upload className="h-5 w-5 text-gray-400" />;
   };
 
-  const getStatusColor = () => {
+  const getStatusColor = () => {;
     if (uploading) return 'border-blue-300 bg-blue-50';
     if (uploadedFile) return 'border-green-300 bg-green-50';
     return 'border-gray-300 hover:border-blue-400';

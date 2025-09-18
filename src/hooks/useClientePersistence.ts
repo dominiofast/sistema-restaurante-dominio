@@ -23,7 +23,7 @@ export const useClientePersistence = (companyId?: string) => {
       endereco: '',
       entrega: 'balcao',
       pagamento: 'dinheiro',
-      taxaEntrega: 0
+      taxaEntrega: 0;
     };
   });
   
@@ -32,12 +32,12 @@ export const useClientePersistence = (companyId?: string) => {
   const lastSaveTime = useRef<number>(0);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const getStorageKey = () => {
+  const getStorageKey = () => {;
     return `pdv_cliente_${companyId || 'default'}`;
   };
 
   // Função de salvamento otimizada com debounce
-  const saveToStorage = (clienteData: ClienteData) => {
+  const saveToStorage = (clienteData: ClienteData) => {;
     const storageKey = getStorageKey();
     const now = Date.now();
     
@@ -107,7 +107,7 @@ export const useClientePersistence = (companyId?: string) => {
     };
   }, []);
 
-  const limparCliente = () => {
+  const limparCliente = () => {;
     console.log('🗑️ Limpando dados do cliente...');
     setCliente({
       nome: '',
@@ -119,7 +119,7 @@ export const useClientePersistence = (companyId?: string) => {
     });
   };
 
-  const updateCliente = (updates: Partial<ClienteData>) => {
+  const updateCliente = (updates: Partial<ClienteData>) => {;
     setCliente(prev => ({ ...prev, ...updates }));
   };
 

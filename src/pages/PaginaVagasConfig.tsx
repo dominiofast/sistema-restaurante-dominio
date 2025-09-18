@@ -45,22 +45,22 @@ const PaginaVagasConfig: React.FC = () => {
     if (isAuthLoading) {
       setLoading(true);
       return;
-    }
+
 
     // Se a autenticação terminou e não há empresa selecionada (caso do Super Admin)
     if (!companyId) {
       setLoading(false);
       return;
-    }
 
-    const fetchConfig = async () => {
+
+    const fetchConfig = async () => {;
     console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'rh_vagas_config')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .single\( REMOVIDO */ ; //);
+  } = 
+          
+          
+          
+          
 
         console.log('PaginaVagasConfig: Resultado da busca:', { data, error });
 
@@ -99,12 +99,12 @@ const PaginaVagasConfig: React.FC = () => {
         toast.error('Erro ao carregar configuração da página de vagas.');
       } finally {
         setLoading(false);
-      }
+
     };
 
     if (companyId) {
       fetchConfig();
-    }
+
   }, [companyId, isAuthLoading, currentCompany]);
 
   // Efeito adicional para garantir que temos um slug quando currentCompany é carregado
@@ -116,26 +116,26 @@ const PaginaVagasConfig: React.FC = () => {
         ...prev,
         slug: generatedSlug
       }));
-    }
+
   }, [currentCompany, loading]);
 
   const handleSave = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       toast.error('Erro: ID da empresa não encontrado');
       return;
-    }
+
     
     if (!currentCompany) {
       toast.error('Erro: Empresa não encontrada');
       return;
-    }
+
 
     // Validação
     const validationError = validateVagasConfig(config);
     if (validationError) {
       toast.error(validationError);
       return;
-    }
+
     
     console.log('PaginaVagasConfig: Salvando configuração:', config);
     setSaving(true);
@@ -147,8 +147,8 @@ const PaginaVagasConfig: React.FC = () => {
       // Preparar dados para salvar
       const dataToSave = {
         company_id: companyId,
-        is_active: config.is_active || false,
-        page_title: config.page_title?.trim() || `Carreiras na ${currentCompany.name}`,
+        is_active: config.is_active || false,;
+        page_title: config.page_title?.trim() || `Carreiras na ${currentCompany.name} catch (error) { console.error('Error:', error); }`,
         logo_url: config.logo_url || '',
         banner_url: config.banner_url || '',
         primary_color: config.primary_color || '#1B365D',
@@ -159,20 +159,18 @@ const PaginaVagasConfig: React.FC = () => {
 
       console.log('Dados a serem salvos:', dataToSave);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_vagas_config')
-        /* .upsert\( REMOVIDO */ ; //dataToSave, { 
+      const { data, error  } = null as any;
           onConflict: 'company_id',
           ignoreDuplicates: false 
         })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao salvar:', error);
         toast.error(`Erro ao salvar configuração: ${error.message}`);
         return;
-      }
+
 
       console.log('PaginaVagasConfig: Configuração salva com sucesso:', data);
       toast.success('Configuração salva com sucesso!');
@@ -184,14 +182,14 @@ const PaginaVagasConfig: React.FC = () => {
           title_color: data.title_color || '#FFFFFF',
           welcome_message: data.welcome_message || ''
         });
-      }
+
 
     } catch (error: any) {
       console.error('PaginaVagasConfig: Erro no handleSave:', error);
       toast.error(`Erro ao salvar configuração: ${error.message}`);
     } finally {
       setSaving(false);
-    }
+
   };
 
   // Usar o slug da configuração, da empresa atual ou gerar um novo
@@ -221,7 +219,7 @@ const PaginaVagasConfig: React.FC = () => {
         Carregando...
       </div>
     );
-  }
+
 
   if (user?.role === 'super_admin' && !companyId) {
     console.log('PaginaVagasConfig: Super admin sem empresa selecionada');
@@ -236,7 +234,7 @@ const PaginaVagasConfig: React.FC = () => {
         </Alert>
       </div>
     );
-  }
+
 
   if (error) {
     console.log('PaginaVagasConfig: Renderizando erro:', error);
@@ -251,7 +249,7 @@ const PaginaVagasConfig: React.FC = () => {
         </Alert>
       </div>
     );
-  }
+
 
   if (loading) {
     console.log('PaginaVagasConfig: Renderizando loading...');
@@ -261,7 +259,7 @@ const PaginaVagasConfig: React.FC = () => {
         Carregando configuração...
       </div>
     );
-  }
+
 
   console.log('PaginaVagasConfig: Renderizando página completa');
 

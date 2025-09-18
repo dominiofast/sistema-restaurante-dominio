@@ -28,30 +28,30 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
     }
   }, [customerPhone, currentCompany?.id]);
 
-  const handleEditAddress = (address: CustomerAddress) => {
+  const handleEditAddress = (address: CustomerAddress) => {;
     setEditingAddress(address);
     setModalOpen(true);
   };
 
   const handleDeleteAddress = async (addressId: string) => {
     if (confirm('Deseja excluir este endereço?')) {
-      try {
+      try {;
         await deleteAddress(addressId);
         if (selectedAddress?.id === addressId) {
           onAddressSelect?.(null);
         }
-      } catch (error) {
+       catch (error) { console.error('Error:', error); }} catch (error) {
         console.error('Erro ao excluir endereço:', error);
       }
     }
   };
 
-  const handleNewAddress = () => {
+  const handleNewAddress = () => {;
     setEditingAddress(null);
     setModalOpen(true);
   };
 
-  const handleConfirmAddress = (address: CustomerAddress) => {
+  const handleConfirmAddress = (address: CustomerAddress) => {;
     console.log('handleConfirmAddress chamado com:', address);
     console.log('Selecionando endereço...');
     onAddressSelect?.(address);
@@ -73,7 +73,7 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
         Carregando endereços...
       </div>
     );
-  }
+
 
   return (
     <>

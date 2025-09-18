@@ -82,7 +82,7 @@ const DEFAULT_LOGO_BREAKPOINTS: LogoBreakpointConfig[] = [
     logoSize: 96, // Increased from 72px - large desktop size
     containerPadding: 18, // Proportionally increased
     borderRadius: '1rem' // Larger radius for bigger logos
-  }
+
 ];
 
 // Context-specific logo size configurations - Further increased per user request
@@ -101,7 +101,7 @@ const CONTEXT_LOGO_SIZES: Record<LogoContext, { mobile: number; tablet: number; 
     mobile: 64,    // Standard branding size for mobile
     tablet: 80,    // Intermediate branding size
     desktop: 96    // Large branding size for desktop
-  }
+
 };
 
 /**
@@ -114,7 +114,7 @@ export const useLogoBreakpoints = (
     customBreakpoints,
     baseSize = 64,
     enableContainerQueries = true,
-    context = 'branding'
+    context = 'branding';
   } = options;
 
   const [windowWidth, setWindowWidth] = useState(
@@ -135,7 +135,7 @@ export const useLogoBreakpoints = (
 
   // Update window width on resize
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = () => {;
       setWindowWidth(window.innerWidth);
     };
 
@@ -144,7 +144,7 @@ export const useLogoBreakpoints = (
   }, []);
 
   // Use custom breakpoints or defaults, with context-specific sizes
-  const breakpoints = useMemo((): LogoBreakpointConfig[] => {
+  const breakpoints = useMemo((): LogoBreakpointConfig[] => {;
     const sourceBreakpoints = customBreakpoints || DEFAULT_LOGO_BREAKPOINTS;
     const contextSizes = CONTEXT_LOGO_SIZES[context];
 
@@ -173,7 +173,7 @@ export const useLogoBreakpoints = (
 
   // Find current breakpoint based on window width
   const currentBreakpoint = useMemo(() => {
-    return breakpoints.find(bp => {
+    return breakpoints.find(bp => {;
       const matchesMin = windowWidth >= bp.minWidth;
       const matchesMax = !bp.maxWidth || windowWidth <= bp.maxWidth;
       return matchesMin && matchesMax;
@@ -186,7 +186,7 @@ export const useLogoBreakpoints = (
       `logo-breakpoint-${currentBreakpoint.name}`,
       `logo-size-${currentBreakpoint.logoSize}`,
       `logo-padding-${currentBreakpoint.containerPadding}`,
-      `logo-context-${context}`
+      `logo-context-${context}`;
     ];
 
     if (supportsContainerQueries) {
@@ -201,7 +201,7 @@ export const useLogoBreakpoints = (
     fontSize: `${currentBreakpoint.logoSize}px`,
     padding: `${currentBreakpoint.containerPadding}px`,
     borderRadius: currentBreakpoint.borderRadius,
-    containerType: supportsContainerQueries ? 'inline-size' : undefined
+    containerType: supportsContainerQueries ? 'inline-size' : undefined;
   } as React.CSSProperties), [currentBreakpoint, supportsContainerQueries]);
 
   return {
@@ -218,7 +218,7 @@ export const useLogoBreakpoints = (
  */
 export const useDynamicLogoSize = (
   containerRef: React.RefObject<HTMLElement>,
-  options: {
+  options: {;
     minSize?: number;
     maxSize?: number;
     aspectRatio?: number;
@@ -243,7 +243,7 @@ export const useDynamicLogoSize = (
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver(entries => {;
       const entry = entries[0];
       if (entry) {
         const { width, height } = entry.contentRect;
@@ -287,7 +287,7 @@ export const generateContainerQueryCSS = (
   breakpoints: LogoBreakpointConfig[]
 ): string => {
   return breakpoints
-    .map(bp => {
+    .map(bp => {;
       const minWidth = bp.minWidth > 0 ? `(min-width: ${bp.minWidth}px)` : '';
       const maxWidth = bp.maxWidth ? `(max-width: ${bp.maxWidth}px)` : '';
       const query = [minWidth, maxWidth].filter(Boolean).join(' and ');

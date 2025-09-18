@@ -80,18 +80,18 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         user_count: 0,
       });
       setInvitationEmail('');
-    }
+
   }, [company]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {;
     e.preventDefault();
     onSubmit(formData, invitationEmail);
   };
 
   const handleSendInvite = () => {
-    if (company && invitationEmail) {
+    if (company && invitationEmail) {;
       sendInvitation(invitationEmail, company.id);
-    }
+
   };
 
   return (
@@ -188,7 +188,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
           value={formData.plan} 
           onValueChange={(value: 'basic' | 'pro' | 'enterprise') => 
             setFormData({ ...formData, plan: value })
-          }
+
         >
           <SelectTrigger className="bg-white border border-gray-300 text-gray-900 focus:bg-white">
             <SelectValue />
@@ -207,7 +207,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
           value={formData.status} 
           onValueChange={(value: 'active' | 'inactive' | 'suspended') => 
             setFormData({ ...formData, status: value })
-          }
+
         >
           <SelectTrigger className="bg-white border border-gray-300 text-gray-900 focus:bg-white">
             <SelectValue />

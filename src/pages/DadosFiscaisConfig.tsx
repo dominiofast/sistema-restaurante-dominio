@@ -20,7 +20,7 @@ export default function DadosFiscaisConfig() {
     }
   }, [tipoId, buscarDadosFiscais]);
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: any) => {;
     console.log('=== SUBMIT DADOS FISCAIS ===');
     console.log('TipoId:', tipoId);
     console.log('Data recebida:', data);
@@ -47,7 +47,7 @@ export default function DadosFiscaisConfig() {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = () => {;
     navigate('/opcoes-loja/dados-fiscais');
   };
 
@@ -77,4 +77,3 @@ export default function DadosFiscaisConfig() {
       />
     </div>
   );
-}

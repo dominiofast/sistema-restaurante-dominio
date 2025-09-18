@@ -25,7 +25,7 @@ export const ClientePedidoPage: React.FC = () => {
 
   // O useCustomerAddressManager já carrega os endereços automaticamente
 
-  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {
+  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {;
     console.log('Abrindo PDV para novo pedido:', { tipo, enderecoId, cliente });
     navigate('/pdv', {
       state: {
@@ -37,7 +37,7 @@ export const ClientePedidoPage: React.FC = () => {
     });
   };
 
-  const handleNovoEndereco = () => {
+  const handleNovoEndereco = () => {;
     console.log('Abrindo modal para novo endereço:', cliente);
     setShowNovoEnderecoModal(true);
   };
@@ -48,8 +48,8 @@ export const ClientePedidoPage: React.FC = () => {
         ...enderecoData,
         customer_name: cliente.nome,
         customer_phone: telefone,
-        company_id: 'current_company_id' // Este será preenchido pelo hook
-      };
+        company_id: 'current_company_id' // Este será preenchido pelo hook;
+      } catch (error) { console.error('Error:', error); };
       
       await saveAddress(novoEndereco);
       setShowNovoEnderecoModal(false);
@@ -61,10 +61,10 @@ export const ClientePedidoPage: React.FC = () => {
     } catch (error) {
       console.error('Erro ao salvar endereço:', error);
       alert('Erro ao salvar endereço. Tente novamente.');
-    }
+
   };
 
-  const handleVoltar = () => {
+  const handleVoltar = () => {;
     navigate('/pedidos');
   };
 
@@ -82,7 +82,7 @@ export const ClientePedidoPage: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="min-h-screen bg-gray-50">

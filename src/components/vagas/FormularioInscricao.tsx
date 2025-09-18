@@ -38,7 +38,7 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
   const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
-  const onFormDataChange = useCallback((newData: any) => {
+  const onFormDataChange = useCallback((newData: any) => {;
     setFormData(prev => ({ ...prev, ...newData }));
     
     // Limpar erros quando o campo for preenchido
@@ -51,42 +51,42 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
     setErrors(newErrors);
   }, [errors]);
 
-  const onCurriculoUpload = useCallback((url: string, nome: string) => {
+  const onCurriculoUpload = useCallback((url: string, nome: string) => {;
     setCurriculo({ url, nome });
     if(url) {
       const newErrors = { ...errors };
       delete newErrors['curriculo'];
       setErrors(newErrors);
-    }
+
   }, [errors]);
 
-  const validateForm = () => {
+  const validateForm = () => {;
     const newErrors: any = {};
     
     if (!formData.nome_completo?.trim()) {
       newErrors.nome_completo = 'Nome completo é obrigatório';
-    }
+
     
     if (!formData.email?.trim()) {
       newErrors.email = 'E-mail é obrigatório';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'E-mail inválido';
-    }
+
     
     if (!formData.telefone?.trim()) {
       newErrors.telefone = 'Telefone é obrigatório';
-    }
+
     
     if (!curriculo.url) {
       newErrors.curriculo = 'Currículo é obrigatório';
       toast.error('Por favor, anexe seu currículo');
-    }
+
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async () => {;
     if (!validateForm()) return;
     
     setLoading(true);
@@ -102,13 +102,10 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
         carta_apresentacao: formData.carta_apresentacao?.trim() || null,
         curriculo_url: curriculo.url,
         curriculo_nome: curriculo.nome,
-        status: 'pendente'
-      };
+        status: 'pendente';
+      } catch (error) { console.error('Error:', error); };
       
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .insert\( REMOVIDO */ ; //[inscricaoData]);
-
+      const { error  } = null as any;
       if (error) throw error;
       
       toast.success('Candidatura enviada com sucesso!');
@@ -119,7 +116,7 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
       toast.error('Erro ao enviar candidatura. Tente novamente.');
     } finally {
       setLoading(false);
-    }
+
   };
 
   const isFormValid = formData.nome_completo && formData.email && formData.telefone && curriculo.url;

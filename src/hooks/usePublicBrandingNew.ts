@@ -16,9 +16,9 @@ export interface PublicBrandingData {
   background_color?: string;
   header_style?: string;
   is_active?: boolean;
-}
 
-export const usePublicBrandingNew = (companyIdentifier?: string) => {
+
+export const usePublicBrandingNew = (companyIdentifier?: string) => {;
   const [branding, setBranding] = useState<PublicBrandingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {
     }
 
     const fetchPublicBranding = async () => {
-      try {
+      try {;
         setLoading(true);
         setError(null);
 
@@ -44,10 +44,10 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {
           throw new Error(companyResult.error || 'Erro ao carregar empresas');
         }
 
-        // Procurar empresa por identificador
+         catch (error) { console.error('Error:', error); }// Procurar empresa por identificador
         const company = companyResult.data?.find((comp: any) => {
           if (!isNaN(Number(companyIdentifier))) {
-            // É número - usar store_code
+            // É número - usar store_code;
             return comp.store_code === Number(companyIdentifier);
           } else if (companyIdentifier.length === 36 && companyIdentifier.includes('-')) {
             // É UUID - usar ID
@@ -123,7 +123,7 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {
         });
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchPublicBranding();
@@ -134,6 +134,6 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {
     loading, 
     error,
     // Manter compatibilidade com código existente
-    config: branding
+// config: branding
   };
 };

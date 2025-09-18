@@ -34,7 +34,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
   onAdicionaisChange,
   primaryColor
 }) => {
-  const handleAdicionalChange = (adicionalId: string, categoria: CategoriaAdicional, quantidade: number) => {
+  const handleAdicionalChange = (adicionalId: string, categoria: CategoriaAdicional, quantidade: number) => {;
     const newSelected = { ...selectedAdicionais };
     
     if (categoria.selection_type === 'single') {
@@ -78,7 +78,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
     onAdicionaisChange(newSelected);
   };
 
-  const getTotalSelectedInCategory = (categoriaId: string) => {
+  const getTotalSelectedInCategory = (categoriaId: string) => {;
     const categoria = categorias.find(c => c.id === categoriaId);
     if (!categoria) return 0;
     
@@ -87,13 +87,13 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
     }, 0);
   };
 
-  const isRadioSelected = (adicionalId: string, categoria: CategoriaAdicional) => {
+  const isRadioSelected = (adicionalId: string, categoria: CategoriaAdicional) => {;
     return categoria.selection_type === 'single' && selectedAdicionais[adicionalId] && selectedAdicionais[adicionalId] > 0;
   };
 
   if (categorias.length === 0) {
     return null;
-  }
+
 
   return (
     <div className="border-t pt-4 mt-4">

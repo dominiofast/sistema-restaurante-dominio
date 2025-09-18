@@ -11,7 +11,7 @@ interface ValidationResult {
 export function useAddressValidator(companyId: string | undefined) {
   const { calculateDeliveryFee, regioes } = useDeliveryFeeCalculator(companyId);
 
-  const validateAddress = useCallback(async (address: CustomerAddress): Promise<ValidationResult> => {
+  const validateAddress = useCallback(async (address: CustomerAddress): Promise<ValidationResult> => {;
     console.log('🔍 Validando endereço:', address);
     console.log('🏪 Company ID:', companyId);
     console.log('📍 Regiões configuradas:', regioes);
@@ -27,7 +27,7 @@ export function useAddressValidator(companyId: string | undefined) {
       console.warn('⚠️ Nenhuma região de atendimento configurada');
       return {
         isValid: true, // Permitir se não há regiões configuradas
-        fee: 0
+// fee: 0
       };
     }
 
@@ -42,7 +42,7 @@ export function useAddressValidator(companyId: string | undefined) {
         estado: address.estado,
         latitude: address.latitude,
         longitude: address.longitude
-      });
+      } catch (error) { console.error('Error:', error); });
       console.log('🔍 Total de regiões para validar:', regioes.length);
       console.log('🔍 Regiões disponíveis:', regioes.map(r => ({
         id: r.id?.substring(0, 8),
@@ -54,7 +54,7 @@ export function useAddressValidator(companyId: string | undefined) {
         raio_km: r.raio_km
       })));
       
-      const enderecoEmRegiao = regioes.some((regiao, index) => {
+      const enderecoEmRegiao = regioes.some((regiao, index) => {;
         console.log(`🔍 --- Validando região ${index + 1} ---`);
         console.log('🔍 Região:', {
           id: regiao.id?.substring(0, 8),
@@ -69,22 +69,22 @@ export function useAddressValidator(companyId: string | undefined) {
         if (!regiao.status || regiao.tipo !== 'raio') {
           console.log(`❌ Região ${index + 1} rejeitada: status=${regiao.status}, tipo=${regiao.tipo}`);
           return false;
-        }
+
         if (!regiao.centro_lat || !regiao.centro_lng || !regiao.raio_km) {
           console.log(`❌ Região ${index + 1} rejeitada: coordenadas ou raio inválidos`);
           return false;
-        }
+
         if (!address.latitude || !address.longitude) {
           console.log(`❌ Endereço rejeitado: sem coordenadas (${address.latitude}, ${address.longitude})`);
           return false;
-        }
+
         
         // Calcular distância usando a mesma lógica do useDeliveryFeeCalculator
         const R = 6371; // Raio da Terra em km
         const dLat = (regiao.centro_lat - address.latitude) * (Math.PI / 180);
         const dLon = (regiao.centro_lng - address.longitude) * (Math.PI / 180);
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(address.latitude * (Math.PI / 180)) * Math.cos(regiao.centro_lat * (Math.PI / 180)) *
+                  Math.cos(address.latitude * (Math.PI / 180)) * Math.cos(regiao.centro_lat * (Math.PI / 180)) *;
                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         const distance = R * c;
@@ -110,7 +110,7 @@ export function useAddressValidator(companyId: string | undefined) {
           message: 'Este endereço está fora da nossa área de atendimento. Por favor, verifique se o endereço está correto ou entre em contato conosco.',
           fee: 0
         };
-      }
+
       
       // TERCEIRO: Se está dentro de uma região, calcular taxa (pode ser 0, 16, ou qualquer valor)
       console.log('✅ Endereço DENTRO da área de atendimento - Calculando taxa...');

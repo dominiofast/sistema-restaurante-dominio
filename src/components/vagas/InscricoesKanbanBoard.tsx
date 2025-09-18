@@ -22,7 +22,7 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 interface InscricoesKanbanBoardProps {
   inscricoesPorStatus: Record<string, Inscricao[]>;
@@ -30,7 +30,7 @@ interface InscricoesKanbanBoardProps {
   onUpdateStatus: (inscricaoId: string, status: string) => void;
   onSelectInscricao: (inscricao: Inscricao) => void;
   onArquivar: (inscricaoId: string) => void;
-}
+
 
 const STATUS_CONFIG = [
   {
@@ -72,16 +72,16 @@ const STATUS_CONFIG = [
     borderColor: 'border-red-200',
     textColor: 'text-red-700',
     gradient: 'from-red-400 to-red-500'
-  }
+  };
 ];
 
 const statusConfigs = STATUS_CONFIG.map(config => ({
   ...config,
   bgColor: `bg-gradient-to-r ${config.gradient}`,
-  textColor: 'text-white'
+  textColor: 'text-white';
 }));
 
-const onViewDetails = (inscricao: Inscricao) => {
+const onViewDetails = (inscricao: Inscricao) => {;
   console.log('Ver detalhes:', inscricao);
 };
 

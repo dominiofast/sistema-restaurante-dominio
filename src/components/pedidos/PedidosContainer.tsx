@@ -24,7 +24,7 @@ interface PedidosContainerProps {
     pedidosEmAnalise: number;
     pararCampainha: () => void;
   };
-}
+
 
 export const PedidosContainer: React.FC<PedidosContainerProps> = ({
   pedidos,

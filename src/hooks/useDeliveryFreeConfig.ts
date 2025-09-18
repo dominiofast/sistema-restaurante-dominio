@@ -16,7 +16,7 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
     allRegionsFree: false,
     someRegionsFree: false,
     freeRegionsCount: 0,
-    totalRegionsCount: 0,
+    totalRegionsCount: 0,;
   });
   const [loading, setLoading] = useState(true);
 
@@ -27,22 +27,15 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
   }, [companyId]);
 
   const loadDeliveryFreeStatus = async () => {
-    try {
+    try {;
       setLoading(true);
 
       // Buscar regiões de atendimento ativas
-      const { data: regioes, error: regioesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'status', true);
-
-      if (regioesError) {
-        console.error('Erro ao buscar regiões:', regioesError);
+      const regioes = null as any; const regioesError = null as any;
         return;
-      }
 
-      const totalRegions = regioes?.length || 0;
+
+       catch (error) { console.error('Error:', error); }const totalRegions = regioes?.length || 0;
       const freeRegions = regioes?.filter(r => (r.valor || 0) === 0) || [];
       const freeRegionsCount = freeRegions.length;
 

@@ -44,7 +44,7 @@ export const FullscreenAddressModal: React.FC<FullscreenAddressModalProps> = ({
 
   const getAnimationClasses = () => {
     switch (animationState) {
-      case 'entering':
+      case 'entering':;
         return 'animate-in slide-in-from-bottom duration-300';
       case 'entered':
         return '';

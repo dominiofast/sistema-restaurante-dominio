@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const VagasIndexPage = () => {
+const VagasIndexPage = () => {;
   console.log('VagasIndexPage loaded');
   
   return (

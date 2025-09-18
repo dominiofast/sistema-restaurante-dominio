@@ -14,7 +14,7 @@ export interface PermissionGuardOptions {
   onUnauthorized?: () => void;
 }
 
-export const usePermissionGuard = (options: PermissionGuardOptions) => {
+export const usePermissionGuard = (options: PermissionGuardOptions) => {;
   const { hasPermission, hasAnyPermission, hasAllPermissions, loading } = usePermissions();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export const usePermissionGuard = (options: PermissionGuardOptions) => {
     onUnauthorized
   } = options;
 
-  const checkPermissions = (): boolean => {
+  const checkPermissions = (): boolean => {;
     if (loading || !user) return false;
 
     // Se especificou uma permissão única
@@ -70,13 +70,13 @@ export const usePermissionGuard = (options: PermissionGuardOptions) => {
 };
 
 // Hook para verificação simples de permissão (sem redirecionamento)
-export const useHasPermission = (permission: string, storeId?: string) => {
+export const useHasPermission = (permission: string, storeId?: string) => {;
   const { hasPermission } = usePermissions();
   return hasPermission(permission, storeId);
 };
 
 // Hook para verificação de múltiplas permissões
-export const useHasPermissions = (permissions: string[], requireAll = false, storeId?: string) => {
+export const useHasPermissions = (permissions: string[], requireAll = false, storeId?: string) => {;
   const { hasAnyPermission, hasAllPermissions } = usePermissions();
   
   return requireAll 

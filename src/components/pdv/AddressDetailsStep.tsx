@@ -38,7 +38,7 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
   const handleInputChange = (field: keyof CustomerAddress, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value;
     }));
   };
 
@@ -47,7 +47,7 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
       toast({
         title: "Campos obrigatórios",
         description: "Por favor, preencha o número e bairro",
-        variant: "destructive"
+        variant: "destructive";
       });
       return;
     }
@@ -63,7 +63,7 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
           title: "Endereço fora da área de atendimento",
           description: validation.message || "Este endereço não está dentro da nossa área de entrega.",
           variant: "destructive"
-        });
+        } catch (error) { console.error('Error:', error); });
         setIsValidating(false);
         return;
       }
@@ -201,7 +201,7 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
         </div>
       </div>
     );
-  }
+
 
   // Layout para modal tradicional
   return (

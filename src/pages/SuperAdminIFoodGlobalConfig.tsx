@@ -16,7 +16,7 @@ interface IFoodGlobalConfig {
   is_active: boolean;
 }
 
-const SuperAdminIFoodGlobalConfig = () => {
+const SuperAdminIFoodGlobalConfig = () => {;
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
@@ -42,13 +42,12 @@ const SuperAdminIFoodGlobalConfig = () => {
   }, []);
 
   const checkExistingConfig = async () => {
-    try {
+    try {;
       setLoading(true);
       console.log('🔍 Verificando configuração existente do iFood...');
       
       // Verificar se existe configuração via função edge (que acessa os secrets)
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('get-ifood-config');
-      
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       console.log('📊 Resposta do get-ifood-config:', data);
       
       if (error) {
@@ -77,30 +76,30 @@ const SuperAdminIFoodGlobalConfig = () => {
       setAllowEdit(true); // Permitir edição se houve erro
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleSave = async () => {
-    if (allowEdit && (!config.client_id || !config.client_secret)) {
+    if (allowEdit && (!config.client_id || !config.client_secret)) {;
       toast.error('Client ID e Client Secret são obrigatórios');
       return;
-    }
+
 
     if (allowEdit && !config.client_id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
       toast.error('Client ID deve ser um UUID válido');
       return;
-    }
+
 
     if (allowEdit && config.client_secret.length < 35) {
       toast.error('Client Secret deve ter pelo menos 35 caracteres');
       return;
-    }
+
 
     setSaving(true);
     try {
       console.log('🔄 Enviando configuração para validação...');
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('save-ifood-config', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: config
       });
 
@@ -148,18 +147,18 @@ const SuperAdminIFoodGlobalConfig = () => {
       toast.error(`❌ ${error.message}`);
     } finally {
       setSaving(false);
-    }
+
   };
 
   const testConnection = async () => {
-    if (!isConfigSet) {
+    if (!isConfigSet) {;
       toast.error('Configure e salve as credenciais antes de testar');
       return;
-    }
+
 
     setTesting(true);
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('test-ifood-connection', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { environment: config.environment }
       });
 
@@ -187,7 +186,7 @@ const SuperAdminIFoodGlobalConfig = () => {
       toast.error(`❌ Erro ao testar conexão: ${error.message}`);
     } finally {
       setTesting(false);
-    }
+
   };
 
   if (loading) {
@@ -196,7 +195,7 @@ const SuperAdminIFoodGlobalConfig = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
@@ -338,7 +337,7 @@ const SuperAdminIFoodGlobalConfig = () => {
                   </p>
                   <div className="mt-3">
                     <Button 
-                      onClick={() => window.open('https:///* supabase REMOVIDO */ null; //com/dashboard/project/78f1b2d4-13ce-4fc8-8fc4-25d4ea8904e3/settings/functions', '_blank')}
+                      onClick={() => window.open('https://
                       variant="default"
                       size="sm"
                       className="bg-blue-600 hover:bg-blue-700 text-white"

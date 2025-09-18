@@ -30,7 +30,7 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
       icon: 'h-5 w-5',
       text: 'text-base',
       percentage: 'text-xl font-bold'
-    }
+    };
   };
 
   const config = sizeConfig[size];

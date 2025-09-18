@@ -5,7 +5,7 @@ import { useBulkProductPricing } from '@/hooks/useBulkProductPricing';
 
 // Função para aplicar opacidade nas cores
 const applyOpacity = (color: string, opacity: number) => {
-  // Remove # se existir
+  // Remove # se existir;
   const hex = color.replace('#', '');
   // Converte para RGB
   const r = parseInt(hex.substring(0, 2), 16);
@@ -23,7 +23,7 @@ interface ProductGridProps {
   textColor?: string;
   onProductClick: (produto: Produto) => void;
   companyId?: string;
-}
+
 
 export const ProductGrid: React.FC<ProductGridProps> = ({
   categorias,
@@ -36,7 +36,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 }) => {
   // Coleta todos os produtos para calcular pricing em lote
   // Memoização mais estável para evitar recriações desnecessárias
-  const todosProdutos = useMemo(() => {
+  const todosProdutos = useMemo(() => {;
     const produtos = Object.values(produtosPorCategoria).flat();
     // Ordenar por ID para garantir consistência
     return produtos.sort((a, b) => a.id.localeCompare(b.id));

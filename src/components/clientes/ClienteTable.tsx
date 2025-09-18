@@ -21,7 +21,7 @@ interface Cliente {
   data_nascimento?: string;
   dias_sem_comprar?: number;
   total_pedidos?: number;
-}
+
 
 interface ClienteTableProps {
   clientes: Cliente[];
@@ -29,7 +29,7 @@ interface ClienteTableProps {
   onDelete: (id: number) => void;
   onAddCashback: (cliente: Cliente) => void;
   searchTerm: string;
-}
+
 
 export const ClienteTable: React.FC<ClienteTableProps> = ({
   clientes,
@@ -44,7 +44,7 @@ export const ClienteTable: React.FC<ClienteTableProps> = ({
     cliente.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.telefone?.includes(searchTerm) ||
-    cliente.documento?.includes(searchTerm)
+    cliente.documento?.includes(searchTerm);
   );
 
   console.log('📋 ClienteTable - Dados recebidos:', {

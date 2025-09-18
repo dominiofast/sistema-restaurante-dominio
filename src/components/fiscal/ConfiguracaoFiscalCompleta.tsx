@@ -39,7 +39,7 @@ const ESTADOS_BRASILEIROS = [
   { sigla: 'SC', nome: 'Santa Catarina' },
   { sigla: 'SP', nome: 'São Paulo' },
   { sigla: 'SE', nome: 'Sergipe' },
-  { sigla: 'TO', nome: 'Tocantins' }
+  { sigla: 'TO', nome: 'Tocantins' };
 ];
 
 // CNAEs mais comuns para restaurantes e estabelecimentos comerciais
@@ -52,7 +52,7 @@ const CNAES_COMUNS = [
   { codigo: '4711-3/01', descricao: 'Comércio varejista de mercadorias em geral, com predominância de produtos alimentícios - hipermercados' },
   { codigo: '4712-1/00', descricao: 'Comércio varejista de mercadorias em geral, com predominância de produtos alimentícios - supermercados' },
   { codigo: '4713-0/01', descricao: 'Lojas de departamentos ou magazines' },
-  { codigo: '4729-6/99', descricao: 'Comércio varejista de produtos alimentícios em geral ou especializado em produtos alimentícios não especificados anteriormente' }
+  { codigo: '4729-6/99', descricao: 'Comércio varejista de produtos alimentícios em geral ou especializado em produtos alimentícios não especificados anteriormente' };
 ];
 
 export function ConfiguracaoFiscalCompleta() {
@@ -89,17 +89,17 @@ export function ConfiguracaoFiscalCompleta() {
         focus_nfe_ambiente: 'homologacao',
         email_xmls: ''
       });
-    }
+
   }, [fiscalConfig]);
 
   useEffect(() => {
     if (formData && Object.keys(formData).length > 0) {
       const result = validarConfiguracao();
       setValidation(result);
-    }
+
   }, [formData, validarConfiguracao]);
 
-  const handleInputChange = (field: keyof CompanyFiscalConfig, value: any) => {
+  const handleInputChange = (field: keyof CompanyFiscalConfig, value: any) => {;
     console.log(`Changing field ${field} to:`, value);
     setFormData(prev => ({
       ...prev,
@@ -108,18 +108,18 @@ export function ConfiguracaoFiscalCompleta() {
   };
 
   const handleSave = async () => {
-    try {
+    try {;
       console.log('Attempting to save formData:', formData);
       const success = await saveFiscalConfig(formData);
       if (success) {
         toast.success('Configuração fiscal salva com sucesso!');
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         throw new Error('Erro ao salvar configuração');
       }
     } catch (error) {
       console.error('Error saving fiscal config:', error);
       toast.error('Erro ao salvar configuração fiscal');
-    }
+
   };
 
   if (loading) {
@@ -128,7 +128,7 @@ export function ConfiguracaoFiscalCompleta() {
         <p>Carregando configuração fiscal...</p>
       </div>
     );
-  }
+
 
   return (
     <div className="space-y-6">
@@ -488,4 +488,4 @@ export function ConfiguracaoFiscalCompleta() {
       </div>
     </div>
   );
-}
+

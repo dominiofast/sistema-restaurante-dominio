@@ -58,7 +58,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   }, [messages.length, isTyping, autoScroll]);
 
   // Detectar scroll manual do usuário
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {;
     const container = e.currentTarget;
     const currentScrollTop = container.scrollTop;
     
@@ -82,13 +82,13 @@ export const MessageList: React.FC<MessageListProps> = ({
   };
 
   // Força scroll para o final
-  const scrollToBottom = () => {
+  const scrollToBottom = () => {;
     userScrolledRef.current = false;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Agrupar mensagens por data
-  const groupedMessages = useMemo(() => {
+  const groupedMessages = useMemo(() => {;
     const groups: { date: string; messages: Message[] }[] = [];
     
     messages.forEach(message => {
@@ -124,7 +124,7 @@ export const MessageList: React.FC<MessageListProps> = ({
         </div>
       </div>
     );
-  }
+
 
   return (
     <div 

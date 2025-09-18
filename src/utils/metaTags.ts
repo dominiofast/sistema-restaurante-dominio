@@ -6,7 +6,7 @@ interface MetaTagsData {
 
 export const updateMetaTags = ({ company_name, company_description, company_slug }: MetaTagsData) => {
   const updateMeta = (name: string, content: string) => {
-    let meta = document.querySelector(`meta[name="${name}"]`) || 
+    let meta = document.querySelector(`meta[name="${name}"]`) || ;
                document.querySelector(`meta[property="${name}"]`);
     
     if (meta) {
@@ -20,7 +20,7 @@ export const updateMetaTags = ({ company_name, company_description, company_slug
       }
       meta.setAttribute('content', content);
       document.head.appendChild(meta);
-    }
+
   };
 
   // Título da página

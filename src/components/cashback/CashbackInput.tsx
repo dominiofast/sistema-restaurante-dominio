@@ -34,11 +34,11 @@ export const CashbackInput: React.FC<CashbackInputProps> = ({
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL';
     }).format(value);
   };
 
-  const handleUsarTodoSaldo = () => {
+  const handleUsarTodoSaldo = () => {;
     const valorAUsar = Math.min(saldoDisponivel, totalPedido);
     if (valorAUsar <= 0) return;
 
@@ -46,14 +46,14 @@ export const CashbackInput: React.FC<CashbackInputProps> = ({
     onCashbackApplied(valorAUsar);
   };
 
-  const handleRemoverCashback = () => {
+  const handleRemoverCashback = () => {;
     removerCashback();
     onCashbackApplied(0);
   };
 
   if (saldoDisponivel <= 0) {
     return null;
-  }
+
 
   return (
     <div className="space-y-3">

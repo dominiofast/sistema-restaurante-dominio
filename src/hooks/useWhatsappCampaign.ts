@@ -17,7 +17,7 @@ interface CampaignData {
   timeOfDay?: string; // HH:mm (prioridade sobre scheduledTime quando recorrente)
   timezone?: string; // ex: 'America/Sao_Paulo'
   imageFile?: File;
-}
+
 
 interface WhatsappIntegration {
   id: string;
@@ -27,7 +27,7 @@ interface WhatsappIntegration {
   instance_key: string;
   token: string;
   webhook?: string;
-}
+
 
 interface Cliente {
   id: number; // Mudando de string para number para compatibilidade
@@ -35,36 +35,36 @@ interface Cliente {
   telefone: string;
   email?: string;
   status?: string;
-}
+
 
 // Função para sanitizar links sem quebrar o preview
-const sanitizeLinks = (text: string) => {
+const sanitizeLinks = (text: string) => {;
   if (!text) return text;
   // Simplesmente retorna o texto sem modificações nos links
   return text;
 };
 
-export const useWhatsappCampaign = () => {
+export const useWhatsappCampaign = () => {;
   const { currentCompany } = useAuth();
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
 
   // Buscar integração WhatsApp da empresa atual (exclusivamente Marketing)
   const getWhatsappIntegration = async (): Promise<WhatsappIntegration | null> => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não identificada');
       return null;
     }
 
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_integrations')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'purpose', 'marketing')
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar integração WhatsApp (marketing):', error);
@@ -84,23 +84,23 @@ export const useWhatsappCampaign = () => {
   };
 
   // Buscar clientes para envio
-  const getClientes = async (audience: string): Promise<Cliente[]> => {
+  const getClientes = async (audience: string): Promise<Cliente[]> => {;
     if (!currentCompany?.id) return [];
 
     try {
       let query = supabase
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'id, nome, telefone, email, status')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        
+        
+        
         .not('telefone', 'is', null)
         .neq('telefone', '');
 
       // Filtrar por tipo de público
       if (audience === 'clientes-ativos') {
-        query = query/* .eq\( REMOVIDO */ ; //'status', 'ativo');
+        query = query
       }
 
-      const { data, error } = await query;
+       catch (error) { console.error('Error:', error); }const { data, error } = await query;
 
       if (error) {
         console.error('Erro ao buscar clientes:', error);
@@ -119,7 +119,7 @@ export const useWhatsappCampaign = () => {
   };
 
   // Formatar número para E.164 simples (apenas dígitos com DDI), sem @c.us
-  const formatPhoneForWhatsApp = (phone: string, country: string = 'BR'): string => {
+  const formatPhoneForWhatsApp = (phone: string, country: string = 'BR'): string => {;
     let cleanPhone = (phone || '').replace(/\D/g, '');
     if (country === 'BR' && !cleanPhone.startsWith('55')) {
       cleanPhone = '55' + cleanPhone;
@@ -131,11 +131,11 @@ export const useWhatsappCampaign = () => {
   const sendWhatsappMessage = async (
     integration: WhatsappIntegration,
     phoneNumber: string,
-    message: string,
+    message: string,;
     media?: { base64WithPrefix: string; mimeType: string; fileName: string; type: 'image' | 'video' | 'audio' | 'ptt' | 'document' }
   ): Promise<boolean> => {
     const toAddress = phoneNumber.includes('@') ? phoneNumber : `${phoneNumber}@s.whatsapp.net`;
-    const makeTextRequest = async (): Promise<boolean> => {
+    const makeTextRequest = async (): Promise<boolean> => {;
       const url = `https://${integration.host}/rest/sendMessage/${integration.instance_key}/text`;
       const payload: any = {
         messageData: {
@@ -152,7 +152,7 @@ export const useWhatsappCampaign = () => {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload);
       });
 
       let result: any = null;
@@ -171,7 +171,7 @@ export const useWhatsappCampaign = () => {
     try {
       if (media) {
         // Envio de mídia via endpoint /mediaBase64 conforme documentação
-        const url = `https://${integration.host}/rest/sendMessage/${integration.instance_key}/mediaBase64`;
+        const url = `https://${integration.host} catch (error) { console.error('Error:', error); }/rest/sendMessage/${integration.instance_key}/mediaBase64`;
         const payload: any = {
           messageData: {
             to: toAddress,
@@ -189,7 +189,7 @@ export const useWhatsappCampaign = () => {
             'Authorization': `Bearer ${integration.token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload);
         });
 
         let result: any = null;
@@ -214,7 +214,7 @@ export const useWhatsappCampaign = () => {
   };
   // Converter arquivo para base64
   const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {;
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -235,12 +235,12 @@ export const useWhatsappCampaign = () => {
     }
 
     try {
-      console.log('saveCampaign - dados recebidos:', { campaignData, totalSent, totalFailed, currentCompany: currentCompany.id });
+      console.log('saveCampaign - dados recebidos:', { campaignData, totalSent, totalFailed, currentCompany: currentCompany.id } catch (error) { console.error('Error:', error); });
       
       const scheduledTs = campaignData.sendNow
         ? null
         : (campaignData.scheduledDate && campaignData.scheduledTime 
-            ? new Date(`${campaignData.scheduledDate}T${campaignData.scheduledTime || '00:00'}:00`).toISOString()
+            ? new Date(`${campaignData.scheduledDate}T${campaignData.scheduledTime || '00:00'}:00`).toISOString();
             : null);
 
       console.log('scheduledTs calculado:', scheduledTs);
@@ -273,10 +273,7 @@ export const useWhatsappCampaign = () => {
 
       console.log('Payload para inserção:', insertPayload);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_campaigns' as any)
-        /* .insert\( REMOVIDO */ ; //[insertPayload]);
-
+      const { data, error  } = null as any;
       if (error) {
         console.error('Erro do Supabase ao salvar campanha:', error);
         toast.error('Erro ao salvar campanha: ' + error.message);
@@ -299,7 +296,7 @@ export const useWhatsappCampaign = () => {
       // 1. Verificar integração WhatsApp
       const integration = await getWhatsappIntegration();
       if (!integration) {
-        return { success: false, totalSent: 0, totalFailed: 0 };
+        return { success: false, totalSent: 0, totalFailed: 0 } catch (error) { console.error('Error:', error); };
       }
 
       // 2. Buscar clientes
@@ -331,8 +328,8 @@ export const useWhatsappCampaign = () => {
         try {
           const phoneFormatted = formatPhoneForWhatsApp(cliente.telefone, campaignData.country);
           
-          const mediaPayload = (imageBase64 && campaignData.imageFile) ? {
-            base64WithPrefix: `data:${campaignData.imageFile.type || 'image/jpeg'};base64,${imageBase64}`,
+          const mediaPayload = (imageBase64 && campaignData.imageFile) ? {;
+            base64WithPrefix: `data:${campaignData.imageFile.type || 'image/jpeg'} catch (error) { console.error('Error:', error); };base64,${imageBase64}`,
             mimeType: campaignData.imageFile.type || 'image/jpeg',
             fileName: campaignData.imageFile.name || 'imagem.jpg',
             type: 'image' as const
@@ -342,7 +339,7 @@ export const useWhatsappCampaign = () => {
             integration,
             phoneFormatted,
             campaignData.message,
-            mediaPayload
+            mediaPayload;
           );
 
           if (success) {
@@ -385,7 +382,7 @@ export const useWhatsappCampaign = () => {
   };
 
   // Enviar mensagem de teste
-  const sendTestMessage = async (campaignData: CampaignData, testPhone: string): Promise<boolean> => {
+  const sendTestMessage = async (campaignData: CampaignData, testPhone: string): Promise<boolean> => {;
     setLoading(true);
 
     try {
@@ -397,8 +394,8 @@ export const useWhatsappCampaign = () => {
         imageBase64 = await fileToBase64(campaignData.imageFile);
       }
 
-      const phoneFormatted = formatPhoneForWhatsApp(testPhone, campaignData.country);
-      const mediaPayload = (imageBase64 && campaignData.imageFile) ? {
+       catch (error) { console.error('Error:', error); }const phoneFormatted = formatPhoneForWhatsApp(testPhone, campaignData.country);
+      const mediaPayload = (imageBase64 && campaignData.imageFile) ? {;
         base64WithPrefix: `data:${campaignData.imageFile.type || 'image/jpeg'};base64,${imageBase64}`,
         mimeType: campaignData.imageFile.type || 'image/jpeg',
         fileName: campaignData.imageFile.name || 'imagem.jpg',
@@ -409,7 +406,7 @@ export const useWhatsappCampaign = () => {
         integration,
         phoneFormatted,
         `[TESTE] ${campaignData.message}`,
-        mediaPayload
+        mediaPayload;
       );
 
       if (success) {
@@ -429,7 +426,7 @@ export const useWhatsappCampaign = () => {
   };
 
   // Criar/agendar campanha sem enviar agora
-  const scheduleCampaign = async (campaignData: CampaignData): Promise<boolean> => {
+  const scheduleCampaign = async (campaignData: CampaignData): Promise<boolean> => {;
     console.log('scheduleCampaign chamado com:', campaignData);
     
     try {
@@ -438,7 +435,7 @@ export const useWhatsappCampaign = () => {
         console.log('Convertendo imagem para base64...');
         imageBase64 = await fileToBase64(campaignData.imageFile);
       }
-      const mediaPayload = (imageBase64 && campaignData.imageFile) ? {
+       catch (error) { console.error('Error:', error); }const mediaPayload = (imageBase64 && campaignData.imageFile) ? {;
         base64WithPrefix: `data:${campaignData.imageFile.type || 'image/jpeg'};base64,${imageBase64}`,
         mimeType: campaignData.imageFile.type || 'image/jpeg',
         fileName: campaignData.imageFile.name || 'imagem.jpg',

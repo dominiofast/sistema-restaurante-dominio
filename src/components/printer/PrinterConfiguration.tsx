@@ -36,7 +36,7 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
 
   // Carregar configuração existente
   useEffect(() => {
-    const loadConfig = async () => {
+    const loadConfig = async () => {;
       const config = await getPrinterConfig(companyId);
       if (config) {
         setPrinterType(config.type);
@@ -51,7 +51,7 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
 
   // Verificar status do Dominio Printer apenas uma vez
   useEffect(() => {
-    const checkStatus = async () => {
+    const checkStatus = async () => {;
       console.log('🔍 [PrinterConfiguration] Verificando status do Dominio Printer...');
       try {
         const status = await checkDominioStatus();
@@ -61,7 +61,7 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
           console.log('✅ [PrinterConfiguration] Dominio Printer conectado, buscando impressoras...');
           const printers = await getDominioPrinters();
           console.log('🖨️ [PrinterConfiguration] Impressoras encontradas:', printers);
-        } else {
+        }  catch (error) { console.error('Error:', error); }else {
           console.log('❌ [PrinterConfiguration] Dominio Printer não conectado');
         }
       } catch (error) {
@@ -73,15 +73,15 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
   }, []); // Removidas as dependências que causavam o loop infinito
 
   const handleSave = async () => {
-    if (printerType === 'network' && (!networkIp || !printerName)) {
+    if (printerType === 'network' && (!networkIp || !printerName)) {;
       toast.error('Preencha IP e nome da impressora');
       return;
-    }
+
     
     if (printerType === 'dominio' && !dominioPrinterName) {
       toast.error('Selecione uma impressora do Dominio Printer');
       return;
-    }
+
 
     try {
       await savePrinterConfig({
@@ -90,13 +90,13 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
         port: parseInt(networkPort),
         name: printerName,
         dominioPrinterName: dominioPrinterName
-      }, companyId);
+      } catch (error) { console.error('Error:', error); }, companyId);
     } catch (error) {
       console.error('Erro ao salvar:', error);
-    }
+
   };
 
-  const handleTest = async () => {
+  const handleTest = async () => {;
     await testPrinter(companyId);
   };
 
@@ -156,14 +156,14 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
                       if (status) {
                         const printers = await getDominioPrinters();
                         console.log('🔄 [Manual] Impressoras:', printers);
-                        toast.success(`${printers.length} impressoras encontradas`);
+                        toast.success(`${printers.length}  catch (error) { console.error('Error:', error); }impressoras encontradas`);
                       } else {
                         toast.error('Não foi possível conectar ao Dominio Printer');
                       }
                     } catch (error) {
                       console.error('🔄 [Manual] Erro:', error);
                       toast.error('Erro na verificação');
-                    }
+
                   }}
                 >
                   🔄 Atualizar

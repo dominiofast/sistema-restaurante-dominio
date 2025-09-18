@@ -34,7 +34,7 @@ export const KDSColumn: React.FC<KDSColumnProps> = ({
 }) => {
   const Icon = status.icon;
 
-  const getNextActionLabel = () => {
+  const getNextActionLabel = () => {;
     if (status.key === 'analise') return 'Iniciar Produção';
     if (status.key === 'producao') return 'Finalizar';
     if (status.key === 'pronto') return 'Pronto';

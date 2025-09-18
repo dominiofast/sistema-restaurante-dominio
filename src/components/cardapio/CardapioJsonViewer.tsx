@@ -32,7 +32,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
     uploadingToAI
   });
 
-  const generateJson = async () => {
+  const generateJson = async () => {;
     console.log('🔄 generateJson - INÍCIO');
     
     if (!effectiveCompanyId) {
@@ -57,7 +57,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
           title: "Erro",
           description: "Não foi possível gerar o JSON do cardápio",
           variant: "destructive"
-        });
+        } catch (error) { console.error('Error:', error); });
         return;
       }
 
@@ -81,7 +81,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
     }
   };
 
-  const downloadJson = async () => {
+  const downloadJson = async () => {;
     if (!effectiveCompanyId) return;
 
     try {
@@ -89,7 +89,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
       if (url) {
         const link = document.createElement('a');
         link.href = url;
-        link.download = `cardapio-${effectiveCompanyId}-${new Date().toISOString().split('T')[0]}.json`;
+        link.download = `cardapio-${effectiveCompanyId} catch (error) { console.error('Error:', error); }-${new Date().toISOString().split('T')[0]}.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -111,7 +111,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
 
   const copyToClipboard = async () => {
     const content = viewMode === 'json' 
-      ? JSON.stringify(jsonData, null, 2)
+      ? JSON.stringify(jsonData, null, 2);
       : textData;
 
     try {
@@ -119,7 +119,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
       toast({
         title: "Sucesso",
         description: "Conteúdo copiado para a área de transferência"
-      });
+      } catch (error) { console.error('Error:', error); });
     } catch (error) {
       toast({
         title: "Erro",
@@ -129,7 +129,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
     }
   };
 
-  const updateAIAssistant = async () => {
+  const updateAIAssistant = async () => {;
     console.log('🤖 updateAIAssistant - INÍCIO');
     
     if (!effectiveCompanyId) {
@@ -154,7 +154,7 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
         toast({
           title: "Sucesso",
           description: "Cardápio enviado para IA com sucesso!"
-        });
+        } catch (error) { console.error('Error:', error); });
       } else {
         toast({
           title: "Erro",

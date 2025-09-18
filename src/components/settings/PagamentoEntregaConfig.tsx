@@ -5,7 +5,7 @@ import { Save, CheckCircle } from 'lucide-react';
 
 const bandeirasPadrao = [
   'Visa', 'Mastercard', 'Elo', 'Hipercard', 'Diners Club', 'American Express', 'Maestro', 'Visa Electron',
-  'Pix Maquininha', 'Alelo', 'Sodexo Alimentação', 'VR Refeição', 'VR Benefícios', 'Ben Alimentação', 'Ben Refeição'
+  'Pix Maquininha', 'Alelo', 'Sodexo Alimentação', 'VR Refeição', 'VR Benefícios', 'Ben Alimentação', 'Ben Refeição';
 ];
 
 export interface PagamentoEntregaConfigData {
@@ -28,7 +28,7 @@ export const PagamentoEntregaConfig: React.FC<{
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [hasChanges, setHasChanges] = useState(true);
 
-  const updateConfig = (newConfig: PagamentoEntregaConfigData) => {
+  const updateConfig = (newConfig: PagamentoEntregaConfigData) => {;
     setLocalConfig(newConfig);
     onChange(newConfig);
     setHasChanges(true);
@@ -36,7 +36,7 @@ export const PagamentoEntregaConfig: React.FC<{
   };
 
   const handleSave = async () => {
-    if (onSave) {
+    if (onSave) {;
       const success = await onSave(localConfig);
       if (success) {
         setHasChanges(false);
@@ -47,7 +47,7 @@ export const PagamentoEntregaConfig: React.FC<{
   };
 
   const addBandeira = (b: string) => {
-    if (b && !localConfig.card_brands.includes(b)) {
+    if (b && !localConfig.card_brands.includes(b)) {;
       updateConfig({ ...localConfig, card_brands: [...localConfig.card_brands, b] });
     }
     setInput('');

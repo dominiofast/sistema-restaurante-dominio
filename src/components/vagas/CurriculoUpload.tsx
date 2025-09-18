@@ -26,7 +26,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     const allowedTypes = [
       'application/pdf',
       'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     ];
     
     if (!allowedTypes.includes(file.type)) {
@@ -41,7 +41,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     return null;
   };
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {;
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -55,7 +55,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
   };
 
   const uploadFile = async (file: File) => {
-    try {
+    try {;
       setUploading(true);
 
       console.log('Processando arquivo:', file.name);
@@ -66,10 +66,10 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
       const reader = new FileReader();
       
       const base64Promise = new Promise<string>((resolve, reject) => {
-        reader.onload = () => {
+        reader.onload = () => {;
           const result = reader.result as string;
           resolve(result);
-        };
+        } catch (error) { console.error('Error:', error); };
         reader.onerror = () => reject(reader.error);
       });
 
@@ -103,7 +103,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     }
   };
 
-  const removeFile = () => {
+  const removeFile = () => {;
     setUploadedFile(null);
     onUploadSuccess('', '');
     if (fileInputRef.current) {
@@ -112,7 +112,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
   };
 
   const getFileIcon = () => {
-    if (uploading) {
+    if (uploading) {;
       return <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>;
     }
     if (uploadedFile) {
@@ -121,7 +121,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     return <Upload className="h-5 w-5 text-gray-400" />;
   };
 
-  const getStatusColor = () => {
+  const getStatusColor = () => {;
     if (uploading) return 'border-blue-300 bg-blue-50';
     if (uploadedFile) return 'border-green-300 bg-green-50';
     return 'border-gray-300 hover:border-blue-400';

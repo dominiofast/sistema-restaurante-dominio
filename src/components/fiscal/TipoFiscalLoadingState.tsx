@@ -39,4 +39,3 @@ export function TipoFiscalLoadingState() {
       </div>
     </div>
   );
-}

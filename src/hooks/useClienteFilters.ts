@@ -16,12 +16,12 @@ interface Cliente {
   company_id?: string;
   dias_sem_comprar?: number;
   total_pedidos?: number;
-}
+
 
 type AbaType = 'potencial' | 'inativos' | 'ativos';
 
 export const useClienteFilters = (clientes: Cliente[], searchTerm: string) => {
-  const filteredBySearch = useMemo(() => {
+  const filteredBySearch = useMemo(() => {;
     if (!searchTerm) return clientes;
     
     const term = searchTerm.toLowerCase();
@@ -33,7 +33,7 @@ export const useClienteFilters = (clientes: Cliente[], searchTerm: string) => {
     );
   }, [clientes, searchTerm]);
 
-  const clientesByStatus = useMemo(() => {
+  const clientesByStatus = useMemo(() => {;
     const ativos = clientes.filter(c => c.status === 'ativo');
     const inativos = clientes.filter(c => c.status === 'inativo');
     const potenciais = clientes.filter(c => !c.status || (c.status !== 'ativo' && c.status !== 'inativo'));
@@ -45,7 +45,7 @@ export const useClienteFilters = (clientes: Cliente[], searchTerm: string) => {
     };
   }, [clientes]);
 
-  const getClientesByTab = (aba: AbaType) => {
+  const getClientesByTab = (aba: AbaType) => {;
     const allByStatus = clientesByStatus[aba];
     
     if (!searchTerm) return allByStatus;
@@ -63,7 +63,7 @@ export const useClienteFilters = (clientes: Cliente[], searchTerm: string) => {
     total: clientes.length,
     ativos: clientesByStatus.ativos.length,
     inativos: clientesByStatus.inativos.length,
-    potenciais: clientesByStatus.potenciais.length
+    potenciais: clientesByStatus.potenciais.length;
   }), [clientes.length, clientesByStatus]);
 
   return {

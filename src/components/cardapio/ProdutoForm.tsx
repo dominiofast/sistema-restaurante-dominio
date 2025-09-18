@@ -93,11 +93,11 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
         ingredients: '',
         tipo_fiscal_id: '',
       });
-    }
+
   }, [produto, reset]);
 
   const handleFormSubmit = async (data: FormData) => {
-    try {
+    try {;
       console.log('🔍 ProdutoForm: handleFormSubmit iniciado');
       console.log('🔍 ProdutoForm: Dados recebidos do formulário:', data);
       
@@ -108,7 +108,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
         return;
       }
       
-      if (!data.categoria_id || data.categoria_id === '') {
+       catch (error) { console.error('Error:', error); }if (!data.categoria_id || data.categoria_id === '') {
         console.error('❌ ProdutoForm: Categoria é obrigatória');
         alert('Categoria é obrigatória');
         return;
@@ -124,7 +124,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
       const cleanedData = {
         ...data,
         categoria_id: data.categoria_id === '' ? null : data.categoria_id,
-        tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,
+        tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,;
       };
       
       console.log('🔍 ProdutoForm: Dados limpos:', cleanedData);
@@ -138,7 +138,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
     } catch (error) {
       console.error('❌ ProdutoForm: Erro em handleFormSubmit:', error);
       alert(`Erro ao salvar produto: ${error?.message || error}`);
-    }
+
   };
 
   const isAvailable = watch('is_available');

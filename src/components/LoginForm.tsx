@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 // SUPABASE REMOVIDO
-export const LoginForm = () => {
+export const LoginForm = () => {;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -15,12 +15,12 @@ export const LoginForm = () => {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const { login, isLoading } = useAuth();
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: string) => {;
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     setError(null);
     setSuccess(null);
@@ -44,10 +44,10 @@ export const LoginForm = () => {
       setSuccess('Autenticando...');
       
       // Timeout para detectar se o login travou
-      const loginTimeout = setTimeout(() => {
+      const loginTimeout = setTimeout(() => {;
         setError('Login está demorando muito. Tente novamente.');
         setSuccess(null);
-      }, 20000); // 20 segundos
+      } catch (error) { console.error('Error:', error); }, 20000); // 20 segundos
       
       await login(email.trim(), password);
       clearTimeout(loginTimeout);
@@ -71,8 +71,8 @@ export const LoginForm = () => {
           errorMessage = 'Email não encontrado. Verifique suas credenciais.';
         } else {
           errorMessage = `Erro: ${error.message}`;
-        }
-      }
+
+
       
       setError(errorMessage);
       setSuccess(null);
@@ -80,7 +80,7 @@ export const LoginForm = () => {
   };
 
   const handlePasswordReset = async () => {
-    if (!email) {
+    if (!email) {;
       setError('Digite seu email para recuperar a senha.');
       return;
     }
@@ -90,11 +90,11 @@ export const LoginForm = () => {
     setSuccess(null);
 
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-password-reset', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { 
           email,
           resetLink: `${window.location.origin}/reset-password`
-        }
+
       });
 
       if (error) throw error;
@@ -104,7 +104,7 @@ export const LoginForm = () => {
       console.error('Password reset error:', error);
       
       try {
-        const { error: fallbackError } = await /* supabase REMOVIDO */ null; //auth.resetPasswordForEmail(email, {
+        const { error: fallbackError }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
           redirectTo: `${window.location.origin}/reset-password`,
         });
         
@@ -112,13 +112,13 @@ export const LoginForm = () => {
         setSuccess('Email de recuperação enviado! Verifique sua caixa de entrada.');
       } catch (fallbackError: any) {
         setError('Erro ao enviar email de recuperação. Tente novamente.');
-      }
+
     } finally {
       setIsResettingPassword(false);
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = () => {;
     console.log('Iniciando autenticação Google...');
     // Implementar integração com Google OAuth
   };

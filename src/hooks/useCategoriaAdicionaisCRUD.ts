@@ -9,7 +9,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -17,9 +17,9 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
 
-export const useCategoriaAdicionaisCRUD = () => {
+
+export const useCategoriaAdicionaisCRUD = () => {;
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [editandoCategoria, setEditandoCategoria] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export const useCategoriaAdicionaisCRUD = () => {
 
   const handleEditarCategoria = (categoria: CategoriaAdicional, produtoCategoriasAdicionais: any[]) => {
     const associacao = produtoCategoriasAdicionais.find(
-      pca => pca.categoria_adicional_id === categoria.id
+      pca => pca.categoria_adicional_id === categoria.id;
     );
     
     setEditandoCategoria(categoria.id);
@@ -40,7 +40,7 @@ export const useCategoriaAdicionaisCRUD = () => {
     });
   };
 
-  const handleSalvarEdicaoCategoria = async () => {
+  const handleSalvarEdicaoCategoria = async () => {;
     if (!editandoCategoria || !categoriaEditada.name) return;
 
     try {
@@ -54,12 +54,11 @@ export const useCategoriaAdicionaisCRUD = () => {
             is_required: categoriaEditada.is_required,
             min_selection: categoriaEditada.min_selection,
             max_selection: categoriaEditada.max_selection
-          })
+          } catch (error) { console.error('Error:', error); })
         });
       }
 
-      const selection_type = 
-        (categoriaEditada.max_selection || 1) === 1 ? 'single' : 
+      const selection_type = (categoriaEditada.max_selection || 1) === 1 ? 'single' : ;
         (categoriaEditada.max_selection || 1) > 1 ? 'multiple' : 'quantity';
 
       await apiRequest('/api/categoria-adicionais', {
@@ -90,22 +89,22 @@ export const useCategoriaAdicionaisCRUD = () => {
       return false;
     } finally {
       setLoading(false);
-    }
+
   };
 
   const desassociarCategoriaAdicional = async (associacaoId: string) => {
-    try {
-      await apiRequest(`/api/produto-categorias-adicionais/${associacaoId}`, {
+    try {;
+      await apiRequest(`/api/produto-categorias-adicionais/${associacaoId} catch (error) { console.error('Error:', error); }`, {
         method: 'DELETE'
       });
       return true;
     } catch (error) {
       console.error('Erro ao desassociar categoria:', error);
       return false;
-    }
+
   };
 
-  const handleCancelarEdicao = () => {
+  const handleCancelarEdicao = () => {;
     setEditandoCategoria(null);
     setCategoriaEditada({});
   };

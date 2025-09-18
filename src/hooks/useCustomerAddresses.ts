@@ -16,15 +16,15 @@ export interface CustomerAddress {
   latitude?: number;
   longitude?: number;
   created_at?: string;
-}
 
-export const useCustomerAddresses = () => {
+
+export const useCustomerAddresses = () => {;
   const [addresses, setAddresses] = useState<CustomerAddress[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchAddressesByPhone = useCallback(async (phone: string, companyId?: string) => {
-    // Sempre limpar endereços primeiro para evitar mostrar dados de outros clientes
+    // Sempre limpar endereços primeiro para evitar mostrar dados de outros clientes;
     setAddresses([]);
     
     if (!phone || phone.length < 10) {
@@ -45,28 +45,19 @@ export const useCustomerAddresses = () => {
         return;
       }
       
-      let data, error;
+       catch (error) { console.error('Error:', error); }let data, error;
       
       // Se companyId foi fornecido, usar a função pública segura
       // Caso contrário, tentar query direta (para usuários autenticados)
       if (companyId) {
         // Usar função RPC segura para cardápio público
-        const { data: rpcData, error: rpcError } = /* await supabase REMOVIDO */ null
-          .rpc('get_customer_addresses_for_order', {
-            p_phone: cleanPhone,
-            p_company_id: companyId
-          });
+        const rpcData = null as any; const rpcError = null as any;
         
         data = rpcData;
         error = rpcError;
       } else {
         // Query direta para usuários autenticados no painel admin
-        const { data: queryData, error: queryError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'customer_addresses')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'customer_phone', cleanPhone)
-          .not('customer_phone', 'is', null)
-          .neq('customer_phone', '');
+        const queryData = null as any; const queryError = null as any;
         
         data = queryData;
         error = queryError;
@@ -83,7 +74,7 @@ export const useCustomerAddresses = () => {
     }
   }, []);
 
-  const saveAddress = useCallback(async (addressData: Omit<CustomerAddress, 'id' | 'created_at'> & { company_id: string }) => {
+  const saveAddress = useCallback(async (addressData: Omit<CustomerAddress, 'id' | 'created_at'> & { company_id: string }) => {;
     console.log('saveAddress chamado com dados:', addressData);
     setLoading(true);
     setError(null);
@@ -92,11 +83,11 @@ export const useCustomerAddresses = () => {
       console.log('Inserindo no Supabase...');
       console.log('Dados completos para inserção:', JSON.stringify(addressData, null, 2));
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .insert\( REMOVIDO */ ; //addressData)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
       
       console.log('Resposta do Supabase:', { data, error });
       
@@ -122,17 +113,17 @@ export const useCustomerAddresses = () => {
     }
   }, []);
 
-  const updateAddress = useCallback(async (id: string, addressData: Partial<CustomerAddress>) => {
+  const updateAddress = useCallback(async (id: string, addressData: Partial<CustomerAddress>) => {;
     setLoading(true);
     setError(null);
     
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .update\( REMOVIDO */ ; //addressData)
-        /* .eq\( REMOVIDO */ ; //'id', id)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
       
       if (error) throw error;
       setAddresses(prev => prev.map(addr => addr.id === id ? data : addr));
@@ -145,15 +136,15 @@ export const useCustomerAddresses = () => {
     }
   }, []);
 
-  const deleteAddress = useCallback(async (id: string) => {
+  const deleteAddress = useCallback(async (id: string) => {;
     setLoading(true);
     setError(null);
     
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', id);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
       
       if (error) throw error;
       setAddresses(prev => prev.filter(addr => addr.id !== id));
@@ -166,7 +157,7 @@ export const useCustomerAddresses = () => {
   }, []);
 
   const refetch = useCallback(async () => {
-    // Refetch logic if needed
+    // Refetch logic if needed;
   }, []);
 
   return {

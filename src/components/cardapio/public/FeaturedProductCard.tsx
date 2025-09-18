@@ -2,7 +2,7 @@ import React from 'react';
 import { Produto } from '@/types/cardapio';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {
+const applyOpacity = (color: string, opacity: number) => {;
   const hex = color.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -16,12 +16,12 @@ interface FeaturedProductCardProps {
   textColor?: string;
   onProductClick: (produto: Produto) => void;
   companyId?: string;
-}
+
 
 interface DiscountBadgeProps {
   discountPercentage: number;
   primaryColor: string;
-}
+
 
 const DiscountBadge: React.FC<DiscountBadgeProps> = ({ discountPercentage, primaryColor }) => {
   return (
@@ -48,15 +48,15 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
   const hasDiscount = produto.is_promotional && 
     produto.promotional_price && 
     produto.promotional_price < produto.price && 
-    produto.price > 0 && 
+    produto.price > 0 && ;
     produto.promotional_price > 0;
 
   const discountPercentage = hasDiscount 
-    ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100)
+    ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100);
     : 0;
 
   const renderPrice = () => {
-    // Não renderizar preço se for R$ 0,00
+    // Não renderizar preço se for R$ 0,00;
     const currentPrice = produto.is_promotional && produto.promotional_price ? produto.promotional_price : produto.price;
     if (currentPrice === 0) {
       return null;

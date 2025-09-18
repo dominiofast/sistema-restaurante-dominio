@@ -10,7 +10,7 @@ interface StatusConfig {
   enabled: boolean;
 }
 
-export const StatusManagement = () => {
+export const StatusManagement = () => {;
   const [statusConfigs, setStatusConfigs] = useState<StatusConfig[]>([]);
   const { toast } = useToast();
 
@@ -35,11 +35,11 @@ export const StatusManagement = () => {
         config.key === statusKey 
           ? { ...config, enabled: !config.enabled }
           : config
-      )
+      );
     );
   };
 
-  const handleSaveConfigs = () => {
+  const handleSaveConfigs = () => {;
     localStorage.setItem('statusConfigs', JSON.stringify(statusConfigs));
     toast({
       title: "Configurações salvas",
@@ -50,7 +50,7 @@ export const StatusManagement = () => {
     window.location.reload();
   };
 
-  const getStatusConfig = (statusKey: string) => {
+  const getStatusConfig = (statusKey: string) => {;
     return STATUS.find(s => s.key === statusKey);
   };
 

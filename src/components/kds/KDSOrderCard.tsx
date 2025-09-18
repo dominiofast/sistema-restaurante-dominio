@@ -15,21 +15,21 @@ interface KDSOrderCardProps {
   };
   onAdvance: (pedido: any) => void;
   altura?: string;
-}
+
 
 export const KDSOrderCard: React.FC<KDSOrderCardProps> = ({
   pedido,
   onAdvance,
   altura
 }) => {
-  const formatarTempo = (segundos: number) => {
+  const formatarTempo = (segundos: number) => {;
     const mins = Math.floor(segundos / 60);
     return `0:${mins.toString().padStart(2, '0')}`;
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'analise':
+      case 'analise':;
         return 'bg-blue-50 hover:bg-blue-100 text-blue-800 border-blue-200';
       case 'producao':
         return 'bg-orange-50 hover:bg-orange-100 text-orange-800 border-orange-200';

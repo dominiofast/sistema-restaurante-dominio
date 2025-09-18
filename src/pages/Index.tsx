@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
-const AppContent = () => {
+const AppContent = () => {;
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -41,12 +41,12 @@ const AppContent = () => {
         </div>
       </div>
     );
-  }
+
 
   // Se o usuário não está logado, redireciona para login
   if (!user) {
     return <Navigate to="/login" replace />;
-  }
+
 
   // Se o usuário está logado e está na rota raiz (/), redireciona baseado no role
   if (window.location.pathname === '/') {
@@ -63,14 +63,14 @@ const AppContent = () => {
     return <Navigate to="/empresas" replace />;
   } else {
     return <Navigate to="/pedidos" replace />;
-  }
+
 };
 
 const Index = () => {
   return (
     <AuthProvider>
       <AppContent />
-    </AuthProvider>
+    </AuthProvider>;
   );
 };
 

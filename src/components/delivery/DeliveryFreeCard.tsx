@@ -38,7 +38,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
       brandingLoading
     });
     return null;
-  }
+
 
   // Cores da marca ou padrão verde
   const primaryColor = branding?.primary_color || '#22c55e';
@@ -46,7 +46,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
   const textColor = branding?.text_color || '#1F2937';
 
   // Função para criar gradiente baseado na cor primária
-  const createGradient = (color: string) => {
+  const createGradient = (color: string) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -64,7 +64,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
   };
 
   // Função para determinar se a cor é clara ou escura
-  const isLightColor = (color: string) => {
+  const isLightColor = (color: string) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -81,7 +81,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
     if (deliveryStatus.allRegionsFree) {
       return {
         title: 'Entrega grátis',
-        subtitle: 'em todas as regiões'
+        subtitle: 'em todas as regiões';
       };
     } else {
       return {
@@ -108,7 +108,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
         </span>
       </div>
     );
-  }
+
 
   if (variant === 'banner') {
     return (
@@ -143,7 +143,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
         </div>
       </div>
     );
-  }
+
 
   // Variant full (padrão) - melhor design inspirado na referência
   return (

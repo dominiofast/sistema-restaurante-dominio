@@ -20,9 +20,9 @@ export interface BrandingConfig {
   header_style: 'modern' | 'classic' | 'minimal';
   logo_url?: string;
   banner_url?: string;
-}
 
-export const useBrandingConfig = () => {
+
+export const useBrandingConfig = () => {;
   const { currentCompany } = useAuth();
   const [config, setConfig] = useState<BrandingConfig | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,24 +30,24 @@ export const useBrandingConfig = () => {
 
   const loadConfig = async () => {
     if (!currentCompany?.id) {
-      // Aguarde o company_id para evitar sobrescrever com defaults
+      // Aguarde o company_id para evitar sobrescrever com defaults;
       return;
     }
 
     try {
       console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .select\( REMOVIDO */ ; //`
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           *
         `)
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+        
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('❌ Erro ao carregar configuração de branding:', error);
@@ -59,38 +59,30 @@ export const useBrandingConfig = () => {
       if (data) {
         const loadedConfig = {
           ...data,
-          header_style: (data as any).header_style as 'modern' | 'classic' | 'minimal',
+          header_style: (data as any).header_style as 'modern' | 'classic' | 'minimal',;
         } as BrandingConfig;
         console.log('✅ Configuração processada:', loadedConfig);
         setConfig(loadedConfig);
       } else {
         console.log('⚠️ Nenhuma configuração ativa encontrada. Buscando a mais recente...');
         // Tentar buscar o registro mais recente (mesmo que inativo)
-        const { data: latestAny } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cardapio_branding')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-          /* .limit\( REMOVIDO */ ; //1)
-          /* .maybeSingle\( REMOVIDO */ ; //);
-
+        const { data: latestAny  } = null as any;
         if (latestAny) {
           // Ativar essa configuração e desativar as demais para garantir consistência
-          /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'cardapio_branding')
-            /* .update\( REMOVIDO */ ; //{ is_active: true })
-            /* .eq\( REMOVIDO */ ; //'id', latestAny.id);
-          /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'cardapio_branding')
-            /* .update\( REMOVIDO */ ; //{ is_active: false })
-            /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          
+            
+            
+            
+          
+            
+            
+            
             .neq('id', latestAny.id);
 
           const loadedConfig = {
             ...latestAny,
             is_active: true,
-            header_style: (latestAny as any).header_style as 'modern' | 'classic' | 'minimal',
+            header_style: (latestAny as any).header_style as 'modern' | 'classic' | 'minimal',;
           } as BrandingConfig;
           console.log('✅ Configuração mais recente ativada e carregada:', loadedConfig);
           setConfig(loadedConfig);
@@ -106,10 +98,10 @@ export const useBrandingConfig = () => {
             accent_color: '#F59E0B',
             text_color: '#1F2937',
             background_color: '#FFFFFF',
-            header_style: 'modern' as const,
+            header_style: 'modern' as const,;
           };
           setConfig(defaultConfig);
-        }
+
       }
     } catch (error) {
       console.error('💥 Erro ao carregar configuração:', error);
@@ -123,7 +115,7 @@ export const useBrandingConfig = () => {
   }, [currentCompany?.id]);
 
   const uploadFile = async (file: File, type: 'logo' | 'banner'): Promise<string | null> => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não selecionada');
       return null;
     }
@@ -133,15 +125,10 @@ export const useBrandingConfig = () => {
       
       const fileExt = file.name.split('.').pop();
       const timestamp = Date.now();
-      const fileName = `${currentCompany.id}/${type}_${timestamp}.${fileExt}`;
+      const fileName = `${currentCompany.id} catch (error) { console.error('Error:', error); }/${type}_${timestamp}.${fileExt}`;
 
       // Upload para o storage
-      const { data: uploadData, error: uploadError } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'media')
-        .upload(fileName, file, { 
-          upsert: true,
-          contentType: file.type 
-        });
+      const uploadData = null as any; const uploadError = null as any;
 
       if (uploadError) {
         console.error('❌ Erro no upload para storage:', uploadError);
@@ -152,41 +139,19 @@ export const useBrandingConfig = () => {
       console.log('✅ Upload para storage realizado com sucesso:', uploadData.path);
 
       // Obter URL pública
-      const { data: publicUrlData } = /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'media')
+      const { data: publicUrlData  } = null as any;
         .getPublicUrl(fileName);
 
       console.log('🔗 URL pública gerada:', publicUrlData.publicUrl);
 
       // Deletar arquivo anterior do mesmo tipo se existir
-      const { error: deleteError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'media_files')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'file_type', type)
-        /* .eq\( REMOVIDO */ ; //'is_active', true);
-
+      const { error: deleteError  } = null as any;
       if (deleteError) {
         console.warn('⚠️ Aviso ao deletar arquivo anterior:', deleteError);
       }
 
       // Salvar registro na tabela media_files
-      const { data: mediaFile, error: mediaError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'media_files')
-        /* .insert\( REMOVIDO */ ; //{
-          company_id: currentCompany.id,
-          file_name: file.name,
-          file_type: type,
-          file_url: publicUrlData.publicUrl,
-          file_size: file.size,
-          mime_type: file.type,
-          is_active: true,
-        })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (mediaError) {
-        console.error('❌ Erro ao salvar arquivo na base:', mediaError);
+      const mediaFile = null as any; const mediaError = null as any;
         toast.error('Erro ao salvar arquivo na base de dados');
         return null;
       }
@@ -203,7 +168,7 @@ export const useBrandingConfig = () => {
   };
 
   const saveConfig = async (newConfig: Partial<BrandingConfig>) => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não selecionada');
       return false;
     }
@@ -225,105 +190,51 @@ export const useBrandingConfig = () => {
         text_color: newConfig.text_color || config?.text_color || '#1F2937',
         background_color: newConfig.background_color || config?.background_color || '#FFFFFF',
         header_style: newConfig.header_style || config?.header_style || 'modern',
-        is_active: true,
-      };
+        is_active: true,;
+      } catch (error) { console.error('Error:', error); };
 
       console.log('📝 Dados válidos para salvar:', validFields);
 
       // Garantir atualização do registro mais recente para evitar duplicatas
       // Buscar registro existente ativo para a empresa
-      const { data: existing } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data: existing  } = null as any;
       // Atualizar se já existir um registro; caso contrário, inserir um novo
       let targetId = (config?.id || existing?.id) as string | undefined;
 
       if (targetId) {
         // Atualizar registro ativo da empresa (mais robusto que por ID)
-        const { data: updatedRows, error: updErr } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cardapio_branding')
-          /* .update\( REMOVIDO */ ; //{
-            logo_file_id: validFields.logo_file_id,
-            banner_file_id: validFields.banner_file_id,
-            show_logo: validFields.show_logo,
-            show_banner: validFields.show_banner,
-            primary_color: validFields.primary_color,
-            secondary_color: validFields.secondary_color,
-            accent_color: validFields.accent_color,
-            text_color: validFields.text_color,
-            background_color: validFields.background_color,
-            header_style: validFields.header_style,
-            is_active: true,
-          })
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .eq\( REMOVIDO */ ; //'is_active', true)
-          /* .select\( REMOVIDO */ ; //'id');
-
-        if (updErr) {
-          console.error('❌ Erro ao atualizar configuração:', updErr);
+        const updatedRows = null as any; const updErr = null as any;
           toast.error(`Erro ao salvar: ${updErr.message}`);
           return false;
-        }
+
 
         // Se nenhuma linha foi atualizada (registro ativo ausente), força insert
         if (!updatedRows || updatedRows.length === 0) {
-          const { data: inserted, error: insErr } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'cardapio_branding')
-            /* .insert\( REMOVIDO */ ; //validFields)
-            /* .select\( REMOVIDO */ ; //'id')
-            /* .single\( REMOVIDO */ ; //);
-
-          if (insErr) {
-            console.error('❌ Erro ao inserir configuração (fallback):', insErr);
+          const inserted = null as any; const insErr = null as any;
             toast.error(`Erro ao salvar: ${insErr.message}`);
             return false;
-          }
+
           targetId = inserted?.id;
         } else {
           targetId = updatedRows[0]?.id || targetId;
-        }
-      } else {
-        const { data: inserted, error: insErr } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cardapio_branding')
-          /* .insert\( REMOVIDO */ ; //validFields)
-          /* .select\( REMOVIDO */ ; //'id')
-          /* .single\( REMOVIDO */ ; //);
 
-        if (insErr) {
-          console.error('❌ Erro ao inserir configuração:', insErr);
+      } else {
+        const inserted = null as any; const insErr = null as any;
           toast.error(`Erro ao salvar: ${insErr.message}`);
           return false;
-        }
+
         targetId = inserted?.id;
       }
 
       // Desativar outras configurações da mesma empresa
-      /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .update\( REMOVIDO */ ; //{ is_active: false })
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+      
+        
+        
+        
         .neq('id', targetId);
 
       // Buscar o registro mais recente após salvar
-      const { data: latest, error: fetchError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (fetchError) {
-        console.error('❌ Erro ao buscar configuração após salvar:', fetchError);
+      const latest = null as any; const fetchError = null as any;
       }
 
       console.log('✅ Configuração salva no banco:', latest);

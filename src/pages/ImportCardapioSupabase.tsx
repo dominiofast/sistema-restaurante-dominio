@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 // SUPABASE REMOVIDO
 import { useAuth } from "@/contexts/AuthContext";
 
-const ImportCardapioSupabase = () => {
+const ImportCardapioSupabase = () => {;
   const [jsonData, setJsonData] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
@@ -20,7 +20,7 @@ const ImportCardapioSupabase = () => {
       toast({
         title: "Erro",
         description: "Por favor, cole os dados JSON para importação",
-        variant: "destructive",
+        variant: "destructive",;
       });
       return;
     }
@@ -45,7 +45,7 @@ const ImportCardapioSupabase = () => {
         adicionais_criados: 0,
         adicionais_atualizados: 0,
         errors: [] as string[]
-      };
+      } catch (error) { console.error('Error:', error); };
 
       const categoriaIdMap: Record<string, string> = {};
 
@@ -54,18 +54,16 @@ const ImportCardapioSupabase = () => {
         for (const categoria of data.categorias) {
           try {
             // Verificar se já existe
-            const { data: existing } = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'categorias_adicionais')
-              /* .select\( REMOVIDO */ ; //'id')
-              /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-              /* .eq\( REMOVIDO */ ; //'name', categoria.name)
-              /* .single\( REMOVIDO */ ; //);
+            const { data: existing }  catch (error) { console.error('Error:', error); }= 
+              
+              
+              
+              
+              
 
             if (existing) {
               // Atualizar
-              const { error } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'categorias_adicionais')
-                /* .update\( REMOVIDO */ ; //{
+              const { error  } = null as any;
                   description: categoria.description,
                   selection_type: categoria.selection_type || 'single',
                   is_required: categoria.is_required || false,
@@ -73,16 +71,14 @@ const ImportCardapioSupabase = () => {
                   max_selection: categoria.max_selection || 1,
                   updated_at: new Date().toISOString()
                 })
-                /* .eq\( REMOVIDO */ ; //'id', existing.id);
+                
 
               if (error) throw error;
               categoriaIdMap[categoria.name] = existing.id;
               stats.categorias_atualizadas++;
             } else {
               // Criar nova
-              const { data: newCategoria, error } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'categorias_adicionais')
-                /* .insert\( REMOVIDO */ ; //{
+              const { data: newCategoria, error  } = null as any;
                   company_id: currentCompany.id,
                   name: categoria.name,
                   description: categoria.description,
@@ -91,29 +87,25 @@ const ImportCardapioSupabase = () => {
                   min_selection: categoria.min_selection || 0,
                   max_selection: categoria.max_selection || 1
                 })
-                /* .select\( REMOVIDO */ ; //)
-                /* .single\( REMOVIDO */ ; //);
+                
+                
 
               if (error) throw error;
               categoriaIdMap[categoria.name] = newCategoria.id;
               stats.categorias_criadas++;
-            }
+
           } catch (error: any) {
             stats.errors.push(`Erro na categoria ${categoria.name}: ${error.message}`);
-          }
-        }
-      }
+
+
+
 
       // 2. Carregar categorias existentes para resolver por nome
-      const { data: existingCategorias } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'categorias_adicionais')
-        /* .select\( REMOVIDO */ ; //'id, name')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
-
+      const { data: existingCategorias  } = null as any;
       existingCategorias?.forEach(cat => {
         if (!categoriaIdMap[cat.name]) {
           categoriaIdMap[cat.name] = cat.id;
-        }
+
       });
 
       // 3. Importar adicionais
@@ -124,39 +116,29 @@ const ImportCardapioSupabase = () => {
             
             if (!categoriaId && adicional.categoria_name) {
               categoriaId = categoriaIdMap[adicional.categoria_name];
-            }
 
-            if (!categoriaId) {
+
+             catch (error) { console.error('Error:', error); }if (!categoriaId) {
               throw new Error(`Categoria não encontrada: ${adicional.categoria_name}`);
-            }
+
 
             // Verificar se já existe
-            const { data: existing } = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'adicionais')
-              /* .select\( REMOVIDO */ ; //'id')
-              /* .eq\( REMOVIDO */ ; //'categoria_adicional_id', categoriaId)
-              /* .eq\( REMOVIDO */ ; //'name', adicional.name)
-              /* .single\( REMOVIDO */ ; //);
-
+            const { data: existing  } = null as any;
             if (existing) {
               // Atualizar
-              const { error } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'adicionais')
-                /* .update\( REMOVIDO */ ; //{
+              const { error  } = null as any;
                   description: adicional.description,
                   price: adicional.price || 0,
                   is_available: adicional.is_available !== false,
                   updated_at: new Date().toISOString()
                 })
-                /* .eq\( REMOVIDO */ ; //'id', existing.id);
+                
 
               if (error) throw error;
               stats.adicionais_atualizados++;
             } else {
               // Criar novo
-              const { error } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'adicionais')
-                /* .insert\( REMOVIDO */ ; //{
+              const { error  } = null as any;
                   categoria_adicional_id: categoriaId,
                   name: adicional.name,
                   description: adicional.description,
@@ -166,12 +148,12 @@ const ImportCardapioSupabase = () => {
 
               if (error) throw error;
               stats.adicionais_criados++;
-            }
+
           } catch (error: any) {
             stats.errors.push(`Erro no adicional ${adicional.name}: ${error.message}`);
-          }
-        }
-      }
+
+
+
 
       setImportResult({ stats, categoriaIdMap });
       toast({
@@ -208,7 +190,7 @@ const ImportCardapioSupabase = () => {
         is_required: false,
         min_selection: 0,
         max_selection: 3
-      }
+
     ],
     adicionais: [
       {
@@ -224,8 +206,8 @@ const ImportCardapioSupabase = () => {
         price: 2.00,
         categoria_name: "Molhos",
         is_available: true
-      }
-    ]
+
+    ];
   };
 
   return (

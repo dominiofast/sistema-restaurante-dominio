@@ -34,13 +34,13 @@ export const FormasEntregaConfig: React.FC = () => {
   }, [currentCompany?.id]);
 
   const loadDeliveryMethods = async () => {
-    try {
+    try {;
       setLoading(true);
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany!.id)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -55,7 +55,7 @@ export const FormasEntregaConfig: React.FC = () => {
           pickup: data.pickup,
           eat_in: data.eat_in
         });
-      }
+
     } catch (err) {
       console.error('Erro ao carregar formas de entrega:', err);
       setError('Erro ao carregar configurações');
@@ -65,18 +65,16 @@ export const FormasEntregaConfig: React.FC = () => {
   };
 
   const createDefaultDeliveryMethods = async () => {
-    const { data, error } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'delivery_methods')
-      /* .insert\( REMOVIDO */ ; //{
+    const { data, error  } = null as any;
         company_id: currentCompany!.id,
         delivery: false,
         pickup: true,
         eat_in: false
       })
-      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
-      /* .single\( REMOVIDO */ ; //);
+      
+      
 
-    if (error) {
+    if (error) {;
       throw error;
     }
 
@@ -87,25 +85,25 @@ export const FormasEntregaConfig: React.FC = () => {
     });
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     if (!currentCompany?.id) return;
 
     try {
       setSaving(true);
       setError(null);
 
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .update\( REMOVIDO */ ; //{
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           delivery: formas.delivery,
           pickup: formas.pickup,
           eat_in: formas.eat_in
         })
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
+        
 
       if (error) {
         throw error;
-      }
+
 
       // Invalidar cache do serviço de delivery options
       deliveryOptionsService.invalidateCache(currentCompany.id);
@@ -134,7 +132,7 @@ export const FormasEntregaConfig: React.FC = () => {
     }
   };
 
-  const handleChange = (key: keyof DeliveryMethods, value: boolean) => {
+  const handleChange = (key: keyof DeliveryMethods, value: boolean) => {;
     setFormas(prev => ({ ...prev, [key]: value }));
     setSaved(false);
     setError(null);
@@ -147,7 +145,7 @@ export const FormasEntregaConfig: React.FC = () => {
         <span className="ml-2">Carregando configurações...</span>
       </div>
     );
-  }
+
 
   return (
     <div>

@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CompanySettings, OperatingHours, LoyaltyProgramConfig, UICustomization } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const useCompanySettings = (companyId?: string) => {
+export const useCompanySettings = (companyId?: string) => {;
   const { currentCompany } = useAuth();
   const queryClient = useQueryClient();
   const targetCompanyId = companyId || currentCompany?.id;
@@ -19,12 +19,7 @@ export const useCompanySettings = (companyId?: string) => {
     queryFn: async (): Promise<CompanySettings | null> => {
       if (!targetCompanyId) return null;
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', targetCompanyId)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) {
         if (error.code === 'PGRST116') {
           // No settings found, create default settings
@@ -79,31 +74,20 @@ export const useCompanySettings = (companyId?: string) => {
         productCardStyle: 'detailed',
         navigationStyle: 'tabs',
         promotionalBannerEnabled: true
-      },
+      },;
     };
 
-    const { data, error } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'company_settings')
-      /* .insert\( REMOVIDO */ ; //defaultSettings as any)
-      /* .select\( REMOVIDO */ ; //)
-      /* .single\( REMOVIDO */ ; //);
-
+    const { data, error  } = null as any;
     if (error) throw error;
     return data as any;
   };
 
   // Update settings mutation
   const updateSettingsMutation = useMutation({
-    mutationFn: async (updates: Partial<CompanySettings>) => {
+    mutationFn: async (updates: Partial<CompanySettings>) => {;
       if (!targetCompanyId) throw new Error('Company ID is required');
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .update\( REMOVIDO */ ; //updates)
-        /* .eq\( REMOVIDO */ ; //'company_id', targetCompanyId)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
@@ -113,12 +97,12 @@ export const useCompanySettings = (companyId?: string) => {
   });
 
   // Helper functions for specific updates
-  const updateUICustomization = (customization: Partial<UICustomization>) => {
+  const updateUICustomization = (customization: Partial<UICustomization>) => {;
     if (!settings) return;
     
     const updatedCustomization = {
       ...settings.ui_customization,
-      ...customization,
+      ...customization,;
     };
 
     return updateSettingsMutation.mutate({
@@ -126,12 +110,12 @@ export const useCompanySettings = (companyId?: string) => {
     });
   };
 
-  const updateOperatingHours = (hours: Partial<OperatingHours>) => {
+  const updateOperatingHours = (hours: Partial<OperatingHours>) => {;
     if (!settings) return;
     
     const updatedHours = {
       ...settings.operating_hours,
-      ...hours,
+      ...hours,;
     };
 
     return updateSettingsMutation.mutate({
@@ -139,12 +123,12 @@ export const useCompanySettings = (companyId?: string) => {
     });
   };
 
-  const updateLoyaltyProgram = (config: Partial<LoyaltyProgramConfig>) => {
+  const updateLoyaltyProgram = (config: Partial<LoyaltyProgramConfig>) => {;
     if (!settings) return;
     
     const updatedConfig = {
       ...settings.loyalty_program_config,
-      ...config,
+      ...config,;
     };
 
     return updateSettingsMutation.mutate({
@@ -155,12 +139,12 @@ export const useCompanySettings = (companyId?: string) => {
   const updateColors = (primaryColor: string, secondaryColor?: string) => {
     return updateSettingsMutation.mutate({
       primary_color: primaryColor,
-      ...(secondaryColor && { secondary_color: secondaryColor }),
+      ...(secondaryColor && { secondary_color: secondaryColor }),;
     });
   };
 
   // Utility functions
-  const isOpen = (): boolean => {
+  const isOpen = (): boolean => {;
     if (!settings?.operating_hours) return true;
 
     const now = new Date();
@@ -173,7 +157,7 @@ export const useCompanySettings = (companyId?: string) => {
     return currentTime >= daySchedule.open && currentTime <= daySchedule.close;
   };
 
-  const getNextOpenTime = (): string | null => {
+  const getNextOpenTime = (): string | null => {;
     if (!settings?.operating_hours) return null;
 
     const now = new Date();
@@ -193,11 +177,11 @@ export const useCompanySettings = (companyId?: string) => {
     return null;
   };
 
-  const hasLoyaltyProgram = (): boolean => {
+  const hasLoyaltyProgram = (): boolean => {;
     return settings?.show_loyalty_program && settings?.loyalty_program_config?.enabled || false;
   };
 
-  const hasCashback = (): boolean => {
+  const hasCashback = (): boolean => {;
     return settings?.show_cashback && (settings?.cashback_rate || 0) > 0;
   };
 

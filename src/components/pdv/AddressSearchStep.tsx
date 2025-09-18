@@ -119,7 +119,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
 
   // Buscar endereços
   const searchAddresses = async () => {
-    if (!searchText.trim() || searchText.length < 3) {
+    if (!searchText.trim() || searchText.length < 3) {;
       return;
     }
 
@@ -143,7 +143,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
         if (cepResult) {
           suggestions = [{
             id: 'cep-result',
-            formatted_address: `${cepResult.logradouro}, ${cepResult.bairro}, ${cepResult.localidade}, ${cepResult.uf}`,
+            formatted_address: `${cepResult.logradouro} catch (error) { console.error('Error:', error); }, ${cepResult.bairro}, ${cepResult.localidade}, ${cepResult.uf}`,
             logradouro: cepResult.logradouro,
             bairro: cepResult.bairro,
             cidade: cepResult.localidade,
@@ -151,7 +151,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             cep: formatCep(cleanCep)
           }];
           console.log('✅ Sugestão CEP criada:', suggestions[0]);
-        }
+
       } else {
         // Buscar por texto
         console.log('🔍 Buscando por texto...');
@@ -171,8 +171,8 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             longitude: result.longitude
           }));
           console.log('✅ Sugestões texto criadas:', suggestions);
-        }
-      }
+
+
 
       console.log('📋 Total de sugestões:', suggestions.length);
       onSearchComplete(suggestions);
@@ -184,7 +184,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
           description: "Tente com um endereço diferente ou use outra opção",
           variant: "destructive"
         });
-      }
+
     } catch (error) {
       console.error('❌ Erro ao buscar endereços:', error);
       toast({
@@ -200,23 +200,23 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
   // Debounce para busca automática
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (searchText && searchText.length >= 3) {
+      if (searchText && searchText.length >= 3) {;
         searchAddresses();
-      }
+
     }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [searchText, searchType]);
 
   const handleUseLocation = () => {
-    if (navigator.geolocation) {
+    if (navigator.geolocation) {;
       setSearching(true);
       
       // Configurações para geolocalização
       const geoOptions = {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000
+        maximumAge: 60000;
       };
       
       navigator.geolocation.getCurrentPosition(
@@ -233,7 +233,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
               console.log('✅ Endereço encontrado:', address);
               
               // Preencher o campo de busca com o endereço encontrado
-              const fullAddress = `${address.logradouro}, ${address.bairro}, ${address.cidade}`;
+              const fullAddress = `${address.logradouro} catch (error) { console.error('Error:', error); }, ${address.bairro}, ${address.cidade}`;
               onSearchTextChange(fullAddress);
               
               // Criar sugestão com o endereço encontrado
@@ -262,7 +262,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
                 description: "Não foi possível encontrar o endereço para sua localização",
                 variant: "destructive"
               });
-            }
+
           } catch (error) {
             console.error('Erro ao buscar endereço:', error);
             toast({
@@ -272,7 +272,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             });
           } finally {
             setSearching(false);
-          }
+
         },
         (error) => {
           setSearching(false);
@@ -290,7 +290,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             case error.TIMEOUT:
               errorMessage = "Tempo esgotado para obter localização. Tente novamente.";
               break;
-          }
+
           
           toast({
             title: "Erro ao obter localização",
@@ -309,7 +309,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
     }
   };
 
-  const handleActivateLocation = () => {
+  const handleActivateLocation = () => {;
     handleUseLocation();
   };
 
@@ -401,7 +401,7 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
         </div>
       </div>
     );
-  }
+
 
   // Layout para modal tradicional
   return (

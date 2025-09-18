@@ -30,7 +30,7 @@ interface ClienteEncontradoProps {
   onNovoEndereco: () => void;
   onFechar: () => void;
   onDeleteAddress?: (addressId: string) => Promise<boolean>;
-}
+
 
 export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
   cliente,
@@ -46,7 +46,7 @@ export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
   const [validatingAddressId, setValidatingAddressId] = useState<string | null>(null);
   const [deletingAddressId, setDeletingAddressId] = useState<string | null>(null);
 
-  const handleDeliveryClick = async (endereco: CustomerAddress) => {
+  const handleDeliveryClick = async (endereco: CustomerAddress) => {;
     if (!endereco.id) return;
     
     setValidatingAddressId(endereco.id);
@@ -61,7 +61,7 @@ export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
           title: "Endereço fora da área de atendimento",
           description: validation.message || "Este endereço não está mais dentro da nossa área de entrega.",
           variant: "destructive"
-        });
+        } catch (error) { console.error('Error:', error); });
         return;
       }
       
@@ -77,9 +77,9 @@ export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
       });
     } finally {
       setValidatingAddressId(null);
-    }
+
   };
-  const handleDeleteAddress = async (addressId: string) => {
+  const handleDeleteAddress = async (addressId: string) => {;
     if (!onDeleteAddress) return;
     
     setDeletingAddressId(addressId);
@@ -91,7 +91,7 @@ export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
         toast({
           title: "Endereço excluído",
           description: "O endereço foi removido com sucesso.",
-        });
+        } catch (error) { console.error('Error:', error); });
       } else {
         toast({
           title: "Erro ao excluir",
@@ -107,7 +107,7 @@ export const ClienteEncontrado: React.FC<ClienteEncontradoProps> = ({
       });
     } finally {
       setDeletingAddressId(null);
-    }
+
   };
 
   return (

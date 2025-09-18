@@ -20,7 +20,7 @@ interface RecentCompany {
   owner_email?: string;
 }
 
-const SuperAdminDashboard = () => {
+const SuperAdminDashboard = () => {;
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stat[]>([]);
@@ -28,7 +28,7 @@ const SuperAdminDashboard = () => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      try {
+      try {;
         setLoading(true);
         
         // Buscar dados via APIs do Neon
@@ -36,7 +36,7 @@ const SuperAdminDashboard = () => {
           fetch('/api/companies', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-          }),
+           catch (error) { console.error('Error:', error); }}),
           fetch('/api/companies', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
@@ -45,18 +45,18 @@ const SuperAdminDashboard = () => {
 
         if (!companiesResponse.ok || !recentCompaniesResponse.ok) {
           throw new Error('Erro ao buscar dados do dashboard');
-        }
+
 
         const companiesResult = await companiesResponse.json();
         const recentCompaniesResult = await recentCompaniesResponse.json();
 
         if (!companiesResult.success || !recentCompaniesResult.success) {
           throw new Error('Erro na resposta da API');
-        }
+
 
         const totalCompanies = companiesResult.data?.length || 0;
         const recentCompaniesList = (recentCompaniesResult.data || [])
-          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
           .slice(0, 5);
         
         setRecentCompanies(recentCompaniesList);
@@ -79,7 +79,7 @@ const SuperAdminDashboard = () => {
         toast.error('Não foi possível carregar os dados do dashboard.');
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchDashboardData();
@@ -91,7 +91,7 @@ const SuperAdminDashboard = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-6 space-y-8">

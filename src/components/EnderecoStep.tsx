@@ -52,16 +52,16 @@ export default function EnderecoStep() {
       // Atualizar coordenadas para o mapa
       if (address.latitude && address.longitude) {
         setCoordenadas({ lat: address.latitude, lng: address.longitude });
-      }
-    }
+
+
   }, [address]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {;
     const cep = e.target.value;
     setForm(prev => ({ ...prev, cep }));
 
@@ -78,33 +78,33 @@ export default function EnderecoStep() {
             bairro: addressData.bairro,
             cidade: addressData.cidade,
             estado: addressData.estado
-          }));
+          } catch (error) { console.error('Error:', error); }));
         }
       } catch (err) {
         console.error('Erro ao buscar CEP:', err);
       } finally {
         setBuscandoCep(false);
-      }
-    }
+
+
   };
 
   // Função para buscar coordenadas do endereço usando a API do Google Maps
   const buscarCoordenadasEndereco = async () => {
-    if (!form.logradouro || !form.cidade || !form.estado) {
+    if (!form.logradouro || !form.cidade || !form.estado) {;
       alert('Preencha pelo menos logradouro, cidade e estado para buscar as coordenadas');
       return;
-    }
+
 
     setBuscandoEndereco(true);
     try {
-      const enderecoCompleto = `${form.logradouro}, ${form.numero}, ${form.bairro}, ${form.cidade}, ${form.estado}`;
+      const enderecoCompleto = `${form.logradouro} catch (error) { console.error('Error:', error); }, ${form.numero}, ${form.bairro}, ${form.cidade}, ${form.estado}`;
       console.log('Buscando coordenadas para:', enderecoCompleto);
 
       // Verificar se temos a API key
       if (!apiKey) {
         alert('API key do Google Maps não configurada');
         return;
-      }
+
 
       const encodedAddress = encodeURIComponent(enderecoCompleto + ', Brasil');
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`;
@@ -142,14 +142,14 @@ export default function EnderecoStep() {
       alert('Erro ao buscar coordenadas. Tente novamente.');
     } finally {
       setBuscandoEndereco(false);
-    }
+
   };
 
   const handleSalvar = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       console.error('Company ID não encontrado');
       return;
-    }
+
 
     console.log('Iniciando salvamento do endereço');
     setSalvo(true);
@@ -166,7 +166,7 @@ export default function EnderecoStep() {
       hide_from_customers: form.mostrarEndereco === 'true',
       manual_coordinates: form.informarLatLng === 'true',
       latitude: form.latitude ? parseFloat(form.latitude) : undefined,
-      longitude: form.longitude ? parseFloat(form.longitude) : undefined
+      longitude: form.longitude ? parseFloat(form.longitude) : undefined;
     };
     
     console.log('Dados do formulário a serem salvos:', addressData);
@@ -178,7 +178,7 @@ export default function EnderecoStep() {
     } else {
       console.error('Erro ao salvar endereço');
       setSalvo(false);
-    }
+
   };
 
   if (loading) return <div className="text-center text-slate-400 py-8">Carregando endereço...</div>;
@@ -537,4 +537,4 @@ export default function EnderecoStep() {
       </div>
     </div>
   );
-}
+

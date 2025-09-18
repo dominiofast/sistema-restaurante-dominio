@@ -40,7 +40,7 @@ const Cashback: React.FC = () => {
   }, [config]);
 
   const handleSaveConfig = () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.error('Company ID não encontrado');
       return;
     }
@@ -54,7 +54,7 @@ const Cashback: React.FC = () => {
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL';
     }).format(value);
   };
 

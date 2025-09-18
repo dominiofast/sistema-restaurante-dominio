@@ -2,13 +2,13 @@
 
 export const SECURITY_HEADERS = {
   // Content Security Policy - previne XSS
-  'Content-Security-Policy': 
+  'Content-Security-Policy': ;
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*./* supabase REMOVIDO */ null; //co; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:/
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' https:; " +
-    "connect-src 'self' https://*./* supabase REMOVIDO */ null; //co wss://*./* supabase REMOVIDO */ null; //co; " +
+    "connect-src 'self' https:/
     "media-src 'self'; " +
     "object-src 'none'; " +
     "frame-src 'none'; " +
@@ -39,7 +39,7 @@ export const SECURITY_HEADERS = {
 export const addSecurityHeaders = (headers: Record<string, string> = {}): Record<string, string> => {
   return {
     ...headers,
-    ...SECURITY_HEADERS
+    ...SECURITY_HEADERS;
   };
 };
 
@@ -47,7 +47,7 @@ export const addSecurityHeaders = (headers: Record<string, string> = {}): Record
 export const sanitizeInput = (input: string): string => {
   return input
     .replace(/[<>'"&]/g, (char) => {
-      const entities: Record<string, string> = {
+      const entities: Record<string, string> = {;
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
@@ -59,7 +59,7 @@ export const sanitizeInput = (input: string): string => {
 };
 
 // Validação de email mais rigorosa
-export const isValidEmail = (email: string): boolean => {
+export const isValidEmail = (email: string): boolean => {;
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email) && email.length <= 254;
 };
@@ -124,7 +124,7 @@ class FrontendRateLimit {
   }
   
   reset(key: string): void {
-    this.attempts/* .delete\( REMOVIDO */ ; //key);
+    this.attempts
   }
 }
 

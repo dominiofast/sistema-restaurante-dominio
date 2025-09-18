@@ -15,16 +15,16 @@ interface ShortLink {
   is_active: boolean;
 }
 
-const LinksCurtos = () => {
+const LinksCurtos = () => {;
   const [links, setLinks] = useState<ShortLink[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   const loadLinks = async () => {
-    try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //"short_links")
-        /* .select\( REMOVIDO */ ; //`
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           id,
           short_id,
           target_slug,
@@ -32,7 +32,7 @@ const LinksCurtos = () => {
           is_active,
           companies (name)
         `)
-        /* .order\( REMOVIDO */ ; //"created_at", { ascending: false });
+        
 
       if (error) throw error;
 
@@ -42,7 +42,7 @@ const LinksCurtos = () => {
         target_slug: link.target_slug,
         clicks_count: link.clicks_count,
         is_active: link.is_active,
-        company_name: link.companies?.name || "Empresa não encontrada"
+        company_name: link.companies?.name || "Empresa não encontrada";
       })) || [];
 
       setLinks(formattedLinks);
@@ -55,14 +55,14 @@ const LinksCurtos = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   useEffect(() => {
     loadLinks();
   }, []);
 
-  const copyToClipboard = (shortId: string) => {
+  const copyToClipboard = (shortId: string) => {;
     const url = `https://pedido.dominio.tech/c/${shortId}`;
     navigator.clipboard.writeText(url);
     toast({
@@ -71,7 +71,7 @@ const LinksCurtos = () => {
     });
   };
 
-  const openLink = (shortId: string) => {
+  const openLink = (shortId: string) => {;
     const url = `https://pedido.dominio.tech/c/${shortId}`;
     window.open(url, '_blank');
   };
@@ -87,7 +87,7 @@ const LinksCurtos = () => {
         </CardHeader>
       </Card>
     );
-  }
+
 
   return (
     <div className="space-y-6">

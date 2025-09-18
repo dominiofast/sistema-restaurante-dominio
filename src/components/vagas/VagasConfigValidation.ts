@@ -10,10 +10,10 @@ export interface VagasConfig {
   slug: string;
   title_color: string;
   welcome_message?: string;
-}
+
 
 export const validateVagasConfig = (config: Partial<VagasConfig>): string | null => {
-  if (!config.page_title?.trim()) {
+  if (!config.page_title?.trim()) {;
     return 'Título da página é obrigatório';
   }
 
@@ -24,7 +24,7 @@ export const validateVagasConfig = (config: Partial<VagasConfig>): string | null
   return null;
 };
 
-export const generateSlugFromCompany = (currentCompany: any): string => {
+export const generateSlugFromCompany = (currentCompany: any): string => {;
   if (!currentCompany) return 'minha-empresa';
   
   // Primeiro tenta usar o slug existente da empresa
@@ -44,7 +44,7 @@ export const generateSlugFromCompany = (currentCompany: any): string => {
     .replace(/[\u0300-\u036f]/g, '') // Remove acentos
     .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove caracteres especiais
     .replace(/\s+/g, '-') // Substitui espaços por hífens
-    .replace(/-+/g, '-') // Remove hífens duplicados
+    .replace(/-+/g, '-') // Remove hífens duplicados;
     .replace(/^-|-$/g, ''); // Remove hífens do início e fim
   
   const fullSlug = storeCode ? `${baseSlug}-${storeCode}` : baseSlug;
@@ -52,6 +52,6 @@ export const generateSlugFromCompany = (currentCompany: any): string => {
   return fullSlug || 'minha-empresa';
 };
 
-export const sanitizeSlug = (slug: string): string => {
+export const sanitizeSlug = (slug: string): string => {;
   return slug.toLowerCase().replace(/[^a-z0-9-]/g, '');
 };

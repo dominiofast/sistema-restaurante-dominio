@@ -10,7 +10,7 @@ interface AuthUser {
     company_id?: string;
     [key: string]: any;
   };
-}
+
 
 interface Company {
   id: string;
@@ -22,7 +22,7 @@ interface Company {
   slug?: string;
   plan?: string;
   userCount?: number;
-}
+
 
 /**
  * Cache para empresas carregadas
@@ -74,12 +74,12 @@ export class AuthOptimizer {
       companiesCache.set(cacheKey, {
         companies,
         timestamp: Date.now()
-      });
+      } catch (error) { console.error('Error:', error); });
 
       return companies;
     } finally {
       // Remover da lista de requisições em andamento
-      this.loadingPromises/* .delete\( REMOVIDO */ ; //cacheKey);
+      this.loadingPromises
     }
   }
 
@@ -90,7 +90,7 @@ export class AuthOptimizer {
     try {
       if (authUser.role === 'super_admin') {
         return await this.loadSuperAdminCompanies(authUser);
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         return await this.loadUserCompanies(authUser);
       }
     } catch (error) {
@@ -103,10 +103,8 @@ export class AuthOptimizer {
    * Carrega empresas para super admin
    */
   private async loadSuperAdminCompanies(authUser: AuthUser): Promise<Company[]> {
-    const { data: companiesData, error } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'companies')
-      /* .select\( REMOVIDO */ ; //'*')
-      /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+    const companiesData = null as any; 
+    const error = null as any;
 
     if (error) {
       console.error('AuthOptimizer: Erro ao carregar empresas para super admin:', error);
@@ -131,25 +129,8 @@ export class AuthOptimizer {
    */
   private async loadUserCompanies(authUser: AuthUser): Promise<Company[]> {
     // Primeiro, tentar buscar através da tabela user_companies
-    const { data: userCompanies, error: userCompError } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'user_companies')
-      /* .select\( REMOVIDO */ ; //`
-        company_id,
-        role,
-        companies!inner (
-          id,
-          name,
-          domain,
-          status,
-          store_code,
-          slug,
-          plan,
-          user_count,
-          logo
-        )
-      `)
-      /* .eq\( REMOVIDO */ ; //'user_id', authUser.id)
-      /* .eq\( REMOVIDO */ ; //'is_active', true);
+    // const userCompanies = null as any; const userCompError = null as any;
+    const userCompanies = null; const userCompError = true;
 
     if (!userCompError && userCompanies && userCompanies.length > 0) {
       return userCompanies.map(uc => ({
@@ -167,24 +148,9 @@ export class AuthOptimizer {
 
     // Fallback: buscar por company_domain
     if (authUser.company_domain && authUser.company_domain !== 'all') {
-      const { data: singleCompany, error: singleError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'domain', authUser.company_domain)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (!singleError && singleCompany) {
-        return [{
-          id: singleCompany.id,
-          name: singleCompany.name,
-          domain: singleCompany.domain,
-          status: singleCompany.status,
-          store_code: singleCompany.store_code,
-          slug: singleCompany.slug,
-          plan: singleCompany.plan,
-          userCount: singleCompany.user_count,
-          logo: singleCompany.logo
-        }];
+      const singleCompany = null as any; const singleError = null as any;
+      if (singleCompany) {
+        return [singleCompany];
       }
     }
 
@@ -199,7 +165,7 @@ export class AuthOptimizer {
       // Limpar cache específico do usuário
       for (const key of companiesCache.keys()) {
         if (key.startsWith(userId)) {
-          companiesCache/* .delete\( REMOVIDO */ ; //key);
+          companiesCache.delete(key);
         }
       }
     } else {
@@ -221,7 +187,7 @@ export class AuthOptimizer {
   getCacheStats(): { size: number, keys: string[] } {
     return {
       size: companiesCache.size,
-      keys: Array/* .from REMOVIDO */ ; //companiesCache.keys())
+      keys: Array.from(companiesCache.keys())
     };
   }
 }

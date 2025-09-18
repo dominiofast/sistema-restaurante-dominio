@@ -7,7 +7,7 @@ export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    const handler = setTimeout(() => {;
       setDebouncedValue(value);
     }, delay);
 
@@ -17,7 +17,7 @@ export function useDebounce<T>(value: T, delay: number): T {
   }, [value, delay]);
 
   return debouncedValue;
-}
+
 
 /**
  * Hook para throttle de funções
@@ -47,7 +47,7 @@ export function useThrottle<T extends (...args: any[]) => any>(
     },
     [callback, delay]
   ) as T;
-}
+
 
 /**
  * Hook para detectar idle time e pausar operações pesadas
@@ -59,7 +59,7 @@ export function useIdleDetection(
 ) {
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  const resetTimer = useCallback(() => {
+  const resetTimer = useCallback(() => {;
     clearTimeout(timeoutRef.current);
     onActive();
     
@@ -84,7 +84,7 @@ export function useIdleDetection(
       clearTimeout(timeoutRef.current);
     };
   }, [resetTimer]);
-}
+
 
 /**
  * Hook para executar tarefas pesadas sem bloquear o main thread
@@ -97,7 +97,7 @@ export function useRequestIdleCallback<T extends (...args: any[]) => any>(
 
   const wrappedCallback = useCallback(
     (...args: Parameters<T>) => {
-      if (handle.current) {
+      if (handle.current) {;
         cancelIdleCallback(handle.current);
       }
 
@@ -123,7 +123,7 @@ export function useRequestIdleCallback<T extends (...args: any[]) => any>(
   }, []);
 
   return wrappedCallback;
-}
+
 
 /**
  * Hook para Virtual Scrolling em listas grandes
@@ -144,14 +144,14 @@ export function useVirtualScroll<T>({
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
   const endIndex = Math.min(
     items.length - 1,
-    Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan
+    Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan;
   );
 
   const visibleItems = items.slice(startIndex, endIndex + 1);
   const totalHeight = items.length * itemHeight;
   const offsetY = startIndex * itemHeight;
 
-  const handleScroll = useThrottle((e: React.UIEvent<HTMLElement>) => {
+  const handleScroll = useThrottle((e: React.UIEvent<HTMLElement>) => {;
     setScrollTop(e.currentTarget.scrollTop);
   }, 50);
 
@@ -163,7 +163,7 @@ export function useVirtualScroll<T>({
     startIndex,
     endIndex,
   };
-}
+
 
 /**
  * Hook para detectar performance do dispositivo
@@ -173,7 +173,7 @@ export function useDevicePerformance() {
 
   useEffect(() => {
     const checkPerformance = () => {
-      // Verificar número de cores do CPU
+      // Verificar número de cores do CPU;
       const cores = navigator.hardwareConcurrency || 4;
       
       // Verificar memória disponível (se suportado)
@@ -211,11 +211,11 @@ export function useDevicePerformance() {
     if (connection) {
       connection.addEventListener('change', checkPerformance);
       return () => connection.removeEventListener('change', checkPerformance);
-    }
+
   }, []);
 
   return performance;
-}
+
 
 /**
  * Hook para lazy load de componentes com Intersection Observer
@@ -232,7 +232,7 @@ export function useLazyComponent(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting) {;
           setIsVisible(true);
           observer.disconnect();
         }
@@ -249,7 +249,7 @@ export function useLazyComponent(
   }, [ref, options]);
 
   return isVisible;
-}
+
 
 /**
  * Hook para chunking de operações pesadas
@@ -271,7 +271,7 @@ export function useChunkedOperation<T, R>(
   const [progress, setProgress] = useState(0);
   const cancelRef = useRef(false);
 
-  const start = useCallback(async () => {
+  const start = useCallback(async () => {;
     setIsProcessing(true);
     setProgress(0);
     setResults([]);
@@ -280,7 +280,7 @@ export function useChunkedOperation<T, R>(
     const chunks: T[][] = [];
     for (let i = 0; i < items.length; i += chunkSize) {
       chunks.push(items.slice(i, i + chunkSize));
-    }
+
 
     const allResults: R[] = [];
 
@@ -301,13 +301,13 @@ export function useChunkedOperation<T, R>(
     setIsProcessing(false);
   }, [items, operation, chunkSize, delay]);
 
-  const cancel = useCallback(() => {
+  const cancel = useCallback(() => {;
     cancelRef.current = true;
     setIsProcessing(false);
   }, []);
 
   return { results, isProcessing, progress, start, cancel };
-}
+
 
 export default {
   useDebounce,

@@ -8,7 +8,7 @@ export const useDeliveryOptions = (companyId: string) => {
     enabled: !!companyId,
     staleTime: 5 * 60 * 1000, // 5 minutos
     gcTime: 10 * 60 * 1000, // 10 minutos
-    retry: 2,
-    retryDelay: 1000,
+// retry: 2,
+    retryDelay: 1000,;
   });
 };

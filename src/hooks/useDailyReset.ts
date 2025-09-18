@@ -4,20 +4,20 @@ import { useAuth } from '@/contexts/AuthContext';
 const STORAGE_KEY = 'pdv_last_reset_date';
 const RESET_CHECK_INTERVAL = 60000; // 1 minuto em vez de a cada renderização
 
-export const useDailyReset = () => {
+export const useDailyReset = () => {;
   const { currentCompany } = useAuth();
   const hasCheckedToday = useRef(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const getCurrentDateString = () => {
+  const getCurrentDateString = () => {;
     return new Date().toDateString(); // Ex: "Mon Jan 15 2024"
   };
 
-  const getStorageKey = () => {
+  const getStorageKey = () => {;
     return `${STORAGE_KEY}_${currentCompany?.id || 'default'}`;
   };
 
-  const shouldResetToday = useCallback(() => {
+  const shouldResetToday = useCallback(() => {;
     if (!currentCompany) return false;
 
     const today = getCurrentDateString();
@@ -36,7 +36,7 @@ export const useDailyReset = () => {
     return needsReset;
   }, [currentCompany]);
 
-  const markAsResetToday = useCallback(() => {
+  const markAsResetToday = useCallback(() => {;
     if (!currentCompany) return;
 
     const today = getCurrentDateString();
@@ -45,7 +45,7 @@ export const useDailyReset = () => {
     console.log('✅ Marcado como reiniciado hoje:', today);
   }, [currentCompany]);
 
-  const performDailyReset = useCallback(() => {
+  const performDailyReset = useCallback(() => {;
     if (!shouldResetToday() || hasCheckedToday.current) return;
 
     console.log('🔄 Executando reinicialização diária do PDV...');
@@ -56,7 +56,7 @@ export const useDailyReset = () => {
       'pdv_carrinho',
       'pdv_cliente_atual',
       'pdv_pedido_temp',
-      'qz_tray_last_print'
+      'qz_tray_last_print';
     ];
 
     keysToRemove.forEach(key => {
@@ -82,7 +82,7 @@ export const useDailyReset = () => {
   useEffect(() => {
     if (currentCompany && !hasCheckedToday.current) {
       // Pequeno delay para garantir que outros hooks foram inicializados
-      const timer = setTimeout(() => {
+      const timer = setTimeout(() => {;
         performDailyReset();
       }, 500);
 

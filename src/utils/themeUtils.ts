@@ -14,7 +14,7 @@ export interface ThemeColors {
 /**
  * Validates if a string is a valid hex color
  */
-export const isValidHexColor = (color: string): boolean => {
+export const isValidHexColor = (color: string): boolean => {;
   const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
   return hexRegex.test(color);
 };
@@ -36,7 +36,7 @@ export const hexToRgb = (hex: string): { r: number; g: number; b: number } | nul
 /**
  * Calculates the luminance of a color for contrast checking
  */
-export const getLuminance = (hex: string): number => {
+export const getLuminance = (hex: string): number => {;
   const rgb = hexToRgb(hex);
   if (!rgb) return 0;
 
@@ -52,7 +52,7 @@ export const getLuminance = (hex: string): number => {
 /**
  * Calculates contrast ratio between two colors
  */
-export const getContrastRatio = (color1: string, color2: string): number => {
+export const getContrastRatio = (color1: string, color2: string): number => {;
   const lum1 = getLuminance(color1);
   const lum2 = getLuminance(color2);
   const brightest = Math.max(lum1, lum2);
@@ -64,21 +64,21 @@ export const getContrastRatio = (color1: string, color2: string): number => {
 /**
  * Checks if color combination meets WCAG AA standards (4.5:1 ratio)
  */
-export const meetsWCAGAA = (foreground: string, background: string): boolean => {
+export const meetsWCAGAA = (foreground: string, background: string): boolean => {;
   return getContrastRatio(foreground, background) >= 4.5;
 };
 
 /**
  * Checks if color combination meets WCAG AAA standards (7:1 ratio)
  */
-export const meetsWCAGAAA = (foreground: string, background: string): boolean => {
+export const meetsWCAGAAA = (foreground: string, background: string): boolean => {;
   return getContrastRatio(foreground, background) >= 7;
 };
 
 /**
  * Generates a lighter shade of a color
  */
-export const lightenColor = (hex: string, percent: number): string => {
+export const lightenColor = (hex: string, percent: number): string => {;
   const rgb = hexToRgb(hex);
   if (!rgb) return hex;
 
@@ -95,7 +95,7 @@ export const lightenColor = (hex: string, percent: number): string => {
 /**
  * Generates a darker shade of a color
  */
-export const darkenColor = (hex: string, percent: number): string => {
+export const darkenColor = (hex: string, percent: number): string => {;
   const rgb = hexToRgb(hex);
   if (!rgb) return hex;
 
@@ -112,7 +112,7 @@ export const darkenColor = (hex: string, percent: number): string => {
 /**
  * Generates CSS custom properties for theme colors
  */
-export const generateThemeCSS = (colors: ThemeColors): string => {
+export const generateThemeCSS = (colors: ThemeColors): string => {;
   const { primary, secondary, success, warning, error, info } = colors;
   
   return `
@@ -127,7 +127,7 @@ export const generateThemeCSS = (colors: ThemeColors): string => {
       --color-warning: ${warning};
       --color-error: ${error};
       --color-info: ${info};
-    }
+
   `;
 };
 
@@ -146,7 +146,7 @@ export const defaultTheme: ThemeColors = {
 /**
  * Applies theme colors to the document
  */
-export const applyTheme = (colors: Partial<ThemeColors>): void => {
+export const applyTheme = (colors: Partial<ThemeColors>): void => {;
   const theme = { ...defaultTheme, ...colors };
   const css = generateThemeCSS(theme);
   
@@ -166,7 +166,7 @@ export const applyTheme = (colors: Partial<ThemeColors>): void => {
 /**
  * Gets the appropriate text color (black or white) for a background color
  */
-export const getTextColor = (backgroundColor: string): string => {
+export const getTextColor = (backgroundColor: string): string => {;
   const whiteContrast = getContrastRatio('#FFFFFF', backgroundColor);
   const blackContrast = getContrastRatio('#000000', backgroundColor);
   
@@ -176,7 +176,7 @@ export const getTextColor = (backgroundColor: string): string => {
 /**
  * Validates theme configuration
  */
-export const validateTheme = (colors: Partial<ThemeColors>): {
+export const validateTheme = (colors: Partial<ThemeColors>): {;
   isValid: boolean;
   errors: string[];
   warnings: string[];
@@ -188,7 +188,7 @@ export const validateTheme = (colors: Partial<ThemeColors>): {
   Object.entries(colors).forEach(([key, color]) => {
     if (color && !isValidHexColor(color)) {
       errors.push(`Invalid hex color for ${key}: ${color}`);
-    }
+
   });
   
   // Check contrast ratios
@@ -198,7 +198,7 @@ export const validateTheme = (colors: Partial<ThemeColors>): {
     
     if (whiteContrast < 4.5 && blackContrast < 4.5) {
       warnings.push('Primary color may have poor contrast with both white and black text');
-    }
+
   }
   
   return {

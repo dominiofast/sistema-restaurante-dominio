@@ -16,7 +16,7 @@ const diasSemana = [
   { label: 'Q', nome: 'Quarta', value: 3 },
   { label: 'Q', nome: 'Quinta', value: 4 },
   { label: 'S', nome: 'Sexta', value: 5 },
-  { label: 'S', nome: 'Sábado', value: 6 },
+  { label: 'S', nome: 'Sábado', value: 6 },;
 ];
 
 export const HorariosPorDia: React.FC<HorariosPorDiaProps> = ({

@@ -29,7 +29,7 @@ export const BrandedLoadingScreen: React.FC<BrandedLoadingScreenProps> = ({
       setIsAnimating(true);
     } else {
       // Delay hiding to allow fade-out animation
-      const timer = setTimeout(() => {
+      const timer = setTimeout(() => {;
         setIsAnimating(false);
         onLoadingComplete?.();
       }, 300);
@@ -40,7 +40,7 @@ export const BrandedLoadingScreen: React.FC<BrandedLoadingScreenProps> = ({
   // Don't render if not visible and not animating
   if (!isVisible && !isAnimating) {
     return null;
-  }
+
 
   // Get responsive sizes based on screen size
   const getResponsiveSizes = () => {
@@ -48,7 +48,7 @@ export const BrandedLoadingScreen: React.FC<BrandedLoadingScreenProps> = ({
     return {
       logoSize: 'w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24', // 64px, 80px, 96px
       animationSize: 'md' as const, // Will be overridden by CSS
-      containerPadding: 'p-4 md:p-6 lg:p-8'
+      containerPadding: 'p-4 md:p-6 lg:p-8';
     };
   };
 

@@ -3,7 +3,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { LoginForm } from '../components/LoginForm';
 import { Navigate } from 'react-router-dom';
 
-const LoginPageContent = () => {
+const LoginPageContent = () => {;
   const { user, isLoading } = useAuth();
 
   // Loading simples sem animações
@@ -34,7 +34,7 @@ const LoginPage = () => {
   return (
     <AuthProvider>
       <LoginPageContent />
-    </AuthProvider>
+    </AuthProvider>;
   );
 };
 

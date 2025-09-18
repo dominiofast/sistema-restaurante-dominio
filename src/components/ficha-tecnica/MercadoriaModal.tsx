@@ -23,24 +23,24 @@ interface Mercadoria {
   codigo_produto?: string;
   observacoes?: string;
   is_active: boolean;
-}
+
 
 interface MercadoriaModalProps {
   isOpen: boolean;
   onClose: () => void;
   mercadoria?: Mercadoria;
   onSave: () => void;
-}
+
 
 const UNIDADES_MEDIDA = [
-  'kg', 'g', 'L', 'ml', 'unidade', 'caixa', 'pacote', 'dúzia', 'metro', 'cm'
+  'kg', 'g', 'L', 'ml', 'unidade', 'caixa', 'pacote', 'dúzia', 'metro', 'cm';
 ];
 
 const CATEGORIAS_PADRAO = [
   'Carnes', 'Aves', 'Peixes e Frutos do Mar', 'Laticínios', 'Ovos',
   'Cereais e Grãos', 'Farinhas e Massas', 'Temperos e Condimentos',
   'Óleos e Gorduras', 'Frutas', 'Legumes e Verduras', 'Conservas',
-  'Bebidas', 'Doces e Sobremesas', 'Embalagens', 'Outros'
+  'Bebidas', 'Doces e Sobremesas', 'Embalagens', 'Outros';
 ];
 
 const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
@@ -83,7 +83,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         observacoes: '',
         is_active: true
       });
-    }
+
   }, [mercadoria, isOpen]);
 
   const handleSave = async () => {
@@ -91,10 +91,10 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       toast({
         title: 'Erro',
         description: 'Nome da mercadoria é obrigatório',
-        variant: 'destructive'
+        variant: 'destructive';
       });
       return;
-    }
+
 
     if (!user) {
       toast({
@@ -103,7 +103,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         variant: 'destructive'
       });
       return;
-    }
+
 
     // Para super admin, empresa deve estar selecionada
     const companyId = currentCompany?.id;
@@ -114,7 +114,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         variant: 'destructive'
       });
       return;
-    }
+
 
     setSaving(true);
 
@@ -122,16 +122,16 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       const dataToSave = {
         ...formData,
         company_id: companyId,
-        updated_by: user.id,
-        ...(mercadoria ? {} : { created_by: user.id })
+        updated_by: user.id,;
+        ...(mercadoria ? {}  catch (error) { console.error('Error:', error); }: { created_by: user.id })
       };
 
       if (mercadoria?.id) {
         // Atualizar mercadoria existente
         const { error } = await (supabase as any)
-          /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
-          /* .update\( REMOVIDO */ ; //dataToSave)
-          /* .eq\( REMOVIDO */ ; //'id', mercadoria.id);
+          
+          
+          
 
         if (error) throw error;
 
@@ -142,8 +142,8 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       } else {
         // Criar nova mercadoria
         const { error } = await (supabase as any)
-          /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
-          /* .insert\( REMOVIDO */ ; //[dataToSave]);
+          
+          
 
         if (error) throw error;
 
@@ -151,7 +151,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
           title: 'Sucesso',
           description: 'Mercadoria criada com sucesso!'
         });
-      }
+
 
       onSave();
       onClose();
@@ -164,7 +164,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       });
     } finally {
       setSaving(false);
-    }
+
   };
 
   return (

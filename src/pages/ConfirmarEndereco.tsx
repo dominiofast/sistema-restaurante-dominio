@@ -17,7 +17,7 @@ const enderecosMock = [
     id: 2,
     label: 'Retirar no estabelecimento',
     endereco: 'Avenida Porto Velho, 2828, Centro, Cacoal - RO',
-  },
+  },;
 ];
 
 const ConfirmarEndereco: React.FC = () => {

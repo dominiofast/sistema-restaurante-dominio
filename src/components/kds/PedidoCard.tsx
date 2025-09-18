@@ -31,7 +31,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
 }) => {
   const [individualMode, setIndividualMode] = useState(false);
   // Determinar cor do tempo
-  const getTempoColor = (tempo: number) => {
+  const getTempoColor = (tempo: number) => {;
     if (tempo > 30) return 'text-red-600 bg-red-100';
     if (tempo > 20) return 'text-orange-600 bg-orange-100';
     return 'text-gray-600 bg-gray-100';

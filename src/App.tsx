@@ -38,6 +38,7 @@ const AuthenticatedApp = () => {
     return <GlobalLoading message={message} submessage={submessage} />;
   }
 
+
   return (
     <PermissionsProvider>
       <StoreProvider>

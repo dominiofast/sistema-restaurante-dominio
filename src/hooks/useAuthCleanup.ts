@@ -8,12 +8,12 @@ import { useEffect, useRef } from 'react';
  */
 
 // Função utilitária para limpeza completa do estado de auth
-export const cleanupAuthState = () => {
+export const cleanupAuthState = () => {;
   console.log('🧹 Iniciando limpeza completa do estado de autenticação...');
   
   // Limpar todas as chaves do Supabase no localStorage
   Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || key.includes('sb-')) {
+    if (key.startsWith('supabase.') || key.startsWith('sb-')) {
       localStorage.removeItem(key);
       console.log(`🗑️ Removido localStorage: ${key}`);
     }
@@ -22,45 +22,45 @@ export const cleanupAuthState = () => {
   // Limpar sessionStorage se existir
   if (typeof sessionStorage !== 'undefined') {
     Object.keys(sessionStorage).forEach((key) => {
-      if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || key.includes('sb-')) {
+      if (key.startsWith('supabase.') || key.startsWith('sb-')) {
         sessionStorage.removeItem(key);
         console.log(`🗑️ Removido sessionStorage: ${key}`);
       }
     });
-  }
+
 
   console.log('✅ Limpeza de autenticação concluída');
 };
 
-export const useAuthCleanup = () => {
+export const useAuthCleanup = () => {;
   const mountedRef = useRef(true);
   const timeoutsRef = useRef<Set<NodeJS.Timeout>>(new Set());
   const subscriptionsRef = useRef<Set<any>>(new Set());
 
   // Função para registrar timeouts
-  const registerTimeout = (timeout: NodeJS.Timeout) => {
+  const registerTimeout = (timeout: NodeJS.Timeout) => {;
     timeoutsRef.current.add(timeout);
     return timeout;
   };
 
   // Função para registrar subscriptions
-  const registerSubscription = (subscription: any) => {
+  const registerSubscription = (subscription: any) => {;
     subscriptionsRef.current.add(subscription);
     return subscription;
   };
 
   // Função para limpar um timeout específico
-  const clearRegisteredTimeout = (timeout: NodeJS.Timeout) => {
+  const clearRegisteredTimeout = (timeout: NodeJS.Timeout) => {;
     clearTimeout(timeout);
-    timeoutsRef.current/* .delete\( REMOVIDO */ ; //timeout);
+    timeoutsRef.current
   };
 
   // Função para limpar uma subscription específica
   const clearRegisteredSubscription = (subscription: any) => {
-    if (subscription && typeof subscription.unsubscribe === 'function') {
+    if (subscription && typeof subscription.unsubscribe === 'function') {;
       subscription.unsubscribe();
     }
-    subscriptionsRef.current/* .delete\( REMOVIDO */ ; //subscription);
+    subscriptionsRef.current
   };
 
   // Função para verificar se o componente ainda está montado

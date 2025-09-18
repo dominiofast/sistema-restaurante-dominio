@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { usePlans } from '@/hooks/usePlans';
 import { PlanCard } from './PlanCard';
 
-export const PricingSection = () => {
+export const PricingSection = () => {;
   const [billingType, setBillingType] = useState<'monthly' | 'yearly'>('monthly');
   const { data: plans = [], isLoading } = usePlans();
 
-  const toggleBilling = (type: 'monthly' | 'yearly') => {
+  const toggleBilling = (type: 'monthly' | 'yearly') => {;
     setBillingType(type);
   };
 
@@ -23,7 +23,7 @@ export const PricingSection = () => {
         </div>
       </section>
     );
-  }
+
 
   return (
     <section id="precos" className="py-16 bg-[hsl(var(--dominio-neutral-background))]">

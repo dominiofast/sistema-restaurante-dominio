@@ -5,17 +5,17 @@ import { useGlobalWhatsAppNotification } from '@/contexts/GlobalWhatsAppNotifica
  * 
  * @returns {object} Objeto com funções e estado das notificações
  */
-export const useWhatsAppNotifications = () => {
+export const useWhatsAppNotifications = () => {;
   return useGlobalWhatsAppNotification();
 };
 
 /**
  * Hook para mostrar notificação manual (para casos especiais)
  */
-export const useManualNotification = () => {
+export const useManualNotification = () => {;
   const { showNotification } = useGlobalWhatsAppNotification();
   
-  const notify = (message: {
+  const notify = (message: {;
     senderName: string;
     content: string;
     chatId: string;

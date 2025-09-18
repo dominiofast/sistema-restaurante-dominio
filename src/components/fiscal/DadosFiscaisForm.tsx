@@ -20,7 +20,7 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
   const { register, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm({
     defaultValues: {
       // Dados Básicos
-      descricao: '',
+// descricao: '',
       ean: '',
       codigo_beneficio_fiscal: '',
       ncm: '',
@@ -28,7 +28,7 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
       cfop: '5102',
       
       // ICMS - Situação Tributária
-      icms_situacao_tributaria: '102',
+// icms_situacao_tributaria: '102',
       icms_origem: '0',
       
       // ICMS Normal
@@ -51,12 +51,12 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
       icms_efetivo_aliquota: 19.50,
       
       // PIS
-      pis_situacao_tributaria: '07',
+// pis_situacao_tributaria: '07',
       aliquota_pis: 0.00,
       pis_base_calculo: 0.00,
       
       // COFINS
-      cofins_situacao_tributaria: '07',
+// cofins_situacao_tributaria: '07',
       aliquota_cofins: 0.00,
       cofins_base_calculo: 0.00,
       
@@ -66,11 +66,11 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
       ipi_codigo_enquadramento: '999',
       
       // CEST (Código Especificador da Substituição Tributária)
-      cest: '',
+// cest: '',
       
       // Observações
-      observacoes: '',
-    }
+// observacoes: '',
+
   });
 
   // Atualizar o formulário quando os dados chegam
@@ -130,7 +130,7 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
         // Observações
         observacoes: initialData.observacoes || '',
       });
-    }
+
   }, [initialData, reset]);
 
   return (

@@ -46,7 +46,7 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (

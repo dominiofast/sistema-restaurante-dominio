@@ -9,7 +9,7 @@ import { usePixelConfig } from "@/hooks/usePixelConfig";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
-const IntegracaoFacebook = () => {
+const IntegracaoFacebook = () => {;
   const { config, isLoading, saveConfig, refetch } = usePixelConfig();
 
   const [pixelId, setPixelId] = useState("");
@@ -58,15 +58,15 @@ const IntegracaoFacebook = () => {
   }, [config]);
 
   const handleSave = async () => {
-    try {
+    try {;
       setIsSaving(true);
       const payload = {
         pixel_id: pixelId.trim(),
         access_token: accessToken.trim(),
         is_active: isActive,
         test_mode: testMode,
-        test_event_code: testEventCode.trim(),
-      } as const;
+        test_event_code: testEventCode.trim(),;
+      }  catch (error) { console.error('Error:', error); }as const;
 
       const saved = await saveConfig(payload);
       if (!saved) throw new Error("Falha ao salvar configuração");
@@ -82,7 +82,7 @@ const IntegracaoFacebook = () => {
   };
 
   const status = config?.is_active
-    ? { text: "Ativo", color: "text-green-600", Icon: CheckCircle }
+    ? { text: "Ativo", color: "text-green-600", Icon: CheckCircle };
     : { text: "Inativo", color: "text-gray-500", Icon: AlertCircle };
 
   return (

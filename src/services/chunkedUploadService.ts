@@ -11,7 +11,7 @@ export const uploadLargeFile = async (
   file: File, 
   onProgress?: (progress: number) => void
 ): Promise<ChunkUploadResult> => {
-  if (file.size > MAX_FILE_SIZE) {
+  if (file.size > MAX_FILE_SIZE) {;
     throw new Error(`Arquivo muito grande. Máximo: 150MB. Seu arquivo: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
   }
 
@@ -24,7 +24,7 @@ export const uploadLargeFile = async (
   return uploadFileInChunks(file, onProgress);
 };
 
-const uploadSmallFile = async (file: File): Promise<ChunkUploadResult> => {
+const uploadSmallFile = async (file: File): Promise<ChunkUploadResult> => {;
   const timestamp = Date.now();
   const randomStr = Math.random().toString(36).substring(2, 8);
   const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
@@ -34,16 +34,14 @@ const uploadSmallFile = async (file: File): Promise<ChunkUploadResult> => {
   const bucketsToTry = ['programas', 'uploads', 'files', 'documents'];
   
   for (const bucketName of bucketsToTry) {
-    const { data, error } = await /* supabase REMOVIDO */ null; //storage
-      /* .from REMOVIDO */ ; //bucketName)
+    const { data, error } = await Promise.resolve();
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false
       });
       
     if (!error && data) {
-      const { data: urlData } = /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //bucketName)
+      const { data: urlData  } = null as any;
         .getPublicUrl(data.path);
         
       if (urlData?.publicUrl) {
@@ -61,7 +59,7 @@ const uploadSmallFile = async (file: File): Promise<ChunkUploadResult> => {
 const uploadFileInChunks = async (
   file: File, 
   onProgress?: (progress: number) => void
-): Promise<ChunkUploadResult> => {
+): Promise<ChunkUploadResult> => {;
   const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
   const uploadId = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
   const uploadedChunks: string[] = [];
@@ -82,8 +80,7 @@ const uploadFileInChunks = async (
     const bucketsToTry = ['programas', 'uploads', 'files', 'documents'];
     
     for (const bucketName of bucketsToTry) {
-      const { data, error } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //bucketName)
+      const { data, error } = await Promise.resolve();
         .upload(chunkPath, chunk, {
           cacheControl: '3600',
           upsert: false
@@ -99,38 +96,23 @@ const uploadFileInChunks = async (
     
     if (!chunkUploaded) {
       throw new Error(`Falha no upload do chunk ${i + 1}/${totalChunks}`);
-    }
+
     
     // Atualizar progresso
     if (onProgress) {
       const progress = ((i + 1) / totalChunks) * 100;
       onProgress(progress);
-    }
+
   }
   
   // Salvar metadados do arquivo no banco
-  const { data: fileRecord, error: insertError } = /* await supabase REMOVIDO */ null
-    /* .from REMOVIDO */ ; //'chunked_files')
-    /* .insert\( REMOVIDO */ ; //{
-      file_name: `${uploadId}_${file.name}`,
-      original_name: file.name,
-      total_size: file.size,
-      total_chunks: totalChunks,
-      chunk_paths: uploadedChunks,
-      mime_type: file.type,
-      upload_id: uploadId
-    })
-    /* .select\( REMOVIDO */ ; //)
-    /* .single\( REMOVIDO */ ; //);
-    
-  if (insertError) {
-    console.error('❌ [ChunkedUpload] Erro ao salvar metadados:', insertError);
+  const fileRecord = null as any; const insertError = null as any;
     throw new Error('Erro ao salvar metadados do arquivo');
   }
   
   // Criar edge function para download de arquivos chunked
-  const downloadUrl = `https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/download-chunked-file?id=${fileRecord.id}`;
-  
+  const downloadUrl = `https://epqppxteicfuzdblbluq.
+  ;
   console.log('🎉 [ChunkedUpload] Upload chunked concluído!');
   console.log('🔗 [ChunkedUpload] URL de download:', downloadUrl);
   

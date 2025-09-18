@@ -17,7 +17,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -25,13 +25,13 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
+
 
 interface NovoGrupoTabProps {
   currentCompany: { id: string };
   produto: { id: string };
   onRefresh: () => void;
-}
+
 
 export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
   currentCompany,
@@ -50,8 +50,8 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
   });
 
   const associarCategoriaAoProduto = async (categoriaId: string) => {
-    try {
-      console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id });
+    try {;
+      console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id } catch (error) { console.error('Error:', error); });
       
       const { error } = await supabase
         .from('produto_categorias_adicionais')
@@ -69,10 +69,10 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
     } catch (error) {
       console.error('💥 Erro geral ao associar categoria ao produto:', error);
       throw error;
-    }
+
   };
 
-  const handleCreateCategoriaAdicional = async () => {
+  const handleCreateCategoriaAdicional = async () => {;
     console.log('🚀 Iniciando criação de grupo de adicionais...');
     console.log('📋 Dados do formulário:', novaCategoriaAdicional);
     console.log('🏢 Empresa atual:', currentCompany);
@@ -86,7 +86,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
         variant: "destructive",
       });
       return;
-    }
+
 
     if (!currentCompany?.id) {
       console.log('❌ Empresa não selecionada');
@@ -96,22 +96,21 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
         variant: "destructive",
       });
       return;
-    }
+
 
     try {
       setLoading(true);
       console.log('📤 Enviando dados para a API PostgreSQL...');
       
       // Inferir selection_type automaticamente baseado em min/max
-      const selection_type = 
-        novaCategoriaAdicional.max_selection === 1 ? 'single' : 
+      const selection_type = novaCategoriaAdicional.max_selection === 1 ? 'single' : ;
         novaCategoriaAdicional.max_selection > 1 ? 'multiple' : 'quantity';
 
       const dadosParaInserir = {
         ...novaCategoriaAdicional,
         selection_type,
-        company_id: currentCompany.id
-      };
+        company_id: currentCompany.id;
+      } catch (error) { console.error('Error:', error); };
       
       console.log('📊 Dados finais para inserção:', dadosParaInserir);
 
@@ -136,7 +135,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
           variant: "destructive",
         });
         return;
-      }
+
 
       console.log('✅ Categoria criada com sucesso!', data);
       
@@ -176,7 +175,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
     } finally {
       setLoading(false);
       console.log('🏁 Processo finalizado, loading = false');
-    }
+
   };
 
   return (

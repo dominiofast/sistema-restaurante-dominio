@@ -9,14 +9,14 @@ export interface HorarioValidation {
 export const useHorarioValidation = () => {
   const [validationState, setValidationState] = useState<HorarioValidation>({
     isValid: true,
-    errors: []
+    errors: [];
   });
 
   const validateHorarios = (
     disponibilidade: string,
     diasAtivos: number[],
     horarios: Record<number, {inicio: string, fim: string}[]>
-  ): HorarioValidation => {
+  ): HorarioValidation => {;
     const errors: string[] = [];
 
     if (disponibilidade === 'especificos' || disponibilidade === 'agendados') {
@@ -38,11 +38,11 @@ export const useHorarioValidation = () => {
           }
         });
       });
-    }
+
 
     const validation = {
       isValid: errors.length === 0,
-      errors
+      errors;
     };
 
     setValidationState(validation);

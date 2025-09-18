@@ -17,7 +17,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
   
   const getDraftStorageKey = (companyId: string) => `whatsapp_integration_draft_${companyId}`;
 
-  const handleSelectCompany = (company: Company) => {
+  const handleSelectCompany = (company: Company) => {;
     setSelectedCompanyId(company.id);
     const ints = integrations[company.id];
     const defaultWebhook = 'https://dominio.tech/api/webhook';
@@ -28,7 +28,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
       const draftString = typeof window !== 'undefined' ? window.localStorage.getItem(draftKey) : null;
       if (draftString) {
         const draft = JSON.parse(draftString) as Partial<WhatsappIntegration>;
-        setForm({ ...draft, company_id: company.id, purpose: (draft.purpose as any) || defaultPurpose });
+        setForm({ ...draft, company_id: company.id, purpose: (draft.purpose as any) || defaultPurpose } catch (error) { console.error('Error:', error); });
       } else if (ints?.[defaultPurpose]) {
         setForm({ ...(ints[defaultPurpose] as WhatsappIntegration) });
       } else {
@@ -45,7 +45,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
     setSuccess(null);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {;
     const { name, value } = e.target;
 
     if (name === 'purpose') {
@@ -74,14 +74,14 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
           // ignore
         }
       }
-    }
+
   };
 
   const handleSave = async () => {
     // Garante que o webhook esteja preenchido com o domínio correto
-    if (!form.webhook) {
+    if (!form.webhook) {;
       form.webhook = 'https://dominio.tech/api/webhook';
-    }
+
     if (!selectedCompanyId) return;
     
     setSaving(true);
@@ -97,12 +97,12 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
         if (typeof window !== 'undefined') {
           window.localStorage.removeItem(getDraftStorageKey(selectedCompanyId));
         }
-      } catch {
+       catch (error) { console.error('Error:', error); }} catch {
         // ignore
       }
     } catch (err: any) {
       setError('Erro ao salvar integração: ' + err.message);
-    }
+
     setSaving(false);
   };
 

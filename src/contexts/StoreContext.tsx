@@ -45,7 +45,7 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
     domain: company.domain,
     status: company.status,
     plan: company.plan || 'standard',
-    user_count: company.user_count || 0
+    user_count: company.user_count || 0;
   });
   
   // Enhanced initialization with validation
@@ -57,14 +57,14 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       
       // Validate stored company exists in user's companies
       const validatedCompany = userCompanies.find(
-        (company: Company) => company.id === parsedStoredCompany?.id
+        (company: Company) => company.id === parsedStoredCompany?.id;
       );
       
       if (validatedCompany) {
         return convertToStoreInfo(validatedCompany);
       }
       
-      if (currentCompany) {
+       catch (error) { console.error('Error:', error); }if (currentCompany) {
         return convertToStoreInfo(currentCompany);
       }
       
@@ -81,22 +81,22 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
         return convertToStoreInfo(userCompanies[0]);
       }
       return null;
-    }
+
   });
 
   const selectCompany = (company: StoreInfo | null) => {
-    if (!company) {
+    if (!company) {;
       console.log('❌ Clearing company selection');
       setSelectedStoreState(null);
       localStorage.removeItem('selectedCompany');
       return;
-    }
+
     
     // ENHANCED VALIDATION
     if (!userCompanies.some((c: Company) => c.id === company.id)) {
       console.error('❌ Invalid company selection', { company, userCompanies });
       return;
-    }
+
     
     console.log('✅ Selecting company:', company.name, 'ID:', company.id);
     setSelectedStoreState(company);
@@ -130,10 +130,10 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
   );
 };
 
-export const useStore = () => {
+export const useStore = () => {;
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw new Error('useStore must be used within a StoreProvider');
-  }
+
   return context;
 };

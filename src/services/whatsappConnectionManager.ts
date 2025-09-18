@@ -88,13 +88,13 @@ export class WhatsAppConnectionManager {
     };
 
     this.startQualityMonitoring();
-  }
+
 
   initialize(companyId: string): void {
     this.companyId = companyId;
     this.connectionStartTime = Date.now();
     console.log('🔗 Gerenciador de conexões inicializado para company:', companyId);
-  }
+
 
   // Configurar callbacks
   setCallbacks(callbacks: {
@@ -107,7 +107,7 @@ export class WhatsAppConnectionManager {
     this.onQualityChange = callbacks.onQualityChange;
     this.onAlert = callbacks.onAlert;
     this.onMetricsUpdate = callbacks.onMetricsUpdate;
-  }
+
 
   // Notificar conexão bem-sucedida
   notifyConnectionSuccess(latency?: number): void {
@@ -133,7 +133,7 @@ export class WhatsAppConnectionManager {
     }
 
     this.updateQuality();
-  }
+
 
   // Notificar falha de conexão
   notifyConnectionFailure(error: string): void {
@@ -155,7 +155,7 @@ export class WhatsAppConnectionManager {
 
     this.updateQuality();
     this.scheduleReconnection();
-  }
+
 
   // Agendar reconexão com backoff exponencial e jitter
   private scheduleReconnection(): void {
@@ -178,7 +178,7 @@ export class WhatsAppConnectionManager {
     // Calcular delay com backoff exponencial e jitter
     const baseDelay = Math.min(
       this.config.baseDelay * Math.pow(this.config.backoffMultiplier, this.reconnectionAttempts - 1),
-      this.config.maxDelay
+      this.config.maxDelay;
     );
 
     // Adicionar jitter para evitar thundering herd
@@ -190,7 +190,7 @@ export class WhatsAppConnectionManager {
     this.reconnectionTimeout = setTimeout(() => {
       this.attemptReconnection();
     }, delay);
-  }
+
 
   // Tentar reconexão
   private async attemptReconnection(): Promise<void> {
@@ -199,16 +199,14 @@ export class WhatsAppConnectionManager {
     try {
       // Testar conectividade básica
       const startTime = Date.now();
-      const testChannel = /* supabase REMOVIDO */ null; //channel(`connection_test_${Date.now()}`);
-      
-      const connectionPromise = new Promise<boolean>((resolve) => {
-        const timeout = setTimeout(() => {
+      const testChannel = const connectionPromise = new Promise<boolean>((resolve) => {
+        const timeout = setTimeout(() => {;
           resolve(false);
-        }, 10000);
+        } catch (error) { console.error('Error:', error); }, 10000);
 
-        testChannel/* .subscribe REMOVIDO */ ; //(status) => {
+        testChannel
           clearTimeout(timeout);
-          /* supabase REMOVIDO */ null; //removeChannel(testChannel);
+          
           
           const latency = Date.now() - startTime;
           const success = status === 'SUBSCRIBED';
@@ -241,7 +239,7 @@ export class WhatsAppConnectionManager {
     
     this.reconnectionAttempts = 0;
     this.attemptReconnection();
-  }
+
 
   // Atualizar latência
   private updateLatency(latency: number): void {
@@ -254,7 +252,7 @@ export class WhatsAppConnectionManager {
 
     // Calcular latência média
     this.metrics.latency = this.latencyHistory.reduce((sum, l) => sum + l, 0) / this.latencyHistory.length;
-  }
+
 
   // Notificar mensagem recebida
   notifyMessageReceived(latency?: number): void {
@@ -272,7 +270,7 @@ export class WhatsAppConnectionManager {
     this.metrics.errorRate = Math.max(0, this.metrics.errorRate - 0.01);
 
     this.updateQuality();
-  }
+
 
   // Notificar mensagem perdida
   notifyMessageLost(): void {
@@ -287,14 +285,14 @@ export class WhatsAppConnectionManager {
     });
 
     this.updateQuality();
-  }
+
 
   // Atualizar qualidade da conexão
   private updateQuality(): void {
     const factors = {
       latency: this.calculateLatencyScore(),
       stability: this.calculateStabilityScore(),
-      reliability: this.calculateReliabilityScore()
+      reliability: this.calculateReliabilityScore();
     };
 
     const score = Math.round((factors.latency + factors.stability + factors.reliability) / 3);
@@ -321,7 +319,7 @@ export class WhatsAppConnectionManager {
         });
       }
     }
-  }
+
 
   // Calcular score de latência
   private calculateLatencyScore(): number {
@@ -332,7 +330,7 @@ export class WhatsAppConnectionManager {
     if (this.metrics.latency < 300) return 80;
     if (this.metrics.latency < 1000) return 50;
     return 20;
-  }
+
 
   // Calcular score de estabilidade
   private calculateStabilityScore(): number {
@@ -343,7 +341,7 @@ export class WhatsAppConnectionManager {
     if (reconnectionRate < 0.5) return 80;
     if (reconnectionRate < 2) return 50;
     return 20;
-  }
+
 
   // Calcular score de confiabilidade
   private calculateReliabilityScore(): number {
@@ -351,7 +349,7 @@ export class WhatsAppConnectionManager {
     const errorScore = Math.max(0, 100 - (this.metrics.errorRate * 100));
     
     return Math.round((deliveryScore + errorScore) / 2);
-  }
+
 
   // Adicionar alerta
   private addAlert(alert: Omit<ConnectionAlert, 'id' | 'timestamp' | 'resolved'>): void {
@@ -371,7 +369,7 @@ export class WhatsAppConnectionManager {
 
     console.log(`🚨 Alerta ${alert.type}: ${alert.message}`);
     this.onAlert?.(newAlert);
-  }
+
 
   // Resolver alerta
   resolveAlert(alertId: string): void {
@@ -389,7 +387,7 @@ export class WhatsAppConnectionManager {
       this.updateQuality();
       this.onMetricsUpdate?.(this.metrics);
     }, 5000); // A cada 5 segundos
-  }
+
 
   // Atualizar métricas
   private updateMetrics(): void {
@@ -414,19 +412,19 @@ export class WhatsAppConnectionManager {
   // Obter métricas atuais
   getMetrics(): ConnectionMetrics {
     return { ...this.metrics };
-  }
+
 
   // Obter qualidade atual
   getQuality(): ConnectionQuality {
     return { ...this.quality };
-  }
+
 
   // Obter alertas
   getAlerts(unresolvedOnly = false): ConnectionAlert[] {
     return unresolvedOnly 
       ? this.alerts.filter(a => !a.resolved)
       : [...this.alerts];
-  }
+
 
   // Obter status da conexão
   getConnectionStatus(): {
@@ -436,7 +434,7 @@ export class WhatsAppConnectionManager {
     nextReconnectionIn?: number;
   } {
     const nextReconnectionIn = this.reconnectionTimeout 
-      ? Math.max(0, Date.now() + 5000)
+      ? Math.max(0, Date.now() + 5000);
       : undefined;
 
     return {
@@ -445,7 +443,7 @@ export class WhatsAppConnectionManager {
       lastSuccessfulConnection: new Date(this.lastSuccessfulConnection),
       nextReconnectionIn
     };
-  }
+
 
   // Resetar métricas
   resetMetrics(): void {
@@ -465,7 +463,7 @@ export class WhatsAppConnectionManager {
     this.reconnectionAttempts = 0;
     
     console.log('🔄 Métricas resetadas');
-  }
+
 
   // Cleanup
   destroy(): void {
@@ -481,7 +479,7 @@ export class WhatsAppConnectionManager {
     this.latencyHistory = [];
     
     console.log('🧹 Gerenciador de conexões destruído');
-  }
+
 }
 
 // Instância singleton

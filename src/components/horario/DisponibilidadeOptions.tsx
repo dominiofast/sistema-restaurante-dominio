@@ -26,7 +26,7 @@ const opcoesDisponibilidade = [
     value: 'fechado', 
     label: 'Fechado permanentemente', 
     desc: '' 
-  },
+  },;
 ];
 
 export const DisponibilidadeOptions: React.FC<DisponibilidadeOptionsProps> = ({

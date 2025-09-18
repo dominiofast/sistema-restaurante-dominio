@@ -32,7 +32,7 @@ const CardapioPublico: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
+    const checkMobile = () => {;
       setIsMobile(window.innerWidth < 768);
     };
     
@@ -213,7 +213,7 @@ const CardapioPublico: React.FC = () => {
 
   // Effect para controlar o skeleton
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(() => {;
       setShowingSkeleton(false);
     }, 3000);
     return () => clearTimeout(timer);
@@ -232,8 +232,8 @@ const CardapioPublico: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: company?.name || 'Cardápio Digital',
-          text: `Confira o cardápio de ${company?.name}`,
+          title: company?.name || 'Cardápio Digital',;
+          text: `Confira o cardápio de ${company?.name} catch (error) { console.error('Error:', error); }`,
           url: window.location.href,
         });
       } catch (error) {
@@ -245,18 +245,18 @@ const CardapioPublico: React.FC = () => {
     }
   };
 
-  const handleFallbackShare = () => {
+  const handleFallbackShare = () => {;
     navigator.clipboard.writeText(window.location.href);
     alert('Link copiado para a área de transferência!');
   };
 
-  const handleProductClick = (produto: Produto) => {
+  const handleProductClick = (produto: Produto) => {;
     setSelectedProduct(produto);
   };
 
   const handleAddToCart = async (produto: Produto, quantidade: number, observacoes?: string, adicionais?: { [adicionalId: string]: number }) => {
     // Verificar se a loja está aberta antes de adicionar ao carrinho
-    if (!storeStatus?.isOpen) {
+    if (!storeStatus?.isOpen) {;
       alert(storeStatus?.message || 'Loja fechada no momento');
       return;
     }
@@ -271,14 +271,14 @@ const CardapioPublico: React.FC = () => {
     }
   };
 
-  const handleCartClick = () => {
+  const handleCartClick = () => {;
     setCartOpen(true);
   };
 
   // Mover hooks para ANTES de qualquer return condicional
   const produtosDestaque = useMemo(() => 
     produtos.filter(produto => produto.destaque),
-    [produtos]
+    [produtos];
   );
 
   // Preload de imagens críticas depois que produtos estão carregados
@@ -286,7 +286,7 @@ const CardapioPublico: React.FC = () => {
     if (produtosDestaque.length > 0) {
       const imagesToPreload = produtosDestaque
         .slice(0, 3)
-        .filter(p => p.image)
+        .filter(p => p.image);
         .map(p => p.image!);
         
       imagesToPreload.forEach(imageUrl => {
@@ -300,10 +300,10 @@ const CardapioPublico: React.FC = () => {
   }, [produtosDestaque]);
 
   const produtosFiltrados = produtos.filter(produto => 
-    produto.categoria_id === selectedCategoria
+    produto.categoria_id === selectedCategoria;
   );
 
-  const produtosPorCategoria = categorias.reduce((acc, categoria) => {
+  const produtosPorCategoria = categorias.reduce((acc, categoria) => {;
     acc[categoria.id] = produtos.filter(produto => produto.categoria_id === categoria.id);
     return acc;
   }, {} as { [catId: string]: Produto[] });
@@ -499,7 +499,7 @@ const CardapioPublico: React.FC = () => {
                     localStorage.removeItem('temp_observacao');
                   }
                   
-                  await handleAddToCart(produto, 1, finalObservacoes, selectedAdicionais);
+                   catch (error) { console.error('Error:', error); }await handleAddToCart(produto, 1, finalObservacoes, selectedAdicionais);
                   await new Promise(resolve => setTimeout(resolve, 100));
                   navigate(`/${company_slug}/produto-adicionado`, { 
                     state: { produto, company } 
@@ -507,7 +507,7 @@ const CardapioPublico: React.FC = () => {
                 } catch (error) {
                   console.error('🛒 [CardapioPublico] MOBILE - ERRO em onAdvance:', error);
                   alert(`ERRO: ${error.message}`);
-                }
+
               }}
               primaryColor={primaryColor}
               companyId={company?.id}
@@ -521,13 +521,13 @@ const CardapioPublico: React.FC = () => {
                 try {
                   await handleAddToCart(selectedProduct, 1, observacoes, selectedAdicionais);
                   await new Promise(resolve => setTimeout(resolve, 100));
-                  navigate(`/${company_slug}/produto-adicionado`, { 
+                  navigate(`/${company_slug} catch (error) { console.error('Error:', error); }/produto-adicionado`, { 
                     state: { produto: selectedProduct, company } 
                   });
                 } catch (error) {
                   console.error('🛒 [CardapioPublico] DESKTOP - ERRO em onAdvance:', error);
                   alert(`ERRO: ${error.message}`);
-                }
+
               }}
               primaryColor={primaryColor}
               companyId={company?.id}

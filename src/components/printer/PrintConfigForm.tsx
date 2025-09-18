@@ -26,23 +26,23 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
   const [isLoading, setIsLoading] = useState(false);
   const { currentCompany } = useAuth();
 
-  const handleChange = (field: keyof PrintConfig, value: any) => {
+  const handleChange = (field: keyof PrintConfig, value: any) => {;
     const newConfig = { ...localConfig, [field]: value };
     setLocalConfig(newConfig);
     onConfigChange(newConfig);
   };
 
-  const loadSavedConfig = async () => {
+  const loadSavedConfig = async () => {;
     if (!currentCompany?.id) return;
 
     setIsLoading(true);
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'printer_configs')
-        /* .select\( REMOVIDO */ ; //'largura_papel, texto_header, texto_footer')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao carregar configuração:', error);
@@ -54,7 +54,7 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
         const savedConfig = {
           width: data.largura_papel || 48,
           removeAccents: data.texto_header?.includes('removeAccents:true') || true,
-          marginLeft: parseInt(data.texto_footer?.match(/marginLeft:(\d+)/)?.[1] || '0')
+          marginLeft: parseInt(data.texto_footer?.match(/marginLeft:(\d+)/)?.[1] || '0');
         };
         setLocalConfig(savedConfig);
         onConfigChange(savedConfig);
@@ -63,19 +63,19 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
       console.error('Erro ao carregar configuração:', error);
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   const saveConfig = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não encontrada');
       return;
-    }
+
 
     setIsSaving(true);
     try {
       // Verificar se o usuário está autenticado
-      const { data: { user }, error: authError } = await /* supabase REMOVIDO */ null; //auth.getUser();
+      const { data: { user } catch (error) { console.error('Error:', error); }, error: authError } = await Promise.resolve();
       if (authError || !user) {
         toast.error('Usuário não autenticado');
         return;
@@ -86,18 +86,11 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
       const footerConfig = `marginLeft:${localConfig.marginLeft}`;
 
       // Primeiro, verificar se já existe uma configuração para a empresa
-      const { data: existingConfig } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'printer_configs')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data: existingConfig  } = null as any;
       let error;
       if (existingConfig) {
         // Atualizar configuração existente
-        const { error: updateError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'printer_configs')
-          /* .update\( REMOVIDO */ ; //{
+        const { error: updateError  } = null as any;
             largura_papel: localConfig.width,
             texto_header: headerConfig,
             texto_footer: footerConfig,
@@ -105,13 +98,11 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
             is_default: true,
             impressao_automatica: false
           })
-          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id);
+          
         error = updateError;
       } else {
         // Criar nova configuração
-        const { error: insertError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'printer_configs')
-          /* .insert\( REMOVIDO */ ; //{
+        const { error: insertError  } = null as any;
             company_id: currentCompany.id,
             printer_name: 'Configuração de Formatação',
             largura_papel: localConfig.width,
@@ -136,7 +127,7 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
       toast.error('Erro ao salvar configuração');
     } finally {
       setIsSaving(false);
-    }
+
   };
 
   useEffect(() => {
@@ -147,7 +138,7 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
     { name: 'Cupom Fiscal (48)', width: 48, removeAccents: true, marginLeft: 0 },
     { name: 'Cupom Pequeno (32)', width: 32, removeAccents: true, marginLeft: 0 },
     { name: 'Etiqueta (24)', width: 24, removeAccents: false, marginLeft: 2 },
-    { name: 'Recibo (40)', width: 40, removeAccents: true, marginLeft: 1 }
+    { name: 'Recibo (40)', width: 40, removeAccents: true, marginLeft: 1 };
   ];
 
   return (

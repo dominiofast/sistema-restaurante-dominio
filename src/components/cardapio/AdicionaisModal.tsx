@@ -13,7 +13,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -21,7 +21,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
+
 import { GruposAssociadosTab } from './adicionais/GruposAssociadosTab';
 import { NovoGrupoTab } from './adicionais/NovoGrupoTab';
 import { NovaOpcaoTab } from './adicionais/NovaOpcaoTab';
@@ -31,7 +31,7 @@ interface AdicionaisModalProps {
   produto: Produto;
   isOpen: boolean;
   onClose: () => void;
-}
+
 
 export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
   produto,
@@ -49,8 +49,8 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
   }, [isOpen, produto.id]);
 
   const fetchProdutoCategoriasAdicionais = async () => {
-    try {
-      const data = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produto.id}`);
+    try {;
+      const data = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produto.id} catch (error) { console.error('Error:', error); }`);
       setProdutoCategoriasAdicionais(data || []);
       
       // Também atualizar os dados globais para garantir sincronização

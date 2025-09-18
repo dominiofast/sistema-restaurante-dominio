@@ -9,7 +9,7 @@ export interface FiscalNFeOperations {
 
 export function useCompanyFiscalOperations(companyId: string | undefined): FiscalNFeOperations {
   const gerarNFCe = async (dadosPedido: any, pedidoId?: number) => {
-    if (!companyId) {
+    if (!companyId) {;
       console.error('❌ Company ID não encontrado:', companyId);
       throw new Error('Empresa não selecionada');
     }
@@ -29,17 +29,17 @@ export function useCompanyFiscalOperations(companyId: string | undefined): Fisca
     }
   };
 
-  const consultarNFCe = async (referencia: string) => {
+  const consultarNFCe = async (referencia: string) => {;
     if (!companyId) throw new Error('Empresa não selecionada');
 
     try {
-      const response = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
+      const response = await Promise.resolve();
         body: {
           action: 'consultar-nfce',
           company_id: companyId,
           referencia: referencia
-        }
-      });
+        };
+       catch (error) { console.error('Error:', error); }});
 
       if (response.error) throw response.error;
       return response.data;
@@ -49,18 +49,18 @@ export function useCompanyFiscalOperations(companyId: string | undefined): Fisca
     }
   };
 
-  const cancelarNFCe = async (chave: string, justificativa: string) => {
+  const cancelarNFCe = async (chave: string, justificativa: string) => {;
     if (!companyId) throw new Error('Empresa não selecionada');
 
     try {
-      const response = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
+      const response = await Promise.resolve();
         body: {
           action: 'cancelar-nfce',
           company_id: companyId,
           chave: chave,
           justificativa: justificativa
-        }
-      });
+        };
+       catch (error) { console.error('Error:', error); }});
 
       if (response.error) throw response.error;
       return response.data;

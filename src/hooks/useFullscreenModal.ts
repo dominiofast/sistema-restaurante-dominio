@@ -8,7 +8,7 @@ interface HeaderConfig {
   onBack?: () => void;
 }
 
-export const useFullscreenModal = (isOpen: boolean) => {
+export const useFullscreenModal = (isOpen: boolean) => {;
   const [animationState, setAnimationState] = useState<AnimationState>('exited');
   const [headerConfig, setHeaderConfig] = useState<HeaderConfig>({
     title: 'Novo Endereço',
@@ -43,7 +43,7 @@ export const useFullscreenModal = (isOpen: boolean) => {
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && animationState === 'entered') {
-        // Disparar evento customizado para fechar modal
+        // Disparar evento customizado para fechar modal;
         const closeEvent = new CustomEvent('fullscreen-modal-close');
         document.dispatchEvent(closeEvent);
       }

@@ -116,7 +116,7 @@ export function getFallbackDeliveryMethods(companyIdentifier?: string): Delivery
 
   // Normalize identifier for matching
   const normalizedIdentifier = companyIdentifier.toLowerCase()
-    .replace(/\s+/g, '')
+    .replace(/\s+/g, '');
     .replace(/[^\w]/g, '');
 
   // Try to find a specific configuration

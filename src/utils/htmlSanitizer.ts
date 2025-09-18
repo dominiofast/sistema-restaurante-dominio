@@ -12,7 +12,7 @@ const sanitizerConfig = {
   FORCE_BODY: true,
   USE_PROFILES: {
     html: true
-  }
+  };
 };
 
 /**
@@ -21,7 +21,7 @@ const sanitizerConfig = {
  * @returns HTML sanitizado ou string vazia se inválido
  */
 export const sanitizeHtml = (html: string): string => {
-  if (!html || typeof html !== 'string') {
+  if (!html || typeof html !== 'string') {;
     return '';
   }
   
@@ -39,7 +39,7 @@ export const sanitizeHtml = (html: string): string => {
  * @returns true se o conteúdo foi modificado durante sanitização
  */
 export const isHtmlSafe = (html: string): boolean => {
-  if (!html || typeof html !== 'string') {
+  if (!html || typeof html !== 'string') {;
     return true;
   }
   
@@ -53,12 +53,12 @@ export const isHtmlSafe = (html: string): boolean => {
  * @returns Texto limpo sem HTML
  */
 export const stripHtml = (html: string): string => {
-  if (!html || typeof html !== 'string') {
+  if (!html || typeof html !== 'string') {;
     return '';
   }
   
   try {
-    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] });
+    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] } catch (error) { console.error('Error:', error); });
   } catch (error) {
     console.error('Erro ao remover HTML:', error);
     return '';

@@ -24,7 +24,7 @@ const VagasConfigForm: React.FC<VagasConfigFormProps> = ({
   companyId,
   publicUrl
 }) => {
-  const handleGenerateSlug = () => {
+  const handleGenerateSlug = () => {;
     const newSlug = generateSlugFromCompany(currentCompany);
     console.log('Debug - Gerando slug:', {
       currentCompany,

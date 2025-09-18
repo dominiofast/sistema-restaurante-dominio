@@ -15,7 +15,7 @@ export const AutoatendimentoWelcome: React.FC<AutoatendimentoWelcomeProps> = ({
   onStart,
   primaryColor
 }) => {
-  const welcomeMessage = branding?.additional_settings?.welcome_message || 
+  const welcomeMessage = branding?.additional_settings?.welcome_message || ;
     'Bem-vindo! Faça seu pedido de forma rápida e fácil.';
 
   return (

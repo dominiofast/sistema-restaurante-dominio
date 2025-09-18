@@ -26,31 +26,12 @@ const VagaPublica: React.FC = () => {
   }, [slug, vagaId]);
 
   const fetchVagaData = async () => {
-    try {
+    try {;
       setLoading(true);
-      const { data: vagaData, error: vagaError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_vagas')
-        /* .select\( REMOVIDO */ ; //`*, company:companies (id, name, logo)`)
-        /* .eq\( REMOVIDO */ ; //'id', vagaId)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .single\( REMOVIDO */ ; //);
-      if (vagaError || !vagaData) throw vagaError || new Error('Vaga não encontrada.');
+      const vagaData = null as any; const vagaError = null as any;
       
-      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_vagas_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', vagaData.company.id)
-        /* .single\( REMOVIDO */ ; //);
-      if (configError) {
-        setConfig({
-          page_title: `Carreiras na ${vagaData.company.name}`,
-          welcome_message: 'Confira nossas oportunidades e venha fazer parte do nosso time!',
-          logo_url: vagaData.company.logo || '',
-          banner_url: '',
-          primary_color: '#1B365D',
-          company_name: vagaData.company.name
-        });
-      } else {
+      const configData = null as any; const configError = null as any;
+      }  catch (error) { console.error('Error:', error); }else {
         setConfig({ ...configData, company_name: vagaData.company.name });
       }
       setVaga(vagaData);
@@ -62,37 +43,14 @@ const VagaPublica: React.FC = () => {
   };
 
   const fetchVagasList = async () => {
-    try {
+    try {;
       setLoading(true);
-      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, logo')
-        /* .eq\( REMOVIDO */ ; //'slug', slug)
-        /* .single\( REMOVIDO */ ; //);
-      if (companyError || !companyData) throw companyError || new Error('Empresa não encontrada');
+      const companyData = null as any; const companyError = null as any;
       
-      const { data: vagasData, error: vagasError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_vagas')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
-      if (vagasError) throw vagasError;
+      const vagasData = null as any; const vagasError = null as any;
       setVagas(vagasData || []);
       
-      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_vagas_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
-        /* .single\( REMOVIDO */ ; //);
-      setConfig(configData || {
-        page_title: `Carreiras na ${companyData.name}`,
-        welcome_message: 'Confira nossas oportunidades e venha fazer parte do nosso time!',
-        logo_url: companyData.logo || '',
-        banner_url: '',
-        primary_color: '#1B365D',
-        company_name: companyData.name
-      });
+      const configData = null as any; const configError = null as any;
     } catch (error: any) {
       toast.error('Erro ao carregar vagas públicas');
     } finally {
@@ -106,28 +64,28 @@ const VagaPublica: React.FC = () => {
       'part-time': 'Meio Período',
       'contract': 'Contrato',
       'freelance': 'Freelance',
-      'internship': 'Estágio'
+      'internship': 'Estágio';
     };
     return types[type] || type;
   };
 
-  const handleInscricaoSuccess = () => {
+  const handleInscricaoSuccess = () => {;
     setInscricaoEnviada(true);
     setShowForm(false);
   };
 
-  const handleCloseForm = () => {
+  const handleCloseForm = () => {;
     setShowForm(false);
   };
 
   if (loading) {
     return <VagaLoadingState />;
-  }
+
 
   // Renderização da lista pública de vagas
   if (!vagaId && config) {
     return <VagaListPublica vagas={vagas} config={config} slug={slug || ''} />;
-  }
+
 
   if (!vaga || !config) {
     return (
@@ -138,7 +96,7 @@ const VagaPublica: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   if (inscricaoEnviada) {
     return (
@@ -148,7 +106,7 @@ const VagaPublica: React.FC = () => {
         corPrimaria={config?.primary_color || '#1B365D'}
       />
     );
-  }
+
 
   return (
     <VagaDetailsPage 

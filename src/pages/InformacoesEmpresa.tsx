@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Upload, Eye, EyeOff, Download } from 'lucide-react';
 // SUPABASE REMOVIDO
-const InformacoesEmpresa = () => {
+const InformacoesEmpresa = () => {;
   const { currentCompany } = useAuth();
   const { companyInfo, loading, saveCompanyInfo } = useCompanyInfo();
   const { fiscalConfig, loading: fiscalLoading, saveFiscalConfig } = useCompanyFiscalConfig();
@@ -40,7 +40,7 @@ const InformacoesEmpresa = () => {
     estado: '',
     
     // Informações Fiscais
-    regime_tributario: 'simples_nacional',
+// regime_tributario: 'simples_nacional',
     email_xmls: '',
     certificado_status: 'ativo',
     certificado_validade: '18/07/2025',
@@ -76,7 +76,7 @@ const InformacoesEmpresa = () => {
         estado: companyInfo.estado || '',
         cnae: companyInfo.cnae || '',
       }));
-    }
+
   }, [companyInfo]);
 
   // Atualizar código da empresa quando currentCompany carrega
@@ -86,7 +86,7 @@ const InformacoesEmpresa = () => {
         ...prev,
         codigo: currentCompany.store_code.toString(),
       }));
-    }
+
   }, [currentCompany]);
 
   useEffect(() => {
@@ -110,17 +110,17 @@ const InformacoesEmpresa = () => {
         nfe_proxima_numeracao: fiscalConfig.nfe_proxima_numeracao || 2,
         info_complementar_nfce: fiscalConfig.informacao_complementar_nfce || ''
       }));
-    }
+
   }, [fiscalConfig]);
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value;
     }));
   };
 
-  const handleNumberChange = (field: string, value: string, defaultValue: number) => {
+  const handleNumberChange = (field: string, value: string, defaultValue: number) => {;
     const numValue = parseInt(value) || defaultValue;
     setFormData(prev => ({
       ...prev,
@@ -128,12 +128,12 @@ const InformacoesEmpresa = () => {
     }));
   };
 
-  const handleCertificateUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCertificateUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {;
     const file = event.target.files?.[0];
     if (!file || !currentCompany?.id) {
       console.log('handleCertificateUpload: Missing file or company ID', { file: !!file, companyId: currentCompany?.id });
       return;
-    }
+
 
     console.log('handleCertificateUpload: Starting upload', { fileName: file.name, fileSize: file.size, companyId: currentCompany.id });
 
@@ -145,19 +145,18 @@ const InformacoesEmpresa = () => {
       console.error('handleCertificateUpload: Invalid file type', { fileExtension, allowedTypes });
       toast.error('Apenas arquivos .p12 ou .pfx são permitidos');
       return;
-    }
+
 
     try {
       setUploadingCertificate(true);
       
       const fileExt = fileExtension;
-      const fileName = `certificado_${currentCompany.id}_${Date.now()}${fileExt}`;
+      const fileName = `certificado_${currentCompany.id} catch (error) { console.error('Error:', error); }_${Date.now()}${fileExt}`;
       const filePath = `${currentCompany.id}/${fileName}`;
 
       console.log('handleCertificateUpload: Uploading to storage', { filePath, bucketId: 'certificados' });
 
-      const { data, error: uploadError } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'certificados')
+      const { data, error: uploadError } = await Promise.resolve();
         .upload(filePath, file);
 
       if (uploadError) {
@@ -172,7 +171,7 @@ const InformacoesEmpresa = () => {
       const result = await saveFiscalConfig({
         certificado_path: filePath,
         certificado_status: 'ativo',
-        certificado_validade: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 ano de validade padrão
+        certificado_validade: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 ano de validade padrão;
       });
 
       console.log('handleCertificateUpload: Fiscal config update result:', result);
@@ -195,14 +194,13 @@ const InformacoesEmpresa = () => {
   };
 
   const handleCertificateDownload = async () => {
-    if (!fiscalConfig?.certificado_path || !currentCompany?.id) {
+    if (!fiscalConfig?.certificado_path || !currentCompany?.id) {;
       toast.error('Nenhum certificado encontrado');
       return;
-    }
+
 
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'certificados')
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         .download(fiscalConfig.certificado_path);
 
       if (error) throw error;
@@ -221,10 +219,10 @@ const InformacoesEmpresa = () => {
     } catch (error) {
       console.error('Erro ao baixar certificado:', error);
       toast.error('Erro ao baixar certificado');
-    }
+
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     console.log('handleSave: Starting save operation for tab:', activeTab);
     console.log('handleSave: Form data:', formData);
     
@@ -246,7 +244,7 @@ const InformacoesEmpresa = () => {
           cidade: formData.cidade,
           estado: formData.estado,
           cnae: formData.cnae,
-        });
+        } catch (error) { console.error('Error:', error); });
         
         // Salvar também a inscrição estadual na configuração fiscal
         if (formData.inscricao_estadual) {
@@ -255,7 +253,7 @@ const InformacoesEmpresa = () => {
             cnpj: formData.cnpj_cpf,
             inscricao_estadual: formData.inscricao_estadual,
           });
-        }
+
       } else if (activeTab === 'fiscais') {
         console.log('handleSave: Saving fiscal config');
         console.log('handleSave: CNPJ/CPF value:', formData.cnpj_cpf);
@@ -275,7 +273,7 @@ const InformacoesEmpresa = () => {
           nfce_proxima_numeracao: formData.nfce_proxima_numeracao,
           nfe_serie: formData.nfe_serie,
           nfe_proxima_numeracao: formData.nfe_proxima_numeracao,
-          informacao_complementar_nfce: formData.info_complementar_nfce
+          informacao_complementar_nfce: formData.info_complementar_nfce;
         };
         
         console.log('handleSave: Fiscal data to save:', fiscalData);
@@ -286,7 +284,7 @@ const InformacoesEmpresa = () => {
     } catch (error) {
       console.error('handleSave: Error saving information:', error);
       toast.error('Erro ao salvar informações');
-    }
+
   };
 
   if (loading) {
@@ -295,7 +293,7 @@ const InformacoesEmpresa = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">

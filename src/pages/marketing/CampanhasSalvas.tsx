@@ -24,9 +24,9 @@ interface Campaign {
   media_mime_type?: string;
   media_file_name?: string;
   media_type?: string;
-}
 
-const CampanhasSalvas = () => {
+
+const CampanhasSalvas = () => {;
   const { currentCompany } = useAuth();
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -58,20 +58,20 @@ const CampanhasSalvas = () => {
 
   // Carregar campanhas
   useEffect(() => {
-    const fetchCampaigns = async () => {
+    const fetchCampaigns = async () => {;
       if (!currentCompany?.id) return;
 
       try {
         setLoading(true);
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'whatsapp_campaigns')
-          /* .select\( REMOVIDO */ ; //`
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
             id, name, message, audience, status, created_at, scheduled_date, 
             is_active, country, last_run_at, next_run_at, media_base64, 
             media_mime_type, media_file_name, media_type
           `)
-          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+          
+          
 
         if (error) throw error;
         
@@ -81,7 +81,7 @@ const CampanhasSalvas = () => {
         toast.error('Erro ao carregar campanhas salvas');
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchCampaigns();
@@ -89,28 +89,28 @@ const CampanhasSalvas = () => {
 
   // Filtrar campanhas
   const filteredCampaigns = campaigns.filter(campaign => {
-    const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||;
                          campaign.message.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || 
                          (statusFilter === 'active' && campaign.is_active) ||
-                         (statusFilter === 'inactive' && !campaign.is_active) ||
+                         (statusFilter === 'inactive' && !campaign.is_active) ||;
                          campaign.status === statusFilter;
     
     return matchesSearch && matchesStatus;
   });
 
   const handleDeleteCampaign = async (campaignId: string) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {
+    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {;
       return;
     }
 
     try {
       setDeleting(campaignId);
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_campaigns')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', campaignId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -142,7 +142,7 @@ const CampanhasSalvas = () => {
         mimeType: campaign.media_mime_type,
         fileName: campaign.media_file_name,
         type: campaign.media_type
-      } : null
+      } : null;
     };
     
     // Salvar dados no sessionStorage para serem carregados na outra página
@@ -151,7 +151,7 @@ const CampanhasSalvas = () => {
     toast.success('Campanha carregada para edição');
   };
 
-  const getStatusColor = (status: string, isActive: boolean) => {
+  const getStatusColor = (status: string, isActive: boolean) => {;
     if (!isActive) return 'bg-gray-100 text-gray-600';
     
     switch (status) {
@@ -168,7 +168,7 @@ const CampanhasSalvas = () => {
     }
   };
 
-  const getStatusText = (status: string, isActive: boolean) => {
+  const getStatusText = (status: string, isActive: boolean) => {;
     if (!isActive) return 'Inativa';
     
     switch (status) {
@@ -187,7 +187,7 @@ const CampanhasSalvas = () => {
 
   const getAudienceText = (audience: string) => {
     switch (audience) {
-      case 'todos-clientes':
+      case 'todos-clientes':;
         return 'Todos os clientes';
       case 'clientes-ativos':
         return 'Clientes ativos';
@@ -199,15 +199,15 @@ const CampanhasSalvas = () => {
   };
 
   const getMediaPreview = (campaign: Campaign) => {
-    if (!campaign.media_base64 || !campaign.media_mime_type) {
+    if (!campaign.media_base64 || !campaign.media_mime_type) {;
       return null;
     }
 
     try {
       // Verificar se é uma imagem válida
       if (campaign.media_mime_type.startsWith('image/')) {
-        return `data:${campaign.media_mime_type};base64,${campaign.media_base64}`;
-      }
+        return `data:${campaign.media_mime_type} catch (error) { console.error('Error:', error); };base64,${campaign.media_base64}`;
+
     } catch (error) {
       console.error('Erro ao processar mídia:', error);
     }

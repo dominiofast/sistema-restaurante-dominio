@@ -51,13 +51,7 @@ class AIService {
         return false;
       }
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'whatsapp_chats')
-        /* .select\( REMOVIDO */ ; //'ai_paused')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'chat_id', chatId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+       catch (error) { console.error('Error:', error); }const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro ao verificar estado de pausa da IA:', error);
         return false; // Em caso de erro, assumir IA ativa (comportamento seguro)
@@ -116,22 +110,15 @@ class AIService {
           console.log('⏸️ IA pausada para este chat:', chatId);
           return null;
         }
-      }
+       catch (error) { console.error('Error:', error); }}
 
       // Buscar dados da empresa
-      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'slug, name')
-        /* .eq\( REMOVIDO */ ; //'id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (companyError || !companyData) {
-        console.error('❌ Empresa não encontrada:', companyError);
+      const companyData = null as any; const companyError = null as any;
         return null;
       }
 
       // Chamar edge function ai-chat-direct
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('ai-chat-direct', {
+      const { data, error } = await Promise.resolve();
         body: {
           company_id: companyId,
           company_slug: companyData.slug,
@@ -191,7 +178,7 @@ class AIService {
           console.log('⏸️ IA pausada para este chat - não processando mensagem:', chatId);
           return null;
         }
-      }
+       catch (error) { console.error('Error:', error); }}
       
       // Carrega configurações
       const globalConfig = aiConfigService.cachedGlobalConfig || await aiConfigService.loadGlobalConfig();
@@ -222,7 +209,7 @@ class AIService {
       const hasProductKnowledge = agentConfig.product_knowledge !== undefined 
         ? agentConfig.product_knowledge 
         : agentConfig.conhecimento_produtos !== undefined 
-        ? agentConfig.conhecimento_produtos 
+        ? agentConfig.conhecimento_produtos ;
         : true;
 
       if (hasProductKnowledge) {
@@ -243,11 +230,11 @@ class AIService {
       // Extras dinâmicos (cashback e link do cardápio)
       let cashbackPercent: number | undefined = undefined;
       try {
-        const { data: cashbackRow } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cashback_config')
-          /* .select\( REMOVIDO */ ; //'percentual_cashback, is_active')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+        const { data: cashbackRow }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
         if (cashbackRow?.is_active && typeof cashbackRow.percentual_cashback === 'number') {
           cashbackPercent = cashbackRow.percentual_cashback;
         }
@@ -261,7 +248,7 @@ class AIService {
         agentConfig,
         cardapioData,
         paymentConfig,
-        { cashbackPercent, menuUrl, companyName: (agentConfig as any).nome || (agentConfig as any).agent_name }
+        { cashbackPercent, menuUrl, companyName: (agentConfig as any).nome || (agentConfig as any).agent_name };
       );
 
       // Prepara as mensagens
@@ -282,7 +269,7 @@ class AIService {
       // Chama a API do OpenAI
       const startTime = Date.now();
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
+// method: 'POST',
         headers: {
           'Authorization': `Bearer ${globalConfig.openai_api_key}`,
           'Content-Type': 'application/json'
@@ -294,7 +281,7 @@ class AIService {
           temperature: globalConfig.temperature,
           presence_penalty: 0.1,
           frequency_penalty: 0.1
-        })
+        });
       });
 
       if (!response.ok) {
@@ -346,7 +333,7 @@ class AIService {
         return false;
       }
 
-      const agentConfig = await aiConfigService.loadAgentConfig(companyId);
+       catch (error) { console.error('Error:', error); }const agentConfig = await aiConfigService.loadAgentConfig(companyId);
       return agentConfig !== null;
     } catch (error) {
       console.error('Erro ao verificar status da IA:', error);
@@ -378,7 +365,7 @@ class AIService {
       const globalConfig = await aiConfigService.loadLatestGlobalConfig();
       
       if (!globalConfig) {
-        return { success: false, message: 'Nenhuma configuração encontrada' };
+        return { success: false, message: 'Nenhuma configuração encontrada' } catch (error) { console.error('Error:', error); };
       }
 
       if (!globalConfig.openai_api_key || globalConfig.openai_api_key === 'CONFIGURE_YOUR_OPENAI_API_KEY_HERE') {
@@ -392,7 +379,7 @@ class AIService {
       });
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
+// method: 'POST',
         headers: {
           'Authorization': `Bearer ${globalConfig.openai_api_key}`,
           'Content-Type': 'application/json'
@@ -411,7 +398,7 @@ class AIService {
           ],
           max_tokens: 10,
           temperature: 0.1
-        })
+        });
       });
 
       if (!response.ok) {

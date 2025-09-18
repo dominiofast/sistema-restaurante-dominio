@@ -29,7 +29,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
   onSelectPedido,
   isCampainhaActive,
   pararCampainha
-}) => {
+}) => {;
   const { gerarNFCe } = useCompanyFiscalConfig();
   const { hasNFCe, getNFCeData, saveNFCeLog } = useNFCeLogs(pedido.company_id);
   const { isPrinting, printPedido, printCupomFiscal } = usePrintPedido(pedido.company_id);
@@ -40,7 +40,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
   const nfceExistente = getNFCeData(pedido.id);
   const nfceGerada = nfceExistente ? { success: true, data: nfceExistente } : null;
 
-  const handleGerarNFCe = async (e: React.MouseEvent) => {
+  const handleGerarNFCe = async (e: React.MouseEvent) => {;
     e.stopPropagation();
     
     if (isGeneratingNFCe) return;
@@ -53,7 +53,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
     
     try {
       setIsGeneratingNFCe(true);
-      toast.loading('Gerando cupom fiscal...', { id: `nfce-${pedido.id}` });
+      toast.loading('Gerando cupom fiscal...', { id: `nfce-${pedido.id} catch (error) { console.error('Error:', error); }` });
       
       console.log('🚀 Iniciando geração de NFCe para pedido:', pedido.id);
       console.log('📋 Dados do pedido:', pedido);
@@ -77,7 +77,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
             cst_csosn: '102', // Para Simples Nacional - Tributada pelo Simples Nacional sem permissão de crédito
             aliquota_icms: 0, // Simples Nacional normalmente isento
             origem_produto: '0' // Produto nacional
-          }
+
         ],
         pagamentos: [
           {
@@ -87,8 +87,8 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
                 ? 'pix' 
                 : 'dinheiro',
             valor: pedido.total || 0
-          }
-        ]
+
+        ];
       };
 
       console.log('📦 Dados NFCe preparados:', dadosNFCe);
@@ -108,7 +108,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
         }
       } else {
         throw new Error(resultado.error || 'Erro ao gerar cupom fiscal');
-      }
+
     } catch (error: any) {
       console.error('❌ Erro ao gerar NFCe:', error);
       console.error('❌ Stack trace:', error.stack);
@@ -118,7 +118,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
     }
   };
 
-  const handleImprimirNFCe = async () => {
+  const handleImprimirNFCe = async () => {;
     const dadosNFCe = nfceGerada?.data;
     if (!dadosNFCe) {
       toast.error('Nenhum cupom fiscal disponível para impressão');
@@ -131,16 +131,16 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
       
       if (impressaoSucesso) {
         toast.success('Cupom fiscal impresso com sucesso!');
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         toast.error('Falha ao imprimir cupom fiscal. Verifique a configuração da impressora.');
-      }
+
     } catch (error) {
       console.error('Erro ao imprimir NFCe:', error);
       toast.error('Erro ao imprimir cupom fiscal');
     }
   };
 
-  const handleImprimirPedido = async () => {
+  const handleImprimirPedido = async () => {;
     console.log('🔥 handleImprimirPedido CLICADO!');
     console.log('📋 Pedido para impressão:', pedido);
     console.log('🏢 Company ID do pedido:', pedido.company_id);
@@ -155,10 +155,10 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
       if (impressaoSucesso) {
         console.log('✅ Impressão bem-sucedida');
         toast.success('Pedido impresso com sucesso!');
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         console.log('❌ Impressão falhou');
         toast.error('Falha ao imprimir pedido. Verifique a configuração da impressora.');
-      }
+
     } catch (error) {
       console.error('💥 Erro CATCH no handleImprimirPedido:', error);
       toast.error('Erro ao imprimir pedido');
@@ -166,11 +166,11 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
   };
 
 
-  const handleCancelarPedido = (e: React.MouseEvent) => {
+  const handleCancelarPedido = (e: React.MouseEvent) => {;
     e.stopPropagation();
     
     const confirmar = window.confirm(
-      `Tem certeza que deseja cancelar o pedido #${pedido.numero_pedido || pedido.id}?\n\nEsta ação não pode ser desfeita.`
+      `Tem certeza que deseja cancelar o pedido #${pedido.numero_pedido || pedido.id}?\n\nEsta ação não pode ser desfeita.`;
     );
     
     if (confirmar) {
@@ -192,7 +192,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -268,7 +268,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
                   nfceGerada?.success 
                     ? 'Imprimir cupom fiscal' 
                     : 'Gerar cupom fiscal'
-                }
+
               >
                 <Receipt size={14} />
                 {isGeneratingNFCe 
@@ -276,7 +276,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
                   : nfceGerada?.success 
                     ? 'Imprimir' 
                     : 'NFCe'
-                }
+
               </button>
               
               {/* Botão de impressão do pedido */}
@@ -330,7 +330,7 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
                   const nextStatus = {
                     'analise': 'producao',
                     'producao': 'pronto',
-                    'pronto': 'entregue'
+                    'pronto': 'entregue';
                   }[statusConfig.key];
                   if (nextStatus) {
                     onUpdateStatus(pedido.id, nextStatus);

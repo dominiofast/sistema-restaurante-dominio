@@ -39,10 +39,10 @@ export class DynamicMetaTagsService {
         return null;
       }
       
-      // Procurar empresa por slug/domain/id
+       catch (error) { console.error('Error:', error); }// Procurar empresa por slug/domain/id
       const company = result.data?.find((comp: any) => {
         return comp.slug === slugOrId || 
-               comp.domain === slugOrId ||
+               comp.domain === slugOrId ||;
                comp.id === slugOrId;
       });
 
@@ -67,8 +67,8 @@ export class DynamicMetaTagsService {
     } catch (error) {
       console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa por slug via API:', error);
       return null;
-    }
-  }
+
+
 
   // Gerar meta tags para uma empresa
   static generateCompanyMetaTags(company: CompanyMetaTags, currentUrl?: string): MetaTagsConfig {
@@ -83,7 +83,7 @@ export class DynamicMetaTagsService {
       type: 'website',
       url: currentUrl || `https://pedido.dominio.tech/${company.slug}`
     };
-  }
+
 
   // Meta tags padrão da plataforma (fallback)
   static getDefaultMetaTags(): MetaTagsConfig {
@@ -95,14 +95,14 @@ export class DynamicMetaTagsService {
       type: 'website',
       url: 'https://pedido.dominio.tech'
     };
-  }
+
 
   // Aplicar meta tags no documento
   static applyMetaTags(metaTags: MetaTagsConfig) {
     // Title
     if (metaTags.title) {
       document.title = metaTags.title;
-    }
+
 
     // Meta description
     this.setMetaTag('name', 'description', metaTags.description || '');
@@ -124,7 +124,7 @@ export class DynamicMetaTagsService {
     // WhatsApp específico (mesmo que Open Graph)
     this.setMetaTag('property', 'og:image:width', '1200');
     this.setMetaTag('property', 'og:image:height', '630');
-  }
+
 
   // Helper para definir meta tags
   private static setMetaTag(attribute: string, name: string, content: string) {
@@ -134,10 +134,10 @@ export class DynamicMetaTagsService {
       metaTag = document.createElement('meta');
       metaTag.setAttribute(attribute, name);
       document.head.appendChild(metaTag);
-    }
+
     
     metaTag.setAttribute('content', content);
-  }
+
 
   // Limpar meta tags antigas
   static clearMetaTags() {
@@ -152,7 +152,7 @@ export class DynamicMetaTagsService {
       'meta[name="twitter:card"]',
       'meta[name="twitter:title"]',
       'meta[name="twitter:description"]',
-      'meta[name="twitter:image"]'
+      'meta[name="twitter:image"]';
     ];
 
     metaTagsToRemove.forEach(selector => {
@@ -161,7 +161,7 @@ export class DynamicMetaTagsService {
         metaTag.remove();
       }
     });
-  }
+
 
   // Extrair slug da URL atual
   static getSlugFromPath(pathname: string): string | null {
@@ -180,7 +180,7 @@ export class DynamicMetaTagsService {
     if (pathSegments.length === 0) {
       console.log('🔍 DynamicMetaTagsService - Nenhum segmento encontrado, retornando null');
       return null;
-    }
+
 
     // Se o primeiro segmento não é uma rota conhecida, assume que é um slug
     const knownRoutes = [
@@ -190,7 +190,7 @@ export class DynamicMetaTagsService {
       'empresas', 'companies', 'super-admin', 'caixa', 'pdv', 'clientes', 'marketing',
       'whatsapp', 'chat', 'kds', 'cashback', 'agente-ia', 'teste-agente',
       'ferramentas', 'tools', 'estoque', 'gestor-cardapio', 'opcoes-loja',
-      'autoatendimento'
+      'autoatendimento';
     ];
     const firstSegment = pathSegments[0];
     console.log('🔍 DynamicMetaTagsService - firstSegment:', firstSegment, 'é rota conhecida?', knownRoutes.includes(firstSegment));
@@ -198,17 +198,17 @@ export class DynamicMetaTagsService {
     if (!knownRoutes.includes(firstSegment)) {
       console.log('🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug:', firstSegment);
       return firstSegment;
-    }
+
 
     // Se é uma rota conhecida, verifica se há slug no segundo segmento
     if (pathSegments.length > 1 && ['cardapio', 'pedido', 'autoatendimento'].includes(firstSegment)) {
       console.log('🔍 DynamicMetaTagsService - Rota conhecida detectada, extraindo slug do segundo segmento:', pathSegments[1]);
       return pathSegments[1];
-    }
+
 
     console.log('🔍 DynamicMetaTagsService - Nenhum slug encontrado, retornando null');
     return null;
-  }
+
 
   // Atualização de meta tags via API (temporariamente desabilitado)
   static async updateCompanyMetaTags(
@@ -217,9 +217,8 @@ export class DynamicMetaTagsService {
       name?: string;
       domain?: string;
       logo?: string;
-    }
+
   ): Promise<boolean> {
     console.log('⏭️ DynamicMetaTagsService - updateCompanyMetaTags temporariamente desabilitado');
     return false;
-  }
-} 
+

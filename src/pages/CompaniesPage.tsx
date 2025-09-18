@@ -19,9 +19,9 @@ interface Company {
   store_code: number;
   slug?: string;
   created_at: string;
-}
 
-export const CompaniesPage = () => {
+
+export const CompaniesPage = () => {;
   const { companies, isLoading: loading, createCompany, updateCompany, deleteCompany, isCreating, isUpdating, isDeleting } = useCompanies();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
@@ -42,25 +42,25 @@ export const CompaniesPage = () => {
     );
   }
 
-  const handleEdit = (company: Company) => {
+  const handleEdit = (company: Company) => {;
     setEditingCompany(company);
     setDialogOpen(true);
   };
 
   const handleDelete = async (company: Company) => {
-    if (!confirm(`Tem certeza que deseja excluir a empresa "${company.name}"?`)) {
+    if (!confirm(`Tem certeza que deseja excluir a empresa "${company.name}"?`)) {;
       return;
     }
 
     deleteCompany(company.id);
   };
 
-  const handleDialogClose = () => {
+  const handleDialogClose = () => {;
     setDialogOpen(false);
     setEditingCompany(null);
   };
 
-  const filteredCompanies = (() => {
+  const filteredCompanies = (() => {;
     if (!searchTerm) return companies;
     
     return companies.filter(company =>
@@ -69,7 +69,7 @@ export const CompaniesPage = () => {
     );
   })();
 
-  const getCompanyInitials = (name: string) => {
+  const getCompanyInitials = (name: string) => {;
     const words = name.split(' ');
     if (words.length === 1) {
       return words[0].substring(0, 2).toUpperCase();
@@ -93,7 +93,7 @@ export const CompaniesPage = () => {
         label: 'Enterprise', 
         color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
         icon: Award
-      }
+      };
     };
     return configs[plan] || configs.basic;
   };
@@ -114,13 +114,13 @@ export const CompaniesPage = () => {
         label: 'Suspenso', 
         color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
         dot: 'bg-yellow-500'
-      }
+      };
     };
     return configs[status] || configs.active;
   };
 
   const handleLoginAsAdmin = (company: Company) => {
-    // Selecionar a empresa no contexto de autenticação
+    // Selecionar a empresa no contexto de autenticação;
     selectCompany(company);
     
     toast({

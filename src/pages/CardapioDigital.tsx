@@ -29,7 +29,7 @@ interface Produto {
   is_available: boolean;
   preparation_time?: number;
   company_id: string;
-}
+
 
 const CardapioDigital: React.FC = () => {
   const navigate = useNavigate();
@@ -74,13 +74,13 @@ const CardapioDigital: React.FC = () => {
 
   // Produtos da categoria selecionada ou em destaque
   const produtosFiltrados = categoriaSelecionada
-    ? produtos.filter(p => p.categoria_id === categoriaSelecionada)
+    ? produtos.filter(p => p.categoria_id === categoriaSelecionada);
     : produtos.filter(p => p.destaque);
 
   // Filtrar por busca
   const produtosFinal = produtosFiltrados.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    produto.description?.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
   console.log('📊 Estado atual render:', {
@@ -167,7 +167,7 @@ const CardapioDigital: React.FC = () => {
 
 
   const getSectionTitle = () => {
-    if (categoriaSelecionada === null) {
+    if (categoriaSelecionada === null) {;
       return '🔥 Em Destaque';
     }
     return categorias.find(c => c.id === categoriaSelecionada)?.name || 'Produtos';
@@ -243,7 +243,7 @@ const CardapioDigital: React.FC = () => {
               
               // Calcular percentual de desconto
               const discountPercentage = produto.is_promotional && produto.promotional_price && produto.promotional_price < produto.price && produto.price > 0
-                ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100)
+                ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100);
                 : null;
 
               return (

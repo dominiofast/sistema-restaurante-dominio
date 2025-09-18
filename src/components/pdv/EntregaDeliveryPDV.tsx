@@ -28,7 +28,7 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
   // Calcular taxa automaticamente quando endereço for selecionado
   useEffect(() => {
     const handleAddressSelection = async () => {
-      if (selectedAddress) {
+      if (selectedAddress) {;
         console.log('📍 PDV - Endereço selecionado:', selectedAddress);
         console.log('🏢 PDV - Company ID:', currentCompany?.id);
         
@@ -42,7 +42,7 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
             selectedAddress.bairro || '',
             selectedAddress.cidade || '',
             selectedAddress.estado || '',
-            selectedAddress.cep || ''
+            selectedAddress.cep || '';
           );
           
           if (coordinates && selectedAddress.id) {
@@ -53,7 +53,7 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
             const updatedAddress = {
               ...selectedAddress,
               latitude: coordinates.latitude,
-              longitude: coordinates.longitude
+              longitude: coordinates.longitude;
             };
             
             setSelectedAddress(updatedAddress);
@@ -67,22 +67,22 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
             const calculatedFee = await calculateDeliveryFee(selectedAddress);
             console.log('💰 PDV - Taxa calculada sem coordenadas:', calculatedFee);
             setTaxaEntrega(calculatedFee);
-          }
+
         } else {
           // Endereço já tem coordenadas
           const calculatedFee = await calculateDeliveryFee(selectedAddress);
           console.log('💰 PDV - Taxa calculada com coordenadas existentes:', calculatedFee);
           setTaxaEntrega(calculatedFee);
-        }
+
       } else {
         setTaxaEntrega(0);
-      }
+
     };
 
     handleAddressSelection();
   }, [selectedAddress, calculateDeliveryFee, geocodeAddress, updateAddressWithCoordinates]);
 
-  const handleConfirm = () => {
+  const handleConfirm = () => {;
     console.log('✅ PDV - Confirmando entrega com taxa:', taxaEntrega);
     onConfirm({ 
       tipo: 'delivery', 

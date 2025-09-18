@@ -8,7 +8,7 @@ interface PrinterConfig {
   parity?: 'none' | 'even' | 'odd';
 }
 
-export const useWebSerialPrinter = () => {
+export const useWebSerialPrinter = () => {;
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const portRef = useRef<SerialPort | null>(null);
@@ -20,7 +20,7 @@ export const useWebSerialPrinter = () => {
   
   // Verificar suporte
   const checkSupport = useCallback(() => {
-    if (!('serial' in navigator)) {
+    if (!('serial' in navigator)) {;
       toast.error('Navegador não suporta Web Serial API. Use Chrome ou Edge.');
       return false;
     }
@@ -28,7 +28,7 @@ export const useWebSerialPrinter = () => {
   }, []);
 
   // Conectar impressora
-  const connect = useCallback(async (config: PrinterConfig = {}) => {
+  const connect = useCallback(async (config: PrinterConfig = {}) => {;
     if (!checkSupport()) return false;
     
     try {
@@ -44,7 +44,7 @@ export const useWebSerialPrinter = () => {
         dataBits: config.dataBits || 8,
         stopBits: config.stopBits || 1,
         parity: config.parity || 'none'
-      });
+      } catch (error) { console.error('Error:', error); });
       
       // Configurar writer
       const textEncoder = new TextEncoderStream();
@@ -70,11 +70,11 @@ export const useWebSerialPrinter = () => {
   // Desconectar
   const disconnect = useCallback(async () => {
     try {
-      if (writerRef.current) {
+      if (writerRef.current) {;
         await writerRef.current.close();
         writerRef.current = null;
       }
-      if (portRef.current) {
+       catch (error) { console.error('Error:', error); }if (portRef.current) {
         await portRef.current.close();
         portRef.current = null;
       }
@@ -87,7 +87,7 @@ export const useWebSerialPrinter = () => {
 
   // Enviar comando
   const sendCommand = useCallback(async (command: string) => {
-    if (!writerRef.current) {
+    if (!writerRef.current) {;
       throw new Error('Impressora não conectada');
     }
     await writerRef.current.write(command);
@@ -95,7 +95,7 @@ export const useWebSerialPrinter = () => {
 
   // Imprimir texto
   const printText = useCallback(async (text: string) => {
-    try {
+    try {;
       await sendCommand(text);
     } catch (error) {
       toast.error('Erro ao imprimir');
@@ -104,7 +104,7 @@ export const useWebSerialPrinter = () => {
   }, [sendCommand]);
 
   // Imprimir cupom
-  const printReceipt = useCallback(async (data: {
+  const printReceipt = useCallback(async (data: {;
     header?: string;
     items: Array<{ name: string; quantity: number; price: number }>;
     total: number;
@@ -123,7 +123,7 @@ export const useWebSerialPrinter = () => {
       await sendCommand(ESC + 'a' + '\x00');
       
       for (const item of data.items) {
-        const linha = `${item.quantity}x ${item.name.padEnd(25)} ${item.price.toFixed(2)}`;
+        const linha = `${item.quantity} catch (error) { console.error('Error:', error); }x ${item.name.padEnd(25)} ${item.price.toFixed(2)}`;
         await printText(linha + '\n');
       }
       
@@ -153,7 +153,7 @@ export const useWebSerialPrinter = () => {
 
   // Cortar papel
   const cutPaper = useCallback(async () => {
-    try {
+    try {;
       await sendCommand(GS + 'V' + '\x41' + '\x00');
     } catch (error) {
       toast.error('Erro ao cortar papel');
@@ -162,7 +162,7 @@ export const useWebSerialPrinter = () => {
 
   // Abrir gaveta
   const openDrawer = useCallback(async () => {
-    try {
+    try {;
       await sendCommand(ESC + 'p' + '\x00' + '\x0A' + '\x00');
       toast.success('Gaveta aberta');
     } catch (error) {

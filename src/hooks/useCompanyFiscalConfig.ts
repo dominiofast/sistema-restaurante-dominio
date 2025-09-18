@@ -41,7 +41,7 @@ export interface CompanyFiscalConfig {
   nfe_proxima_numeracao?: number;
   informacao_complementar_nfce?: string;
   email_xmls?: string;
-}
+
 
 export function useCompanyFiscalConfig() {
   const { currentCompany } = useAuth();
@@ -53,7 +53,7 @@ export function useCompanyFiscalConfig() {
   const { validarConfiguracao } = useCompanyFiscalValidation();
 
   const fetchFiscalConfig = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.log('fetchFiscalConfig: No company ID available');
       return;
     }
@@ -62,11 +62,11 @@ export function useCompanyFiscalConfig() {
       setLoading(true);
       console.log('fetchFiscalConfig: Fetching config for company:', currentCompany.id);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_fiscal_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('fetchFiscalConfig: Supabase error:', error);
@@ -105,7 +105,7 @@ export function useCompanyFiscalConfig() {
     }
   };
 
-  const saveFiscalConfig = async (config: Partial<CompanyFiscalConfig>) => {
+  const saveFiscalConfig = async (config: Partial<CompanyFiscalConfig>) => {;
     console.log('saveFiscalConfig: Starting with config:', config);
     if (!currentCompany?.id) {
       console.log('saveFiscalConfig: No company ID available');
@@ -118,7 +118,7 @@ export function useCompanyFiscalConfig() {
       
       // Garantir que campos obrigatórios estejam presentes e limpar campos vazios
       const cleanConfig = Object.fromEntries(
-        Object.entries(config).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
+        Object.entries(config).filter(([_, value]) => value !== '' && value !== null && value !== undefined);
       );
 
       const dataToSave = {
@@ -127,8 +127,8 @@ export function useCompanyFiscalConfig() {
         cnpj: config.cnpj || fiscalConfig?.cnpj || '',
         // Garantir que certificado_validade seja string se fornecido
         ...(config.certificado_validade 
-          ? { certificado_validade: String(config.certificado_validade) }
-          : {}
+          ? { certificado_validade: String(config.certificado_validade) };
+           catch (error) { console.error('Error:', error); }: {}
         ),
         updated_at: new Date().toISOString(),
       };
@@ -137,13 +137,7 @@ export function useCompanyFiscalConfig() {
 
       if (fiscalConfig?.id) {
         console.log('saveFiscalConfig: Updating existing record with ID:', fiscalConfig.id);
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_fiscal_config')
-          /* .update\( REMOVIDO */ ; //dataToSave)
-          /* .eq\( REMOVIDO */ ; //'id', fiscalConfig.id)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
+        const { data, error  } = null as any;
         if (error) {
           console.error('saveFiscalConfig: Update error:', error);
           throw error;
@@ -152,12 +146,7 @@ export function useCompanyFiscalConfig() {
         setFiscalConfig(data);
       } else {
         console.log('saveFiscalConfig: Creating new record');
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_fiscal_config')
-          /* .insert\( REMOVIDO */ ; //dataToSave)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
+        const { data, error  } = null as any;
         if (error) {
           console.error('saveFiscalConfig: Insert error:', error);
           throw error;
@@ -190,4 +179,4 @@ export function useCompanyFiscalConfig() {
     cancelarNFCe,
     refetch: fetchFiscalConfig,
   };
-}
+

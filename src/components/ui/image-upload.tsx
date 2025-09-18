@@ -25,7 +25,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (file: File) => {
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith('image/')) {;
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
@@ -36,24 +36,24 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelect(file);
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {;
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent) => {;
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent) => {;
     e.preventDefault();
     setIsDragging(false);
     
@@ -63,7 +63,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const clearImage = () => {
+  const clearImage = () => {;
     setPreview(null);
     onChange('');
     if (fileInputRef.current) {
@@ -71,7 +71,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const openFileDialog = () => {
+  const openFileDialog = () => {;
     fileInputRef.current?.click();
   };
 

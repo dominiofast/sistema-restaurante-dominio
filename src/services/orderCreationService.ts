@@ -63,7 +63,7 @@ export class OrderCreationService {
           try {
             // Se é uma string JSON, fazer parse e formatar
             const enderecoObj = JSON.parse(deliveryInfo.endereco);
-            enderecoPedido = `${enderecoObj.logradouro || ''}, ${enderecoObj.numero || ''}, ${enderecoObj.bairro || ''}, ${enderecoObj.cidade || ''}/${enderecoObj.estado || ''}`;
+            enderecoPedido = `${enderecoObj.logradouro || ''} catch (error) { console.error('Error:', error); }, ${enderecoObj.numero || ''}, ${enderecoObj.bairro || ''}, ${enderecoObj.cidade || ''}/${enderecoObj.estado || ''}`;
           } catch {
             // Se não conseguir fazer parse, usar como string
             enderecoPedido = deliveryInfo.endereco;
@@ -88,19 +88,12 @@ export class OrderCreationService {
         total: totalFinal,
         observacoes: null,
         status: 'pendente',
-        origem: 'cardapio_publico'
+        origem: 'cardapio_publico';
       };
 
       console.log('📦 Criando pedido com dados:', pedidoData);
 
-      const { data: pedido, error: pedidoError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedidos')
-        /* .insert\( REMOVIDO */ ; //pedidoData)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (pedidoError) {
-        console.error('❌ Erro ao criar pedido:', pedidoError);
+      const pedido = null as any; const pedidoError = null as any;
         throw pedidoError;
       }
 
@@ -114,7 +107,7 @@ export class OrderCreationService {
         quantidade: item.quantidade,
         valor_unitario: item.preco_unitario,
         valor_total: item.preco_total,
-        observacoes: item.observacoes || null
+        observacoes: item.observacoes || null;
       }));
 
       // Adicionar taxa de entrega como item se existir
@@ -143,13 +136,7 @@ export class OrderCreationService {
         });
       }
 
-      const { data: itensInseridos, error: itensError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_itens')
-        /* .insert\( REMOVIDO */ ; //itensParaInserir)
-        /* .select\( REMOVIDO */ ; //);
-
-      if (itensError) {
-        console.error('❌ Erro ao criar itens do pedido:', itensError);
+      const itensInseridos = null as any; const itensError = null as any;
         throw itensError;
       }
 
@@ -179,8 +166,8 @@ export class OrderCreationService {
     } catch (error) {
       console.error('❌ Erro ao finalizar pedido:', error);
       throw error;
-    }
-  }
+
+
 
 
   private static async processOrderAdditions(carrinho: OrderItem[], itensInseridos: any[]) {
@@ -204,7 +191,7 @@ export class OrderCreationService {
           const isValidAdicional = (
             isUUID && qty > 0 &&
             typeof adicionalData === 'object' && adicionalData !== null &&
-            'name' in (adicionalData as any) && 'price' in (adicionalData as any) && 'quantity' in (adicionalData as any)
+            'name' in (adicionalData as any) && 'price' in (adicionalData as any) && 'quantity' in (adicionalData as any);
           );
           
           console.log('🔍 Validação adicional:', { isUUID, qty, isValidAdicional, adicionalData });
@@ -220,17 +207,17 @@ export class OrderCreationService {
           let categoriaNome = 'Adicional'; // Fallback
           if (isUUID) {
             try {
-              const { data: adicionalCompleto } = /* await supabase REMOVIDO */ null
-                /* .from REMOVIDO */ ; //'adicionais')
-                /* .select\( REMOVIDO */ ; //'categorias_adicionais!inner(name)')
-                /* .eq\( REMOVIDO */ ; //'id', adicionalId)
-                /* .maybeSingle\( REMOVIDO */ ; //);
+              const { data: adicionalCompleto }  catch (error) { console.error('Error:', error); }= 
+                
+                
+                
+                
               if (adicionalCompleto?.categorias_adicionais) {
                 categoriaNome = adicionalCompleto.categorias_adicionais.name;
               }
             } catch (error) {
               console.warn('⚠️ Não foi possível buscar categoria do adicional:', adicionalId);
-            }
+
           }
           
           adicionaisParaInserir.push({
@@ -244,16 +231,13 @@ export class OrderCreationService {
           });
         }
       }
-    }
+
 
     // Inserir adicionais se existirem
     if (adicionaisParaInserir.length > 0) {
       console.log('🎯 Inserindo adicionais:', adicionaisParaInserir);
       
-      const { error: adicionaisError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_item_adicionais')
-        /* .insert\( REMOVIDO */ ; //adicionaisParaInserir);
-
+      const { error: adicionaisError  } = null as any;
       if (adicionaisError) {
         console.error('⚠️ Erro ao criar adicionais do pedido (seguindo sem interromper):', adicionaisError);
       } else {
@@ -262,21 +246,21 @@ export class OrderCreationService {
     } else {
       console.log('⚠️ NENHUM ADICIONAL PARA INSERIR - Array vazio');
       console.log('🔍 DEBUG: adicionaisParaInserir =', adicionaisParaInserir);
-    }
-  }
+
+
 
   private static async triggerAutoPrint(pedido: any) {
     try {
-      await /* supabase REMOVIDO */ null; //functions.invoke('auto-print-pedido', {
+      await Promise.resolve();
         body: {
           pedido_id: pedido.id,
           numero_pedido: pedido.numero_pedido,
           company_id: pedido.company_id,
           origin: 'cardapio_publico',
-        },
+        } catch (error) { console.error('Error:', error); },
       });
     } catch (printErr) {
       console.warn('⚠️ Falha ao acionar auto-print-pedido (segue fluxo):', printErr);
-    }
-  }
+
+
 }

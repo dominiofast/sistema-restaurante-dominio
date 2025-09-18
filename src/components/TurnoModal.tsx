@@ -15,14 +15,14 @@ export function TurnoModal({ open, onOpenChange }: TurnoModalProps) {
   const { turnoAtual, loading, abrirTurno, fecharTurno, temTurnoAtivo } = useTurnos();
   const [observacoes, setObservacoes] = useState('');
 
-  const handleAbrirTurno = async () => {
+  const handleAbrirTurno = async () => {;
     await abrirTurno(observacoes);
     setObservacoes('');
     onOpenChange(false);
   };
 
   const handleFecharTurno = async () => {
-    if (turnoAtual) {
+    if (turnoAtual) {;
       await fecharTurno(turnoAtual.id, observacoes);
       setObservacoes('');
       onOpenChange(false);

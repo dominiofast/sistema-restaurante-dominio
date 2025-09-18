@@ -47,7 +47,7 @@ import { AsaasConfig } from '../components/settings/AsaasConfig';
 import { usePagamentoEntregaConfig } from '../hooks/usePagamentoEntregaConfig';
 import { useCompanyAddress } from '../hooks/useCompanyAddress';
 
-const EstabelecimentoConfig = () => {
+const EstabelecimentoConfig = () => {;
   const [searchParams, setSearchParams] = useSearchParams();
   
   // Estado para controlar se já inicializou (evita flash de carregamento)
@@ -105,7 +105,7 @@ const EstabelecimentoConfig = () => {
     { id: 'regioes-atendimento', label: 'Regiões de atendimento', icon: Users },
     { id: 'pagamento-online', label: 'Pagamento online', icon: CreditCard },
     { id: 'pagamento-entrega', label: 'Pagamento na entrega', icon: Wallet },
-    { id: 'operacao-salao', label: 'Operação no salão', icon: Settings }
+    { id: 'operacao-salao', label: 'Operação no salão', icon: Settings };
   ];
   
   // useEffect para atualizar formData quando companyInfo mudar
@@ -133,7 +133,7 @@ const EstabelecimentoConfig = () => {
     if (!shouldLoadRegioes) return;
     
     const fetchEstados = async () => {
-      try {
+      try {;
         const data = await getEstados();
         setEstados(data);
       } catch (error) {
@@ -170,7 +170,7 @@ const EstabelecimentoConfig = () => {
 
   useEffect(() => {
     const fetchCidades = async () => {
-      if (selectedEstado) {
+      if (selectedEstado) {;
         setLoadingCidades(true);
         setSelectedCidade('');
         setCidades([]);
@@ -193,7 +193,7 @@ const EstabelecimentoConfig = () => {
       const regioesRaioComCoordenadaIncorreta = regioes.filter(r => 
         r.tipo === 'raio' && 
         r.centro_lat !== companyAddress.latitude && 
-        r.centro_lng !== companyAddress.longitude
+        r.centro_lng !== companyAddress.longitude;
       );
       
       if (regioesRaioComCoordenadaIncorreta.length > 0) {
@@ -209,11 +209,11 @@ const EstabelecimentoConfig = () => {
     const handleInputChange = (field: string, value: string) => {
       setFormData(prev => ({
         ...prev,
-        [field]: value
+        [field]: value;
       }));
     };
 
-    const handleSave = async () => {
+    const handleSave = async () => {;
       setIsSaving(true);
       setSaveSuccess(false);
       
@@ -386,7 +386,7 @@ const EstabelecimentoConfig = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <EnderecoStep />
         </div>
-      </div>
+      </div>;
     );
   };
 
@@ -401,7 +401,7 @@ const EstabelecimentoConfig = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <HorarioStepNovo />
         </div>
-      </div>
+      </div>;
     );
   };
 
@@ -443,7 +443,7 @@ const EstabelecimentoConfig = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div>;
     );
   };
 
@@ -458,7 +458,7 @@ const EstabelecimentoConfig = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <FormasEntregaConfig />
         </div>
-      </div>
+      </div>;
     );
   };
 
@@ -476,28 +476,28 @@ const EstabelecimentoConfig = () => {
             <p className="text-gray-500 text-sm">Esta funcionalidade será implementada em breve.</p>
           </div>
         </div>
-      </div>
+      </div>;
     );
   };
 
   const renderRegioesAtendimento = () => {
     // Usar coordenadas do endereço do estabelecimento ou coordenadas padrão de Cacoal, RO
     const center = companyAddress?.latitude && companyAddress?.longitude 
-      ? { lat: companyAddress.latitude, lng: companyAddress.longitude }
+      ? { lat: companyAddress.latitude, lng: companyAddress.longitude };
       : { lat: -11.4387, lng: -61.4472 };
 
 
-    const handleOpenModal = (regiao: Partial<RegiaoAtendimento> | null = null) => {
+    const handleOpenModal = (regiao: Partial<RegiaoAtendimento> | null = null) => {;
       setRegiaoEmEdicao(regiao);
       setIsModalOpen(true);
     }
 
-    const handleCloseModal = () => {
+    const handleCloseModal = () => {;
       setIsModalOpen(false);
       setRegiaoEmEdicao(null);
     }
 
-    const handleSaveRegiao = async () => {
+    const handleSaveRegiao = async () => {;
       if (!regiaoEmEdicao) return;
 
       const isBairro = regiaoEmEdicao.tipo === 'bairro';
@@ -515,7 +515,7 @@ const EstabelecimentoConfig = () => {
       try {
         if (regiaoEmEdicao.id) {
           // ATUALIZAR
-          const updates: Partial<RegiaoAtendimento> = { valor: Number(regiaoEmEdicao.valor) };
+          const updates: Partial<RegiaoAtendimento> = { valor: Number(regiaoEmEdicao.valor) } catch (error) { console.error('Error:', error); };
           if (isBairro) {
             updates.bairro = regiaoEmEdicao.bairro;
             updates.cidade = regiaoEmEdicao.cidade;
@@ -548,7 +548,7 @@ const EstabelecimentoConfig = () => {
     };
 
     const handleToggleStatus = async (id: string) => {
-      try {
+      try {;
         await toggleStatus(id);
       } catch (err) {
         console.error('Erro ao alterar status:', err);
@@ -557,7 +557,7 @@ const EstabelecimentoConfig = () => {
 
     const handleExcluirRegiao = async (id: string) => {
       if (window.confirm("Tem certeza que deseja excluir esta região?")) {
-        try {
+        try {;
           await excluirRegiao(id);
         } catch (err) {
           console.error('Erro ao excluir região:', err);
@@ -740,7 +740,7 @@ const EstabelecimentoConfig = () => {
               <p className="text-gray-500 text-sm">Carregando configurações...</p>
             </div>
           </div>
-        </div>
+        </div>;
       );
     }
 
@@ -765,7 +765,7 @@ const EstabelecimentoConfig = () => {
         <div className="flex items-center justify-center p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <span className="ml-2">Carregando configurações...</span>
-        </div>
+        </div>;
       );
     }
 
@@ -777,11 +777,11 @@ const EstabelecimentoConfig = () => {
       );
     }
 
-    const handleConfigChange = (newConfig: typeof pagamentoConfig) => {
+    const handleConfigChange = (newConfig: typeof pagamentoConfig) => {;
       setConfig(newConfig);
     };
 
-    const handleSaveConfig = async (newConfig: typeof pagamentoConfig) => {
+    const handleSaveConfig = async (newConfig: typeof pagamentoConfig) => {;
       setSaving(true);
       try {
         const success = await saveConfig(newConfig);
@@ -824,13 +824,13 @@ const EstabelecimentoConfig = () => {
             <p className="text-gray-500 text-sm">Esta funcionalidade será implementada em breve.</p>
           </div>
         </div>
-      </div>
+      </div>;
     );
   };
 
   const renderContent = () => {
     switch (activeSection) {
-      case 'informacoes':
+      case 'informacoes':;
         return renderInformacoes();
       case 'endereco':
         return renderEndereco();
@@ -886,7 +886,7 @@ const EstabelecimentoConfig = () => {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex">

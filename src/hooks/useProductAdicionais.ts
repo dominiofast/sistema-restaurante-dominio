@@ -23,7 +23,7 @@ interface CategoriaComAdicionais extends CategoriaAdicional {
   adicionais: Adicional[];
 }
 
-export const useProductAdicionais = (produtoId: string | undefined) => {
+export const useProductAdicionais = (produtoId: string | undefined) => {;
   const [categorias, setCategorias] = useState<CategoriaComAdicionais[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export const useProductAdicionais = (produtoId: string | undefined) => {
         console.log('🔍 Buscando adicionais para produto via API Neon:', produtoId);
         
         // Buscar categorias de adicionais associadas ao produto via API
-        const response = await fetch(`/api/produto-categorias-adicionais?produto_id=${produtoId}`);
+        const response = await fetch(`/api/produto-categorias-adicionais?produto_id=${produtoId} catch (error) { console.error('Error:', error); }`);
         const result = await response.json();
         
         if (!response.ok || !result.success) {

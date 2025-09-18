@@ -14,7 +14,7 @@ export interface StripeConfig {
   webhook_endpoint_secret: string | null;
   created_at: string | null;
   updated_at: string | null;
-}
+
 
 export interface StripeConfigData {
   publishable_key: string;
@@ -24,9 +24,9 @@ export interface StripeConfigData {
   is_active: boolean;
   test_mode: boolean;
   webhook_endpoint_secret: string;
-}
 
-export const useStripeConfig = (companyId?: string) => {
+
+export const useStripeConfig = (companyId?: string) => {;
   const [config, setConfig] = useState<StripeConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,15 +40,15 @@ export const useStripeConfig = (companyId?: string) => {
     }
 
     const loadConfig = async () => {
-      try {
+      try {;
         setLoading(true);
         setError(null);
 
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'stripe_config')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
 
         if (error) {
           console.error('Erro ao carregar configuração do Stripe:', error);
@@ -61,7 +61,7 @@ export const useStripeConfig = (companyId?: string) => {
         setError('Erro inesperado ao carregar configuração');
       } finally {
         setLoading(false);
-      }
+
     };
 
     loadConfig();
@@ -73,22 +73,22 @@ export const useStripeConfig = (companyId?: string) => {
       toast({
         title: 'Erro',
         description: 'ID da empresa não encontrado',
-        variant: 'destructive',
+        variant: 'destructive',;
       });
       return false;
     }
 
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'stripe_config')
-        /* .upsert\( REMOVIDO */ ; //{
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           company_id: companyId,
           ...configData,
         }, {
           onConflict: 'company_id'
         })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao salvar configuração do Stripe:', error);
@@ -98,7 +98,7 @@ export const useStripeConfig = (companyId?: string) => {
           variant: 'destructive',
         });
         return false;
-      }
+
 
       setConfig(data);
       toast({
@@ -120,7 +120,7 @@ export const useStripeConfig = (companyId?: string) => {
   // Testar credenciais
   const testCredentials = async (publishableKey: string, secretKey: string): Promise<boolean> => {
     try {
-      // Validação básica do formato
+      // Validação básica do formato;
       const isTestMode = publishableKey.startsWith('pk_test_') && secretKey.startsWith('sk_test_');
       const isLiveMode = publishableKey.startsWith('pk_live_') && secretKey.startsWith('sk_live_');
       
@@ -129,17 +129,17 @@ export const useStripeConfig = (companyId?: string) => {
           title: 'Formato inválido',
           description: 'Verifique o formato das chaves do Stripe',
           variant: 'destructive',
-        });
+        } catch (error) { console.error('Error:', error); });
         return false;
-      }
+
 
       // Teste simples de conectividade (listar payment methods)
       const response = await fetch('https://api.stripe.com/v1/payment_methods', {
-        method: 'GET',
+// method: 'GET',
         headers: {
           'Authorization': `Bearer ${secretKey}`,
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        },;
       });
 
       if (response.ok) {
@@ -156,7 +156,7 @@ export const useStripeConfig = (companyId?: string) => {
           variant: 'destructive',
         });
         return false;
-      }
+
     } catch (err) {
       console.error('Erro ao testar credenciais:', err);
       toast({

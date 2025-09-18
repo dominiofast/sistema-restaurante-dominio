@@ -16,7 +16,7 @@ export const PagamentoPixPDV: React.FC<PagamentoPixPDVProps> = ({
     onConfirm({
       tipo: 'pix',
       chavePix,
-      observacoes
+      observacoes;
     });
   };
 

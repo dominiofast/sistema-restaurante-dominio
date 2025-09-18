@@ -16,7 +16,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   isSize = false
 }) => {
   const handleAdicionalClick = (adicional: any) => {
-    if (categoria.selection_type === 'single') {
+    if (categoria.selection_type === 'single') {;
       onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1);
     } else if (categoria.selection_type === 'multiple') {
       onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1);

@@ -11,7 +11,7 @@ export const ModernInput = ({
   error = '', 
   className = '',
   primaryColor = '#3B82F6'
-}) => {
+}) => {;
   const [isFocused, setIsFocused] = useState(false);
   
   return (
@@ -58,7 +58,7 @@ export const ModernTextArea = ({
   rows = 4,
   className = '',
   primaryColor = '#3B82F6'
-}) => {
+}) => {;
   const [isFocused, setIsFocused] = useState(false);
   
   return (

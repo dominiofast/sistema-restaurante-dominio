@@ -16,7 +16,7 @@ const STORAGE_KEY = 'cardapio_pricing_cache';
 
 // Função para carregar cache do localStorage
 const loadCacheFromStorage = () => {
-  try {
+  try {;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
@@ -24,17 +24,17 @@ const loadCacheFromStorage = () => {
         if (Date.now() - value.timestamp < CACHE_DURATION) {
           pricingCache.set(key, value);
         }
-      });
+       catch (error) { console.error('Error:', error); }});
     }
   } catch (error) {
     console.warn('Erro ao carregar cache de preços:', error);
-  }
+
 };
 
 // Função para salvar cache no localStorage
 const saveCacheToStorage = () => {
-  try {
-    const cacheObj: any = {};
+  try {;
+    const cacheObj: any = {} catch (error) { console.error('Error:', error); };
     pricingCache.forEach((value, key) => {
       if (Date.now() - value.timestamp < CACHE_DURATION) {
         cacheObj[key] = value;
@@ -43,7 +43,7 @@ const saveCacheToStorage = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
   } catch (error) {
     console.warn('Erro ao salvar cache de preços:', error);
-  }
+
 };
 
 // Carregar cache na inicialização
@@ -53,13 +53,13 @@ loadCacheFromStorage();
  * Hook para calcular preços de múltiplos produtos em lote (mais eficiente)
  * Agora com cache para evitar recarregamentos ao trocar de aba
  */
-export const useBulkProductPricing = (produtos: Produto[]) => {
+export const useBulkProductPricing = (produtos: Produto[]) => {;
   const [pricingMap, setPricingMap] = useState<PricingMap>({});
   const [loading, setLoading] = useState(true);
   const lastProductsRef = useRef<string>('');
 
   // Memoizar a chave dos produtos para evitar recálculos desnecessários
-  const produtosKey = useMemo(() => {
+  const produtosKey = useMemo(() => {;
     if (!produtos || produtos.length === 0) return '';
     return produtos.map(p => p.id).sort().join(',');
   }, [produtos]);
@@ -86,41 +86,24 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
     }
 
     const calculateBulkPricing = async () => {
-      try {
+      try {;
         setLoading(true);
         const produtoIds = produtos.map(p => p.id);
 
         // Buscar todas as categorias obrigatórias de uma vez
-        const { data: produtoCategorias, error: produtoError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
-          /* .select\( REMOVIDO */ ; //`
-            produto_id,
-            categoria_adicional_id,
-            is_required,
-            min_selection,
-            max_selection,
-            categorias_adicionais (
-              id,
-              name,
-              is_required,
-              min_selection,
-              max_selection,
-              selection_type
-            )
-          `)
-          .in('produto_id', produtoIds);
+        const produtoCategorias = null as any; const produtoError = null as any;
 
         if (produtoError) {
           console.error('Erro ao buscar categorias em lote:', produtoError);
           // Fallback: criar mapa com preços base
           const fallbackMap = produtos.reduce((acc, produto) => {
             const basePrice = produto.is_promotional && produto.promotional_price 
-              ? produto.promotional_price 
+              ? produto.promotional_price ;
               : produto.price;
             acc[produto.id] = {
               minimumPrice: basePrice,
               hasRequired: false
-            };
+            } catch (error) { console.error('Error:', error); };
             return acc;
           }, {} as PricingMap);
           
@@ -130,7 +113,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
         }
 
         // Agrupar por produto
-        const produtoCategoriasMap = produtoCategorias?.reduce((acc, pc) => {
+        const produtoCategoriasMap = produtoCategorias?.reduce((acc, pc) => {;
           if (!acc[pc.produto_id]) acc[pc.produto_id] = [];
           acc[pc.produto_id].push(pc);
           return acc;
@@ -138,7 +121,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
 
         // Buscar todos os adicionais necessários de uma vez
         const categoriasObrigatorias = produtoCategorias?.filter(pc => 
-          pc.is_required || pc.categorias_adicionais?.is_required
+          pc.is_required || pc.categorias_adicionais?.is_required;
         ) || [];
 
         const categoriasIds = [...new Set(categoriasObrigatorias.map(pc => pc.categoria_adicional_id))];
@@ -146,13 +129,11 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
         let adicionaisMap: { [categoriaId: string]: any[] } = {};
         
         if (categoriasIds.length > 0) {
-          const { data: adicionais } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'adicionais')
-            /* .select\( REMOVIDO */ ; //'id, name, price, categoria_adicional_id')
+          const { data: adicionais  } = null as any;
             .in('categoria_adicional_id', categoriasIds)
-            /* .eq\( REMOVIDO */ ; //'is_available', true)
-            /* .eq\( REMOVIDO */ ; //'is_active', true)
-            /* .order\( REMOVIDO */ ; //'price', { ascending: true });
+            
+            
+            
 
           adicionaisMap = adicionais?.reduce((acc, adicional) => {
             if (!acc[adicional.categoria_adicional_id]) acc[adicional.categoria_adicional_id] = [];
@@ -166,12 +147,12 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
 
         for (const produto of produtos) {
           const basePrice = produto.is_promotional && produto.promotional_price 
-            ? produto.promotional_price 
+            ? produto.promotional_price ;
             : produto.price;
 
           const categoriasProduto = produtoCategoriasMap[produto.id] || [];
           const categoriasObrigatoriasProduto = categoriasProduto.filter(pc => 
-            pc.is_required || pc.categorias_adicionais?.is_required
+            pc.is_required || pc.categorias_adicionais?.is_required;
           );
 
           if (categoriasObrigatoriasProduto.length === 0) {
@@ -206,7 +187,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
               const menoresPrecos = adicionaisCategoria.slice(0, minSelection);
               const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0);
               precoMinimo += somaMinimos;
-            }
+
           }
 
           newPricingMap[produto.id] = {
@@ -231,7 +212,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
         // Fallback em caso de erro
         const fallbackMap = produtos.reduce((acc, produto) => {
           const basePrice = produto.is_promotional && produto.promotional_price 
-            ? produto.promotional_price 
+            ? produto.promotional_price ;
             : produto.price;
           acc[produto.id] = {
             minimumPrice: basePrice,
@@ -251,7 +232,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
   }, [produtosKey]); // Mudança: usar produtosKey ao invés de produtos
 
   // Função para limpar cache (útil para debugging ou quando necessário)
-  const clearCache = () => {
+  const clearCache = () => {;
     pricingCache.clear();
     localStorage.removeItem(STORAGE_KEY);
   };

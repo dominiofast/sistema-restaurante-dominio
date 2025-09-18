@@ -10,14 +10,14 @@ interface GerarDescricaoButtonProps {
 export const GerarDescricaoButton: React.FC<GerarDescricaoButtonProps> = ({ nomeProduto, onResult }) => {
   const [loading, setLoading] = useState(false);
 
-  const gerarDescricao = async () => {
+  const gerarDescricao = async () => {;
     if (!nomeProduto) return;
     
     setLoading(true);
     try {
       console.log('Enviando requisição para gerar descrição:', nomeProduto);
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('gerar-descricao', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { nome: nomeProduto }
       });
 
@@ -25,7 +25,7 @@ export const GerarDescricaoButton: React.FC<GerarDescricaoButtonProps> = ({ nome
         console.error('Erro ao chamar função:', error);
         alert('Erro ao gerar descrição. Verifique se a chave da OpenAI está configurada.');
         return;
-      }
+
 
       if (data?.descricao) {
         console.log('Descrição gerada:', data.descricao);
@@ -33,13 +33,13 @@ export const GerarDescricaoButton: React.FC<GerarDescricaoButtonProps> = ({ nome
       } else {
         console.error('Resposta inválida:', data);
         alert('Não foi possível gerar a descrição.');
-      }
+
     } catch (err) {
       console.error('Erro na requisição:', err);
       alert('Erro ao gerar descrição.');
     } finally {
       setLoading(false);
-    }
+
   };
 
   return (

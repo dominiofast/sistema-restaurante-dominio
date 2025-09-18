@@ -24,7 +24,7 @@ const DebugCurriculoUpload: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const createTestInscricao = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       toast.error('Company ID não encontrado');
       return;
     }
@@ -38,39 +38,25 @@ const DebugCurriculoUpload: React.FC = () => {
 
     try {
       // Primeiro, verificar se existe uma vaga de teste
-      let { data: vaga, error: vagaError } = await (supabase as any)
-        /* .from REMOVIDO */ ; //'rh_vagas')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'title', 'Vaga de Teste - Debug PDF')
-        /* .single\( REMOVIDO */ ; //);
+      let { data: vaga, error: vagaError }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+        
+        
+        
+        
+        
 
       if (vagaError || !vaga) {
         // Criar vaga de teste
-        const { data: newVaga, error: createVagaError } = await (supabase as any)
-          /* .from REMOVIDO */ ; //'rh_vagas')
-          /* .insert\( REMOVIDO */ ; //{
-            company_id: companyId,
-            title: 'Vaga de Teste - Debug PDF',
-            description: 'Vaga criada automaticamente para teste de PDFs',
-            location: 'Teste',
-            type: 'CLT',
-            is_active: true
-          })
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
-        if (createVagaError) {
-          throw new Error('Erro ao criar vaga de teste: ' + createVagaError.message);
+        const newVaga = null as any; const createVagaError = null as any;
         }
 
         vaga = newVaga;
-      }
+
 
       // Criar inscrição de teste
       const { error: inscricaoError } = await (supabase as any)
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .insert\( REMOVIDO */ ; //{
+        
+        
           company_id: companyId,
           vaga_id: vaga.id,
           nome_completo: candidateName,
@@ -83,7 +69,7 @@ const DebugCurriculoUpload: React.FC = () => {
 
       if (inscricaoError) {
         throw new Error('Erro ao criar inscrição: ' + inscricaoError.message);
-      }
+
 
       toast.success('Inscrição de teste criada com sucesso!');
       
@@ -102,7 +88,7 @@ const DebugCurriculoUpload: React.FC = () => {
   };
 
   const testDirectAccess = () => {
-    if (!testUrl) {
+    if (!testUrl) {;
       toast.error('Digite uma URL primeiro');
       return;
     }
@@ -112,7 +98,7 @@ const DebugCurriculoUpload: React.FC = () => {
   };
 
   const testDownload = async () => {
-    if (!testUrl) {
+    if (!testUrl) {;
       toast.error('Digite uma URL primeiro');
       return;
     }
@@ -122,12 +108,12 @@ const DebugCurriculoUpload: React.FC = () => {
     try {
       const response = await fetch(testUrl, {
         method: 'GET',
-        mode: 'cors'
-      });
+        mode: 'cors';
+      } catch (error) { console.error('Error:', error); });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+
 
       const blob = await response.blob();
       console.log('📦 [Debug] Blob criado:', {

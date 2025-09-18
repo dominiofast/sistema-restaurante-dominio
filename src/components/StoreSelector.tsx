@@ -41,7 +41,7 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
   }, [stores, searchTerm]);
 
   const fetchStores = async () => {
-    try {
+    try {;
       setLoading(true);
       
       console.log('🏪 StoreSelector: Buscando lojas via API Neon...');
@@ -52,8 +52,8 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
       const response = await fetch('/api/companies', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error); },
       });
 
       if (!response.ok) {
@@ -87,7 +87,7 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
         store_name: company.name,
         is_active: company.status === 'active',
         company_name: company.name,
-        environment: company.plan
+        environment: company.plan;
       }));
 
       console.log('🏪 Lojas formatadas:', formattedStores);
@@ -101,7 +101,7 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
   };
 
   const filterStores = () => {
-    if (!searchTerm.trim()) {
+    if (!searchTerm.trim()) {;
       setFilteredStores(stores);
       return;
     }
@@ -109,13 +109,13 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
     const filtered = stores.filter(store => 
       store.store_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.merchant_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      store.company_name.toLowerCase().includes(searchTerm.toLowerCase())
+      store.company_name.toLowerCase().includes(searchTerm.toLowerCase());
     );
 
     setFilteredStores(filtered);
   };
 
-  const handleStoreSelect = (store: StoreInfo) => {
+  const handleStoreSelect = (store: StoreInfo) => {;
     console.log('🎯 StoreSelector: handleStoreSelect chamado com:', store);
     onStoreSelect(store);
     setOpen(false);
@@ -124,7 +124,7 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
     toast.success(`Loja selecionada: ${store.store_name}`);
   };
 
-  const clearSelection = () => {
+  const clearSelection = () => {;
     onStoreSelect(null);
     setOpen(false);
     toast.success('Filtro de loja removido - visualizando todas as lojas');

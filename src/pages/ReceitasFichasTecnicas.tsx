@@ -26,7 +26,7 @@ interface Receita {
   is_active: boolean;
   created_at: string;
   company_id: string;
-}
+
 
 const ReceitasFichasTecnicas: React.FC = () => {
   const [receitas, setReceitas] = useState<Receita[]>([]);
@@ -43,7 +43,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
   }, [user, currentCompany]);
 
   const fetchReceitas = async () => {
-    if (!user) {
+    if (!user) {;
       setError('Usuário não autenticado');
       setLoading(false);
       return;
@@ -55,15 +55,15 @@ const ReceitasFichasTecnicas: React.FC = () => {
 
       // Se não há empresa selecionada, mostrar dados de todas as empresas (para super admin)
       let query = (supabase as any)
-        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
-        /* .select\( REMOVIDO */ ; //'*');
+        
+        
 
       // Se há uma empresa específica selecionada, filtrar por ela
       if (currentCompany?.id) {
-        query = query/* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
+        query = query
       }
 
-      const { data, error: fetchError } = await query/* .order\( REMOVIDO */ ; //'nome');
+       catch (error) { console.error('Error:', error); }const { data, error: fetchError } = await query
 
       if (fetchError) {
         console.error('Erro ao carregar receitas:', fetchError);
@@ -84,30 +84,30 @@ const ReceitasFichasTecnicas: React.FC = () => {
     }
   };
 
-  const handleOpenModal = (receita?: Receita) => {
+  const handleOpenModal = (receita?: Receita) => {;
     setEditingReceita(receita);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = () => {;
     setModalOpen(false);
     setEditingReceita(undefined);
   };
 
-  const handleSaveReceita = () => {
+  const handleSaveReceita = () => {;
     fetchReceitas(); // Recarregar a lista
   };
 
   const handleDeleteReceita = async (receita: Receita) => {
-    if (!window.confirm(`Tem certeza que deseja excluir "${receita.nome}"?`)) {
+    if (!window.confirm(`Tem certeza que deseja excluir "${receita.nome}"?`)) {;
       return;
     }
 
     try {
-      const { error } = await (supabase as any)
-        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', receita.id);
+      const { error }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+        
+        
+        
 
       if (error) throw error;
 
@@ -130,10 +130,10 @@ const ReceitasFichasTecnicas: React.FC = () => {
   const filteredReceitas = receitas.filter(receita =>
     receita.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     receita.categoria?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    receita.descricao?.toLowerCase().includes(searchTerm.toLowerCase())
+    receita.descricao?.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
-  const formatCurrency = (value?: number) => {
+  const formatCurrency = (value?: number) => {;
     if (!value) return 'R$ 0,00';
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -141,7 +141,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
     }).format(value);
   };
 
-  const formatTime = (minutes?: number) => {
+  const formatTime = (minutes?: number) => {;
     if (!minutes) return 'N/A';
     if (minutes < 60) return `${minutes}min`;
     const hours = Math.floor(minutes / 60);
@@ -149,7 +149,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
     return `${hours}h${mins > 0 ? ` ${mins}min` : ''}`;
   };
 
-  const calcularMargemLucro = (custo?: number, preco?: number) => {
+  const calcularMargemLucro = (custo?: number, preco?: number) => {;
     if (!custo || !preco || custo === 0) return 0;
     return ((preco - custo) / custo * 100);
   };
@@ -165,7 +165,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   if (error) {
     return (
@@ -182,7 +182,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="w-full px-6 py-4 space-y-4 max-w-none">

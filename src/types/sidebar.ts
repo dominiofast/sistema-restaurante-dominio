@@ -13,7 +13,7 @@ export interface MenuItem {
   openInNewTab?: boolean;
   subItems?: MenuItem[];
   badgeType?: 'default' | 'success' | 'warning' | 'error';
-}
+
 
 export interface SidebarProps {
   collapsed?: boolean;
@@ -21,4 +21,4 @@ export interface SidebarProps {
   isMobile?: boolean;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
-}
+

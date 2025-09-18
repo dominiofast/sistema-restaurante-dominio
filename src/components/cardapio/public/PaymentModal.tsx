@@ -39,13 +39,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const [showPixModal, setShowPixModal] = useState(false);
   const [observacoes, setObservacoes] = useState('');
 
-  const formatCurrency = (value: number) =>
+  const formatCurrency = (value: number) =>;
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
 
   // Gerar cores acessíveis baseadas na cor principal
   const accessibleColors = {
     backgroundColor: primaryColor,
-    textColor: '#ffffff'
+    textColor: '#ffffff';
   };
 
   // Buscar configurações de pagamento da empresa
@@ -54,12 +54,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!companyId) return null;
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-      
+      const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro ao buscar configuração de pagamento:', error);
         return null;
@@ -74,12 +69,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const { data: asaasConfig, isLoading: asaasLoading } = useQuery({
     queryKey: ['asaas-config', companyId],
     queryFn: async () => {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'asaas_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-      
+      const { data, error  } = null as any;
       console.log('🔍 ASAAS DEBUG - Query result:', { data, error });
       
       if (error) {
@@ -123,11 +113,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!paymentConfig?.id || !paymentConfig?.ask_card_brand) return [];
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'config_id', paymentConfig.id);
-      
+      const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro ao buscar bandeiras de cartão:', error);
         return [];
@@ -138,21 +124,21 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     enabled: !!paymentConfig?.id && !!paymentConfig?.ask_card_brand
   });
 
-  const handlePaymentChange = (paymentType: string) => {
+  const handlePaymentChange = (paymentType: string) => {;
     setSelectedPayment(paymentType);
     if (paymentType === 'dinheiro' || paymentType === 'cartao') {
       setShowModal(true);
-    }
+
   };
 
-  const handleFinalizarPedido = async () => {
+  const handleFinalizarPedido = async () => {;
     if (!selectedPayment) return;
     
     // Se for PIX Online via Asaas, abrir modal específico
     if (selectedPayment === 'pix_online_asaas') {
       setShowPixModal(true);
       return;
-    }
+
     
     setIsProcessing(true);
     
@@ -167,7 +153,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           cardBrand: '',
           cashbackApplied: cashbackAplicado,
           totalWithCashback: totalComCashback
-        };
+        } catch (error) { console.error('Error:', error); };
       } else if (selectedPayment === 'dinheiro') {
         paymentData = {
           method: 'dinheiro',
@@ -195,12 +181,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
       setIsProcessing(false);
-    }
+
   };
 
   const handleModalConfirm = () => {
     if (selectedPayment === 'dinheiro') {
-      if (needsChange && !changeAmount) {
+      if (needsChange && !changeAmount) {;
         alert('Por favor, informe o valor para o troco');
         return;
       }
@@ -215,16 +201,16 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       // Apenas atualizar o estado local e fechar o modal - não finalizar o pedido
       setShowModal(false);
       resetModalState();
-    }
+
   };
 
-  const resetModalState = () => {
+  const resetModalState = () => {;
     setNeedsChange(false);
     setChangeAmount('');
     setSelectedCardBrand('');
   };
 
-  const closeModal = () => {
+  const closeModal = () => {;
     setShowModal(false);
     resetModalState();
   };
@@ -767,7 +753,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             cardBrand: '',
             cashbackApplied: cashbackAplicado,
             totalWithCashback: totalComCashback,
-            pixApproved: true
+            pixApproved: true;
           };
           onConfirm(JSON.stringify(paymentData));
         }}

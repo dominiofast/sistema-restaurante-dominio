@@ -32,7 +32,7 @@ interface PromptHistory {
   vars: any;
   version: number;
   created_at: string;
-}
+
 
 interface AssistantForm {
   bot_name: string;
@@ -40,12 +40,12 @@ interface AssistantForm {
   cardapio_url: string;
   produtos_path: string;
   config_path: string;
-}
+
 
 // Função para processar prompt - substitui todas as variáveis disponíveis
 const processPromptTemplate = (template: string, vars: Record<string, any>): string => {
   // Para templates do builder, retornar o template original sem processamento
-  if (template === 'PROMPT_SERÁ_RENDERIZADO_PELO_BUILDER') {
+  if (template === 'PROMPT_SERÁ_RENDERIZADO_PELO_BUILDER') {;
     return template;
   }
   
@@ -70,7 +70,7 @@ const processPromptTemplate = (template: string, vars: Record<string, any>): str
     'cashback_percent': vars.cashback_percent || vars.percentual_cashback,
     'opening_hours': vars.working_hours || vars.opening_hours,
     'contact_phone': vars.telefone || vars.contact_phone,
-    'contact_address': vars.company_address || vars.contact_address
+    'contact_address': vars.company_address || vars.contact_address;
   };
   
   // Aplicar mapeamento de variáveis
@@ -135,18 +135,18 @@ export default function AdminAgents() {
     }
   }, [slug]);
 
-  const loadData = async () => {
+  const loadData = async () => {;
     if (!slug) return;
 
     try {
       setLoading(true);
 
       // Carregar dados da empresa
-      const { data: companyData } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, slug')
-        /* .eq\( REMOVIDO */ ; //'slug', slug)
-        /* .single\( REMOVIDO */ ; //);
+      const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (!companyData) {
         toast({
@@ -158,12 +158,7 @@ export default function AdminAgents() {
       }
 
       // Carregar prompt atual
-      const { data: promptData } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_prompts')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'agent_slug', slug)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data: promptData  } = null as any;
       if (promptData) {
         setValue('template', promptData.template);
         setValue('vars', JSON.stringify(promptData.vars, null, 2));
@@ -171,12 +166,7 @@ export default function AdminAgents() {
       }
 
       // Carregar configurações do assistant
-      const { data: assistantData } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_assistants')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data: assistantData  } = null as any;
       if (assistantData) {
         setAssistantForm({
           bot_name: assistantData.bot_name || companyData.name || 'RangoBot',
@@ -201,16 +191,16 @@ export default function AdminAgents() {
     }
   };
 
-  const loadHistory = async () => {
+  const loadHistory = async () => {;
     if (!slug) return;
 
     try {
-      const { data } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_prompt_history')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'agent_id', slug)
-        /* .order\( REMOVIDO */ ; //'version', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //10);
+      const { data }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       setHistory(data?.map(item => ({
         id: item.id.toString(),
@@ -224,18 +214,16 @@ export default function AdminAgents() {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: any) => {;
     if (!slug) return;
 
     try {
       setSaving(true);
 
-      const varsObj = JSON.parse(data.vars || '{}');
+      const varsObj = JSON.parse(data.vars || '{} catch (error) { console.error('Error:', error); }');
 
       // Salvar prompt usando upsert com onConflict
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_prompts')
-        /* .upsert\( REMOVIDO */ ; //{
+      const { error  } = null as any;
           agent_slug: slug,
           template: data.template,
           vars: varsObj,
@@ -247,7 +235,7 @@ export default function AdminAgents() {
       if (error) throw error;
 
       // Chamar edge function para sincronizar
-      const { error: pushError } = await /* supabase REMOVIDO */ null; //functions.invoke('push_prompt_to_edge', {
+      const { error: pushError } = await Promise.resolve();
         body: { agent_slug: slug }
       });
 
@@ -274,25 +262,23 @@ export default function AdminAgents() {
     }
   };
 
-  const saveAssistantConfig = async () => {
+  const saveAssistantConfig = async () => {;
     if (!slug) return;
 
     try {
       setSaving(true);
 
       // Buscar company_id
-      const { data: companyData } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'slug', slug)
-        /* .single\( REMOVIDO */ ; //);
+      const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (!companyData) throw new Error('Empresa não encontrada');
 
       // Salvar configurações do assistant
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_assistants')
-        /* .upsert\( REMOVIDO */ ; //{
+      const { error  } = null as any;
           company_id: companyData.id,
           bot_name: assistantForm.bot_name,
           assistant_id: assistantForm.assistant_id,
@@ -320,14 +306,14 @@ export default function AdminAgents() {
     }
   };
 
-  const testPrompt = async () => {
+  const testPrompt = async () => {;
     if (!slug) return;
 
     setTesting(true);
     setTestResponse("");
 
     try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           slug_empresa: slug,
           user_message: 'teste de prompt',
@@ -356,7 +342,7 @@ export default function AdminAgents() {
     }
   };
 
-  const revertToVersion = async (historyItem: PromptHistory) => {
+  const revertToVersion = async (historyItem: PromptHistory) => {;
     setValue('template', historyItem.template);
     setValue('vars', JSON.stringify(historyItem.vars, null, 2));
     setVars(historyItem.vars || {});
@@ -367,24 +353,24 @@ export default function AdminAgents() {
     });
   };
 
-  const addVar = () => {
+  const addVar = () => {;
     const newKey = `var_${Object.keys(vars).length + 1}`;
     setVars(prev => ({ ...prev, [newKey]: '' }));
   };
 
-  const updateVar = (key: string, value: string) => {
+  const updateVar = (key: string, value: string) => {;
     setVars(prev => ({ ...prev, [key]: value }));
     setValue('vars', JSON.stringify({ ...vars, [key]: value }, null, 2));
   };
 
-  const removeVar = (key: string) => {
+  const removeVar = (key: string) => {;
     const newVars = { ...vars };
     delete newVars[key];
     setVars(newVars);
     setValue('vars', JSON.stringify(newVars, null, 2));
   };
 
-  const uploadJson = async (type: 'produtos' | 'config', file: File) => {
+  const uploadJson = async (type: 'produtos' | 'config', file: File) => {;
     if (!slug) return;
 
     try {
@@ -393,8 +379,7 @@ export default function AdminAgents() {
       formData.append('type', type);
       formData.append('company_slug', slug);
 
-      const { error } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'ai-knowledge')
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         .upload(`${slug}/${type}.json`, file);
 
       if (error) throw error;
@@ -656,4 +641,3 @@ export default function AdminAgents() {
       </div>
     </div>
   );
-}

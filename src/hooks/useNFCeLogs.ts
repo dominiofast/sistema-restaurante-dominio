@@ -19,24 +19,24 @@ export interface NFCeLog {
   error_message?: string;
   motivo_cancelamento?: string;
   justificativa_cancelamento?: string;
-}
+
 
 export function useNFCeLogs(companyId: string | undefined) {
   const [nfceLogs, setNfceLogs] = useState<Record<number, NFCeLog>>({});
   const [loading, setLoading] = useState(false);
 
   // Buscar logs existentes para a empresa
-  const fetchNFCeLogs = async () => {
+  const fetchNFCeLogs = async () => {;
     if (!companyId) return;
 
     console.log('🔍 Buscando logs NFCe para company:', companyId);
     setLoading(true);
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'nfce_logs')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('❌ Erro ao buscar logs NFCe:', error);
@@ -47,7 +47,7 @@ export function useNFCeLogs(companyId: string | undefined) {
 
       // Organizar logs por pedido_id
       const logsMap = data.reduce((acc, log) => {
-        if (log.pedido_id) {
+        if (log.pedido_id) {;
           acc[log.pedido_id] = log;
         }
         return acc;
@@ -58,16 +58,16 @@ export function useNFCeLogs(companyId: string | undefined) {
       console.error('❌ Erro ao buscar logs NFCe:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Verificar se um pedido já tem NFCe gerada
-  const hasNFCe = (pedidoId: number): boolean => {
+  const hasNFCe = (pedidoId: number): boolean => {;
     return !!nfceLogs[pedidoId];
   };
 
   // Obter dados da NFCe de um pedido
-  const getNFCeData = (pedidoId: number): NFCeLog | null => {
+  const getNFCeData = (pedidoId: number): NFCeLog | null => {;
     return nfceLogs[pedidoId] || null;
   };
 
@@ -77,10 +77,10 @@ export function useNFCeLogs(companyId: string | undefined) {
     nfceData: any,
     responseData: any
   ): Promise<boolean> => {
-    if (!companyId) {
+    if (!companyId) {;
       console.error('❌ Company ID não encontrado para salvar log NFCe');
       return false;
-    }
+
 
     console.log('💾 Iniciando salvamento do log NFCe:', { pedidoId, companyId });
     console.log('📊 Dados NFCe para salvar:', nfceData);
@@ -97,17 +97,12 @@ export function useNFCeLogs(companyId: string | undefined) {
         referencia: nfceData.ref || nfceData.referencia,
         protocolo_autorizacao: nfceData.protocolo_autorizacao,
         data_autorizacao: nfceData.data_autorizacao,
-        response_data: responseData
-      };
+        response_data: responseData;
+      } catch (error) { console.error('Error:', error); };
 
       console.log('📋 Dados preparados para insert:', logData);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'nfce_logs')
-        /* .insert\( REMOVIDO */ ; //logData)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro detalhado ao salvar log NFCe:', {
           error,
@@ -135,7 +130,7 @@ export function useNFCeLogs(companyId: string | undefined) {
         stack: error.stack
       });
       return false;
-    }
+
   };
 
   // Carregar logs ao inicializar
@@ -151,4 +146,3 @@ export function useNFCeLogs(companyId: string | undefined) {
     saveNFCeLog,
     refreshLogs: fetchNFCeLogs
   };
-}

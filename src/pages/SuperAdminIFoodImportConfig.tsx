@@ -12,14 +12,9 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchApiKey = async () => {
+    const fetchApiKey = async () => {;
       setIsLoading(true);
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'app_settings')
-        /* .select\( REMOVIDO */ ; //'value')
-        /* .eq\( REMOVIDO */ ; //'key', SETTING_KEY)
-        /* .single\( REMOVIDO */ ; //);
-      
+      const { data, error  } = null as any;
       if (data && data.value) {
         setApiKey(data.value);
       }
@@ -28,12 +23,9 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
     fetchApiKey();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     setIsLoading(true);
-    const { error } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'app_settings')
-      /* .upsert\( REMOVIDO */ ; //{ key: SETTING_KEY, value: apiKey }, { onConflict: 'key' });
-
+    const { error  } = null as any;
     setIsLoading(false);
     if (error) {
       toast({
@@ -46,7 +38,7 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
         title: 'Sucesso!',
         description: 'Chave de API do ScrapingBee salva com sucesso.',
       });
-    }
+
   };
 
   return (

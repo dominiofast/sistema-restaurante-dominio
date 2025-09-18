@@ -3,26 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 // SUPABASE REMOVIDO
 import { Loader2 } from "lucide-react";
 
-const ShortLinkRedirect = () => {
+const ShortLinkRedirect = () => {;
   const { short_id } = useParams<{ short_id: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const resolveShortLink = async () => {
-      if (!short_id) {
+      if (!short_id) {;
         navigate("/");
         return;
       }
 
       try {
         // Buscar o link curto no banco
-        const { data: shortLink, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //"short_links")
-          /* .select\( REMOVIDO */ ; //"target_slug, clicks_count")
-          /* .eq\( REMOVIDO */ ; //"short_id", short_id)
-          /* .eq\( REMOVIDO */ ; //"is_active", true)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+        const { data: shortLink, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
+          
 
         if (error) {
           console.error("Erro ao buscar link curto:", error);
@@ -38,9 +38,9 @@ const ShortLinkRedirect = () => {
 
         // Incrementar contador de cliques (sem aguardar)
         supabase
-          /* .from REMOVIDO */ ; //"short_links")
-          /* .update\( REMOVIDO */ ; //{ clicks_count: shortLink.clicks_count + 1 })
-          /* .eq\( REMOVIDO */ ; //"short_id", short_id)
+          
+          
+          
           .then(({ error }) => {
             if (error) {
               console.warn("Erro ao incrementar cliques:", error);
@@ -77,7 +77,7 @@ const ShortLinkRedirect = () => {
         </div>
       </div>
     );
-  }
+
 
   return null;
 };

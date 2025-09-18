@@ -49,16 +49,16 @@ const ProdutoAdicionado: React.FC = () => {
   if (!produto) {
     navigate(-1);
     return null;
-  }
+
 
   const handleContinuarComprando = () => {
-    // Voltar para o cardápio (o produto já está no carrinho)
+    // Voltar para o cardápio (o produto já está no carrinho);
     navigate(`/${company?.slug || company_slug}`);
   };
 
   const handleIrParaCarrinho = () => {
     // Se há observações, salvar no localStorage temporariamente
-    if (observacao.trim()) {
+    if (observacao.trim()) {;
       localStorage.setItem('temp_observacao', observacao.trim());
     }
     
@@ -132,12 +132,12 @@ const ProdutoAdicionado: React.FC = () => {
             {(() => {
               // Calcular preço base do produto
               const precoBase = produto.is_promotional && produto.promotional_price 
-                ? Number(produto.promotional_price) 
+                ? Number(produto.promotional_price) ;
                 : Number(produto.price);
               
               // Encontrar o item correspondente no carrinho para obter o preço real com adicionais
               const itemNoCarrinho = carrinho.find(item => 
-                item.produto.id === produto.id || item.produto.name === produto.name
+                item.produto.id === produto.id || item.produto.name === produto.name;
               );
               
               // Se encontrou no carrinho, usar o preço calculado com adicionais

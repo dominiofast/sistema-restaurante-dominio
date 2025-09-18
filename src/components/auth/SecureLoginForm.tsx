@@ -24,7 +24,7 @@ export const SecureLoginForm: React.FC<SecureLoginFormProps> = ({
     sanitizeInput 
   } = useSecurityValidation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     setErrors([]);
 

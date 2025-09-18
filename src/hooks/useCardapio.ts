@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Categoria, Produto, CategoriaAdicional, Adicional, DashboardStats } from '@/types/cardapio';
 
-export const useCardapio = () => {
+export const useCardapio = () => {;
   const { currentCompany } = useAuth();
   const [loading, setLoading] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -12,7 +12,7 @@ export const useCardapio = () => {
 
   // Buscar categorias
   const fetchCategorias = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar categorias');
       return;
     }
@@ -20,7 +20,7 @@ export const useCardapio = () => {
     try {
       console.log('🔍 useCardapio: Buscando categorias para empresa via API Neon:', currentCompany.id);
       
-      const response = await fetch(`/api/categorias?company_id=${currentCompany.id}`);
+      const response = await fetch(`/api/categorias?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`);
       const result = await response.json();
       
       if (!response.ok || !result.success) {
@@ -36,7 +36,7 @@ export const useCardapio = () => {
 
   // Buscar produtos
   const fetchProdutos = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar produtos');
       return;
     }
@@ -44,7 +44,7 @@ export const useCardapio = () => {
     try {
       console.log('🔍 useCardapio: Buscando produtos para empresa via API Neon:', currentCompany.id);
       
-      const response = await fetch(`/api/produtos?company_id=${currentCompany.id}`);
+      const response = await fetch(`/api/produtos?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`);
       const result = await response.json();
       
       if (!response.ok || !result.success) {
@@ -60,7 +60,7 @@ export const useCardapio = () => {
 
   // Buscar categorias de adicionais
   const fetchCategoriasAdicionais = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar categorias adicionais');
       return;
     }
@@ -68,7 +68,7 @@ export const useCardapio = () => {
     try {
       console.log('🔍 useCardapio: Buscando categorias adicionais para empresa via API Neon:', currentCompany.id);
       
-      const response = await fetch(`/api/categoria-adicionais?company_id=${currentCompany.id}`);
+      const response = await fetch(`/api/categoria-adicionais?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`);
       const result = await response.json();
       
       if (!response.ok || !result.success) {
@@ -85,7 +85,7 @@ export const useCardapio = () => {
 
   // Buscar adicionais
   const fetchAdicionais = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar adicionais');
       return;
     }
@@ -93,7 +93,7 @@ export const useCardapio = () => {
     try {
       console.log('🔍 useCardapio: Buscando adicionais para empresa via API Neon:', currentCompany.id);
       
-      const response = await fetch(`/api/adicionais?company_id=${currentCompany.id}`);
+      const response = await fetch(`/api/adicionais?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`);
       const result = await response.json();
       
       if (!response.ok || !result.success) {
@@ -114,19 +114,19 @@ export const useCardapio = () => {
       totalCategorias: categorias.length,
       totalProdutos: produtos.length,
       produtosAtivos: produtos.filter(p => p.is_available).length,
-      categoriasAtivas: categorias.filter(c => c.is_active).length,
+      categoriasAtivas: categorias.filter(c => c.is_active).length,;
     };
   };
 
   // Criar categoria
   const createCategoria = async (categoria: Omit<Categoria, 'id' | 'created_at' | 'updated_at'>) => {
-    try {
+    try {;
       setLoading(true);
       console.log('🔄 useCardapio: Criando categoria via API:', categoria);
       
       const response = await fetch('/api/categorias', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',;
+        headers: { 'Content-Type': 'application/json' } catch (error) { console.error('Error:', error); },
         body: JSON.stringify(categoria)
       });
       
@@ -148,13 +148,13 @@ export const useCardapio = () => {
 
   // Atualizar categoria
   const updateCategoria = async (id: string, updates: Partial<Categoria>) => {
-    try {
+    try {;
       setLoading(true);
       console.log('🔄 useCardapio: Atualizando categoria via API:', id, updates);
       
       const response = await fetch('/api/categorias', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',;
+        headers: { 'Content-Type': 'application/json' } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({ id, ...updates })
       });
       
@@ -176,8 +176,8 @@ export const useCardapio = () => {
 
   // Toggle status da categoria
   const toggleCategoriaStatus = async (id: string, isActive: boolean) => {
-    try {
-      await updateCategoria(id, { is_active: isActive });
+    try {;
+      await updateCategoria(id, { is_active: isActive } catch (error) { console.error('Error:', error); });
     } catch (error) {
       console.error('Erro ao alterar status da categoria:', error);
       throw error;
@@ -186,8 +186,8 @@ export const useCardapio = () => {
 
   // Toggle status do produto
   const toggleProdutoStatus = async (id: string, isAvailable: boolean) => {
-    try {
-      await updateProduto(id, { is_available: isAvailable });
+    try {;
+      await updateProduto(id, { is_available: isAvailable } catch (error) { console.error('Error:', error); });
     } catch (error) {
       console.error('Erro ao alterar status do produto:', error);
       throw error;
@@ -196,11 +196,11 @@ export const useCardapio = () => {
 
   // Deletar categoria
   const deleteCategoria = async (id: string) => {
-    try {
+    try {;
       setLoading(true);
       console.log('🗑️ useCardapio: Deletando categoria via API:', id);
       
-      const response = await fetch(`/api/categorias?id=${id}`, {
+      const response = await fetch(`/api/categorias?id=${id} catch (error) { console.error('Error:', error); }`, {
         method: 'DELETE'
       });
       
@@ -222,7 +222,7 @@ export const useCardapio = () => {
 
   // Criar produto (TEMPORÁRIO - Mock)
   const createProduto = async (produto: Omit<Produto, 'id' | 'created_at' | 'updated_at'>) => {
-    try {
+    try {;
       setLoading(true);
       console.log('⏭️ createProduto: Temporariamente desabilitado (mock)');
       throw new Error('Criação de produtos temporariamente desabilitada - focando nas categorias primeiro');
@@ -236,7 +236,7 @@ export const useCardapio = () => {
 
   // Atualizar produto (TEMPORÁRIO - Mock)
   const updateProduto = async (id: string, updates: Partial<Produto>) => {
-    try {
+    try {;
       setLoading(true);
       console.log('⏭️ updateProduto: Temporariamente desabilitado (mock)');
       throw new Error('Atualização de produtos temporariamente desabilitada - focando nas categorias primeiro');
@@ -250,7 +250,7 @@ export const useCardapio = () => {
 
   // Deletar produto (TEMPORÁRIO - Mock)
   const deleteProduto = async (id: string) => {
-    try {
+    try {;
       setLoading(true);
       console.log('⏭️ deleteProduto: Temporariamente desabilitado (mock)');
       throw new Error('Exclusão de produtos temporariamente desabilitada - focando nas categorias primeiro');
@@ -288,17 +288,17 @@ export const useCardapio = () => {
   }, [currentCompany?.id]);
 
   // Reordenar categorias
-  const reorderCategorias = async (startIndex: number, endIndex: number) => {
+  const reorderCategorias = async (startIndex: number, endIndex: number) => {;
     if (!currentCompany?.id) return;
 
-    const result = Array/* .from REMOVIDO */ ; //categorias);
+    const result = Array;
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
     // Atualizar posições
     const updates = result.map((categoria, index) => ({
       id: categoria.id,
-      order_position: index
+      order_position: index;
     }));
 
     setCategorias(result);
@@ -308,8 +308,8 @@ export const useCardapio = () => {
         console.log('🔄 useCardapio: Reordenando categoria via API:', update);
         
         const response = await fetch('/api/categorias', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'PUT',;
+          headers: { 'Content-Type': 'application/json' } catch (error) { console.error('Error:', error); },
           body: JSON.stringify({ 
             id: update.id, 
             order_position: update.order_position 
@@ -320,7 +320,7 @@ export const useCardapio = () => {
         
         if (!response.ok || !result.success) {
           throw new Error(result.error || 'Erro ao reordenar categoria');
-        }
+
       }
     } catch (error) {
       console.error('Erro ao reordenar categorias:', error);
@@ -329,7 +329,7 @@ export const useCardapio = () => {
   };
 
   // Reordenar produtos
-  const reorderProdutos = async (startIndex: number, endIndex: number, categoriaId: string) => {
+  const reorderProdutos = async (startIndex: number, endIndex: number, categoriaId: string) => {;
     if (!currentCompany?.id) return;
 
     console.log('🔄 Reordenando produtos:', { startIndex, endIndex, categoriaId });
@@ -337,7 +337,7 @@ export const useCardapio = () => {
     // Filtrar produtos da categoria atual e ordenar por position/name
     const produtosDaCategoria = produtos
       .filter(p => p.categoria_id === categoriaId)
-      .sort((a, b) => {
+      .sort((a, b) => {;
         const aOrder = a.order_position ?? 999;
         const bOrder = b.order_position ?? 999;
         if (aOrder !== bOrder) return aOrder - bOrder;
@@ -347,7 +347,7 @@ export const useCardapio = () => {
     const outrosProdutos = produtos.filter(p => p.categoria_id !== categoriaId);
     
     // Reordenar array
-    const result = Array/* .from REMOVIDO */ ; //produtosDaCategoria);
+    const result = Array;
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -360,8 +360,8 @@ export const useCardapio = () => {
       // Começar com order_position = 1 e incrementar
       const updates = result.map((produto, index) => ({
         id: produto.id,
-        order_position: index + 1
-      }));
+        order_position: index + 1;
+      } catch (error) { console.error('Error:', error); }));
 
       console.log('📝 Atualizando order_position para produtos:', updates);
 
@@ -378,17 +378,17 @@ export const useCardapio = () => {
   };
 
   // Reordenar categorias de adicionais
-  const reorderCategoriasAdicionais = async (startIndex: number, endIndex: number) => {
+  const reorderCategoriasAdicionais = async (startIndex: number, endIndex: number) => {;
     if (!currentCompany?.id) return;
 
-    const result = Array/* .from REMOVIDO */ ; //categoriasAdicionais);
+    const result = Array;
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
     // Atualizar posições
     const updates = result.map((categoria, index) => ({
       id: categoria.id,
-      order_position: index
+      order_position: index;
     }));
 
     setCategoriasAdicionais(result);
@@ -402,13 +402,13 @@ export const useCardapio = () => {
   };
 
   // Reordenar adicionais
-  const reorderAdicionais = async (startIndex: number, endIndex: number, categoriaAdicionalId: string) => {
+  const reorderAdicionais = async (startIndex: number, endIndex: number, categoriaAdicionalId: string) => {;
     if (!currentCompany?.id) return;
 
     const adicionaisDaCategoria = adicionais.filter(a => a.categoria_adicional_id === categoriaAdicionalId);
     const outrosAdicionais = adicionais.filter(a => a.categoria_adicional_id !== categoriaAdicionalId);
     
-    const result = Array/* .from REMOVIDO */ ; //adicionaisDaCategoria);
+    const result = Array;
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -418,7 +418,7 @@ export const useCardapio = () => {
       ...result.map((adicional, index) => ({
         ...adicional,
         order_position: index
-      }))
+      }));
     ];
     setAdicionais(todosOsAdicionais);
 

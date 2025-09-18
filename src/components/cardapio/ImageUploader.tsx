@@ -18,7 +18,7 @@ interface ImageUploaderProps {
   folder?: string;
   multiple?: boolean;
   onMultipleImagesChange?: (urls: string[]) => void;
-}
+
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
   label,
@@ -40,7 +40,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   const validateFile = (file: File): boolean => {
     // Validar tipo de arquivo
-    if (!acceptedFormats.includes(file.type)) {
+    if (!acceptedFormats.includes(file.type)) {;
       toast.error(`Tipo de arquivo não suportado. Use: ${acceptedFormats.map(f => f.split('/')[1].toUpperCase()).join(', ')}`);
       return false;
     }
@@ -55,12 +55,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     return true;
   };
 
-  const handleFileSelect = async (files: FileList | null) => {
+  const handleFileSelect = async (files: FileList | null) => {;
     if (!files || files.length === 0) return;
 
-    const fileArray = Array/* .from REMOVIDO */ ; //files);
+    const fileArray = Array
     
-    // Validar todos os arquivos
+    // Validar todos os arquivos;
     const validFiles = fileArray.filter(validateFile);
     if (validFiles.length === 0) return;
 
@@ -81,23 +81,23 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {;
     e.preventDefault();
     setDragOver(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent) => {;
     e.preventDefault();
     setDragOver(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent) => {;
     e.preventDefault();
     setDragOver(false);
     handleFileSelect(e.dataTransfer.files);
   };
 
-  const handleRemove = () => {
+  const handleRemove = () => {;
     onImageChange('');
     onRemove?.();
     if (fileInputRef.current) {
@@ -105,7 +105,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
-  const handleRemoveMultiple = (index: number) => {
+  const handleRemoveMultiple = (index: number) => {;
     const newUrls = previewUrls.filter((_, i) => i !== index);
     setPreviewUrls(newUrls);
     onMultipleImagesChange?.(newUrls);

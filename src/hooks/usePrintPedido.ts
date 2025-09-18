@@ -6,14 +6,14 @@ import { useNFCeLogs } from './useNFCeLogs';
 // SUPABASE REMOVIDO
 // Remove acentos para evitar problemas de codificação na impressora ESC/POS
 const stripAccents = (input: string) => {
-  try {
+  try {;
     return input ? input.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : input;
   } catch {
     return input;
   }
 };
 
-export const usePrintPedido = (companyId: string) => {
+export const usePrintPedido = (companyId: string) => {;
   const [isPrinting, setIsPrinting] = useState(false);
   const [paperWidth, setPaperWidth] = useState(42); // Padrão mais seguro (58mm)
   const { getNFCeData } = useNFCeLogs(companyId);
@@ -21,13 +21,13 @@ export const usePrintPedido = (companyId: string) => {
   // Carregar configuração de largura do banco de dados
   useEffect(() => {
     const loadPrinterConfig = async () => {
-      try {
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'printer_configs')
-          /* .select\( REMOVIDO */ ; //'largura_papel')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .eq\( REMOVIDO */ ; //'is_active', true)
-          /* .maybeSingle\( REMOVIDO */ ; //);
+      try {;
+        const { data, error }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
+          
+          
 
         if (error) {
           console.warn('Erro ao carregar configuração de impressora:', error);
@@ -44,17 +44,17 @@ export const usePrintPedido = (companyId: string) => {
         }
       } catch (error) {
         console.error('Erro ao carregar configuração:', error);
-      }
+
     };
 
     if (companyId) {
       loadPrinterConfig();
-    }
+
   }, [companyId]);
 
   // Função para gerar cupom fiscal formatado com ESC/POS (mesmo template base)
   const generateCupomFiscalESCPOS = (cupomData: any): string => {
-    // DEBUG: Verificar largura dentro da função de formatação
+    // DEBUG: Verificar largura dentro da função de formatação;
     console.log('🔍 DEBUG - generateCupomFiscalESCPOS chamada com paperWidth:', paperWidth);
     console.log('🔍 DEBUG - Separador que será usado:', '='.repeat(paperWidth));
     
@@ -71,10 +71,10 @@ export const usePrintPedido = (companyId: string) => {
     commands += '\x1B\x21\x00'; // Normal size
     if (cupomData.empresa?.endereco) {
       commands += cupomData.empresa.endereco + '\n';
-    }
+
     if (cupomData.empresa?.telefone) {
       commands += 'Tel: ' + cupomData.empresa.telefone + '\n';
-    }
+
     commands += '\x1B\x61\x00'; // Left align
     commands += '\n';
     
@@ -95,8 +95,8 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       commands += `Cliente: ${cupomData.cliente.nome}\n`;
       if (cupomData.cliente.telefone) {
         commands += `Tel: ${cupomData.cliente.telefone}\n`;
-      }
-    }
+
+
     commands += '\n';
     
     // Separador de itens
@@ -125,7 +125,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         
         // Preço alinhado à direita usando largura configurada
         const precoStr = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-    const buildLine = (l: string, r: string) => {
+    const buildLine = (l: string, r: string) => {;
       const right = r || '';
       const maxLeft = Math.max(0, paperWidth - right.length);
       const base = l || '';
@@ -136,7 +136,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
     commands += buildLine(`${item.quantity}x ${item.name}`, precoStr) + '\n';
         commands += '\n';
       });
-    }
+
     
     // Subtotal, cashback, taxa de entrega e total
     commands += '='.repeat(paperWidth).slice(0, paperWidth) + '\n';
@@ -153,17 +153,17 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         const taxaStr = `Taxa de Entrega: R$ ${cupomData.taxaEntrega.toFixed(2).replace('.', ',')}`;
         const taxaSpaces = Math.max(0, paperWidth - taxaStr.length);
         commands += ' '.repeat(taxaSpaces) + taxaStr + '\n';
-      }
+
       
       // Cashback se houver
       if (cupomData.cashback && cupomData.cashback > 0) {
         const cashbackStr = `Desconto Cashback: - R$ ${cupomData.cashback.toFixed(2).replace('.', ',')}`;
         const cashbackSpaces = Math.max(0, paperWidth - cashbackStr.length);
         commands += ' '.repeat(cashbackSpaces) + cashbackStr + '\n';
-      }
+
       
       commands += '-'.repeat(paperWidth).slice(0, paperWidth) + '\n';
-    }
+
     
     // Total final em destaque
     commands += '\x1B\x45\x01'; // Bold on
@@ -184,17 +184,17 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       commands += `Série: ${cupomData.cupomFiscal.serie}\n`;
       if (cupomData.cupomFiscal.chave && cupomData.cupomFiscal.chave !== 'N/A') {
         commands += `Chave: ${cupomData.cupomFiscal.chave}\n`;
-      }
+
       if (cupomData.cupomFiscal.protocolo && cupomData.cupomFiscal.protocolo !== 'N/A') {
         commands += `Protocolo: ${cupomData.cupomFiscal.protocolo}\n`;
-      }
-    }
+
+
     
     // Forma de pagamento
     if (cupomData.pagamento) {
       commands += '\n';
       commands += `Pagamento: ${cupomData.pagamento}\n`;
-    }
+
     
     // Rodapé
     commands += '\n';
@@ -211,7 +211,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
   };
 
   const printCupomFiscal = async (pedido: Pedido) => {
-    try {
+    try {;
       setIsPrinting(true);
       console.log('🧾 Iniciando impressão do cupom fiscal:', pedido.id);
 
@@ -221,49 +221,25 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       if (!nfceData) {
         toast.error('Nenhum cupom fiscal encontrado para este pedido');
         return false;
-      }
 
-      // Buscar informações da empresa
-      const { data: companyInfo, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_info')
-        /* .select\( REMOVIDO */ ; //'nome_estabelecimento, endereco, contato')
-        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
-        /* .single\( REMOVIDO */ ; //);
 
-      if (companyError) {
-        console.error('Erro ao buscar informações da empresa:', companyError);
-      }
+       catch (error) { console.error('Error:', error); }// Buscar informações da empresa
+      const companyInfo = null as any; const companyError = null as any;
+
 
       // Buscar itens do pedido com adicionais
-      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_itens')
-        /* .select\( REMOVIDO */ ; //`
-          id,
-          nome_produto, 
-          quantidade, 
-          valor_unitario, 
-          observacoes,
-          pedido_item_adicionais(
-            nome_adicional,
-            categoria_nome,
-            quantidade,
-            valor_unitario
-          )
-        `)
-        /* .eq\( REMOVIDO */ ; //'pedido_id', pedido.id);
-
-      console.log('📋 Itens encontrados:', itens);
+      const itens = null as any; const itensError = null as any;
       
       if (itensError) {
         console.error('Erro ao buscar itens do pedido:', itensError);
         toast.error('Erro ao buscar itens do pedido');
         return false;
-      }
+
 
       // Separar itens especiais (cashback, taxa de entrega) dos itens normais
       const itensNormais = itens?.filter(item => 
         item.nome_produto !== 'Desconto Cashback' && 
-        item.nome_produto !== 'Taxa de Entrega'
+        item.nome_produto !== 'Taxa de Entrega';
       ) || [];
       
       const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback');
@@ -272,10 +248,10 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       // Log dos valores especiais
       if (cashbackItem) {
         console.log('💰 Cashback encontrado:', cashbackItem.valor_unitario);
-      }
+
       if (taxaEntregaItem) {
         console.log('🚚 Taxa de entrega encontrada:', taxaEntregaItem.valor_unitario);
-      }
+
 
       // Montar dados para impressão do cupom fiscal
       const printData = {
@@ -304,7 +280,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
             nome: 'Pedido sem itens detalhados',
             quantidade: 1,
             preco: pedido.total || 0
-          }
+
         ],
         formaPagamento: pedido.pagamento || 'Não informado',
         cupomFiscal: {
@@ -318,21 +294,14 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           width: 48,
           removeAccents: true,
           marginLeft: 0
-        }
+        };
       };
 
       console.log('🧾 Dados do cupom fiscal preparados:', printData);
 
       // Buscar configurações da impressora
-      const { data: printerConfig, error: printerError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'dominio_printer_name')
-        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
-        /* .single\( REMOVIDO */ ; //);
+      const printerConfig = null as any; const printerError = null as any;
 
-      if (printerError) {
-        console.warn('⚠️ Configuração de impressora não encontrada');
-      }
 
       // Preparar dados no formato da API do Dominio Printer para cupom fiscal
       const dominioPrintData = {
@@ -354,11 +323,11 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           endereco: ''
         },
         items: itensNormais?.map(item => {
-          // Calcular valor base do item
+          // Calcular valor base do item;
           const valorBaseItem = item.quantidade * item.valor_unitario;
           
           // Calcular total dos adicionais
-          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {
+          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {;
             return acc + (adicional.quantidade * adicional.valor_unitario);
           }, 0) || 0;
           
@@ -426,7 +395,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
 
       // Enviar para API do Dominio Printer v2.2.1 com rawMode
       const response = await fetch('http://localhost:3001/api/printer/test', {
-        method: 'POST',
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -434,7 +403,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           printerName: printerName,
           text: formattedCupom,
           rawMode: true  // v2.2.1 - Impressão sem alterações, controle total pelo app
-        })
+        });
       });
 
       const result = await response.json();
@@ -444,7 +413,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         return true;
       } else {
         throw new Error(result.error || 'Erro ao imprimir cupom fiscal');
-      }
+
 
     } catch (error: any) {
       console.error('💥 Erro ao imprimir cupom fiscal:', error);
@@ -452,10 +421,10 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   };
 
-  const printPedido = async (pedido: Pedido) => {
+  const printPedido = async (pedido: Pedido) => {;
     console.log('🚀 INÍCIO - printPedido chamado');
     console.log('📋 Pedido recebido:', pedido);
     console.log('🏢 Company ID usado:', pedido.company_id);
@@ -466,117 +435,73 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
 
       // Buscar informações da empresa
       console.log('🏢 Buscando informações da empresa...');
-      const { data: companyInfo, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_info')
-        /* .select\( REMOVIDO */ ; //'nome_estabelecimento, endereco, contato')
-        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      console.log('🏢 Company info encontrada:', companyInfo);
+      const companyInfo = null as any; const companyError = null as any;
       if (companyError) {
         console.error('❌ Erro ao buscar informações da empresa:', companyError);
         console.log('🔍 Tentando buscar sem filtro para debug...');
         
         // Debug: verificar se a empresa existe
-        const { data: allCompanies } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_info')
-          /* .select\( REMOVIDO */ ; //'company_id, nome_estabelecimento')
-          /* .limit\( REMOVIDO */ ; //5);
+        const { data: allCompanies }  catch (error) { console.error('Error:', error); }= 
+          
+          
+          
         console.log('🏢 Empresas encontradas no banco:', allCompanies);
-      }
+
 
       // Buscar configurações da impressora
       console.log('🖨️ Buscando configurações da impressora...');
-      const { data: printerConfig, error: printerError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'printnode_enabled, printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
-        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      console.log('🖨️ Printer config encontrada:', printerConfig);
+      const printerConfig = null as any; const printerError = null as any;
       
       if (printerError) {
         console.error('❌ Erro ao buscar configurações da impressora:', printerError);
         console.log('🔍 Debug: tentando buscar todas as configurações...');
         
         // Debug: verificar se existem configurações
-        const { data: allSettings } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_settings')
-          /* .select\( REMOVIDO */ ; //'company_id, dominio_printer_name, printer_type')
-          /* .limit\( REMOVIDO */ ; //5);
+        const { data: allSettings  } = null as any;
         console.log('🖨️ Configurações encontradas no banco:', allSettings);
         
         toast.error('Erro ao buscar configurações da impressora. Configure a impressora primeiro.');
         return false;
-      }
+
       
       // Verificar se há configuração válida
       if (!printerConfig) {
         console.error('❌ Nenhuma configuração de impressora encontrada');
         toast.error('Nenhuma configuração de impressora encontrada. Configure a impressora em Configurações > Impressora.');
         return false;
-      }
+
       
       if (!printerConfig?.printnode_default_printer_id) {
         console.error('❌ PrintNode sem impressora padrão definida');
         toast.error('Defina uma impressora padrão na integração PrintNode.');
         return false;
-      }
+
 
       // Mesmo com a flag desabilitada, se houver impressora padrão vamos prosseguir
       if (printerConfig.printnode_enabled === false) {
         console.warn('⚠️ PrintNode marcado como desabilitado, mas há impressora padrão. Prosseguindo com impressão.');
-      }
+
 
       // Buscar dados completos da empresa
-      const { data: empresaInfo } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_info')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data: empresaInfo  } = null as any;
       // Buscar endereço da empresa
-      const { data: empresaEndereco } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_addresses')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'is_principal', true)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data: empresaEndereco  } = null as any;
       console.log('🏢 Dados da empresa:', empresaInfo);
       console.log('📍 Endereço da empresa:', empresaEndereco);
 
       // Buscar itens do pedido com adicionais
-      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_itens')
-        /* .select\( REMOVIDO */ ; //`
-          id,
-          nome_produto, 
-          quantidade, 
-          valor_unitario, 
-          valor_total,
-          observacoes,
-          pedido_item_adicionais(
-            nome_adicional,
-            categoria_nome,
-            quantidade,
-            valor_unitario
-          )
-        `)
-        /* .eq\( REMOVIDO */ ; //'pedido_id', pedido.id);
-
-      console.log('📋 Itens encontrados:', itens);
+      const itens = null as any; const itensError = null as any;
       
       if (itensError) {
         console.error('Erro ao buscar itens do pedido:', itensError);
         toast.error('Erro ao buscar itens do pedido');
         return false;
-      }
+
 
       // Separar itens especiais (cashback, taxa de entrega) dos itens normais
       const itensNormais = itens?.filter(item => 
         item.nome_produto !== 'Desconto Cashback' && 
-        item.nome_produto !== 'Taxa de Entrega'
+        item.nome_produto !== 'Taxa de Entrega';
       ) || [];
       
       const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback');
@@ -601,11 +526,11 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           endereco: pedido.endereco || ''
         } : undefined,
         items: itensNormais?.map(item => {
-          // Calcular valor base do item
+          // Calcular valor base do item;
           const valorBaseItem = item.quantidade * item.valor_unitario;
           
           // Calcular total dos adicionais
-          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {
+          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {;
             return acc + (adicional.quantidade * adicional.valor_unitario);
           }, 0) || 0;
           
@@ -636,7 +561,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       // Formatar texto do pedido para impressão
       const empresaNome = empresaInfo?.nome_estabelecimento || printData.empresa.nome;
       const empresaEnderecoPrincipal = empresaEndereco ? 
-        `${empresaEndereco.logradouro}, ${empresaEndereco.numero}${empresaEndereco.complemento ? `, ${empresaEndereco.complemento}` : ''}\n${empresaEndereco.bairro} - ${empresaEndereco.cidade}/${empresaEndereco.estado}\nCEP: ${empresaEndereco.cep || 'N/A'}` :
+        `${empresaEndereco.logradouro}, ${empresaEndereco.numero}${empresaEndereco.complemento ? `, ${empresaEndereco.complemento}` : ''}\n${empresaEndereco.bairro} - ${empresaEndereco.cidade}/${empresaEndereco.estado}\nCEP: ${empresaEndereco.cep || 'N/A'}` :;
         printData.empresa.endereco;
       const empresaTelefone = empresaInfo?.contato || printData.empresa.telefone;
 
@@ -657,7 +582,7 @@ ${printData.cliente?.endereco ? `End: ${printData.cliente.endereco}` : ''}
 ----------------------------------------
 ITENS:
 ----------------------------------------
-${printData.items.map(item => {
+${printData.items.map(item => {;
   let itemText = `${item.quantity}x ${item.name} - R$ ${item.price.toFixed(2)}`;
   if (item.observacoes) {
     itemText += `\n   Obs: ${item.observacoes}`;
@@ -711,7 +636,7 @@ const dadosParaFormatacao = {
     const adicionais = item.pedido_item_adicionais?.map((ad: any) => ({
       name: ad.nome_adicional,
       quantity: ad.quantidade,
-      price: ad.valor_unitario,
+      price: ad.valor_unitario,;
     })) || [];
     const subtotalBase = item.quantidade * item.valor_unitario;
     const subtotalAdicionais = adicionais.reduce((acc: number, a: any) => acc + (a.quantity * a.price), 0);
@@ -733,28 +658,22 @@ const dadosParaFormatacao = {
       // Gerar formatação ESC/POS com largura configurada (template unificado)
       const pedidoFormatadoESCPOS = formatPedidoESCPOS(dadosParaFormatacao as PedidoTemplateData, paperWidth, {
         removeAccents: true,
-        highlightOrder: true,
+        highlightOrder: true,;
       });
       
       console.log('🔍 DEBUG - Pedido formatado com ESC/POS (primeiras 200 chars):', pedidoFormatadoESCPOS.substring(0, 200));
       console.log('🔍 DEBUG - Contém separador de', paperWidth, 'chars?', pedidoFormatadoESCPOS.includes('='.repeat(paperWidth)));
       
       // Impressão direta via printnode-proxy (consistente com templates locais)
-      const { data: pnSettings, error: pnSettingsErr } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
-        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-      if (pnSettingsErr || !pnSettings?.printnode_default_printer_id) {
-        throw new Error('PrintNode não configurado (defina a impressora padrão em Configurações)');
-      }
+      const pnSettings = null as any; const pnSettingsErr = null as any;
+
 
       const utf8 = new TextEncoder().encode(pedidoFormatadoESCPOS);
       let binary = '';
       utf8.forEach((b) => (binary += String.fromCharCode(b)));
       const contentBase64 = btoa(binary);
 
-      const { error: pnErr } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
+      const { error: pnErr } = await Promise.resolve();
         body: {
           action: 'print',
           printerId: Number(pnSettings.printnode_default_printer_id),
@@ -777,7 +696,7 @@ const dadosParaFormatacao = {
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   };
 
   return {

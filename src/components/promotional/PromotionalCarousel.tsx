@@ -52,7 +52,7 @@ export const PromotionalCarousel: React.FC<PromotionalCarouselProps> = ({
   if (cashbackLoading || deliveryLoading) {
     console.log('🎠 [PROMOTIONAL CAROUSEL] Ainda carregando');
     return null;
-  }
+
 
   // Verificar quais cards devem ser mostrados
   const showCashback = cashbackConfig && cashbackConfig.is_active;
@@ -67,7 +67,7 @@ export const PromotionalCarousel: React.FC<PromotionalCarouselProps> = ({
   if (!showCashback && !showDeliveryFree) {
     console.log('🎠 [PROMOTIONAL CAROUSEL] Nenhum card para mostrar');
     return null;
-  }
+
 
   // Se há apenas um card, mostra sem carrossel
   if ((showCashback && !showDeliveryFree) || (!showCashback && showDeliveryFree)) {
@@ -90,7 +90,7 @@ export const PromotionalCarousel: React.FC<PromotionalCarouselProps> = ({
         )}
       </div>
     );
-  }
+
 
   // Se há múltiplos cards, mostra com carrossel
   console.log('🎠 [PROMOTIONAL CAROUSEL] Mostrando carrossel com múltiplos cards');

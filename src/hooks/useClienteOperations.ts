@@ -18,13 +18,13 @@ interface Cliente {
   status?: string;
   data_nascimento?: string;
   company_id: string; // Obrigatório agora
-}
 
-export const useClienteOperations = () => {
+
+export const useClienteOperations = () => {;
   const [loading, setLoading] = useState(false);
   const { currentCompany } = useAuth();
 
-  const createCliente = async (formData: Partial<Cliente>) => {
+  const createCliente = async (formData: Partial<Cliente>) => {;
     setLoading(true);
     try {
       console.log('🔄 Iniciando cadastro de cliente:', formData);
@@ -35,7 +35,7 @@ export const useClienteOperations = () => {
         return false;
       }
 
-      if (!formData.nome?.trim()) {
+       catch (error) { console.error('Error:', error); }if (!formData.nome?.trim()) {
         console.error('❌ Nome do cliente é obrigatório');
         toast.error('Nome do cliente é obrigatório');
         return false;
@@ -44,17 +44,12 @@ export const useClienteOperations = () => {
       const clienteData = {
         ...formData,
         nome: formData.nome,
-        company_id: currentCompany.id
+        company_id: currentCompany.id;
       };
 
       console.log('📝 Dados do cliente a serem inseridos:', clienteData);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .insert\( REMOVIDO */ ; //[clienteData])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro na inserção:', error);
         throw error;
@@ -69,16 +64,16 @@ export const useClienteOperations = () => {
       return false;
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const updateCliente = async (id: number, formData: Partial<Cliente>) => {
+  const updateCliente = async (id: number, formData: Partial<Cliente>) => {;
     setLoading(true);
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .update\( REMOVIDO */ ; //formData)
-        /* .eq\( REMOVIDO */ ; //'id', id);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
       toast.success('Cliente atualizado com sucesso');
@@ -89,18 +84,18 @@ export const useClienteOperations = () => {
       return false;
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const deleteCliente = async (id: number) => {
+  const deleteCliente = async (id: number) => {;
     if (!confirm('Tem certeza que deseja excluir este cliente?')) return false;
 
     setLoading(true);
     try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', id);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
       toast.success('Cliente excluído com sucesso');
@@ -111,7 +106,7 @@ export const useClienteOperations = () => {
       return false;
     } finally {
       setLoading(false);
-    }
+
   };
 
   return {

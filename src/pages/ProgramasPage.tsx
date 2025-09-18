@@ -24,7 +24,7 @@ interface Programa {
   created_at: string;
 }
 
-const ProgramasPage = () => {
+const ProgramasPage = () => {;
   const [programas, setProgramas] = useState<Programa[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -49,8 +49,8 @@ const ProgramasPage = () => {
   }, []);
 
   const loadProgramas = async () => {
-    try {
-      const { data, error } = /* await supabase REMOVIDO */ null
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
         .rpc('get_programas_saipos');
       
       if (error) throw error;
@@ -64,11 +64,11 @@ const ProgramasPage = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleFileUpload = async (file: File): Promise<string | null> => {
-    try {
+    try {;
       setUploading(true);
       setUploadProgress(0);
       
@@ -80,11 +80,11 @@ const ProgramasPage = () => {
       const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
       
       if (!allowedTypes.includes(fileExt)) {
-        throw new Error(`Tipo de arquivo não permitido. Tipos aceitos: ${allowedTypes.join(', ')}`);
+        throw new Error(`Tipo de arquivo não permitido. Tipos aceitos: ${allowedTypes.join(', ')} catch (error) { console.error('Error:', error); }`);
       }
       
       // Verificar autenticação
-      const { data: { user } } = await /* supabase REMOVIDO */ null; //auth.getUser();
+      const { data: { user } } = await Promise.resolve();
       console.log('🔑 [Upload] Usuário autenticado:', user?.id);
       
       if (!user) {
@@ -92,7 +92,7 @@ const ProgramasPage = () => {
       }
       
       // Usar o novo serviço de upload chunked
-      const result = await uploadLargeFile(file, (progress) => {
+      const result = await uploadLargeFile(file, (progress) => {;
         setUploadProgress(progress);
         console.log(`📊 [Upload] Progresso: ${progress.toFixed(1)}%`);
       });
@@ -128,14 +128,14 @@ const ProgramasPage = () => {
     } finally {
       setUploading(false);
       setUploadProgress(0);
-    }
+
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     try {
-      let finalFormData = { ...formData };
+      let finalFormData = { ...formData } catch (error) { console.error('Error:', error); };
 
       // Se tem arquivo selecionado, fazer upload primeiro
       if (selectedFile) {
@@ -152,7 +152,7 @@ const ProgramasPage = () => {
       }
 
       if (editingPrograma) {
-        const { error } = await /* supabase REMOVIDO */ null; //rpc('update_programa_saipos', {
+        const { error } = await Promise.resolve();
           programa_id: editingPrograma.id,
           programa_data: finalFormData
         });
@@ -160,7 +160,7 @@ const ProgramasPage = () => {
         if (error) throw error;
         toast({ title: 'Sucesso', description: 'Programa atualizado com sucesso!' });
       } else {
-        const { error } = await /* supabase REMOVIDO */ null; //rpc('insert_programa_saipos', {
+        const { error } = await Promise.resolve();
           programa_data: finalFormData
         });
         
@@ -178,7 +178,7 @@ const ProgramasPage = () => {
         description: 'Erro ao salvar programa',
         variant: 'destructive'
       });
-    }
+
   };
 
   const resetForm = () => {
@@ -189,13 +189,13 @@ const ProgramasPage = () => {
       versao: '',
       icone: '',
       ativo: true,
-      arquivo_path: ''
+      arquivo_path: '';
     });
     setEditingPrograma(null);
     setSelectedFile(null);
   };
 
-  const editPrograma = (programa: Programa) => {
+  const editPrograma = (programa: Programa) => {;
     setEditingPrograma(programa);
     setFormData({
       nome: programa.nome,
@@ -209,7 +209,7 @@ const ProgramasPage = () => {
     setDialogOpen(true);
   };
 
-  const deletePrograma = async (programa: Programa) => {
+  const deletePrograma = async (programa: Programa) => {;
     if (!confirm('Tem certeza que deseja excluir este programa?')) return;
 
     try {
@@ -217,14 +217,13 @@ const ProgramasPage = () => {
       if (programa.arquivo_path) {
         const fileName = programa.arquivo_path.split('/').pop();
         if (fileName) {
-          await /* supabase REMOVIDO */ null; //storage
-            /* .from REMOVIDO */ ; //'programas')
+          await Promise.resolve();
             .remove([fileName]);
         }
-      }
+       catch (error) { console.error('Error:', error); }}
 
       // Deletar registro do banco
-      const { error } = await /* supabase REMOVIDO */ null; //rpc('delete_programa_saipos', {
+      const { error } = await Promise.resolve();
         programa_id: programa.id
       });
 
@@ -239,14 +238,14 @@ const ProgramasPage = () => {
         description: 'Erro ao excluir programa',
         variant: 'destructive'
       });
-    }
+
   };
 
   const openUrl = (url: string) => {
-    if (url) {
+    if (url) {;
       console.log('🔗 [Download] Abrindo URL:', url);
       window.open(url, '_blank');
-    }
+
   };
 
   if (loading) {

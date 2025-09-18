@@ -38,14 +38,14 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [previewItems, setPreviewItems] = useState<PreviewItem[]>([]);
 
-  const handlePreview = async () => {
+  const handlePreview = async () => {;
     setIsLoading(true);
     setError(null);
     setPreviewItems([]);
 
     try {
       // Usar a função Supabase para fazer o preview
-      const { data, error: functionError } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-import-preview', {
+      const { data, error: functionError }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { url }
       });
 
@@ -65,7 +65,7 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
       const itemsWithSelection = data.map(item => ({
         ...item,
         selected: true,
-        categoria_id: categorias[0]?.id || '' // Seleciona a primeira categoria por padrão
+        categoria_id: categorias[0]?.id || '' // Seleciona a primeira categoria por padrão;
       }));
 
       setPreviewItems(itemsWithSelection);
@@ -79,17 +79,17 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
       setError(err.message || 'Ocorreu um erro ao analisar o cardápio.');
     } finally {
       setIsLoading(false);
-    }
+
   };
   
-  const handleImport = async () => {
+  const handleImport = async () => {;
     setIsImporting(true);
     setError(null);
     setSuccessMessage(null);
     const itemsToImport = previewItems.filter(item => item.selected);
 
     try {
-      const { data, error: functionError } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-import-execute', {
+      const { data, error: functionError }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { 
           company_id: currentCompany?.id,
           items: itemsToImport,
@@ -122,11 +122,11 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
       setError(err.message || 'Ocorreu um erro desconhecido durante a importação.');
     } finally {
       setIsImporting(false);
-    }
+
   };
   
   const handleClose = () => {
-    // Resetar o estado ao fechar
+    // Resetar o estado ao fechar;
     setUrl('');
     setPreviewItems([]);
     setError(null);
@@ -134,13 +134,13 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
     onClose();
   };
 
-  const toggleItemSelection = (index: number) => {
+  const toggleItemSelection = (index: number) => {;
     const updatedItems = [...previewItems];
     updatedItems[index].selected = !updatedItems[index].selected;
     setPreviewItems(updatedItems);
   };
 
-  const handleCategoryChange = (index: number, categoria_id: string) => {
+  const handleCategoryChange = (index: number, categoria_id: string) => {;
     const updatedItems = [...previewItems];
     updatedItems[index].categoria_id = categoria_id;
     setPreviewItems(updatedItems);

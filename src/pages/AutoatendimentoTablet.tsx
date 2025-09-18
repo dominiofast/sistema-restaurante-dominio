@@ -45,7 +45,7 @@ const AutoatendimentoTablet: React.FC = () => {
   }, [timeLeft, currentStep]);
 
   // Função para iniciar sessão
-  const handleStartSession = async () => {
+  const handleStartSession = async () => {;
     console.log('🚀 AutoatendimentoTablet - handleStartSession chamado');
     console.log('🏢 AutoatendimentoTablet - effectiveCompanyId:', effectiveCompanyId);
     
@@ -56,7 +56,7 @@ const AutoatendimentoTablet: React.FC = () => {
       if (sessionId) {
         console.log('✅ AutoatendimentoTablet - Mudando para step cardapio');
         setCurrentStep('cardapio');
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         console.log('❌ AutoatendimentoTablet - Falha ao criar sessão');
       }
     } catch (error) {
@@ -65,12 +65,12 @@ const AutoatendimentoTablet: React.FC = () => {
   };
 
   // Função para navegar entre etapas
-  const handleStepChange = (step: AutoatendimentoStep) => {
+  const handleStepChange = (step: AutoatendimentoStep) => {;
     setCurrentStep(step);
   };
 
   // Função para finalizar pedido
-  const handleCompleteOrder = async (orderData: any) => {
+  const handleCompleteOrder = async (orderData: any) => {;
     const success = await completeSession(orderData);
     if (success) {
       setCurrentStep('success');

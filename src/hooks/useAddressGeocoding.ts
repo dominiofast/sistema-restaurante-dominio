@@ -16,7 +16,7 @@ export function useAddressGeocoding() {
     estado?: string,
     cep?: string
   ): Promise<GeocodeResult | null> => {
-    if (!logradouro || !cidade) {
+    if (!logradouro || !cidade) {;
       return null;
     }
 
@@ -31,14 +31,13 @@ export function useAddressGeocoding() {
         cidade,
         estado,
         cep,
-        'Brasil'
+        'Brasil';
       ].filter(Boolean).join(', ');
 
       console.log('🔍 Geocoding endereço:', endereco);
 
       // Buscar chave da API via Edge Function
-      const { data: configData } = await /* supabase REMOVIDO */ null; //functions.invoke('get-maps-config');
-      
+      const { data: configData }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       if (!configData?.apiKey) {
         console.error('Google Maps API key não encontrada');
         return null;
@@ -46,7 +45,7 @@ export function useAddressGeocoding() {
 
       // Fazer requisição para Google Geocoding API
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(endereco)}&key=${configData.apiKey}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(endereco)}&key=${configData.apiKey}`;
       );
 
       const data = await response.json();
@@ -75,14 +74,14 @@ export function useAddressGeocoding() {
     addressId: string,
     coordinates: GeocodeResult
   ): Promise<boolean> => {
-    try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'customer_addresses')
-        /* .update\( REMOVIDO */ ; //{
+    try {;
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           latitude: coordinates.latitude,
           longitude: coordinates.longitude
         })
-        /* .eq\( REMOVIDO */ ; //'id', addressId);
+        
 
       if (error) {
         console.error('Erro ao atualizar coordenadas:', error);

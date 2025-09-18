@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
-const SignupPage = () => {
+const SignupPage = () => {;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +14,7 @@ const SignupPage = () => {
     acceptTerms: false
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -22,7 +22,7 @@ const SignupPage = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (loading) return;
@@ -49,30 +49,18 @@ const SignupPage = () => {
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '') // Remove acentos
         .replace(/[^a-z0-9\s]/g, '') // Remove caracteres especiais
-        .replace(/\s+/g, '') // Remove espaços
+        .replace(/\s+/g, '') // Remove espaços;
         .substring(0, 20); // Limita tamanho
       
       // Adicionar timestamp para garantir unicidade
-      const uniqueDomain = `${companyDomain}${Date.now().toString().slice(-4)}`;
+      const uniqueDomain = `${companyDomain} catch (error) { console.error('Error:', error); }${Date.now().toString().slice(-4)}`;
       
       console.log('🏢 Criando empresa com domain:', uniqueDomain);
       
       // 1. Primeiro criar a empresa
-      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .insert\( REMOVIDO */ ; //{
-          name: formData.businessName,
-          domain: uniqueDomain,
-          slug: uniqueDomain,
-          status: 'active',
-          plan: 'trial', // Plano de teste
-          user_count: 1
-        })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
+      const companyData = null as any; const companyError = null as any;
+      
       if (companyError) {
-        console.error('❌ Erro ao criar empresa:', companyError);
         toast.error('Erro ao criar empresa: ' + companyError.message);
         return;
       }
@@ -83,30 +71,14 @@ const SignupPage = () => {
       // Gerar senha temporária para o usuário (será solicitada para trocar no primeiro login)
       const tempPassword = `temp${Date.now()}`;
       
-      const { data: authData, error: authError } = await /* supabase REMOVIDO */ null; //auth.signUp({
-        email: formData.email,
-        password: tempPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            name: formData.name,
-            phone: formData.phone,
-            businessName: formData.businessName,
-            company_id: companyData.id,
-            company_domain: uniqueDomain,
-            role: 'admin',
-            orders_per_day: formData.ordersPerDay,
-            has_computer: formData.hasComputer
-          }
-        }
-      });
+      const authData = null as any; const authError = null as any;
 
       if (authError) {
         console.error('❌ Erro na autenticação:', authError);
         
         // Se falhou ao criar usuário, deletar a empresa criada
         try {
-          await fetch(`/api/companies?id=${companyData.id}`, {
+          await fetch(`/api/companies?id=${companyData.id} catch (error) { console.error('Error:', error); }`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
           });
@@ -126,9 +98,7 @@ const SignupPage = () => {
 
       // 3. Criar credenciais da empresa para login direto
       if (authData.user) {
-        const { error: credentialsError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_credentials')
-          /* .insert\( REMOVIDO */ ; //{
+        const { error: credentialsError  } = null as any;
             email: formData.email,
             password_hash: tempPassword, // Será processado pelo trigger
             company_id: companyData.id,

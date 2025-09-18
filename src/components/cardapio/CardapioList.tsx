@@ -40,12 +40,12 @@ interface CardapioListProps {
   onReorderCategorias: (startIndex: number, endIndex: number) => void;
   onReorderProdutos: (startIndex: number, endIndex: number, categoriaId: string) => void;
   loading?: boolean;
-}
+
 
 interface SortableItemProps {
   id: string;
   children: React.ReactNode;
-}
+
 
 const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
   const {
@@ -61,7 +61,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -112,14 +112,14 @@ export const CardapioList: React.FC<CardapioListProps> = ({
         distance: 8,
       },
     }),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor);
   );
 
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = (event: DragStartEvent) => {;
     setActiveDragId(event.active.id as string);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {;
     const { active, over } = event;
     setActiveDragId(null);
 
@@ -141,10 +141,10 @@ export const CardapioList: React.FC<CardapioListProps> = ({
           onReorderProdutos(oldIndex, newIndex, activeItem.categoriaId!);
         }
       }
-    }
+
   };
 
-  const findItemById = (id: string) => {
+  const findItemById = (id: string) => {;
     const categoria = categorias.find(c => c.id === id);
     if (categoria) return { type: 'categoria' as const, data: categoria };
 
@@ -155,15 +155,15 @@ export const CardapioList: React.FC<CardapioListProps> = ({
   };
 
   const filteredCategorias = categorias.filter(categoria =>
-    categoria.name.toLowerCase().includes(searchTerm.toLowerCase())
+    categoria.name.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
   const filteredProdutos = produtos.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    produto.description?.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
-  const getCategoriaProdutos = (categoriaId: string) => {
+  const getCategoriaProdutos = (categoriaId: string) => {;
     return filteredProdutos.filter(produto => produto.categoria_id === categoriaId);
   };
 
@@ -171,7 +171,7 @@ export const CardapioList: React.FC<CardapioListProps> = ({
   React.useEffect(() => {
     if (!selectedCategoria && categorias.length > 0) {
       setSelectedCategoria(categorias[0].id);
-    }
+
   }, [categorias, selectedCategoria]);
 
   return (

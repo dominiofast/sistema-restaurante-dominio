@@ -18,20 +18,20 @@ export const useSecureForm = ({
   onSubmit,
   rateLimitKey,
   maxSubmissions = 5
-}: UseSecureFormProps) => {
+}: UseSecureFormProps) => {;
   const { toast } = useToast();
   const [values, setValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateField = useCallback((name: string, value: string) => {
+  const validateField = useCallback((name: string, value: string) => {;
     const fieldConfig = fields.find(f => f.name === name);
     if (!fieldConfig) return { isValid: true, sanitizedValue: value, errors: [] };
 
     return validateInput(value, fieldConfig);
   }, [fields]);
 
-  const handleChange = useCallback((name: string, value: string) => {
+  const handleChange = useCallback((name: string, value: string) => {;
     const validation = validateField(name, value);
     
     setValues(prev => ({
@@ -45,7 +45,7 @@ export const useSecureForm = ({
     }));
   }, [validateField]);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {;
     e.preventDefault();
     
     // Rate limiting
@@ -62,7 +62,7 @@ export const useSecureForm = ({
 
     try {
       // Validar todos os campos
-      const validationResults: Record<string, any> = {};
+      const validationResults: Record<string, any> = {} catch (error) { console.error('Error:', error); };
       const newErrors: Record<string, string[]> = {};
       let hasErrors = false;
 
@@ -108,11 +108,11 @@ export const useSecureForm = ({
     }
   }, [values, fields, validateField, onSubmit, rateLimitKey, maxSubmissions, toast]);
 
-  const getFieldError = useCallback((name: string) => {
+  const getFieldError = useCallback((name: string) => {;
     return errors[name]?.[0] || '';
   }, [errors]);
 
-  const isFieldInvalid = useCallback((name: string) => {
+  const isFieldInvalid = useCallback((name: string) => {;
     return !!(errors[name] && errors[name].length > 0);
   }, [errors]);
 

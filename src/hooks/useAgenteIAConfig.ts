@@ -30,7 +30,7 @@ export interface AgenteIAConfig {
   habilitar_lancamento_pedidos?: boolean;
   url_pedidos?: string;
   token_pedidos?: string;
-}
+
 
 const defaultConfig: Omit<AgenteIAConfig, 'company_id'> = {
   is_active: true,
@@ -55,7 +55,7 @@ const defaultConfig: Omit<AgenteIAConfig, 'company_id'> = {
   promotion_knowledge: true,
   stock_knowledge: false,
   // Campos para compatibilidade
-  url_cardapio: '',
+// url_cardapio: '',
   habilitar_lancamento_pedidos: false,
   url_pedidos: '',
   token_pedidos: '',
@@ -63,18 +63,18 @@ const defaultConfig: Omit<AgenteIAConfig, 'company_id'> = {
 
 // Função para gerar token único
 const generateToken = () => {
-  return 'sk-' + Array/* .from REMOVIDO */ ; //crypto.getRandomValues(new Uint8Array(16)))
-    .map(b => b.toString(16).padStart(2, '0'))
+  return 'sk-' + Array
+    .map(b => b.toString(16).padStart(2, '0'));
     .join('');
 };
 
-export const useAgenteIAConfig = (companyId: string) => {
+export const useAgenteIAConfig = (companyId: string) => {;
   const [config, setConfig] = useState<AgenteIAConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const loadConfig = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       console.log('⏸️ Company ID não fornecido, aguardando...');
       setLoading(false);
       return;
@@ -84,11 +84,11 @@ export const useAgenteIAConfig = (companyId: string) => {
       setLoading(true);
       console.log('📥 Carregando configuração para empresa:', companyId);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('❌ Erro ao carregar configuração:', error);
@@ -98,7 +98,7 @@ export const useAgenteIAConfig = (companyId: string) => {
           company_id: companyId,
           // Auto-gerar URL e token para pedidos
           url_pedidos: `${window.location.origin}/functions/v1/criar-pedido`,
-          token_pedidos: generateToken()
+          token_pedidos: generateToken();
         };
         console.log('🆕 Criando configuração padrão:', newConfig);
         setConfig(newConfig);
@@ -110,7 +110,7 @@ export const useAgenteIAConfig = (companyId: string) => {
           url_cardapio: '',
           habilitar_lancamento_pedidos: false,
           url_pedidos: `${window.location.origin}/functions/v1/criar-pedido`,
-          token_pedidos: generateToken()
+          token_pedidos: generateToken();
         };
         setConfig(configWithDefaults);
       } else {
@@ -121,10 +121,10 @@ export const useAgenteIAConfig = (companyId: string) => {
           company_id: companyId,
           // Auto-gerar URL e token para pedidos
           url_pedidos: `${window.location.origin}/functions/v1/criar-pedido`,
-          token_pedidos: generateToken()
+          token_pedidos: generateToken();
         };
         setConfig(newConfig);
-      }
+
     } catch (error) {
       console.error('❌ Erro inesperado ao carregar configuração:', error);
       const newConfig = { 
@@ -132,7 +132,7 @@ export const useAgenteIAConfig = (companyId: string) => {
         company_id: companyId,
         // Auto-gerar URL e token para pedidos
         url_pedidos: `${window.location.origin}/functions/v1/criar-pedido`,
-        token_pedidos: generateToken()
+        token_pedidos: generateToken();
       };
       setConfig(newConfig);
     } finally {
@@ -141,7 +141,7 @@ export const useAgenteIAConfig = (companyId: string) => {
   };
 
   const saveConfig = async (configToSave: AgenteIAConfig) => {
-    if (!companyId) {
+    if (!companyId) {;
       console.error('❌ Company ID não fornecido para salvar');
       return false;
     }
@@ -151,44 +151,37 @@ export const useAgenteIAConfig = (companyId: string) => {
       console.log('💾 Salvando configuração:', configToSave);
       
       // Remover campos que não existem na nova tabela antes de salvar
-      const { url_cardapio, habilitar_lancamento_pedidos, url_pedidos, token_pedidos, ...configToSend } = configToSave;
+      const { url_cardapio, habilitar_lancamento_pedidos, url_pedidos, token_pedidos, ...configToSend }  catch (error) { console.error('Error:', error); }= configToSave;
       
       // Verificar se já existe uma configuração
-      const { data: existingConfig, error: checkError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_config')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (checkError && checkError.code !== 'PGRST116') {
-        console.error('❌ Erro ao verificar configuração existente:', checkError);
+      const existingConfig = null as any; const checkError = null as any;
         return false;
-      }
+
 
       let result;
       if (existingConfig?.id) {
         // Atualizar configuração existente
         console.log('🔄 Atualizando configuração existente ID:', existingConfig.id);
-        result = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'ai_agent_config')
-          /* .update\( REMOVIDO */ ; //configToSend)
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
+        result = 
+          
+          
+          
+          
+          
       } else {
         // Inserir nova configuração
         console.log('➕ Inserindo nova configuração');
-        result = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'ai_agent_config')
-          /* .insert\( REMOVIDO */ ; //[configToSend])
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-      }
+        result = 
+          
+          
+          
+          
+
 
       if (result.error) {
         console.error('❌ Erro ao salvar configuração:', result.error);
         return false;
-      }
+
 
       console.log('✅ Configuração salva com sucesso:', result.data);
       // Atualizar o estado local com os dados salvos + campos de compatibilidade
@@ -197,7 +190,7 @@ export const useAgenteIAConfig = (companyId: string) => {
         url_cardapio: '',
         habilitar_lancamento_pedidos: false,
         url_pedidos: `${window.location.origin}/functions/v1/criar-pedido`,
-        token_pedidos: generateToken()
+        token_pedidos: generateToken();
       };
       setConfig(savedConfigWithDefaults);
       return true;

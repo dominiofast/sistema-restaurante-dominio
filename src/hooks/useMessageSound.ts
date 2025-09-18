@@ -2,11 +2,11 @@ import { useCallback, useRef } from 'react';
 
 export type MessageSoundType = 'whatsapp' | 'soft' | 'notification' | 'none';
 
-export const useMessageSound = () => {
+export const useMessageSound = () => {;
   const audioCache = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   // Criar sons base64 para diferentes tipos de notificação
-  const createSound = useCallback((type: MessageSoundType): HTMLAudioElement | null => {
+  const createSound = useCallback((type: MessageSoundType): HTMLAudioElement | null => {;
     if (type === 'none') return null;
 
     const audio = new Audio();
@@ -28,13 +28,13 @@ export const useMessageSound = () => {
         break;
       default:
         return null;
-    }
+
 
     return audio;
   }, []);
 
   // Obter ou criar áudio do cache
-  const getAudio = useCallback((type: MessageSoundType) => {
+  const getAudio = useCallback((type: MessageSoundType) => {;
     if (type === 'none') return null;
 
     let audio = audioCache.current.get(type);
@@ -49,7 +49,7 @@ export const useMessageSound = () => {
 
   // Reproduzir som
   const playSound = useCallback((type: MessageSoundType = 'whatsapp') => {
-    try {
+    try {;
       const audio = getAudio(type);
       if (audio) {
         // Resetar áudio para o início caso já esteja tocando
@@ -59,12 +59,12 @@ export const useMessageSound = () => {
         if (playPromise) {
           playPromise.catch(error => {
             console.warn('Erro ao reproduzir som de mensagem:', error);
-          });
+          } catch (error) { console.error('Error:', error); });
         }
       }
     } catch (error) {
       console.warn('Erro ao criar/reproduzir som:', error);
-    }
+
   }, [getAudio]);
 
   // Sons específicos para diferentes contextos
@@ -74,7 +74,7 @@ export const useMessageSound = () => {
 
   // Cleanup do cache
   const cleanup = useCallback(() => {
-    audioCache.current.forEach(audio => {
+    audioCache.current.forEach(audio => {;
       audio.pause();
       audio.src = '';
     });

@@ -14,7 +14,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -22,7 +22,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
+
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
 
@@ -34,12 +34,12 @@ interface Adicional {
   categoria_adicional_id: string;
   is_available: boolean;
   image?: string;
-}
+
 
 interface NovaOpcaoTabProps {
   categoriasAdicionais: CategoriaAdicional[];
   onRefresh?: () => void;
-}
+
 
 export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
   categoriasAdicionais,
@@ -59,7 +59,7 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleImageUpload = (file: File) => {
+  const handleImageUpload = (file: File) => {;
     setImageFile(file);
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -68,12 +68,12 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
     reader.readAsDataURL(file);
   };
 
-  const clearImage = () => {
+  const clearImage = () => {;
     setImageFile(null);
     setImagePreview(null);
   };
 
-  const handleCreateAdicional = async () => {
+  const handleCreateAdicional = async () => {;
     if (!novoAdicional.name || !novoAdicional.categoria_adicional_id) return;
 
     try {
@@ -88,9 +88,9 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         imageUrl = null;
       }
 
-      const data = await apiRequest('/api/adicionais', {
+       catch (error) { console.error('Error:', error); }const data = await apiRequest('/api/adicionais', {
         method: 'POST',
-        body: JSON.stringify({ ...novoAdicional, image: imageUrl })
+        body: JSON.stringify({ ...novoAdicional, image: imageUrl });
       });
 
       // Adicionar o novo adicional à lista local
@@ -127,10 +127,10 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const getCategoriaNome = (categoriaId: string) => {
+  const getCategoriaNome = (categoriaId: string) => {;
     return categoriasAdicionais.find(cat => cat.id === categoriaId)?.name || 'Categoria';
   };
 

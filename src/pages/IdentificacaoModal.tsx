@@ -27,7 +27,7 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
 
   const podeAvancar = telefone.length >= 10 && nome.length > 3;
 
-  const handleBuscarCliente = async () => {
+  const handleBuscarCliente = async () => {;
     const telefoneNumeros = telefone.replace(/\D/g, '');
     if (telefoneNumeros.length < 10) return;
 
@@ -41,7 +41,7 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
         setNome(cliente.nome);
         setClienteEncontrado(true);
         setMostrarFormulario(false);
-      } else {
+      }  catch (error) { console.error('Error:', error); }else {
         console.log('❌ Cliente não encontrado, mostrar formulário');
         setClienteEncontrado(false);
         setMostrarFormulario(true);
@@ -52,16 +52,16 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
       setMostrarFormulario(true);
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const handleFinalizar = async () => {
+  const handleFinalizar = async () => {;
     setLoading(true);
     try {
       const telefoneNumeros = telefone.replace(/\D/g, '');
       
       if (!clienteEncontrado && nome) {
-        console.log('📝 Cadastrando novo cliente', { nome, telefone: telefoneNumeros, companyId });
+        console.log('📝 Cadastrando novo cliente', { nome, telefone: telefoneNumeros, companyId } catch (error) { console.error('Error:', error); });
         const novoCliente = await cadastrarCliente(nome, telefoneNumeros, companyId);
         if (!novoCliente) {
           console.error('❌ Falha ao cadastrar cliente');
@@ -76,19 +76,19 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
       console.error('❌ Erro ao processar cliente:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const formatarTelefone = (valor: string) => {
+  const formatarTelefone = (valor: string) => {;
     const numeros = valor.replace(/\D/g, '');
     if (numeros.length <= 10) {
       return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
     } else {
       return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    }
+
   };
 
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const valor = e.target.value;
     const telefoneFormatado = formatarTelefone(valor);
     setTelefone(telefoneFormatado);
@@ -98,7 +98,7 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
       setClienteEncontrado(false);
       setMostrarFormulario(true);
       setNome('');
-    }
+
   };
 
   return (

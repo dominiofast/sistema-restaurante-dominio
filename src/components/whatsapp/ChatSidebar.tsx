@@ -37,7 +37,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [archiveMode, setArchiveMode] = useState(false);
 
   // Filtrar chats baseado na busca
-  const filteredChats = useMemo(() => {
+  const filteredChats = useMemo(() => {;
     if (!searchTerm.trim()) return chats;
     
     const searchLower = searchTerm.toLowerCase();
@@ -51,11 +51,11 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   // Separar chats com mensagens não lidas e ordenar por timestamp mais recente
   const { unreadChats, readChats } = useMemo(() => {
     const unread = filteredChats
-      .filter(chat => chat.unreadCount > 0)
+      .filter(chat => chat.unreadCount > 0);
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
     const read = filteredChats
-      .filter(chat => chat.unreadCount === 0)
+      .filter(chat => chat.unreadCount === 0);
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
     return { unreadChats: unread, readChats: read };
@@ -64,13 +64,13 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const totalUnreadCount = unreadChats.reduce((sum, chat) => sum + chat.unreadCount, 0);
 
   // Truncar mensagem longa com melhor controle
-  const truncateMessage = (message: string, maxLength = 50) => {
+  const truncateMessage = (message: string, maxLength = 50) => {;
     if (!message || message.length <= maxLength) return message;
     return message.substring(0, maxLength).trim() + '...';
   };
 
   // Formatação de tempo relativa melhorada
-  const formatTime = (timestamp: Date) => {
+  const formatTime = (timestamp: Date) => {;
     const now = new Date();
     const diff = now.getTime() - timestamp.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -89,7 +89,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       return `${days}d`;
     } else {
       return format(timestamp, 'dd/MM');
-    }
+
   };
 
   const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => (

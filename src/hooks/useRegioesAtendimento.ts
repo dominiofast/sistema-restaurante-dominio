@@ -18,7 +18,7 @@ export interface RegiaoAtendimento {
   status: boolean;
   poligono?: any; // Reverted to any due to Supabase compatibility
   created_at?: string;
-}
+
 
 export function useRegioesAtendimento(companyId: string | undefined) {
   const [regioes, setRegioes] = useState<RegiaoAtendimento[]>([]);
@@ -26,7 +26,7 @@ export function useRegioesAtendimento(companyId: string | undefined) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchRegioes = async () => {
-    if (!companyId) {
+    if (!companyId) {;
       console.warn('⚠️ useRegioesAtendimento - Company ID não fornecido, não buscando regiões');
       return;
     }
@@ -37,11 +37,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Buscando regiões para company:', companyId);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: true });
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar regiões:', error);
@@ -56,11 +56,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
         
         try {
           // Buscar informações da empresa para criar região personalizada
-          const { data: companyData } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'companies')
-            /* .select\( REMOVIDO */ ; //'name, slug')
-            /* .eq\( REMOVIDO */ ; //'id', companyId)
-            /* .single\( REMOVIDO */ ; //);
+          const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+            
+            
+            
+            
           
           // CONFIGURAÇÃO UNIVERSAL baseada na 300 graus (que FUNCIONA)
           const regiaoPadrao = {
@@ -73,24 +73,17 @@ export function useRegioesAtendimento(companyId: string | undefined) {
             centro_lng: -61.4447,
             raio_km: 100, // Raio MUITO maior (100km) para cobrir toda a região
             valor: 0, // Taxa gratuita para facilitar
-            status: true
+// status: true;
           };
           
           console.log('🔧 Criando região UNIVERSAL (baseada na 300 graus):', regiaoPadrao);
           
-          const { data: novaRegiao, error: insertError } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'regioes_atendimento')
-            /* .insert\( REMOVIDO */ ; //[regiaoPadrao])
-            /* .select\( REMOVIDO */ ; //)
-            /* .single\( REMOVIDO */ ; //);
-          
-          if (insertError) {
-            console.error('❌ Erro ao criar região no banco, usando em memória:', insertError);
+          const novaRegiao = null as any; const insertError = null as any;
             // SOLUÇÃO DE FALLBACK: Criar região em memória (como a 300 graus faz)
             const regiaoMemoria = { 
               ...regiaoPadrao, 
               id: 'universal-' + Date.now(),
-              raio_km: 150 // Raio ainda maior para garantir cobertura
+              raio_km: 150 // Raio ainda maior para garantir cobertura;
             };
             console.log('✅ Usando região UNIVERSAL em memória (como 300 graus):', regiaoMemoria);
             setRegioes([regiaoMemoria]);
@@ -99,7 +92,7 @@ export function useRegioesAtendimento(companyId: string | undefined) {
             console.log('✅ Região UNIVERSAL criada no banco (como 300 graus):', novaRegiao);
             setRegioes([novaRegiao]);
             return;
-          }
+
         } catch (insertErr) {
           console.error('❌ Erro crítico, criando região de emergência:', insertErr);
           // REGIÃO DE EMERGÊNCIA: Garantir que SEMPRE funcione
@@ -113,13 +106,13 @@ export function useRegioesAtendimento(companyId: string | undefined) {
             centro_lat: -11.4389,
             centro_lng: -61.4447,
             raio_km: 200, // Raio MÁXIMO para garantir funcionamento
-            valor: 0,
-            status: true
+// valor: 0,
+            status: true;
           };
           console.log('🚨 REGIÃO DE EMERGÊNCIA criada:', regiaoEmergencia);
           setRegioes([regiaoEmergencia]);
           return;
-        }
+
       }
       
       setRegioes(data || []);
@@ -137,7 +130,7 @@ export function useRegioesAtendimento(companyId: string | undefined) {
   }, [companyId]);
 
   const adicionarRegiao = async (regiao: Omit<RegiaoAtendimento, 'id' | 'created_at'>) => {
-    if (!companyId) {
+    if (!companyId) {;
       throw new Error('Company ID é obrigatório');
     }
 
@@ -147,11 +140,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Adicionando região:', regiao);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .insert\( REMOVIDO */ ; //[{ ...regiao, company_id: companyId }])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao adicionar região:', error);
@@ -171,19 +164,19 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     }
   };
 
-  const atualizarRegiao = async (id: string, updates: Partial<RegiaoAtendimento>) => {
+  const atualizarRegiao = async (id: string, updates: Partial<RegiaoAtendimento>) => {;
     setLoading(true);
     setError(null);
 
     try {
       console.log('Atualizando região:', id, updates);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .update\( REMOVIDO */ ; //updates)
-        /* .eq\( REMOVIDO */ ; //'id', id)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao atualizar região:', error);
@@ -203,17 +196,17 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     }
   };
 
-  const excluirRegiao = async (id: string) => {
+  const excluirRegiao = async (id: string) => {;
     setLoading(true);
     setError(null);
 
     try {
       console.log('Excluindo região:', id);
 
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'regioes_atendimento')
-        /* .delete\( REMOVIDO */ ; //)
-        /* .eq\( REMOVIDO */ ; //'id', id);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) {
         console.error('Erro ao excluir região:', error);
@@ -232,7 +225,7 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     }
   };
 
-  const toggleStatus = async (id: string) => {
+  const toggleStatus = async (id: string) => {;
     const regiao = regioes.find(r => r.id === id);
     if (regiao) {
       await atualizarRegiao(id, { status: !regiao.status });
@@ -248,13 +241,13 @@ export function useRegioesAtendimento(companyId: string | undefined) {
       const regioesRaio = regioes.filter(r => r.tipo === 'raio');
       
       for (const regiao of regioesRaio) {
-        /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'regioes_atendimento')
-          /* .update\( REMOVIDO */ ; //{
+        
+          
+          
             centro_lat: novasCoordenadas.lat,
             centro_lng: novasCoordenadas.lng
-          })
-          /* .eq\( REMOVIDO */ ; //'id', regiao.id);
+          } catch (error) { console.error('Error:', error); })
+          
       }
 
       console.log(`✅ Centro de ${regioesRaio.length} regiões de raio atualizado para as coordenadas do estabelecimento`);
@@ -280,4 +273,4 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     atualizarCentroRegioes,
     refetch: fetchRegioes
   };
-}
+

@@ -22,19 +22,19 @@ export const PedidoConfirmacaoModal: React.FC<PedidoConfirmacaoModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const handleFechar = () => {
+  const handleFechar = () => {;
     onClose();
   };
 
   const handleConfirmar = () => {
-    if (onNovaVenda) {
+    if (onNovaVenda) {;
       onNovaVenda();
     }
     onClose();
   };
 
   const handleImprimir = () => {
-    if (onImprimirVenda) {
+    if (onImprimirVenda) {;
       onImprimirVenda();
     }
   };

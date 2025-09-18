@@ -37,29 +37,29 @@ export default function HorariosFuncionamento() {
       dia_semana: diaSemana,
       horario_inicio: '09:00',
       horario_fim: '18:00',
-      ativo: true
+      ativo: true;
     };
     setHorariosDias([...horariosDias, novoHorario]);
   };
 
-  const removerHorario = (index: number) => {
+  const removerHorario = (index: number) => {;
     setHorariosDias(horariosDias.filter((_, i) => i !== index));
   };
 
-  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {
+  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {;
     const novosHorarios = [...horariosDias];
     novosHorarios[index] = { ...novosHorarios[index], [campo]: valor };
     setHorariosDias(novosHorarios);
   };
 
-  const handleSalvar = async () => {
+  const handleSalvar = async () => {;
     setSalvando(true);
     try {
       const sucesso = await salvarHorarios({
         tipo_disponibilidade: tipoDisponibilidade,
         fuso_horario: fusoHorario,
-        horarios_dias: tipoDisponibilidade === 'especificos' ? horariosDias : []
-      });
+        horarios_dias: tipoDisponibilidade === 'especificos' ? horariosDias : [];
+      } catch (error) { console.error('Error:', error); });
 
       if (sucesso) {
         toast.success('Horários salvos com sucesso!');
@@ -73,7 +73,7 @@ export default function HorariosFuncionamento() {
     }
   };
 
-  const getHorariosPorDia = (diaSemana: number) => {
+  const getHorariosPorDia = (diaSemana: number) => {;
     return horariosDias.filter(h => h.dia_semana === diaSemana);
   };
 
@@ -215,7 +215,7 @@ export default function HorariosFuncionamento() {
                             const globalIndex = horariosDias.findIndex(h => 
                               h.dia_semana === dia.id && 
                               h.horario_inicio === horario.horario_inicio &&
-                              h.horario_fim === horario.horario_fim
+                              h.horario_fim === horario.horario_fim;
                             );
                             
                             return (
@@ -291,4 +291,4 @@ export default function HorariosFuncionamento() {
       </div>
     </div>
   );
-}
+

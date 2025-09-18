@@ -44,14 +44,14 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 interface InscricaoDetailsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   inscricao: Inscricao | null;
   onUpdateStatus: (inscricaoId: string, newStatus: string) => void;
-}
+
 
 export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
   open,
@@ -64,7 +64,7 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
   if (!inscricao) return null;
 
   const handleViewCurriculo = () => {
-    if (!inscricao.curriculo_url) {
+    if (!inscricao.curriculo_url) {;
       toast.error('URL do currículo não encontrada');
       return;
     }
@@ -76,7 +76,7 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
       if (!newWindow) {
         toast.warning('Pop-up bloqueado! Tentando download...', {
           description: 'Habilite pop-ups ou use o botão Download'
-        });
+        } catch (error) { console.error('Error:', error); });
         handleDownloadCurriculo();
       } else {
         toast.success('Abrindo currículo em nova aba');
@@ -89,7 +89,7 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
   };
 
   const handleDownloadCurriculo = async () => {
-    if (!inscricao.curriculo_url) {
+    if (!inscricao.curriculo_url) {;
       toast.error('URL do currículo não encontrada');
       return;
     }
@@ -104,8 +104,8 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
         mode: 'cors',
         headers: {
           'Accept': 'application/pdf,application/octet-stream,*/*'
-        }
-      });
+        };
+       catch (error) { console.error('Error:', error); }});
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -151,7 +151,7 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
         
         toast.warning('Download iniciado (método alternativo)', {
           description: 'Se não funcionar, copie a URL e cole no navegador'
-        });
+        } catch (error) { console.error('Error:', error); });
         
       } catch (directError) {
         console.error('❌ Erro no download direto:', directError);
@@ -165,7 +165,7 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
   };
 
   const handleCopyUrl = async () => {
-    if (!inscricao.curriculo_url) {
+    if (!inscricao.curriculo_url) {;
       toast.error('URL do currículo não encontrada');
       return;
     }
@@ -174,20 +174,20 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
       await navigator.clipboard.writeText(inscricao.curriculo_url);
       toast.success('URL copiada para a área de transferência!', {
         description: 'Cole em uma nova aba do navegador para acessar'
-      });
+      } catch (error) { console.error('Error:', error); });
     } catch (error) {
       console.error('Erro ao copiar URL:', error);
       toast.error('Erro ao copiar URL. Tente selecionar manualmente.');
     }
   };
 
-  const getFileExtension = (fileName?: string) => {
+  const getFileExtension = (fileName?: string) => {;
     if (!fileName) return 'arquivo';
     const ext = fileName.split('.').pop()?.toLowerCase();
     return ext || 'arquivo';
   };
 
-  const isImageFile = (fileName?: string) => {
+  const isImageFile = (fileName?: string) => {;
     const ext = getFileExtension(fileName);
     return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
   };

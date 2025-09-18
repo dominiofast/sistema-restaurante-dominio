@@ -17,7 +17,7 @@ export const WhatsAppNotificationSettings: React.FC = () => {
 
   const getPermissionIcon = () => {
     switch (browserNotificationPermission) {
-      case 'granted':
+      case 'granted':;
         return <ShieldCheck className="w-4 h-4 text-green-500" />;
       case 'denied':
         return <ShieldX className="w-4 h-4 text-red-500" />;
@@ -28,7 +28,7 @@ export const WhatsAppNotificationSettings: React.FC = () => {
 
   const getPermissionBadge = () => {
     switch (browserNotificationPermission) {
-      case 'granted':
+      case 'granted':;
         return <Badge variant="secondary" className="bg-green-100 text-green-800">Autorizada</Badge>;
       case 'denied':
         return <Badge variant="secondary" className="bg-red-100 text-red-800">Negada</Badge>;
@@ -37,7 +37,7 @@ export const WhatsAppNotificationSettings: React.FC = () => {
     }
   };
 
-  const handleRequestPermission = async () => {
+  const handleRequestPermission = async () => {;
     await requestNotificationPermission();
   };
 

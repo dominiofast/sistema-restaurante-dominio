@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Package } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
-export const RecentActivity = () => {
+export const RecentActivity = () => {;
   const { currentCompany, getCompanyData } = useAuth();
   const companyData = getCompanyData();
 
@@ -30,11 +30,11 @@ export const RecentActivity = () => {
         </CardContent>
       </Card>
     );
-  }
+
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'order':
+      case 'order':;
         return <ShoppingCart className="h-4 w-4" />;
       case 'user':
         return <User className="h-4 w-4" />;
@@ -47,7 +47,7 @@ export const RecentActivity = () => {
 
   const getBadgeColor = (type: string) => {
     switch (type) {
-      case 'order':
+      case 'order':;
         return 'bg-green-100 text-green-700';
       case 'user':
         return 'bg-blue-100 text-blue-700';

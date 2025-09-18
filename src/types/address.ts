@@ -15,7 +15,7 @@ export interface CustomerAddress {
   longitude?: number;
   created_at?: string;
   deliveryFee?: number;
-}
+
 
 export interface AddressSuggestion {
   id: string;
@@ -27,11 +27,11 @@ export interface AddressSuggestion {
   cep?: string;
   latitude?: number;
   longitude?: number;
-}
+
 
 export interface AddressFormFieldsProps {
   address: Partial<CustomerAddress>;
   loading: boolean;
   onCepChange: (cep: string) => void;
   onChange: (field: string, value: string) => void;
-}
+

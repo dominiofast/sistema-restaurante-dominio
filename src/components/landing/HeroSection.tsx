@@ -14,10 +14,10 @@ export const HeroSection = ({ handleTrialSubmit }: HeroSectionProps) => {
     businessName: '',
     ordersPerDay: '',
     hasComputer: '',
-    acceptTerms: false
+    acceptTerms: false;
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,

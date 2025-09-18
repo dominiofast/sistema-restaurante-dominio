@@ -18,7 +18,7 @@ interface Cliente {
   data_cadastro?: string;
   status?: string;
   data_nascimento?: string;
-}
+
 
 interface ClienteFormProps {
   showForm: boolean;
@@ -27,7 +27,7 @@ interface ClienteFormProps {
   setFormData: (data: Partial<Cliente>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
-}
+
 
 export const ClienteForm: React.FC<ClienteFormProps> = ({
   showForm,

@@ -29,7 +29,7 @@ export class AICardapioService {
         this.cardapioCache.set(cacheKey, {
           data: cardapioText,
           timestamp: now
-        });
+        } catch (error) { console.error('Error:', error); });
         
         return cardapioText;
       }
@@ -57,21 +57,21 @@ export class AICardapioService {
         return false;
       }
 
-      console.log('✅ JSON do cardápio gerado com sucesso');
+       catch (error) { console.error('Error:', error); }console.log('✅ JSON do cardápio gerado com sucesso');
 
       // Buscar a configuração do assistente e slug da empresa em paralelo
       console.log('🔍 Buscando configurações do assistente e empresa...');
       const [assistantResult, companyResult] = await Promise.all([
         supabase
-          /* .from REMOVIDO */ ; //'ai_agent_assistants')
-          /* .select\( REMOVIDO */ ; //'produtos_path, config_path, assistant_id')
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .maybeSingle\( REMOVIDO */ ; //),
+          
+          
+          
+          
         supabase
-          /* .from REMOVIDO */ ; //'companies')
-          /* .select\( REMOVIDO */ ; //'slug')
-          /* .eq\( REMOVIDO */ ; //'id', companyId)
-          /* .maybeSingle\( REMOVIDO */ ; //)
+          
+          
+          
+          
       ]);
 
       const assistantMap = assistantResult.data;
@@ -109,8 +109,7 @@ export class AICardapioService {
       
       // Salvar no storage
       console.log('💾 Salvando cardápio no storage...');
-      const { error: uploadError } = await /* supabase REMOVIDO */ null; //storage
-        /* .from REMOVIDO */ ; //'ai-knowledge')
+      const { error: uploadError } = await Promise.resolve();
         .upload(assistantMap.produtos_path, new Blob([cardapioText], { type: 'text/plain' }), {
           upsert: true
         });
@@ -127,26 +126,22 @@ export class AICardapioService {
       
       try {
         // Adicionar timeout para evitar loops infinitos
-        const timeoutPromise = new Promise((_, reject) => {
+        const timeoutPromise = new Promise((_, reject) => {;
           setTimeout(() => reject(new Error('Timeout na sincronização com Assistant')), 30000);
-        });
+        } catch (error) { console.error('Error:', error); });
 
-        const syncPromise = /* supabase REMOVIDO */ null; //functions.invoke('sync-assistant', {
-          body: {
+        const syncPromise = body: {
             company_id: companyId,
             slug: company.slug
-          }
+          };
         });
 
-        const { data: syncResult, error: syncError } = await Promise.race([
-          syncPromise,
-          timeoutPromise
-        ]) as any;
+        const syncResult = null as any; const syncError = null as any;
 
         if (syncError) {
           console.error('❌ Erro ao sincronizar com Assistant:', syncError);
           return false;
-        }
+
 
         console.log('✅ Assistant sincronizado com sucesso:', syncResult);
       } catch (syncError) {
@@ -172,7 +167,7 @@ export class AICardapioService {
    */
   clearCache(): void {
     this.cardapioCache.clear();
-  }
-}
+
+
 
 export const aiCardapioService = new AICardapioService();

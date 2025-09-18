@@ -30,7 +30,7 @@ export interface CloudinaryUploadResult {
 import { cloudinary } from '@/config/appConfig';
 
 // Service para upload de arquivos no Cloudinary
-export const uploadToCloudinary = async (file: File): Promise<string> => {
+export const uploadToCloudinary = async (file: File): Promise<string> => {;
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
@@ -38,8 +38,8 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
   try {
     const response = await fetch(cloudinary.UPLOAD_URL, {
       method: 'POST',
-      body: formData,
-    });
+      body: formData,;
+    } catch (error) { console.error('Error:', error); });
     
     if (!response.ok) {
       throw new Error('Upload failed');
@@ -50,7 +50,7 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
   } catch (error) {
     console.error('Cloudinary upload error:', error);
     throw error;
-  }
+
 };
 
 // Service completo para gerenciar uploads
@@ -64,7 +64,7 @@ export const cloudinaryService = {
         name: file.name,
         size: file.size,
         type: file.type
-      }
+      };
     });
 
     const formData = new FormData();
@@ -140,7 +140,7 @@ export const cloudinaryService = {
         throw new Error('Download failed');
       }
       
-      const blob = await response.blob();
+       catch (error) { console.error('Error:', error); }const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
       
       const link = document.createElement('a');

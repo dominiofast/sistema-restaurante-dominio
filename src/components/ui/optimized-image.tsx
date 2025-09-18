@@ -13,7 +13,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   onError?: () => void;
   fallback?: React.ReactNode;
   aspectRatio?: string;
-}
+
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
@@ -43,7 +43,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting) {;
             setIsInView(true);
             observer.disconnect();
           }
@@ -61,19 +61,19 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     };
   }, [priority]);
 
-  const handleLoad = () => {
+  const handleLoad = () => {;
     setIsLoading(false);
     onLoad?.();
   };
 
-  const handleError = () => {
+  const handleError = () => {;
     setIsLoading(false);
     setHasError(true);
     onError?.();
   };
 
   // Otimizar URL da imagem para diferentes CDNs
-  const getOptimizedSrc = (originalSrc: string): string => {
+  const getOptimizedSrc = (originalSrc: string): string => {;
     if (!originalSrc) return originalSrc;
     
     try {
@@ -88,7 +88,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           // Adicionar parâmetros de otimização após 'upload'
           const optimizations = 'f_auto,q_auto:good';
           if (width) {
-            const widthParam = `w_${width}`;
+            const widthParam = `w_${width} catch (error) { console.error('Error:', error); }`;
             pathParts.splice(uploadIndex + 1, 0, `${optimizations},${widthParam}`);
           } else {
             pathParts.splice(uploadIndex + 1, 0, optimizations);
@@ -100,12 +100,12 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       return url.toString();
     } catch {
       return originalSrc;
-    }
+
   };
 
   if (hasError && fallback) {
     return <>{fallback}</>;
-  }
+
 
   const optimizedSrc = getOptimizedSrc(src);
   const shouldShowPlaceholder = placeholder === 'blur' && blurDataURL && isLoading;
@@ -165,7 +165,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
 // Hook para preload de imagens críticas
 export const useImagePreload = (urls: string[]) => {
   useEffect(() => {
-    urls.forEach((url) => {
+    urls.forEach((url) => {;
       const img = new Image();
       img.src = url;
     });
@@ -182,7 +182,7 @@ export const OptimizedPicture: React.FC<{
   priority?: boolean;
 }> = ({ src, alt, width, height, className, priority = false }) => {
   const getImageFormat = (originalSrc: string, format: string): string => {
-    try {
+    try {;
       const url = new URL(originalSrc);
       
       if (url.hostname.includes('cloudinary.com')) {
@@ -191,12 +191,12 @@ export const OptimizedPicture: React.FC<{
           pathParts[pathParts.length - 1] = format;
           url.pathname = pathParts.join('.');
         }
-      }
+       catch (error) { console.error('Error:', error); }}
       
       return url.toString();
     } catch {
       return originalSrc;
-    }
+
   };
 
   return (

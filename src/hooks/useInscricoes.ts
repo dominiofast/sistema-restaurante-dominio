@@ -23,14 +23,14 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
 
-export const useInscricoes = (companyId: string | null) => {
+
+export const useInscricoes = (companyId: string | null) => {;
   const [inscricoes, setInscricoes] = useState<Inscricao[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchInscricoes = useCallback(async () => {
-    if (!companyId) {
+    if (!companyId) {;
       console.log('Company ID não disponível, não buscando inscrições');
       setLoading(false);
       return;
@@ -42,24 +42,13 @@ export const useInscricoes = (companyId: string | null) => {
       console.log('Buscando inscrições para company_id:', companyId);
 
       // Primeiro, verificar o usuário atual
-      const { data: { user }, error: userError } = await /* supabase REMOVIDO */ null; //auth.getUser();
+      const { data: { user } catch (error) { console.error('Error:', error); }, error: userError } = await Promise.resolve();
       console.log('Usuário atual:', user);
       console.log('Erro do usuário:', userError);
 
       // Testar busca básica primeiro
       console.log('Executando teste de busca básica...');
-      const { data: testData, error: testError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'arquivado', false) // Filtrar apenas não arquivadas
-        /* .limit\( REMOVIDO */ ; //5);
-
-      console.log('Resultado do teste básico:', { 
-        count: testData?.length || 0, 
-        data: testData, 
-        error: testError 
-      });
+      const testData = null as any; const testError = null as any;
 
       if (testError) {
         console.error('Erro no teste básico:', testError);
@@ -68,15 +57,13 @@ export const useInscricoes = (companyId: string | null) => {
 
       // Agora fazer a busca completa com join
       console.log('Executando busca completa com join...');
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .select\( REMOVIDO */ ; //`
+      const { data, error  } = null as any;
           *,
           rh_vagas(title, location)
         `)
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'arquivado', false) // Filtrar apenas não arquivadas
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+        
+        
+        
 
       console.log('Resultado da busca completa:', { 
         count: data?.length || 0, 
@@ -104,13 +91,13 @@ export const useInscricoes = (companyId: string | null) => {
   }, [fetchInscricoes]);
 
   const updateStatus = async (inscricaoId: string, newStatus: string) => {
-    try {
+    try {;
       console.log('Atualizando status da inscrição:', inscricaoId, 'para:', newStatus);
       
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .update\( REMOVIDO */ ; //{ status: newStatus })
-        /* .eq\( REMOVIDO */ ; //'id', inscricaoId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -123,13 +110,13 @@ export const useInscricoes = (companyId: string | null) => {
   };
 
   const arquivarInscricao = async (inscricaoId: string) => {
-    try {
+    try {;
       console.log('Arquivando inscrição:', inscricaoId);
       
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'rh_inscricoes')
-        /* .update\( REMOVIDO */ ; //{ arquivado: true })
-        /* .eq\( REMOVIDO */ ; //'id', inscricaoId);
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -146,7 +133,7 @@ export const useInscricoes = (companyId: string | null) => {
       'pendente': [],
       'em_analise': [],
       'aprovado': [],
-      'rejeitado': []
+      'rejeitado': [];
     };
 
     inscricoes.forEach(inscricao => {
@@ -160,7 +147,7 @@ export const useInscricoes = (companyId: string | null) => {
     return statusMap;
   }, [inscricoes]);
 
-  const onDragEnd = useCallback((event: DragEndEvent) => {
+  const onDragEnd = useCallback((event: DragEndEvent) => {;
     const { active, over } = event;
     
     if (!over) return;

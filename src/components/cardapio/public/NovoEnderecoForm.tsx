@@ -25,13 +25,13 @@ export const NovoEnderecoForm: React.FC<NovoEnderecoFormProps> = ({ onSave, onCa
   });
   const [buscandoCep, setBuscandoCep] = useState(false);
 
-  const buscarCep = async (cep: string) => {
+  const buscarCep = async (cep: string) => {;
     const cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo.length !== 8) return;
 
     setBuscandoCep(true);
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo} catch (error) { console.error('Error:', error); }/json/`);
       const data = await response.json();
 
       if (!data.erro) {
@@ -47,21 +47,21 @@ export const NovoEnderecoForm: React.FC<NovoEnderecoFormProps> = ({ onSave, onCa
       console.error('Erro ao buscar CEP:', error);
     } finally {
       setBuscandoCep(false);
-    }
+
   };
 
-  const handleCepChange = (value: string) => {
+  const handleCepChange = (value: string) => {;
     setEndereco(prev => ({ ...prev, cep: value }));
     if (value.replace(/\D/g, '').length === 8) {
       buscarCep(value);
-    }
+
   };
 
   const handleSalvar = () => {
-    if (!endereco.logradouro || !endereco.numero || !endereco.bairro || !endereco.cidade) {
+    if (!endereco.logradouro || !endereco.numero || !endereco.bairro || !endereco.cidade) {;
       alert('Por favor, preencha todos os campos obrigatórios');
       return;
-    }
+
     onSave(endereco);
   };
 

@@ -29,7 +29,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ stats }) => {
       title: 'Categorias Ativas',
       value: stats.categoriasAtivas,
       icon: CheckCircle,
-    },
+    },;
   ];
 
   return (

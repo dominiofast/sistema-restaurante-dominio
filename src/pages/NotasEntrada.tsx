@@ -26,7 +26,7 @@ interface NotaEntrada {
   conciliacao_estoque: boolean;
   observacoes: string | null;
   company_id: string;
-}
+
 
 const NotasEntradaPage: React.FC = () => {
   const [notas, setNotas] = useState<NotaEntrada[]>([]);
@@ -38,13 +38,13 @@ const NotasEntradaPage: React.FC = () => {
     fetchNotas();
   }, []);
 
-  const fetchNotas = async () => {
+  const fetchNotas = async () => {;
     setLoading(true);
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'notas_entrada')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) {
         throw error;
@@ -54,7 +54,7 @@ const NotasEntradaPage: React.FC = () => {
         ...nota,
         data_entrada: new Date(nota.data_entrada),
         data_emissao: new Date(nota.data_emissao),
-        created_at: new Date(nota.created_at),
+        created_at: new Date(nota.created_at),;
       })) as NotaEntrada[];
 
       setNotas(formattedData);
@@ -63,7 +63,7 @@ const NotasEntradaPage: React.FC = () => {
       toast.error('Falha ao buscar as notas de entrada.', { description: error.message });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const DatePicker = ({ date, setDate }: { date: Date | undefined, setDate: (date: Date | undefined) => void }) => (
@@ -77,7 +77,7 @@ const NotasEntradaPage: React.FC = () => {
       <PopoverContent className="w-auto p-0">
         <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
       </PopoverContent>
-    </Popover>
+    </Popover>;
   );
 
   if (loading) {

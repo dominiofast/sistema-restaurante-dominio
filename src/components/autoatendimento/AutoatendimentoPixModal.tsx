@@ -19,7 +19,7 @@ interface AutoatendimentoPixModalProps {
     externalReference: string;
   };
   primaryColor: string;
-}
+
 
 export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = ({
   isOpen,
@@ -37,12 +37,12 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
   const [showCpfForm, setShowCpfForm] = useState<boolean>(true);
 
   // Format CPF
-  const formatCpf = (value: string): string => {
+  const formatCpf = (value: string): string => {;
     const numbers = value.replace(/\D/g, '');
     return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   };
 
-  const validateCpf = (cpf: string): boolean => {
+  const validateCpf = (cpf: string): boolean => {;
     const numbers = cpf.replace(/\D/g, '');
     if (numbers.length !== 11 || /^(\d)\1{10}$/.test(numbers)) return false;
     
@@ -109,7 +109,7 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     };
   }, [pixData]);
 
-  const createPixPayment = async () => {
+  const createPixPayment = async () => {;
     setIsLoading(true);
     setError(null);
 
@@ -117,7 +117,7 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
       console.log('🔄 Criando PIX via função Asaas oficial...');
 
       // Usar função oficial que já funciona no cardápio
-      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('create_asaas_payment_oficial', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         p_company_id: paymentData.companyId,
         p_amount: paymentData.amount,
         p_description: paymentData.description,
@@ -129,13 +129,13 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
       if (error) {
         console.error('❌ Erro na função Asaas:', error);
         throw new Error(error.message || 'Erro ao criar pagamento PIX');
-      }
+
 
       const response = data as any;
       if (!response?.success || !response?.payment) {
         console.error('❌ Resposta inválida:', data);
         throw new Error(response?.error || 'Resposta inválida do servidor');
-      }
+
 
       const asaasPayment = response.payment;
 
@@ -146,13 +146,13 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
         qr_code: asaasPayment.qr_code,
         qr_code_base64: asaasPayment.qr_code_base64,
         amount: asaasPayment.amount,
-        expires_at: asaasPayment.expires_at
+        expires_at: asaasPayment.expires_at;
       };
 
       setPixData(pixPayment);
       
       // Calcular tempo de expiração baseado na resposta
-      const calculateTimeLeft = (expirationDate: string): number => {
+      const calculateTimeLeft = (expirationDate: string): number => {;
         const now = new Date().getTime();
         const expiry = new Date(expirationDate).getTime();
         return Math.max(0, Math.floor((expiry - now) / 1000));
@@ -174,7 +174,7 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     }
   };
 
-  const checkPaymentStatus = async (paymentId?: string) => {
+  const checkPaymentStatus = async (paymentId?: string) => {;
     const idToCheck = paymentId || pixData?.id;
     if (!idToCheck || isChecking) return false;
     
@@ -182,14 +182,14 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     try {
       console.log('🔍 Verificando status do pagamento Asaas:', idToCheck);
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('check_asaas_payment_status', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         p_payment_id: idToCheck
       });
 
       if (error) {
         console.error('❌ Erro ao verificar status:', error);
         return false;
-      }
+
 
       const response = data as any;
       if (response?.success && response?.payment) {
@@ -219,15 +219,15 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
 
   // Start payment checking
   const startPaymentCheck = (paymentId: string) => {
-    // Check immediately
+    // Check immediately;
     checkPaymentStatus(paymentId);
     
     // Then check every 5 seconds
-    const interval = setInterval(async () => {
+    const interval = setInterval(async () => {;
       const shouldStop = await checkPaymentStatus(paymentId);
       if (shouldStop) {
         clearInterval(interval);
-      }
+
     }, 5000);
 
     // Stop after 24 hours
@@ -237,13 +237,13 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
   };
 
   const copyPixCode = () => {
-    if (pixData?.qr_code) {
+    if (pixData?.qr_code) {;
       navigator.clipboard.writeText(pixData.qr_code);
       toast.success('Código PIX copiado!');
     }
   };
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number) => {;
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;

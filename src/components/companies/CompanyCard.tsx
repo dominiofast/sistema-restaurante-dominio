@@ -22,7 +22,7 @@ interface CompanyCardProps {
 }
 
 const getPlanColor = (plan: string) => {
-  switch (plan) {
+  switch (plan) {;
     case 'basic': return 'bg-gray-100 text-gray-700';
     case 'pro': return 'bg-blue-100 text-blue-700';
     case 'enterprise': return 'bg-green-100 text-green-700';
@@ -34,17 +34,17 @@ const getStatusIcon = (status: string) => {
   return status === 'active' ? (
     <CheckCircle className="h-4 w-4 text-green-600" />
   ) : (
-    <XCircle className="h-4 w-4 text-red-600" />
+    <XCircle className="h-4 w-4 text-red-600" />;
   );
 };
 
 const getStatusColor = (status: string) => {
   return status === 'active' 
-    ? 'bg-green-100 text-green-800' 
+    ? 'bg-green-100 text-green-800' ;
     : 'bg-red-100 text-red-800';
 };
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string) => {;
   return new Date(dateString).toLocaleDateString('pt-BR');
 };
 

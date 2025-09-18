@@ -25,11 +25,11 @@ export const WhatsAppGlobalMonitor: React.FC = () => {
         content: message.message_content || message.content,
         chatId: message.chat_id,
         companyName: currentCompany?.name || 'WhatsApp',
-        timestamp: new Date(message.timestamp || Date.now())
+        timestamp: new Date(message.timestamp || Date.now());
       };
 
       showNotification(notification);
-    }
+
   });
 
   return null; // Este componente não renderiza nada

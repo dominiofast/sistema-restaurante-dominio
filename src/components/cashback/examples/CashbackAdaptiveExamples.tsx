@@ -37,7 +37,7 @@ const brandExamples = [
     primaryColor: '#92400E', // Marrom
     accentColor: '#78350F',
     logo: '🥐'
-  }
+  };
 ];
 
 export const CashbackAdaptiveExamples: React.FC = () => {
@@ -49,7 +49,7 @@ export const CashbackAdaptiveExamples: React.FC = () => {
     primary_color: brand.primaryColor,
     accent_color: brand.accentColor,
     text_color: '#1F2937',
-    background_color: '#FFFFFF'
+    background_color: '#FFFFFF';
   };
 
   return (
@@ -224,7 +224,7 @@ export const CashbackAdaptiveExamples: React.FC = () => {
 const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, brand }) => {
   const percentual = '10';
   
-  const createGradient = (color: string) => {
+  const createGradient = (color: string) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -238,7 +238,7 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
     return `linear-gradient(135deg, rgb(${lighterR}, ${lighterG}, ${lighterB}) 0%, rgb(${darkerR}, ${darkerG}, ${darkerB}) 100%)`;
   };
 
-  const isLightColor = (color: string) => {
+  const isLightColor = (color: string) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -265,7 +265,7 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
         <span>Cashback {percentual}%</span>
       </div>
     );
-  }
+
 
   if (variant === 'banner') {
     return (
@@ -308,7 +308,7 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
         </div>
       </div>
     );
-  }
+
 
   // Full variant (default)
   return (

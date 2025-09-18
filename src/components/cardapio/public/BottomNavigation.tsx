@@ -27,7 +27,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   const [active, setActive] = React.useState<'home'|'pedidos'|'promos'|'carrinho'>('home');
 
   // Função para aplicar opacidade nas cores
-  const applyOpacity = (color: string, opacity: number) => {
+  const applyOpacity = (color: string, opacity: number) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);

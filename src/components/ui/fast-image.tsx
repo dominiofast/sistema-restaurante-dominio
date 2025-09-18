@@ -42,17 +42,17 @@ export const FastImage: React.FC<FastImageProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Otimizar URL se for do Supabase
+            // Otimizar URL se for do Supabase;
             let optimizedSrc = src;
             
-            if (src.includes('/* supabase REMOVIDO */ null; //co')) {
+            if (src.includes('
               const url = new URL(src);
               // Adicionar parâmetros de otimização
               url.searchParams.set('width', (width || 400).toString());
               url.searchParams.set('quality', '80');
               url.searchParams.set('format', 'webp');
               optimizedSrc = url.toString();
-            }
+
             
             // Pré-carregar a imagem
             const img = new Image();
@@ -69,13 +69,13 @@ export const FastImage: React.FC<FastImageProps> = ({
             img.src = optimizedSrc;
             
             observer.disconnect();
-          }
+
         });
       },
       {
         rootMargin: '50px', // Começa a carregar 50px antes
         threshold: 0.01,
-      }
+
     );
 
     if (imgRef.current) {

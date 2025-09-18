@@ -49,14 +49,14 @@ interface CardapioTableProps {
   onReorderCategorias: (startIndex: number, endIndex: number) => void;
   onReorderProdutos: (startIndex: number, endIndex: number, categoriaId: string) => void;
   loading?: boolean;
-}
+
 
 interface SortableRowProps {
   id: string;
   type: 'categoria' | 'produto';
   categoriaId?: string;
   children: React.ReactNode;
-}
+
 
 const SortableRow: React.FC<SortableRowProps> = ({ id, children }) => {
   const {
@@ -72,7 +72,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ id, children }) => {
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -123,24 +123,24 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
         distance: 8,
       },
     }),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor);
   );
 
-  const toggleCategory = (categoriaId: string) => {
+  const toggleCategory = (categoriaId: string) => {;
     const newExpanded = new Set(expandedCategories);
     if (newExpanded.has(categoriaId)) {
-      newExpanded/* .delete\( REMOVIDO */ ; //categoriaId);
+      newExpanded
     } else {
       newExpanded.add(categoriaId);
     }
     setExpandedCategories(newExpanded);
   };
 
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = (event: DragStartEvent) => {;
     setActiveDragId(event.active.id as string);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {;
     const { active, over } = event;
     setActiveDragId(null);
 
@@ -165,7 +165,7 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
     }
   };
 
-  const findItemById = (id: string) => {
+  const findItemById = (id: string) => {;
     const categoria = categorias.find(c => c.id === id);
     if (categoria) return { type: 'categoria' as const, data: categoria };
 
@@ -176,19 +176,19 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
   };
 
   const filteredCategorias = categorias.filter(categoria =>
-    categoria.name.toLowerCase().includes(searchTerm.toLowerCase())
+    categoria.name.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
   const filteredProdutos = produtos.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    produto.description?.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
-  const getCategoriaProdutos = (categoriaId: string) => {
+  const getCategoriaProdutos = (categoriaId: string) => {;
     return filteredProdutos.filter(produto => produto.categoria_id === categoriaId);
   };
 
-  const getCategoriaName = (categoriaId?: string) => {
+  const getCategoriaName = (categoriaId?: string) => {;
     if (!categoriaId) return 'Sem categoria';
     const categoria = categorias.find(c => c.id === categoriaId);
     return categoria?.name || 'Categoria não encontrada';

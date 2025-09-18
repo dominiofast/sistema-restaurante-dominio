@@ -18,16 +18,16 @@ interface IFoodIntegration {
   environment: string | null;
   webhook_url: string | null;
   webhook_secret: string | null;
-}
+
 
 interface IntegrationData {
   accessToken: string;
   expiresIn: number;
   environment: string;
   message: string;
-}
 
-const IFoodIntegrationsLojista = () => {
+
+const IFoodIntegrationsLojista = () => {;
   const { currentCompany } = useAuth();
   const [integrations, setIntegrations] = useState<IFoodIntegration[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,16 +40,16 @@ const IFoodIntegrationsLojista = () => {
     }
   }, [currentCompany?.id]);
 
-  const fetchIntegrations = async () => {
+  const fetchIntegrations = async () => {;
     console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ifood_integrations')
-        /* .select\( REMOVIDO */ ; //`
+  } = 
+        
+        
           *
         `)
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+        
+        
 
       if (error) throw error;
       setIntegrations(data || []);
@@ -61,13 +61,13 @@ const IFoodIntegrationsLojista = () => {
     }
   };
 
-  const handleRequestToken = async () => {
+  const handleRequestToken = async () => {;
     if (!currentCompany?.id) return;
 
     try {
       setRequestingToken(true);
       
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-request-linking-code', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: { environment: 'sandbox' } // Por padrão usar sandbox
       });
 
@@ -95,7 +95,7 @@ const IFoodIntegrationsLojista = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
-  }
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">

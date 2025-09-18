@@ -12,7 +12,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },
+    },;
   });
   
   if (!response.ok) {
@@ -20,12 +20,12 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   }
   
   return response.json();
-}
+
 interface CopiarAdicionaisTabProps {
   produto: Produto;
   produtos: Produto[];
   onRefresh: () => void;
-}
+
 
 export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
   produto,
@@ -35,13 +35,13 @@ export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
   const [loading, setLoading] = useState(false);
   const [produtoParaCopiar, setProdutoParaCopiar] = useState('');
 
-  const copiarAdicionaisDeProduto = async () => {
+  const copiarAdicionaisDeProduto = async () => {;
     if (!produtoParaCopiar) return;
 
     try {
       setLoading(true);
       
-      const categoriasParaCopiar = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produtoParaCopiar}`);
+      const categoriasParaCopiar = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produtoParaCopiar} catch (error) { console.error('Error:', error); }`);
 
       for (const categoria of categoriasParaCopiar || []) {
         await apiRequest('/api/produto-categorias-adicionais', {
@@ -54,7 +54,7 @@ export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
             max_selection: categoria.max_selection
           })
         });
-      }
+
 
       onRefresh();
       setProdutoParaCopiar('');
@@ -62,7 +62,7 @@ export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
       console.error('Erro ao copiar adicionais:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
   return (

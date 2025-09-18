@@ -18,7 +18,7 @@ interface PedidoData {
   forma_pagamento?: string;
   tipo?: string;
   observacoes?: string | null;
-}
+
 
 interface OrderResponse {
   success: boolean;
@@ -32,7 +32,7 @@ interface OrderResponse {
   total_itens: number;
   error?: string;
   details?: string;
-}
+
 
 /**
  * 🚀 FUNÇÃO PRINCIPAL - Cria pedido via API backend segura
@@ -49,7 +49,7 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
   try {
     // 🎯 ENDPOINT PROFISSIONAL: Sempre usar /api/orders relativo com override opcional
     const base = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
-    const apiUrl = `${base}/api/orders`; // Se base=='' => same-origin /api/orders
+    const apiUrl = `${base} catch (error) { console.error('Error:', error); }/api/orders`; // Se base=='' => same-origin /api/orders
     
     console.log('🎯 Usando endpoint:', apiUrl);
     
@@ -58,14 +58,14 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(pedidoData)
+      body: JSON.stringify(pedidoData);
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       console.error('❌ Erro na resposta do servidor:', errorData);
       throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
-    }
+
 
     const result = await response.json();
 
@@ -93,8 +93,8 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
       itens_salvos: 0,
       total_itens: 0
     };
-  }
-}
+
+
 
 /**
  * 🔄 FUNÇÃO DE MIGRAÇÃO - Para substituir chamadas antigas
@@ -125,7 +125,7 @@ export async function createOrderLegacyCompat(data: any): Promise<OrderResponse>
   };
 
   return createOrder(normalizedData);
-}
+
 
 export default {
   createOrder,

@@ -22,7 +22,7 @@ export interface CompanyInfo {
   cidade?: string;
   estado?: string;
   cnae?: string;
-}
+
 
 export function useCompanyInfo() {
   const { currentCompany } = useAuth();
@@ -30,16 +30,16 @@ export function useCompanyInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCompanyInfo = async () => {
+  const fetchCompanyInfo = async () => {;
     if (!currentCompany?.id) return;
 
     try {
       setLoading(true);
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_info')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) throw error;
 
@@ -58,10 +58,10 @@ export function useCompanyInfo() {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const saveCompanyInfo = async (info: Partial<CompanyInfo>) => {
+  const saveCompanyInfo = async (info: Partial<CompanyInfo>) => {;
     if (!currentCompany?.id) return;
 
     try {
@@ -71,28 +71,17 @@ export function useCompanyInfo() {
       const dataToSave = {
         ...info,
         company_id: currentCompany.id,
-        nome_estabelecimento: info.nome_estabelecimento || currentCompany.name,
-      };
+        nome_estabelecimento: info.nome_estabelecimento || currentCompany.name,;
+      } catch (error) { console.error('Error:', error); };
 
       if (companyInfo?.id) {
         // Atualizar registro existente
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_info')
-          /* .update\( REMOVIDO */ ; //dataToSave)
-          /* .eq\( REMOVIDO */ ; //'id', companyInfo.id)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
+        const { data, error  } = null as any;
         if (error) throw error;
         setCompanyInfo(data);
       } else {
         // Criar novo registro
-        const { data, error } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'company_info')
-          /* .insert\( REMOVIDO */ ; //dataToSave)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
-
+        const { data, error  } = null as any;
         if (error) throw error;
         setCompanyInfo(data);
       }
@@ -102,7 +91,7 @@ export function useCompanyInfo() {
       console.error('Erro ao salvar informações da empresa:', err);
       setError(err instanceof Error ? err.message : 'Erro ao salvar');
       return false;
-    }
+
   };
 
   useEffect(() => {
@@ -116,4 +105,4 @@ export function useCompanyInfo() {
     saveCompanyInfo,
     refetch: fetchCompanyInfo,
   };
-}
+

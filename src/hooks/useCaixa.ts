@@ -15,7 +15,7 @@ export interface Caixa {
   usuario_abertura?: string;
   usuario_fechamento?: string;
   observacoes?: string;
-}
+
 
 export interface CaixaLancamento {
   id: string;
@@ -30,7 +30,7 @@ export interface CaixaLancamento {
   forma_pagamento: string;
   usuario?: string;
   observacoes?: string;
-}
+
 
 export function useCaixa() {
   const { currentCompany, user } = useAuth();
@@ -40,17 +40,17 @@ export function useCaixa() {
   const [loading, setLoading] = useState(false);
 
   // Buscar caixa atual (aberto)
-  const buscarCaixaAtual = useCallback(async () => {
+  const buscarCaixaAtual = useCallback(async () => {;
     console.log('⚠️ buscarCaixaAtual desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixas')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
-        /* .order\( REMOVIDO */ ; //'data_abertura', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+  } = 
+        
+        
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar caixa atual:', error);
@@ -67,20 +67,20 @@ export function useCaixa() {
       console.error('Erro ao buscar caixa atual:', error);
     } finally {
       setLoading(false);
-    }
+
   }, [currentCompany?.id]);
 
   // Buscar lançamentos do caixa
-  const buscarLancamentos = useCallback(async (caixaId: string) => {
+  const buscarLancamentos = useCallback(async (caixaId: string) => {;
     if (!currentCompany?.id) return;
 
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixa_lancamentos')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'caixa_id', caixaId)
-        /* .order\( REMOVIDO */ ; //'data_lancamento', { ascending: false })
-        /* .order\( REMOVIDO */ ; //'hora_lancamento', { ascending: false });
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao buscar lançamentos:', error);
@@ -90,50 +90,48 @@ export function useCaixa() {
       setLancamentos((data || []) as CaixaLancamento[]);
     } catch (error) {
       console.error('Erro ao buscar lançamentos:', error);
-    }
+
   }, [currentCompany?.id]);
 
   // Abrir caixa
-  const abrirCaixa = useCallback(async (valorAbertura: number) => {
+  const abrirCaixa = useCallback(async (valorAbertura: number) => {;
     console.log('🔄 Tentando abrir caixa...', { valorAbertura, currentCompany: currentCompany?.id, user: user?.name });
     
     if (!currentCompany?.id || !user?.name) {
       console.error('❌ Erro: Empresa ou usuário não identificado', { currentCompany, user });
       toast({ title: "Erro", description: "Empresa ou usuário não identificado", variant: "destructive" });
       return false;
-    }
+
 
     if (valorAbertura <= 0) {
       toast({ title: "Erro", description: "Valor de abertura deve ser maior que zero", variant: "destructive" });
       return false;
-    }
+
 
     try {
       setLoading(true);
       
       // Verificar se já existe caixa aberto
-      const { data: caixaExistente } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixas')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
-        /* .maybeSingle\( REMOVIDO */ ; //);
+      const { data: caixaExistente }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (caixaExistente) {
         toast({ title: "Aviso", description: "Já existe um caixa aberto", variant: "destructive" });
         return false;
       }
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixas')
-        /* .insert\( REMOVIDO */ ; //[{
+      const { data, error  } = null as any;
           company_id: currentCompany.id,
           valor_abertura: valorAbertura,
           usuario_abertura: user.name,
           status: 'aberto'
         }])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao abrir caixa:', error);
@@ -151,33 +149,33 @@ export function useCaixa() {
       return false;
     } finally {
       setLoading(false);
-    }
+
   }, [currentCompany?.id, user?.name, toast]);
 
   // Fechar caixa
   const fecharCaixa = useCallback(async (observacoes?: string) => {
-    if (!caixaAtual || !user?.name) {
+    if (!caixaAtual || !user?.name) {;
       toast({ title: "Erro", description: "Nenhum caixa aberto ou usuário não identificado", variant: "destructive" });
       return false;
-    }
+
 
     try {
       setLoading(true);
 
       // Calcular valor de fechamento
-      const valorFechamento = caixaAtual.valor_abertura + 
+      const valorFechamento = caixaAtual.valor_abertura + ;
         lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0);
 
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixas')
-        /* .update\( REMOVIDO */ ; //{
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           status: 'fechado',
           data_fechamento: new Date().toISOString(),
           valor_fechamento: valorFechamento,
           usuario_fechamento: user.name,
           observacoes
         })
-        /* .eq\( REMOVIDO */ ; //'id', caixaAtual.id);
+        
 
       if (error) {
         console.error('Erro ao fechar caixa:', error);
@@ -195,32 +193,32 @@ export function useCaixa() {
       return false;
     } finally {
       setLoading(false);
-    }
+
   }, [caixaAtual, user?.name, lancamentos, toast]);
 
   // Adicionar lançamento
-  const adicionarLancamento = useCallback(async (lancamento: Omit<CaixaLancamento, 'id' | 'caixa_id' | 'company_id'>) => {
+  const adicionarLancamento = useCallback(async (lancamento: Omit<CaixaLancamento, 'id' | 'caixa_id' | 'company_id'>) => {;
     console.log('💰 Adicionando lançamento...', { lancamento, caixaAtual: caixaAtual?.id, company: currentCompany?.id });
     
     if (!caixaAtual || !currentCompany?.id) {
       console.error('❌ Caixa ou empresa não encontrada:', { caixaAtual, currentCompany });
       toast({ title: "Erro", description: "Nenhum caixa aberto", variant: "destructive" });
       return false;
-    }
+
 
     try {
       setLoading(true);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'caixa_lancamentos')
-        /* .insert\( REMOVIDO */ ; //[{
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           ...lancamento,
           caixa_id: caixaAtual.id,
           company_id: currentCompany.id,
           usuario: user?.name || 'Usuário'
         }])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+        
+        
 
       if (error) {
         console.error('Erro ao adicionar lançamento:', error);
@@ -237,11 +235,11 @@ export function useCaixa() {
       return false;
     } finally {
       setLoading(false);
-    }
+
   }, [caixaAtual, currentCompany?.id, user?.name, toast]);
 
   // Calcular valores
-  const saldoAtual = caixaAtual ? 
+  const saldoAtual = caixaAtual ? ;
     caixaAtual.valor_abertura + lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0) : 0;
   
   const totalEntradas = lancamentos.filter(l => l.tipo === 'entrada').reduce((acc, l) => acc + l.valor, 0);
@@ -250,7 +248,7 @@ export function useCaixa() {
   useEffect(() => {
     if (currentCompany?.id) {
       buscarCaixaAtual();
-    }
+
   }, [currentCompany?.id]); // Removido buscarCaixaAtual das dependências para evitar loop
 
   return {
@@ -265,4 +263,3 @@ export function useCaixa() {
     adicionarLancamento,
     buscarCaixaAtual
   };
-}

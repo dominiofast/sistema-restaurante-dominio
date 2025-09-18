@@ -25,12 +25,11 @@ const UserManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const loadUsers = async () => {
-    try {
+    try {;
       setLoading(true);
       
       // Buscar usuários (apenas super admins podem ver todos)
-      const { data, error } = await /* supabase REMOVIDO */ null; //auth.admin.listUsers();
-      
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       if (error) throw error;
       
       setUsers(data.users.map(user => ({
@@ -45,12 +44,12 @@ const UserManagement: React.FC = () => {
       toast.error('Erro ao carregar usuários');
     } finally {
       setLoading(false);
-    }
+
   };
 
   const getRoleBadgeColor = (role?: string) => {
     switch (role) {
-      case 'super_admin':
+      case 'super_admin':;
         return 'bg-red-100 text-red-800';
       case 'admin':
         return 'bg-blue-100 text-blue-800';
@@ -60,12 +59,12 @@ const UserManagement: React.FC = () => {
         return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-600';
-    }
+
   };
 
   const getRoleLabel = (role?: string) => {
     switch (role) {
-      case 'super_admin':
+      case 'super_admin':;
         return 'Super Admin';
       case 'admin':
         return 'Admin';
@@ -75,7 +74,7 @@ const UserManagement: React.FC = () => {
         return 'Loja';
       default:
         return 'Usuário';
-    }
+
   };
 
   useEffect(() => {

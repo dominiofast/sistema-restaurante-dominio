@@ -26,7 +26,7 @@ interface Produto {
   company_id: string;
 }
 
-export const useCardapioData = (companyId: string | undefined) => {
+export const useCardapioData = (companyId: string | undefined) => {;
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,11 +48,11 @@ export const useCardapioData = (companyId: string | undefined) => {
         setError(null);
 
         // Safety timeout to avoid loading infinito
-        const timeoutId = setTimeout(() => {
+        const timeoutId = setTimeout(() => {;
           console.error('⏳ useCardapioData: Tempo limite ao carregar cardápio. Exibindo fallback.');
           setError('Não conseguimos carregar o cardápio agora. Tente novamente.');
           setLoading(false);
-        }, 10000);
+        } catch (error) { console.error('Error:', error); }, 10000);
         
         console.log('📋 useCardapioData: Buscando categorias para empresa via API:', companyId);
         // Buscar categorias via API
@@ -61,7 +61,7 @@ export const useCardapioData = (companyId: string | undefined) => {
         
         if (!categoriasResponse.ok || !categoriasResult.success) {
           throw new Error(categoriasResult.error || 'Erro ao carregar categorias');
-        }
+
 
         console.log('✅ useCardapioData: Categorias encontradas via API:', categoriasResult.data?.length || 0, categoriasResult.data);
         setCategorias(categoriasResult.data || []);
@@ -73,7 +73,7 @@ export const useCardapioData = (companyId: string | undefined) => {
         
         if (!produtosResponse.ok || !produtosResult.success) {
           throw new Error(produtosResult.error || 'Erro ao carregar produtos');
-        }
+
 
         console.log('✅ useCardapioData: Produtos encontrados via API:', produtosResult.data?.length || 0, produtosResult.data);
         setProdutos(produtosResult.data || []);
@@ -92,17 +92,17 @@ export const useCardapioData = (companyId: string | undefined) => {
   }, [companyId]);
 
   // Função para agrupar produtos por categoria
-  const produtosPorCategoria = (categoriaId: string) => {
+  const produtosPorCategoria = (categoriaId: string) => {;
     return produtos.filter(produto => produto.categoria_id === categoriaId);
   };
 
   // Função para buscar produto por ID
-  const getProdutoById = (produtoId: string) => {
+  const getProdutoById = (produtoId: string) => {;
     return produtos.find(produto => produto.id === produtoId);
   };
 
   // Função para buscar categoria por ID
-  const getCategoriaById = (categoriaId: string) => {
+  const getCategoriaById = (categoriaId: string) => {;
     return categorias.find(categoria => categoria.id === categoriaId);
   };
 

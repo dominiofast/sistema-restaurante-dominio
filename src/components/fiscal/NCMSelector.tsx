@@ -30,7 +30,7 @@ const ncmCodes = [
   { code: '2202.10.00', description: 'Águas, incluindo águas minerais e águas gaseificadas, adicionadas de açúcar' },
   { code: '2202.99.00', description: 'Outras bebidas não alcoólicas' },
   { code: '2203.00.00', description: 'Cerveja de malte' },
-  { code: '2204.10.00', description: 'Vinhos espumantes' },
+  { code: '2204.10.00', description: 'Vinhos espumantes' },;
   { code: '2204.21.00', description: 'Outros vinhos; mosto de uva' },
   { code: '2208.20.00', description: 'Aguardentes de vinho ou de bagaço de uvas' },
   { code: '2208.90.00', description: 'Outras bebidas espirituosas' },
@@ -172,7 +172,7 @@ export function NCMSelector({ value, onValueChange, placeholder = "Buscar códig
   const filteredCodes = ncmCodes.filter(
     (ncm) =>
       ncm.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ncm.description.toLowerCase().includes(searchTerm.toLowerCase())
+      ncm.description.toLowerCase().includes(searchTerm.toLowerCase());
   );
 
   const selectedNCM = ncmCodes.find((ncm) => ncm.code === value);

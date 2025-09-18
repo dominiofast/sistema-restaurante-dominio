@@ -54,7 +54,7 @@ const VagasDisponiveis: React.FC = () => {
     is_active: true
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     const success = await saveVaga(formData, editingVaga);
     if (success) {
@@ -63,7 +63,7 @@ const VagasDisponiveis: React.FC = () => {
     }
   };
 
-  const handleEdit = (vaga: Vaga) => {
+  const handleEdit = (vaga: Vaga) => {;
     setEditingVaga(vaga);
     setFormData({
       title: vaga.title,
@@ -87,12 +87,12 @@ const VagasDisponiveis: React.FC = () => {
       salary_range: '',
       requirements: '',
       benefits: '',
-      is_active: true
+      is_active: true;
     });
     setEditingVaga(null);
   };
 
-  const handleNewVaga = () => {
+  const handleNewVaga = () => {;
     resetForm();
     setDialogOpen(true);
   };

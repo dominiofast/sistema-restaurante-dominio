@@ -11,12 +11,12 @@ interface Country {
   dialCode: string;
 }
 
-// Function to get flag emoji from country code
+ catch (error) { console.error('Error:', error); }// Function to get flag emoji from country code
 const getFlagEmoji = (countryCode: string) => {
   // Convert country code to regional indicator symbols
   const codePoints = countryCode
     .toUpperCase()
-    .split('')
+    .split('');
     .map(char => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
 };
@@ -28,12 +28,12 @@ const countries: Country[] = [
 ];
 
 // Function to get country by dial code
-const getCountryByDialCode = (dialCode: string) => {
+const getCountryByDialCode = (dialCode: string) => {;
   return countries.find(country => dialCode.startsWith(country.dialCode)) || countries[0];
 };
 
 // Function to initialize phone number with country code
-const formatInitialPhoneNumber = (value: string, country: Country) => {
+const formatInitialPhoneNumber = (value: string, country: Country) => {;
   if (!value) return '';
   // If value already starts with country code, return the rest
   if (value.startsWith(country.dialCode)) {
@@ -63,7 +63,7 @@ export const PhoneInput = ({
   className = '',
   required = false,
 }: PhoneInputProps) => {
-  // Find Brazil as default country
+  // Find Brazil as default country;
   const defaultCountry = countries.find(c => c.code === 'BR') || countries[0];
   
   const [selectedCountry, setSelectedCountry] = useState<Country>(defaultCountry);
@@ -75,7 +75,7 @@ export const PhoneInput = ({
     if (value) {
       // Find matching country by dial code
       const matchingCountry = countries.find(
-        (c) => value.startsWith(c.dialCode)
+        (c) => value.startsWith(c.dialCode);
       );
       
       if (matchingCountry) {
@@ -90,19 +90,19 @@ export const PhoneInput = ({
       // If no value, ensure we're using the default country (Brazil)
       setSelectedCountry(defaultCountry);
       setPhoneNumber('');
-    }
+
   }, [value]);
 
-  const handleCountrySelect = (country: Country) => {
+  const handleCountrySelect = (country: Country) => {;
     setSelectedCountry(country);
     setIsOpen(false);
     // Update the parent with the full phone number including new country code
     if (phoneNumber) {
       onChange(`${country.dialCode} ${phoneNumber}`.trim());
-    }
+
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
     const newValue = e.target.value;
     setPhoneNumber(newValue);
     // Only update parent if there's actually a number
@@ -110,7 +110,7 @@ export const PhoneInput = ({
       onChange(`${selectedCountry.dialCode} ${newValue}`.trim());
     } else {
       onChange('');
-    }
+
   };
 
   return (

@@ -68,7 +68,7 @@ export const AddressSuggestionsStep: React.FC<AddressSuggestionsStepProps> = ({
         </div>
       </div>
     );
-  }
+
 
   // Layout para modal tradicional
   return (

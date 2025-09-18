@@ -35,20 +35,20 @@ export default function AcceptInvitation() {
   }, [token, navigate]);
 
   const loadInvitation = async () => {
-    try {
+    try {;
       console.log('🔍 Loading invitation with token:', token);
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'user_invitations')
-        /* .select\( REMOVIDO */ ; //`
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           email,
           role,
           expires_at,
           companies:company_id(name)
         `)
-        /* .eq\( REMOVIDO */ ; //'token', token)
-        /* .eq\( REMOVIDO */ ; //'accepted_at', null)
+        
+        
         .gt('expires_at', new Date().toISOString())
-        /* .maybeSingle\( REMOVIDO */ ; //);
+        
 
       console.log('📊 Query result:', { data, error });
 
@@ -73,7 +73,7 @@ export default function AcceptInvitation() {
     }
   };
 
-  const handleAcceptInvitation = async (e: React.FormEvent) => {
+  const handleAcceptInvitation = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (!password || password.length < 6) {
@@ -90,30 +90,18 @@ export default function AcceptInvitation() {
 
     try {
       // 1. Criar usuário no Supabase Auth
-      const { data: authData, error: signUpError } = await /* supabase REMOVIDO */ null; //auth.signUp({
-        email: invitation!.email,
-        password: password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/login`,
-        }
-      });
+      const authData = null as any; const signUpError = null as any;
 
       if (signUpError) {
         throw signUpError;
       }
 
-      if (!authData.user) {
+       catch (error) { console.error('Error:', error); }if (!authData.user) {
         throw new Error('Usuário não foi criado');
       }
 
       // 2. Aceitar convite (criar associação usuário-empresa)
-      const { data: acceptResult, error: acceptError } = await /* supabase REMOVIDO */ null; //rpc(
-        'accept_user_invitation',
-        {
-          p_token: token,
-          p_user_id: authData.user.id
-        }
-      );
+      const acceptResult = null as any; const acceptError = null as any;
 
       if (acceptError || !(acceptResult as any)?.success) {
         throw new Error((acceptResult as any)?.error || 'Erro ao aceitar convite');

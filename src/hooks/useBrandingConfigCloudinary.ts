@@ -19,33 +19,33 @@ export interface BrandingConfig {
   header_style: 'modern' | 'classic' | 'minimal';
   logo_url?: string;
   banner_url?: string;
-}
 
-export const useBrandingConfigCloudinary = () => {
+
+export const useBrandingConfigCloudinary = () => {;
   const { currentCompany } = useAuth();
   const [config, setConfig] = useState<BrandingConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const { uploadFile: cloudinaryUpload, uploading } = useCloudinaryUpload();
 
   const loadConfig = async () => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       return;
     }
 
     try {
       console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .select\( REMOVIDO */ ; //`
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           *
         `)
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+        
+        
+        
+        
+        
+        
 
       if (error) {
         console.error('❌ Erro ao carregar configuração:', error);
@@ -84,7 +84,7 @@ export const useBrandingConfigCloudinary = () => {
   }, [currentCompany?.id]);
 
   const uploadFile = async (file: File, type: 'logo' | 'banner'): Promise<string | null> => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não selecionada');
       return null;
     }
@@ -93,7 +93,7 @@ export const useBrandingConfigCloudinary = () => {
       console.log('🔄 Iniciando upload do arquivo via Cloudinary:', file.name);
       
       // Upload para Cloudinary
-      const url = await cloudinaryUpload(file, `cardapio/branding/${currentCompany.id}/${type}`);
+      const url = await cloudinaryUpload(file, `cardapio/branding/${currentCompany.id} catch (error) { console.error('Error:', error); }/${type}`);
       
       if (url) {
         console.log('✅ Upload concluído:', url);
@@ -110,7 +110,7 @@ export const useBrandingConfigCloudinary = () => {
   };
 
   const saveConfig = async (newConfig: BrandingConfig) => {
-    if (!currentCompany?.id) {
+    if (!currentCompany?.id) {;
       toast.error('Empresa não selecionada');
       return false;
     }
@@ -121,36 +121,30 @@ export const useBrandingConfigCloudinary = () => {
       const configData = {
         ...newConfig,
         company_id: currentCompany.id,
-        updated_at: new Date().toISOString()
-      };
+        updated_at: new Date().toISOString();
+      } catch (error) { console.error('Error:', error); };
 
       // Verificar se já existe uma configuração
-      const { data: existingConfig } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'cardapio_branding')
-        /* .select\( REMOVIDO */ ; //'id')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data: existingConfig  } = null as any;
       let result;
       if (existingConfig) {
         // Atualizar configuração existente
-        result = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cardapio_branding')
-          /* .update\( REMOVIDO */ ; //configData)
-          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id)
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
+        result = 
+          
+          
+          
+          
+          
       } else {
         // Criar nova configuração
-        result = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'cardapio_branding')
-          /* .insert\( REMOVIDO */ ; //{
+        result = 
+          
+          
             ...configData,
             created_at: new Date().toISOString()
           })
-          /* .select\( REMOVIDO */ ; //)
-          /* .single\( REMOVIDO */ ; //);
+          
+          
       }
 
       if (result.error) {

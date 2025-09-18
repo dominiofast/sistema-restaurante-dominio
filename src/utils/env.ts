@@ -20,11 +20,11 @@ export const ENV = {
   // Configurações específicas
   showPerformanceLogs: import.meta.env.VITE_SHOW_PERF === 'true',
   showApiLogs: import.meta.env.VITE_SHOW_API === 'true',
-  showStateLogs: import.meta.env.VITE_SHOW_STATE === 'true',
+  showStateLogs: import.meta.env.VITE_SHOW_STATE === 'true',;
 } as const;
 
 // Helper para verificar se deve mostrar logs
-export const shouldLog = (level: 'debug' | 'info' | 'warn' | 'error' = 'info') => {
+export const shouldLog = (level: 'debug' | 'info' | 'warn' | 'error' = 'info') => {;
   if (!ENV.isDevelopment) return false;
   
   const levels = ['debug', 'info', 'warn', 'error'];

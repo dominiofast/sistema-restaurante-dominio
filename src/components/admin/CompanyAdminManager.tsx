@@ -29,14 +29,14 @@ interface Company {
   name: string;
   domain: string;
   status: string;
-}
+
 
 interface CompanyWithUser extends Company {
   has_admin_user: boolean;
   admin_email?: string;
   admin_role?: string;
   admin_user_id?: string;
-}
+
 
 export const CompanyAdminManager: React.FC = () => {
   const { roles } = usePermissions();
@@ -47,37 +47,25 @@ export const CompanyAdminManager: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<{id: string, email: string, role?: string} | null>(null);
 
   const loadCompanies = async () => {
-    try {
+    try {;
       setLoading(true);
       
       // Buscar todas as empresas ativas
-      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, domain, status')
-        /* .eq\( REMOVIDO */ ; //'status', 'active')
-        /* .order\( REMOVIDO */ ; //'name');
-
-      if (companiesError) throw companiesError;
+      const companiesData = null as any; const companiesError = null as any;
 
       // Verificar quais empresas já têm usuário admin
       const companiesWithUserStatus = await Promise.all(
-        (companiesData || []).map(async (company) => {
-          const expectedEmail = `${company.domain}@dominiopizzas.com.br`;
+        (companiesData || []).map(async (company) => {;
+          const expectedEmail = `${company.domain} catch (error) { console.error('Error:', error); }@dominiopizzas.com.br`;
           
           // Verificar se existe usuário com esse email
-          const { data: userData } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'company_credentials')
-            /* .select\( REMOVIDO */ ; //'email')
-            /* .eq\( REMOVIDO */ ; //'company_id', company.id)
-            /* .eq\( REMOVIDO */ ; //'email', expectedEmail)
-            /* .maybeSingle\( REMOVIDO */ ; //);
-
+          const { data: userData  } = null as any;
           // Buscar dados do usuário no auth.users se existe
           let userRole = null;
           let userId = null;
           if (userData) {
             try {
-              const { data: authData } = await /* supabase REMOVIDO */ null; //auth.admin.listUsers();
+              const { data: authData }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
               const authUser = authData?.users?.find((u: any) => u.email === expectedEmail);
               userRole = authUser?.user_metadata?.role;
               userId = authUser?.id;
@@ -102,18 +90,18 @@ export const CompanyAdminManager: React.FC = () => {
       toast.error('Erro ao carregar empresas');
     } finally {
       setLoading(false);
-    }
+
   };
 
   const createAdminUser = async (company: Company) => {
-    try {
+    try {;
       setCreating(company.id);
       
-      const adminEmail = `${company.domain}@dominiopizzas.com.br`;
+      const adminEmail = `${company.domain} catch (error) { console.error('Error:', error); }@dominiopizzas.com.br`;
       const tempPassword = `admin${company.domain}123`;
 
       // Chamar a Edge Function para criar o usuário
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-company-admin', {
+      const { data, error } = await Promise.resolve();
         body: {
           company_id: company.id,
           company_domain: company.domain,
@@ -137,7 +125,7 @@ export const CompanyAdminManager: React.FC = () => {
       toast.error(`Erro ao criar usuário admin: ${error.message}`);
     } finally {
       setCreating(null);
-    }
+
   };
 
   useEffect(() => {
@@ -277,7 +265,7 @@ export const CompanyAdminManager: React.FC = () => {
                   if (!selectedUser?.id) return;
                   
                   try {
-                    const { error } = await /* supabase REMOVIDO */ null; //auth.admin.updateUserById(
+                    const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
                       selectedUser.id,
                       {
                         user_metadata: { role: newRole }
@@ -291,7 +279,7 @@ export const CompanyAdminManager: React.FC = () => {
                     loadCompanies(); // Recarregar para ver mudanças
                   } catch (error: any) {
                     toast.error('Erro ao atualizar role: ' + error.message);
-                  }
+
                 }}
               >
                 <SelectTrigger>

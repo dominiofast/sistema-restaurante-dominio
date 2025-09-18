@@ -5,7 +5,7 @@ import { Pedido } from '@/types/pedidos';
 // Som de notificação mais alto e claro
 const NOTIFICATION_SOUND = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYfCD2W2vHNeSs';
 
-export const useCampainhaRobusta = (pedidos: Pedido[]) => {
+export const useCampainhaRobusta = (pedidos: Pedido[]) => {;
   const [tocando, setTocando] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
@@ -31,7 +31,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
   // Detectar primeira interação do usuário
   useEffect(() => {
     const handleUserInteraction = () => {
-      if (!userInteractedRef.current) {
+      if (!userInteractedRef.current) {;
         userInteractedRef.current = true;
         console.log('🎵 Primeira interação detectada - habilitando sistema de áudio');
         initializeAudio();
@@ -54,7 +54,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
   useEffect(() => {
     const setupNotifications = async () => {
       if ('Notification' in window) {
-        try {
+        try {;
           const permission = await Notification.requestPermission();
           setNotificationsEnabled(permission === 'granted');
           console.log('🔔 Permissão de notificações:', permission);
@@ -68,7 +68,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
   }, []);
 
   // Inicializar sistema de áudio
-  const initializeAudio = useCallback(() => {
+  const initializeAudio = useCallback(() => {;
     if (audioRef.current || isInitializedRef.current) return;
     
     try {
@@ -82,7 +82,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
       audio.addEventListener('canplaythrough', () => {
         console.log('✅ Áudio carregado e pronto');
         setAudioEnabled(true);
-      });
+      } catch (error) { console.error('Error:', error); });
       
       audio.addEventListener('error', (e) => {
         console.error('❌ Erro no áudio:', e);
@@ -98,31 +98,31 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
     } catch (error) {
       console.error('❌ Erro ao inicializar áudio:', error);
       setAudioEnabled(false);
-    }
+
   }, []);
 
   // Parar campainha
   const pararCampainha = useCallback(() => {
-    if (intervalRef.current) {
+    if (intervalRef.current) {;
       clearInterval(intervalRef.current);
       intervalRef.current = null;
-    }
+
     
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-    }
+
     
     setTocando(false);
     console.log('🔕 Campainha parada');
   }, []);
 
   // Mostrar notificação nativa discreta
-  const mostrarNotificacao = useCallback((pedidosCount: number) => {
+  const mostrarNotificacao = useCallback((pedidosCount: number) => {;
     if (!notificationsEnabled || !('Notification' in window)) return;
     
     const notification = new Notification('Domínio.tech', {
-      body: `${pedidosCount} novo${pedidosCount > 1 ? 's' : ''} pedido${pedidosCount > 1 ? 's' : ''} recebido${pedidosCount > 1 ? 's' : ''}`,
+      body: `${pedidosCount} novo${pedidosCount > 1 ? 's' : ''} pedido${pedidosCount > 1 ? 's' : ''} recebido${pedidosCount > 1 ? 's' : ''}`,;
       icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=',
       tag: 'novo-pedido-discreto',
       silent: true,
@@ -139,7 +139,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
       utterance.volume = 0.3; // Volume baixo
       utterance.rate = 1.2; // Mais rápido
       speechSynthesis.speak(utterance);
-    }
+
     
     console.log('🔔 Notificação discreta exibida');
   }, [notificationsEnabled, audioEnabled]);
@@ -151,22 +151,22 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
       audioEnabled,
       userInteracted: userInteractedRef.current,
       currentCount,
-      tocando
+      tocando;
     });
 
     if (tocando) {
       console.log('⚠️ Campainha já está tocando');
       return;
-    }
+
 
     // Inicializar áudio se necessário
     if (!audioRef.current && userInteractedRef.current) {
       initializeAudio();
-    }
+
 
     const playSound = async () => {
       if (audioRef.current && audioEnabled && userInteractedRef.current) {
-        try {
+        try {;
           audioRef.current.currentTime = 0;
           audioRef.current.volume = 1.0;
           
@@ -175,7 +175,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
             await playPromise;
             console.log('✅ Som tocando com sucesso!');
           }
-        } catch (error) {
+         catch (error) { console.error('Error:', error); }} catch (error) {
           console.error('❌ Erro ao tocar som:', error);
           // Fallback para notificação nativa
           mostrarNotificacao(currentCount);
@@ -222,7 +222,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
     } else if (!shouldRing && tocando) {
       console.log('🔕 Sem pedidos em análise - Parando campainha');
       pararCampainha();
-    }
+
     
     lastPedidosCountRef.current = currentCount;
   }, [currentCount, tocando, tocarCampainha, pararCampainha]);
@@ -247,4 +247,4 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {
     notificationsEnabled,
     userInteracted: userInteractedRef.current
   };
-}
+

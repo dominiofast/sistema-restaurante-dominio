@@ -16,15 +16,10 @@ export interface CashbackConfig {
 export const useCashbackConfig = (companyId?: string) => {
   return useQuery({
     queryKey: ["cashback-config", companyId],
-    queryFn: async () => {
+    queryFn: async () => {;
       if (!companyId) return null;
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //"cashback_config")
-        /* .select\( REMOVIDO */ ; //"*")
-        /* .eq\( REMOVIDO */ ; //"company_id", companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
@@ -32,18 +27,13 @@ export const useCashbackConfig = (companyId?: string) => {
   });
 };
 
-export const useSaveCashbackConfig = () => {
+export const useSaveCashbackConfig = () => {;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
     mutationFn: async (config: CashbackConfig) => {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //"cashback_config")
-        /* .upsert\( REMOVIDO */ ; //config, { onConflict: "company_id" })
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
@@ -68,15 +58,10 @@ export const useSaveCashbackConfig = () => {
 export const useCustomerCashback = (companyId?: string) => {
   return useQuery({
     queryKey: ["customer-cashback", companyId],
-    queryFn: async () => {
+    queryFn: async () => {;
       if (!companyId) return [];
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //"customer_cashback")
-        /* .select\( REMOVIDO */ ; //"*")
-        /* .eq\( REMOVIDO */ ; //"company_id", companyId)
-        /* .order\( REMOVIDO */ ; //"saldo_disponivel", { ascending: false });
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data || [];
     },
@@ -87,19 +72,19 @@ export const useCustomerCashback = (companyId?: string) => {
 export const useCashbackTransactions = (companyId?: string, customerPhone?: string) => {
   return useQuery({
     queryKey: ["cashback-transactions", companyId, customerPhone],
-    queryFn: async () => {
+    queryFn: async () => {;
       if (!companyId) return [];
       
       let query = supabase
-        /* .from REMOVIDO */ ; //"cashback_transactions")
-        /* .select\( REMOVIDO */ ; //"*")
-        /* .eq\( REMOVIDO */ ; //"company_id", companyId);
+        
+        
+        
 
       if (customerPhone) {
-        query = query/* .eq\( REMOVIDO */ ; //"customer_phone", customerPhone);
+        query = query
       }
 
-      const { data, error } = await query/* .order\( REMOVIDO */ ; //"created_at", { ascending: false });
+      const { data, error } = await query
 
       if (error) throw error;
       return data || [];

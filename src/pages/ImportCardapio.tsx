@@ -7,7 +7,7 @@ import { Upload, CheckCircle, AlertCircle, Coffee } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 // import { useStore } from "@/contexts/StoreContext"; // TODO: Implementar quando disponível
 
-const ImportCardapio = () => {
+const ImportCardapio = () => {;
   const [jsonData, setJsonData] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
@@ -19,7 +19,7 @@ const ImportCardapio = () => {
       toast({
         title: "Erro",
         description: "Por favor, cole os dados JSON para importação",
-        variant: "destructive",
+        variant: "destructive",;
       });
       return;
     }
@@ -45,8 +45,8 @@ const ImportCardapio = () => {
       const response = await fetch('/api/import/cardapio', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           company_id: companyId,
           ...data
@@ -118,7 +118,7 @@ const ImportCardapio = () => {
         is_available: true,
         is_active: true
       }
-    ]
+    ];
   };
 
   return (

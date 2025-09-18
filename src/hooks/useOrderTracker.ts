@@ -20,7 +20,7 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
   const [companySlug, setCompanySlug] = useState<string>('');
 
   useEffect(() => {
-    const fetchOrderData = async () => {
+    const fetchOrderData = async () => {;
       if (!numero_pedido) return;
 
       try {
@@ -38,53 +38,31 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
         console.log('🔍 Número do pedido:', numero_pedido);
 
         // Buscar empresa por slug/domain
-        const { data: todasEmpresas, error: erroTodas } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'companies')
-          /* .select\( REMOVIDO */ ; //'id, slug, domain')
-          /* .eq\( REMOVIDO */ ; //'status', 'active');
+        const todasEmpresas = null as any; const erroTodas = null as any;
 
-        if (erroTodas) {
-          throw new Error(`Erro ao buscar empresas: ${erroTodas.message}`);
-        }
 
-        // Encontrar empresa específica
+         catch (error) { console.error('Error:', error); }// Encontrar empresa específica
         const empresaEncontrada = todasEmpresas?.find(empresa => 
-          empresa.slug === extractedCompanySlug || empresa.domain === extractedCompanySlug
+          empresa.slug === extractedCompanySlug || empresa.domain === extractedCompanySlug;
         );
 
         if (!empresaEncontrada) {
           throw new Error(`Empresa não encontrada para slug/domain: ${extractedCompanySlug}`);
-        }
+
 
         const companyId = empresaEncontrada.id;
         console.log('✅ Empresa encontrada! ID:', companyId);
 
         // Buscar pedido
         const numeroInteiro = parseInt(numero_pedido);
-        const { data: pedidoData, error: pedidoError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'pedidos')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'numero_pedido', numeroInteiro)
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-          /* .limit\( REMOVIDO */ ; //1)
-          /* .single\( REMOVIDO */ ; //);
+        const pedidoData = null as any; const pedidoError = null as any;
 
-        if (pedidoError || !pedidoData) {
-          throw new Error('Pedido não encontrado');
-        }
 
         setPedido(pedidoData);
         console.log('✅ Pedido encontrado!');
 
         // Buscar itens do pedido
-        const { data: itensData, error: itensError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'pedido_itens')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoData.id);
-
-        if (itensError) {
-          console.warn('Erro ao buscar itens:', itensError);
+        const itensData = null as any; const itensError = null as any;
         } else if (itensData) {
           setItens(itensData);
 
@@ -92,25 +70,21 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
           const adicionaisMap: { [itemId: string]: AdicionalItem[] } = {};
           
           for (const item of itensData) {
-            const { data: adicionaisData } = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'pedido_item_adicionais')
-              /* .select\( REMOVIDO */ ; //'nome_adicional, quantidade, valor_total')
-              /* .eq\( REMOVIDO */ ; //'pedido_item_id', item.id);
-
+            const { data: adicionaisData  } = null as any;
             if (adicionaisData && adicionaisData.length > 0) {
               adicionaisMap[item.id] = adicionaisData;
             }
           }
           
           setAdicionais(adicionaisMap);
-        }
+
 
       } catch (err) {
         console.error('❌ Erro ao carregar pedido:', err);
         setError(err instanceof Error ? err.message : 'Erro ao carregar pedido');
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchOrderData();

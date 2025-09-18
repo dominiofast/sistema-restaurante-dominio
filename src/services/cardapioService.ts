@@ -19,7 +19,7 @@ interface CardapioData {
       ingredients?: string;
     }>;
   }>;
-}
+
 
 export class CardapioService {
   /**
@@ -30,27 +30,12 @@ export class CardapioService {
       console.log('🍽️ Buscando cardápio para IA - Company:', companyId);
 
       // Buscar categorias ativas
-      const { data: categorias, error: categoriasError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'categorias')
-        /* .select\( REMOVIDO */ ; //'id, name, description')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
-
-      if (categoriasError) {
-        console.error('❌ Erro ao buscar categorias:', categoriasError);
+      const categorias = null as any; const categoriasError = null as any;
         return null;
       }
 
-      // Buscar produtos disponíveis
-      const { data: produtos, error: produtosError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'produtos')
-        /* .select\( REMOVIDO */ ; //'id, name, description, price, promotional_price, is_promotional, is_available, preparation_time, ingredients, categoria_id')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .eq\( REMOVIDO */ ; //'is_available', true);
-
-      if (produtosError) {
-        console.error('❌ Erro ao buscar produtos:', produtosError);
+       catch (error) { console.error('Error:', error); }// Buscar produtos disponíveis
+      const produtos = null as any; const produtosError = null as any;
         return null;
       }
 
@@ -85,8 +70,8 @@ export class CardapioService {
     } catch (error) {
       console.error('❌ Erro ao buscar cardápio para IA:', error);
       return null;
-    }
-  }
+
+
 
   /**
    * Formata o cardápio em texto para o prompt do Agente IA
@@ -94,7 +79,7 @@ export class CardapioService {
   static formatCardapioForPrompt(cardapioData: CardapioData): string {
     if (!cardapioData || cardapioData.categorias.length === 0) {
       return 'Nenhum produto disponível no momento.';
-    }
+
 
     let cardapioText = 'CARDÁPIO DISPONÍVEL:\n\n';
 
@@ -115,7 +100,7 @@ export class CardapioService {
         }
         
         const precoAtual = produto.is_promotional && produto.promotional_price 
-          ? produto.promotional_price 
+          ? produto.promotional_price ;
           : produto.price;
         
         cardapioText += `Preço: R$ ${precoAtual.toFixed(2)}`;
@@ -133,7 +118,7 @@ export class CardapioService {
     });
 
     return cardapioText;
-  }
+
 
   /**
    * Gera JSON estruturado do cardápio para alimentar a IA
@@ -147,6 +132,6 @@ export class CardapioService {
     } catch (error) {
       console.error('❌ Erro ao gerar JSON estruturado:', error);
       return null;
-    }
-  }
-}
+
+
+

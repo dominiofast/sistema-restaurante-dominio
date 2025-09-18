@@ -63,7 +63,7 @@ export function useGoogleMapsGeocoding() {
   // Chave da API do Google Maps
   const GOOGLE_MAPS_API_KEY = 'AIzaSyBOti4mM-6x9WDnZIjIeyb-QSNX-fBV5gY';
 
-  const searchAddressByText = async (searchText: string): Promise<GoogleMapsAddress | null> => {
+  const searchAddressByText = async (searchText: string): Promise<GoogleMapsAddress | null> => {;
     if (!searchText.trim()) return null;
 
     setLoading(true);
@@ -71,12 +71,12 @@ export function useGoogleMapsGeocoding() {
 
     try {
       // Usar o proxy do Supabase Edge Function
-      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
-        method: 'POST',
+      const response = await fetch('https://epqppxteicfuzdblbluq.
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`
-        },
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           searchType: 'geocode',
           query: searchText
@@ -91,17 +91,17 @@ export function useGoogleMapsGeocoding() {
       } else {
         console.warn('Google Maps API não encontrou resultados para:', searchText);
         return null;
-      }
+
     } catch (err) {
       console.error('Erro ao buscar endereço no Google Maps:', err);
       setError('Erro ao buscar endereço');
       return null;
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const searchAddressByCep = async (cep: string): Promise<GoogleMapsAddress | null> => {
+  const searchAddressByCep = async (cep: string): Promise<GoogleMapsAddress | null> => {;
     console.log('searchAddressByCep chamado com:', cep);
     const cleanCep = cep.replace(/\D/g, '');
     console.log('CEP limpo para busca:', cleanCep);
@@ -109,7 +109,7 @@ export function useGoogleMapsGeocoding() {
     if (cleanCep.length !== 8) {
       console.log('CEP inválido para busca:', cleanCep);
       return null;
-    }
+
 
     // Primeiro tenta com ViaCEP (mais rápido para CEPs brasileiros)
     try {
@@ -119,7 +119,7 @@ export function useGoogleMapsGeocoding() {
       
       if (viacepResult) {
         // Se ViaCEP funcionou, busca coordenadas no Google Maps
-        const fullAddress = `${viacepResult.logradouro}, ${viacepResult.bairro}, ${viacepResult.cidade}, ${viacepResult.estado}, Brasil`;
+        const fullAddress = `${viacepResult.logradouro} catch (error) { console.error('Error:', error); }, ${viacepResult.bairro}, ${viacepResult.cidade}, ${viacepResult.estado}, Brasil`;
         console.log('Buscando coordenadas para:', fullAddress);
         const googleResult = await searchAddressByText(fullAddress);
         console.log('Resultado Google Maps:', googleResult);
@@ -127,14 +127,14 @@ export function useGoogleMapsGeocoding() {
         const finalResult = {
           ...viacepResult,
           latitude: googleResult?.latitude,
-          longitude: googleResult?.longitude
+          longitude: googleResult?.longitude;
         };
         console.log('Resultado final combinado:', finalResult);
         return finalResult;
-      }
+
     } catch (error) {
       console.warn('ViaCEP falhou, tentando Google Maps:', error);
-    }
+
 
     // Se ViaCEP falhou, usa Google Maps diretamente
     console.log('Tentando Google Maps diretamente...');
@@ -146,7 +146,7 @@ export function useGoogleMapsGeocoding() {
   };
 
   // Nova função para buscar múltiplas sugestões usando Google Places API
-  const searchAddressSuggestions = async (searchText: string): Promise<GoogleMapsAddress[]> => {
+  const searchAddressSuggestions = async (searchText: string): Promise<GoogleMapsAddress[]> => {;
     if (!searchText.trim() || searchText.length < 3) return [];
 
     setLoading(true);
@@ -167,11 +167,11 @@ export function useGoogleMapsGeocoding() {
       return [];
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Nova função para busca reversa de endereço (coordenadas para endereço)
-  const searchAddressByCoordinates = async (latitude: number, longitude: number): Promise<GoogleMapsAddress | null> => {
+  const searchAddressByCoordinates = async (latitude: number, longitude: number): Promise<GoogleMapsAddress | null> => {;
     setLoading(true);
     setError(null);
 
@@ -179,12 +179,12 @@ export function useGoogleMapsGeocoding() {
       console.log('🔍 Iniciando busca reversa com coordenadas:', latitude, longitude);
       
       // Usar o proxy do Supabase Edge Function para reverse geocoding
-      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
-        method: 'POST',
+      const response = await fetch('https://epqppxteicfuzdblbluq.
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`
-        },
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           searchType: 'reverse',
           query: JSON.stringify({ lat: latitude, lng: longitude })
@@ -201,28 +201,28 @@ export function useGoogleMapsGeocoding() {
       } else {
         console.warn('Nenhum endereço encontrado para as coordenadas');
         return null;
-      }
+
     } catch (err) {
       console.error('Erro na busca reversa:', err);
       setError('Erro ao buscar endereço pela localização');
       return null;
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Função para busca usando Google Places API (Autocomplete) via proxy
   const searchWithGooglePlaces = async (searchText: string): Promise<GoogleMapsAddress[]> => {
-    try {
+    try {;
       console.log('🔍 Google Places - Buscando via proxy:', searchText);
       
       // Usar o proxy do Supabase Edge Function
-      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
-        method: 'POST',
+      const response = await fetch('https://epqppxteicfuzdblbluq.
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`
-        },
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           searchType: 'autocomplete',
           query: searchText
@@ -243,7 +243,7 @@ export function useGoogleMapsGeocoding() {
             if (details) {
               detailedResults.push(details);
             }
-          } catch (error) {
+           catch (error) { console.error('Error:', error); }} catch (error) {
             console.log('❌ Erro ao buscar detalhes para:', prediction.place_id, error);
           }
         }
@@ -253,22 +253,22 @@ export function useGoogleMapsGeocoding() {
       } else {
         console.log('❌ Google Places - Nenhum resultado. Status:', data.status);
         return [];
-      }
+
     } catch (error) {
       console.log('❌ Google Places - Erro:', error);
       return [];
-    }
+
   };
 
   // Função para buscar detalhes de um lugar específico via proxy
   const getPlaceDetails = async (placeId: string): Promise<GoogleMapsAddress | null> => {
     try {
-      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
-        method: 'POST',
+      const response = await fetch('https://epqppxteicfuzdblbluq.
+// method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`
-        },
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwcXBweHRlaWNmdXpkYmxibHVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTYwNjAsImV4cCI6MjA2NTY3MjA2MH0.rzwsy0eSZgIZ1Ia3ZU-mapEhgCSuwFsaJNXL-XshfHg`;
+        } catch (error) { console.error('Error:', error); },
         body: JSON.stringify({
           searchType: 'details',
           query: placeId
@@ -279,18 +279,18 @@ export function useGoogleMapsGeocoding() {
       
       if (data.status === 'OK' && data.result) {
         return parseGoogleMapsResult(data.result);
-      }
+
       
       return null;
     } catch (error) {
       console.log('❌ Erro ao buscar detalhes do lugar:', error);
       return null;
-    }
+
   };
 
     
 
-  const searchWithViaCep = async (cep: string): Promise<GoogleMapsAddress | null> => {
+  const searchWithViaCep = async (cep: string): Promise<GoogleMapsAddress | null> => {;
     const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const data = await response.json();
 
@@ -302,23 +302,23 @@ export function useGoogleMapsGeocoding() {
         cidade: data.localidade || '',
         estado: data.uf || ''
       };
-    }
+
     return null;
   };
 
-  const parseGoogleMapsResult = (result: GeocodeResult): GoogleMapsAddress => {
+  const parseGoogleMapsResult = (result: GeocodeResult): GoogleMapsAddress => {;
     const components = result.address_components;
     
     const getComponent = (types: string[]) => {
       const component = components.find(comp => 
-        types.some(type => comp.types.includes(type))
+        types.some(type => comp.types.includes(type));
       );
       return component?.long_name || '';
     };
 
     const getShortComponent = (types: string[]) => {
       const component = components.find(comp => 
-        types.some(type => comp.types.includes(type))
+        types.some(type => comp.types.includes(type));
       );
       return component?.short_name || '';
     };
@@ -334,8 +334,8 @@ export function useGoogleMapsGeocoding() {
       const parts = result.formatted_address.split(',');
       if (parts.length > 0) {
         logradouro = parts[0].trim();
-      }
-    }
+
+
     
     // Melhorar extração do bairro
     let bairro = getComponent(['sublocality', 'sublocality_level_1']) || 
@@ -347,8 +347,8 @@ export function useGoogleMapsGeocoding() {
       const parts = result.formatted_address.split(',');
       if (parts.length > 1) {
         bairro = parts[1].trim();
-      }
-    }
+
+
     
     // Melhorar extração da cidade
     let cidade = getComponent(['locality', 'administrative_area_level_2']) || '';
@@ -358,8 +358,8 @@ export function useGoogleMapsGeocoding() {
       const parts = result.formatted_address.split(',');
       if (parts.length > 2) {
         cidade = parts[2].trim();
-      }
-    }
+
+
     
     const estado = getShortComponent(['administrative_area_level_1']) || '';
     

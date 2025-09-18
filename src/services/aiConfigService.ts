@@ -58,12 +58,12 @@ export class AIConfigService {
    */
   async loadGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_global_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error || !data) {
         console.error('Configuração global de IA não encontrada ou inativa:', error);
@@ -75,20 +75,20 @@ export class AIConfigService {
     } catch (error) {
       console.error('Erro ao carregar configuração global:', error);
       return null;
-    }
-  }
+
+
 
   /**
    * Carrega a configuração global mais recente (independente do status ativo)
    */
   async loadLatestGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_global_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
-        /* .limit\( REMOVIDO */ ; //1)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
+        
 
       if (error || !data) {
         console.error('Nenhuma configuração global encontrada:', error);
@@ -99,8 +99,8 @@ export class AIConfigService {
     } catch (error) {
       console.error('Erro ao carregar configuração global mais recente:', error);
       return null;
-    }
-  }
+
+
 
   /**
    * Carrega a configuração do agente por empresa (compatível com ambas as tabelas)
@@ -109,31 +109,17 @@ export class AIConfigService {
     try {
       // ⚠️ CACHE REMOVIDO TEMPORARIAMENTE para evitar confusão entre empresas
       // Sempre buscar dados frescos do banco
-      console.log(`🔍 Carregando configuração fresca para empresa: ${companyId}`);
+      console.log(`🔍 Carregando configuração fresca para empresa: ${companyId} catch (error) { console.error('Error:', error); }`);
 
       // Tentar carregar da tabela nova primeiro
-      const { data: newConfigData, error: newError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'ai_agent_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (!newError && newConfigData) {
-        console.log('✅ Configuração carregada da tabela nova:', newConfigData.agent_name, 'para empresa:', companyId);
+      const newConfigData = null as any; const newError = null as any;
         return newConfigData;
       }
 
       console.log('⚠️ Tabela nova não encontrada, tentando tabela antiga...');
 
       // Tentar carregar da tabela antiga como fallback
-      const { data: oldConfigData, error: oldError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'agente_ia_config')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
-
-      if (oldError || !oldConfigData) {
-        console.error('Configuração do agente não encontrada em nenhuma tabela:', { newError, oldError });
+      const oldConfigData = null as any; const oldError = null as any;
         return null;
       }
 
@@ -144,14 +130,14 @@ export class AIConfigService {
       
       // Salva no cache por 5 minutos
       this.configCache.set(companyId, convertedConfig);
-      setTimeout(() => this.configCache/* .delete\( REMOVIDO */ ; //companyId), 5 * 60 * 1000);
+      setTimeout(() => this.configCache
       return convertedConfig;
 
     } catch (error) {
       console.error('Erro ao carregar configuração do agente:', error);
       return null;
-    }
-  }
+
+
 
   /**
    * Converte configuração da tabela antiga para o formato novo
@@ -175,7 +161,7 @@ export class AIConfigService {
       stock_knowledge: oldConfig.conhecimento_estoque,
       is_active: oldConfig.ativo
     };
-  }
+
 
   /**
    * Limpa o cache de configurações
@@ -185,36 +171,32 @@ export class AIConfigService {
       if (this.paymentCache.has(companyId)) {
         return this.paymentCache.get(companyId)!;
       }
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'payment_delivery_config')
-        /* .select\( REMOVIDO */ ; //'pix_key, accept_pix')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .maybeSingle\( REMOVIDO */ ; //);
+       catch (error) { console.error('Error:', error); }const { data, error  } = null as any;
       if (error || !data) {
         console.error('Configuração de pagamento não encontrada:', error);
         return null;
       }
       this.paymentCache.set(companyId, data);
-      setTimeout(() => this.paymentCache/* .delete\( REMOVIDO */ ; //companyId), 5 * 60 * 1000);
+      setTimeout(() => this.paymentCache
       return data;
     } catch (error) {
       console.error('Erro ao carregar configuração de pagamento:', error);
       return null;
-    }
-  }
+
+
 
   clearCache(): void {
     this.configCache.clear();
     this.paymentCache.clear();
     this.globalConfig = null;
-  }
+
 
   /**
    * Getter para configuração global em cache
    */
   get cachedGlobalConfig(): AIGlobalConfig | null {
     return this.globalConfig;
-  }
+
 }
 
 export const aiConfigService = new AIConfigService();

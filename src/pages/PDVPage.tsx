@@ -15,7 +15,7 @@ import { ObservacaoModalPDV } from '@/components/pdv/ObservacaoModalPDV';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
-const PDVEnhanced = () => {
+const PDVEnhanced = () => {;
   const { currentCompany, user } = useAuth();
   const { selectedStore } = useStore();
   const { categorias, produtos, loading, error } = useCardapioData(currentCompany?.id);
@@ -47,7 +47,7 @@ const PDVEnhanced = () => {
         entrega: 'balcao',
         pagamento: 'dinheiro',
         taxaEntrega: 0
-      };
+      } catch (error) { console.error('Error:', error); };
     } catch {
       return {
         nome: '',
@@ -106,15 +106,15 @@ const PDVEnhanced = () => {
     }
   }, [searchParams, produtos]);
 
-  const carregarPedidoExistente = async (pedidoId: number) => {
+  const carregarPedidoExistente = async (pedidoId: number) => {;
     setCarregandoPedido(true);
     try {
       // Carregar dados do pedido
-      const { data: pedido, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedidos')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'id', pedidoId)
-        /* .single\( REMOVIDO */ ; //);
+      const { data: pedido, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
 
       if (error) {
         console.error('Erro ao carregar pedido:', error);
@@ -123,16 +123,7 @@ const PDVEnhanced = () => {
       }
 
       // Carregar itens do pedido com adicionais
-      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'pedido_itens')
-        /* .select\( REMOVIDO */ ; //`
-          *,
-          pedido_item_adicionais (*)
-        `)
-        /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoId);
-
-      if (itensError) {
-        console.error('Erro ao carregar itens do pedido:', itensError);
+      const itens = null as any; const itensError = null as any;
         alert('Erro ao carregar itens do pedido');
         return;
       }
@@ -146,7 +137,7 @@ const PDVEnhanced = () => {
             item.nome_produto.toLowerCase().includes('taxa de entrega') ||
             item.nome_produto.toLowerCase().includes('entrega') ||
             item.nome_produto.toLowerCase().includes('delivery')
-          )
+          );
         );
         
         const taxaEntrega = taxaEntregaItem ? Number(taxaEntregaItem.valor_total) : 0;
@@ -173,7 +164,7 @@ const PDVEnhanced = () => {
               const isTaxaEntrega = item.nome_produto && (
                 item.nome_produto.toLowerCase().includes('taxa de entrega') ||
                 item.nome_produto.toLowerCase().includes('entrega') ||
-                item.nome_produto.toLowerCase().includes('delivery')
+                item.nome_produto.toLowerCase().includes('delivery');
               );
               return !isTaxaEntrega;
             })
@@ -189,7 +180,7 @@ const PDVEnhanced = () => {
                 id: adicional.id,
                 name: adicional.nome_adicional || `Adicional ${adicional.id.slice(0, 8)}`,
                 price: Number(adicional.valor_unitario) || 0,
-                quantidade: adicional.quantidade || 1
+                quantidade: adicional.quantidade || 1;
               }));
 
               return {
@@ -202,7 +193,7 @@ const PDVEnhanced = () => {
 
           // Itens carregados no carrinho
           setCarrinho(carrinhoItems);
-        }
+
 
         setClienteEncontrado(true);
         console.log('Pedido carregado com sucesso para edição:', pedido);
@@ -216,7 +207,7 @@ const PDVEnhanced = () => {
   };
 
   // Função para buscar cliente por telefone
-  const buscarClientePorTelefone = async (telefone: string) => {
+  const buscarClientePorTelefone = async (telefone: string) => {;
     if (!telefone || telefone.length < 10) return; // Mínimo 10 dígitos
     
     setBuscandoCliente(true);
@@ -227,7 +218,7 @@ const PDVEnhanced = () => {
           ...prev,
           nome: clienteEncontrado.nome || '',
           endereco: clienteEncontrado.endereco || ''
-        }));
+        } catch (error) { console.error('Error:', error); }));
         setClienteEncontrado(true);
       } else {
         setClienteEncontrado(false);
@@ -242,7 +233,7 @@ const PDVEnhanced = () => {
   // Efeito para buscar cliente quando telefone mudar
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (cliente.telefone) {
+      if (cliente.telefone) {;
         buscarClientePorTelefone(cliente.telefone);
       } else {
         setClienteEncontrado(false);
@@ -256,7 +247,7 @@ const PDVEnhanced = () => {
   const effectiveCategoriaAtiva = categoriaAtiva || (categorias[0]?.id || '');
   
   const produtosFiltrados = produtos.filter(produto => {
-    // Se ainda não temos categoria definida e não há categorias carregadas, mostrar todos
+    // Se ainda não temos categoria definida e não há categorias carregadas, mostrar todos;
     const categoriaMatch = effectiveCategoriaAtiva ? produto.categoria_id === effectiveCategoriaAtiva : true;
     const searchMatch = produto.name.toLowerCase().includes(busca.toLowerCase());
     return categoriaMatch && searchMatch;
@@ -273,14 +264,14 @@ const PDVEnhanced = () => {
     });
   }, [produtos, categorias, categoriaAtiva, produtosFiltrados]);
 
-  const abrirModalAdicionais = (produto) => {
+  const abrirModalAdicionais = (produto) => {;
     if (!produto.is_available) return;
     
     setProdutoSelecionado(produto);
     setAdicionaisModalOpen(true);
   };
 
-  const adicionarAoCarrinho = (produto, quantidade, adicionais = {}) => {
+  const adicionarAoCarrinho = (produto, quantidade, adicionais = {}) => {;
     if (!produto.is_available) return;
     
     // Converter objeto de adicionais para array com dados completos
@@ -291,7 +282,7 @@ const PDVEnhanced = () => {
           id: adicionalData.id,
           name: adicionalData.name,
           price: Number(adicionalData.price) || 0,
-          quantidade: adicionalData.quantity
+          quantidade: adicionalData.quantity;
         };
       } else {
         // Fallback para formato antigo (apenas quantidade)
@@ -312,13 +303,13 @@ const PDVEnhanced = () => {
       preco_unitario: produto.is_promotional && produto.promotional_price 
         ? Number(produto.promotional_price) || 0 
         : Number(produto.price) || 0,
-      // O preço total será calculado dinamicamente no carrinho
+      // O preço total será calculado dinamicamente no carrinho;
     };
     
     setCarrinho(prev => {
       const itemExistente = prev.find(item => 
         item.id === produto.id && 
-        JSON.stringify(item.adicionais) === JSON.stringify(adicionais)
+        JSON.stringify(item.adicionais) === JSON.stringify(adicionais);
       );
       
       if (itemExistente) {
@@ -335,12 +326,12 @@ const PDVEnhanced = () => {
 
   const removerDoCarrinho = (item) => {
     setCarrinho(prev => prev.filter(cartItem => 
-      !(cartItem.id === item.id && JSON.stringify(cartItem.adicionais) === JSON.stringify(item.adicionais))
+      !(cartItem.id === item.id && JSON.stringify(cartItem.adicionais) === JSON.stringify(item.adicionais));
     ));
   };
 
   const atualizarQuantidade = (item, novaQuantidade) => {
-    if (novaQuantidade === 0) {
+    if (novaQuantidade === 0) {;
       removerDoCarrinho(item);
       return;
     }
@@ -354,15 +345,15 @@ const PDVEnhanced = () => {
   };
 
   const total = carrinho.reduce((acc, item) => {
-    // Converter preços para números para evitar NaN
+    // Converter preços para números para evitar NaN;
     const priceNumber = Number(item.price) || 0;
     const promotionalPriceNumber = item.promotional_price ? Number(item.promotional_price) : 0;
     
     const preco = item.is_promotional && promotionalPriceNumber 
-      ? promotionalPriceNumber 
+      ? promotionalPriceNumber ;
       : priceNumber;
       
-    const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => {
+    const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => {;
       const adicionalPrice = Number(adicional.price) || 0;
       return total + (adicionalPrice * adicional.quantidade);
     }, 0);
@@ -380,7 +371,7 @@ const PDVEnhanced = () => {
     return acc + (isNaN(itemTotal) ? 0 : itemTotal);
   }, 0);
 
-  const handleEntregaConfirm = (data: any) => {
+  const handleEntregaConfirm = (data: any) => {;
     console.log('📦 PDV - Dados recebidos do modal de entrega:', data);
     if (data.tipo === 'delivery' && data.endereco) {
       const enderecoTexto = `${data.endereco.logradouro}, ${data.endereco.numero}${data.endereco.complemento ? ', ' + data.endereco.complemento : ''} - ${data.endereco.bairro}, ${data.endereco.cidade}`;
@@ -401,7 +392,7 @@ const PDVEnhanced = () => {
     setEntregaModalOpen(false);
   };
 
-  const handlePagamentoConfirm = (formaPagamento: string, dados?: any) => {
+  const handlePagamentoConfirm = (formaPagamento: string, dados?: any) => {;
     setCliente(prev => ({ ...prev, pagamento: formaPagamento }));
     setPagamentoModalOpen(false);
     console.log('Pagamento confirmado:', { formaPagamento, dados });
@@ -409,12 +400,12 @@ const PDVEnhanced = () => {
 
   const salvarPedido = async () => {
     try {
-      if (!agenteConfig?.token_pedidos) {
+      if (!agenteConfig?.token_pedidos) {;
         toast.error('Erro: Token de autenticação não configurado');
         return false;
       }
 
-      // DEFENSIVE PROGRAMMING - Validação para super admins
+       catch (error) { console.error('Error:', error); }// DEFENSIVE PROGRAMMING - Validação para super admins
       if (!selectedStore && user?.role === 'super_admin') {
         console.error('❌ Super admin tentando criar pedido sem empresa selecionada');
         toast.error('Por favor, selecione uma empresa antes de criar o pedido');
@@ -442,7 +433,7 @@ const PDVEnhanced = () => {
             preco: adicional.price,
             quantidade: adicional.quantidade
           }))
-        }))
+        }));
       };
 
       console.log('Enviando pedido:', pedidoData);
@@ -451,7 +442,7 @@ const PDVEnhanced = () => {
       console.log('📱 Todos os dados da selectedStore:', JSON.stringify(selectedStore, null, 2));
 
       // Solução profissional e escalável: Edge Function com transação atômica
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('criar-pedido-pdv', {
+      const { data, error } = await Promise.resolve();
         body: pedidoData
       });
 
@@ -465,13 +456,13 @@ const PDVEnhanced = () => {
       
       // Imprimir via PrintNode (edge function)
       try {
-        await /* supabase REMOVIDO */ null; //functions.invoke('auto-print-pedido', {
+        await Promise.resolve();
           body: {
             pedido_id: data.pedido_id,
             numero_pedido: data.numero_pedido,
             company_id: currentCompany?.id,
             origin: 'pdv',
-          },
+          } catch (error) { console.error('Error:', error); },
         });
         toast.success(`Pedido criado! Número: ${data.numero_pedido || data.pedido_id}`);
       } catch (printErr) {
@@ -489,7 +480,7 @@ const PDVEnhanced = () => {
   };
 
   const finalizarPedido = async () => {
-    if (carrinho.length === 0) {
+    if (carrinho.length === 0) {;
       toast.error('Adicione itens ao carrinho!');
       return;
     }
@@ -528,7 +519,7 @@ const PDVEnhanced = () => {
         </div>
       </div>
     );
-  }
+
 
   if (error) {
     return (
@@ -539,7 +530,7 @@ const PDVEnhanced = () => {
         </div>
       </div>
     );
-  }
+
 
   return (
     <div className="h-[calc(100vh-56px)] bg-gray-100 flex flex-col">

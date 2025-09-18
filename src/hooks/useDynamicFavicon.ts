@@ -17,7 +17,7 @@ export const useDynamicFavicon = ({
   companyName,
   defaultFaviconUrl = '/favicon.ico',
   size = 32
-}: UseDynamicFaviconOptions = {}) => {
+}: UseDynamicFaviconOptions = {}) => {;
   const originalFaviconRef = useRef<string | null>(null);
   const currentFaviconRef = useRef<string | null>(null);
 
@@ -32,7 +32,7 @@ export const useDynamicFavicon = ({
   // Update favicon when logoUrl changes
   useEffect(() => {
     const updateFavicon = async () => {
-      try {
+      try {;
         let faviconUrl = originalFaviconRef.current || defaultFaviconUrl;
 
         // Try to use company logo as favicon
@@ -54,7 +54,7 @@ export const useDynamicFavicon = ({
         }
       } catch (error) {
         console.error('Error updating favicon:', error);
-      }
+
     };
 
     updateFavicon();
@@ -65,7 +65,7 @@ export const useDynamicFavicon = ({
     if (companyName) {
       const originalTitle = document.title;
       const newTitle = originalTitle.includes(companyName) 
-        ? originalTitle 
+        ? originalTitle ;
         : `${companyName} - ${originalTitle}`;
       
       document.title = newTitle;
@@ -84,7 +84,7 @@ export const useDynamicFavicon = ({
     return () => {
       if (originalFaviconRef.current && currentFaviconRef.current !== originalFaviconRef.current) {
         setFavicon(originalFaviconRef.current);
-      }
+
     };
   }, []);
 
@@ -103,7 +103,7 @@ export const useDynamicFavicon = ({
       if (originalFaviconRef.current) {
         setFavicon(originalFaviconRef.current);
         currentFaviconRef.current = originalFaviconRef.current;
-      }
+
     }
   };
 };
@@ -112,7 +112,7 @@ export const useDynamicFavicon = ({
  * Updates the favicon in the document head
  */
 const setFavicon = (url: string) => {
-  // Remove existing favicon links
+  // Remove existing favicon links;
   const existingLinks = document.querySelectorAll('link[rel*="icon"]');
   existingLinks.forEach(link => link.remove());
 

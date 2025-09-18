@@ -33,11 +33,7 @@ export const DeliveryMethodsManager: React.FC = () => {
   const { data: companies = [], isLoading: loadingCompanies } = useQuery({
     queryKey: ['admin-companies'],
     queryFn: async () => {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'companies')
-        /* .select\( REMOVIDO */ ; //'id, name, slug')
-        /* .order\( REMOVIDO */ ; //'name');
-      
+      const { data, error  } = null as any;
       if (error) throw error;
       return data as Company[];
     }
@@ -49,12 +45,7 @@ export const DeliveryMethodsManager: React.FC = () => {
     queryFn: async () => {
       if (!selectedCompany) return null;
       
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', selectedCompany)
-        /* .single\( REMOVIDO */ ; //);
-      
+      const { data, error  } = null as any;
       if (error) {
         if (error.code === 'PGRST116') {
           // Não existe ainda - retornar configuração padrão
@@ -66,7 +57,7 @@ export const DeliveryMethodsManager: React.FC = () => {
           } as DeliveryMethod;
         }
         throw error;
-      }
+
       
       return data as DeliveryMethod;
     },
@@ -85,42 +76,16 @@ export const DeliveryMethodsManager: React.FC = () => {
   const saveMutation = useMutation({
     mutationFn: async (config: DeliveryMethod) => {
       // Validar que pelo menos uma opção está ativa
-      if (!config.delivery && !config.pickup && !config.eat_in) {
+      if (!config.delivery && !config.pickup && !config.eat_in) {;
         throw new Error('Pelo menos uma opção de entrega deve estar habilitada');
-      }
+
 
       // Tentar atualizar primeiro
-      const { data: updateData, error: updateError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'delivery_methods')
-        /* .update\( REMOVIDO */ ; //{
-          delivery: config.delivery,
-          pickup: config.pickup,
-          eat_in: config.eat_in,
-          updated_at: new Date().toISOString()
-        })
-        /* .eq\( REMOVIDO */ ; //'company_id', config.company_id)
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
-
-      if (updateError) {
-        if (updateError.code === 'PGRST116') {
-          // Não existe, criar novo
-          const { data: insertData, error: insertError } = /* await supabase REMOVIDO */ null
-            /* .from REMOVIDO */ ; //'delivery_methods')
-            /* .insert\( REMOVIDO */ ; //{
-              company_id: config.company_id,
-              delivery: config.delivery,
-              pickup: config.pickup,
-              eat_in: config.eat_in
-            })
-            /* .select\( REMOVIDO */ ; //)
-            /* .single\( REMOVIDO */ ; //);
-          
-          if (insertError) throw insertError;
+      const updateData = null as any; const updateError = null as any;
           return insertData;
         }
         throw updateError;
-      }
+
 
       return updateData;
     },
@@ -139,7 +104,7 @@ export const DeliveryMethodsManager: React.FC = () => {
   });
 
   // Handler para mudanças nas configurações
-  const handleConfigChange = (field: keyof DeliveryMethod, value: boolean) => {
+  const handleConfigChange = (field: keyof DeliveryMethod, value: boolean) => {;
     if (!localConfig) return;
     
     const newConfig = { ...localConfig, [field]: value };
@@ -155,21 +120,21 @@ export const DeliveryMethodsManager: React.FC = () => {
   };
 
   // Salvar configurações
-  const handleSave = () => {
+  const handleSave = () => {;
     if (!localConfig) return;
     saveMutation.mutate(localConfig);
   };
 
   // Resetar para configurações salvas
   const handleReset = () => {
-    if (deliveryConfig) {
+    if (deliveryConfig) {;
       setLocalConfig(deliveryConfig);
       setHasChanges(false);
     }
   };
 
   // Aplicar template de configuração
-  const applyTemplate = (template: 'delivery-only' | 'pickup-only' | 'both' | 'eat-in') => {
+  const applyTemplate = (template: 'delivery-only' | 'pickup-only' | 'both' | 'eat-in') => {;
     if (!localConfig) return;
     
     let newConfig = { ...localConfig };

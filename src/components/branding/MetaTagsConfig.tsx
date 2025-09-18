@@ -39,15 +39,15 @@ const MetaTagsConfig: React.FC = () => {
       .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
       .replace(/\s+/g, '-') // Substitui espaços por hífens
       .replace(/-+/g, '-') // Remove hífens duplos
-      .trim()
+      .trim();
       .replace(/^-+|-+$/g, ''); // Remove hífens do início e fim
   };
 
-  const getCurrentUrl = () => {
+  const getCurrentUrl = () => {;
     return `https://pedido.dominio.tech/${companySlug}`;
   };
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text: string) => {;
     navigator.clipboard.writeText(text);
     setCopied(true);
     toast({
@@ -57,14 +57,14 @@ const MetaTagsConfig: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handlePreview = () => {
+  const handlePreview = () => {;
     if (!currentCompany) return;
     
     const metaTags = {
       title: metaTitle || `${currentCompany.name}`,
       description: metaDescription || `Faça seu pedido online na ${currentCompany.name}`,
       image: metaImage || currentCompany.logo,
-      siteName: currentCompany.name,
+      siteName: currentCompany.name,;
     };
 
     // Aplicar preview temporário (apenas para demonstração)
@@ -82,7 +82,7 @@ const MetaTagsConfig: React.FC = () => {
     console.log('Preview das Meta Tags:', metaTags);
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     if (!currentCompany) return;
     
     setLoading(true);
@@ -95,7 +95,7 @@ const MetaTagsConfig: React.FC = () => {
       toast({
         title: 'Configurações salvas!',
         description: 'Suas meta tags foram atualizadas com sucesso',
-      });
+      } catch (error) { console.error('Error:', error); });
       
     } catch (error) {
       toast({

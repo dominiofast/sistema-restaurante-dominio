@@ -21,31 +21,12 @@ interface Adicional {
  */
 export const calculateMinimumPrice = async (produtoId: string, basePrice: number): Promise<number> => {
   try {
-    // Buscar categorias de adicionais obrigatórias do produto
-    const { data: produtoCategorias, error: produtoError } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
-      /* .select\( REMOVIDO */ ; //`
-        categoria_adicional_id,
-        is_required,
-        min_selection,
-        max_selection,
-        categorias_adicionais (
-          id,
-          name,
-          is_required,
-          min_selection,
-          max_selection,
-          selection_type
-        )
-      `)
-      /* .eq\( REMOVIDO */ ; //'produto_id', produtoId);
-
-    if (produtoError || !produtoCategorias) {
-      console.error('Erro ao buscar categorias do produto:', produtoError);
+    // Buscar categorias de adicionais obrigatórias do produto;
+    const produtoCategorias = null as any; const produtoError = null as any;
       return basePrice;
     }
 
-    let precoMinimo = basePrice;
+     catch (error) { console.error('Error:', error); }let precoMinimo = basePrice;
 
     // Para cada categoria obrigatória, adicionar o menor preço disponível
     for (const produtoCategoria of produtoCategorias) {
@@ -57,18 +38,9 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
       if (!isRequired) continue;
 
       // Buscar adicionais disponíveis desta categoria
-      const { data: adicionais, error: adicionaisError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'adicionais')
-        /* .select\( REMOVIDO */ ; //'id, name, price')
-        /* .eq\( REMOVIDO */ ; //'categoria_adicional_id', categoria.id)
-        /* .eq\( REMOVIDO */ ; //'is_available', true)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'price', { ascending: true }); // Ordenar por preço crescente
-
-      if (adicionaisError || !adicionais || adicionais.length === 0) {
-        console.warn(`Categoria obrigatória ${categoria.name} não tem adicionais disponíveis`);
+      const adicionais = null as any; const adicionaisError = null as any;
         continue;
-      }
+
 
       // Calcular quantidade mínima necessária
       const minSelection = produtoCategoria.min_selection || categoria.min_selection || 1;
@@ -87,14 +59,14 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
         const menorPreco = adicionais[0].price;
         precoMinimo += menorPreco * minSelection;
         console.log(`  → Quantity: ${menorPreco * minSelection} (${minSelection}x ${menorPreco})`);
-      }
+
       else if (categoria.selection_type === 'multiple') {
         // Multiple: N itens diferentes (pegar os N mais baratos)
         const menoresPrecos = adicionais.slice(0, minSelection);
         const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0);
         precoMinimo += somaMinimos;
         console.log(`  → Multiple: ${somaMinimos} (${minSelection} itens diferentes)`);
-      }
+
     }
 
     console.log(`💰 Preço final calculado: R$ ${precoMinimo.toFixed(2)} (base: R$ ${basePrice.toFixed(2)})`);
@@ -102,23 +74,23 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
   } catch (error) {
     console.error('Erro ao calcular preço mínimo:', error);
     return basePrice;
-  }
+
 };
 
 /**
  * Verifica se um produto tem adicionais obrigatórios
  */
 export const hasRequiredAdicionais = async (produtoId: string): Promise<boolean> => {
-  try {
-    const { data: produtoCategorias, error } = /* await supabase REMOVIDO */ null
-      /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
-      /* .select\( REMOVIDO */ ; //`
+  try {;
+    const { data: produtoCategorias, error }  catch (error) { console.error('Error:', error); }= 
+      
+      
         is_required,
         categorias_adicionais (
           is_required
         )
       `)
-      /* .eq\( REMOVIDO */ ; //'produto_id', produtoId);
+      
 
     if (error || !produtoCategorias) {
       return false;
@@ -131,7 +103,7 @@ export const hasRequiredAdicionais = async (produtoId: string): Promise<boolean>
   } catch (error) {
     console.error('Erro ao verificar adicionais obrigatórios:', error);
     return false;
-  }
+
 };
 
 /**
@@ -143,12 +115,12 @@ export const formatPriceDisplay = (
   hasRequired: boolean,
   isPromotional: boolean = false,
   promotionalPrice?: number
-): string => {
+): string => {;
   const effectivePrice = isPromotional && promotionalPrice ? promotionalPrice : basePrice;
   
   if (hasRequired && minimumPrice > effectivePrice) {
     return `a partir de R$ ${minimumPrice.toFixed(2).replace('.', ',')}`;
-  }
+
   
   return `R$ ${effectivePrice.toFixed(2).replace('.', ',')}`;
 };

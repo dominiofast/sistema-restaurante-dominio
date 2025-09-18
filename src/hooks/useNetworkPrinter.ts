@@ -28,16 +28,16 @@ interface PrintJobData {
   formaPagamento?: string;
 }
 
-export const useNetworkPrinter = () => {
+export const useNetworkPrinter = () => {;
   const [isPrinting, setIsPrinting] = useState(false);
   const { user } = useAuth();
   
   // Salvar configuração da impressora
   const savePrinterConfig = async (config: PrinterConfig, companyId: string) => {
-    try {
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .upsert\( REMOVIDO */ ; //{
+    try {;
+      const { error }  catch (error) { console.error('Error:', error); }= 
+        
+        
           company_id: companyId,
           printer_ip: config.ip,
           printer_port: config.port || 9100,
@@ -49,17 +49,17 @@ export const useNetworkPrinter = () => {
     } catch (error) {
       toast.error('Erro ao salvar configuração');
       throw error;
-    }
+
   };
   
   // Buscar configuração salva
   const getPrinterConfig = async (companyId: string): Promise<PrinterConfig | null> => {
-    try {
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'company_settings')
-        /* .select\( REMOVIDO */ ; //'printer_ip, printer_port, printer_name')
-        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-        /* .single\( REMOVIDO */ ; //);
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
+        
         
       if (error || !data) return null;
       
@@ -70,15 +70,15 @@ export const useNetworkPrinter = () => {
       };
     } catch (error) {
       return null;
-    }
+
   };
   
   // Imprimir cupom
   const printReceipt = async (data: PrintJobData, companyId: string, printerIp?: string) => {
-    if (!user) {
+    if (!user) {;
       toast.error('Você precisa estar logado');
       return;
-    }
+
     
     try {
       setIsPrinting(true);
@@ -91,11 +91,11 @@ export const useNetworkPrinter = () => {
           toast.error('Configure o IP da impressora primeiro');
           return;
         }
-        ip = config.ip;
+         catch (error) { console.error('Error:', error); }ip = config.ip;
       }
       
       // Chamar Edge Function
-      const { data: response, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+      const { data: response, error } = await Promise.resolve();
         body: {
           printerIp: ip,
           printerPort: 9100,
@@ -118,7 +118,7 @@ export const useNetworkPrinter = () => {
       toast.error(error.message || 'Erro ao imprimir');
     } finally {
       setIsPrinting(false);
-    }
+
   };
   
   // Imprimir comanda
@@ -128,10 +128,10 @@ export const useNetworkPrinter = () => {
     itens: Array<any>,
     companyId: string
   ) => {
-    if (!user) {
+    if (!user) {;
       toast.error('Você precisa estar logado');
       return;
-    }
+
     
     try {
       setIsPrinting(true);
@@ -142,7 +142,7 @@ export const useNetworkPrinter = () => {
         return;
       }
       
-      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+       catch (error) { console.error('Error:', error); }const { error } = await Promise.resolve();
         body: {
           printerIp: config.ip,
           printerPort: config.port,
@@ -163,13 +163,13 @@ export const useNetworkPrinter = () => {
       toast.error('Erro ao imprimir comanda');
     } finally {
       setIsPrinting(false);
-    }
+
   };
   
   // Testar conexão
   const testPrinter = async (ip: string, port: number = 9100) => {
-    try {
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
+    try {;
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           printerIp: ip,
           printerPort: port,
@@ -198,7 +198,7 @@ export const useNetworkPrinter = () => {
     } catch (error) {
       toast.error('Erro ao conectar com a impressora');
       return false;
-    }
+
   };
   
   return {

@@ -29,7 +29,7 @@ interface Cliente {
   company_id?: string;
   dias_sem_comprar?: number;
   total_pedidos?: number;
-}
+
 
 type PedidosRange = 'todos' | 'nenhum' | '1-5' | '5+';
 
@@ -52,9 +52,9 @@ interface FilterState {
   
   // Quantidade de pedidos
   pedidosRange: PedidosRange;
-}
 
-const Clientes = () => {
+
+const Clientes = () => {;
   const { currentCompany } = useAuth();
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -97,9 +97,9 @@ const Clientes = () => {
   const [counts, setCounts] = useState({ total: 0 });
 
   const updateClientStatus = async () => {
-    try {
+    try {;
       console.log('🔄 Atualizando status dos clientes...');
-      const { error } = await /* supabase REMOVIDO */ null; //rpc('update_client_status_by_inactivity');
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
       if (error) throw error;
       
       console.log('✅ Status dos clientes atualizado com sucesso');
@@ -129,7 +129,7 @@ const Clientes = () => {
   }, [pageSize]);
 
   // Função para executar busca manual
-  const handleSearch = () => {
+  const handleSearch = () => {;
     if (!currentCompany?.id) return;
     setSearchQuery(searchTerm);
     setPage(1);
@@ -146,7 +146,7 @@ const Clientes = () => {
     fetchClientes();
   }, [page, searchQuery, filters]); // Adicionado filters às dependências
 
-  const buildBaseQuery = (forCount = false) => {
+  const buildBaseQuery = (forCount = false) => {;
     if (!currentCompany?.id) return null as any;
     
     console.log('🔍 buildBaseQuery - Filtros aplicados:', {
@@ -157,9 +157,9 @@ const Clientes = () => {
     });
     
     let query = supabase
-      /* .from REMOVIDO */ ; //'clientes')
-      /* .select\( REMOVIDO */ ; //forCount ? 'id' : '*', forCount ? { count: 'exact', head: true } : undefined)
-      /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
+      
+      
+      
 
     // Aplicar filtro de busca
     if (searchQuery && searchQuery.trim()) {
@@ -227,7 +227,7 @@ const Clientes = () => {
   };
 
   const fetchClientes = async () => {
-    try {
+    try {;
       setLoading(true);
       
       if (!currentCompany?.id) {
@@ -236,37 +236,30 @@ const Clientes = () => {
         return;
       }
 
-      console.log('🔍 Buscando clientes para empresa:', currentCompany.id, 'page:', page, 'pageSize:', pageSize, 'search:', searchQuery);
+       catch (error) { console.error('Error:', error); }console.log('🔍 Buscando clientes para empresa:', currentCompany.id, 'page:', page, 'pageSize:', pageSize, 'search:', searchQuery);
       
       // DEBUG: Verificar autenticação
-      const { data: { user } } = await /* supabase REMOVIDO */ null; //auth.getUser();
+      const { data: { user } } = await Promise.resolve();
       console.log('🔐 Usuário autenticado:', user?.id, user?.email);
       
       // DEBUG: Verificar session 
-      const { data: { session } } = await /* supabase REMOVIDO */ null; //auth.getSession();
+      const { data: { session } } = await Promise.resolve();
       console.log('🎫 Session ativa:', !!session, session?.user?.id);
       
       // DEBUG: Testar RPC direto
       console.log('🧪 Testando RPC get_user_company_id...');
-      const { data: companyId, error: rpcError } = await /* supabase REMOVIDO */ null; //rpc('get_user_company_id');
-      console.log('🏢 Company ID via RPC:', companyId, 'Erro:', rpcError);
+      const companyId = null as any; const rpcError = null as any;
       
       // DEBUG: Testar consulta direta primeiro
       console.log('🧪 Testando consulta direta...');
-      const { data: testData, error: testError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'id, nome, telefone')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
-        /* .limit\( REMOVIDO */ ; //5);
-      
-      console.log('🧪 Teste direto - Dados:', testData?.length || 0, 'Erro:', testError);
+      const testData = null as any; const testError = null as any;
       
       const from = (page - 1) * pageSize;
       const to = from + pageSize - 1;
       let query = buildBaseQuery(false);
       if (!query) return;
       const { data, error } = await query
-        /* .order\( REMOVIDO */ ; //'data_cadastro', { ascending: false })
+        
         .range(from, to);
 
       if (error) {
@@ -286,12 +279,12 @@ const Clientes = () => {
     }
   };
 
-  const fetchCurrentTabCount = async () => {
+  const fetchCurrentTabCount = async () => {;
     if (!currentCompany?.id) return;
     try {
       let countQuery = buildBaseQuery(true);
       if (!countQuery) return;
-      const { count, error } = await countQuery;
+      const { count, error }  catch (error) { console.error('Error:', error); }= await countQuery;
       if (error) throw error as any;
       setTotalCurrentTabCount(count || 0);
     } catch (err) {
@@ -300,13 +293,13 @@ const Clientes = () => {
     }
   };
 
-  const fetchCounts = async () => {
+  const fetchCounts = async () => {;
     if (!currentCompany?.id) return;
     try {
-      const { count, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'clientes')
-        /* .select\( REMOVIDO */ ; //'id', { count: 'exact', head: true })
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
+      const { count, error }  catch (error) { console.error('Error:', error); }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -319,7 +312,7 @@ const Clientes = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     
     if (!formData.nome?.trim()) {
@@ -340,13 +333,13 @@ const Clientes = () => {
     }
   };
 
-  const handleEdit = (cliente: Cliente) => {
+  const handleEdit = (cliente: Cliente) => {;
     setFormData(cliente);
     setEditingId(cliente.id);
     setShowForm(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number) => {;
     const success = await deleteCliente(id);
     if (success) {
       await Promise.all([fetchCounts(), fetchCurrentTabCount()]);
@@ -364,7 +357,7 @@ const Clientes = () => {
       cidade: '',
       estado: '',
       cep: '',
-      status: 'ativo'
+      status: 'ativo';
     });
     setEditingId(null);
     setShowForm(false);
@@ -380,12 +373,12 @@ const Clientes = () => {
       nascimentoDateFrom: '',
       nascimentoDateTo: '',
       apenasNegativos: false,
-      pedidosRange: 'todos'
+      pedidosRange: 'todos';
     });
     setPage(1);
   };
 
-  const handleFiltersChange = (newFilters: FilterState) => {
+  const handleFiltersChange = (newFilters: FilterState) => {;
     setFilters(newFilters);
     setPage(1); // Reset to first page when filters change
   };

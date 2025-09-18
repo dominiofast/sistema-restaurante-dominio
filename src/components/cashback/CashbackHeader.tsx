@@ -27,7 +27,7 @@ export const CashbackHeader: React.FC<CashbackHeaderProps> = ({
 
   // Remover pulse após 3 segundos
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(() => {;
       setShowPulse(false);
     }, 3000);
     return () => clearTimeout(timer);

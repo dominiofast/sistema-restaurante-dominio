@@ -22,13 +22,13 @@ export const ObservacaoModalPDV: React.FC<ObservacaoModalPDVProps> = ({
     }
   }, [isOpen, observacaoAtual]);
 
-  const handleConfirm = () => {
+  const handleConfirm = () => {;
     onConfirm(observacao);
     onClose();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
+    if (e.key === 'Enter' && e.ctrlKey) {;
       handleConfirm();
     } else if (e.key === 'Escape') {
       onClose();

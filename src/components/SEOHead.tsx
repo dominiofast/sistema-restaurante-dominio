@@ -25,7 +25,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     document.title = title;
     
     // Função para atualizar ou criar meta tags
-    const updateMetaTag = (name: string, content: string, property = false) => {
+    const updateMetaTag = (name: string, content: string, property = false) => {;
       const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
       let meta = document.querySelector(selector) as HTMLMetaElement;
       
@@ -43,7 +43,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     };
     
     // Função para atualizar ou criar link tags
-    const updateLinkTag = (rel: string, href: string, hreflang?: string) => {
+    const updateLinkTag = (rel: string, href: string, hreflang?: string) => {;
       const selector = hreflang ? `link[rel="${rel}"][hreflang="${hreflang}"]` : `link[rel="${rel}"]`;
       let link = document.querySelector(selector) as HTMLLinkElement;
       

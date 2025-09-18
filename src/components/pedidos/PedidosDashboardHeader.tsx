@@ -32,7 +32,7 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
   const [buscaCliente, setBuscaCliente] = useState('');
 
   const handleBuscaCliente = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && buscaCliente.trim()) {
+    if (e.key === 'Enter' && buscaCliente.trim()) {;
       const somenteNumeros = buscaCliente.replace(/\D/g, '');
       
       if (somenteNumeros.length >= 10) {
@@ -41,7 +41,7 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
           
           if (cliente) {
             await fetchAddressesByPhone(somenteNumeros, currentCompany?.id);
-            navigate(`/pedidos/cliente/${cliente.id}`, { 
+            navigate(`/pedidos/cliente/${cliente.id} catch (error) { console.error('Error:', error); }`, { 
               state: { cliente, telefone: somenteNumeros } 
             });
           } else {
@@ -49,14 +49,14 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
           }
         } catch (error) {
           alert('Erro ao buscar cliente');
-        }
+
       } else {
         alert('Por favor, digite um telefone válido com pelo menos 10 dígitos');
-      }
-    }
+
+
   };
 
-  const handleVendaBalcao = () => {
+  const handleVendaBalcao = () => {;
     navigate('/pdv');
   };
 

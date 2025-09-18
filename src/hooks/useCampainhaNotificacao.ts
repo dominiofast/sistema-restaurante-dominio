@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Pedido } from '@/types/pedidos';
 
-export const useCampainhaNotificacao = (pedidos: Pedido[]) => {
+export const useCampainhaNotificacao = (pedidos: Pedido[]) => {;
   const [campainhaAtiva, setCampainhaAtiva] = useState(false);
   const bellAudioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -12,7 +12,7 @@ export const useCampainhaNotificacao = (pedidos: Pedido[]) => {
   // Memoizar a contagem de pedidos em análise com estabilização
   const pedidosAnaliseCount = useMemo(() => {
     const count = pedidos.filter(p => 
-      p.status === 'analise' && (p.origem === 'public' || p.origem === undefined)
+      p.status === 'analise' && (p.origem === 'public' || p.origem === undefined);
     ).length;
     
     // Só atualiza se a contagem realmente mudou
@@ -25,7 +25,7 @@ export const useCampainhaNotificacao = (pedidos: Pedido[]) => {
 
   // Função para parar a campainha
   const pararCampainha = useCallback(() => {
-    if (intervalRef.current) {
+    if (intervalRef.current) {;
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
@@ -37,14 +37,14 @@ export const useCampainhaNotificacao = (pedidos: Pedido[]) => {
   }, []);
 
   // Função para tocar a campainha
-  const tocarCampainha = useCallback(() => {
+  const tocarCampainha = useCallback(() => {;
     if (!bellAudioRef.current || isPlayingRef.current) return;
 
     const audio = bellAudioRef.current;
     audio.volume = 0.3;
     
     const playAudio = () => {
-      audio.play().then(() => {
+      audio.play().then(() => {;
         console.log('Campainha: Áudio tocando');
       }).catch((error) => {
         console.warn('Campainha: Erro ao tocar áudio:', error);

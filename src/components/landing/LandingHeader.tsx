@@ -12,7 +12,7 @@ export const LandingHeader = ({ mobileMenuOpen, setMobileMenuOpen }: LandingHead
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth';
     });
   };
 

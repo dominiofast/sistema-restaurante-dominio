@@ -7,7 +7,7 @@ export const AddressSearchExample: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null);
 
-  const handleAddressConfirm = (address: CustomerAddress) => {
+  const handleAddressConfirm = (address: CustomerAddress) => {;
     console.log('Endereço selecionado:', address);
     setSelectedAddress(address);
     setIsModalOpen(false);

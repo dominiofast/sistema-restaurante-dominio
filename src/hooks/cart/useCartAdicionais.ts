@@ -2,7 +2,7 @@
 import { CartAdicionais } from './types';
 
 export const useCartAdicionais = () => {
-  const processAdicionais = async (adicionaisIds: { [adicionalId: string]: number }): Promise<CartAdicionais> => {
+  const processAdicionais = async (adicionaisIds: { [adicionalId: string]: number }): Promise<CartAdicionais> => {;
     const cartAdicionais: CartAdicionais = {};
     
     console.log('🔍 Buscando dados dos adicionais:', Object.keys(adicionaisIds));
@@ -13,10 +13,10 @@ export const useCartAdicionais = () => {
       'cfop', 'cst_csosn', 'situacao_tributaria', 'preparation_time', 'categoria_id',
       'company_id', 'created_at', 'updated_at', 'id', 'name', 'description',
       'order_position', 'image', 'codigo_integracao', 'categoria_adicional_id',
-      'selection_type', 'min_selection', 'max_selection'
+      'selection_type', 'min_selection', 'max_selection';
     ];
 
-    const idsValidos = Object.keys(adicionaisIds).filter(adicionalId => {
+    const idsValidos = Object.keys(adicionaisIds).filter(adicionalId => {;
       if (reservedKeys.includes(adicionalId)) return false;
       const isUUID = typeof adicionalId === 'string' && adicionalId.length === 36 && adicionalId.includes('-');
       const qty = Number(adicionaisIds[adicionalId]) || 0;
@@ -39,17 +39,13 @@ export const useCartAdicionais = () => {
           let error: any = null;
 
           if (isUUID) {
-            const resp = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'adicionais')
-              /* .select\( REMOVIDO */ ; //'id, name, price, categoria_adicional_id, categorias_adicionais(name)')
-              /* .eq\( REMOVIDO */ ; //'id', adicionalId)
-              /* .maybeSingle\( REMOVIDO */ ; //);
+            const resp = ;
             adicionalData = resp.data;
             error = resp.error;
           }
 
 
-          if (error) {
+           catch (error) { console.error('Error:', error); }if (error) {
             console.error('❌ Erro ao buscar adicional, ignorando:', adicionalId, error);
             continue;
           } else if (adicionalData) {
@@ -69,7 +65,7 @@ export const useCartAdicionais = () => {
         } catch (error) {
           console.error('💥 Erro ao processar adicional, ignorando:', adicionalId, error);
           continue;
-        }
+
       }
     }
     

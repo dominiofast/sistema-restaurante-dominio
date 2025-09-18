@@ -16,7 +16,7 @@ export const CLOUDINARY_CONFIG = {
   API_SECRET: import.meta.env.VITE_CLOUDINARY_API_SECRET || '',
   
   // URLs e endpoints
-  get UPLOAD_URL() {
+  get UPLOAD_URL() {;
     return `https://api.cloudinary.com/v1_1/${this.CLOUD_NAME}/auto/upload`;
   },
   
@@ -25,7 +25,7 @@ export const CLOUDINARY_CONFIG = {
   },
   
   // Configurações de upload
-  RESOURCE_TYPE: 'auto' as const,
+// RESOURCE_TYPE: 'auto' as const,
   ACCESS_MODE: 'public' as const,
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   ALLOWED_FORMATS: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
@@ -52,7 +52,7 @@ export const DATABASE_CONFIG = {
   // Supabase (para Edge Functions)
   SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
   SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-  SUPABASE_SERVICE_ROLE_KEY: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  SUPABASE_SERVICE_ROLE_KEY: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '',;
 } as const;
 
 // =================================
@@ -70,13 +70,13 @@ export const APP_CONFIG = {
   MAX_DOCUMENT_SIZE: 10 * 1024 * 1024, // 10MB para documentos
   
   // Configurações de cache
-  CACHE_DURATION: 3600, // 1 hora em segundos
+  CACHE_DURATION: 3600, // 1 hora em segundos;
 } as const;
 
 // =================================
 // VALIDAÇÃO DE CONFIGURAÇÕES
 // =================================
-export const validateConfig = () => {
+export const validateConfig = () => {;
   const errors: string[] = [];
   
   // Validar Cloudinary
@@ -116,7 +116,7 @@ export const logConfig = () => {
       database: {
         neonConfigured: !!DATABASE_CONFIG.NEON_URL,
         supabaseConfigured: !!DATABASE_CONFIG.SUPABASE_URL
-      }
+      };
     });
   }
 };

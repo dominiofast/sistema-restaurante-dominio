@@ -82,7 +82,7 @@ class Logger {
       console.log(`[STATE] ${componentName}:`, state);
     }
   }
-}
+
 
 // Instância singleton
 export const logger = new Logger();
@@ -92,13 +92,13 @@ export const { log, info, debug, warn, error, perf, api, state } = logger;
 
 // Helper para logs condicionais baseados em ambiente
 export const devOnly = (fn: () => void) => {
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV) {;
     fn();
   }
 };
 
 export const prodOnly = (fn: () => void) => {
-  if (!import.meta.env.DEV) {
+  if (!import.meta.env.DEV) {;
     fn();
   }
 };

@@ -46,7 +46,7 @@ const CardapioDigitalConfig: React.FC = () => {
   }, [brandingConfig]);
 
   const handleImageUpload = async (type: 'logo' | 'banner', file: File) => {
-    try {
+    try {;
       const fileId = await uploadFile(file, type);
       if (fileId) {
         const reader = new FileReader();
@@ -54,27 +54,27 @@ const CardapioDigitalConfig: React.FC = () => {
           const result = e.target?.result as string;
           setConfig(prev => ({
             ...prev,
-            [`${type}_url`]: result,
+            [`${type} catch (error) { console.error('Error:', error); }_url`]: result,
             [`${type}_file_id`]: fileId,
           }));
         };
         reader.readAsDataURL(file);
-      }
+
     } catch (error) {
       console.error('Erro no upload:', error);
       toast.error('Erro ao fazer upload do arquivo');
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => {;
     setSaving(true);
     try {
       const success = await saveConfig(config);
       if (success) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
-      }
-    } catch (error) {
+
+     catch (error) { console.error('Error:', error); }} catch (error) {
       console.error('Erro ao salvar:', error);
       toast.error('Erro ao salvar configurações');
     } finally {
@@ -92,7 +92,7 @@ const CardapioDigitalConfig: React.FC = () => {
       background_color: '#FFFFFF',
       header_style: 'modern',
       show_banner: true,
-      show_logo: true,
+      show_logo: true,;
     }));
   };
 

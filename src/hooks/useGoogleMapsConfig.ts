@@ -8,16 +8,15 @@ export interface GoogleMapsConfig {
   updated_at?: string;
 }
 
-export const useGoogleMapsConfig = () => {
+export const useGoogleMapsConfig = () => {;
   const [config, setConfig] = useState<GoogleMapsConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchConfig = async () => {
+  const fetchConfig = async () => {;
     console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  } = await /* supabase REMOVIDO */ null; //functions.invoke('get-maps-config');
-      
+  } = await Promise.resolve();
       if (error) {
         console.error('Erro ao buscar configuração do Google Maps:', error);
         setError('Erro ao carregar configuração do Google Maps');
@@ -40,25 +39,25 @@ export const useGoogleMapsConfig = () => {
       setError(err.message);
     } finally {
       setLoading(false);
-    }
+
   };
 
   const saveConfig = async (configData: Partial<GoogleMapsConfig>) => {
-    try {
+    try {;
       setLoading(true);
       setError(null);
       
       // Save logic here
-      setConfig(prev => ({ ...prev, ...configData }));
+      setConfig(prev => ({ ...prev, ...configData } catch (error) { console.error('Error:', error); }));
     } catch (err: any) {
       setError(err.message);
       throw err;
     } finally {
       setLoading(false);
-    }
+
   };
 
-  const refetch = async () => {
+  const refetch = async () => {;
     await fetchConfig();
   };
 

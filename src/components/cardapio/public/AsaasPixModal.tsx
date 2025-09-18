@@ -14,7 +14,7 @@ interface AsaasPixModalProps {
   customerPhone?: string;
   externalReference?: string;
   primaryColor?: string;
-}
+
 
 interface AsaasPayment {
   id: string;
@@ -23,7 +23,7 @@ interface AsaasPayment {
   qr_code_base64: string;
   amount: number;
   expires_at: string;
-}
+
 
 export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   isOpen,
@@ -50,11 +50,11 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   const paymentSuccessTriggered = React.useRef(false);
 
   // Format currency
-  const formatCurrency = (value: number) =>
+  const formatCurrency = (value: number) =>;
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
   // Format time left
-  const formatTimeLeft = (seconds: number): string => {
+  const formatTimeLeft = (seconds: number): string => {;
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
@@ -66,12 +66,12 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   };
 
   // Validate and format CPF
-  const formatCpf = (value: string): string => {
+  const formatCpf = (value: string): string => {;
     const numbers = value.replace(/\D/g, '');
     return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   };
 
-  const validateCpf = (cpf: string): boolean => {
+  const validateCpf = (cpf: string): boolean => {;
     const numbers = cpf.replace(/\D/g, '');
     if (numbers.length !== 11 || /^(\d)\1{10}$/.test(numbers)) return false;
     
@@ -93,14 +93,14 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   };
 
   // Calculate time left
-  const calculateTimeLeft = (expirationDate: string): number => {
+  const calculateTimeLeft = (expirationDate: string): number => {;
     const now = new Date().getTime();
     const expiry = new Date(expirationDate).getTime();
     return Math.max(0, Math.floor((expiry - now) / 1000));
   };
 
   // Create PIX payment via Asaas
-  const createPixPayment = async () => {
+  const createPixPayment = async () => {;
     setLoading(true);
     setError(null);
 
@@ -108,7 +108,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
 
 
       // Usar edge function em vez da função do banco
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-asaas-payment', {
+      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           companyId,
           amount,
@@ -124,13 +124,13 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
       if (error) {
         console.error('❌ Erro na função Asaas:', error);
         throw new Error(error.message || 'Erro ao criar pagamento PIX');
-      }
+
 
       const response = data as any;
       if (!response?.success || !response?.payment) {
         console.error('❌ Resposta inválida:', data);
         throw new Error(response?.error || 'Resposta inválida do servidor');
-      }
+
 
       const asaasPayment = response.payment;
 
@@ -170,12 +170,12 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
 
   // Check payment status with retry logic
   const checkPaymentStatus = async (paymentId: string, retryCount = 0) => {
-    try {
+    try {;
       setChecking(true);
       
-      console.log(`🔍 Verificando status do pagamento Asaas (tentativa ${retryCount + 1}):`, paymentId);
+      console.log(`🔍 Verificando status do pagamento Asaas (tentativa ${retryCount + 1} catch (error) { console.error('Error:', error); }):`, paymentId);
 
-      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('check-asaas-payment', {
+      const { data, error } = await Promise.resolve();
         body: {
           paymentId
         }
@@ -193,7 +193,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
           }, delay);
         }
         return false;
-      }
+
 
       const response = data;
       if (response?.success && response?.payment) {
@@ -231,7 +231,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
         setTimeout(() => {
           checkPaymentStatus(paymentId, retryCount + 1);
         }, 2000);
-      }
+
     } finally {
       setChecking(false);
     }
@@ -240,7 +240,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   };
 
   // Start payment checking with more aggressive polling
-  const startPaymentCheck = (paymentId: string) => {
+  const startPaymentCheck = (paymentId: string) => {;
     console.log('🔄 Iniciando verificação de pagamento:', paymentId);
     
     // Check immediately
@@ -249,35 +249,35 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
     // Check every 3 seconds for the first 5 minutes (more frequent for fresh payments)
     const frequentInterval = setInterval(async () => {
       // ANTI-DUPLICAÇÃO: Parar verificação se já houve sucesso
-      if (paymentSuccessTriggered.current) {
+      if (paymentSuccessTriggered.current) {;
         console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado');
         clearInterval(frequentInterval);
         clearInterval(normalInterval);
         return;
-      }
+
       
       const shouldStop = await checkPaymentStatus(paymentId);
       if (shouldStop) {
         clearInterval(frequentInterval);
         clearInterval(normalInterval);
-      }
+
     }, 3000);
 
     // After 5 minutes, switch to every 10 seconds
     const normalInterval = setInterval(async () => {
       // ANTI-DUPLICAÇÃO: Parar verificação se já houve sucesso
-      if (paymentSuccessTriggered.current) {
+      if (paymentSuccessTriggered.current) {;
         console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado');
         clearInterval(frequentInterval);
         clearInterval(normalInterval);
         return;
-      }
+
       
       const shouldStop = await checkPaymentStatus(paymentId);
       if (shouldStop) {
         clearInterval(frequentInterval);
         clearInterval(normalInterval);
-      }
+
     }, 10000);
 
     // Stop frequent checking after 5 minutes
@@ -295,7 +295,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   };
 
   // Copy PIX code
-  const copyPixCode = async () => {
+  const copyPixCode = async () => {;
     if (!payment?.qr_code) return;
 
     try {
@@ -303,7 +303,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
       toast({
         title: 'Código copiado!',
         description: 'Cole no seu app do banco para pagar',
-      });
+      } catch (error) { console.error('Error:', error); });
     } catch (err) {
       toast({
         title: 'Erro ao copiar',
@@ -317,7 +317,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   useEffect(() => {
     if (!payment || timeLeft <= 0) return;
 
-    const interval = setInterval(() => {
+    const interval = setInterval(() => {;
       setTimeLeft(prev => Math.max(0, prev - 1));
     }, 1000);
 
@@ -541,7 +541,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
                   {checking 
                     ? 'Consultando status no Asaas...' 
                     : 'Seu pagamento será confirmado automaticamente'
-                  }
+
                 </p>
                 
                 {/* Indicador de progresso */}

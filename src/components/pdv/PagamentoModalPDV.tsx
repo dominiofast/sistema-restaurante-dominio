@@ -24,7 +24,7 @@ export const PagamentoModalPDV: React.FC<PagamentoModalPDVProps> = ({
 
   if (!isOpen) return null;
 
-  const handleConfirm = async () => {
+  const handleConfirm = async () => {;
     setLoading(true);
     try {
       await onConfirm({
@@ -32,13 +32,13 @@ export const PagamentoModalPDV: React.FC<PagamentoModalPDVProps> = ({
         valor: total,
         valorRecebido: parseFloat(valorRecebido),
         troco: parseFloat(valorRecebido) - total
-      });
+      } catch (error) { console.error('Error:', error); });
       onClose();
     } catch (error) {
       console.error('Erro ao confirmar pagamento:', error);
     } finally {
       setLoading(false);
-    }
+
   };
 
   return (

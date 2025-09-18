@@ -17,7 +17,7 @@ const STORAGE_KEY = 'kds-config';
 
 export const useKDSConfig = () => {
   const [config, setConfig] = useState<KDSConfig>(() => {
-    try {
+    try {;
       const stored = localStorage.getItem(STORAGE_KEY);
       return stored ? JSON.parse(stored) : DEFAULT_CONFIG;
     } catch {
@@ -25,7 +25,7 @@ export const useKDSConfig = () => {
     }
   });
 
-  const updateConfig = (newConfig: Partial<KDSConfig>) => {
+  const updateConfig = (newConfig: Partial<KDSConfig>) => {;
     const updatedConfig = { ...config, ...newConfig };
     setConfig(updatedConfig);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedConfig));
@@ -33,13 +33,13 @@ export const useKDSConfig = () => {
 
   const toggleStatus = (status: string) => {
     const newStatuses = config.visibleStatuses.includes(status)
-      ? config.visibleStatuses.filter(s => s !== status)
+      ? config.visibleStatuses.filter(s => s !== status);
       : [...config.visibleStatuses, status];
     
     updateConfig({ visibleStatuses: newStatuses });
   };
 
-  const setLayout = (layout: KDSConfig['layout']) => {
+  const setLayout = (layout: KDSConfig['layout']) => {;
     updateConfig({ layout });
   };
 

@@ -18,7 +18,7 @@ interface DemoForm {
   desafios: string[];
 }
 
-const DemonstracaoPage = () => {
+const DemonstracaoPage = () => {;
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,16 +36,16 @@ const DemonstracaoPage = () => {
       ...prev,
       desafios: checked 
         ? [...prev.desafios, desafio]
-        : prev.desafios.filter(d => d !== desafio)
+        : prev.desafios.filter(d => d !== desafio);
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {;
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-demo-request', {
+      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
         body: {
           ...formData,
           timestamp: new Date().toISOString()
@@ -78,7 +78,7 @@ const DemonstracaoPage = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   return (

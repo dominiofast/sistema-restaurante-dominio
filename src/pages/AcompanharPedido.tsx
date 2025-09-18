@@ -16,7 +16,7 @@ interface PedidoData {
   status: string;
   created_at: string;
   company_id: string;
-}
+
 
 interface ItemPedido {
   id: string;
@@ -24,13 +24,13 @@ interface ItemPedido {
   quantidade: number;
   valor_total: number;
   observacoes?: string;
-}
+
 
 interface AdicionalItem {
   nome_adicional: string;
   quantidade: number;
   valor_total: number;
-}
+
 
 const getStatusInfo = (status: string, tipoPedido?: string) => {
   // Usar o status exato do banco de dados
@@ -42,7 +42,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         color: 'text-green-600',
         bgColor: 'bg-green-100',
         text: 'Pedido Confirmado',
-        description: 'Seu pedido foi aceito e está sendo preparado'
+        description: 'Seu pedido foi aceito e está sendo preparado';
       };
     
     case 'analise':
@@ -73,7 +73,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
     case 'ready':
       // Descrição específica baseada no tipo de pedido
       const descricaoPronto = tipoPedido === 'delivery' 
-        ? 'Pedido pronto, logo sairá para entrega'
+        ? 'Pedido pronto, logo sairá para entrega';
         : 'Pedido pronto, pode vir retirar';
       
       return {
@@ -126,7 +126,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         text: status || 'Status não identificado',
         description: 'Verificando status do pedido'
       };
-  }
+
 };
 
 export const AcompanharPedido: React.FC = () => {
@@ -145,7 +145,7 @@ export const AcompanharPedido: React.FC = () => {
 
     const fetchPedido = async () => {
       try {
-        // Extrair company_slug da URL (formato: /company-slug/pedido/numero)
+        // Extrair company_slug da URL (formato: /company-slug/pedido/numero);
         const urlPath = window.location.pathname;
         console.log('🔍 URL atual:', urlPath);
         const pathSegments = urlPath.split('/').filter(segment => segment.length > 0);
@@ -166,17 +166,12 @@ export const AcompanharPedido: React.FC = () => {
         
         // SOLUÇÃO DEFINITIVA: Usar APENAS a lógica que FUNCIONA
         console.log('🔍 === EXECUTANDO QUERY QUE FUNCIONA ===');
-        const { data: todasEmpresas, error: erroTodas } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'companies')
-          /* .select\( REMOVIDO */ ; //'id, slug, domain')
-          /* .eq\( REMOVIDO */ ; //'status', 'active');
-        
-        console.log('🔍 Todas as empresas ativas:', todasEmpresas);
+        const todasEmpresas = null as any; const erroTodas = null as any;
         console.log('🔍 Erro ao buscar todas:', erroTodas);
         
         // Filtrar manualmente como na query que FUNCIONA
         const empresaEncontrada = todasEmpresas?.find(empresa => 
-          empresa.slug === companySlugToUse || empresa.domain === companySlugToUse
+          empresa.slug === companySlugToUse || empresa.domain === companySlugToUse;
         );
         
         console.log('🔍 Empresa filtrada:', empresaEncontrada);
@@ -187,7 +182,7 @@ export const AcompanharPedido: React.FC = () => {
           return;
         }
         
-        const companyId = empresaEncontrada.id;
+         catch (error) { console.error('Error:', error); }const companyId = empresaEncontrada.id;
         console.log('✅ Empresa encontrada com sucesso! ID:', companyId);
         
         // Buscar pedido por numero_pedido + company_id
@@ -197,16 +192,7 @@ export const AcompanharPedido: React.FC = () => {
         // Primeiro tentar buscar por numero_pedido
         const numeroInteiro = parseInt(numero_pedido);
         console.log('🔍 Buscando pedido...', { numeroInteiro, companyId });
-        const { data: dadosPorNumero, error: erroPorNumero } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'pedidos')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'numero_pedido', numeroInteiro)
-          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
-          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
-          /* .limit\( REMOVIDO */ ; //1)
-          /* .single\( REMOVIDO */ ; //);
-        
-        console.log('🔍 Resultado da busca:', { dadosPorNumero, erroPorNumero });
+        const dadosPorNumero = null as any; const erroPorNumero = null as any;
         console.log('🔍 Erro detalhado:', erroPorNumero?.message, erroPorNumero?.details, erroPorNumero?.code);
         
         if (dadosPorNumero) {
@@ -225,23 +211,13 @@ export const AcompanharPedido: React.FC = () => {
         setPedido(pedidoData);
 
         // Buscar itens
-        const { data: itensData, error: itensError } = /* await supabase REMOVIDO */ null
-          /* .from REMOVIDO */ ; //'pedido_itens')
-          /* .select\( REMOVIDO */ ; //'*')
-          /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoData.id);
-
-        if (!itensError && itensData) {
-          setItens(itensData);
+        const itensData = null as any; const itensError = null as any;
 
           // Buscar adicionais para cada item
           const adicionaisMap: { [itemId: string]: AdicionalItem[] } = {};
           
           for (const item of itensData) {
-            const { data: adicionaisData } = /* await supabase REMOVIDO */ null
-              /* .from REMOVIDO */ ; //'pedido_item_adicionais')
-              /* .select\( REMOVIDO */ ; //'nome_adicional, quantidade, valor_total')
-              /* .eq\( REMOVIDO */ ; //'pedido_item_id', item.id);
-
+            const { data: adicionaisData  } = null as any;
             if (adicionaisData && adicionaisData.length > 0) {
               adicionaisMap[item.id] = adicionaisData;
             }
@@ -255,15 +231,15 @@ export const AcompanharPedido: React.FC = () => {
         console.error(err);
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchPedido();
 
     // Configurar realtime para atualizações de status
     const channel = supabase
-      /* .channel REMOVIDO */ ; //'pedido-updates')
-      /* .on REMOVIDO */ ; //
+      
+      
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -272,15 +248,15 @@ export const AcompanharPedido: React.FC = () => {
           filter: `numero_pedido=eq.${numero_pedido}`
         },
         (payload) => {
-          if (payload.new) {
+          if (payload.new) {;
             setPedido(payload.new as PedidoData);
           }
         }
       )
-      /* .subscribe REMOVIDO */ ; //);
+      
 
     return () => {
-      /* supabase REMOVIDO */ null; //removeChannel(channel);
+      
     };
   }, [numero_pedido]);
 
@@ -293,7 +269,7 @@ export const AcompanharPedido: React.FC = () => {
         </div>
       </div>
     );
-  }
+
 
   if (error || !pedido) {
     return (
@@ -308,7 +284,7 @@ export const AcompanharPedido: React.FC = () => {
           </div>
         </div>
     );
-  }
+
 
   const statusInfo = getStatusInfo(pedido.status, pedido.tipo);
   const StatusIcon = statusInfo.icon;

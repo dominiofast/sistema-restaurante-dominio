@@ -11,7 +11,7 @@ export interface User {
   };
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface Company {
   id: string;
@@ -25,7 +25,7 @@ export interface Company {
   userCount: number;
   created_at?: string;
   updated_at?: string;
-}
+
 
 export interface AuthContextType {
   user: User | null;
@@ -36,4 +36,4 @@ export interface AuthContextType {
   switchCompany: (companyId: string) => void;
   isLoading: boolean;
   getCompanyData: () => any;
-}
+

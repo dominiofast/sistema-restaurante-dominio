@@ -26,7 +26,7 @@ interface FileUploadManagerProps {
   acceptedTypes?: string[];
   maxFiles?: number;
   disabled?: boolean;
-}
+
 
 export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
   onFilesChange,
@@ -41,7 +41,7 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (selectedFiles: FileList) => {
-    if (files.length + selectedFiles.length > maxFiles) {
+    if (files.length + selectedFiles.length > maxFiles) {;
       toast.error(`Máximo de ${maxFiles} arquivos permitidos`);
       return;
     }
@@ -59,8 +59,8 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
         const result = await cloudinaryService.uploadFile(file, (progress) => {
           setUploadProgress(prev => ({
             ...prev,
-            [fileKey]: progress.percentage
-          }));
+            [fileKey]: progress.percentage;
+          } catch (error) { console.error('Error:', error); }));
         });
 
         const fileData = cloudinaryService.convertToFileData(result, file);
@@ -91,20 +91,20 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
           delete newProgress[fileKey];
           return newProgress;
         });
-      }
+
     }
 
     setUploading(false);
   };
 
-  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {;
     const selectedFiles = event.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
       handleFileSelect(selectedFiles);
     }
   };
 
-  const handleDrop = (event: React.DragEvent) => {
+  const handleDrop = (event: React.DragEvent) => {;
     event.preventDefault();
     const droppedFiles = event.dataTransfer.files;
     if (droppedFiles.length > 0) {
@@ -112,18 +112,18 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
     }
   };
 
-  const handleDragOver = (event: React.DragEvent) => {
+  const handleDragOver = (event: React.DragEvent) => {;
     event.preventDefault();
   };
 
   const handleDownload = async (fileData: FileData) => {
-    try {
+    try {;
       const success = await cloudinaryService.downloadFile(fileData.cloudinaryUrl, fileData.originalName);
       if (success) {
-        toast.success(`Download de ${fileData.originalName} iniciado! 📥`);
+        toast.success(`Download de ${fileData.originalName}  catch (error) { console.error('Error:', error); }iniciado! 📥`);
       } else {
         toast.error('Erro no download. Tente novamente.');
-      }
+
     } catch (error) {
       console.error('Erro no download:', error);
       toast.error('Erro no download');
@@ -131,7 +131,7 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
   };
 
   const handleRemoveFile = (fileId: string) => {
-    setFiles(prev => {
+    setFiles(prev => {;
       const newFiles = prev.filter(file => file.id !== fileId);
       onFilesChange?.(newFiles);
       return newFiles;
@@ -139,7 +139,7 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
     toast.success('Arquivo removido');
   };
 
-  const getFileIcon = (format: string) => {
+  const getFileIcon = (format: string) => {;
     const imageFormats = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     const documentFormats = ['pdf', 'doc', 'docx'];
     
@@ -152,7 +152,7 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
     }
   };
 
-  const formatFileSize = (bytes: number): string => {
+  const formatFileSize = (bytes: number): string => {;
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];

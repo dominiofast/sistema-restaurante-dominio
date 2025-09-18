@@ -13,7 +13,7 @@ interface VagaHeroSectionProps {
 const VagaHeroSection: React.FC<VagaHeroSectionProps> = ({ vaga, config, slug }) => {
   // Validar e corrigir cor hexadecimal
   const validTitleColor = config.title_color?.match(/^#[0-9A-Fa-f]{6}$/) 
-    ? config.title_color 
+    ? config.title_color ;
     : '#1F2937';
   
   console.log('VagaHeroSection - config.title_color original:', config.title_color);

@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export const useQZTrayPrint = () => {
+export const useQZTrayPrint = () => {;
   const [isPrinting, setIsPrinting] = useState(false);
   
   // Usar contexto global do QZ Tray
@@ -54,13 +54,13 @@ export const useQZTrayPrint = () => {
           price: parseFloat(a.preco || 0)
         }))
       })),
-      total: (pedido.itens || []).reduce((acc: number, it: any) => {
+      total: (pedido.itens || []).reduce((acc: number, it: any) => {;
         const q = it.quantidade || 1;
         const p = parseFloat(it.preco || it.produto?.preco || 0);
         let sub = q * p;
         if (Array.isArray(it.adicionais)) {
           sub += it.adicionais.reduce((s: number, a: any) => s + (parseFloat(a.preco || 0) * q), 0);
-        }
+
         return acc + sub;
       }, 0),
       pagamento: pedido.pagamento || undefined
@@ -70,7 +70,7 @@ export const useQZTrayPrint = () => {
 
   // Imprimir pedido usando contexto global
   const printPedido = useCallback(async (pedido: Pedido, printerName?: string) => {
-    try {
+    try {;
       setIsPrinting(true);
       
       // Obter impressora
@@ -80,15 +80,15 @@ export const useQZTrayPrint = () => {
         const savedPrinter = localStorage.getItem('qz-selected-printer');
         if (savedPrinter) {
           targetPrinter = savedPrinter;
-        } else {
+        }  catch (error) { console.error('Error:', error); }else {
           // Usar primeira impressora disponível
           const printers = await getPrinters();
           if (printers.length === 0) {
             throw new Error('Nenhuma impressora encontrada');
           }
           targetPrinter = printers[0];
-        }
-      }
+
+
       
       // Formatar dados para impressão
       const printDataFormatted = formatPedidoForPrint(pedido);
@@ -99,12 +99,12 @@ export const useQZTrayPrint = () => {
         format: 'command',
         flavor: 'plain',
         data: printDataFormatted,
-        options: { language: 'ESCPOS' }
+        options: { language: 'ESCPOS' };
       }]);
       
       if (success) {
         toast.success(`Pedido #${pedido.numero_pedido || pedido.id} enviado para impressão!`);
-      }
+
       
       return success;
       
@@ -114,12 +114,12 @@ export const useQZTrayPrint = () => {
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   }, [getPrinters, printData, formatPedidoForPrint]);
 
   // Imprimir cupom fiscal via QZ Tray usando contexto global
   const printCupomFiscal = useCallback(async (cupomData: any, printerName?: string) => {
-    try {
+    try {;
       setIsPrinting(true);
       
       // Obter impressora
@@ -128,14 +128,14 @@ export const useQZTrayPrint = () => {
         const savedPrinter = localStorage.getItem('qz-selected-printer');
         if (savedPrinter) {
           targetPrinter = savedPrinter;
-        } else {
+        }  catch (error) { console.error('Error:', error); }else {
           const printers = await getPrinters();
           if (printers.length === 0) {
             throw new Error('Nenhuma impressora encontrada');
           }
           targetPrinter = printers[0];
-        }
-      }
+
+
       
       // Formatar cupom fiscal (simplificado)
       const lines = [];
@@ -147,13 +147,13 @@ export const useQZTrayPrint = () => {
       
       if (cupomData.chave) {
         lines.push(`Chave: ${cupomData.chave}`);
-      }
+
       if (cupomData.numero) {
         lines.push(`Número: ${cupomData.numero}`);
-      }
+
       if (cupomData.serie) {
         lines.push(`Série: ${cupomData.serie}`);
-      }
+
       
       lines.push('================================');
       lines.push('');
@@ -168,12 +168,12 @@ export const useQZTrayPrint = () => {
         format: 'command',
         flavor: 'plain',
         data: printDataFormatted,
-        options: { language: 'ESCPOS' }
+        options: { language: 'ESCPOS' };
       }]);
       
       if (success) {
         toast.success('Cupom fiscal enviado para impressão!');
-      }
+
       
       return success;
       
@@ -183,7 +183,7 @@ export const useQZTrayPrint = () => {
       return false;
     } finally {
       setIsPrinting(false);
-    }
+
   }, [getPrinters, printData]);
 
   return {

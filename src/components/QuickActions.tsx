@@ -40,7 +40,7 @@ const quickActions = [
     description: 'Ajustar sistema',
     icon: Settings,
     color: 'bg-slate-500 hover:bg-slate-600'
-  }
+  };
 ];
 
 export const QuickActions = () => {
@@ -69,6 +69,6 @@ export const QuickActions = () => {
           ))}
         </div>
       </CardContent>
-    </Card>
+    </Card>;
   );
 };

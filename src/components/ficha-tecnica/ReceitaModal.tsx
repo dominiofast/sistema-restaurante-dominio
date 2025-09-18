@@ -25,7 +25,7 @@ interface Receita {
   preco_venda_sugerido?: number;
   margem_lucro?: number;
   is_active: boolean;
-}
+
 
 interface Ingrediente {
   id: string;
@@ -35,23 +35,23 @@ interface Ingrediente {
   medida?: string;
   quantidade?: number;
   custo_total?: number;
-}
+
 
 interface ReceitaModalProps {
   isOpen: boolean;
   onClose: () => void;
   receita?: Receita;
   onSave: () => void;
-}
+
 
 const CATEGORIAS_RECEITA = [
   'Pizzas Doces', 'Pizzas Salgadas', 'Massas', 'Molhos e Bases',
   'Saladas', 'Sobremesas', 'Bebidas', 'Antepastos', 'Pratos Principais',
-  'Acompanhamentos', 'Temperos e Misturas', 'Outros'
+  'Acompanhamentos', 'Temperos e Misturas', 'Outros';
 ];
 
 const UNIDADES_RENDIMENTO = [
-  'porções', 'unidades', 'kg', 'L', 'fatias', 'copos'
+  'porções', 'unidades', 'kg', 'L', 'fatias', 'copos';
 ];
 
 const ReceitaModal: React.FC<ReceitaModalProps> = ({
@@ -99,27 +99,27 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         margem_lucro: 0,
         is_active: true
       });
-    }
+
     
     // Carregar mercadorias disponíveis
     if (isOpen) {
       fetchMercadorias();
-    }
+
   }, [receita, isOpen]);
 
   const fetchMercadorias = async () => {
-    try {
-      const { data } = await (supabase as any)
-        /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
-        /* .select\( REMOVIDO */ ; //'*')
-        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany?.id)
-        /* .eq\( REMOVIDO */ ; //'is_active', true)
-        /* .order\( REMOVIDO */ ; //'nome');
+    try {;
+      const { data }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+        
+        
+        
+        
+        
       
       setMercadorias(data || []);
     } catch (error) {
       console.error('Erro ao carregar mercadorias:', error);
-    }
+
   };
 
   const adicionarIngrediente = () => {
@@ -130,7 +130,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
       custo_item: 0,
       medida: '',
       quantidade: 0,
-      custo_total: 0
+      custo_total: 0;
     };
     setIngredientes([...ingredientes, novoIngrediente]);
   };
@@ -139,19 +139,19 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
     const novoTitulo: Ingrediente = {
       id: Date.now().toString(),
       tipo: 'titulo',
-      nome: ''
+      nome: '';
     };
     setIngredientes([...ingredientes, novoTitulo]);
   };
 
-  const removerIngrediente = (id: string) => {
+  const removerIngrediente = (id: string) => {;
     setIngredientes(ingredientes.filter(ing => ing.id !== id));
     recalcularCustoTotal();
   };
 
   const atualizarIngrediente = (id: string, campo: string, valor: any) => {
     setIngredientes(prev => prev.map(ing => {
-      if (ing.id === id) {
+      if (ing.id === id) {;
         const atualizado = { ...ing, [campo]: valor };
         
         // Recalcular custo total do ingrediente
@@ -170,17 +170,17 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
 
   const recalcularCustoTotal = () => {
     const custoTotal = ingredientes
-      .filter(ing => ing.tipo === 'ingrediente')
+      .filter(ing => ing.tipo === 'ingrediente');
       .reduce((sum, ing) => sum + (ing.custo_total || 0), 0);
     
     setFormData(prev => ({ ...prev, custo_total: custoTotal }));
   };
 
   const calcularMargem = () => {
-    if (formData.custo_total && formData.preco_venda_sugerido && formData.custo_total > 0) {
+    if (formData.custo_total && formData.preco_venda_sugerido && formData.custo_total > 0) {;
       const margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100);
       setFormData({ ...formData, margem_lucro: margem });
-    }
+
   };
 
   const handleSave = async () => {
@@ -188,10 +188,10 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
       toast({
         title: 'Erro',
         description: 'Nome da receita é obrigatório',
-        variant: 'destructive'
+        variant: 'destructive';
       });
       return;
-    }
+
 
     if (!user) {
       toast({
@@ -200,7 +200,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         variant: 'destructive'
       });
       return;
-    }
+
 
     const companyId = currentCompany?.id;
     if (!companyId) {
@@ -210,7 +210,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         variant: 'destructive'
       });
       return;
-    }
+
 
     setSaving(true);
 
@@ -220,19 +220,19 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100);
       }
 
-      const dataToSave = {
+       catch (error) { console.error('Error:', error); }const dataToSave = {
         ...formData,
         company_id: companyId,
         margem_lucro: margem,
         updated_by: user.id,
-        ...(receita ? {} : { created_by: user.id })
+        ...(receita ? {} : { created_by: user.id });
       };
 
       if (receita?.id) {
         const { error } = await (supabase as any)
-          /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
-          /* .update\( REMOVIDO */ ; //dataToSave)
-          /* .eq\( REMOVIDO */ ; //'id', receita.id);
+          
+          
+          
 
         if (error) throw error;
 
@@ -242,8 +242,8 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         });
       } else {
         const { error } = await (supabase as any)
-          /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
-          /* .insert\( REMOVIDO */ ; //[dataToSave]);
+          
+          
 
         if (error) throw error;
 
@@ -264,13 +264,13 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
       });
     } finally {
       setSaving(false);
-    }
+
   };
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL';
     }).format(value);
   };
 

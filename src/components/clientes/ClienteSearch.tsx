@@ -18,7 +18,7 @@ export const ClienteSearch: React.FC<ClienteSearchProps> = ({
   totalRecords
 }) => {
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter') {;
       onSearch();
     }
   };

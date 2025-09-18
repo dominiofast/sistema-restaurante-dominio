@@ -38,7 +38,7 @@ export const CashbackCardAdaptive: React.FC<CashbackCardAdaptiveProps> = ({
 
   // Função para criar gradiente baseado na cor primária
   const createGradient = (color: string) => {
-    // Converte hex para RGB para manipulação
+    // Converte hex para RGB para manipulação;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
@@ -58,7 +58,7 @@ export const CashbackCardAdaptive: React.FC<CashbackCardAdaptiveProps> = ({
   };
 
   // Função para determinar se a cor é clara ou escura
-  const isLightColor = (color: string) => {
+  const isLightColor = (color: string) => {;
     const hex = color.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
