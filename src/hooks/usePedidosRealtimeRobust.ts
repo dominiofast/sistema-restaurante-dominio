@@ -72,33 +72,19 @@ export const usePedidosRealtimeRobust = () => {
             id: pedido.id,
             numero_pedido: pedido.numero_pedido,
             company_id: pedido.company_id,
-            nome: pedido.nome || 'Cliente não informado',
-            telefone: pedido.telefone || '',
-            endereco: pedido.endereco || '',
+            nome: pedido.customer_name || pedido.nome || 'Cliente não informado',
+            telefone: pedido.customer_phone || pedido.telefone || '',
+            endereco: pedido.customer_address || pedido.endereco || '',
             status: statusMapeado,
-            tipo: pedido.tipo || 'delivery',
-            total: Number(pedido.total) || 0,
-            pagamento: pedido.pagamento || '',
+            tipo: pedido.delivery_method || pedido.tipo || 'balcao',
+            total: Number(pedido.total_amount || pedido.total) || 0,
+            pagamento: pedido.payment_method || pedido.pagamento || '',
             horario: pedido.horario || '',
-            origem: pedido.origem || 'pdv',
+            origem: pedido.origem || 'api',
             created_at: pedido.created_at,
             updated_at: pedido.updated_at,
-            observacoes: pedido.observacoes,
-            itens: (pedido.pedido_itens || []).map((item: any) => ({
-              nome: item.nome_produto,
-              qtd: item.quantidade,
-              valor: item.valor_unitario,
-              adicionais: (item.pedido_item_adicionais || []).reduce((acc: any, adicional: any) => {
-                const categoria = adicional.categoria_nome || 'Outros';
-                if (!acc[categoria]) acc[categoria] = [];
-                acc[categoria].push({
-                  nome: adicional.nome_adicional,
-                  quantidade: adicional.quantidade,
-                  valor: adicional.valor_unitario
-                });
-                return acc;
-              }, {})
-            }))
+            observacoes: pedido.observation || pedido.observacoes,
+            itens: [] // Por enquanto vazio, pode ser implementado depois
           };
         }) as Pedido[];
 

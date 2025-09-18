@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from './AuthContext';
 
 // Tipos
@@ -61,35 +61,26 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   const [userPermissions, setUserPermissions] = useState<UserPermission[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Carregar todas as permissões disponíveis
+  // MOCK - Carregar todas as permissões disponíveis (DESABILITADO)
   const loadPermissions = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('permissions')
-        .select('*')
-        .order('module, action');
-      
-      if (error) throw error;
-      setPermissions(data || []);
-    } catch (error) {
-      console.error('Erro ao carregar permissões:', error);
-    }
+    console.log('⚠️ PermissionsContext: loadPermissions desabilitado - sistema usa PostgreSQL');
+    // Mock de permissões básicas para evitar erros
+    setPermissions([
+      { id: '1', name: 'Gerenciar Pedidos', slug: 'manage-orders', module: 'orders', action: 'manage' },
+      { id: '2', name: 'Ver Pedidos', slug: 'view-orders', module: 'orders', action: 'view' },
+      { id: '3', name: 'Gerenciar Cardápio', slug: 'manage-menu', module: 'menu', action: 'manage' },
+    ]);
   };
 
-  // Carregar todos os roles disponíveis
+  // MOCK - Carregar todos os roles disponíveis (DESABILITADO)
   const loadRoles = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('roles')
-        .select('*')
-        .eq('is_active', true)
-        .order('name');
-      
-      if (error) throw error;
-      setRoles(data || []);
-    } catch (error) {
-      console.error('Erro ao carregar roles:', error);
-    }
+    console.log('⚠️ PermissionsContext: loadRoles desabilitado - sistema usa PostgreSQL');
+    // Mock de roles básicos para evitar erros
+    setRoles([
+      { id: '1', name: 'Admin', slug: 'admin', is_active: true },
+      { id: '2', name: 'Super Admin', slug: 'super_admin', is_active: true },
+      { id: '3', name: 'Gerente', slug: 'manager', is_active: true },
+    ]);
   };
 
   // Carregar permissões do usuário atual

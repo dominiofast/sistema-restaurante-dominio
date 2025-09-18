@@ -52,9 +52,10 @@ export const useWhatsappIntegrations = () => {
   };
 
   const fetchIntegrations = async () => {
+    console.log('⚠️ useWhatsappIntegrations: fetchIntegrations desabilitado - sistema usa PostgreSQL');
     if (companies.length === 0) return;
-    const { data } = await supabase.from('whatsapp_integrations').select('*');
-    setIntegrations(buildMap(data || []));
+    // const { data } = // await // supabase. // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations').select('*'); // DESABILITADO
+    setIntegrations({});
   };
 
   const saveIntegration = async (form: Partial<WhatsappIntegration>, selectedCompanyId: string) => {
@@ -73,7 +74,7 @@ export const useWhatsappIntegrations = () => {
       // Atualizar integração existente
       const updateId = form.id || existingIntegration?.id;
       const { error } = await supabase
-        .from('whatsapp_integrations')
+        // .from( // DESABILITADO'whatsapp_integrations')
         .update(payload as any)
         .eq('id', updateId);
       if (error) throw error;
@@ -81,7 +82,7 @@ export const useWhatsappIntegrations = () => {
     } else {
       // Criar nova integração
       const { error } = await supabase
-        .from('whatsapp_integrations')
+        // .from( // DESABILITADO'whatsapp_integrations')
         .insert([payload as any]);
       if (error) throw error;
       return 'Integração criada com sucesso.';
@@ -89,15 +90,20 @@ export const useWhatsappIntegrations = () => {
   };
 
   const refreshIntegrations = async () => {
-    const { data } = await supabase.from('whatsapp_integrations').select('*');
-    setIntegrations(buildMap(data || []));
+    console.log('⚠️ useWhatsappIntegrations: refreshIntegrations desabilitado - sistema usa PostgreSQL');
+    // const { data } = // await // supabase. // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations').select('*'); // DESABILITADO
+    setIntegrations({});
   };
 
   useEffect(() => {
+    console.log('⚠️ Hook desabilitado - sistema usa PostgreSQL');
+    return;
     fetchCompanies();
   }, []);
 
   useEffect(() => {
+    console.log('⚠️ Hook desabilitado - sistema usa PostgreSQL');
+    return;
     fetchIntegrations();
   }, [companies]);
 

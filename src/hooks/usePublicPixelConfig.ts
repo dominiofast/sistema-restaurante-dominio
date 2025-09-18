@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
 import { useParams, useLocation } from 'react-router-dom';
 
 export interface PixelConfigPublic {
@@ -28,41 +28,8 @@ export function usePublicPixelConfig(companySlug?: string) {
     }
 
     try {
-      console.info('[usePublicPixelConfig] Resolvido slug:', slug);
-      // Buscar empresa por slug | id | store_code
-      let companyQuery = supabase
-        .from('companies')
-        .select('id, slug, store_code, status')
-        .eq('status', 'active');
-
-      if (isNaN(Number(slug))) {
-        if ((slug as string).length === 36) {
-          companyQuery = companyQuery.eq('id', slug as string);
-        } else {
-          companyQuery = companyQuery.eq('slug', slug as string);
-        }
-      } else {
-        companyQuery = companyQuery.eq('store_code', Number(slug));
-      }
-
-      const { data: company, error: companyError } = await companyQuery.maybeSingle();
-      if (companyError) throw companyError;
-      if (!company?.id) {
-        console.info('[usePublicPixelConfig] Empresa não encontrada para slug:', slug);
-        setConfig(null);
-        setIsLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('facebook_pixel_configs')
-        .select('*')
-        .eq('company_id', company.id)
-        .maybeSingle();
-
-      if (error) throw error;
-      console.info('[usePublicPixelConfig] Config do pixel:', data);
-      setConfig(data ?? null);
+      console.log('⚠️ usePublicPixelConfig: Desabilitado - sistema usa PostgreSQL');
+      setConfig(null);
     } catch (err) {
       console.error('[usePublicPixelConfig] Erro ao buscar config:', err);
       setConfig(null);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
 import { toast } from 'sonner';
 import { whatsappFallback } from '@/services/whatsappFallbackSystem';
 import { whatsappConnectionManager } from '@/services/whatsappConnectionManager';
@@ -130,7 +130,7 @@ export const useWhatsAppRealtime = ({
   const cleanupChannels = useCallback(() => {
     channelsRef.current.forEach(channel => {
       try {
-        supabase.removeChannel(channel);
+        // supabase. // DESABILITADO - removeChannel(channel);
       } catch (error) {
         console.warn('Erro ao remover canal:', error);
       }
@@ -275,8 +275,8 @@ export const useWhatsAppRealtime = ({
 
     // Canal para mensagens com configuração otimizada
     const messagesChannel = supabase
-      .channel(`whatsapp_messages_${companyId}`)
-      .on(
+      // .channel( // DESABILITADO`whatsapp_messages_${companyId}`)
+      // .on( // DESABILITADO
         'postgres_changes',
         {
           event: 'INSERT',
@@ -315,7 +315,7 @@ export const useWhatsAppRealtime = ({
           }
         }
       )
-      .on(
+      // .on( // DESABILITADO
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -335,8 +335,8 @@ export const useWhatsAppRealtime = ({
 
     // Canal para chats
     const chatsChannel = supabase
-      .channel(`whatsapp_chats_${companyId}`)
-      .on(
+      // .channel( // DESABILITADO`whatsapp_chats_${companyId}`)
+      // .on( // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -437,14 +437,14 @@ export const useWhatsAppRealtime = ({
     };
 
     // Subscribe nos canais
-    messagesChannel.subscribe((status) => handleSubscriptionStatus(status, messagesChannel));
-    chatsChannel.subscribe((status) => handleSubscriptionStatus(status, chatsChannel));
+    messagesChannel// .subscribe( // DESABILITADO(status) => handleSubscriptionStatus(status, messagesChannel));
+    chatsChannel// .subscribe( // DESABILITADO(status) => handleSubscriptionStatus(status, chatsChannel));
 
     // Canal Broadcast: permite que o webhook notifique diretamente o frontend
     try {
       broadcastChannelRef.current = supabase
-        .channel(`whatsapp:${companyId}`, { config: { broadcast: { self: false } } })
-        .on('broadcast', { event: 'new_message' }, (payload: any) => {
+        // .channel( // DESABILITADO`whatsapp:${companyId}`, { config: { broadcast: { self: false } } })
+        // .on( // DESABILITADO'broadcast', { event: 'new_message' }, (payload: any) => {
           const m = payload?.payload || payload;
           if (!m) return;
           const mid = m.id || m.message_id;
@@ -453,7 +453,7 @@ export const useWhatsAppRealtime = ({
             debouncedMessageHandler(m);
           }
         })
-        .subscribe((status: string) => {
+        // .subscribe( // DESABILITADO(status: string) => {
           console.log('📡 Broadcast status:', status, `topic=whatsapp:${companyId}`);
           if (status === 'SUBSCRIBED') {
             // Se não houver atividade em 3s, puxa via polling
@@ -502,7 +502,7 @@ export const useWhatsAppRealtime = ({
       
       try {
         const { data: recentMessages } = await supabase
-          .from('whatsapp_messages')
+          // .from( // DESABILITADO'whatsapp_messages')
           .select('*')
           .eq('company_id', companyId)
           .order('timestamp', { ascending: false })
@@ -552,7 +552,7 @@ export const useWhatsAppRealtime = ({
           if (isUnmountedRef.current) return;
           try {
             const { data: recent } = await supabase
-              .from('whatsapp_messages')
+              // .from( // DESABILITADO'whatsapp_messages')
               .select('*')
               .eq('company_id', companyId)
               .order('timestamp', { ascending: false })
@@ -582,7 +582,7 @@ export const useWhatsAppRealtime = ({
       setTimeout(async () => {
         try {
           const { data: existingMessages } = await supabase
-            .from('whatsapp_messages')
+            // .from( // DESABILITADO'whatsapp_messages')
             .select('*')
             .eq('company_id', companyId)
             .order('timestamp', { ascending: false })
@@ -628,7 +628,7 @@ export const useWhatsAppRealtime = ({
       
       if (broadcastChannelRef.current) {
         try { 
-          supabase.removeChannel(broadcastChannelRef.current);
+          // supabase. // DESABILITADO - removeChannel(broadcastChannelRef.current);
           broadcastChannelRef.current = null;
         } catch {}
       }

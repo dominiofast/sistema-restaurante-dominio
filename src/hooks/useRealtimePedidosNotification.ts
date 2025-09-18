@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
 import { toast } from 'sonner';
 
 interface PedidoNotification {
@@ -19,13 +19,15 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
   const [pedidosPendentes, setPedidosPendentes] = useState<number>(0);
 
   useEffect(() => {
+    console.log('⚠️ Hook desabilitado - sistema usa PostgreSQL');
+    return;
     if (!companyId) return;
 
     // Buscar pedidos pendentes iniciais
     const fetchPedidosPendentes = async () => {
       try {
         const { data, error } = await supabase
-          .from('pedidos')
+          // .from( // DESABILITADO'pedidos')
           .select('id')
           .eq('company_id', companyId)
           .in('status', ['analise', 'aceito']);
@@ -42,8 +44,8 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
 
     // Configurar listener em tempo real para novos pedidos
     const channel = supabase
-      .channel('pedidos-realtime')
-      .on(
+      // .channel( // DESABILITADO'pedidos-realtime')
+      // // .on( // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: 'INSERT',
@@ -112,7 +114,7 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           console.log('🔔 Novo pedido recebido:', novoPedidoData);
         }
       )
-      .on(
+      // // .on( // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -137,11 +139,11 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           }
         }
       )
-      .subscribe();
+      // // .subscribe( // DESABILITADO // DESABILITADO);
 
     // Cleanup
     return () => {
-      supabase.removeChannel(channel);
+      // supabase. // DESABILITADO - removeChannel(channel);
     };
   }, [companyId]);
 

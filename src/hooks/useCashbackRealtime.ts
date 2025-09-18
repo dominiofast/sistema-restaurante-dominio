@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
 import { CashbackService } from '@/services/CashbackService';
 
 interface CashbackRealtimeHookReturn {
@@ -84,6 +84,8 @@ export const useCashbackRealtime = (
 
   // Real-time subscription para mudanças no cashback
   useEffect(() => {
+    console.log('⚠️ Hook desabilitado - sistema usa PostgreSQL');
+    return;
     if (!customerPhone || !companyId) return;
 
     // Buscar saldo inicial
@@ -91,8 +93,8 @@ export const useCashbackRealtime = (
 
     // Configurar real-time subscription para transações
     const transactionChannel = supabase
-      .channel('cashback-transactions-changes')
-      .on(
+      // .channel( // DESABILITADO'cashback-transactions-changes')
+      // // .on( // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -106,12 +108,12 @@ export const useCashbackRealtime = (
           fetchSaldo();
         }
       )
-      .subscribe();
+      // // .subscribe( // DESABILITADO // DESABILITADO);
 
     // Configurar real-time subscription para saldos
     const balanceChannel = supabase
-      .channel('cashback-balance-changes')
-      .on(
+      // .channel( // DESABILITADO'cashback-balance-changes')
+      // // .on( // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -130,12 +132,12 @@ export const useCashbackRealtime = (
           }
         }
       )
-      .subscribe();
+      // // .subscribe( // DESABILITADO // DESABILITADO);
 
     return () => {
       console.log('💰 [REALTIME] Desconectando canais de cashback');
-      supabase.removeChannel(transactionChannel);
-      supabase.removeChannel(balanceChannel);
+      // supabase. // DESABILITADO - removeChannel(transactionChannel);
+      // supabase. // DESABILITADO - removeChannel(balanceChannel);
     };
   }, [customerPhone, companyId]);
 

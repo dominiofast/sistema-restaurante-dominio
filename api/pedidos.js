@@ -41,15 +41,15 @@ export default async function handler(req, res) {
           p.id,
           p.numero_pedido,
           p.company_id,
-          p.customer_name,
-          p.customer_phone,
-          p.customer_address,
-          p.delivery_method,
-          p.payment_method,
+          p.nome as customer_name,
+          p.telefone as customer_phone,
+          p.endereco as customer_address,
+          p.tipo as delivery_method,
+          p.pagamento as payment_method,
           p.status,
-          p.total_amount,
-          p.observation,
-          p.estimated_time,
+          p.total as total_amount,
+          p.observacoes as observation,
+          30 as estimated_time,
           p.created_at,
           p.updated_at,
           c.name as company_name
@@ -121,28 +121,27 @@ export default async function handler(req, res) {
 
       // Gerar número do pedido único
       const numeroResult = await pool.query(
-        'SELECT COALESCE(MAX(numero_pedido), 0) + 1 as next_numero FROM pedidos WHERE company_id = $1',
+        'SELECT COALESCE(MAX(CAST(numero_pedido AS INTEGER)), 0) + 1 as next_numero FROM pedidos WHERE company_id = $1',
         [company_id]
       );
       
-      const numero_pedido = numeroResult.rows[0].next_numero;
+      const numero_pedido = numeroResult.rows[0].next_numero.toString();
 
       const insertQuery = `
         INSERT INTO pedidos (
           numero_pedido,
           company_id,
-          customer_name,
-          customer_phone,
-          customer_address,
-          delivery_method,
-          payment_method,
+          nome,
+          telefone,
+          endereco,
+          tipo,
+          pagamento,
           status,
-          total_amount,
-          observation,
-          estimated_time,
+          total,
+          observacoes,
           created_at,
           updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW()) 
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW()) 
         RETURNING *
       `;
       
@@ -156,8 +155,7 @@ export default async function handler(req, res) {
         payment_method || 'dinheiro',
         'pendente', // status inicial
         total_amount,
-        observation || null,
-        estimated_time || 30 // 30 minutos por padrão
+        observation || null
       ]);
 
       console.log(`✅ Pedido #${numero_pedido} criado com sucesso`);

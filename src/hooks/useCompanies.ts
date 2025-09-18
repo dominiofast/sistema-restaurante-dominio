@@ -197,14 +197,15 @@ export const useCompanyDetails = (companyId?: string) => {
     queryFn: async (): Promise<Company | null> => {
       if (!targetId) return null;
 
-      const { data, error } = await supabase
-        .from('companies')
-        .select('*')
-        .eq('id', targetId)
-        .single();
-
-      if (error) throw error;
-      return data;
+      const response = await fetch(`/api/companies`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar detalhes da empresa');
+      }
+      
+      const company = result.data?.find((c: Company) => c.id === targetId);
+      return company || null;
     },
     enabled: !!targetId,
     staleTime: 5 * 60 * 1000,
