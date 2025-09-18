@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -15,11 +16,11 @@ export const useAutoPrint = () => {
 
       // Buscar dados do pedido
       console.log('🔍 Buscando dados do pedido:', pedidoId);
-      const { data: pedido, error: pedidoError } = await supabase
-        // .from( // DESABILITADO'pedidos')
-        .select('*')
-        .eq('id', pedidoId)
-        .single();
+      const { data: pedido, error: pedidoError } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'pedidos')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'id', pedidoId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (pedidoError) {
         console.error('❌ Erro ao buscar pedido:', pedidoError);
@@ -29,32 +30,32 @@ export const useAutoPrint = () => {
       console.log('📋 Dados do pedido encontrado:', pedido);
 
       // Buscar dados completos da empresa
-      const { data: empresaInfo } = await supabase
-        // .from( // DESABILITADO'company_info')
-        .select('*')
-        .eq('company_id', currentCompany?.id)
-        .maybeSingle();
+      const { data: empresaInfo } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'company_info')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany?.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       // Buscar endereço da empresa
-      const { data: empresaEndereco } = await supabase
-        // .from( // DESABILITADO'company_addresses')
-        .select('*')
-        .eq('company_id', currentCompany?.id)
-        .eq('is_principal', true)
-        .maybeSingle();
+      const { data: empresaEndereco } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'company_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany?.id)
+        /* .eq\( REMOVIDO */ ; //'is_principal', true)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       // Buscar configurações da impressora
-      const { data: printerConfig } = await supabase
-        // .from( // DESABILITADO'company_settings')
-        .select('dominio_printer_name')
-        .eq('company_id', currentCompany?.id)
-        .maybeSingle();
+      const { data: printerConfig } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'company_settings')
+        /* .select\( REMOVIDO */ ; //'dominio_printer_name')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany?.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       // Buscar itens do pedido com adicionais
       console.log('🔍 Buscando itens do pedido:', pedidoId);
-      const { data: itens, error: itensError } = await supabase
-        // .from( // DESABILITADO'pedido_itens')
-        .select(`
+      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'pedido_itens')
+        /* .select\( REMOVIDO */ ; //`
           id,
           nome_produto, 
           quantidade, 
@@ -69,7 +70,7 @@ export const useAutoPrint = () => {
             valor_total
           )
         `)
-        .eq('pedido_id', pedidoId);
+        /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoId);
 
       if (itensError) {
         console.error('❌ Erro ao buscar itens:', itensError);
@@ -211,8 +212,8 @@ Obrigado pela preferencia!
 
     // Escutar novos pedidos em tempo real
     const channel = supabase
-      // .channel( // DESABILITADO'new-orders-auto-print')
-      // .on( // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO'new-orders-auto-print')
+      // /* .on REMOVIDO */ ; // // DESABILITADO
         'postgres_changes',
         {
           event: 'INSERT',
@@ -257,7 +258,7 @@ Obrigado pela preferencia!
           }, 5000); // Aumentado para 5 segundos
         }
       )
-      // .subscribe( // DESABILITADO(status) => {
+      // /* .subscribe REMOVIDO */ ; // // DESABILITADO(status) => {
         console.log('📡 Status da subscrição do canal:', status);
         if (status === 'SUBSCRIBED') {
           console.log('✅ Canal de escuta configurado com sucesso!');
@@ -266,7 +267,7 @@ Obrigado pela preferencia!
 
     return () => {
       console.log('🔕 Removendo escuta de novos pedidos');
-      // supabase. // DESABILITADO - removeChannel(channel);
+      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
     };
   }, [currentCompany?.id]); // Removida dependência da função para evitar loop
 

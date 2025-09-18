@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface Vaga {
@@ -43,11 +43,11 @@ export const useVagas = (companyId: string | null) => {
       setLoading(true);
 
       // Primeiro, buscar a configuração da empresa
-      const { data: configData, error: configError } = await supabase
-        .from('rh_vagas_config')
-        .select('id')
-        .eq('company_id', companyId)
-        .single();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas_config')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (configError) {
         if (configError.code === 'PGRST116') {
@@ -60,11 +60,11 @@ export const useVagas = (companyId: string | null) => {
       setConfigId(configData.id);
 
       // Buscar as vagas
-      const { data: vagasData, error: vagasError } = await supabase
-        .from('rh_vagas')
-        .select('*')
-        .eq('config_id', configData.id)
-        .order('created_at', { ascending: false });
+      const { data: vagasData, error: vagasError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'config_id', configData.id)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       if (vagasError) throw vagasError;
 
@@ -101,14 +101,14 @@ export const useVagas = (companyId: string | null) => {
 
       let error;
       if (editingVaga) {
-        ({ error } = await supabase
-          .from('rh_vagas')
-          .update(vagaData)
-          .eq('id', editingVaga.id));
+        ({ error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'rh_vagas')
+          /* .update\( REMOVIDO */ ; //vagaData)
+          /* .eq\( REMOVIDO */ ; //'id', editingVaga.id));
       } else {
-        ({ error } = await supabase
-          .from('rh_vagas')
-          .insert([vagaData]));
+        ({ error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'rh_vagas')
+          /* .insert\( REMOVIDO */ ; //[vagaData]));
       }
 
       if (error) throw error;
@@ -129,10 +129,10 @@ export const useVagas = (companyId: string | null) => {
     }
 
     try {
-      const { error } = await supabase
-        .from('rh_vagas')
-        .delete()
-        .eq('id', vaga.id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', vaga.id);
 
       if (error) throw error;
 

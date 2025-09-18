@@ -5,7 +5,7 @@
  * for companies that don't have them, using intelligent business rules.
  */
 
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { getAutoCreationConfig, DeliveryMethodsConfig } from '@/utils/deliveryMethodsFallback';
 import { recoverFromError, logError, categorizeError } from '@/utils/errorRecovery';
 import { recordDeliveryMethodsAutoCreated } from '@/utils/deliveryMethodsMonitoring';
@@ -34,11 +34,11 @@ export async function autoCreateDeliveryMethods(
     console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug });
 
     // Verificar se já existe registro (double-check)
-    const { data: existing, error: checkError } = await supabase
-      .from('delivery_methods')
-      .select('delivery, pickup, eat_in')
-      .eq('company_id', companyId)
-      .single();
+    const { data: existing, error: checkError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+      /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+      /* .single\( REMOVIDO */ ; //);
 
     if (existing && !checkError) {
       console.log('✅ [AutoConfig] Registro já existe, retornando configuração existente');
@@ -58,16 +58,16 @@ export async function autoCreateDeliveryMethods(
     console.log('📝 [AutoConfig] Criando registro com configuração:', config);
 
     // Criar o registro
-    const { data: newRecord, error: insertError } = await supabase
-      .from('delivery_methods')
-      .insert({
+    const { data: newRecord, error: insertError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .insert\( REMOVIDO */ ; //{
         company_id: companyId,
         delivery: config.delivery,
         pickup: config.pickup,
         eat_in: config.eat_in
       })
-      .select('delivery, pickup, eat_in')
-      .single();
+      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+      /* .single\( REMOVIDO */ ; //);
 
     if (insertError) {
       console.error('❌ [AutoConfig] Erro ao inserir registro:', insertError);
@@ -77,11 +77,11 @@ export async function autoCreateDeliveryMethods(
         console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente');
         
         // Tentar buscar o registro que foi criado
-        const { data: raceData, error: raceError } = await supabase
-          .from('delivery_methods')
-          .select('delivery, pickup, eat_in')
-          .eq('company_id', companyId)
-          .single();
+        const { data: raceData, error: raceError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'delivery_methods')
+          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .single\( REMOVIDO */ ; //);
 
         if (raceData && !raceError) {
           return {
@@ -144,11 +144,11 @@ export async function ensureDeliveryMethodsExist(
   
   const operation = async (): Promise<DeliveryMethodsConfig> => {
     // Primeiro, tentar buscar configuração existente
-    const { data: existing, error: fetchError } = await supabase
-      .from('delivery_methods')
-      .select('delivery, pickup, eat_in')
-      .eq('company_id', companyId)
-      .single();
+    const { data: existing, error: fetchError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+      /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+      /* .single\( REMOVIDO */ ; //);
 
     if (existing && !fetchError) {
       return {
@@ -262,11 +262,11 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
 }> {
   try {
     let query = supabase
-      .from('delivery_methods')
-      .select('company_id, delivery, pickup, eat_in');
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .select\( REMOVIDO */ ; //'company_id, delivery, pickup, eat_in');
 
     if (companyId) {
-      query = query.eq('company_id', companyId);
+      query = query/* .eq\( REMOVIDO */ ; //'company_id', companyId);
     }
 
     const { data: allConfigs, error: fetchError } = await query;
@@ -287,13 +287,13 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
     for (const config of toRepair) {
       try {
         // Habilitar pickup como padrão para configurações inválidas
-        const { error: updateError } = await supabase
-          .from('delivery_methods')
-          .update({
+        const { error: updateError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'delivery_methods')
+          /* .update\( REMOVIDO */ ; //{
             pickup: true,
             updated_at: new Date().toISOString()
           })
-          .eq('company_id', config.company_id);
+          /* .eq\( REMOVIDO */ ; //'company_id', config.company_id);
 
         if (updateError) {
           errors.push({

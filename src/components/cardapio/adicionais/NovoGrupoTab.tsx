@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Plus } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
 
@@ -36,9 +36,9 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
     try {
       console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id });
       
-      const { error } = await supabase
-        .from('produto_categorias_adicionais')
-        .insert([{
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
+        /* .insert\( REMOVIDO */ ; //[{
           produto_id: produto.id,
           categoria_adicional_id: categoriaId,
           is_required: false,
@@ -102,11 +102,11 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
       
       console.log('📊 Dados finais para inserção:', dadosParaInserir);
 
-      const { data, error } = await supabase
-        .from('categorias_adicionais')
-        .insert([dadosParaInserir])
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'categorias_adicionais')
+        /* .insert\( REMOVIDO */ ; //[dadosParaInserir])
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro do Supabase ao criar categoria:', error);

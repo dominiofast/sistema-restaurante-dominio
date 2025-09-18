@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   ArrowLeft, 
@@ -74,18 +74,18 @@ export default function PromptsManagement() {
       setLoading(true);
       
       // Carregar empresas
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name, slug, domain, status')
-        .order('name');
+      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, slug, domain, status')
+        /* .order\( REMOVIDO */ ; //'name');
 
       if (companiesError) throw companiesError;
       setCompanies(companiesData || []);
 
       // Carregar prompts de todas as empresas
-      const { data: promptsData, error: promptsError } = await supabase
-        .from('ai_agent_prompts')
-        .select('*');
+      const { data: promptsData, error: promptsError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_prompts')
+        /* .select\( REMOVIDO */ ; //'*');
 
       if (promptsError) throw promptsError;
       
@@ -96,10 +96,10 @@ export default function PromptsManagement() {
       setPrompts(promptsMap);
 
       // Carregar template global
-      const { data: globalData, error: globalError } = await supabase
-        .from('ai_global_prompt_template')
-        .select('*')
-        .single();
+      const { data: globalData, error: globalError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_global_prompt_template')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .single\( REMOVIDO */ ; //);
 
       if (!globalError && globalData) {
         setGlobalTemplate(globalData);
@@ -143,14 +143,14 @@ export default function PromptsManagement() {
 
   const updateGlobalTemplate = async (newTemplate: string) => {
     try {
-      const { error } = await supabase
-        .from('ai_global_prompt_template')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_global_prompt_template')
+        /* .update\( REMOVIDO */ ; //{
           template: newTemplate,
           is_active: true,
           updated_at: new Date().toISOString()
         })
-        .eq('id', globalTemplate?.id);
+        /* .eq\( REMOVIDO */ ; //'id', globalTemplate?.id);
 
       if (error) throw error;
 
@@ -174,7 +174,7 @@ export default function PromptsManagement() {
     try {
       setApplyingTemplate(true);
       
-      const { data, error } = await supabase.functions.invoke('apply-global-template', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('apply-global-template', {
         body: { companiesToUpdate: 'all' }
       });
 
@@ -207,7 +207,7 @@ export default function PromptsManagement() {
         description: "Aplicando horários reais aos prompts...",
       });
 
-      const { data, error } = await supabase.functions.invoke('fix-horarios-reais');
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('fix-horarios-reais');
 
       if (error) throw error;
 

@@ -4,11 +4,11 @@ export const SECURITY_HEADERS = {
   // Content Security Policy - previne XSS
   'Content-Security-Policy': 
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*./* supabase REMOVIDO */ null; //co; " +
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' https:; " +
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co; " +
+    "connect-src 'self' https://*./* supabase REMOVIDO */ null; //co wss://*./* supabase REMOVIDO */ null; //co; " +
     "media-src 'self'; " +
     "object-src 'none'; " +
     "frame-src 'none'; " +
@@ -124,7 +124,7 @@ class FrontendRateLimit {
   }
   
   reset(key: string): void {
-    this.attempts.delete(key);
+    this.attempts/* .delete\( REMOVIDO */ ; //key);
   }
 }
 

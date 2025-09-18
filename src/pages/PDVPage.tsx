@@ -6,7 +6,7 @@ import { useCardapioData } from '@/hooks/useCardapioData';
 import { useClientePublico } from '@/hooks/useClientePublico';
 import { useAgenteIAConfig } from '@/hooks/useAgenteIAConfig';
  
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { EntregaModalPDV } from '@/components/pdv/EntregaModalPDV';
 import { PagamentoModalSimplesPDV } from '@/components/pdv/PagamentoModalSimplesPDV';
@@ -110,11 +110,11 @@ const PDVEnhanced = () => {
     setCarregandoPedido(true);
     try {
       // Carregar dados do pedido
-      const { data: pedido, error } = await supabase
-        .from('pedidos')
-        .select('*')
-        .eq('id', pedidoId)
-        .single();
+      const { data: pedido, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedidos')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'id', pedidoId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao carregar pedido:', error);
@@ -123,13 +123,13 @@ const PDVEnhanced = () => {
       }
 
       // Carregar itens do pedido com adicionais
-      const { data: itens, error: itensError } = await supabase
-        .from('pedido_itens')
-        .select(`
+      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_itens')
+        /* .select\( REMOVIDO */ ; //`
           *,
           pedido_item_adicionais (*)
         `)
-        .eq('pedido_id', pedidoId);
+        /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoId);
 
       if (itensError) {
         console.error('Erro ao carregar itens do pedido:', itensError);
@@ -451,7 +451,7 @@ const PDVEnhanced = () => {
       console.log('📱 Todos os dados da selectedStore:', JSON.stringify(selectedStore, null, 2));
 
       // Solução profissional e escalável: Edge Function com transação atômica
-      const { data, error } = await supabase.functions.invoke('criar-pedido-pdv', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('criar-pedido-pdv', {
         body: pedidoData
       });
 
@@ -465,7 +465,7 @@ const PDVEnhanced = () => {
       
       // Imprimir via PrintNode (edge function)
       try {
-        await supabase.functions.invoke('auto-print-pedido', {
+        await /* supabase REMOVIDO */ null; //functions.invoke('auto-print-pedido', {
           body: {
             pedido_id: data.pedido_id,
             numero_pedido: data.numero_pedido,

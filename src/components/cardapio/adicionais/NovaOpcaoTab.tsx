@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Plus, Check, Upload, ImageIcon, X } from 'lucide-react';
 import { CategoriaAdicional } from '@/types/cardapio';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
 
@@ -72,23 +72,23 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `adicionais/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
-          .from('media')
+        const { error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+          /* .from REMOVIDO */ ; //'media')
           .upload(filePath, imageFile);
 
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = supabase.storage
-          .from('media')
+        const { data: urlData } = /* supabase REMOVIDO */ null; //storage
+          /* .from REMOVIDO */ ; //'media')
           .getPublicUrl(filePath);
 
         imageUrl = urlData.publicUrl;
       }
 
-      const { data, error } = await supabase
-        .from('adicionais')
-        .insert([{ ...novoAdicional, image: imageUrl }])
-        .select('*');
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'adicionais')
+        /* .insert\( REMOVIDO */ ; //[{ ...novoAdicional, image: imageUrl }])
+        /* .select\( REMOVIDO */ ; //'*');
 
       if (error) throw error;
 

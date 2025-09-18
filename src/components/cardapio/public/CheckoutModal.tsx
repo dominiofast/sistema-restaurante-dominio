@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus, Store, MapPin, Trash2 } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { DeliveryAddressModal } from '@/components/pdv/DeliveryAddressModal';
 import { FullscreenAddressModal } from '@/components/ui/FullscreenAddressModal';
@@ -117,11 +117,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       if (!validCompanyId) return null;
       
       // Primeiro, tentar buscar as configurações existentes
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('delivery, pickup, eat_in')
-        .eq('company_id', validCompanyId)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
+        /* .single\( REMOVIDO */ ; //);
       
       if (error) {
         if (error.code === 'PGRST116') {
@@ -148,16 +148,16 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           }
           
           // Criar registro com valores padrão
-          const { data: newData, error: insertError } = await supabase
-            .from('delivery_methods')
-            .insert({
+          const { data: newData, error: insertError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'delivery_methods')
+            /* .insert\( REMOVIDO */ ; //{
               company_id: validCompanyId,
               delivery: defaultDelivery,
               pickup: defaultPickup,
               eat_in: false
             })
-            .select('delivery, pickup, eat_in')
-            .single();
+            /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+            /* .single\( REMOVIDO */ ; //);
           
           if (insertError) {
             console.error('Erro ao criar configurações:', insertError);
@@ -325,11 +325,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     queryFn: async () => {
       if (!validCompanyId) return [];
       
-      const { data, error } = await supabase
-        .from('company_addresses')
-        .select('*')
-        .eq('company_id', validCompanyId)
-        .eq('hide_from_customers', false);
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
+        /* .eq\( REMOVIDO */ ; //'hide_from_customers', false);
       
       if (error) throw error;
       return data || [];
@@ -346,11 +346,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       const cleanPhone = cliente.telefone.replace(/\D/g, '');
       if (cleanPhone.length < 10) return [];
       
-      const { data, error } = await supabase
-        .from('customer_addresses')
-        .select('*')
-        .eq('company_id', validCompanyId)
-        .eq('customer_phone', cleanPhone)
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', validCompanyId)
+        /* .eq\( REMOVIDO */ ; //'customer_phone', cleanPhone)
         .not('customer_phone', 'is', null)
         .neq('customer_phone', '');
       
@@ -380,9 +380,9 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handleConfirmarNovoEndereco = async (enderecoData: any) => {
     try {
-      const { data, error } = await supabase
-        .from('customer_addresses')
-        .insert({
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: validCompanyId,
           customer_name: cliente.nome,
           customer_phone: cliente.telefone,
@@ -394,8 +394,8 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           cidade: enderecoData.cidade,
           estado: enderecoData.estado
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao salvar endereço:', error);
@@ -421,7 +421,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     
     try {
       // Usar a função RPC específica para exclusão no cardápio público
-      const { data, error } = await supabase.rpc('delete_customer_address_public', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('delete_customer_address_public', {
         p_address_id: addressId,
         p_company_id: validCompanyId,
         p_customer_phone: cliente.telefone.replace(/\D/g, '')

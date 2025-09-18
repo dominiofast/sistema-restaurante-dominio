@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import MercadoriaModal from '@/components/ficha-tecnica/MercadoriaModal';
 import DadosPadraoButton from '@/components/ficha-tecnica/DadosPadraoButton';
@@ -54,15 +54,15 @@ const MercadoriasIngredientes: React.FC = () => {
 
       // Se não há empresa selecionada, mostrar dados de todas as empresas (para super admin)
       let query = (supabase as any)
-        .from('mercadorias_ingredientes')
-        .select('*');
+        /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+        /* .select\( REMOVIDO */ ; //'*');
 
       // Se há uma empresa específica selecionada, filtrar por ela
       if (currentCompany?.id) {
-        query = query.eq('company_id', currentCompany.id);
+        query = query/* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
       }
 
-      const { data, error: fetchError } = await query.order('nome');
+      const { data, error: fetchError } = await query/* .order\( REMOVIDO */ ; //'nome');
 
       if (fetchError) {
         console.error('Erro ao carregar mercadorias:', fetchError);
@@ -104,9 +104,9 @@ const MercadoriasIngredientes: React.FC = () => {
 
     try {
       const { error } = await (supabase as any)
-        .from('mercadorias_ingredientes')
-        .delete()
-        .eq('id', mercadoria.id);
+        /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', mercadoria.id);
 
       if (error) throw error;
 

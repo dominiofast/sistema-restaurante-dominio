@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Plus, Trash2, Save, AlertCircle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -60,11 +60,11 @@ export default function HorariosFuncionamentoSimples() {
       setError(null);
 
       // Buscar configuração de horário
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (horarioError && horarioError.code !== 'PGRST116') {
         throw horarioError;
@@ -78,11 +78,11 @@ export default function HorariosFuncionamentoSimples() {
           fuso_horario: 'America/Sao_Paulo'
         };
 
-        const { data: createdHorario, error: createError } = await supabase
-          .from('horario_funcionamento')
-          .insert(novoHorario)
-          .select()
-          .single();
+        const { data: createdHorario, error: createError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horario_funcionamento')
+          /* .insert\( REMOVIDO */ ; //novoHorario)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (createError) throw createError;
 
@@ -99,11 +99,11 @@ export default function HorariosFuncionamentoSimples() {
       setFusoHorario(horarioData.fuso_horario);
 
       // Buscar horários dos dias
-      const { data: horariosData, error: horariosError } = await supabase
-        .from('horarios_dias')
-        .select('*')
-        .eq('horario_funcionamento_id', horarioData.id)
-        .order('dia_semana');
+      const { data: horariosData, error: horariosError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horarios_dias')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id)
+        /* .order\( REMOVIDO */ ; //'dia_semana');
 
       if (horariosError) throw horariosError;
 
@@ -143,23 +143,23 @@ export default function HorariosFuncionamentoSimples() {
     setSalvando(true);
     try {
       // Atualizar configuração principal
-      const { error: updateError } = await supabase
-        .from('horario_funcionamento')
-        .update({
+      const { error: updateError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .update\( REMOVIDO */ ; //{
           tipo_disponibilidade: tipoDisponibilidade,
           fuso_horario: fusoHorario
         })
-        .eq('id', horarioId);
+        /* .eq\( REMOVIDO */ ; //'id', horarioId);
 
       if (updateError) throw updateError;
 
       // Se há horários específicos, atualizar/inserir
       if (tipoDisponibilidade === 'especificos' && horariosDias.length > 0) {
         // Remover horários existentes
-        await supabase
-          .from('horarios_dias')
-          .delete()
-          .eq('horario_funcionamento_id', horarioId);
+        /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .delete\( REMOVIDO */ ; //)
+          /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioId);
 
         // Inserir novos horários
         const horariosParaInserir = horariosDias.map(h => ({
@@ -170,9 +170,9 @@ export default function HorariosFuncionamentoSimples() {
           ativo: h.ativo
         }));
 
-        const { error: insertError } = await supabase
-          .from('horarios_dias')
-          .insert(horariosParaInserir);
+        const { error: insertError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .insert\( REMOVIDO */ ; //horariosParaInserir);
 
         if (insertError) throw insertError;
       }

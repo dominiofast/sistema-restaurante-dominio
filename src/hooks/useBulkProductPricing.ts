@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Produto } from '@/types/cardapio';
 
 interface ProductPricingInfo {
@@ -91,9 +91,9 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
         const produtoIds = produtos.map(p => p.id);
 
         // Buscar todas as categorias obrigatórias de uma vez
-        const { data: produtoCategorias, error: produtoError } = await supabase
-          .from('produto_categorias_adicionais')
-          .select(`
+        const { data: produtoCategorias, error: produtoError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
+          /* .select\( REMOVIDO */ ; //`
             produto_id,
             categoria_adicional_id,
             is_required,
@@ -146,13 +146,13 @@ export const useBulkProductPricing = (produtos: Produto[]) => {
         let adicionaisMap: { [categoriaId: string]: any[] } = {};
         
         if (categoriasIds.length > 0) {
-          const { data: adicionais } = await supabase
-            .from('adicionais')
-            .select('id, name, price, categoria_adicional_id')
+          const { data: adicionais } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'adicionais')
+            /* .select\( REMOVIDO */ ; //'id, name, price, categoria_adicional_id')
             .in('categoria_adicional_id', categoriasIds)
-            .eq('is_available', true)
-            .eq('is_active', true)
-            .order('price', { ascending: true });
+            /* .eq\( REMOVIDO */ ; //'is_available', true)
+            /* .eq\( REMOVIDO */ ; //'is_active', true)
+            /* .order\( REMOVIDO */ ; //'price', { ascending: true });
 
           adicionaisMap = adicionais?.reduce((acc, adicional) => {
             if (!acc[adicional.categoria_adicional_id]) acc[adicional.categoria_adicional_id] = [];

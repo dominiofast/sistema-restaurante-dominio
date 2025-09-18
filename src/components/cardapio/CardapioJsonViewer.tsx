@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { CardapioJsonService } from '@/services/cardapioJsonService';
 import { AICardapioService } from '@/services/aiCardapioService';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Download, RefreshCw, Eye, Copy, Upload } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { 
   RefreshCw, 
@@ -39,10 +39,10 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       setLoading(true);
 
       // Buscar estatísticas gerais
-      const { data: paymentsData, error: paymentsError } = await supabase
-        .from('asaas_payments')
-        .select('status, amount, confirmed_at')
-        .eq('company_id', companyId)
+      const { data: paymentsData, error: paymentsError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'asaas_payments')
+        /* .select\( REMOVIDO */ ; //'status, amount, confirmed_at')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
 
       if (paymentsError) throw paymentsError;
@@ -54,7 +54,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       const successRate = totalPayments > 0 ? (confirmedPayments / totalPayments) * 100 : 0;
 
       // Buscar pagamentos órfãos
-      const { data: orphanData, error: orphanError } = await supabase
+      const { data: orphanData, error: orphanError } = /* await supabase REMOVIDO */ null
         .rpc('identify_orphan_payments');
 
       if (orphanError) throw orphanError;
@@ -88,7 +88,7 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
     try {
       setRecovering(true);
 
-      const { data, error } = await supabase.functions.invoke('recover-orphan-payments');
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('recover-orphan-payments');
 
       if (error) throw error;
 

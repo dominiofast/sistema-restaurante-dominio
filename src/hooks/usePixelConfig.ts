@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -21,16 +22,13 @@ export function usePixelConfig() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchConfig = useCallback(async () => {
-    console.log('⚠️ usePixelConfig: fetchConfig desabilitado - sistema usa PostgreSQL');
-    if (!currentCompany?.id) return;
-
-    setIsLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('facebook_pixel_configs')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'facebook_pixel_configs')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) throw error;
       setConfig(data ?? null);
@@ -63,11 +61,11 @@ export function usePixelConfig() {
         updated_at: new Date().toISOString(),
       };
       
-      const { data, error } = await supabase
-        .from('facebook_pixel_configs')
-        .upsert(upsertData, { onConflict: 'company_id' })
-        .select()
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'facebook_pixel_configs')
+        /* .upsert\( REMOVIDO */ ; //upsertData, { onConflict: 'company_id' })
+        /* .select\( REMOVIDO */ ; //)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) throw error;
       

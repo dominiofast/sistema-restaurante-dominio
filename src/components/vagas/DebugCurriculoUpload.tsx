@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -39,17 +39,17 @@ const DebugCurriculoUpload: React.FC = () => {
     try {
       // Primeiro, verificar se existe uma vaga de teste
       let { data: vaga, error: vagaError } = await (supabase as any)
-        .from('rh_vagas')
-        .select('id')
-        .eq('company_id', companyId)
-        .eq('title', 'Vaga de Teste - Debug PDF')
-        .single();
+        /* .from REMOVIDO */ ; //'rh_vagas')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'title', 'Vaga de Teste - Debug PDF')
+        /* .single\( REMOVIDO */ ; //);
 
       if (vagaError || !vaga) {
         // Criar vaga de teste
         const { data: newVaga, error: createVagaError } = await (supabase as any)
-          .from('rh_vagas')
-          .insert({
+          /* .from REMOVIDO */ ; //'rh_vagas')
+          /* .insert\( REMOVIDO */ ; //{
             company_id: companyId,
             title: 'Vaga de Teste - Debug PDF',
             description: 'Vaga criada automaticamente para teste de PDFs',
@@ -57,8 +57,8 @@ const DebugCurriculoUpload: React.FC = () => {
             type: 'CLT',
             is_active: true
           })
-          .select()
-          .single();
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (createVagaError) {
           throw new Error('Erro ao criar vaga de teste: ' + createVagaError.message);
@@ -69,8 +69,8 @@ const DebugCurriculoUpload: React.FC = () => {
 
       // Criar inscrição de teste
       const { error: inscricaoError } = await (supabase as any)
-        .from('rh_inscricoes')
-        .insert({
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           vaga_id: vaga.id,
           nome_completo: candidateName,

@@ -271,7 +271,7 @@ export const useCardapio = () => {
   const reorderCategorias = async (startIndex: number, endIndex: number) => {
     if (!currentCompany?.id) return;
 
-    const result = Array.from(categorias);
+    const result = Array/* .from REMOVIDO */ ; //categorias);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -327,7 +327,7 @@ export const useCardapio = () => {
     const outrosProdutos = produtos.filter(p => p.categoria_id !== categoriaId);
     
     // Reordenar array
-    const result = Array.from(produtosDaCategoria);
+    const result = Array/* .from REMOVIDO */ ; //produtosDaCategoria);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -361,7 +361,7 @@ export const useCardapio = () => {
   const reorderCategoriasAdicionais = async (startIndex: number, endIndex: number) => {
     if (!currentCompany?.id) return;
 
-    const result = Array.from(categoriasAdicionais);
+    const result = Array/* .from REMOVIDO */ ; //categoriasAdicionais);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -388,7 +388,7 @@ export const useCardapio = () => {
     const adicionaisDaCategoria = adicionais.filter(a => a.categoria_adicional_id === categoriaAdicionalId);
     const outrosAdicionais = adicionais.filter(a => a.categoria_adicional_id !== categoriaAdicionalId);
     
-    const result = Array.from(adicionaisDaCategoria);
+    const result = Array/* .from REMOVIDO */ ; //adicionaisDaCategoria);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 

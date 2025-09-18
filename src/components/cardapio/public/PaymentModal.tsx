@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CreditCard, DollarSign, Smartphone, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { AsaasPixModal } from './AsaasPixModal';
 import { CashbackInput } from '@/components/cashback/CashbackInput';
 
@@ -54,11 +54,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!companyId) return null;
       
-      const { data, error } = await supabase
-        .from('payment_delivery_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
       
       if (error) {
         console.error('❌ Erro ao buscar configuração de pagamento:', error);
@@ -74,11 +74,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const { data: asaasConfig, isLoading: asaasLoading } = useQuery({
     queryKey: ['asaas-config', companyId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('asaas_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'asaas_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
       
       console.log('🔍 ASAAS DEBUG - Query result:', { data, error });
       
@@ -123,10 +123,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!paymentConfig?.id || !paymentConfig?.ask_card_brand) return [];
       
-      const { data, error } = await supabase
-        .from('payment_delivery_card_brands')
-        .select('*')
-        .eq('config_id', paymentConfig.id);
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'config_id', paymentConfig.id);
       
       if (error) {
         console.error('❌ Erro ao buscar bandeiras de cartão:', error);

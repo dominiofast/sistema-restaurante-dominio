@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface PagamentoEntregaOption {
   value: string;
   label: string;
@@ -24,11 +23,11 @@ export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
       setLoading(true);
 
       // Buscar configuração principal
-      const { data: configData, error: configError } = await supabase
-        .from('payment_delivery_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (configError) {
         console.error('Erro ao buscar configuração de pagamento:', configError);
@@ -46,10 +45,10 @@ export const usePagamentoEntregaConfigPDV = (companyId: string | undefined) => {
       // Buscar bandeiras se existe configuração
       let cardBrands: string[] = [];
       if (configData.accept_card) {
-        const { data: brandsData, error: brandsError } = await supabase
-          .from('payment_delivery_card_brands')
-          .select('brand_name')
-          .eq('config_id', configData.id);
+        const { data: brandsData, error: brandsError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
+          /* .select\( REMOVIDO */ ; //'brand_name')
+          /* .eq\( REMOVIDO */ ; //'config_id', configData.id);
 
         if (!brandsError && brandsData) {
           cardBrands = brandsData.map(b => b.brand_name);

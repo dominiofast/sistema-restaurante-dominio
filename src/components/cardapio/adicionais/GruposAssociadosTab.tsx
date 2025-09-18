@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Produto, CategoriaAdicional, Adicional, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useCardapio } from '@/hooks/useCardapio';
 import { useAdicionaisCRUD } from '@/hooks/useAdicionaisCRUD';
@@ -180,7 +180,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
       console.log('🔄 Reordenando categorias associadas:', { oldIndex, newIndex });
       
       // 1. Atualizar estado local IMEDIATAMENTE para feedback visual
-      const newOrder = Array.from(categoriasAssociadasLocal);
+      const newOrder = Array/* .from REMOVIDO */ ; //categoriasAssociadasLocal);
       const [removed] = newOrder.splice(oldIndex, 1);
       newOrder.splice(newIndex, 0, removed);
       setCategoriasAssociadasLocal(newOrder);
@@ -200,10 +200,10 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
 
         // Atualizar as posições no banco usando atualizações individuais
         for (const update of updates) {
-          const { error: updateError } = await supabase
-            .from('produto_categorias_adicionais')
-            .update({ order_position: update.order_position })
-            .eq('id', update.id);
+          const { error: updateError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
+            /* .update\( REMOVIDO */ ; //{ order_position: update.order_position })
+            /* .eq\( REMOVIDO */ ; //'id', update.id);
           
           if (updateError) throw updateError;
         }
@@ -323,10 +323,10 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
         )
       );
 
-      const { error } = await supabase
-        .from('adicionais')
-        .update({ is_active: isActive } as any)
-        .eq('id', adicionalId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'adicionais')
+        /* .update\( REMOVIDO */ ; //{ is_active: isActive } as any)
+        /* .eq\( REMOVIDO */ ; //'id', adicionalId);
 
       if (error) throw error;
 

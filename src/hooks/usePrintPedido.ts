@@ -3,8 +3,7 @@ import { toast } from 'sonner';
 import { Pedido } from '@/types/pedidos';
 import { formatPedidoESCPOS, PedidoTemplateData } from '@/utils/printTemplates';
 import { useNFCeLogs } from './useNFCeLogs';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 // Remove acentos para evitar problemas de codificação na impressora ESC/POS
 const stripAccents = (input: string) => {
   try {
@@ -23,12 +22,12 @@ export const usePrintPedido = (companyId: string) => {
   useEffect(() => {
     const loadPrinterConfig = async () => {
       try {
-        const { data, error } = await supabase
-          .from('printer_configs')
-          .select('largura_papel')
-          .eq('company_id', companyId)
-          .eq('is_active', true)
-          .maybeSingle();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .select\( REMOVIDO */ ; //'largura_papel')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .eq\( REMOVIDO */ ; //'is_active', true)
+          /* .maybeSingle\( REMOVIDO */ ; //);
 
         if (error) {
           console.warn('Erro ao carregar configuração de impressora:', error);
@@ -225,20 +224,20 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       }
 
       // Buscar informações da empresa
-      const { data: companyInfo, error: companyError } = await supabase
-        .from('company_info')
-        .select('nome_estabelecimento, endereco, contato')
-        .eq('company_id', pedido.company_id)
-        .single();
+      const { data: companyInfo, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_info')
+        /* .select\( REMOVIDO */ ; //'nome_estabelecimento, endereco, contato')
+        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
+        /* .single\( REMOVIDO */ ; //);
 
       if (companyError) {
         console.error('Erro ao buscar informações da empresa:', companyError);
       }
 
       // Buscar itens do pedido com adicionais
-      const { data: itens, error: itensError } = await supabase
-        .from('pedido_itens')
-        .select(`
+      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_itens')
+        /* .select\( REMOVIDO */ ; //`
           id,
           nome_produto, 
           quantidade, 
@@ -251,7 +250,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
             valor_unitario
           )
         `)
-        .eq('pedido_id', pedido.id);
+        /* .eq\( REMOVIDO */ ; //'pedido_id', pedido.id);
 
       console.log('📋 Itens encontrados:', itens);
       
@@ -325,11 +324,11 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       console.log('🧾 Dados do cupom fiscal preparados:', printData);
 
       // Buscar configurações da impressora
-      const { data: printerConfig, error: printerError } = await supabase
-        .from('company_settings')
-        .select('dominio_printer_name')
-        .eq('company_id', pedido.company_id)
-        .single();
+      const { data: printerConfig, error: printerError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'dominio_printer_name')
+        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
+        /* .single\( REMOVIDO */ ; //);
 
       if (printerError) {
         console.warn('⚠️ Configuração de impressora não encontrada');
@@ -467,11 +466,11 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
 
       // Buscar informações da empresa
       console.log('🏢 Buscando informações da empresa...');
-      const { data: companyInfo, error: companyError } = await supabase
-        .from('company_info')
-        .select('nome_estabelecimento, endereco, contato')
-        .eq('company_id', pedido.company_id)
-        .maybeSingle();
+      const { data: companyInfo, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_info')
+        /* .select\( REMOVIDO */ ; //'nome_estabelecimento, endereco, contato')
+        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       console.log('🏢 Company info encontrada:', companyInfo);
       if (companyError) {
@@ -479,20 +478,20 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         console.log('🔍 Tentando buscar sem filtro para debug...');
         
         // Debug: verificar se a empresa existe
-        const { data: allCompanies } = await supabase
-          .from('company_info')
-          .select('company_id, nome_estabelecimento')
-          .limit(5);
+        const { data: allCompanies } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_info')
+          /* .select\( REMOVIDO */ ; //'company_id, nome_estabelecimento')
+          /* .limit\( REMOVIDO */ ; //5);
         console.log('🏢 Empresas encontradas no banco:', allCompanies);
       }
 
       // Buscar configurações da impressora
       console.log('🖨️ Buscando configurações da impressora...');
-      const { data: printerConfig, error: printerError } = await supabase
-        .from('company_settings')
-        .select('printnode_enabled, printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
-        .eq('company_id', pedido.company_id)
-        .maybeSingle();
+      const { data: printerConfig, error: printerError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'printnode_enabled, printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
+        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       console.log('🖨️ Printer config encontrada:', printerConfig);
       
@@ -501,10 +500,10 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         console.log('🔍 Debug: tentando buscar todas as configurações...');
         
         // Debug: verificar se existem configurações
-        const { data: allSettings } = await supabase
-          .from('company_settings')
-          .select('company_id, dominio_printer_name, printer_type')
-          .limit(5);
+        const { data: allSettings } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_settings')
+          /* .select\( REMOVIDO */ ; //'company_id, dominio_printer_name, printer_type')
+          /* .limit\( REMOVIDO */ ; //5);
         console.log('🖨️ Configurações encontradas no banco:', allSettings);
         
         toast.error('Erro ao buscar configurações da impressora. Configure a impressora primeiro.');
@@ -530,27 +529,27 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       }
 
       // Buscar dados completos da empresa
-      const { data: empresaInfo } = await supabase
-        .from('company_info')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const { data: empresaInfo } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_info')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       // Buscar endereço da empresa
-      const { data: empresaEndereco } = await supabase
-        .from('company_addresses')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('is_principal', true)
-        .single();
+      const { data: empresaEndereco } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_principal', true)
+        /* .single\( REMOVIDO */ ; //);
 
       console.log('🏢 Dados da empresa:', empresaInfo);
       console.log('📍 Endereço da empresa:', empresaEndereco);
 
       // Buscar itens do pedido com adicionais
-      const { data: itens, error: itensError } = await supabase
-        .from('pedido_itens')
-        .select(`
+      const { data: itens, error: itensError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_itens')
+        /* .select\( REMOVIDO */ ; //`
           id,
           nome_produto, 
           quantidade, 
@@ -564,7 +563,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
             valor_unitario
           )
         `)
-        .eq('pedido_id', pedido.id);
+        /* .eq\( REMOVIDO */ ; //'pedido_id', pedido.id);
 
       console.log('📋 Itens encontrados:', itens);
       
@@ -741,11 +740,11 @@ const dadosParaFormatacao = {
       console.log('🔍 DEBUG - Contém separador de', paperWidth, 'chars?', pedidoFormatadoESCPOS.includes('='.repeat(paperWidth)));
       
       // Impressão direta via printnode-proxy (consistente com templates locais)
-      const { data: pnSettings, error: pnSettingsErr } = await supabase
-        .from('company_settings')
-        .select('printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
-        .eq('company_id', pedido.company_id)
-        .maybeSingle();
+      const { data: pnSettings, error: pnSettingsErr } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'printnode_default_printer_id, printnode_child_account_id, printnode_child_email')
+        /* .eq\( REMOVIDO */ ; //'company_id', pedido.company_id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
       if (pnSettingsErr || !pnSettings?.printnode_default_printer_id) {
         throw new Error('PrintNode não configurado (defina a impressora padrão em Configurações)');
       }
@@ -755,7 +754,7 @@ const dadosParaFormatacao = {
       utf8.forEach((b) => (binary += String.fromCharCode(b)));
       const contentBase64 = btoa(binary);
 
-      const { error: pnErr } = await supabase.functions.invoke('printnode-proxy', {
+      const { error: pnErr } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
         body: {
           action: 'print',
           printerId: Number(pnSettings.printnode_default_printer_id),

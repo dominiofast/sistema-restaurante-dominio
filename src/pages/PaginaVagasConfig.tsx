@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -54,16 +54,13 @@ const PaginaVagasConfig: React.FC = () => {
     }
 
     const fetchConfig = async () => {
-      console.log('PaginaVagasConfig: Buscando configuração para company:', companyId);
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const { data, error } = await supabase
-          .from('rh_vagas_config')
-          .select('*')
-          .eq('company_id', companyId)
-          .single();
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'rh_vagas_config')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .single\( REMOVIDO */ ; //);
 
         console.log('PaginaVagasConfig: Resultado da busca:', { data, error });
 
@@ -162,14 +159,14 @@ const PaginaVagasConfig: React.FC = () => {
 
       console.log('Dados a serem salvos:', dataToSave);
 
-      const { data, error } = await supabase
-        .from('rh_vagas_config')
-        .upsert(dataToSave, { 
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas_config')
+        /* .upsert\( REMOVIDO */ ; //dataToSave, { 
           onConflict: 'company_id',
           ignoreDuplicates: false 
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao salvar:', error);

@@ -11,8 +11,7 @@ import { useCompanyFiscalConfig } from '@/hooks/useCompanyFiscalConfig';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Upload, Eye, EyeOff, Download } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const InformacoesEmpresa = () => {
   const { currentCompany } = useAuth();
   const { companyInfo, loading, saveCompanyInfo } = useCompanyInfo();
@@ -157,8 +156,8 @@ const InformacoesEmpresa = () => {
 
       console.log('handleCertificateUpload: Uploading to storage', { filePath, bucketId: 'certificados' });
 
-      const { data, error: uploadError } = await supabase.storage
-        .from('certificados')
+      const { data, error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'certificados')
         .upload(filePath, file);
 
       if (uploadError) {
@@ -202,8 +201,8 @@ const InformacoesEmpresa = () => {
     }
 
     try {
-      const { data, error } = await supabase.storage
-        .from('certificados')
+      const { data, error } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'certificados')
         .download(fiscalConfig.certificado_path);
 
       if (error) throw error;

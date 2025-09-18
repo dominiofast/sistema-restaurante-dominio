@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Upload, Image, Palette, Save, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface BrandingManagerProps {
@@ -66,16 +66,16 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
     try {
       setLoading(true);
       
-      const { data: brandingData, error: brandingError } = await supabase
-        .from('cardapio_branding')
-        .select(`
+      const { data: brandingData, error: brandingError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //`
           *,
           logo:media_files!cardapio_branding_logo_file_id_fkey(*),
           banner:media_files!cardapio_branding_banner_file_id_fkey(*)
         `)
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .maybeSingle();
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (brandingError && brandingError.code !== 'PGRST116') {
         throw brandingError;
@@ -104,21 +104,21 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
       const fileExt = file.name.split('.').pop();
       const fileName = `${companyId}/${fileType}-${Date.now()}.${fileExt}`;
       
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('media')
+      const { data: uploadData, error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'media')
         .upload(fileName, file);
 
       if (uploadError) throw uploadError;
 
       // Obter URL pública
-      const { data: { publicUrl } } = supabase.storage
-        .from('media')
+      const { data: { publicUrl } } = /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'media')
         .getPublicUrl(fileName);
 
       // Salvar referência no banco
-      const { data: mediaData, error: mediaError } = await supabase
-        .from('media_files')
-        .insert({
+      const { data: mediaData, error: mediaError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'media_files')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           file_name: file.name,
           file_type: fileType,
@@ -128,8 +128,8 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
           alt_text: `${fileType} da empresa`,
           is_active: true
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (mediaError) throw mediaError;
 
@@ -161,19 +161,19 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
 
       if (config.id) {
         // Atualizar configuração existente
-        const { error } = await supabase
-          .from('cardapio_branding')
-          .update(config)
-          .eq('id', config.id);
+        const { error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .update\( REMOVIDO */ ; //config)
+          /* .eq\( REMOVIDO */ ; //'id', config.id);
 
         if (error) throw error;
       } else {
         // Criar nova configuração
-        const { data, error } = await supabase
-          .from('cardapio_branding')
-          .insert(config)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .insert\( REMOVIDO */ ; //config)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) throw error;
         setConfig(data);

@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface FallbackConfig {
   pollingInterval: number;
   maxRetries: number;
@@ -138,12 +137,12 @@ export class WhatsAppFallbackSystem {
     if (!this.companyId) return;
     
     try {
-      const { data: messages, error } = await supabase
-        .from('whatsapp_messages')
-        .select('*')
-        .eq('company_id', this.companyId)
-        .order('timestamp', { ascending: false })
-        .limit(10);
+      const { data: messages, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_messages')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', this.companyId)
+        /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //10);
       
       if (error) {
         throw new Error(error.message);
@@ -197,12 +196,12 @@ export class WhatsAppFallbackSystem {
     // Limitar tamanho da queue
     if (this.messageQueue.length > 100) {
       const removed = this.messageQueue.splice(0, 50);
-      removed.forEach(item => this.lastMessageIds.delete(item.id));
+      removed.forEach(item => this.lastMessageIds/* .delete\( REMOVIDO */ ; //item.id));
     }
     
     // Limitar tamanho do Set de IDs
     if (this.lastMessageIds.size > 200) {
-      const idsArray = Array.from(this.lastMessageIds);
+      const idsArray = Array/* .from REMOVIDO */ ; //this.lastMessageIds);
       this.lastMessageIds.clear();
       idsArray.slice(-100).forEach(id => this.lastMessageIds.add(id));
     }

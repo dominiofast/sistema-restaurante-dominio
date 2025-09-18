@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface CashbackTransaction {
   companyId: string;
   customerPhone: string;
@@ -30,12 +29,12 @@ export class CashbackService {
     
     try {
       // 1. Verificar se a empresa tem cashback ativo
-      const { data: config, error: configError } = await supabase
-        .from('cashback_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .maybeSingle();
+      const { data: config, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (configError) {
         console.error('❌ [CASHBACK] Erro ao buscar configuração:', configError);
@@ -62,13 +61,13 @@ export class CashbackService {
       }
 
       // 4. Verificar se já existe cashback para este pedido
-      const { data: existingTransaction } = await supabase
-        .from('cashback_transactions')
-        .select('id')
-        .eq('company_id', companyId)
-        .eq('pedido_id', orderId)
-        .eq('tipo', 'credito')
-        .maybeSingle();
+      const { data: existingTransaction } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_transactions')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'pedido_id', orderId)
+        /* .eq\( REMOVIDO */ ; //'tipo', 'credito')
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (existingTransaction) {
         console.log('⚠️ [CASHBACK] Cashback já foi gerado para este pedido:', orderId);
@@ -79,9 +78,9 @@ export class CashbackService {
       // O trigger auto_recalculate_cashback_balance vai:
       // - Criar/atualizar automaticamente o registro em customer_cashback
       // - Calcular o saldo correto baseado em todas as transações
-      const { error: transactionError } = await supabase
-        .from('cashback_transactions')
-        .insert({
+      const { error: transactionError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_transactions')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           customer_phone: customer.telefone,
           customer_name: customer.nome,
@@ -122,13 +121,13 @@ export class CashbackService {
     
     try {
       // 1. Verificar se já existe débito para este pedido
-      const { data: existingDebit } = await supabase
-        .from('cashback_transactions')
-        .select('id')
-        .eq('company_id', companyId)
-        .eq('pedido_id', orderId)
-        .eq('tipo', 'debito')
-        .maybeSingle();
+      const { data: existingDebit } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_transactions')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'pedido_id', orderId)
+        /* .eq\( REMOVIDO */ ; //'tipo', 'debito')
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (existingDebit) {
         console.log('⚠️ [CASHBACK] Débito já foi processado para este pedido:', orderId);
@@ -145,9 +144,9 @@ export class CashbackService {
       // O trigger auto_recalculate_cashback_balance vai:
       // - Atualizar automaticamente o saldo em customer_cashback
       // - Garantir que o saldo fique sempre correto baseado nas transações
-      const { error: transactionError } = await supabase
-        .from('cashback_transactions')
-        .insert({
+      const { error: transactionError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_transactions')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           customer_phone: customer.telefone,
           customer_name: customer.nome,
@@ -183,7 +182,7 @@ export class CashbackService {
     customerPhone: string
   ): Promise<CashbackBalance | null> {
     try {
-      const { data, error } = await supabase.rpc('get_realtime_cashback_balance', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('get_realtime_cashback_balance', {
         p_company_id: companyId,
         p_customer_phone: customerPhone
       });
@@ -221,13 +220,13 @@ export class CashbackService {
     limit: number = 10
   ): Promise<CashbackTransaction[]> {
     try {
-      const { data, error } = await supabase
-        .from('cashback_transactions')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('customer_phone', customerPhone)
-        .order('created_at', { ascending: false })
-        .limit(limit);
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cashback_transactions')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'customer_phone', customerPhone)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //limit);
 
       if (error) {
         console.error('❌ Erro ao buscar transações de cashback:', error);
@@ -258,7 +257,7 @@ export class CashbackService {
     requiredAmount: number
   ): Promise<boolean> {
     try {
-      const { data, error } = await supabase.rpc('check_sufficient_cashback_balance', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('check_sufficient_cashback_balance', {
         p_company_id: companyId,
         p_customer_phone: customerPhone,
         p_required_amount: requiredAmount

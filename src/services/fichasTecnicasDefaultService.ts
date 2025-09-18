@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 // Dados padrão de mercadorias/ingredientes
 const MERCADORIAS_PADRAO = [
   // === MASSAS E FARINHAS ===
@@ -229,9 +228,9 @@ export class FichasTecnicasDefaultService {
   static async verificarMercadoriasExistentes(companyId: string): Promise<number> {
     try {
       const { data, error } = await (supabase as any)
-        .from('mercadorias_ingredientes')
-        .select('id', { count: 'exact' })
-        .eq('company_id', companyId);
+        /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+        /* .select\( REMOVIDO */ ; //'id', { count: 'exact' })
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId);
       
       if (error) throw error;
       return data?.length || 0;
@@ -245,9 +244,9 @@ export class FichasTecnicasDefaultService {
   static async verificarReceitasExistentes(companyId: string): Promise<number> {
     try {
       const { data, error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .select('id', { count: 'exact' })
-        .eq('company_id', companyId);
+        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+        /* .select\( REMOVIDO */ ; //'id', { count: 'exact' })
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId);
       
       if (error) throw error;
       return data?.length || 0;
@@ -286,8 +285,8 @@ export class FichasTecnicasDefaultService {
         const lote = mercadorias.slice(i, i + batchSize);
         
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .insert(lote);
+          /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+          /* .insert\( REMOVIDO */ ; //lote);
 
         if (error) {
           console.error(`Erro no lote ${i / batchSize + 1}:`, error);
@@ -335,8 +334,8 @@ export class FichasTecnicasDefaultService {
 
       // Inserir todas as receitas
       const { error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .insert(receitas);
+        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+        /* .insert\( REMOVIDO */ ; //receitas);
 
       if (error) {
         console.error('Erro ao inserir receitas:', error);

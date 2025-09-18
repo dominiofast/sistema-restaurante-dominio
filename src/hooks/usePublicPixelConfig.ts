@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useParams, useLocation } from 'react-router-dom';
 
 export interface PixelConfigPublic {
@@ -22,10 +23,9 @@ export function usePublicPixelConfig(companySlug?: string) {
   const slug = (companySlug?.trim()) || params.company_slug || location.pathname.split('/')[1] || null;
 
   const fetchConfig = useCallback(async () => {
-    if (!slug) {
-      setIsLoading(false);
-      return;
-    }
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  }
 
     try {
       console.log('⚠️ usePublicPixelConfig: Desabilitado - sistema usa PostgreSQL');

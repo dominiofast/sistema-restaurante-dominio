@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
 export const useInvitation = () => {
@@ -18,7 +18,7 @@ export const useInvitation = () => {
 
     setIsSending(true);
     try {
-      const { data, error } = await supabase.functions.invoke('send-user-invitation', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-user-invitation', {
         body: {
           email,
           companyId,
@@ -49,15 +49,15 @@ export const useInvitation = () => {
 
   const fetchExistingEmail = async (companyId: string): Promise<string | null> => {
     try {
-      const { data, error } = await supabase
-        .from('user_companies')
-        .select('user_id')
-        .eq('company_id', companyId)
-        .limit(1)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'user_companies')
+        /* .select\( REMOVIDO */ ; //'user_id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (data?.user_id) {
-        const { data: userData, error: userError } = await supabase.auth.admin.getUserById(data.user_id);
+        const { data: userData, error: userError } = await /* supabase REMOVIDO */ null; //auth.admin.getUserById(data.user_id);
         if (userData?.user?.email) {
           return userData.user.email;
         }

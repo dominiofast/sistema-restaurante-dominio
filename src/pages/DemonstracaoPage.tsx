@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { MessageSquare, Bot, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { LandingHeader } from '@/components/landing/LandingHeader';
 
 interface DemoForm {
@@ -45,7 +45,7 @@ const DemonstracaoPage = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.functions.invoke('send-demo-request', {
+      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-demo-request', {
         body: {
           ...formData,
           timestamp: new Date().toISOString()

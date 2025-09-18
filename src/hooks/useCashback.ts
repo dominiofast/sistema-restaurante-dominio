@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { CashbackService } from '@/services/CashbackService';
 
 interface CashbackHookReturn {
@@ -93,8 +94,8 @@ export const useCashback = (
 
     // Configurar real-time subscription para transações
     const transactionChannel = supabase
-      // .channel( // DESABILITADO'cashback-transactions-changes')
-      // // .on( // DESABILITADO // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO'cashback-transactions-changes')
+      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -108,12 +109,12 @@ export const useCashback = (
           fetchSaldo();
         }
       )
-      // // .subscribe( // DESABILITADO // DESABILITADO);
+      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
 
     // Configurar real-time subscription para saldos
     const balanceChannel = supabase
-      // .channel( // DESABILITADO'cashback-balance-changes')
-      // // .on( // DESABILITADO // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO'cashback-balance-changes')
+      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -132,12 +133,12 @@ export const useCashback = (
           }
         }
       )
-      // // .subscribe( // DESABILITADO // DESABILITADO);
+      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
 
     return () => {
       console.log('💰 [REALTIME] Desconectando canais de cashback');
-      // supabase. // DESABILITADO - removeChannel(transactionChannel);
-      // supabase. // DESABILITADO - removeChannel(balanceChannel);
+      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(transactionChannel);
+      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(balanceChannel);
     };
   }, [customerPhone, companyId]);
 

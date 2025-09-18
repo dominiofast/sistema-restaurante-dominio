@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface AuthUser {
   id: string;
   email: string;
@@ -80,7 +79,7 @@ export class AuthOptimizer {
       return companies;
     } finally {
       // Remover da lista de requisições em andamento
-      this.loadingPromises.delete(cacheKey);
+      this.loadingPromises/* .delete\( REMOVIDO */ ; //cacheKey);
     }
   }
 
@@ -104,10 +103,10 @@ export class AuthOptimizer {
    * Carrega empresas para super admin
    */
   private async loadSuperAdminCompanies(authUser: AuthUser): Promise<Company[]> {
-    const { data: companiesData, error } = await supabase
-      .from('companies')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data: companiesData, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'companies')
+      /* .select\( REMOVIDO */ ; //'*')
+      /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
     if (error) {
       console.error('AuthOptimizer: Erro ao carregar empresas para super admin:', error);
@@ -132,9 +131,9 @@ export class AuthOptimizer {
    */
   private async loadUserCompanies(authUser: AuthUser): Promise<Company[]> {
     // Primeiro, tentar buscar através da tabela user_companies
-    const { data: userCompanies, error: userCompError } = await supabase
-      .from('user_companies')
-      .select(`
+    const { data: userCompanies, error: userCompError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'user_companies')
+      /* .select\( REMOVIDO */ ; //`
         company_id,
         role,
         companies!inner (
@@ -149,8 +148,8 @@ export class AuthOptimizer {
           logo
         )
       `)
-      .eq('user_id', authUser.id)
-      .eq('is_active', true);
+      /* .eq\( REMOVIDO */ ; //'user_id', authUser.id)
+      /* .eq\( REMOVIDO */ ; //'is_active', true);
 
     if (!userCompError && userCompanies && userCompanies.length > 0) {
       return userCompanies.map(uc => ({
@@ -168,11 +167,11 @@ export class AuthOptimizer {
 
     // Fallback: buscar por company_domain
     if (authUser.company_domain && authUser.company_domain !== 'all') {
-      const { data: singleCompany, error: singleError } = await supabase
-        .from('companies')
-        .select('*')
-        .eq('domain', authUser.company_domain)
-        .single();
+      const { data: singleCompany, error: singleError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'domain', authUser.company_domain)
+        /* .single\( REMOVIDO */ ; //);
 
       if (!singleError && singleCompany) {
         return [{
@@ -200,7 +199,7 @@ export class AuthOptimizer {
       // Limpar cache específico do usuário
       for (const key of companiesCache.keys()) {
         if (key.startsWith(userId)) {
-          companiesCache.delete(key);
+          companiesCache/* .delete\( REMOVIDO */ ; //key);
         }
       }
     } else {
@@ -222,7 +221,7 @@ export class AuthOptimizer {
   getCacheStats(): { size: number, keys: string[] } {
     return {
       size: companiesCache.size,
-      keys: Array.from(companiesCache.keys())
+      keys: Array/* .from REMOVIDO */ ; //companiesCache.keys())
     };
   }
 }

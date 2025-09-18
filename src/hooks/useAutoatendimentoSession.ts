@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import type { Json } from '@/integrations/supabase/types';
 
 interface AutoatendimentoSession {
@@ -45,12 +45,12 @@ export const useAutoatendimentoSession = (companyId?: string) => {
     console.log('🔧 useAutoatendimentoSession - Carregando config para empresa:', companyId);
 
     try {
-      const { data, error } = await supabase
-        .from('autoatendimento_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('is_enabled', true)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'autoatendimento_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_enabled', true)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ useAutoatendimentoSession - Erro ao carregar config:', error);
@@ -88,16 +88,16 @@ export const useAutoatendimentoSession = (companyId?: string) => {
       console.log('🔑 useAutoatendimentoSession - Token gerado:', sessionToken);
       console.log('⏱️ useAutoatendimentoSession - Timeout (min):', timeoutMinutes);
       
-      const { data, error } = await supabase
-        .from('autoatendimento_sessions')
-        .insert({
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'autoatendimento_sessions')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           session_token: sessionToken,
           status: 'active',
           timeout_at: new Date(Date.now() + timeoutMinutes * 60 * 1000).toISOString()
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ useAutoatendimentoSession - Erro ao criar sessão:', error);
@@ -119,12 +119,12 @@ export const useAutoatendimentoSession = (companyId?: string) => {
     if (!session) return false;
 
     try {
-      const { data, error } = await supabase
-        .from('autoatendimento_sessions')
-        .update(updates)
-        .eq('id', session.id)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'autoatendimento_sessions')
+        /* .update\( REMOVIDO */ ; //updates)
+        /* .eq\( REMOVIDO */ ; //'id', session.id)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao atualizar sessão:', error);
@@ -144,14 +144,14 @@ export const useAutoatendimentoSession = (companyId?: string) => {
     if (!session) return false;
 
     try {
-      const { error } = await supabase
-        .from('autoatendimento_sessions')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'autoatendimento_sessions')
+        /* .update\( REMOVIDO */ ; //{
           status: 'completed',
           completed_at: new Date().toISOString(),
           cart_data: orderData
         })
-        .eq('id', session.id);
+        /* .eq\( REMOVIDO */ ; //'id', session.id);
 
       if (error) {
         console.error('Erro ao finalizar sessão:', error);
@@ -209,7 +209,7 @@ export const useAutoatendimentoSession = (companyId?: string) => {
 
     const cleanupExpiredSessions = async () => {
       try {
-        await supabase.rpc('cleanup_expired_autoatendimento_sessions');
+        await /* supabase REMOVIDO */ null; //rpc('cleanup_expired_autoatendimento_sessions');
       } catch (error) {
         console.error('Erro ao limpar sessões expiradas:', error);
       }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, Users, Send, Edit, Trash2, Copy, MessageSquare, Clock, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface Campaign {
@@ -37,11 +37,11 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('whatsapp_campaigns')
-          .select('id, name, message, audience, status, created_at, scheduled_date, is_active, country')
-          .eq('company_id', currentCompany.id)
-          .order('created_at', { ascending: false });
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'whatsapp_campaigns')
+          /* .select\( REMOVIDO */ ; //'id, name, message, audience, status, created_at, scheduled_date, is_active, country')
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
         if (error) throw error;
         
@@ -64,10 +64,10 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
 
     try {
       setDeleting(campaignId);
-      const { error } = await supabase
-        .from('whatsapp_campaigns')
-        .delete()
-        .eq('id', campaignId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_campaigns')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', campaignId);
 
       if (error) throw error;
 

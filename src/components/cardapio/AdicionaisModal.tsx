@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCardapio } from '@/hooks/useCardapio';
 import { Produto, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { GruposAssociadosTab } from './adicionais/GruposAssociadosTab';
 import { NovoGrupoTab } from './adicionais/NovoGrupoTab';
 import { NovaOpcaoTab } from './adicionais/NovaOpcaoTab';
@@ -35,11 +35,11 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
 
   const fetchProdutoCategoriasAdicionais = async () => {
     try {
-      const { data, error } = await supabase
-        .from('produto_categorias_adicionais')
-        .select('*')
-        .eq('produto_id', produto.id)
-        .order('order_position', { ascending: true });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'produto_id', produto.id)
+        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
       
       if (error) throw error;
       setProdutoCategoriasAdicionais(data || []);

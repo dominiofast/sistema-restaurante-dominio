@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client'
-
+// SUPABASE REMOVIDO
 export interface PedidoData {
   companyId: string
   cliente: {
@@ -49,11 +48,11 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
 
   try {
     // 1. Buscar empresa
-    const { data: company, error: companyError } = await supabase
-      .from('companies')
-      .select('*')
-      .eq('id', pedidoData.companyId)
-      .single()
+    const { data: company, error: companyError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'companies')
+      /* .select\( REMOVIDO */ ; //'*')
+      /* .eq\( REMOVIDO */ ; //'id', pedidoData.companyId)
+      /* .single\( REMOVIDO */ ; //)
 
     if (companyError || !company) {
       console.error('❌ Empresa não encontrada:', companyError)
@@ -66,9 +65,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
     const numeroPedido = Math.floor(Math.random() * 10000) + 1000
 
     // 3. Criar pedido (COLUNAS CORRETAS!)
-    const { data: novoPedido, error: pedidoError } = await supabase
-      .from('pedidos')
-      .insert({
+    const { data: novoPedido, error: pedidoError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'pedidos')
+      /* .insert\( REMOVIDO */ ; //{
         company_id: pedidoData.companyId,
         numero_pedido: numeroPedido,
         nome: pedidoData.cliente.nome,
@@ -81,8 +80,8 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         origem: 'cardapio_publico_local',
         created_at: new Date().toISOString()
       } as any)
-      .select()
-      .single()
+      /* .select\( REMOVIDO */ ; //)
+      /* .single\( REMOVIDO */ ; //)
 
     if (pedidoError) {
       console.error('❌ Erro ao criar pedido:', pedidoError)
@@ -111,12 +110,12 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
       const valorTotalItem = item.price * item.quantity
 
       // VALIDAÇÃO: Verificar se produto existe
-      const { data: produtoExiste, error: produtoError } = await supabase
-        .from('produtos')
-        .select('id')
-        .eq('id', item.id)
-        .eq('company_id', pedidoData.companyId)
-        .single()
+      const { data: produtoExiste, error: produtoError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produtos')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'id', item.id)
+        /* .eq\( REMOVIDO */ ; //'company_id', pedidoData.companyId)
+        /* .single\( REMOVIDO */ ; //)
 
       let itemSalvo = null
 
@@ -127,9 +126,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         })
         
         // Inserir item SEM produto_id (FALLBACK SEGURO)
-        const { data: itemResult, error: itemError } = await supabase
-          .from('pedido_itens')
-          .insert({
+        const { data: itemResult, error: itemError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedido_itens')
+          /* .insert\( REMOVIDO */ ; //{
             pedido_id: novoPedido.id,
             produto_id: null, // NULL para IDs inválidos
             nome_produto: item.name,
@@ -137,8 +136,8 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
             valor_unitario: item.price,
             valor_total: valorTotalItem
           })
-          .select()
-          .single()
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //)
 
         if (itemError) {
           console.error('❌ ERRO ao salvar item sem produto_id:', itemError)
@@ -153,9 +152,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
 
       } else {
         // Produto existe - inserir normalmente
-        const { data: itemResult, error: itemError } = await supabase
-          .from('pedido_itens')
-          .insert({
+        const { data: itemResult, error: itemError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedido_itens')
+          /* .insert\( REMOVIDO */ ; //{
             pedido_id: novoPedido.id,
             produto_id: item.id,
             nome_produto: item.name,
@@ -163,8 +162,8 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
             valor_unitario: item.price,
             valor_total: valorTotalItem
           })
-          .select()
-          .single()
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //)
 
         if (itemError) {
           console.error('❌ ERRO ao salvar item:', itemError)
@@ -184,9 +183,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         for (const adicional of item.adicionais) {
           const valorTotalAdicional = adicional.price * adicional.quantity
           
-          const { error: adicionalError } = await supabase
-            .from('pedido_item_adicionais')
-            .insert({
+          const { error: adicionalError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'pedido_item_adicionais')
+            /* .insert\( REMOVIDO */ ; //{
               pedido_item_id: itemSalvo.id,
               categoria_nome: 'Adicional',
               nome_adicional: adicional.name,

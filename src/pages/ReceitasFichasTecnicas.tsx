@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import ReceitaModal from '@/components/ficha-tecnica/ReceitaModal';
 import DadosPadraoButton from '@/components/ficha-tecnica/DadosPadraoButton';
@@ -55,15 +55,15 @@ const ReceitasFichasTecnicas: React.FC = () => {
 
       // Se não há empresa selecionada, mostrar dados de todas as empresas (para super admin)
       let query = (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .select('*');
+        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+        /* .select\( REMOVIDO */ ; //'*');
 
       // Se há uma empresa específica selecionada, filtrar por ela
       if (currentCompany?.id) {
-        query = query.eq('company_id', currentCompany.id);
+        query = query/* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
       }
 
-      const { data, error: fetchError } = await query.order('nome');
+      const { data, error: fetchError } = await query/* .order\( REMOVIDO */ ; //'nome');
 
       if (fetchError) {
         console.error('Erro ao carregar receitas:', fetchError);
@@ -105,9 +105,9 @@ const ReceitasFichasTecnicas: React.FC = () => {
 
     try {
       const { error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .delete()
-        .eq('id', receita.id);
+        /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', receita.id);
 
       if (error) throw error;
 

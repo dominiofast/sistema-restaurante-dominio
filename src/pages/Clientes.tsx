@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Users, Upload, Wallet } from 'lucide-react';
 import { ClienteForm } from '@/components/clientes/ClienteForm';
@@ -99,7 +99,7 @@ const Clientes = () => {
   const updateClientStatus = async () => {
     try {
       console.log('🔄 Atualizando status dos clientes...');
-      const { error } = await supabase.rpc('update_client_status_by_inactivity');
+      const { error } = await /* supabase REMOVIDO */ null; //rpc('update_client_status_by_inactivity');
       if (error) throw error;
       
       console.log('✅ Status dos clientes atualizado com sucesso');
@@ -157,9 +157,9 @@ const Clientes = () => {
     });
     
     let query = supabase
-      .from('clientes')
-      .select(forCount ? 'id' : '*', forCount ? { count: 'exact', head: true } : undefined)
-      .eq('company_id', currentCompany.id);
+      /* .from REMOVIDO */ ; //'clientes')
+      /* .select\( REMOVIDO */ ; //forCount ? 'id' : '*', forCount ? { count: 'exact', head: true } : undefined)
+      /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
 
     // Aplicar filtro de busca
     if (searchQuery && searchQuery.trim()) {
@@ -239,25 +239,25 @@ const Clientes = () => {
       console.log('🔍 Buscando clientes para empresa:', currentCompany.id, 'page:', page, 'pageSize:', pageSize, 'search:', searchQuery);
       
       // DEBUG: Verificar autenticação
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await /* supabase REMOVIDO */ null; //auth.getUser();
       console.log('🔐 Usuário autenticado:', user?.id, user?.email);
       
       // DEBUG: Verificar session 
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await /* supabase REMOVIDO */ null; //auth.getSession();
       console.log('🎫 Session ativa:', !!session, session?.user?.id);
       
       // DEBUG: Testar RPC direto
       console.log('🧪 Testando RPC get_user_company_id...');
-      const { data: companyId, error: rpcError } = await supabase.rpc('get_user_company_id');
+      const { data: companyId, error: rpcError } = await /* supabase REMOVIDO */ null; //rpc('get_user_company_id');
       console.log('🏢 Company ID via RPC:', companyId, 'Erro:', rpcError);
       
       // DEBUG: Testar consulta direta primeiro
       console.log('🧪 Testando consulta direta...');
-      const { data: testData, error: testError } = await supabase
-        .from('clientes')
-        .select('id, nome, telefone')
-        .eq('company_id', currentCompany.id)
-        .limit(5);
+      const { data: testData, error: testError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .select\( REMOVIDO */ ; //'id, nome, telefone')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .limit\( REMOVIDO */ ; //5);
       
       console.log('🧪 Teste direto - Dados:', testData?.length || 0, 'Erro:', testError);
       
@@ -266,7 +266,7 @@ const Clientes = () => {
       let query = buildBaseQuery(false);
       if (!query) return;
       const { data, error } = await query
-        .order('data_cadastro', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'data_cadastro', { ascending: false })
         .range(from, to);
 
       if (error) {
@@ -303,10 +303,10 @@ const Clientes = () => {
   const fetchCounts = async () => {
     if (!currentCompany?.id) return;
     try {
-      const { count, error } = await supabase
-        .from('clientes')
-        .select('id', { count: 'exact', head: true })
-        .eq('company_id', currentCompany.id);
+      const { count, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .select\( REMOVIDO */ ; //'id', { count: 'exact', head: true })
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
 
       if (error) throw error;
 

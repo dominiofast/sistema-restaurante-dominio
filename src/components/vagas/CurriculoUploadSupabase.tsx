@@ -2,8 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, CheckCircle, X, Camera } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface CurriculoUploadSupabaseProps {
   onUploadSuccess: (url: string, fileName: string) => void;
   companyId: string;
@@ -54,16 +53,16 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `curriculos/${companyId}/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from('vagas')
+      const { error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'vagas')
         .upload(filePath, file);
 
       if (uploadError) {
         throw uploadError;
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('vagas')
+      const { data: { publicUrl } } = /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'vagas')
         .getPublicUrl(filePath);
 
       onUploadSuccess(publicUrl, file.name);
@@ -79,7 +78,7 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(false);
-    const files = Array.from(e.dataTransfer.files);
+    const files = Array/* .from REMOVIDO */ ; //e.dataTransfer.files);
     if (files.length > 0) {
       handleFileSelect(files[0]);
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, CheckCircle, Truck, Home, Phone, MapPin, CreditCard } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 
 interface PedidoData {
@@ -166,10 +166,10 @@ export const AcompanharPedido: React.FC = () => {
         
         // SOLUÇÃO DEFINITIVA: Usar APENAS a lógica que FUNCIONA
         console.log('🔍 === EXECUTANDO QUERY QUE FUNCIONA ===');
-        const { data: todasEmpresas, error: erroTodas } = await supabase
-          .from('companies')
-          .select('id, slug, domain')
-          .eq('status', 'active');
+        const { data: todasEmpresas, error: erroTodas } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'companies')
+          /* .select\( REMOVIDO */ ; //'id, slug, domain')
+          /* .eq\( REMOVIDO */ ; //'status', 'active');
         
         console.log('🔍 Todas as empresas ativas:', todasEmpresas);
         console.log('🔍 Erro ao buscar todas:', erroTodas);
@@ -197,14 +197,14 @@ export const AcompanharPedido: React.FC = () => {
         // Primeiro tentar buscar por numero_pedido
         const numeroInteiro = parseInt(numero_pedido);
         console.log('🔍 Buscando pedido...', { numeroInteiro, companyId });
-        const { data: dadosPorNumero, error: erroPorNumero } = await supabase
-          .from('pedidos')
-          .select('*')
-          .eq('numero_pedido', numeroInteiro)
-          .eq('company_id', companyId)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+        const { data: dadosPorNumero, error: erroPorNumero } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedidos')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'numero_pedido', numeroInteiro)
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+          /* .limit\( REMOVIDO */ ; //1)
+          /* .single\( REMOVIDO */ ; //);
         
         console.log('🔍 Resultado da busca:', { dadosPorNumero, erroPorNumero });
         console.log('🔍 Erro detalhado:', erroPorNumero?.message, erroPorNumero?.details, erroPorNumero?.code);
@@ -225,10 +225,10 @@ export const AcompanharPedido: React.FC = () => {
         setPedido(pedidoData);
 
         // Buscar itens
-        const { data: itensData, error: itensError } = await supabase
-          .from('pedido_itens')
-          .select('*')
-          .eq('pedido_id', pedidoData.id);
+        const { data: itensData, error: itensError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedido_itens')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoData.id);
 
         if (!itensError && itensData) {
           setItens(itensData);
@@ -237,10 +237,10 @@ export const AcompanharPedido: React.FC = () => {
           const adicionaisMap: { [itemId: string]: AdicionalItem[] } = {};
           
           for (const item of itensData) {
-            const { data: adicionaisData } = await supabase
-              .from('pedido_item_adicionais')
-              .select('nome_adicional, quantidade, valor_total')
-              .eq('pedido_item_id', item.id);
+            const { data: adicionaisData } = /* await supabase REMOVIDO */ null
+              /* .from REMOVIDO */ ; //'pedido_item_adicionais')
+              /* .select\( REMOVIDO */ ; //'nome_adicional, quantidade, valor_total')
+              /* .eq\( REMOVIDO */ ; //'pedido_item_id', item.id);
 
             if (adicionaisData && adicionaisData.length > 0) {
               adicionaisMap[item.id] = adicionaisData;
@@ -262,8 +262,8 @@ export const AcompanharPedido: React.FC = () => {
 
     // Configurar realtime para atualizações de status
     const channel = supabase
-      .channel('pedido-updates')
-      .on(
+      /* .channel REMOVIDO */ ; //'pedido-updates')
+      /* .on REMOVIDO */ ; //
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -277,10 +277,10 @@ export const AcompanharPedido: React.FC = () => {
           }
         }
       )
-      .subscribe();
+      /* .subscribe REMOVIDO */ ; //);
 
     return () => {
-      supabase.removeChannel(channel);
+      /* supabase REMOVIDO */ null; //removeChannel(channel);
     };
   }, [numero_pedido]);
 

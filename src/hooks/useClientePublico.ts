@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface ClientePublico {
   id?: number;
   nome: string;
@@ -29,16 +28,16 @@ export function useClientePublico() {
       console.log('🔍 Buscando cliente por telefone:', telefoneNumeros, 'na empresa:', companyId);
       
       let query = supabase
-        .from('clientes')
-        .select('*')
-        .eq('telefone', telefoneNumeros);
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'telefone', telefoneNumeros);
       
       // Se foi fornecido companyId, filtrar por empresa
       if (companyId) {
-        query = query.eq('company_id', companyId);
+        query = query/* .eq\( REMOVIDO */ ; //'company_id', companyId);
       }
       
-      const { data, error } = await query.maybeSingle();
+      const { data, error } = await query/* .maybeSingle\( REMOVIDO */ ; //);
         
       if (error && error.code !== 'PGRST116') { // PGRST116 = não encontrado
         throw error;
@@ -84,11 +83,11 @@ export function useClientePublico() {
       
       console.log('📝 Cadastrando novo cliente:', { nome, telefone: telefoneNumeros, company_id: companyId });
       
-      const { data, error } = await supabase
-        .from('clientes')
-        .insert([{ nome, telefone: telefoneNumeros, company_id: companyId }])
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .insert\( REMOVIDO */ ; //[{ nome, telefone: telefoneNumeros, company_id: companyId }])
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
         
       if (error) throw error;
       

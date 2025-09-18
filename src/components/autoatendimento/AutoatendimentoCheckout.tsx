@@ -8,7 +8,7 @@ import { ArrowLeft, CreditCard, Smartphone, DollarSign, User, Phone } from 'luci
 import { useCart } from '@/hooks/useCart';
 import { usePagamentoEntregaConfigPDV } from '@/hooks/usePagamentoEntregaConfigPDV';
 import { AutoatendimentoPixModal } from './AutoatendimentoPixModal';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { createOrder as createOrderViaGateway } from '@/services/orderGateway';
 

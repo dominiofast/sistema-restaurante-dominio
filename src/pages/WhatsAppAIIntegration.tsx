@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { 
   MessageSquare, 
   BrainCircuit, 
@@ -56,22 +56,22 @@ export default function WhatsAppAIIntegration() {
     setLoading(true);
     try {
       // Carregar integração WhatsApp
-      const { data: whatsappData, error: whatsappError } = await supabase
-        .from('whatsapp_integrations')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', 'primary')
-        .maybeSingle();
+      const { data: whatsappData, error: whatsappError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_integrations')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'purpose', 'primary')
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (whatsappError) throw whatsappError;
       setWhatsappIntegration(whatsappData);
 
       // Carregar prompt IA
-      const { data: promptData, error: promptError } = await supabase
-        .from('ai_agent_prompts')
-        .select('*')
-        .eq('agent_slug', 'agente-ia-conversa')
-        .maybeSingle();
+      const { data: promptData, error: promptError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_prompts')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'agent_slug', 'agente-ia-conversa')
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (promptError) throw promptError;
       setAiPrompt(promptData);
@@ -95,7 +95,7 @@ export default function WhatsAppAIIntegration() {
 
     try {
       // Simular uma mensagem de teste
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
         body: {
           slug_empresa: currentCompany.slug || 'test',
           user_message: 'oi',
@@ -126,7 +126,7 @@ export default function WhatsAppAIIntegration() {
 
   const syncPromptToEdgeConfig = async () => {
     try {
-      const { error } = await supabase.functions.invoke('push_prompt_to_edge', {
+      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('push_prompt_to_edge', {
         body: { agent_slug: 'agente-ia-conversa' }
       });
 

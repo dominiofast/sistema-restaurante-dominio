@@ -6,8 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -33,7 +32,7 @@ export const ResetPassword = () => {
     if (accessToken && refreshToken) {
       console.log('Setting session with tokens...');
       // Configurar a sessão automaticamente
-      supabase.auth.setSession({
+      /* supabase REMOVIDO */ null; //auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
       }).then(({ data, error }) => {
@@ -47,7 +46,7 @@ export const ResetPassword = () => {
     } else {
       console.log('No tokens found, checking current session...');
       // Verificar se já temos uma sessão ativa
-      supabase.auth.getSession().then(({ data: { session }, error }) => {
+      /* supabase REMOVIDO */ null; //auth.getSession().then(({ data: { session }, error }) => {
         if (error) {
           console.error('Error getting session:', error);
         }
@@ -79,7 +78,7 @@ export const ResetPassword = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.updateUser({
+      const { error } = await /* supabase REMOVIDO */ null; //auth.updateUser({
         password: password
       });
 

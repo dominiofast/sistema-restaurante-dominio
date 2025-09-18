@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
 import { Sparkles, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface GerarDescricaoButtonProps {
   nomeProduto: string;
   onResult: (descricao: string) => void;
@@ -18,7 +17,7 @@ export const GerarDescricaoButton: React.FC<GerarDescricaoButtonProps> = ({ nome
     try {
       console.log('Enviando requisição para gerar descrição:', nomeProduto);
       
-      const { data, error } = await supabase.functions.invoke('gerar-descricao', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('gerar-descricao', {
         body: { nome: nomeProduto }
       });
 

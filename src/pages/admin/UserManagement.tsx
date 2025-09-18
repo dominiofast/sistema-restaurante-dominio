@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Shield, Plus, Edit, Trash2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface User {
@@ -29,7 +29,7 @@ const UserManagement: React.FC = () => {
       setLoading(true);
       
       // Buscar usuários (apenas super admins podem ver todos)
-      const { data, error } = await supabase.auth.admin.listUsers();
+      const { data, error } = await /* supabase REMOVIDO */ null; //auth.admin.listUsers();
       
       if (error) throw error;
       

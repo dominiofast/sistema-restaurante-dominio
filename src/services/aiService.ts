@@ -3,8 +3,7 @@ import { aiConfigService } from './aiConfigService';
 import { AIPromptBuilder } from './aiPromptBuilder';
 import { AIConversationLogger } from './aiConversationLogger';
 import { AICardapioService } from './aiCardapioService';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -52,12 +51,12 @@ class AIService {
         return false;
       }
 
-      const { data, error } = await supabase
-        .from('whatsapp_chats')
-        .select('ai_paused')
-        .eq('company_id', companyId)
-        .eq('chat_id', chatId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_chats')
+        /* .select\( REMOVIDO */ ; //'ai_paused')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'chat_id', chatId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro ao verificar estado de pausa da IA:', error);
@@ -120,11 +119,11 @@ class AIService {
       }
 
       // Buscar dados da empresa
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .select('slug, name')
-        .eq('id', companyId)
-        .single();
+      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'slug, name')
+        /* .eq\( REMOVIDO */ ; //'id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (companyError || !companyData) {
         console.error('❌ Empresa não encontrada:', companyError);
@@ -132,7 +131,7 @@ class AIService {
       }
 
       // Chamar edge function ai-chat-direct
-      const { data, error } = await supabase.functions.invoke('ai-chat-direct', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('ai-chat-direct', {
         body: {
           company_id: companyId,
           company_slug: companyData.slug,
@@ -244,11 +243,11 @@ class AIService {
       // Extras dinâmicos (cashback e link do cardápio)
       let cashbackPercent: number | undefined = undefined;
       try {
-        const { data: cashbackRow } = await supabase
-          .from('cashback_config')
-          .select('percentual_cashback, is_active')
-          .eq('company_id', companyId)
-          .maybeSingle();
+        const { data: cashbackRow } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cashback_config')
+          /* .select\( REMOVIDO */ ; //'percentual_cashback, is_active')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .maybeSingle\( REMOVIDO */ ; //);
         if (cashbackRow?.is_active && typeof cashbackRow.percentual_cashback === 'number') {
           cashbackPercent = cashbackRow.percentual_cashback;
         }

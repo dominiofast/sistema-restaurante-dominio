@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   ArrowLeft, 
@@ -142,11 +142,11 @@ export default function AdminAgents() {
       setLoading(true);
 
       // Carregar dados da empresa
-      const { data: companyData } = await supabase
-        .from('companies')
-        .select('id, name, slug')
-        .eq('slug', slug)
-        .single();
+      const { data: companyData } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, slug')
+        /* .eq\( REMOVIDO */ ; //'slug', slug)
+        /* .single\( REMOVIDO */ ; //);
 
       if (!companyData) {
         toast({
@@ -158,11 +158,11 @@ export default function AdminAgents() {
       }
 
       // Carregar prompt atual
-      const { data: promptData } = await supabase
-        .from('ai_agent_prompts')
-        .select('*')
-        .eq('agent_slug', slug)
-        .single();
+      const { data: promptData } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_prompts')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'agent_slug', slug)
+        /* .single\( REMOVIDO */ ; //);
 
       if (promptData) {
         setValue('template', promptData.template);
@@ -171,11 +171,11 @@ export default function AdminAgents() {
       }
 
       // Carregar configurações do assistant
-      const { data: assistantData } = await supabase
-        .from('ai_agent_assistants')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .single();
+      const { data: assistantData } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_assistants')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
+        /* .single\( REMOVIDO */ ; //);
 
       if (assistantData) {
         setAssistantForm({
@@ -205,12 +205,12 @@ export default function AdminAgents() {
     if (!slug) return;
 
     try {
-      const { data } = await supabase
-        .from('ai_prompt_history')
-        .select('*')
-        .eq('agent_id', slug)
-        .order('version', { ascending: false })
-        .limit(10);
+      const { data } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_prompt_history')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'agent_id', slug)
+        /* .order\( REMOVIDO */ ; //'version', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //10);
 
       setHistory(data?.map(item => ({
         id: item.id.toString(),
@@ -233,9 +233,9 @@ export default function AdminAgents() {
       const varsObj = JSON.parse(data.vars || '{}');
 
       // Salvar prompt usando upsert com onConflict
-      const { error } = await supabase
-        .from('ai_agent_prompts')
-        .upsert({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_prompts')
+        /* .upsert\( REMOVIDO */ ; //{
           agent_slug: slug,
           template: data.template,
           vars: varsObj,
@@ -247,7 +247,7 @@ export default function AdminAgents() {
       if (error) throw error;
 
       // Chamar edge function para sincronizar
-      const { error: pushError } = await supabase.functions.invoke('push_prompt_to_edge', {
+      const { error: pushError } = await /* supabase REMOVIDO */ null; //functions.invoke('push_prompt_to_edge', {
         body: { agent_slug: slug }
       });
 
@@ -281,18 +281,18 @@ export default function AdminAgents() {
       setSaving(true);
 
       // Buscar company_id
-      const { data: companyData } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('slug', slug)
-        .single();
+      const { data: companyData } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'slug', slug)
+        /* .single\( REMOVIDO */ ; //);
 
       if (!companyData) throw new Error('Empresa não encontrada');
 
       // Salvar configurações do assistant
-      const { error } = await supabase
-        .from('ai_agent_assistants')
-        .upsert({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_assistants')
+        /* .upsert\( REMOVIDO */ ; //{
           company_id: companyData.id,
           bot_name: assistantForm.bot_name,
           assistant_id: assistantForm.assistant_id,
@@ -327,7 +327,7 @@ export default function AdminAgents() {
     setTestResponse("");
 
     try {
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
         body: {
           slug_empresa: slug,
           user_message: 'teste de prompt',
@@ -393,8 +393,8 @@ export default function AdminAgents() {
       formData.append('type', type);
       formData.append('company_slug', slug);
 
-      const { error } = await supabase.storage
-        .from('ai-knowledge')
+      const { error } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'ai-knowledge')
         .upload(`${slug}/${type}.json`, file);
 
       if (error) throw error;

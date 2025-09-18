@@ -135,7 +135,7 @@ export const KDSHorizontalLayout: React.FC<KDSHorizontalLayoutProps> = ({
               </button>
               
               <div className="flex items-center gap-1 mx-4">
-                {Array.from({ length: totalPages }, (_, i) => (
+                {Array/* .from REMOVIDO */ ; //{ length: totalPages }, (_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i)}

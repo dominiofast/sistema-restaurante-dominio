@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { toast } from 'sonner';
 import { whatsappFallback } from '@/services/whatsappFallbackSystem';
 import { whatsappConnectionManager } from '@/services/whatsappConnectionManager';
@@ -130,7 +131,7 @@ export const useWhatsAppRealtime = ({
   const cleanupChannels = useCallback(() => {
     channelsRef.current.forEach(channel => {
       try {
-        // supabase. // DESABILITADO - removeChannel(channel);
+        // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
       } catch (error) {
         console.warn('Erro ao remover canal:', error);
       }
@@ -275,8 +276,8 @@ export const useWhatsAppRealtime = ({
 
     // Canal para mensagens com configuração otimizada
     const messagesChannel = supabase
-      // .channel( // DESABILITADO`whatsapp_messages_${companyId}`)
-      // .on( // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp_messages_${companyId}`)
+      // /* .on REMOVIDO */ ; // // DESABILITADO
         'postgres_changes',
         {
           event: 'INSERT',
@@ -315,7 +316,7 @@ export const useWhatsAppRealtime = ({
           }
         }
       )
-      // .on( // DESABILITADO
+      // /* .on REMOVIDO */ ; // // DESABILITADO
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -335,8 +336,8 @@ export const useWhatsAppRealtime = ({
 
     // Canal para chats
     const chatsChannel = supabase
-      // .channel( // DESABILITADO`whatsapp_chats_${companyId}`)
-      // .on( // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp_chats_${companyId}`)
+      // /* .on REMOVIDO */ ; // // DESABILITADO
         'postgres_changes',
         {
           event: '*',
@@ -437,14 +438,14 @@ export const useWhatsAppRealtime = ({
     };
 
     // Subscribe nos canais
-    messagesChannel// .subscribe( // DESABILITADO(status) => handleSubscriptionStatus(status, messagesChannel));
-    chatsChannel// .subscribe( // DESABILITADO(status) => handleSubscriptionStatus(status, chatsChannel));
+    messagesChannel// /* .subscribe REMOVIDO */ ; // // DESABILITADO(status) => handleSubscriptionStatus(status, messagesChannel));
+    chatsChannel// /* .subscribe REMOVIDO */ ; // // DESABILITADO(status) => handleSubscriptionStatus(status, chatsChannel));
 
     // Canal Broadcast: permite que o webhook notifique diretamente o frontend
     try {
       broadcastChannelRef.current = supabase
-        // .channel( // DESABILITADO`whatsapp:${companyId}`, { config: { broadcast: { self: false } } })
-        // .on( // DESABILITADO'broadcast', { event: 'new_message' }, (payload: any) => {
+        // /* .channel REMOVIDO */ ; // // DESABILITADO`whatsapp:${companyId}`, { config: { broadcast: { self: false } } })
+        // /* .on REMOVIDO */ ; // // DESABILITADO'broadcast', { event: 'new_message' }, (payload: any) => {
           const m = payload?.payload || payload;
           if (!m) return;
           const mid = m.id || m.message_id;
@@ -453,7 +454,7 @@ export const useWhatsAppRealtime = ({
             debouncedMessageHandler(m);
           }
         })
-        // .subscribe( // DESABILITADO(status: string) => {
+        // /* .subscribe REMOVIDO */ ; // // DESABILITADO(status: string) => {
           console.log('📡 Broadcast status:', status, `topic=whatsapp:${companyId}`);
           if (status === 'SUBSCRIBED') {
             // Se não houver atividade em 3s, puxa via polling
@@ -501,12 +502,12 @@ export const useWhatsAppRealtime = ({
       if (!force && !isLocalhost && connectionStatus.isConnected) return;
       
       try {
-        const { data: recentMessages } = await supabase
-          // .from( // DESABILITADO'whatsapp_messages')
-          .select('*')
-          .eq('company_id', companyId)
-          .order('timestamp', { ascending: false })
-          .limit(8);
+        const { data: recentMessages } = /* await supabase REMOVIDO */ null
+          // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
+          /* .limit\( REMOVIDO */ ; //8);
           
         if (recentMessages?.length) {
           recentMessages.reverse().forEach((m: any) => {
@@ -551,12 +552,12 @@ export const useWhatsAppRealtime = ({
         gapWatcherIntervalRef.current = setInterval(async () => {
           if (isUnmountedRef.current) return;
           try {
-            const { data: recent } = await supabase
-              // .from( // DESABILITADO'whatsapp_messages')
-              .select('*')
-              .eq('company_id', companyId)
-              .order('timestamp', { ascending: false })
-              .limit(5);
+            const { data: recent } = /* await supabase REMOVIDO */ null
+              // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
+              /* .select\( REMOVIDO */ ; //'*')
+              /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+              /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
+              /* .limit\( REMOVIDO */ ; //5);
               
             if (recent?.length) {
               recent.reverse().forEach((m: any) => {
@@ -581,12 +582,12 @@ export const useWhatsAppRealtime = ({
       // GARANTIA EXTRA: buscar mensagens imediatamente ao conectar
       setTimeout(async () => {
         try {
-          const { data: existingMessages } = await supabase
-            // .from( // DESABILITADO'whatsapp_messages')
-            .select('*')
-            .eq('company_id', companyId)
-            .order('timestamp', { ascending: false })
-            .limit(20);
+          const { data: existingMessages } = /* await supabase REMOVIDO */ null
+            // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_messages')
+            /* .select\( REMOVIDO */ ; //'*')
+            /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+            /* .order\( REMOVIDO */ ; //'timestamp', { ascending: false })
+            /* .limit\( REMOVIDO */ ; //20);
           
           if (existingMessages?.length) {
             // Limpar IDs processados para forçar injeção inicial
@@ -628,7 +629,7 @@ export const useWhatsAppRealtime = ({
       
       if (broadcastChannelRef.current) {
         try { 
-          // supabase. // DESABILITADO - removeChannel(broadcastChannelRef.current);
+          // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(broadcastChannelRef.current);
           broadcastChannelRef.current = null;
         } catch {}
       }

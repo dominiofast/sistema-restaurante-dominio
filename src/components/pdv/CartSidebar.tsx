@@ -3,7 +3,7 @@ import { ShoppingCart, Plus, Minus, Trash2, CreditCard, Eye, Edit, X, FileText, 
 import { CartItem } from '@/hooks/useCart';
 import { PagamentoModalPDV } from './PagamentoModalPDV';
 import { PedidoConfirmacaoModal } from './PedidoConfirmacaoModal';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -56,12 +56,12 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     
     try {
       // Buscar na tabela clientes
-      const { data: cliente, error } = await supabase
-        .from('clientes')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('telefone', telefone)
-        .maybeSingle();
+      const { data: cliente, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'telefone', telefone)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao buscar cliente:', error);
@@ -85,11 +85,11 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     if (!telefoneCliente || !companyId) return [];
     
     try {
-      const { data: enderecos, error } = await supabase
-        .from('customer_addresses')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('customer_phone', telefoneCliente);
+      const { data: enderecos, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'customer_phone', telefoneCliente);
 
       if (error) {
         console.error('Erro ao buscar endereços:', error);
@@ -164,9 +164,9 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
       });
 
       // Criar o pedido na tabela pedidos com status 'analise'
-      const { data: pedido, error: pedidoError } = await supabase
-        .from('pedidos')
-        .insert([{
+      const { data: pedido, error: pedidoError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedidos')
+        /* .insert\( REMOVIDO */ ; //[{
           company_id: companyId,
           nome: nomeCliente || 'Balcão',
           telefone: telefoneCliente || '',
@@ -179,8 +179,8 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           horario: new Date().toLocaleTimeString('pt-BR'),
           origem: 'pdv'
         }])
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (pedidoError) {
         console.error('❌ Erro ao criar pedido:', pedidoError);
@@ -210,10 +210,10 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 
       console.log('📦 Inserindo itens do pedido:', itensParaInserir.length);
 
-      const { data: itensInseridos, error: itensError } = await supabase
-        .from('pedido_itens')
-        .insert(itensParaInserir)
-        .select();
+      const { data: itensInseridos, error: itensError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_itens')
+        /* .insert\( REMOVIDO */ ; //itensParaInserir)
+        /* .select\( REMOVIDO */ ; //);
 
       if (itensError) {
         console.error('❌ Erro ao inserir itens:', itensError);
@@ -231,15 +231,15 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           // Buscar dados completos dos adicionais para obter a categoria
           const adicionaisCompletos = await Promise.all(
             Object.entries(item.adicionais).map(async ([adicionalId, adicionalData]) => {
-              const { data: adicionalCompleto } = await supabase
-                .from('adicionais')
-                .select(`
+              const { data: adicionalCompleto } = /* await supabase REMOVIDO */ null
+                /* .from REMOVIDO */ ; //'adicionais')
+                /* .select\( REMOVIDO */ ; //`
                   id,
                   name,
                   categorias_adicionais!inner(name)
                 `)
-                .eq('id', adicionalId)
-                .single();
+                /* .eq\( REMOVIDO */ ; //'id', adicionalId)
+                /* .single\( REMOVIDO */ ; //);
 
               return {
                 pedido_item_id: itemInserido.id,
@@ -255,9 +255,9 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 
           console.log('🧩 Inserindo adicionais para item:', itemInserido.id);
 
-          const { error: adicionaisError } = await supabase
-            .from('pedido_item_adicionais')
-            .insert(adicionaisCompletos);
+          const { error: adicionaisError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'pedido_item_adicionais')
+            /* .insert\( REMOVIDO */ ; //adicionaisCompletos);
 
           if (adicionaisError) {
             console.error('❌ Erro ao inserir adicionais:', adicionaisError);

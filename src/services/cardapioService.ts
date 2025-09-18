@@ -1,5 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CardapioJsonService } from './cardapioJsonService';
 
 interface CardapioData {
@@ -30,12 +30,12 @@ export class CardapioService {
       console.log('🍽️ Buscando cardápio para IA - Company:', companyId);
 
       // Buscar categorias ativas
-      const { data: categorias, error: categoriasError } = await supabase
-        .from('categorias')
-        .select('id, name, description')
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .order('order_position', { ascending: true });
+      const { data: categorias, error: categoriasError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'categorias')
+        /* .select\( REMOVIDO */ ; //'id, name, description')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
 
       if (categoriasError) {
         console.error('❌ Erro ao buscar categorias:', categoriasError);
@@ -43,11 +43,11 @@ export class CardapioService {
       }
 
       // Buscar produtos disponíveis
-      const { data: produtos, error: produtosError } = await supabase
-        .from('produtos')
-        .select('id, name, description, price, promotional_price, is_promotional, is_available, preparation_time, ingredients, categoria_id')
-        .eq('company_id', companyId)
-        .eq('is_available', true);
+      const { data: produtos, error: produtosError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produtos')
+        /* .select\( REMOVIDO */ ; //'id, name, description, price, promotional_price, is_promotional, is_available, preparation_time, ingredients, categoria_id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_available', true);
 
       if (produtosError) {
         console.error('❌ Erro ao buscar produtos:', produtosError);

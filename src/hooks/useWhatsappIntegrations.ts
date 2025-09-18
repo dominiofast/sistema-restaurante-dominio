@@ -52,9 +52,9 @@ export const useWhatsappIntegrations = () => {
   };
 
   const fetchIntegrations = async () => {
-    console.log('⚠️ useWhatsappIntegrations: fetchIntegrations desabilitado - sistema usa PostgreSQL');
-    if (companies.length === 0) return;
-    // const { data } = // await // supabase. // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations').select('*'); // DESABILITADO
+    console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = // await // /* supabase REMOVIDO */ null; // // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'*'); // DESABILITADO
     setIntegrations({});
   };
 
@@ -73,17 +73,17 @@ export const useWhatsappIntegrations = () => {
     if (form.id || existingIntegration) {
       // Atualizar integração existente
       const updateId = form.id || existingIntegration?.id;
-      const { error } = await supabase
-        // .from( // DESABILITADO'whatsapp_integrations')
-        .update(payload as any)
-        .eq('id', updateId);
+      const { error } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_integrations')
+        /* .update\( REMOVIDO */ ; //payload as any)
+        /* .eq\( REMOVIDO */ ; //'id', updateId);
       if (error) throw error;
       return 'Integração atualizada com sucesso.';
     } else {
       // Criar nova integração
-      const { error } = await supabase
-        // .from( // DESABILITADO'whatsapp_integrations')
-        .insert([payload as any]);
+      const { error } = /* await supabase REMOVIDO */ null
+        // /* .from REMOVIDO */ ; // // DESABILITADO'whatsapp_integrations')
+        /* .insert\( REMOVIDO */ ; //[payload as any]);
       if (error) throw error;
       return 'Integração criada com sucesso.';
     }
@@ -91,7 +91,7 @@ export const useWhatsappIntegrations = () => {
 
   const refreshIntegrations = async () => {
     console.log('⚠️ useWhatsappIntegrations: refreshIntegrations desabilitado - sistema usa PostgreSQL');
-    // const { data } = // await // supabase. // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations').select('*'); // DESABILITADO
+    // const { data } = // await // /* supabase REMOVIDO */ null; // // DESABILITADO -  // DESABILITADO - from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'*'); // DESABILITADO
     setIntegrations({});
   };
 

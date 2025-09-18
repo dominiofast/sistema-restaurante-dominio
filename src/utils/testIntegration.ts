@@ -1,10 +1,9 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export const testWhatsAppIntegration = async () => {
   try {
     console.log('🧪 Iniciando teste completo da integração...');
     
-    const { data, error } = await supabase.functions.invoke('test-whatsapp-status', {
+    const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('test-whatsapp-status', {
       body: {}
     });
     

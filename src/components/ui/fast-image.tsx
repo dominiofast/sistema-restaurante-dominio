@@ -45,7 +45,7 @@ export const FastImage: React.FC<FastImageProps> = ({
             // Otimizar URL se for do Supabase
             let optimizedSrc = src;
             
-            if (src.includes('supabase.co')) {
+            if (src.includes('/* supabase REMOVIDO */ null; //co')) {
               const url = new URL(src);
               // Adicionar parâmetros de otimização
               url.searchParams.set('width', (width || 400).toString());

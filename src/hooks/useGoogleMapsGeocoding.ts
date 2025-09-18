@@ -71,7 +71,7 @@ export function useGoogleMapsGeocoding() {
 
     try {
       // Usar o proxy do Supabase Edge Function
-      const response = await fetch('https://epqppxteicfuzdblbluq.supabase.co/functions/v1/google-maps-proxy', {
+      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export function useGoogleMapsGeocoding() {
       console.log('🔍 Iniciando busca reversa com coordenadas:', latitude, longitude);
       
       // Usar o proxy do Supabase Edge Function para reverse geocoding
-      const response = await fetch('https://epqppxteicfuzdblbluq.supabase.co/functions/v1/google-maps-proxy', {
+      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ export function useGoogleMapsGeocoding() {
       console.log('🔍 Google Places - Buscando via proxy:', searchText);
       
       // Usar o proxy do Supabase Edge Function
-      const response = await fetch('https://epqppxteicfuzdblbluq.supabase.co/functions/v1/google-maps-proxy', {
+      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ export function useGoogleMapsGeocoding() {
   // Função para buscar detalhes de um lugar específico via proxy
   const getPlaceDetails = async (placeId: string): Promise<GoogleMapsAddress | null> => {
     try {
-      const response = await fetch('https://epqppxteicfuzdblbluq.supabase.co/functions/v1/google-maps-proxy', {
+      const response = await fetch('https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

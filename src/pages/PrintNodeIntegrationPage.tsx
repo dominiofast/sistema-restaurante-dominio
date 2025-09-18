@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ProBadge } from '@/components/ui/pro-badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { ExternalLink, Printer, ShieldCheck, RefreshCcw, Save, TestTube2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -74,11 +74,11 @@ const PrintNodeIntegrationPage: React.FC = () => {
   useEffect(() => {
     if (!companyId) return;
     (async () => {
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('printnode_enabled, printnode_child_account_id, printnode_child_email, printnode_default_printer_id, printnode_default_printer_name')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'printnode_enabled, printnode_child_account_id, printnode_child_email, printnode_default_printer_id, printnode_default_printer_name')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro carregando settings PrintNode:', error);
@@ -101,9 +101,9 @@ const PrintNodeIntegrationPage: React.FC = () => {
     }
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('company_settings')
-        .upsert(
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .upsert\( REMOVIDO */ ; //
           {
             company_id: companyId,
             printnode_enabled: enabled,
@@ -128,7 +128,7 @@ const PrintNodeIntegrationPage: React.FC = () => {
     setLoading(true);
     setAccountInfo(null);
     try {
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
         body: { action: 'whoami', ...childHeaders },
       });
       if (error) throw error;
@@ -149,7 +149,7 @@ const PrintNodeIntegrationPage: React.FC = () => {
   const loadPrinters = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
         body: { action: 'printers', ...childHeaders },
       });
       if (error) throw error;
@@ -180,7 +180,7 @@ const PrintNodeIntegrationPage: React.FC = () => {
     setLoading(true);
     try {
       const content = btoa('Teste de impressão via PrintNode\nDomínio Tech POS\n\nObrigado!');
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('printnode-proxy', {
         body: {
           action: 'print',
           printerId: Number(defaultPrinterId),

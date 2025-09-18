@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { MessageSquare, Play, RefreshCw, X, Trash2, CheckCircle } from 'lucide-react';
 
 import type { WhatsappIntegration } from '@/types/whatsapp';
@@ -70,14 +70,14 @@ export const WhatsappConnect: React.FC = () => {
       setQrCodeUrl(null);
       setWhatsappStatus({ connected: false });
       
-const { data, error } = await supabase
-        .from('whatsapp_integrations')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', selectedPurpose)
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_integrations')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'purpose', selectedPurpose)
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
       if (error) {
         addLog('error', `Erro ao buscar integração (${selectedPurpose}): ${error.message || 'desconhecido'}`);
       }
@@ -92,12 +92,12 @@ const { data, error } = await supabase
       
       // Verificar se a outra instância usa a mesma instance_key (o que faria conectar o mesmo número)
       const otherPurpose = selectedPurpose === 'primary' ? 'marketing' : 'primary';
-      const { data: other } = await supabase
-        .from('whatsapp_integrations')
-        .select('instance_key, host, token, control_id, purpose')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', otherPurpose)
-        .maybeSingle();
+      const { data: other } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_integrations')
+        /* .select\( REMOVIDO */ ; //'instance_key, host, token, control_id, purpose')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'purpose', otherPurpose)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       setOtherIntegration(other as any);
 

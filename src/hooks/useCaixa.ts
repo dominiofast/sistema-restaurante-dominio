@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -40,18 +41,16 @@ export function useCaixa() {
 
   // Buscar caixa atual (aberto)
   const buscarCaixaAtual = useCallback(async () => {
-    if (!currentCompany?.id) return;
-
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('caixas')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('status', 'aberto')
-        .order('data_abertura', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+    console.log('⚠️ buscarCaixaAtual desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixas')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
+        /* .order\( REMOVIDO */ ; //'data_abertura', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao buscar caixa atual:', error);
@@ -76,12 +75,12 @@ export function useCaixa() {
     if (!currentCompany?.id) return;
 
     try {
-      const { data, error } = await supabase
-        .from('caixa_lancamentos')
-        .select('*')
-        .eq('caixa_id', caixaId)
-        .order('data_lancamento', { ascending: false })
-        .order('hora_lancamento', { ascending: false });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixa_lancamentos')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'caixa_id', caixaId)
+        /* .order\( REMOVIDO */ ; //'data_lancamento', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'hora_lancamento', { ascending: false });
 
       if (error) {
         console.error('Erro ao buscar lançamentos:', error);
@@ -113,28 +112,28 @@ export function useCaixa() {
       setLoading(true);
       
       // Verificar se já existe caixa aberto
-      const { data: caixaExistente } = await supabase
-        .from('caixas')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .eq('status', 'aberto')
-        .maybeSingle();
+      const { data: caixaExistente } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixas')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (caixaExistente) {
         toast({ title: "Aviso", description: "Já existe um caixa aberto", variant: "destructive" });
         return false;
       }
 
-      const { data, error } = await supabase
-        .from('caixas')
-        .insert([{
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixas')
+        /* .insert\( REMOVIDO */ ; //[{
           company_id: currentCompany.id,
           valor_abertura: valorAbertura,
           usuario_abertura: user.name,
           status: 'aberto'
         }])
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao abrir caixa:', error);
@@ -169,16 +168,16 @@ export function useCaixa() {
       const valorFechamento = caixaAtual.valor_abertura + 
         lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0);
 
-      const { error } = await supabase
-        .from('caixas')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixas')
+        /* .update\( REMOVIDO */ ; //{
           status: 'fechado',
           data_fechamento: new Date().toISOString(),
           valor_fechamento: valorFechamento,
           usuario_fechamento: user.name,
           observacoes
         })
-        .eq('id', caixaAtual.id);
+        /* .eq\( REMOVIDO */ ; //'id', caixaAtual.id);
 
       if (error) {
         console.error('Erro ao fechar caixa:', error);
@@ -212,16 +211,16 @@ export function useCaixa() {
     try {
       setLoading(true);
 
-      const { data, error } = await supabase
-        .from('caixa_lancamentos')
-        .insert([{
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'caixa_lancamentos')
+        /* .insert\( REMOVIDO */ ; //[{
           ...lancamento,
           caixa_id: caixaAtual.id,
           company_id: currentCompany.id,
           usuario: user?.name || 'Usuário'
         }])
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao adicionar lançamento:', error);

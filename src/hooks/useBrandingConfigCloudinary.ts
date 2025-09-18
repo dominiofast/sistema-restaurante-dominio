@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { useCloudinaryUpload } from './useCloudinaryUpload';
 import { toast } from 'sonner';
@@ -35,17 +35,17 @@ export const useBrandingConfigCloudinary = () => {
     try {
       console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
       
-      const { data, error } = await supabase
-        .from('cardapio_branding')
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //`
           *
         `)
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro ao carregar configuração:', error);
@@ -125,32 +125,32 @@ export const useBrandingConfigCloudinary = () => {
       };
 
       // Verificar se já existe uma configuração
-      const { data: existingConfig } = await supabase
-        .from('cardapio_branding')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .single();
+      const { data: existingConfig } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .single\( REMOVIDO */ ; //);
 
       let result;
       if (existingConfig) {
         // Atualizar configuração existente
-        result = await supabase
-          .from('cardapio_branding')
-          .update(configData)
-          .eq('id', existingConfig.id)
-          .select()
-          .single();
+        result = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .update\( REMOVIDO */ ; //configData)
+          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
       } else {
         // Criar nova configuração
-        result = await supabase
-          .from('cardapio_branding')
-          .insert({
+        result = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .insert\( REMOVIDO */ ; //{
             ...configData,
             created_at: new Date().toISOString()
           })
-          .select()
-          .single();
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
       }
 
       if (result.error) {

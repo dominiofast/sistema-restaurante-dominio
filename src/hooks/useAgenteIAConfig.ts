@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface AgenteIAConfig {
   id?: string;
   company_id: string;
@@ -64,7 +63,7 @@ const defaultConfig: Omit<AgenteIAConfig, 'company_id'> = {
 
 // Função para gerar token único
 const generateToken = () => {
-  return 'sk-' + Array.from(crypto.getRandomValues(new Uint8Array(16)))
+  return 'sk-' + Array/* .from REMOVIDO */ ; //crypto.getRandomValues(new Uint8Array(16)))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
 };
@@ -85,11 +84,11 @@ export const useAgenteIAConfig = (companyId: string) => {
       setLoading(true);
       console.log('📥 Carregando configuração para empresa:', companyId);
       
-      const { data, error } = await supabase
-        .from('ai_agent_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro ao carregar configuração:', error);
@@ -155,11 +154,11 @@ export const useAgenteIAConfig = (companyId: string) => {
       const { url_cardapio, habilitar_lancamento_pedidos, url_pedidos, token_pedidos, ...configToSend } = configToSave;
       
       // Verificar se já existe uma configuração
-      const { data: existingConfig, error: checkError } = await supabase
-        .from('ai_agent_config')
-        .select('id')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: existingConfig, error: checkError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_config')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (checkError && checkError.code !== 'PGRST116') {
         console.error('❌ Erro ao verificar configuração existente:', checkError);
@@ -170,20 +169,20 @@ export const useAgenteIAConfig = (companyId: string) => {
       if (existingConfig?.id) {
         // Atualizar configuração existente
         console.log('🔄 Atualizando configuração existente ID:', existingConfig.id);
-        result = await supabase
-          .from('ai_agent_config')
-          .update(configToSend)
-          .eq('company_id', companyId)
-          .select()
-          .single();
+        result = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ai_agent_config')
+          /* .update\( REMOVIDO */ ; //configToSend)
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
       } else {
         // Inserir nova configuração
         console.log('➕ Inserindo nova configuração');
-        result = await supabase
-          .from('ai_agent_config')
-          .insert([configToSend])
-          .select()
-          .single();
+        result = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ai_agent_config')
+          /* .insert\( REMOVIDO */ ; //[configToSend])
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
       }
 
       if (result.error) {

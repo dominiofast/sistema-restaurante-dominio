@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface CompanyInfo {
@@ -35,11 +35,11 @@ export function useCompanyInfo() {
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('company_info')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_info')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) throw error;
 
@@ -76,22 +76,22 @@ export function useCompanyInfo() {
 
       if (companyInfo?.id) {
         // Atualizar registro existente
-        const { data, error } = await supabase
-          .from('company_info')
-          .update(dataToSave)
-          .eq('id', companyInfo.id)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_info')
+          /* .update\( REMOVIDO */ ; //dataToSave)
+          /* .eq\( REMOVIDO */ ; //'id', companyInfo.id)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) throw error;
         setCompanyInfo(data);
       } else {
         // Criar novo registro
-        const { data, error } = await supabase
-          .from('company_info')
-          .insert(dataToSave)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_info')
+          /* .insert\( REMOVIDO */ ; //dataToSave)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) throw error;
         setCompanyInfo(data);

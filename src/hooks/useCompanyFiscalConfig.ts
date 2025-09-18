@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { useCompanyFiscalOperations } from './useCompanyFiscalOperations';
 import { useCompanyFiscalValidation } from './useCompanyFiscalValidation';
@@ -62,11 +62,11 @@ export function useCompanyFiscalConfig() {
       setLoading(true);
       console.log('fetchFiscalConfig: Fetching config for company:', currentCompany.id);
       
-      const { data, error } = await supabase
-        .from('company_fiscal_config')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_fiscal_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('fetchFiscalConfig: Supabase error:', error);
@@ -137,12 +137,12 @@ export function useCompanyFiscalConfig() {
 
       if (fiscalConfig?.id) {
         console.log('saveFiscalConfig: Updating existing record with ID:', fiscalConfig.id);
-        const { data, error } = await supabase
-          .from('company_fiscal_config')
-          .update(dataToSave)
-          .eq('id', fiscalConfig.id)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_fiscal_config')
+          /* .update\( REMOVIDO */ ; //dataToSave)
+          /* .eq\( REMOVIDO */ ; //'id', fiscalConfig.id)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) {
           console.error('saveFiscalConfig: Update error:', error);
@@ -152,11 +152,11 @@ export function useCompanyFiscalConfig() {
         setFiscalConfig(data);
       } else {
         console.log('saveFiscalConfig: Creating new record');
-        const { data, error } = await supabase
-          .from('company_fiscal_config')
-          .insert(dataToSave)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_fiscal_config')
+          /* .insert\( REMOVIDO */ ; //dataToSave)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) {
           console.error('saveFiscalConfig: Insert error:', error);

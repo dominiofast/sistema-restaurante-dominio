@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -28,18 +28,16 @@ export function useTurnos() {
 
   // Buscar turno ativo atual
   const buscarTurnoAtual = async () => {
-    if (!companyId) return;
-
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('turnos')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('status', 'aberto')
-        .order('data_abertura', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+    console.log('⚠️ buscarTurnoAtual desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'turnos')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'status', 'aberto')
+        /* .order\( REMOVIDO */ ; //'data_abertura', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao buscar turno atual:', error);
@@ -73,7 +71,7 @@ export function useTurnos() {
       }
 
       // Buscar próximo número de turno
-      const { data: proximoNumero, error: numeroError } = await supabase
+      const { data: proximoNumero, error: numeroError } = /* await supabase REMOVIDO */ null
         .rpc('get_next_turno_number_for_company', {
           company_uuid: companyId
         });
@@ -83,17 +81,17 @@ export function useTurnos() {
       }
 
       // Criar novo turno
-      const { data, error } = await supabase
-        .from('turnos')
-        .insert({
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'turnos')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           numero_turno: proximoNumero,
           usuario_abertura: 'Usuário Atual', // TODO: pegar do contexto de autenticação
           observacoes,
           status: 'aberto'
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         throw error;
@@ -123,15 +121,15 @@ export function useTurnos() {
   const fecharTurno = async (turnoId: string, observacoes?: string) => {
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('turnos')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'turnos')
+        /* .update\( REMOVIDO */ ; //{
           status: 'fechado',
           data_fechamento: new Date().toISOString(),
           usuario_fechamento: 'Usuário Atual', // TODO: pegar do contexto de autenticação
           observacoes
         })
-        .eq('id', turnoId);
+        /* .eq\( REMOVIDO */ ; //'id', turnoId);
 
       if (error) {
         throw error;

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -49,11 +49,11 @@ export const useClienteOperations = () => {
 
       console.log('📝 Dados do cliente a serem inseridos:', clienteData);
 
-      const { data, error } = await supabase
-        .from('clientes')
-        .insert([clienteData])
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .insert\( REMOVIDO */ ; //[clienteData])
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro na inserção:', error);
@@ -75,10 +75,10 @@ export const useClienteOperations = () => {
   const updateCliente = async (id: number, formData: Partial<Cliente>) => {
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('clientes')
-        .update(formData)
-        .eq('id', id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .update\( REMOVIDO */ ; //formData)
+        /* .eq\( REMOVIDO */ ; //'id', id);
 
       if (error) throw error;
       toast.success('Cliente atualizado com sucesso');
@@ -97,10 +97,10 @@ export const useClienteOperations = () => {
 
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('clientes')
-        .delete()
-        .eq('id', id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', id);
 
       if (error) throw error;
       toast.success('Cliente excluído com sucesso');

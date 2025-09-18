@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { PagamentoEntregaConfigData } from '@/components/settings/PagamentoEntregaConfig';
 
 export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
@@ -29,16 +29,16 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       console.log('Carregando configuração de pagamento para empresa:', companyId);
 
       // Primeiro, vamos verificar se o usuário está autenticado
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await /* supabase REMOVIDO */ null; //auth.getSession();
       console.log('Sessão do usuário:', session?.user?.id);
       console.log('Metadata do usuário:', session?.user?.user_metadata);
 
       // Vamos verificar se a empresa existe e se o usuário tem acesso
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .select('id, name, domain')
-        .eq('id', companyId)
-        .single();
+      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, domain')
+        /* .eq\( REMOVIDO */ ; //'id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (companyError) {
         console.error('Erro ao buscar empresa:', companyError);
@@ -48,11 +48,11 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       console.log('Dados da empresa:', companyData);
 
       // Buscar configuração principal
-      const { data: configData, error: configError } = await supabase
-        .from('payment_delivery_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (configError) {
         console.error('Erro ao buscar configuração:', configError);
@@ -66,10 +66,10 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       // Buscar bandeiras se existe configuração
       let cardBrands: string[] = [];
       if (configData) {
-        const { data: brandsData, error: brandsError } = await supabase
-          .from('payment_delivery_card_brands')
-          .select('brand_name')
-          .eq('config_id', configData.id);
+        const { data: brandsData, error: brandsError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
+          /* .select\( REMOVIDO */ ; //'brand_name')
+          /* .eq\( REMOVIDO */ ; //'config_id', configData.id);
 
         if (brandsError) {
           console.error('Erro ao buscar bandeiras:', brandsError);
@@ -116,11 +116,11 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       console.log('Salvando configuração:', newConfig);
 
       // Verificar se já existe configuração
-      const { data: existingConfig, error: checkError } = await supabase
-        .from('payment_delivery_config')
-        .select('id')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: existingConfig, error: checkError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_config')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (checkError) {
         console.error('Erro ao verificar configuração existente:', checkError);
@@ -131,9 +131,9 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
 
       if (existingConfig) {
         // Atualizar configuração existente
-        const { error: updateError } = await supabase
-          .from('payment_delivery_config')
-          .update({
+        const { error: updateError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'payment_delivery_config')
+          /* .update\( REMOVIDO */ ; //{
             accept_cash: newConfig.accept_cash,
             accept_card: newConfig.accept_card,
             accept_pix: newConfig.accept_pix,
@@ -141,7 +141,7 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
             pix_key: newConfig.pix_key,
             updated_at: new Date().toISOString()
           })
-          .eq('id', existingConfig.id);
+          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id);
 
         if (updateError) {
           console.error('Erro ao atualizar configuração:', updateError);
@@ -150,9 +150,9 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
         configId = existingConfig.id;
       } else {
         // Criar nova configuração
-        const { data: newConfigData, error: insertError } = await supabase
-          .from('payment_delivery_config')
-          .insert({
+        const { data: newConfigData, error: insertError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'payment_delivery_config')
+          /* .insert\( REMOVIDO */ ; //{
             company_id: companyId,
             accept_cash: newConfig.accept_cash,
             accept_card: newConfig.accept_card,
@@ -160,8 +160,8 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
             ask_card_brand: newConfig.ask_card_brand,
             pix_key: newConfig.pix_key
           })
-          .select('id')
-          .single();
+          /* .select\( REMOVIDO */ ; //'id')
+          /* .single\( REMOVIDO */ ; //);
 
         if (insertError) {
           console.error('Erro ao inserir configuração:', insertError);
@@ -171,10 +171,10 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
       }
 
       // Remover bandeiras antigas
-      const { error: deleteError } = await supabase
-        .from('payment_delivery_card_brands')
-        .delete()
-        .eq('config_id', configId);
+      const { error: deleteError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'config_id', configId);
 
       if (deleteError) {
         console.error('Erro ao remover bandeiras antigas:', deleteError);
@@ -188,9 +188,9 @@ export const usePagamentoEntregaConfig = (companyId: string | undefined) => {
           brand_name: brand
         }));
 
-        const { error: brandsError } = await supabase
-          .from('payment_delivery_card_brands')
-          .insert(brandsToInsert);
+        const { error: brandsError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'payment_delivery_card_brands')
+          /* .insert\( REMOVIDO */ ; //brandsToInsert);
 
         if (brandsError) {
           console.error('Erro ao inserir bandeiras:', brandsError);

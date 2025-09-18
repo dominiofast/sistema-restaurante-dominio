@@ -114,7 +114,7 @@ export function useDeliveryFeeCalculator(companyId: string | undefined) {
         
         try {
           // Fazer geocoding usando o Google Maps
-          const response = await fetch(`https://epqppxteicfuzdblbluq.supabase.co/functions/v1/google-maps-proxy`, {
+          const response = await fetch(`https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/google-maps-proxy`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

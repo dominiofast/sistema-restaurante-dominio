@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Zap, Bot, CheckCircle, XCircle, Search } from 'lucide-react';
 import { aiService } from '@/services/aiService';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 interface TestResult {
@@ -42,7 +42,7 @@ export function MigrationTestPanel() {
     try {
       console.log('🔍 Investigando modo direto para empresa:', companyId);
       
-      const { data, error } = await supabase.functions.invoke('debug-direct-mode', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('debug-direct-mode', {
         body: { company_id: companyId }
       });
 

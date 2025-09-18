@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface DeliveryOptions {
   delivery: boolean;
   pickup: boolean;
@@ -27,11 +26,11 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('delivery, pickup, eat_in')
-        .eq('company_id', companyId)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -86,7 +85,7 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
   }
 
   invalidateCache(companyId: string): void {
-    this.cache.delete(companyId);
+    this.cache/* .delete\( REMOVIDO */ ; //companyId);
   }
 
   clearCache(): void {

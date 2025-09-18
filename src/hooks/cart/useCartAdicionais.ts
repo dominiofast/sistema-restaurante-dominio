@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CartAdicionais } from './types';
 
 export const useCartAdicionais = () => {
@@ -39,11 +39,11 @@ export const useCartAdicionais = () => {
           let error: any = null;
 
           if (isUUID) {
-            const resp = await supabase
-              .from('adicionais')
-              .select('id, name, price, categoria_adicional_id, categorias_adicionais(name)')
-              .eq('id', adicionalId)
-              .maybeSingle();
+            const resp = /* await supabase REMOVIDO */ null
+              /* .from REMOVIDO */ ; //'adicionais')
+              /* .select\( REMOVIDO */ ; //'id, name, price, categoria_adicional_id, categorias_adicionais(name)')
+              /* .eq\( REMOVIDO */ ; //'id', adicionalId)
+              /* .maybeSingle\( REMOVIDO */ ; //);
             adicionalData = resp.data;
             error = resp.error;
           }
