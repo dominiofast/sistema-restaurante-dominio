@@ -84,3 +84,4 @@ async function checkAndCreateProductionSuperadmin() {
 }
 
 checkAndCreateProductionSuperadmin();
+

@@ -50,3 +50,4 @@ async function verifyNeonUsers() {
 }
 
 verifyNeonUsers();
+
