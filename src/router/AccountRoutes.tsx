@@ -54,7 +54,7 @@ const TestIntegration = lazy(() => import("@/pages/TestIntegration"));
 const AdminAgents = lazy(() => import("@/pages/AdminAgents"));
 const PromptsManagement = lazy(() => import("@/pages/PromptsManagement"));
 const WhatsAppAIIntegration = lazy(() => import("@/pages/WhatsAppAIIntegration"));
-const ImportCardapio = lazy(() => import("@/pages/ImportCardapio"));
+const ImportCardapioSupabase = lazy(() => import("@/pages/ImportCardapioSupabase"));
 const CampanhaWhatsApp = lazy(() => import("@/pages/marketing/CampanhaWhatsApp"));
 const CampanhasSalvas = lazy(() => import("@/pages/marketing/CampanhasSalvas"));
 
@@ -182,7 +182,7 @@ const AccountRoutes = () => {
         <Route path="/test-integration" element={<TestIntegration />} />
         <Route path="/admin/agents/:slug" element={<AdminAgents />} />
         <Route path="/admin/prompts" element={<PromptsManagement />} />
-        <Route path="/admin/import-cardapio" element={<ImportCardapio />} />
+        <Route path="/admin/import-cardapio" element={<ImportCardapioSupabase />} />
         <Route path="/whatsapp-ai-integration" element={<WhatsAppAIIntegration />} />
       </Route>
       
