@@ -146,10 +146,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           toast.error('Usuário não tem empresa associada. Entre em contato com o suporte.', {
             duration: 5000
           });
-
-
-      
-    } catch (error) {
+        }
+      } catch (error) {
       console.error('AuthProvider: Erro ao carregar empresas:', error);
       if (isMounted()) {
         setCompanies([]);

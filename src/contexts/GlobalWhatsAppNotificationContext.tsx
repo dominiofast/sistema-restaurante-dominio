@@ -96,7 +96,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
         // Fallback: se falhar a notificação do navegador, mostra popup
         setCurrentNotification(message);
         scheduleAutoHide();
-
+      }
     } else if (document.hidden) {
       // Se não tem permissão e página inativa, mostrar popup quando voltar
       // Aguardar usuário voltar à aba para mostrar popup

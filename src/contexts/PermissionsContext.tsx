@@ -265,7 +265,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         await loadUserPermissions();
       }
 
-       catch (error) { console.error('Error:', error); }return true;
+      return true;
     } catch (error) {
       console.error('Erro ao revogar permissão:', error);
       return false;

@@ -77,7 +77,7 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       }
       
       return null;
-    } catch {
+    } catch (error) {
       if (currentCompany) {
         return convertToStoreInfo(currentCompany);
       }

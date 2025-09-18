@@ -71,7 +71,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
       setConnectionVersion(undefined);
       setLastConnectionCheck(new Date());
       return false;
-
+    }
   }, [checkQZAvailability]);
 
   // Conectar ao QZ Tray
