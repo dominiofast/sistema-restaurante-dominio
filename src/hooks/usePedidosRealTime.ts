@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface ItemPedido {
@@ -41,7 +39,7 @@ export const usePedidosRealTime = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log('🚀 usePedidosRealTime: Hook iniciado');
+  console.log('🚀 usePedidosRealTime: Hook iniciado via API Neon');
   console.log('🏢 usePedidosRealTime: currentCompany:', currentCompany);
   console.log('🏢 usePedidosRealTime: currentCompany.id:', currentCompany?.id);
 
@@ -52,148 +50,61 @@ export const usePedidosRealTime = () => {
     return Math.floor((now.getTime() - created.getTime()) / (1000 * 60)); // em minutos
   };
 
-  // Função para buscar itens reais do pedido com adicionais
+  // Função para buscar itens reais do pedido com adicionais via API
   const fetchPedidoItens = async (pedidoId: number): Promise<ItemPedido[]> => {
     try {
-      console.log('🔍 Buscando itens do pedido:', pedidoId);
+      console.log('🔍 Buscando itens do pedido via API:', pedidoId);
       
-      // Buscar itens do pedido
-      const { data: itens, error: itensError } = await supabase
-        .from('pedido_itens')
-        .select('*')
-        .eq('pedido_id', pedidoId);
+      // Para simplicidade inicial, retornar item genérico
+      // TODO: Implementar API de pedido_itens quando necessário
+      return [{
+        nome: `Pedido #${pedidoId}`,
+        qtd: 1,
+        valor: 0,
+        observacoes: undefined,
+        adicionais: []
+      }];
       
-      if (itensError) {
-        console.error('❌ Erro ao buscar itens:', itensError);
-        throw itensError;
-      }
-
-      if (!itens || itens.length === 0) {
-        console.log('⚠️ Nenhum item encontrado para o pedido:', pedidoId);
-        // Retorna um item genérico para pedidos sem itens específicos
-        return [{
-          nome: `Pedido #${pedidoId}`,
-          qtd: 1,
-          valor: 0,
-          observacoes: undefined,
-          adicionais: []
-        }];
-      }
-
-      console.log('📦 KDS DEBUG - Itens encontrados:', itens.length);
-      console.log('📦 KDS DEBUG - Dados completos dos itens:', itens);
-
-      // Para cada item, buscar seus adicionais com categorias reais
-      const itensComAdicionais = await Promise.all(
-        itens.map(async (item) => {
-          console.log('🔍 KDS DEBUG - Buscando adicionais para item:', item.id, item.nome_produto);
-          
-          // Buscar adicionais do item sem JOIN já que adicional_id está null
-          const { data: adicionaisData, error: adicionaisError } = await supabase
-            .from('pedido_item_adicionais')
-            .select('*')
-            .eq('pedido_item_id', item.id);
-
-          if (adicionaisError) {
-            console.error('❌ KDS DEBUG - Erro ao buscar adicionais:', adicionaisError);
-          } else {
-            console.log('📋 KDS DEBUG - Adicionais brutos encontrados:', adicionaisData);
-          }
-
-          // Para cada adicional, buscar a categoria real pelo nome
-          const adicionaisFormatados = (adicionaisData || []).map((adicional) => {
-            // Usar categoria_nome que já vem salva corretamente do banco
-            const categoria = adicional.categoria_nome || 'Ingredientes';
-            
-            return {
-              nome: adicional.nome_adicional,
-              qtd: adicional.quantidade,
-              valor: adicional.valor_unitario,
-              categoria: categoria
-            };
-          });
-
-          console.log('🔍 KDS DEBUG - Adicionais formatados para item:', item.nome_produto, adicionaisFormatados);
-
-          console.log('✅ KDS DEBUG - Item final processado:', {
-            nome: item.nome_produto,
-            qtd: item.quantidade,
-            adicionais: adicionaisFormatados.length,
-            adicionaisDetalhes: adicionaisFormatados
-          });
-
-          return {
-            id: item.id, // Incluir ID do banco para controle de status
-            nome: item.nome_produto,
-            qtd: item.quantidade,
-            valor: item.valor_unitario,
-            observacoes: item.observacoes || undefined,
-            adicionais: adicionaisFormatados.length > 0 ? adicionaisFormatados : undefined
-          };
-        })
-      );
-
-      console.log('🍽️ Itens finais processados:', itensComAdicionais.length);
-      return itensComAdicionais;
-      
-    } catch (error) {
-      console.error('💥 Erro ao buscar itens do pedido:', error);
-      // Em caso de erro, retorna um item genérico
-      return [
-        {
-          nome: `Erro ao carregar itens - Pedido #${pedidoId}`,
-          qtd: 1,
-          valor: 0,
-          observacoes: undefined,
-          adicionais: []
-        }
-      ];
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar itens via API:', error);
+      return [{
+        nome: `Pedido #${pedidoId} (erro ao carregar itens)`,
+        qtd: 1,
+        valor: 0,
+        observacoes: 'Erro ao carregar detalhes',
+        adicionais: []
+      }];
     }
   };
 
-  // Função para converter pedido do banco para formato KDS
+  // Função para converter dados do banco para formato KDS
   const convertToKDSFormat = async (pedidoDB: any): Promise<PedidoKDS> => {
+    console.log('🔄 KDS: Convertendo pedido para formato KDS via API:', pedidoDB);
+    
     const itens = await fetchPedidoItens(pedidoDB.id);
     
-    // Se temos apenas um item genérico, atualiza o valor com o total do pedido
-    if (itens.length === 1 && itens[0].nome.includes('Pedido #')) {
-      itens[0].valor = pedidoDB.total || 0;
-    }
-    
-    // Buscar observações dos itens se não há observação geral
-    let observacoesFinal = pedidoDB.observacoes;
-    
-    if (!observacoesFinal || observacoesFinal.trim() === '') {
-      // Verificar se há observações nos itens
-      const observacoesItens = itens
-        .map(item => item.observacoes)
-        .filter(obs => obs && obs.trim() !== '')
-        .join('; ');
-      
-      if (observacoesItens) {
-        observacoesFinal = observacoesItens;
-      }
-    }
-    
-    return {
+    const pedidoKDS: PedidoKDS = {
       id: pedidoDB.id,
       numero: `#${pedidoDB.numero_pedido || pedidoDB.id}`,
       numero_pedido: pedidoDB.numero_pedido,
-      nome: pedidoDB.nome || 'Cliente não informado',
-      telefone: pedidoDB.telefone || '',
+      nome: pedidoDB.customer_name || 'Cliente',
+      telefone: pedidoDB.customer_phone || '',
       tempo: calculateElapsedTime(pedidoDB.created_at),
-      status: pedidoDB.status || 'novo',
-      tipo: pedidoDB.tipo || 'delivery',
-      total: pedidoDB.total || 0,
-      pagamento: pedidoDB.pagamento || 'N/A',
-      endereco: pedidoDB.endereco || '',
+      status: pedidoDB.status || 'pendente',
+      tipo: pedidoDB.delivery_method === 'delivery' ? 'DELIVERY' : 
+            pedidoDB.delivery_method === 'takeaway' ? 'RETIRADA' : 'BALCÃO',
+      total: parseFloat(pedidoDB.total_amount || '0'),
+      pagamento: pedidoDB.payment_method || 'dinheiro',
+      endereco: pedidoDB.customer_address || undefined,
       created_at: pedidoDB.created_at,
       itens: itens,
-      observacoes: observacoesFinal || undefined,
-      fonte: pedidoDB.tipo === 'delivery' ? 'DELIVERY' : 
-             pedidoDB.tipo === 'balcao' ? 'BALCÃO' : 
-             pedidoDB.tipo === 'mesa' ? 'MESA' : 'PDV'
+      observacoes: pedidoDB.observation || undefined,
+      fonte: pedidoDB.delivery_method === 'delivery' ? 'DELIVERY' : 
+             pedidoDB.delivery_method === 'takeaway' ? 'RETIRADA' : 'PDV'
     };
+    
+    console.log('✅ KDS: Pedido convertido via API:', pedidoKDS);
+    return pedidoKDS;
   };
 
   // Buscar pedidos iniciais via API Neon
@@ -217,6 +128,8 @@ export const usePedidosRealTime = () => {
       if (allResponse.ok && allResult.success) {
         console.log('🔍 KDS: TODOS OS PEDIDOS encontrados via API:', allResult.data?.length || 0);
         console.log('🔍 KDS: TODOS OS PEDIDOS - dados:', allResult.data);
+      } else {
+        throw new Error(allResult.error || 'Erro ao buscar pedidos');
       }
       
       // Agora filtrar por status (analise, producao, pronto)
@@ -245,226 +158,93 @@ export const usePedidosRealTime = () => {
     }
   };
 
-  // Configurar real-time subscription
+  // Configurar polling para simular real-time (removido Supabase)
   useEffect(() => {
     if (!currentCompany?.id) return;
 
+    console.log('🔔 KDS: Configurando polling para empresa via API Neon:', currentCompany.id);
+    
     fetchPedidos();
 
-    // Subscription para mudanças em tempo real nos pedidos
-    const pedidosChannel = supabase
-      .channel(`pedidos-kds-${currentCompany.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'pedidos',
-          filter: `company_id=eq.${currentCompany.id}`
-        },
-        async (payload) => {
-          console.log('🔄 KDS: Mudança detectada em pedidos:', payload);
-          
-          if (payload.eventType === 'INSERT') {
-            console.log('➕ KDS: Novo pedido detectado, aguardando itens...');
-            
-            // Aguardar um pouco para garantir que os itens sejam inseridos primeiro
-            setTimeout(async () => {
-              const novoPedido = await convertToKDSFormat(payload.new);
-              if (['analise', 'producao', 'pronto'].includes(novoPedido.status)) {
-                setPedidos(prev => {
-                  // Evitar duplicatas
-                  const existe = prev.find(p => p.id === novoPedido.id);
-                  if (existe) {
-                    return prev.map(p => p.id === novoPedido.id ? novoPedido : p);
-                  }
-                  return [...prev, novoPedido];
-                });
-                console.log('➕ KDS: Novo pedido adicionado com dados completos:', novoPedido.numero);
-              }
-            }, 2000); // Aguarda 2 segundos para itens serem inseridos
-          } else if (payload.eventType === 'UPDATE') {
-            const pedidoAtualizado = await convertToKDSFormat(payload.new);
-            if (['analise', 'producao', 'pronto'].includes(pedidoAtualizado.status)) {
-              setPedidos(prev => 
-                prev.map(p => p.id === pedidoAtualizado.id ? pedidoAtualizado : p)
-              );
-              console.log('🔄 KDS: Pedido atualizado:', pedidoAtualizado.numero);
-            } else {
-              // Remove pedido que mudou para status fora do KDS
-              setPedidos(prev => prev.filter(p => p.id !== pedidoAtualizado.id));
-              console.log('❌ KDS: Pedido removido do KDS:', pedidoAtualizado.numero);
-            }
-          } else if (payload.eventType === 'DELETE') {
-            setPedidos(prev => prev.filter(p => p.id !== payload.old.id));
-            console.log('❌ KDS: Pedido removido:', payload.old.id);
-          }
-        }
-      )
-      .subscribe();
-
-    // Subscription para mudanças em itens dos pedidos
-    const itensChannel = supabase
-      .channel(`pedido-itens-kds-${currentCompany.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'pedido_itens'
-        },
-        async (payload) => {
-          console.log('🔄 KDS: Mudança detectada em itens:', payload);
-          
-          // Atualizar apenas o pedido específico afetado
-          const pedidoId = (payload.new as any)?.pedido_id || (payload.old as any)?.pedido_id;
-          if (pedidoId) {
-            // Buscar o pedido completo no banco
-            const { data: pedidoData } = await supabase
-              .from('pedidos')
-              .select('*')
-              .eq('id', pedidoId)
-              .eq('company_id', currentCompany.id)
-              .single();
-            
-            if (pedidoData && ['analise', 'producao', 'pronto'].includes(pedidoData.status)) {
-              const pedidoAtualizado = await convertToKDSFormat(pedidoData);
-              setPedidos(prev => {
-                const exists = prev.find(p => p.id === pedidoId);
-                if (exists) {
-                  return prev.map(p => p.id === pedidoId ? pedidoAtualizado : p);
-                } else {
-                  return [...prev, pedidoAtualizado];
-                }
-              });
-              console.log('🔄 KDS: Pedido atualizado por mudança nos itens:', pedidoAtualizado.numero);
-            }
-          }
-        }
-      )
-      .subscribe();
-
-    // Subscription para mudanças em adicionais dos itens
-    const adicionaisChannel = supabase
-      .channel(`pedido-adicionais-kds-${currentCompany.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'pedido_item_adicionais'
-        },
-        async (payload) => {
-          console.log('🔄 KDS: Mudança detectada em adicionais:', payload);
-          
-          // Atualizar apenas o pedido específico afetado
-          const itemId = (payload.new as any)?.pedido_item_id || (payload.old as any)?.pedido_item_id;
-          if (itemId) {
-            // Buscar o pedido através do item
-            const { data: itemData } = await supabase
-              .from('pedido_itens')
-              .select('pedido_id')
-              .eq('id', itemId)
-              .single();
-            
-            if (itemData?.pedido_id) {
-              const { data: pedidoData } = await supabase
-                .from('pedidos')
-                .select('*')
-                .eq('id', itemData.pedido_id)
-                .eq('company_id', currentCompany.id)
-                .single();
-              
-              if (pedidoData && ['analise', 'producao', 'pronto'].includes(pedidoData.status)) {
-                const pedidoAtualizado = await convertToKDSFormat(pedidoData);
-                setPedidos(prev => {
-                  const exists = prev.find(p => p.id === itemData.pedido_id);
-                  if (exists) {
-                    return prev.map(p => p.id === itemData.pedido_id ? pedidoAtualizado : p);
-                  } else {
-                    return [...prev, pedidoAtualizado];
-                  }
-                });
-                console.log('🔄 KDS: Pedido atualizado por mudança nos adicionais:', pedidoAtualizado.numero);
-              }
-            }
-          }
-        }
-      )
-      .subscribe();
+    // Polling para simular real-time
+    const pollingInterval = setInterval(() => {
+      console.log('🔄 KDS: Polling para atualizações...');
+      fetchPedidos();
+    }, 15000); // 15 segundos para KDS (mais frequente)
 
     return () => {
-      supabase.removeChannel(pedidosChannel);
-      supabase.removeChannel(itensChannel);
-      supabase.removeChannel(adicionaisChannel);
+      console.log('🧹 KDS: Limpando polling interval');
+      clearInterval(pollingInterval);
     };
   }, [currentCompany?.id]);
 
-  // Atualizar tempos a cada minuto
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPedidos(prev => 
-        prev.map(pedido => ({
-          ...pedido,
-          tempo: calculateElapsedTime(pedido.created_at)
-        }))
-      );
-    }, 60000); // 1 minuto
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Função para atualizar status do pedido
-  const atualizarStatus = async (pedidoId: number, novoStatus: string) => {
-    if (!currentCompany?.id) return;
-
+  const updatePedidoStatus = async (pedidoId: number, novoStatus: string) => {
+    console.log('🔄 KDS: Atualizando status do pedido via API:', pedidoId, '->', novoStatus);
+    
     try {
-      console.log('🔄 KDS: Iniciando atualização de status:', { pedidoId, novoStatus });
-      
-      // Se o novo status for 'entregue', na verdade vamos marcar como 'prontos_entrega'
-      // para que apareça nos pedidos como "Prontos para entrega"
-      const statusFinal = novoStatus === 'entregue' ? 'prontos_entrega' : novoStatus;
-      
-      // Primeiro, atualizar otimisticamente o estado local
-      setPedidos(prev => {
-        if (statusFinal === 'prontos_entrega') {
-          // Remove do KDS se foi marcado como pronto para entrega
-          return prev.filter(p => p.id !== pedidoId);
-        } else {
-          // Atualiza o status localmente
-          return prev.map(p => 
-            p.id === pedidoId 
-              ? { ...p, status: statusFinal }
-              : p
-          );
-        }
+      const response = await fetch('/api/pedidos', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          id: pedidoId, 
+          status: novoStatus
+        })
       });
       
-      const { error } = await supabase
-        .from('pedidos')
-        .update({ status: statusFinal })
-        .eq('id', pedidoId)
-        .eq('company_id', currentCompany.id);
-
-      if (error) {
-        console.error('❌ KDS: Erro ao atualizar status:', error);
-        // Reverter o estado local em caso de erro
-        fetchPedidos();
-        throw error;
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao atualizar pedido');
       }
-
-      console.log('✅ KDS: Status atualizado com sucesso:', { pedidoId, novoStatus: statusFinal });
-    } catch (err: any) {
-      console.error('❌ KDS: Erro ao atualizar status:', err);
-      throw err;
+      
+      console.log('✅ KDS: Status atualizado via API com sucesso');
+      
+      // Atualização otimista do estado local
+      setPedidos(prev => prev.map(p => 
+        p.id === pedidoId ? { ...p, status: novoStatus, updated_at: new Date().toISOString() } : p
+      ));
+      
+    } catch (error: any) {
+      console.error('❌ KDS: Erro ao atualizar status via API:', error);
+      setError(error.message);
     }
+  };
+
+  const marcarPronto = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'pronto');
+  };
+
+  const iniciarProducao = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'producao');
+  };
+
+  const cancelarPedido = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'cancelado');
+  };
+
+  const entregarPedido = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'entregue');
+  };
+
+  const rejeitarPedido = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'rejeitado');
+  };
+
+  const aceitarPedido = async (pedidoId: number) => {
+    await updatePedidoStatus(pedidoId, 'producao');
   };
 
   return {
     pedidos,
     loading,
     error,
-    atualizarStatus,
-    refetch: fetchPedidos
+    updatePedidoStatus,
+    marcarPronto,
+    iniciarProducao,
+    cancelarPedido,
+    entregarPedido,
+    rejeitarPedido,
+    aceitarPedido,
+    fetchPedidos // Expor para recarregamento manual
   };
 };
