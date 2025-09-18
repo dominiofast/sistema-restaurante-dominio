@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -101,23 +100,30 @@ export const useCompanies = () => {
   // Update company mutation
   const updateCompanyMutation = useMutation({
     mutationFn: async ({ id, ...updates }: CompanyFormData & { id: string }) => {
-      const { data, error } = await supabase
-        .from('companies')
-        .update({
+      console.log('🏢 useCompanies: Atualizando empresa via API...');
+      
+      const response = await fetch(`/api/companies/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: updates.name,
           domain: updates.domain,
           logo: updates.logo || null,
           plan: updates.plan,
           status: updates.status,
           user_count: updates.user_count,
-          updated_at: new Date().toISOString(),
         })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao atualizar empresa');
+      }
+      
+      return result.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companies'] });
@@ -138,12 +144,19 @@ export const useCompanies = () => {
   // Delete company mutation
   const deleteCompanyMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('companies')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      console.log('🏢 useCompanies: Deletando empresa via API...');
+      
+      const response = await fetch(`/api/companies/${id}`, {
+        method: 'DELETE'
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao deletar empresa');
+      }
+      
+      return { id };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companies'] });
