@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface CategoriaAdicional {
   id: string;
@@ -41,67 +39,46 @@ export const useProductAdicionais = (produtoId: string | undefined) => {
         setLoading(true);
         setError(null);
         
-        console.log('🔍 Buscando adicionais para produto:', produtoId);
+        console.log('🔍 Buscando adicionais para produto via API Neon:', produtoId);
         
-        // Buscar categorias de adicionais associadas ao produto
-        const { data: produtoCategorias, error: produtoError } = await supabase
-          .from('produto_categorias_adicionais')
-          .select(`
-            categoria_adicional_id,
-            is_required,
-            min_selection,
-            max_selection,
-            order_position,
-            categorias_adicionais (
-              id,
-              name,
-              description,
-              selection_type,
-              is_required,
-              min_selection,
-              max_selection
-            )
-          `)
-          .eq('produto_id', produtoId)
-          .order('order_position', { ascending: true });
-
-        if (produtoError) {
-          console.error('❌ Erro ao buscar categorias do produto:', produtoError);
-          throw new Error(`Erro ao carregar categorias: ${produtoError.message}`);
+        // Buscar categorias de adicionais associadas ao produto via API
+        const response = await fetch(`/api/produto-categorias-adicionais?produto_id=${produtoId}`);
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'Erro ao carregar categorias do produto');
         }
 
-        console.log('📋 Categorias encontradas:', produtoCategorias?.length || 0);
+        const produtoCategorias = result.data || [];
 
-        if (!produtoCategorias || produtoCategorias.length === 0) {
+        console.log('📋 Categorias encontradas via API:', produtoCategorias.length);
+
+        if (produtoCategorias.length === 0) {
           setCategorias([]);
           setLoading(false);
           return;
         }
 
-        // Buscar adicionais para cada categoria
+        // Buscar adicionais para cada categoria via API
         const categoriasComAdicionais: CategoriaComAdicionais[] = [];
         
         for (const produtoCategoria of produtoCategorias) {
           const categoria = produtoCategoria.categorias_adicionais;
           if (!categoria) continue;
 
-          console.log('🍕 Buscando adicionais para categoria:', categoria.name);
+          console.log('🍕 Buscando adicionais para categoria via API:', categoria.name);
 
-          const { data: adicionais, error: adicionaisError } = await supabase
-            .from('adicionais')
-            .select('*')
-            .eq('categoria_adicional_id', categoria.id)
-            .eq('is_available', true)
-            .eq('is_active', true)
-            .order('order_position', { ascending: true, nullsFirst: false })
-            .order('name', { ascending: true });
+          const adicionaisResponse = await fetch(`/api/adicionais?categoria_adicional_id=${categoria.id}`);
+          const adicionaisResult = await adicionaisResponse.json();
 
-          if (adicionaisError) {
-            console.error('❌ Erro ao buscar adicionais:', adicionaisError);
+          if (!adicionaisResponse.ok || !adicionaisResult.success) {
+            console.error('❌ Erro ao buscar adicionais via API:', adicionaisResult.error);
             continue;
           }
 
-          console.log('✅ Adicionais encontrados:', adicionais?.length || 0, 'para categoria:', categoria.name);
+          const adicionais = adicionaisResult.data || [];
+
+          console.log('✅ Adicionais encontrados via API:', adicionais.length, 'para categoria:', categoria.name);
 
           categoriasComAdicionais.push({
             id: categoria.id,
@@ -111,15 +88,22 @@ export const useProductAdicionais = (produtoId: string | undefined) => {
             is_required: produtoCategoria.is_required || categoria.is_required,
             min_selection: produtoCategoria.min_selection || categoria.min_selection,
             max_selection: produtoCategoria.max_selection || categoria.max_selection,
-            adicionais: adicionais || []
+            adicionais: adicionais.map((adicional: any) => ({
+              id: adicional.id,
+              name: adicional.name,
+              description: adicional.description,
+              price: adicional.price,
+              image: adicional.image,
+              is_available: adicional.is_available
+            }))
           });
         }
 
         setCategorias(categoriasComAdicionais);
-        console.log('🎉 Total de categorias com adicionais:', categoriasComAdicionais.length);
+        console.log('🎉 Total de categorias com adicionais via API:', categoriasComAdicionais.length);
         
       } catch (error) {
-        console.error('💥 Erro geral ao carregar adicionais:', error);
+        console.error('💥 Erro geral ao carregar adicionais via API:', error);
         setError(error instanceof Error ? error.message : 'Erro desconhecido ao carregar adicionais');
       } finally {
         setLoading(false);
