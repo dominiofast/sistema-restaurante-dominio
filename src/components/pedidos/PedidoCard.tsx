@@ -199,11 +199,11 @@ export const PedidoCard = React.memo<PedidoCardProps>(({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white border border-gray-200 rounded-lg transition-all duration-200 ${
+      className={`bg-white border-2 border-gray-100 rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
         isDragging 
-          ? 'shadow-lg ring-2 ring-blue-400 cursor-grabbing scale-105 opacity-75' 
-          : 'shadow-sm hover:shadow-md cursor-grab'
-      } ${isCampainhaActive ? 'ring-2 ring-red-400 animate-pulse' : ''}`}
+          ? 'shadow-2xl ring-4 ring-blue-300 cursor-grabbing scale-110 opacity-80' 
+          : 'shadow-md hover:shadow-xl cursor-grab'
+      } ${isCampainhaActive ? 'ring-4 ring-red-400 animate-pulse shadow-red-200' : ''}`}
     >
       <div 
         {...attributes}
