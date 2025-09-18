@@ -196,10 +196,13 @@ app.post('/api/create-superadmin', async (req, res) => {
   }
 });
 
-// ENDPOINT PARA IMPORTAR CARDÁPIO (CATEGORIAS E ADICIONAIS)
+// ENDPOINT PARA IMPORTAR CARDÁPIO (CATEGORIAS E ADICIONAIS) - REQUER AUTENTICAÇÃO
 app.post('/api/import/cardapio', async (req, res) => {
   console.log('📋 API /import/cardapio - Iniciando importação');
 
+  // TODO: Adicionar autenticação adequada aqui
+  // Por enquanto, verificar se há uma basic validation do company_id
+  
   try {
     const { company_id, categorias, adicionais } = req.body;
 
