@@ -53,7 +53,7 @@ export const diagnoseSignatureIssues = async () => {
     if (typeof window === 'undefined' || !window.qz) {
       issues.push('QZ Tray não está disponível')
       solutions.push('Verifique se o QZ Tray está instalado e rodando')
-      return { issues, solutions } catch (error) { console.error('Error:', error) };
+      return { issues, solutions }
     }
 
     // Verificar se as funções de segurança estão definidas
@@ -75,7 +75,7 @@ export const diagnoseSignatureIssues = async () => {
     try {
       window.qz.security.setSignaturePromise((toSign: string, resolve: (signature: string) => void) => {
         resolve('')
-      } catch (error) { console.error('Error:', error) })
+      })
       console.log('✅ Assinatura configurada com sucesso')
     } catch (error) {
       issues.push('Erro ao configurar assinatura: ' + error.message)
