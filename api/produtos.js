@@ -74,6 +74,14 @@ export default async function handler(req, res) {
       // Formar o resultado no formato esperado pelo frontend
       const produtos = result.rows.map(row => ({
         ...row,
+        // Garantir que valores monetários sejam números
+        price: parseFloat(row.price) || 0,
+        promotional_price: row.promotional_price ? parseFloat(row.promotional_price) : null,
+        is_promotional: Boolean(row.is_promotional),
+        is_available: Boolean(row.is_available),
+        destaque: Boolean(row.destaque),
+        order_position: parseInt(row.order_position) || 0,
+        preparation_time: row.preparation_time ? parseInt(row.preparation_time) : null,
         categorias: row.categoria_name ? { 
           id: row.categoria_id, 
           name: row.categoria_name 
