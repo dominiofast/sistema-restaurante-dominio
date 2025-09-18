@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Categoria, Produto, CategoriaAdicional, Adicional, DashboardStats } from '@/types/cardapio';
 
@@ -19,20 +18,17 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('🔍 useCardapio: Buscando categorias para empresa:', currentCompany.id);
-      const { data, error } = await supabase
-        .from('categorias')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .order('order_position', { ascending: true });
-        
-      if (error) {
-        console.error('❌ useCardapio: Erro ao buscar categorias:', error);
-        throw error;
+      console.log('🔍 useCardapio: Buscando categorias para empresa via API Neon:', currentCompany.id);
+      
+      const response = await fetch(`/api/categorias?company_id=${currentCompany.id}`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar categorias');
       }
       
-      console.log('✅ useCardapio: Categorias encontradas:', data?.length || 0, data);
-      setCategorias(data || []);
+      console.log('✅ useCardapio: Categorias encontradas via API:', result.data?.length || 0, result.data);
+      setCategorias(result.data || []);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar categorias:', error);
     }
@@ -46,33 +42,23 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('🔍 useCardapio: Buscando produtos para empresa:', currentCompany.id);
-      const { data, error } = await supabase
-        .from('produtos')
-        .select(`
-          *,
-          categorias (
-            id,
-            name
-          )
-        `)
-        .eq('company_id', currentCompany.id)
-         .order('order_position', { ascending: true, nullsFirst: false })
-         .order('name', { ascending: true });
-        
-      if (error) {
-        console.error('❌ useCardapio: Erro ao buscar produtos:', error);
-        throw error;
+      console.log('🔍 useCardapio: Buscando produtos para empresa via API Neon:', currentCompany.id);
+      
+      const response = await fetch(`/api/produtos?company_id=${currentCompany.id}`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar produtos');
       }
       
-      console.log('✅ useCardapio: Produtos encontrados:', data?.length || 0, data);
-      setProdutos(data || []);
+      console.log('✅ useCardapio: Produtos encontrados via API:', result.data?.length || 0, result.data);
+      setProdutos(result.data || []);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar produtos:', error);
     }
   };
 
-  // Buscar categorias de adicionais
+  // Buscar categorias de adicionais (TEMPORÁRIO - Mock)
   const fetchCategoriasAdicionais = async () => {
     if (!currentCompany?.id) {
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar categorias adicionais');
@@ -80,34 +66,14 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('🔍 useCardapio: Buscando categorias adicionais para empresa:', currentCompany.id);
-      const { data, error } = await supabase
-        .from('categorias_adicionais')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .order('order_position', { ascending: true, nullsFirst: false })
-        .order('name', { ascending: true });
-        
-      if (error) {
-        console.error('❌ useCardapio: Erro ao buscar categorias adicionais:', error);
-        throw error;
-      }
-      
-      console.log('✅ useCardapio: Categorias adicionais encontradas:', data?.length || 0);
-      console.log('🔍 useCardapio: Dados das categorias adicionais:', data);
-      
-      // Corrigir o tipo selection_type para corresponder ao nosso tipo
-      const typedData = (data || []).map(item => ({
-        ...item,
-        selection_type: item.selection_type as 'single' | 'multiple' | 'quantity'
-      }));
-      setCategoriasAdicionais(typedData);
+      console.log('⏭️ useCardapio: Categorias adicionais temporariamente desabilitadas (usando mock)');
+      setCategoriasAdicionais([]);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar categorias de adicionais:', error);
     }
   };
 
-  // Buscar adicionais
+  // Buscar adicionais (TEMPORÁRIO - Mock)
   const fetchAdicionais = async () => {
     if (!currentCompany?.id) {
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar adicionais');
@@ -115,41 +81,8 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('🔍 useCardapio: Buscando adicionais para empresa:', currentCompany.id);
-      const { data, error } = await supabase
-        .from('adicionais')
-        .select(`
-          *,
-          categorias_adicionais!inner (
-            id,
-            name,
-            company_id
-          )
-        `)
-        .eq('categorias_adicionais.company_id', currentCompany.id)
-        .order('order_position', { ascending: true, nullsFirst: false })
-        .order('name', { ascending: true });
-        
-      if (error) {
-        console.error('❌ useCardapio: Erro ao buscar adicionais:', error);
-        throw error;
-      }
-      
-      console.log('✅ useCardapio: Adicionais encontrados:', data?.length || 0);
-      console.log('🔍 useCardapio: Dados dos adicionais:', data);
-      setAdicionais((data || []).map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        image: item.image,
-        categoria_adicional_id: item.categoria_adicional_id,
-        is_available: item.is_available,
-        is_active: item.is_active ?? true, // Usar valor padrão se não existir
-        order_position: item.order_position,
-        created_at: item.created_at,
-        updated_at: item.updated_at
-      })));
+      console.log('⏭️ useCardapio: Adicionais temporariamente desabilitados (usando mock)');
+      setAdicionais([]);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar adicionais:', error);
     }
@@ -169,15 +102,22 @@ export const useCardapio = () => {
   const createCategoria = async (categoria: Omit<Categoria, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('categorias')
-        .insert([categoria])
-        .select()
-        .single();
-        
-      if (error) throw error;
+      console.log('🔄 useCardapio: Criando categoria via API:', categoria);
+      
+      const response = await fetch('/api/categorias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(categoria)
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao criar categoria');
+      }
+      
       await fetchCategorias();
-      return data;
+      return result.data;
     } catch (error) {
       console.error('Erro ao criar categoria:', error);
       throw error;
@@ -190,16 +130,22 @@ export const useCardapio = () => {
   const updateCategoria = async (id: string, updates: Partial<Categoria>) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('categorias')
-        .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single();
-        
-      if (error) throw error;
+      console.log('🔄 useCardapio: Atualizando categoria via API:', id, updates);
+      
+      const response = await fetch('/api/categorias', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao atualizar categoria');
+      }
+      
       await fetchCategorias();
-      return data;
+      return result.data;
     } catch (error) {
       console.error('Erro ao atualizar categoria:', error);
       throw error;
@@ -232,12 +178,18 @@ export const useCardapio = () => {
   const deleteCategoria = async (id: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('categorias')
-        .delete()
-        .eq('id', id);
-        
-      if (error) throw error;
+      console.log('🗑️ useCardapio: Deletando categoria via API:', id);
+      
+      const response = await fetch(`/api/categorias?id=${id}`, {
+        method: 'DELETE'
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao deletar categoria');
+      }
+      
       await fetchCategorias();
       await fetchProdutos(); // Atualizar produtos também
     } catch (error) {
@@ -248,40 +200,12 @@ export const useCardapio = () => {
     }
   };
 
-  // Criar produto
+  // Criar produto (TEMPORÁRIO - Mock)
   const createProduto = async (produto: Omit<Produto, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       setLoading(true);
-      
-      // DEBUG: Log dos dados que estão sendo enviados
-      console.log('🔍 createProduto: Dados recebidos:', produto);
-      console.log('🔍 createProduto: Chaves dos dados:', Object.keys(produto));
-      
-      // Filtrar apenas os campos válidos da tabela produtos
-      const validFields = [
-        'name', 'description', 'price', 'promotional_price', 'is_promotional', 
-        'image', 'images', 'categoria_id', 'is_available', 'preparation_time', 
-        'ingredients', 'destaque', 'order_position', 'company_id', 'tipo_fiscal_id'
-      ];
-      
-      const cleanedProduto = Object.keys(produto)
-        .filter(key => validFields.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = produto[key];
-          return obj;
-        }, {} as any);
-      
-      console.log('🔍 createProduto: Dados limpos:', cleanedProduto);
-      
-      const { data, error } = await supabase
-        .from('produtos')
-        .insert([cleanedProduto])
-        .select()
-        .single();
-        
-      if (error) throw error;
-      await fetchProdutos();
-      return data;
+      console.log('⏭️ createProduto: Temporariamente desabilitado (mock)');
+      throw new Error('Criação de produtos temporariamente desabilitada - focando nas categorias primeiro');
     } catch (error) {
       console.error('Erro ao criar produto:', error);
       throw error;
@@ -290,44 +214,12 @@ export const useCardapio = () => {
     }
   };
 
-  // Atualizar produto
+  // Atualizar produto (TEMPORÁRIO - Mock)
   const updateProduto = async (id: string, updates: Partial<Produto>) => {
     try {
       setLoading(true);
-      
-      // DEBUG: Log dos dados que estão sendo enviados
-      console.log('🔍 updateProduto: Dados recebidos:', updates);
-      console.log('🔍 updateProduto: Chaves dos dados:', Object.keys(updates));
-      
-      // Filtrar apenas os campos válidos da tabela produtos
-      const validFields = [
-        'name', 'description', 'price', 'promotional_price', 'is_promotional', 
-        'image', 'images', 'categoria_id', 'is_available', 'preparation_time', 
-        'ingredients', 'destaque', 'order_position', 'company_id', 'tipo_fiscal_id'
-      ];
-      
-      const cleanedUpdates = Object.keys(updates)
-        .filter(key => validFields.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = updates[key];
-          return obj;
-        }, {} as any);
-      
-      console.log('🔍 updateProduto: Dados limpos:', cleanedUpdates);
-      
-      const { data, error } = await supabase
-        .from('produtos')
-        .update({ ...cleanedUpdates, updated_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single();
-        
-      if (error) {
-        throw error;
-      }
-      
-      await fetchProdutos();
-      return data;
+      console.log('⏭️ updateProduto: Temporariamente desabilitado (mock)');
+      throw new Error('Atualização de produtos temporariamente desabilitada - focando nas categorias primeiro');
     } catch (error) {
       console.error('Erro ao atualizar produto:', error);
       throw error;
@@ -336,17 +228,12 @@ export const useCardapio = () => {
     }
   };
 
-  // Deletar produto
+  // Deletar produto (TEMPORÁRIO - Mock)
   const deleteProduto = async (id: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('produtos')
-        .delete()
-        .eq('id', id);
-        
-      if (error) throw error;
-      await fetchProdutos();
+      console.log('⏭️ deleteProduto: Temporariamente desabilitado (mock)');
+      throw new Error('Exclusão de produtos temporariamente desabilitada - focando nas categorias primeiro');
     } catch (error) {
       console.error('Erro ao deletar produto:', error);
       throw error;
@@ -398,10 +285,22 @@ export const useCardapio = () => {
 
     try {
       for (const update of updates) {
-        await supabase
-          .from('categorias')
-          .update({ order_position: update.order_position })
-          .eq('id', update.id);
+        console.log('🔄 useCardapio: Reordenando categoria via API:', update);
+        
+        const response = await fetch('/api/categorias', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            id: update.id, 
+            order_position: update.order_position 
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'Erro ao reordenar categoria');
+        }
       }
     } catch (error) {
       console.error('Erro ao reordenar categorias:', error);
