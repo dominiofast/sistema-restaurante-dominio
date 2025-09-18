@@ -113,7 +113,7 @@ export const useWhatsAppRealtime = ({
               ...prev,
               messagesReceived: prev.messagesReceived + 1
             }))
-
+          }
         }, 100)
       };
     },
