@@ -58,7 +58,7 @@ export const useCardapio = () => {
     }
   };
 
-  // Buscar categorias de adicionais (TEMPORÁRIO - Mock)
+  // Buscar categorias de adicionais
   const fetchCategoriasAdicionais = async () => {
     if (!currentCompany?.id) {
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar categorias adicionais');
@@ -66,14 +66,24 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('⏭️ useCardapio: Categorias adicionais temporariamente desabilitadas (usando mock)');
-      setCategoriasAdicionais([]);
+      console.log('🔍 useCardapio: Buscando categorias adicionais para empresa via API Neon:', currentCompany.id);
+      
+      const response = await fetch(`/api/categoria-adicionais?company_id=${currentCompany.id}`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar categorias adicionais');
+      }
+      
+      console.log('✅ useCardapio: Categorias adicionais encontradas via API:', result.data?.length || 0, result.data);
+      setCategoriasAdicionais(result.data || []);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar categorias de adicionais:', error);
+      setCategoriasAdicionais([]);
     }
   };
 
-  // Buscar adicionais (TEMPORÁRIO - Mock)
+  // Buscar adicionais
   const fetchAdicionais = async () => {
     if (!currentCompany?.id) {
       console.log('🔍 useCardapio: Nenhuma empresa selecionada para buscar adicionais');
@@ -81,10 +91,20 @@ export const useCardapio = () => {
     }
     
     try {
-      console.log('⏭️ useCardapio: Adicionais temporariamente desabilitados (usando mock)');
-      setAdicionais([]);
+      console.log('🔍 useCardapio: Buscando adicionais para empresa via API Neon:', currentCompany.id);
+      
+      const response = await fetch(`/api/adicionais?company_id=${currentCompany.id}`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar adicionais');
+      }
+      
+      console.log('✅ useCardapio: Adicionais encontrados via API:', result.data?.length || 0, result.data);
+      setAdicionais(result.data || []);
     } catch (error) {
       console.error('❌ useCardapio: Erro ao buscar adicionais:', error);
+      setAdicionais([]);
     }
   };
 

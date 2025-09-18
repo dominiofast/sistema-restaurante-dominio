@@ -36,26 +36,8 @@ export default async function handler(req, res) {
 
       console.log('🔍 API /pedidos GET - Buscando pedidos para empresa:', company_id);
       
-      let query = `
-        SELECT 
-          p.id,
-          p.numero_pedido,
-          p.company_id,
-          p.nome as customer_name,
-          p.telefone as customer_phone,
-          p.endereco as customer_address,
-          p.tipo as delivery_method,
-          p.pagamento as payment_method,
-          p.status,
-          p.total as total_amount,
-          p.observacoes as observation,
-          30 as estimated_time,
-          p.created_at,
-          p.updated_at,
-          'Empresa' as company_name
-        FROM pedidos p
-        WHERE p.company_id = $1
-      `;
+      // Query simplificada para testar
+      let query = `SELECT * FROM pedidos WHERE company_id = $1 LIMIT 10`;
       
       let params = [company_id];
       

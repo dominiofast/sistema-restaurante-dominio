@@ -302,14 +302,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         // Configurar listener apenas se não há subscription ativa
         if (!subscriptionRef.current) {
-          const { data: { subscription: authSubscription } } = /* supabase REMOVIDO */ null; //auth.onAuthStateChange(
-            async (event, session) => {
-              if (!isMountedLocal || !isMounted()) return;
-              
-              console.log('AuthProvider: Auth state changed:', event);
-              await processAuthUser(session, event, isMountedLocal);
-            }
-          );
+          // DESABILITADO: Auth state change listener do Supabase
+        // const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+        //   async (event, session) => {
+        //     if (!isMountedLocal || !isMounted()) return;
+        //     
+        //     console.log('AuthProvider: Auth state changed:', event);
+        //     await processAuthUser(session, event, isMountedLocal);
+        //   }
+        // );
+        const authSubscription = null;
           
           subscriptionRef.current = registerSubscription(authSubscription);
         }

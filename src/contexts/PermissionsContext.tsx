@@ -65,20 +65,16 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   // MOCK - Carregar todas as permissões disponíveis (DESABILITADO)
   const loadPermissions = async () => {
     console.log('⚠️ loadPermissions desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
-  },
-      { id: '2', name: 'Ver Pedidos', slug: 'view-orders', module: 'orders', action: 'view' },
-      { id: '3', name: 'Gerenciar Cardápio', slug: 'manage-menu', module: 'menu', action: 'manage' },
+    return Promise.resolve([
+      // Permissões mock removidas - sistema migrado para PostgreSQL
     ]);
   };
 
   // MOCK - Carregar todos os roles disponíveis (DESABILITADO)
   const loadRoles = async () => {
     console.log('⚠️ loadRoles desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
-  },
-      { id: '2', name: 'Super Admin', slug: 'super_admin', is_active: true },
-      { id: '3', name: 'Gerente', slug: 'manager', is_active: true },
+    return Promise.resolve([
+      // Roles mock removidas - sistema migrado para PostgreSQL
     ]);
   };
 
@@ -96,20 +92,21 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         return;
       }
 
-      // Buscar permissões via role
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'roles')
-        /* .select\( REMOVIDO */ ; //`
-          role_permissions!inner(
-            permissions!inner(
-              slug,
-              module,
-              action
-            )
-          )
-        `)
-        /* .eq\( REMOVIDO */ ; //'slug', userRole)
-        /* .eq\( REMOVIDO */ ; //'is_active', true);
+      // Buscar permissões via role (DESABILITADO - sistema migrado para PostgreSQL)
+      // const { data, error } = await supabase
+      //   .from('roles')
+      //   .select(`
+      //     role_permissions!inner(
+      //       permissions!inner(
+      //         slug,
+      //         module,
+      //         action
+      //       )
+      //     )
+      //   `)
+      //   .eq('slug', userRole)
+      //   .eq('is_active', true);
+      const data = null; const error = null;
 
       if (error) throw error;
 
@@ -127,18 +124,19 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
         });
       });
 
-      // Buscar permissões específicas por contexto
-      const { data: contextPermissions, error: contextError } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'user_store_permissions')
-        /* .select\( REMOVIDO */ ; //`
-          permissions!inner(
-            slug,
-            module,
-            action
-          )
-        `)
-        /* .eq\( REMOVIDO */ ; //'user_id', user.id)
-        .or('expires_at.is.null,expires_at.gt.now()');
+      // Buscar permissões específicas por contexto (DESABILITADO)
+      // const { data: contextPermissions, error: contextError } = await supabase
+      //   .from('user_store_permissions')
+      //   .select(`
+      //     permissions!inner(
+      //       slug,
+      //       module,
+      //       action
+      //     )
+      const contextPermissions = null; const contextError = null;
+      //   `)
+      //   .eq('user_id', user.id)
+      //   .or('expires_at.is.null,expires_at.gt.now()');
 
       if (contextError) throw contextError;
 

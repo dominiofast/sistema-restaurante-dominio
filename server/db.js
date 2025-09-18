@@ -612,6 +612,56 @@ export async function updatePedidoStatus(pedidoId, status) {
   }
 }
 
+// 📋 FUNÇÕES PARA CATEGORIAS ADICIONAIS
+export async function getCategoriasAdicionais(companyId) {
+  try {
+    console.log('🔍 Buscando categorias adicionais para empresa:', companyId);
+    
+    const query = `
+      SELECT id, company_id, name, description, is_required, is_multiple_choice, 
+             max_selections, min_selections, order_position, created_at, updated_at
+      FROM categorias_adicionais 
+      WHERE company_id = $1
+      ORDER BY order_position ASC, name ASC
+    `;
+    
+    const result = await getPool().query(query, [companyId]);
+    
+    console.log(`✅ Categorias adicionais encontradas: ${result.rows.length}`);
+    return result.rows;
+    
+  } catch (error) {
+    console.error('💥 Erro ao buscar categorias adicionais:', error);
+    throw error;
+  }
+}
+
+// 📋 FUNÇÕES PARA ADICIONAIS
+export async function getAdicionais(companyId) {
+  try {
+    console.log('🔍 Buscando adicionais para empresa:', companyId);
+    
+    const query = `
+      SELECT a.id, a.categoria_adicional_id, a.name, a.description, a.price, 
+             a.is_available, a.order_position, a.created_at, a.updated_at,
+             ca.name as categoria_name
+      FROM adicionais a
+      INNER JOIN categorias_adicionais ca ON a.categoria_adicional_id = ca.id
+      WHERE ca.company_id = $1
+      ORDER BY a.order_position ASC, a.name ASC
+    `;
+    
+    const result = await getPool().query(query, [companyId]);
+    
+    console.log(`✅ Adicionais encontrados: ${result.rows.length}`);
+    return result.rows;
+    
+  } catch (error) {
+    console.error('💥 Erro ao buscar adicionais:', error);
+    throw error;
+  }
+}
+
 // 📊 HEALTH CHECK
 export function hasDatabase() {
   return !!process.env.DATABASE_URL;

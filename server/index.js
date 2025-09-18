@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin, getPedidosByCompany, updatePedidoStatus, importCardapioCompleto } from './db.js';
+import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin, getPedidosByCompany, updatePedidoStatus, importCardapioCompleto, getCategoriasAdicionais, getAdicionais } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -382,6 +382,78 @@ app.post('/api/orders', async (req, res) => {
     res.status(500).json({
       success: false,
       error: error.message || 'Erro interno do servidor'
+    });
+  }
+});
+
+// 📋 ENDPOINT PARA BUSCAR CATEGORIAS ADICIONAIS
+app.get('/api/categoria-adicionais', async (req, res) => {
+  console.log('📋 API /categoria-adicionais - Buscando categorias adicionais:', { 
+    companyId: req.query.company_id,
+    query: req.query 
+  });
+
+  try {
+    const { company_id } = req.query;
+
+    if (!company_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'company_id é obrigatório'
+      });
+    }
+
+    const categoriasAdicionais = await getCategoriasAdicionais(company_id);
+
+    console.log(`✅ Categorias adicionais encontradas: ${categoriasAdicionais.length}`);
+
+    res.json({
+      success: true,
+      data: categoriasAdicionais,
+      count: categoriasAdicionais.length
+    });
+
+  } catch (error) {
+    console.error('💥 API /categoria-adicionais - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// 📋 ENDPOINT PARA BUSCAR ADICIONAIS
+app.get('/api/adicionais', async (req, res) => {
+  console.log('📋 API /adicionais - Buscando adicionais:', { 
+    companyId: req.query.company_id,
+    query: req.query 
+  });
+
+  try {
+    const { company_id } = req.query;
+
+    if (!company_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'company_id é obrigatório'
+      });
+    }
+
+    const adicionais = await getAdicionais(company_id);
+
+    console.log(`✅ Adicionais encontrados: ${adicionais.length}`);
+
+    res.json({
+      success: true,
+      data: adicionais,
+      count: adicionais.length
+    });
+
+  } catch (error) {
+    console.error('💥 API /adicionais - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
     });
   }
 });
