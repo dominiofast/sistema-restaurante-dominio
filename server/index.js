@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin, getPedidosByCompany, updatePedidoStatus } from './db.js';
+import { createPedido, createPedidoItem, createPedidoItemAdicional, authenticateUser, createSuperadmin, getPedidosByCompany, updatePedidoStatus, importCardapioCompleto } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -192,6 +192,61 @@ app.post('/api/create-superadmin', async (req, res) => {
     res.status(500).json({
       success: false,
       error: error.message
+    });
+  }
+});
+
+// ENDPOINT PARA IMPORTAR CARDÁPIO (CATEGORIAS E ADICIONAIS)
+app.post('/api/import/cardapio', async (req, res) => {
+  console.log('📋 API /import/cardapio - Iniciando importação');
+
+  try {
+    const { company_id, categorias, adicionais } = req.body;
+
+    // Validação básica
+    if (!company_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'company_id é obrigatório'
+      });
+    }
+
+    if (!categorias || !Array.isArray(categorias)) {
+      return res.status(400).json({
+        success: false,
+        error: 'categorias deve ser um array'
+      });
+    }
+
+    if (!adicionais || !Array.isArray(adicionais)) {
+      return res.status(400).json({
+        success: false,
+        error: 'adicionais deve ser um array'
+      });
+    }
+
+    console.log(`📊 Importando: ${categorias.length} categorias, ${adicionais.length} adicionais para empresa ${company_id}`);
+
+    // Importar via função transacional
+    const result = await importCardapioCompleto({
+      company_id,
+      categorias,
+      adicionais
+    });
+
+    console.log('✅ Importação concluída:', result.stats);
+
+    res.json({
+      success: true,
+      message: 'Cardápio importado com sucesso',
+      data: result
+    });
+
+  } catch (error) {
+    console.error('💥 API /import/cardapio - Erro:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Erro interno do servidor'
     });
   }
 });

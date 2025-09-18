@@ -180,9 +180,246 @@ async function createUsersTableIfNotExists() {
     await getPool().query(createOrdersTables);
     console.log('✅ Tabelas de pedidos garantidas no SEU Neon');
     
+    // Criar tabelas de cardápio (categorias e adicionais)
+    await ensureCardapioTables();
+    
   } catch (error) {
     console.error('❌ Erro ao criar tabelas no SEU Neon:', error);
     throw error;
+  }
+}
+
+// 📋 CARDÁPIO TABLES SETUP
+async function ensureCardapioTables() {
+  try {
+    const createCardapioTables = `
+      -- Habilitar extensão uuid-ossp se não existir
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+      
+      -- Tabela de categorias de adicionais
+      CREATE TABLE IF NOT EXISTS categorias_adicionais (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        company_id UUID NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT,
+        selection_type TEXT NOT NULL DEFAULT 'single' CHECK (selection_type IN ('single','multiple','quantity')),
+        is_required BOOLEAN NOT NULL DEFAULT false,
+        min_selection INTEGER NOT NULL DEFAULT 0,
+        max_selection INTEGER NOT NULL DEFAULT 1,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(company_id, name)
+      );
+
+      -- Tabela de adicionais
+      CREATE TABLE IF NOT EXISTS adicionais (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        categoria_adicional_id UUID NOT NULL REFERENCES categorias_adicionais(id) ON DELETE CASCADE,
+        name TEXT NOT NULL,
+        description TEXT,
+        price NUMERIC(10,2) NOT NULL DEFAULT 0,
+        image TEXT,
+        is_available BOOLEAN NOT NULL DEFAULT true,
+        is_active BOOLEAN NOT NULL DEFAULT true,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(categoria_adicional_id, name)
+      );
+
+      -- Tabela de associação produtos <-> categorias de adicionais
+      CREATE TABLE IF NOT EXISTS produto_categorias_adicionais (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        produto_id TEXT NOT NULL,
+        categoria_adicional_id UUID NOT NULL REFERENCES categorias_adicionais(id) ON DELETE CASCADE,
+        is_required BOOLEAN DEFAULT false,
+        min_selection INTEGER DEFAULT 0,
+        max_selection INTEGER DEFAULT 1,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(produto_id, categoria_adicional_id)
+      );
+
+      -- Índices para performance
+      CREATE INDEX IF NOT EXISTS idx_categorias_adicionais_company ON categorias_adicionais(company_id);
+      CREATE INDEX IF NOT EXISTS idx_adicionais_categoria ON adicionais(categoria_adicional_id);
+      CREATE INDEX IF NOT EXISTS idx_produto_categorias_produto ON produto_categorias_adicionais(produto_id);
+    `;
+
+    await getPool().query(createCardapioTables);
+    console.log('✅ Tabelas de cardápio garantidas no SEU Neon');
+    
+  } catch (error) {
+    console.error('❌ Erro ao criar tabelas de cardápio no SEU Neon:', error);
+    throw error;
+  }
+}
+
+// 🔄 IMPORT FUNCTIONS
+export async function importCategoriaAdicional(categoriaData, client = getPool()) {
+  try {
+    const { id, company_id, name, description, selection_type = 'single', is_required = false, min_selection = 0, max_selection = 1 } = categoriaData;
+    
+    // Primeiro, verifica se já existe
+    const existingQuery = `
+      SELECT id, name FROM categorias_adicionais 
+      WHERE company_id = $1 AND name = $2
+    `;
+    const existingResult = await client.query(existingQuery, [company_id, name]);
+    
+    if (existingResult.rows.length > 0) {
+      console.log(`✅ Categoria já existe: ${name} -> ${existingResult.rows[0].id}`);
+      return existingResult.rows[0];
+    }
+    
+    // Se não existe, insere nova
+    const insertQuery = `
+      INSERT INTO categorias_adicionais (
+        company_id, name, description, selection_type, is_required, min_selection, max_selection, created_at, updated_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+      RETURNING id, name, created_at, updated_at
+    `;
+    
+    const result = await client.query(insertQuery, [
+      company_id, name, description, selection_type, is_required, min_selection, max_selection
+    ]);
+    
+    return result.rows[0];
+    
+  } catch (error) {
+    console.error('❌ Erro ao importar categoria adicional:', error);
+    throw error;
+  }
+}
+
+export async function importAdicional(adicionalData, categoriaId, client = getPool()) {
+  try {
+    const { id, name, description, price = 0, image, is_available = true, is_active = true } = adicionalData;
+    
+    // Primeiro, verifica se já existe
+    const existingQuery = `
+      SELECT id, name, price FROM adicionais 
+      WHERE categoria_adicional_id = $1 AND name = $2
+    `;
+    const existingResult = await client.query(existingQuery, [categoriaId, name]);
+    
+    if (existingResult.rows.length > 0) {
+      console.log(`✅ Adicional já existe: ${name} -> ${existingResult.rows[0].id}`);
+      return existingResult.rows[0];
+    }
+    
+    // Se não existe, insere novo
+    const insertQuery = `
+      INSERT INTO adicionais (
+        categoria_adicional_id, name, description, price, image, is_available, is_active, created_at, updated_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+      RETURNING id, name, price, created_at, updated_at
+    `;
+    
+    const result = await client.query(insertQuery, [
+      categoriaId, name, description, price, image, is_available, is_active
+    ]);
+    
+    return result.rows[0];
+    
+  } catch (error) {
+    console.error('❌ Erro ao importar adicional:', error);
+    throw error;
+  }
+}
+
+export async function importCardapioCompleto(importData) {
+  const client = await getPool().connect();
+  
+  try {
+    await client.query('BEGIN');
+    console.log('🔄 Iniciando importação de cardápio...');
+    
+    const { company_id, categorias = [], adicionais = [] } = importData;
+    const categoriaIdMap = new Map();
+    let stats = {
+      categorias_criadas: 0,
+      categorias_atualizadas: 0,
+      adicionais_criados: 0,
+      adicionais_atualizados: 0,
+      errors: []
+    };
+
+    // 1. Carregar categorias existentes da empresa
+    const existingCategorias = await client.query(
+      'SELECT id, name FROM categorias_adicionais WHERE company_id = $1',
+      [company_id]
+    );
+    
+    existingCategorias.rows.forEach(cat => {
+      categoriaIdMap.set(cat.name, cat.id);
+    });
+    
+    console.log(`📋 Categorias existentes carregadas: ${existingCategorias.rows.length}`);
+
+    // 2. Importar novas categorias
+    for (const categoria of categorias) {
+      try {
+        const result = await importCategoriaAdicional({ ...categoria, company_id }, client);
+        categoriaIdMap.set(categoria.name, result.id);
+        
+        if (categoria.id && result.id === categoria.id) {
+          stats.categorias_atualizadas++;
+        } else {
+          stats.categorias_criadas++;
+        }
+        
+        console.log(`✅ Categoria processada: ${categoria.name} -> ${result.id}`);
+      } catch (error) {
+        stats.errors.push(`Erro na categoria ${categoria.name}: ${error.message}`);
+        console.error(`❌ Erro na categoria ${categoria.name}:`, error);
+      }
+    }
+
+    // 3. Importar adicionais
+    for (const adicional of adicionais) {
+      try {
+        let categoriaId = adicional.categoria_adicional_id;
+        
+        // Se não tem categoria_id, buscar por nome
+        if (!categoriaId && adicional.categoria_name) {
+          categoriaId = categoriaIdMap.get(adicional.categoria_name);
+        }
+        
+        if (!categoriaId) {
+          throw new Error(`Categoria não encontrada para adicional: ${adicional.name}`);
+        }
+        
+        const result = await importAdicional(adicional, categoriaId, client);
+        
+        if (adicional.id && result.id === adicional.id) {
+          stats.adicionais_atualizados++;
+        } else {
+          stats.adicionais_criados++;
+        }
+        
+        console.log(`✅ Adicional processado: ${adicional.name} -> ${result.id}`);
+      } catch (error) {
+        stats.errors.push(`Erro no adicional ${adicional.name}: ${error.message}`);
+        console.error(`❌ Erro no adicional ${adicional.name}:`, error);
+      }
+    }
+
+    await client.query('COMMIT');
+    console.log('🎉 Importação de cardápio concluída!', stats);
+    
+    return {
+      success: true,
+      stats,
+      categoriaIdMap: Object.fromEntries(categoriaIdMap)
+    };
+    
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('💥 Erro na importação de cardápio:', error);
+    throw error;
+  } finally {
+    client.release();
   }
 }
 
