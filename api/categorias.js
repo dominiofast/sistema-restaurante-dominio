@@ -60,10 +60,17 @@ export default async function handler(req, res) {
       
       console.log(`✅ Encontradas ${result.rows.length} categorias para empresa ${company_id}`);
 
+      // Garantir tipos corretos nos dados retornados
+      const categorias = result.rows.map(row => ({
+        ...row,
+        is_active: Boolean(row.is_active),
+        order_position: parseInt(row.order_position) || 0
+      }));
+
       return res.status(200).json({
         success: true,
-        data: result.rows,
-        count: result.rows.length
+        data: categorias,
+        count: categorias.length
       });
 
     } else if (req.method === 'POST') {
