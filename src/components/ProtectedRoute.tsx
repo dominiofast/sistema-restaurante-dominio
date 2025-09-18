@@ -35,7 +35,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                        location.pathname.startsWith('/gestor-cardapio') ||
                        location.pathname.startsWith('/settings') ||
                        location.pathname.startsWith('/opcoes-loja') ||
-                       location.pathname.startsWith('/estoque') ||;
+                        location.pathname.startsWith('/estoque') ||
                        location.pathname.startsWith('/meu-rh')
     
     if (isLojaRoute) {

@@ -47,7 +47,7 @@ const PDVEnhanced = () => {
         entrega: 'balcao',
         pagamento: 'dinheiro',
         taxaEntrega: 0
-      } catch (error) { console.error('Error:', error) };
+      }
     } catch {
       return {
         nome: '',

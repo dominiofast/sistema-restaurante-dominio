@@ -124,7 +124,7 @@ export const useWhatsAppRealtime = ({
   const cleanupTimeouts = useCallback(() => {
     if (reconnectTimeoutRef.current) {
       clearTimeout(reconnectTimeoutRef.current)
-
+    }
   }, [])
 
   // Cleanup de canais
