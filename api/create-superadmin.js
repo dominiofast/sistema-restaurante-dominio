@@ -28,8 +28,18 @@ export default async function handler(req, res) {
       });
     }
 
+    // DIAGNÓSTICO: Verificar qual banco estamos usando
+    const dbUrl = process.env.DATABASE_URL;
+    const maskedUrl = dbUrl.replace(/(:\/\/[^:]+:)[^@]+(@)/, '$1***$2');
+    console.log('🔍 DATABASE_URL mascarada:', maskedUrl);
+
     // Criar conexão com PostgreSQL
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+    // DIAGNÓSTICO: Verificar dados do banco atual
+    const diagQuery = 'SELECT current_database() as db, current_user as user, current_schema() as schema';
+    const diagResult = await pool.query(diagQuery);
+    console.log('🔍 Conectado ao banco:', diagResult.rows[0]);
 
     // Verificar se já existe um superadmin
     const existingQuery = `SELECT id, email, role, created_at FROM users WHERE email = 'contato@dominio.tech'`;
@@ -64,6 +74,10 @@ export default async function handler(req, res) {
       success: true,
       message: 'Superadmin criado com sucesso na produção!',
       user: result.rows[0],
+      database_info: {
+        url_masked: maskedUrl,
+        current_db: diagResult.rows[0]
+      },
       credentials: {
         email: 'contato@dominio.tech',
         password: 'Admin123!@#',
