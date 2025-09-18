@@ -10,7 +10,7 @@ interface AuthUser {
     company_id?: string;
     [key: string]: any;
   };
-
+}
 
 interface Company {
   id: string;
