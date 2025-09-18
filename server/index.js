@@ -262,7 +262,22 @@ app.get(/^\/(?!api\/).*/, (req, res) => {
 
 // Inicializar servidor
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`🔗 PostgreSQL conectado via DATABASE_URL: ${process.env.DATABASE_URL ? '✅' : '❌'}`);
+  
+  // 🔥 CRIAR SUPERADMIN AUTOMATICAMENTE EM PRODUÇÃO
+  try {
+    console.log('👑 Verificando/criando superadmin automaticamente...');
+    const superadminResult = await createSuperadmin();
+    
+    if (superadminResult.exists) {
+      console.log('✅ Superadmin já existe:', superadminResult.user.email);
+    } else {
+      console.log('🎉 Superadmin criado automaticamente:', superadminResult.user.email);
+    }
+  } catch (error) {
+    console.error('❌ Erro ao criar superadmin automaticamente:', error.message);
+    console.error('⚠️  O login pode não funcionar até o superadmin ser criado manualmente.');
+  }
 });
