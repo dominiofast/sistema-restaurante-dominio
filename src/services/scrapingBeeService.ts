@@ -1,14 +1,13 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const SETTING_KEY = 'scrapingbee_api_key';
 
 export const getScrapingBeeApiKey = async (): Promise<string | null> => {
   try {
-    const { data, error } = await supabase
-      .from('app_settings')
-      .select('value')
-      .eq('key', SETTING_KEY)
-      .single();
+    const { data, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'app_settings')
+      /* .select\( REMOVIDO */ ; //'value')
+      /* .eq\( REMOVIDO */ ; //'key', SETTING_KEY)
+      /* .single\( REMOVIDO */ ; //);
 
     if (error) {
       // Se der erro 406 (Not Acceptable), significa que a segurança de RLS bloqueou.

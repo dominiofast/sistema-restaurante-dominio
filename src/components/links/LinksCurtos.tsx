@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,9 +22,9 @@ const LinksCurtos = () => {
 
   const loadLinks = async () => {
     try {
-      const { data, error } = await supabase
-        .from("short_links")
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //"short_links")
+        /* .select\( REMOVIDO */ ; //`
           id,
           short_id,
           target_slug,
@@ -32,7 +32,7 @@ const LinksCurtos = () => {
           is_active,
           companies (name)
         `)
-        .order("created_at", { ascending: false });
+        /* .order\( REMOVIDO */ ; //"created_at", { ascending: false });
 
       if (error) throw error;
 

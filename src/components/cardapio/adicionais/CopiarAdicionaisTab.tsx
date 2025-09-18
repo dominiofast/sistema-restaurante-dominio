@@ -21,7 +21,6 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   
   return response.json();
 }
-
 interface CopiarAdicionaisTabProps {
   produto: Produto;
   produtos: Produto[];

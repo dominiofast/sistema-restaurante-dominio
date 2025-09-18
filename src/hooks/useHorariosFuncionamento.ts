@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface HorarioDia {
@@ -49,11 +49,11 @@ export const useHorariosFuncionamento = () => {
       setError(null);
 
       // Buscar configuração de horário
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .select('*')
-        .eq('company_id', user.user_metadata.company_id)
-        .single();
+      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', user.user_metadata.company_id)
+        /* .single\( REMOVIDO */ ; //);
 
       if (horarioError && horarioError.code !== 'PGRST116') {
         throw horarioError;
@@ -67,11 +67,11 @@ export const useHorariosFuncionamento = () => {
           fuso_horario: 'America/Sao_Paulo'
         };
 
-        const { data: createdHorario, error: createError } = await supabase
-          .from('horario_funcionamento')
-          .insert(novoHorario)
-          .select()
-          .single();
+        const { data: createdHorario, error: createError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horario_funcionamento')
+          /* .insert\( REMOVIDO */ ; //novoHorario)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (createError) throw createError;
 
@@ -84,11 +84,11 @@ export const useHorariosFuncionamento = () => {
       }
 
       // Buscar horários dos dias
-      const { data: horariosData, error: horariosError } = await supabase
-        .from('horarios_dias')
-        .select('*')
-        .eq('horario_funcionamento_id', horarioData.id)
-        .order('dia_semana');
+      const { data: horariosData, error: horariosError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horarios_dias')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id)
+        /* .order\( REMOVIDO */ ; //'dia_semana');
 
       if (horariosError) throw horariosError;
 
@@ -114,23 +114,23 @@ export const useHorariosFuncionamento = () => {
       setError(null);
 
       // Atualizar configuração principal
-      const { error: updateError } = await supabase
-        .from('horario_funcionamento')
-        .update({
+      const { error: updateError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .update\( REMOVIDO */ ; //{
           tipo_disponibilidade: dadosHorarios.tipo_disponibilidade,
           fuso_horario: dadosHorarios.fuso_horario
         })
-        .eq('id', horarios.id);
+        /* .eq\( REMOVIDO */ ; //'id', horarios.id);
 
       if (updateError) throw updateError;
 
       // Se há horários específicos, atualizar/inserir
       if (dadosHorarios.horarios_dias && dadosHorarios.horarios_dias.length > 0) {
         // Remover horários existentes
-        await supabase
-          .from('horarios_dias')
-          .delete()
-          .eq('horario_funcionamento_id', horarios.id);
+        /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .delete\( REMOVIDO */ ; //)
+          /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarios.id);
 
         // Inserir novos horários
         const horariosParaInserir = dadosHorarios.horarios_dias.map(h => ({
@@ -141,9 +141,9 @@ export const useHorariosFuncionamento = () => {
           ativo: h.ativo
         }));
 
-        const { error: insertError } = await supabase
-          .from('horarios_dias')
-          .insert(horariosParaInserir);
+        const { error: insertError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .insert\( REMOVIDO */ ; //horariosParaInserir);
 
         if (insertError) throw insertError;
       }

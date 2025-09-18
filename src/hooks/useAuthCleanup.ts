@@ -13,7 +13,7 @@ export const cleanupAuthState = () => {
   
   // Limpar todas as chaves do Supabase no localStorage
   Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+    if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || key.includes('sb-')) {
       localStorage.removeItem(key);
       console.log(`🗑️ Removido localStorage: ${key}`);
     }
@@ -22,7 +22,7 @@ export const cleanupAuthState = () => {
   // Limpar sessionStorage se existir
   if (typeof sessionStorage !== 'undefined') {
     Object.keys(sessionStorage).forEach((key) => {
-      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+      if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || key.includes('sb-')) {
         sessionStorage.removeItem(key);
         console.log(`🗑️ Removido sessionStorage: ${key}`);
       }
@@ -52,7 +52,7 @@ export const useAuthCleanup = () => {
   // Função para limpar um timeout específico
   const clearRegisteredTimeout = (timeout: NodeJS.Timeout) => {
     clearTimeout(timeout);
-    timeoutsRef.current.delete(timeout);
+    timeoutsRef.current/* .delete\( REMOVIDO */ ; //timeout);
   };
 
   // Função para limpar uma subscription específica
@@ -60,7 +60,7 @@ export const useAuthCleanup = () => {
     if (subscription && typeof subscription.unsubscribe === 'function') {
       subscription.unsubscribe();
     }
-    subscriptionsRef.current.delete(subscription);
+    subscriptionsRef.current/* .delete\( REMOVIDO */ ; //subscription);
   };
 
   // Função para verificar se o componente ainda está montado

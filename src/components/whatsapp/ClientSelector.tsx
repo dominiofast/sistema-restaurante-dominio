@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Check, X, Users, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface Cliente {
@@ -36,13 +36,13 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('clientes')
-          .select('id, nome, telefone, email, status')
-          .eq('company_id', currentCompany.id)
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'clientes')
+          /* .select\( REMOVIDO */ ; //'id, nome, telefone, email, status')
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
           .not('telefone', 'is', null)
           .neq('telefone', '')
-          .order('nome', { ascending: true });
+          /* .order\( REMOVIDO */ ; //'nome', { ascending: true });
 
         if (error) throw error;
         

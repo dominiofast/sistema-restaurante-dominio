@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface DominioPrinter {
   name: string;
   connected: boolean;
@@ -61,12 +60,12 @@ export const useDominioPrinter = () => {
         const currentCompany = JSON.parse(currentCompanyStr);
         const companyId = currentCompany.id;
         
-        const { data, error } = await supabase
-          .from('printer_configs')
-          .select('largura_papel')
-          .eq('company_id', companyId)
-          .eq('is_active', true)
-          .maybeSingle();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .select\( REMOVIDO */ ; //'largura_papel')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .eq\( REMOVIDO */ ; //'is_active', true)
+          /* .maybeSingle\( REMOVIDO */ ; //);
 
         if (error) {
           console.warn('Erro ao carregar configuração de impressora:', error);
@@ -98,23 +97,23 @@ export const useDominioPrinter = () => {
       const companyId = currentCompany.id;
       
       // Verificar se já existe configuração
-      const { data: existingConfig } = await supabase
-        .from('printer_configs')
-        .select('id')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: existingConfig } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'printer_configs')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (existingConfig) {
         // Atualizar configuração existente
-        await supabase
-          .from('printer_configs')
-          .update({ largura_papel: width })
-          .eq('id', existingConfig.id);
+        /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .update\( REMOVIDO */ ; //{ largura_papel: width })
+          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id);
       } else {
         // Criar nova configuração
-        await supabase
-          .from('printer_configs')
-          .insert({
+        /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .insert\( REMOVIDO */ ; //{
             company_id: companyId,
             printer_name: 'Configuração Padrão',
             largura_papel: width,

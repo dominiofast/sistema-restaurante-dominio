@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
 export interface AsaasConfig {
@@ -42,11 +42,11 @@ export const useAsaasConfig = (companyId?: string) => {
         setLoading(true);
         setError(null);
 
-        const { data, error } = await supabase
-          .from('asaas_config')
-          .select('*')
-          .eq('company_id', companyId)
-          .maybeSingle();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'asaas_config')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .maybeSingle\( REMOVIDO */ ; //);
 
         if (error) {
           console.error('Erro ao carregar configuração do Asaas:', error);
@@ -77,16 +77,16 @@ export const useAsaasConfig = (companyId?: string) => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('asaas_config')
-        .upsert({
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'asaas_config')
+        /* .upsert\( REMOVIDO */ ; //{
           company_id: companyId,
           ...configData,
         }, {
           onConflict: 'company_id'
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao salvar configuração do Asaas:', error);

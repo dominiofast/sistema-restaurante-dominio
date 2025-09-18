@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface GoogleMapsConfig {
   id?: string;
   api_key: string;
@@ -15,12 +14,9 @@ export const useGoogleMapsConfig = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchConfig = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Get API key from Supabase edge function
-      const { data, error } = await supabase.functions.invoke('get-maps-config');
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = await /* supabase REMOVIDO */ null; //functions.invoke('get-maps-config');
       
       if (error) {
         console.error('Erro ao buscar configuração do Google Maps:', error);

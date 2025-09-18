@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface Receita {
@@ -110,11 +110,11 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
   const fetchMercadorias = async () => {
     try {
       const { data } = await (supabase as any)
-        .from('mercadorias_ingredientes')
-        .select('*')
-        .eq('company_id', currentCompany?.id)
-        .eq('is_active', true)
-        .order('nome');
+        /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany?.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'nome');
       
       setMercadorias(data || []);
     } catch (error) {
@@ -230,9 +230,9 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
 
       if (receita?.id) {
         const { error } = await (supabase as any)
-          .from('receitas_fichas_tecnicas')
-          .update(dataToSave)
-          .eq('id', receita.id);
+          /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+          /* .update\( REMOVIDO */ ; //dataToSave)
+          /* .eq\( REMOVIDO */ ; //'id', receita.id);
 
         if (error) throw error;
 
@@ -242,8 +242,8 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         });
       } else {
         const { error } = await (supabase as any)
-          .from('receitas_fichas_tecnicas')
-          .insert([dataToSave]);
+          /* .from REMOVIDO */ ; //'receitas_fichas_tecnicas')
+          /* .insert\( REMOVIDO */ ; //[dataToSave]);
 
         if (error) throw error;
 

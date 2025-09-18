@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { focusNFeService } from '@/services/focusNFeService';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
@@ -26,7 +26,7 @@ export const TesteFocusNFe: React.FC = () => {
     try {
       // Primeiro teste: chamar função de teste simples
       console.log('Testando função básica...');
-      const testResponse = await supabase.functions.invoke('focus-nfe-test', {
+      const testResponse = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-test', {
         body: {
           test: true,
           company_id: currentCompany.id,

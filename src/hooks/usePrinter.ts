@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useDominioPrinter } from './useDominioPrinter';
 
@@ -46,9 +46,9 @@ export const usePrinter = () => {
     try {
       console.log('💾 Salvando configuração da impressora:', { config, companyId });
       
-      const { data, error } = await supabase
-        .from('company_settings')
-        .upsert({
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .upsert\( REMOVIDO */ ; //{
           company_id: companyId,
           printer_type: config.type,
           printer_ip: config.ip,
@@ -58,7 +58,7 @@ export const usePrinter = () => {
         }, {
           onConflict: 'company_id'
         })
-        .select();
+        /* .select\( REMOVIDO */ ; //);
         
       if (error) {
         console.error('❌ Erro ao salvar configuração:', error);
@@ -79,11 +79,11 @@ export const usePrinter = () => {
     try {
       console.log('🔍 Buscando configuração da impressora para company_id:', companyId);
       
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('printer_type, printer_ip, printer_port, printer_name, dominio_printer_name')
-        .eq('company_id', companyId)
-        .maybeSingle(); // Usar maybeSingle() em vez de single()
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'printer_type, printer_ip, printer_port, printer_name, dominio_printer_name')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //); // Usar maybeSingle() em vez de single()
         
       if (error) {
         console.error('❌ Erro ao buscar configuração:', error);
@@ -198,7 +198,7 @@ export const usePrinter = () => {
         return await dominioPrinter.printReceipt(config.dominioPrinterName, receipt);
       } else if (config.type === 'network' && config.ip) {
         // Usar impressão de rede via Edge Function
-        const { data: response, error } = await supabase.functions.invoke('imprimir-cupom', {
+        const { data: response, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,
@@ -265,7 +265,7 @@ export const usePrinter = () => {
         return await dominioPrinter.printKitchenOrder(config.dominioPrinterName, order);
       } else if (config.type === 'network' && config.ip) {
         // Usar impressão de rede via Edge Function
-        const { error } = await supabase.functions.invoke('imprimir-cupom', {
+        const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,
@@ -327,7 +327,7 @@ export const usePrinter = () => {
         return await dominioPrinter.testPrint(config.dominioPrinterName, 'Teste do Sistema de Impressão');
       } else if (config.type === 'network' && config.ip) {
         console.log('🌐 Testando impressora de rede:', config.ip + ':' + config.port);
-        const { data, error } = await supabase.functions.invoke('imprimir-cupom', {
+        const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
           body: {
             printerIp: config.ip,
             printerPort: config.port || 9100,

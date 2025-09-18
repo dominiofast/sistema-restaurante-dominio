@@ -1,6 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface PedidoNFCe {
   numero_pedido: string;
   mesa?: string;
@@ -89,11 +88,11 @@ class FocusNFeService {
    */
   async validarConfiguracaoFiscalCompleta(companyId: string): Promise<ValidationResult> {
     try {
-      const { data: fiscalConfig, error } = await supabase
-        .from('company_fiscal_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const { data: fiscalConfig, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_fiscal_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       const erros: string[] = [];
 
@@ -387,11 +386,11 @@ class FocusNFeService {
       }
 
       // Buscar dados fiscais da empresa
-      const { data: fiscalConfig, error: fiscalError } = await supabase
-        .from('company_fiscal_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const { data: fiscalConfig, error: fiscalError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_fiscal_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (fiscalError || !fiscalConfig) {
         return {
@@ -437,7 +436,7 @@ class FocusNFeService {
 
       console.log('📤 Body completo da requisição:', JSON.stringify(requestBody, null, 2));
 
-      const { data, error } = await supabase.functions.invoke('focus-nfe-integration', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
         body: requestBody
       });
 
@@ -469,7 +468,7 @@ class FocusNFeService {
    */
   async consultarNFCe(companyId: string, chave: string): Promise<NFCeResponse> {
     try {
-      const { data, error } = await supabase.functions.invoke('focus-nfe-integration', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
         body: {
           action: 'consultar-nfce',
           company_id: companyId,
@@ -507,7 +506,7 @@ class FocusNFeService {
         };
       }
 
-      const { data, error } = await supabase.functions.invoke('focus-nfe-integration', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
         body: {
           action: 'cancelar-nfce',
           company_id: companyId,
@@ -539,12 +538,12 @@ class FocusNFeService {
    */
   async buscarLogsNFCe(companyId: string, limit: number = 50) {
     try {
-      const { data, error } = await supabase
-        .from('nfce_logs')
-        .select('*')
-        .eq('company_id', companyId)
-        .order('created_at', { ascending: false })
-        .limit(limit);
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'nfce_logs')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //limit);
 
       if (error) {
         console.error('Erro ao buscar logs de NFCe:', error);

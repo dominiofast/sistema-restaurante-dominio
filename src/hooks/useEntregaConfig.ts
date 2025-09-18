@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface EntregaOption {
   id: string;
   tipo: 'delivery' | 'pickup' | 'dine_in';
@@ -27,11 +26,11 @@ export const useEntregaConfig = (companyId: string | undefined) => {
       setLoading(true);
 
       // Buscar regiões de atendimento para verificar se delivery está ativo e calcular taxa
-      const { data: regioes, error: regioesError } = await supabase
-        .from('regioes_atendimento')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('status', true);
+      const { data: regioes, error: regioesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'regioes_atendimento')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'status', true);
 
       if (regioesError) {
         console.error('Erro ao buscar regiões:', regioesError);

@@ -58,7 +58,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleFileSelect = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const fileArray = Array.from(files);
+    const fileArray = Array/* .from REMOVIDO */ ; //files);
     
     // Validar todos os arquivos
     const validFiles = fileArray.filter(validateFile);

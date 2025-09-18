@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface DadosFiscais {
@@ -70,12 +70,12 @@ export function useDadosFiscais() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('dados_fiscais')
-        .select('*')
-        .eq('tipo_fiscal_id', tipoFiscalId)
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'dados_fiscais')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'tipo_fiscal_id', tipoFiscalId)
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error && error.code !== 'PGRST116') throw error;
 
@@ -113,12 +113,12 @@ export function useDadosFiscais() {
       if (dadosFiscais?.id) {
         // Atualizar existente
         console.log('Atualizando dados existentes com ID:', dadosFiscais.id);
-        const { data, error } = await supabase
-          .from('dados_fiscais')
-          .update(dadosCompletos)
-          .eq('id', dadosFiscais.id)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'dados_fiscais')
+          /* .update\( REMOVIDO */ ; //dadosCompletos)
+          /* .eq\( REMOVIDO */ ; //'id', dadosFiscais.id)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         console.log('Resultado da atualização:', { data, error });
         if (error) throw error;
@@ -126,11 +126,11 @@ export function useDadosFiscais() {
       } else {
         // Criar novo
         console.log('Criando novos dados fiscais');
-        const { data, error } = await supabase
-          .from('dados_fiscais')
-          .insert(dadosCompletos)
-          .select()
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'dados_fiscais')
+          /* .insert\( REMOVIDO */ ; //dadosCompletos)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         console.log('Resultado da inserção:', { data, error });
         if (error) throw error;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { toast } from 'sonner';
 
 interface PedidoNotification {
@@ -26,10 +27,10 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
     // Buscar pedidos pendentes iniciais
     const fetchPedidosPendentes = async () => {
       try {
-        const { data, error } = await supabase
-          // .from( // DESABILITADO'pedidos')
-          .select('id')
-          .eq('company_id', companyId)
+        const { data, error } = /* await supabase REMOVIDO */ null
+          // /* .from REMOVIDO */ ; // // DESABILITADO'pedidos')
+          /* .select\( REMOVIDO */ ; //'id')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
           .in('status', ['analise', 'aceito']);
 
         if (!error && data) {
@@ -44,8 +45,8 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
 
     // Configurar listener em tempo real para novos pedidos
     const channel = supabase
-      // .channel( // DESABILITADO'pedidos-realtime')
-      // // .on( // DESABILITADO // DESABILITADO
+      // /* .channel REMOVIDO */ ; // // DESABILITADO'pedidos-realtime')
+      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: 'INSERT',
@@ -114,7 +115,7 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           console.log('🔔 Novo pedido recebido:', novoPedidoData);
         }
       )
-      // // .on( // DESABILITADO // DESABILITADO
+      // // /* .on REMOVIDO */ ; // // DESABILITADO // DESABILITADO
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -139,11 +140,11 @@ export const useRealtimePedidosNotification = (companyId?: string) => {
           }
         }
       )
-      // // .subscribe( // DESABILITADO // DESABILITADO);
+      // // /* .subscribe REMOVIDO */ ; // // DESABILITADO // DESABILITADO);
 
     // Cleanup
     return () => {
-      // supabase. // DESABILITADO - removeChannel(channel);
+      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
     };
   }, [companyId]);
 

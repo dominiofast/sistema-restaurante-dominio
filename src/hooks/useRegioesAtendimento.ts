@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface RegiaoAtendimento {
   id: string;
   company_id: string;
@@ -38,11 +37,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Buscando regiões para company:', companyId);
       
-      const { data, error } = await supabase
-        .from('regioes_atendimento')
-        .select('*')
-        .eq('company_id', companyId)
-        .order('created_at', { ascending: true });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'regioes_atendimento')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: true });
 
       if (error) {
         console.error('Erro ao buscar regiões:', error);
@@ -57,11 +56,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
         
         try {
           // Buscar informações da empresa para criar região personalizada
-          const { data: companyData } = await supabase
-            .from('companies')
-            .select('name, slug')
-            .eq('id', companyId)
-            .single();
+          const { data: companyData } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'companies')
+            /* .select\( REMOVIDO */ ; //'name, slug')
+            /* .eq\( REMOVIDO */ ; //'id', companyId)
+            /* .single\( REMOVIDO */ ; //);
           
           // CONFIGURAÇÃO UNIVERSAL baseada na 300 graus (que FUNCIONA)
           const regiaoPadrao = {
@@ -79,11 +78,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
           
           console.log('🔧 Criando região UNIVERSAL (baseada na 300 graus):', regiaoPadrao);
           
-          const { data: novaRegiao, error: insertError } = await supabase
-            .from('regioes_atendimento')
-            .insert([regiaoPadrao])
-            .select()
-            .single();
+          const { data: novaRegiao, error: insertError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'regioes_atendimento')
+            /* .insert\( REMOVIDO */ ; //[regiaoPadrao])
+            /* .select\( REMOVIDO */ ; //)
+            /* .single\( REMOVIDO */ ; //);
           
           if (insertError) {
             console.error('❌ Erro ao criar região no banco, usando em memória:', insertError);
@@ -148,11 +147,11 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Adicionando região:', regiao);
 
-      const { data, error } = await supabase
-        .from('regioes_atendimento')
-        .insert([{ ...regiao, company_id: companyId }])
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'regioes_atendimento')
+        /* .insert\( REMOVIDO */ ; //[{ ...regiao, company_id: companyId }])
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao adicionar região:', error);
@@ -179,12 +178,12 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Atualizando região:', id, updates);
 
-      const { data, error } = await supabase
-        .from('regioes_atendimento')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'regioes_atendimento')
+        /* .update\( REMOVIDO */ ; //updates)
+        /* .eq\( REMOVIDO */ ; //'id', id)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao atualizar região:', error);
@@ -211,10 +210,10 @@ export function useRegioesAtendimento(companyId: string | undefined) {
     try {
       console.log('Excluindo região:', id);
 
-      const { error } = await supabase
-        .from('regioes_atendimento')
-        .delete()
-        .eq('id', id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'regioes_atendimento')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', id);
 
       if (error) {
         console.error('Erro ao excluir região:', error);
@@ -249,13 +248,13 @@ export function useRegioesAtendimento(companyId: string | undefined) {
       const regioesRaio = regioes.filter(r => r.tipo === 'raio');
       
       for (const regiao of regioesRaio) {
-        await supabase
-          .from('regioes_atendimento')
-          .update({
+        /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'regioes_atendimento')
+          /* .update\( REMOVIDO */ ; //{
             centro_lat: novasCoordenadas.lat,
             centro_lng: novasCoordenadas.lng
           })
-          .eq('id', regiao.id);
+          /* .eq\( REMOVIDO */ ; //'id', regiao.id);
       }
 
       console.log(`✅ Centro de ${regioesRaio.length} regiões de raio atualizado para as coordenadas do estabelecimento`);

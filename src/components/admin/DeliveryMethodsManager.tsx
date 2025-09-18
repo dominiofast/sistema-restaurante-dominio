@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -33,10 +33,10 @@ export const DeliveryMethodsManager: React.FC = () => {
   const { data: companies = [], isLoading: loadingCompanies } = useQuery({
     queryKey: ['admin-companies'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('companies')
-        .select('id, name, slug')
-        .order('name');
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, slug')
+        /* .order\( REMOVIDO */ ; //'name');
       
       if (error) throw error;
       return data as Company[];
@@ -49,11 +49,11 @@ export const DeliveryMethodsManager: React.FC = () => {
     queryFn: async () => {
       if (!selectedCompany) return null;
       
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('*')
-        .eq('company_id', selectedCompany)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', selectedCompany)
+        /* .single\( REMOVIDO */ ; //);
       
       if (error) {
         if (error.code === 'PGRST116') {
@@ -90,31 +90,31 @@ export const DeliveryMethodsManager: React.FC = () => {
       }
 
       // Tentar atualizar primeiro
-      const { data: updateData, error: updateError } = await supabase
-        .from('delivery_methods')
-        .update({
+      const { data: updateData, error: updateError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .update\( REMOVIDO */ ; //{
           delivery: config.delivery,
           pickup: config.pickup,
           eat_in: config.eat_in,
           updated_at: new Date().toISOString()
         })
-        .eq('company_id', config.company_id)
-        .select()
-        .single();
+        /* .eq\( REMOVIDO */ ; //'company_id', config.company_id)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (updateError) {
         if (updateError.code === 'PGRST116') {
           // Não existe, criar novo
-          const { data: insertData, error: insertError } = await supabase
-            .from('delivery_methods')
-            .insert({
+          const { data: insertData, error: insertError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'delivery_methods')
+            /* .insert\( REMOVIDO */ ; //{
               company_id: config.company_id,
               delivery: config.delivery,
               pickup: config.pickup,
               eat_in: config.eat_in
             })
-            .select()
-            .single();
+            /* .select\( REMOVIDO */ ; //)
+            /* .single\( REMOVIDO */ ; //);
           
           if (insertError) throw insertError;
           return insertData;

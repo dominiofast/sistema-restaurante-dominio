@@ -16,7 +16,7 @@ const getOptimizedImageUrl = (url: string | undefined, width: number = 250): str
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
-  if (url.includes('supabase.co') && url.includes('/storage/')) {
+  if (url.includes('/* supabase REMOVIDO */ null; //co') && url.includes('/storage/')) {
     // O Supabase Storage suporta transformações de imagem
     const baseUrl = url.split('?')[0]; // Remove query params existentes
     return `${baseUrl}?width=${width}&height=${Math.round(width * 0.8)}&resize=contain&quality=85`;

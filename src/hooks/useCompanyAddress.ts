@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface CompanyAddress {
@@ -58,11 +58,11 @@ export function useCompanyAddress() {
 
       console.log('Carregando endereço para company_id:', currentCompany.id);
 
-      const { data, error: addressError } = await supabase
-        .from('company_addresses')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error: addressError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_addresses')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (addressError) {
         console.error('Erro ao carregar endereço:', addressError);
@@ -113,12 +113,12 @@ export function useCompanyAddress() {
       if (address?.id) {
         // Atualizar endereço existente
         console.log('Atualizando endereço existente, ID:', address.id);
-        const { data, error: updateError } = await supabase
-          .from('company_addresses')
-          .update(addressData)
-          .eq('id', address.id)
-          .select()
-          .single();
+        const { data, error: updateError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_addresses')
+          /* .update\( REMOVIDO */ ; //addressData)
+          /* .eq\( REMOVIDO */ ; //'id', address.id)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (updateError) {
           console.error('Erro ao atualizar endereço:', updateError);
@@ -130,11 +130,11 @@ export function useCompanyAddress() {
       } else {
         // Criar novo endereço
         console.log('Criando novo endereço');
-        const { data, error: insertError } = await supabase
-          .from('company_addresses')
-          .insert(addressData)
-          .select()
-          .single();
+        const { data, error: insertError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_addresses')
+          /* .insert\( REMOVIDO */ ; //addressData)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
 
         if (insertError) {
           console.error('Erro ao criar endereço:', insertError);

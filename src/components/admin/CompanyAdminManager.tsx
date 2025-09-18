@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,11 +51,11 @@ export const CompanyAdminManager: React.FC = () => {
       setLoading(true);
       
       // Buscar todas as empresas ativas
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name, domain, status')
-        .eq('status', 'active')
-        .order('name');
+      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, domain, status')
+        /* .eq\( REMOVIDO */ ; //'status', 'active')
+        /* .order\( REMOVIDO */ ; //'name');
 
       if (companiesError) throw companiesError;
 
@@ -65,19 +65,19 @@ export const CompanyAdminManager: React.FC = () => {
           const expectedEmail = `${company.domain}@dominiopizzas.com.br`;
           
           // Verificar se existe usuário com esse email
-          const { data: userData } = await supabase
-            .from('company_credentials')
-            .select('email')
-            .eq('company_id', company.id)
-            .eq('email', expectedEmail)
-            .maybeSingle();
+          const { data: userData } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'company_credentials')
+            /* .select\( REMOVIDO */ ; //'email')
+            /* .eq\( REMOVIDO */ ; //'company_id', company.id)
+            /* .eq\( REMOVIDO */ ; //'email', expectedEmail)
+            /* .maybeSingle\( REMOVIDO */ ; //);
 
           // Buscar dados do usuário no auth.users se existe
           let userRole = null;
           let userId = null;
           if (userData) {
             try {
-              const { data: authData } = await supabase.auth.admin.listUsers();
+              const { data: authData } = await /* supabase REMOVIDO */ null; //auth.admin.listUsers();
               const authUser = authData?.users?.find((u: any) => u.email === expectedEmail);
               userRole = authUser?.user_metadata?.role;
               userId = authUser?.id;
@@ -113,7 +113,7 @@ export const CompanyAdminManager: React.FC = () => {
       const tempPassword = `admin${company.domain}123`;
 
       // Chamar a Edge Function para criar o usuário
-      const { data, error } = await supabase.functions.invoke('create-company-admin', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-company-admin', {
         body: {
           company_id: company.id,
           company_domain: company.domain,
@@ -277,7 +277,7 @@ export const CompanyAdminManager: React.FC = () => {
                   if (!selectedUser?.id) return;
                   
                   try {
-                    const { error } = await supabase.auth.admin.updateUserById(
+                    const { error } = await /* supabase REMOVIDO */ null; //auth.admin.updateUserById(
                       selectedUser.id,
                       {
                         user_metadata: { role: newRole }

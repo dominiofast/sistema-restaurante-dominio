@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Zap, Bot, Info } from 'lucide-react';
 import { aiService } from '@/services/aiService';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 export function AIModeToggle() {
@@ -31,19 +31,19 @@ export function AIModeToggle() {
       localStorage.setItem('ai_mode_direct', enabled.toString());
 
       // NOVO: Atualizar flag no banco de dados para TODAS as empresas
-      const { data: companies } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('status', 'active');
+      const { data: companies } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'status', 'active');
 
       if (companies && companies.length > 0) {
         console.log(`🔍 Atualizando use_direct_mode para ${companies.length} empresas...`);
         
         for (const company of companies) {
-          const { error } = await supabase
-            .from('ai_agent_assistants')
-            .update({ use_direct_mode: enabled })
-            .eq('company_id', company.id);
+          const { error } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'ai_agent_assistants')
+            /* .update\( REMOVIDO */ ; //{ use_direct_mode: enabled })
+            /* .eq\( REMOVIDO */ ; //'company_id', company.id);
 
           if (error) {
             console.error(`❌ Erro ao atualizar empresa ${company.id}:`, error);

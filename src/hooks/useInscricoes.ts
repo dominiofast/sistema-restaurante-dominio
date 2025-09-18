@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { DragEndEvent } from '@dnd-kit/core';
 
@@ -42,18 +42,18 @@ export const useInscricoes = (companyId: string | null) => {
       console.log('Buscando inscrições para company_id:', companyId);
 
       // Primeiro, verificar o usuário atual
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      const { data: { user }, error: userError } = await /* supabase REMOVIDO */ null; //auth.getUser();
       console.log('Usuário atual:', user);
       console.log('Erro do usuário:', userError);
 
       // Testar busca básica primeiro
       console.log('Executando teste de busca básica...');
-      const { data: testData, error: testError } = await supabase
-        .from('rh_inscricoes')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('arquivado', false) // Filtrar apenas não arquivadas
-        .limit(5);
+      const { data: testData, error: testError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'arquivado', false) // Filtrar apenas não arquivadas
+        /* .limit\( REMOVIDO */ ; //5);
 
       console.log('Resultado do teste básico:', { 
         count: testData?.length || 0, 
@@ -68,15 +68,15 @@ export const useInscricoes = (companyId: string | null) => {
 
       // Agora fazer a busca completa com join
       console.log('Executando busca completa com join...');
-      const { data, error } = await supabase
-        .from('rh_inscricoes')
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .select\( REMOVIDO */ ; //`
           *,
           rh_vagas(title, location)
         `)
-        .eq('company_id', companyId)
-        .eq('arquivado', false) // Filtrar apenas não arquivadas
-        .order('created_at', { ascending: false });
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'arquivado', false) // Filtrar apenas não arquivadas
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       console.log('Resultado da busca completa:', { 
         count: data?.length || 0, 
@@ -107,10 +107,10 @@ export const useInscricoes = (companyId: string | null) => {
     try {
       console.log('Atualizando status da inscrição:', inscricaoId, 'para:', newStatus);
       
-      const { error } = await supabase
-        .from('rh_inscricoes')
-        .update({ status: newStatus })
-        .eq('id', inscricaoId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .update\( REMOVIDO */ ; //{ status: newStatus })
+        /* .eq\( REMOVIDO */ ; //'id', inscricaoId);
 
       if (error) throw error;
 
@@ -126,10 +126,10 @@ export const useInscricoes = (companyId: string | null) => {
     try {
       console.log('Arquivando inscrição:', inscricaoId);
       
-      const { error } = await supabase
-        .from('rh_inscricoes')
-        .update({ arquivado: true })
-        .eq('id', inscricaoId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .update\( REMOVIDO */ ; //{ arquivado: true })
+        /* .eq\( REMOVIDO */ ; //'id', inscricaoId);
 
       if (error) throw error;
 

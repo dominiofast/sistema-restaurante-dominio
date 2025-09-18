@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Clock, Copy, Loader2, AlertCircle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface AutoatendimentoPixModalProps {
@@ -117,7 +117,7 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
       console.log('🔄 Criando PIX via função Asaas oficial...');
 
       // Usar função oficial que já funciona no cardápio
-      const { data, error } = await supabase.rpc('create_asaas_payment_oficial', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('create_asaas_payment_oficial', {
         p_company_id: paymentData.companyId,
         p_amount: paymentData.amount,
         p_description: paymentData.description,
@@ -182,7 +182,7 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     try {
       console.log('🔍 Verificando status do pagamento Asaas:', idToCheck);
 
-      const { data, error } = await supabase.rpc('check_asaas_payment_status', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //rpc('check_asaas_payment_status', {
         p_payment_id: idToCheck
       });
 

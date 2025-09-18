@@ -32,15 +32,15 @@ const PublicVagasPage = () => {
         console.log('Fetching config for slug:', slug);
         
         // Buscar configuração da página de vagas
-        const { data: configData, error: configError } = await supabase
-          .from('rh_vagas_config')
-          .select(`
+        const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'rh_vagas_config')
+          /* .select\( REMOVIDO */ ; //`
             *,
             companies!inner(name)
           `)
-          .eq('slug', slug)
-          .eq('is_active', true)
-          .single();
+          /* .eq\( REMOVIDO */ ; //'slug', slug)
+          /* .eq\( REMOVIDO */ ; //'is_active', true)
+          /* .single\( REMOVIDO */ ; //);
         
         console.log('Config data:', configData, 'Error:', configError);
         
@@ -54,12 +54,12 @@ const PublicVagasPage = () => {
         }
 
         // Buscar vagas da empresa
-        const { data: vagasData, error: vagasError } = await supabase
-          .from('rh_vagas')
-          .select('*')
-          .eq('company_id', configData.company_id)
-          .eq('is_active', true)
-          .order('created_at', { ascending: false });
+        const { data: vagasData, error: vagasError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'rh_vagas')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'company_id', configData.company_id)
+          /* .eq\( REMOVIDO */ ; //'is_active', true)
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
         console.log('Vagas data:', vagasData, 'Error:', vagasError);
 

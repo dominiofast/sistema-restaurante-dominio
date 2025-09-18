@@ -4,7 +4,7 @@ import {
   Clock, Check, X, Loader2, ArrowLeft, Eye, Copy, AlertCircle
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,15 +63,15 @@ const CampanhasSalvas = () => {
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('whatsapp_campaigns')
-          .select(`
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'whatsapp_campaigns')
+          /* .select\( REMOVIDO */ ; //`
             id, name, message, audience, status, created_at, scheduled_date, 
             is_active, country, last_run_at, next_run_at, media_base64, 
             media_mime_type, media_file_name, media_type
           `)
-          .eq('company_id', currentCompany.id)
-          .order('created_at', { ascending: false });
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
         if (error) throw error;
         
@@ -107,10 +107,10 @@ const CampanhasSalvas = () => {
 
     try {
       setDeleting(campaignId);
-      const { error } = await supabase
-        .from('whatsapp_campaigns')
-        .delete()
-        .eq('id', campaignId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_campaigns')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', campaignId);
 
       if (error) throw error;
 

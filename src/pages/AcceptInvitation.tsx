@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,18 +37,18 @@ export default function AcceptInvitation() {
   const loadInvitation = async () => {
     try {
       console.log('🔍 Loading invitation with token:', token);
-      const { data, error } = await supabase
-        .from('user_invitations')
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'user_invitations')
+        /* .select\( REMOVIDO */ ; //`
           email,
           role,
           expires_at,
           companies:company_id(name)
         `)
-        .eq('token', token)
-        .eq('accepted_at', null)
+        /* .eq\( REMOVIDO */ ; //'token', token)
+        /* .eq\( REMOVIDO */ ; //'accepted_at', null)
         .gt('expires_at', new Date().toISOString())
-        .maybeSingle();
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       console.log('📊 Query result:', { data, error });
 
@@ -90,7 +90,7 @@ export default function AcceptInvitation() {
 
     try {
       // 1. Criar usuário no Supabase Auth
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+      const { data: authData, error: signUpError } = await /* supabase REMOVIDO */ null; //auth.signUp({
         email: invitation!.email,
         password: password,
         options: {
@@ -107,7 +107,7 @@ export default function AcceptInvitation() {
       }
 
       // 2. Aceitar convite (criar associação usuário-empresa)
-      const { data: acceptResult, error: acceptError } = await supabase.rpc(
+      const { data: acceptResult, error: acceptError } = await /* supabase REMOVIDO */ null; //rpc(
         'accept_user_invitation',
         {
           p_token: token,

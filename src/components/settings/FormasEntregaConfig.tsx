@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
@@ -36,11 +36,11 @@ export const FormasEntregaConfig: React.FC = () => {
   const loadDeliveryMethods = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('delivery, pickup, eat_in')
-        .eq('company_id', currentCompany!.id)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany!.id)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -65,16 +65,16 @@ export const FormasEntregaConfig: React.FC = () => {
   };
 
   const createDefaultDeliveryMethods = async () => {
-    const { data, error } = await supabase
-      .from('delivery_methods')
-      .insert({
+    const { data, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .insert\( REMOVIDO */ ; //{
         company_id: currentCompany!.id,
         delivery: false,
         pickup: true,
         eat_in: false
       })
-      .select('delivery, pickup, eat_in')
-      .single();
+      /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+      /* .single\( REMOVIDO */ ; //);
 
     if (error) {
       throw error;
@@ -94,14 +94,14 @@ export const FormasEntregaConfig: React.FC = () => {
       setSaving(true);
       setError(null);
 
-      const { error } = await supabase
-        .from('delivery_methods')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'delivery_methods')
+        /* .update\( REMOVIDO */ ; //{
           delivery: formas.delivery,
           pickup: formas.pickup,
           eat_in: formas.eat_in
         })
-        .eq('company_id', currentCompany.id);
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id);
 
       if (error) {
         throw error;

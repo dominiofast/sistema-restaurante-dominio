@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface DeliveryMethods {
@@ -22,11 +22,11 @@ export const FormasEntregaPDV = ({ value, onChange }: { value: string; onChange:
       }
 
       try {
-        const { data, error } = await supabase
-          .from('delivery_methods')
-          .select('delivery, pickup, eat_in')
-          .eq('company_id', currentCompany.id)
-          .single();
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'delivery_methods')
+          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) {
           console.error('Erro ao buscar formas de entrega:', error);
@@ -46,16 +46,16 @@ export const FormasEntregaPDV = ({ value, onChange }: { value: string; onChange:
 
     const createDefaultDeliveryMethods = async () => {
       try {
-        const { data, error } = await supabase
-          .from('delivery_methods')
-          .insert({
+        const { data, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'delivery_methods')
+          /* .insert\( REMOVIDO */ ; //{
             company_id: currentCompany!.id,
             delivery: false,
             pickup: true,  // Padrão: sempre permitir retirada
             eat_in: false
           })
-          .select('delivery, pickup, eat_in')
-          .single();
+          /* .select\( REMOVIDO */ ; //'delivery, pickup, eat_in')
+          /* .single\( REMOVIDO */ ; //);
 
         if (error) {
           console.error('Erro ao criar configuração padrão:', error);

@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface ConnectionMetrics {
   latency: number;
   deliveryRate: number;
@@ -200,16 +199,16 @@ export class WhatsAppConnectionManager {
     try {
       // Testar conectividade básica
       const startTime = Date.now();
-      const testChannel = supabase.channel(`connection_test_${Date.now()}`);
+      const testChannel = /* supabase REMOVIDO */ null; //channel(`connection_test_${Date.now()}`);
       
       const connectionPromise = new Promise<boolean>((resolve) => {
         const timeout = setTimeout(() => {
           resolve(false);
         }, 10000);
 
-        testChannel.subscribe((status) => {
+        testChannel/* .subscribe REMOVIDO */ ; //(status) => {
           clearTimeout(timeout);
-          supabase.removeChannel(testChannel);
+          /* supabase REMOVIDO */ null; //removeChannel(testChannel);
           
           const latency = Date.now() - startTime;
           const success = status === 'SUBSCRIBED';

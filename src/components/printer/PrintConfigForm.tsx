@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Save } from 'lucide-react';
@@ -37,12 +37,12 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
 
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('printer_configs')
-        .select('largura_papel, texto_header, texto_footer')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'printer_configs')
+        /* .select\( REMOVIDO */ ; //'largura_papel, texto_header, texto_footer')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao carregar configuração:', error);
@@ -75,7 +75,7 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
     setIsSaving(true);
     try {
       // Verificar se o usuário está autenticado
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await /* supabase REMOVIDO */ null; //auth.getUser();
       if (authError || !user) {
         toast.error('Usuário não autenticado');
         return;
@@ -86,18 +86,18 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
       const footerConfig = `marginLeft:${localConfig.marginLeft}`;
 
       // Primeiro, verificar se já existe uma configuração para a empresa
-      const { data: existingConfig } = await supabase
-        .from('printer_configs')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data: existingConfig } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'printer_configs')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       let error;
       if (existingConfig) {
         // Atualizar configuração existente
-        const { error: updateError } = await supabase
-          .from('printer_configs')
-          .update({
+        const { error: updateError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .update\( REMOVIDO */ ; //{
             largura_papel: localConfig.width,
             texto_header: headerConfig,
             texto_footer: footerConfig,
@@ -105,13 +105,13 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
             is_default: true,
             impressao_automatica: false
           })
-          .eq('id', existingConfig.id);
+          /* .eq\( REMOVIDO */ ; //'id', existingConfig.id);
         error = updateError;
       } else {
         // Criar nova configuração
-        const { error: insertError } = await supabase
-          .from('printer_configs')
-          .insert({
+        const { error: insertError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'printer_configs')
+          /* .insert\( REMOVIDO */ ; //{
             company_id: currentCompany.id,
             printer_name: 'Configuração de Formatação',
             largura_papel: localConfig.width,

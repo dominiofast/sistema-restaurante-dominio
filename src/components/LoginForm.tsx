@@ -4,8 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,7 +90,7 @@ export const LoginForm = () => {
     setSuccess(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('send-password-reset', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('send-password-reset', {
         body: { 
           email,
           resetLink: `${window.location.origin}/reset-password`
@@ -105,7 +104,7 @@ export const LoginForm = () => {
       console.error('Password reset error:', error);
       
       try {
-        const { error: fallbackError } = await supabase.auth.resetPasswordForEmail(email, {
+        const { error: fallbackError } = await /* supabase REMOVIDO */ null; //auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
         });
         

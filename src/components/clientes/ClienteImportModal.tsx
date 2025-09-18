@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, FileText, AlertCircle, CheckCircle, Download } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface ClienteImportModalProps {
@@ -245,10 +245,10 @@ Pedro Costa,11777777777,0,45`;
           try {
             console.log('Inserindo cliente:', cliente.nome);
             
-            const { data, error } = await supabase
-              .from('clientes')
-              .insert(cliente)
-              .select();
+            const { data, error } = /* await supabase REMOVIDO */ null
+              /* .from REMOVIDO */ ; //'clientes')
+              /* .insert\( REMOVIDO */ ; //cliente)
+              /* .select\( REMOVIDO */ ; //);
 
             if (error) {
               console.error('Erro detalhado do Supabase:', {

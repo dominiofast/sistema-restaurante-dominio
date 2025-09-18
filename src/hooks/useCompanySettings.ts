@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CompanySettings, OperatingHours, LoyaltyProgramConfig, UICustomization } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -19,11 +19,11 @@ export const useCompanySettings = (companyId?: string) => {
     queryFn: async (): Promise<CompanySettings | null> => {
       if (!targetCompanyId) return null;
 
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('*')
-        .eq('company_id', targetCompanyId)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', targetCompanyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -82,11 +82,11 @@ export const useCompanySettings = (companyId?: string) => {
       },
     };
 
-    const { data, error } = await supabase
-      .from('company_settings')
-      .insert(defaultSettings as any)
-      .select()
-      .single();
+    const { data, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'company_settings')
+      /* .insert\( REMOVIDO */ ; //defaultSettings as any)
+      /* .select\( REMOVIDO */ ; //)
+      /* .single\( REMOVIDO */ ; //);
 
     if (error) throw error;
     return data as any;
@@ -97,12 +97,12 @@ export const useCompanySettings = (companyId?: string) => {
     mutationFn: async (updates: Partial<CompanySettings>) => {
       if (!targetCompanyId) throw new Error('Company ID is required');
 
-      const { data, error } = await supabase
-        .from('company_settings')
-        .update(updates)
-        .eq('company_id', targetCompanyId)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .update\( REMOVIDO */ ; //updates)
+        /* .eq\( REMOVIDO */ ; //'company_id', targetCompanyId)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) throw error;
       return data;

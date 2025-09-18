@@ -1,6 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface AIGlobalConfig {
   openai_api_key: string;
   openai_model: string;
@@ -59,12 +58,12 @@ export class AIConfigService {
    */
   async loadGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error } = await supabase
-        .from('ai_global_config')
-        .select('*')
-        .eq('is_active', true)
-        .limit(1)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_global_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error || !data) {
         console.error('Configuração global de IA não encontrada ou inativa:', error);
@@ -84,12 +83,12 @@ export class AIConfigService {
    */
   async loadLatestGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error } = await supabase
-        .from('ai_global_config')
-        .select('*')
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_global_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error || !data) {
         console.error('Nenhuma configuração global encontrada:', error);
@@ -113,11 +112,11 @@ export class AIConfigService {
       console.log(`🔍 Carregando configuração fresca para empresa: ${companyId}`);
 
       // Tentar carregar da tabela nova primeiro
-      const { data: newConfigData, error: newError } = await supabase
-        .from('ai_agent_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: newConfigData, error: newError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (!newError && newConfigData) {
         console.log('✅ Configuração carregada da tabela nova:', newConfigData.agent_name, 'para empresa:', companyId);
@@ -127,11 +126,11 @@ export class AIConfigService {
       console.log('⚠️ Tabela nova não encontrada, tentando tabela antiga...');
 
       // Tentar carregar da tabela antiga como fallback
-      const { data: oldConfigData, error: oldError } = await supabase
-        .from('agente_ia_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data: oldConfigData, error: oldError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'agente_ia_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (oldError || !oldConfigData) {
         console.error('Configuração do agente não encontrada em nenhuma tabela:', { newError, oldError });
@@ -145,7 +144,7 @@ export class AIConfigService {
       
       // Salva no cache por 5 minutos
       this.configCache.set(companyId, convertedConfig);
-      setTimeout(() => this.configCache.delete(companyId), 5 * 60 * 1000);
+      setTimeout(() => this.configCache/* .delete\( REMOVIDO */ ; //companyId), 5 * 60 * 1000);
       return convertedConfig;
 
     } catch (error) {
@@ -186,17 +185,17 @@ export class AIConfigService {
       if (this.paymentCache.has(companyId)) {
         return this.paymentCache.get(companyId)!;
       }
-      const { data, error } = await supabase
-        .from('payment_delivery_config')
-        .select('pix_key, accept_pix')
-        .eq('company_id', companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'payment_delivery_config')
+        /* .select\( REMOVIDO */ ; //'pix_key, accept_pix')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
       if (error || !data) {
         console.error('Configuração de pagamento não encontrada:', error);
         return null;
       }
       this.paymentCache.set(companyId, data);
-      setTimeout(() => this.paymentCache.delete(companyId), 5 * 60 * 1000);
+      setTimeout(() => this.paymentCache/* .delete\( REMOVIDO */ ; //companyId), 5 * 60 * 1000);
       return data;
     } catch (error) {
       console.error('Erro ao carregar configuração de pagamento:', error);

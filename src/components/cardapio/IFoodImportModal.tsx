@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -45,7 +45,7 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
 
     try {
       // Usar a função Supabase para fazer o preview
-      const { data, error: functionError } = await supabase.functions.invoke('ifood-import-preview', {
+      const { data, error: functionError } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-import-preview', {
         body: { url }
       });
 
@@ -89,7 +89,7 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
     const itemsToImport = previewItems.filter(item => item.selected);
 
     try {
-      const { data, error: functionError } = await supabase.functions.invoke('ifood-import-execute', {
+      const { data, error: functionError } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-import-execute', {
         body: { 
           company_id: currentCompany?.id,
           items: itemsToImport,

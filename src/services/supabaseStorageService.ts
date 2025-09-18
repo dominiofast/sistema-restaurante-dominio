@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 // Define o nome do bucket onde os currículos serão armazenados.
 // É uma boa prática manter isso em uma constante para fácil manutenção.
 const CURRICULOS_BUCKET = 'curriculos';
@@ -24,8 +23,8 @@ export const uploadFileToSupabase = async (file: File, companyId: string): Promi
   console.log(`[Supabase] Iniciando upload para o bucket '${CURRICULOS_BUCKET}'...`);
   console.log(`[Supabase] Caminho do arquivo: ${fileName}`);
 
-  const { data, error } = await supabase.storage
-    .from(CURRICULOS_BUCKET)
+  const { data, error } = await /* supabase REMOVIDO */ null; //storage
+    /* .from REMOVIDO */ ; //CURRICULOS_BUCKET)
     .upload(fileName, file, {
       cacheControl: '3600', // Cache de 1 hora
       upsert: false, // Não sobrescrever se o arquivo já existir (improvável com timestamp)
@@ -39,8 +38,8 @@ export const uploadFileToSupabase = async (file: File, companyId: string): Promi
   console.log('[Supabase] Upload concluído. Obtendo URL pública...');
 
   // Após o upload, obtemos a URL pública para o arquivo.
-  const { data: urlData } = supabase.storage
-    .from(CURRICULOS_BUCKET)
+  const { data: urlData } = /* supabase REMOVIDO */ null; //storage
+    /* .from REMOVIDO */ ; //CURRICULOS_BUCKET)
     .getPublicUrl(data.path);
 
   if (!urlData || !urlData.publicUrl) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { Store, Calendar, Globe, Settings, MessageSquare, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -41,17 +41,15 @@ const IFoodIntegrationsLojista = () => {
   }, [currentCompany?.id]);
 
   const fetchIntegrations = async () => {
-    if (!currentCompany?.id) return;
-
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('ifood_integrations')
-        .select(`
+    console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ifood_integrations')
+        /* .select\( REMOVIDO */ ; //`
           *
         `)
-        .eq('company_id', currentCompany.id)
-        .order('created_at', { ascending: false });
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       if (error) throw error;
       setIntegrations(data || []);
@@ -69,7 +67,7 @@ const IFoodIntegrationsLojista = () => {
     try {
       setRequestingToken(true);
       
-      const { data, error } = await supabase.functions.invoke('ifood-request-linking-code', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('ifood-request-linking-code', {
         body: { environment: 'sandbox' } // Por padrão usar sandbox
       });
 

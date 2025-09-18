@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface GeocodeResult {
   latitude: number;
   longitude: number;
@@ -38,7 +37,7 @@ export function useAddressGeocoding() {
       console.log('🔍 Geocoding endereço:', endereco);
 
       // Buscar chave da API via Edge Function
-      const { data: configData } = await supabase.functions.invoke('get-maps-config');
+      const { data: configData } = await /* supabase REMOVIDO */ null; //functions.invoke('get-maps-config');
       
       if (!configData?.apiKey) {
         console.error('Google Maps API key não encontrada');
@@ -77,13 +76,13 @@ export function useAddressGeocoding() {
     coordinates: GeocodeResult
   ): Promise<boolean> => {
     try {
-      const { error } = await supabase
-        .from('customer_addresses')
-        .update({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .update\( REMOVIDO */ ; //{
           latitude: coordinates.latitude,
           longitude: coordinates.longitude
         })
-        .eq('id', addressId);
+        /* .eq\( REMOVIDO */ ; //'id', addressId);
 
       if (error) {
         console.error('Erro ao atualizar coordenadas:', error);

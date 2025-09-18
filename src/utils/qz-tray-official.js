@@ -802,7 +802,7 @@ var qz = (function() {
             },
 
             uint8ArrayToHex: function(uint8) {
-                return Array.from(uint8)
+                return Array/* .from REMOVIDO */ ; //uint8)
                     .map(function(i) { return i.toString(16).padStart(2, '0'); })
                     .join('');
             },

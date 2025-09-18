@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 import PersonalInfoSection from './form-sections/PersonalInfoSection';
@@ -105,9 +105,9 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
         status: 'pendente'
       };
       
-      const { error } = await supabase
-        .from('rh_inscricoes')
-        .insert([inscricaoData]);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_inscricoes')
+        /* .insert\( REMOVIDO */ ; //[inscricaoData]);
 
       if (error) throw error;
       

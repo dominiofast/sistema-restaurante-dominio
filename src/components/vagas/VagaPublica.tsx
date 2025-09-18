@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import InscricaoSucesso from '@/components/vagas/InscricaoSucesso';
 import VagaLoadingState from '@/components/vagas/VagaLoadingState';
@@ -28,19 +28,19 @@ const VagaPublica: React.FC = () => {
   const fetchVagaData = async () => {
     try {
       setLoading(true);
-      const { data: vagaData, error: vagaError } = await supabase
-        .from('rh_vagas')
-        .select(`*, company:companies (id, name, logo)`)
-        .eq('id', vagaId)
-        .eq('is_active', true)
-        .single();
+      const { data: vagaData, error: vagaError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas')
+        /* .select\( REMOVIDO */ ; //`*, company:companies (id, name, logo)`)
+        /* .eq\( REMOVIDO */ ; //'id', vagaId)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .single\( REMOVIDO */ ; //);
       if (vagaError || !vagaData) throw vagaError || new Error('Vaga não encontrada.');
       
-      const { data: configData, error: configError } = await supabase
-        .from('rh_vagas_config')
-        .select('*')
-        .eq('company_id', vagaData.company.id)
-        .single();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', vagaData.company.id)
+        /* .single\( REMOVIDO */ ; //);
       if (configError) {
         setConfig({
           page_title: `Carreiras na ${vagaData.company.name}`,
@@ -64,27 +64,27 @@ const VagaPublica: React.FC = () => {
   const fetchVagasList = async () => {
     try {
       setLoading(true);
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .select('id, name, logo')
-        .eq('slug', slug)
-        .single();
+      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, logo')
+        /* .eq\( REMOVIDO */ ; //'slug', slug)
+        /* .single\( REMOVIDO */ ; //);
       if (companyError || !companyData) throw companyError || new Error('Empresa não encontrada');
       
-      const { data: vagasData, error: vagasError } = await supabase
-        .from('rh_vagas')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
+      const { data: vagasData, error: vagasError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
       if (vagasError) throw vagasError;
       setVagas(vagasData || []);
       
-      const { data: configData, error: configError } = await supabase
-        .from('rh_vagas_config')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .single();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'rh_vagas_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyData.id)
+        /* .single\( REMOVIDO */ ; //);
       setConfig(configData || {
         page_title: `Carreiras na ${companyData.name}`,
         welcome_message: 'Confira nossas oportunidades e venha fazer parte do nosso time!',

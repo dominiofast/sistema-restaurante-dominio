@@ -129,7 +129,7 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
   const toggleCategory = (categoriaId: string) => {
     const newExpanded = new Set(expandedCategories);
     if (newExpanded.has(categoriaId)) {
-      newExpanded.delete(categoriaId);
+      newExpanded/* .delete\( REMOVIDO */ ; //categoriaId);
     } else {
       newExpanded.add(categoriaId);
     }

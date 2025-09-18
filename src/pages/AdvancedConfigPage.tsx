@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -101,12 +101,12 @@ const AdvancedConfigPage: React.FC = () => {
   const verificarConexoes = async () => {
     try {
       // Testar conexão Supabase
-      const { error: supabaseError } = await supabase.from('ai_agent_config').select('id').limit(1);
+      const { error: supabaseError } = await /* supabase REMOVIDO */ null; //from('ai_agent_config')/* .select\( REMOVIDO */ ; //'id')/* .limit\( REMOVIDO */ ; //1);
       setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }));
 
       // Testar OpenAI via edge function
       try {
-        const { data: testData, error: testError } = await supabase.functions.invoke('agente-ia-conversa', {
+        const { data: testData, error: testError } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
           body: { 
             slug_empresa: 'test', 
             user_message: 'teste conexão',
@@ -121,7 +121,7 @@ const AdvancedConfigPage: React.FC = () => {
       }
 
       // Verificar integração WhatsApp
-      const { data: whatsappData } = await supabase.from('whatsapp_integrations').select('id, webhook').limit(1);
+      const { data: whatsappData } = await /* supabase REMOVIDO */ null; //from('whatsapp_integrations')/* .select\( REMOVIDO */ ; //'id, webhook')/* .limit\( REMOVIDO */ ; //1);
       const hasWhatsapp = whatsappData && whatsappData.length > 0;
       const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook');
       setStatusConexao(prev => ({ 
@@ -138,11 +138,11 @@ const AdvancedConfigPage: React.FC = () => {
     setLoading(true);
     try {
       // Buscar configuração do agente
-      const { data: configData, error: configError } = await supabase
-        .from('ai_agent_config')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
+      const { data: configData, error: configError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_config')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (configError && configError.code !== 'PGRST116') {
         throw configError;
@@ -186,16 +186,16 @@ const AdvancedConfigPage: React.FC = () => {
 
       let resultado;
       if (config.id) {
-        resultado = await supabase
-          .from('ai_agent_config')
-          .update(configParaSalvar)
-          .eq('id', config.id);
+        resultado = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ai_agent_config')
+          /* .update\( REMOVIDO */ ; //configParaSalvar)
+          /* .eq\( REMOVIDO */ ; //'id', config.id);
       } else {
-        resultado = await supabase
-          .from('ai_agent_config')
-          .insert(configParaSalvar)
-          .select()
-          .single();
+        resultado = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ai_agent_config')
+          /* .insert\( REMOVIDO */ ; //configParaSalvar)
+          /* .select\( REMOVIDO */ ; //)
+          /* .single\( REMOVIDO */ ; //);
       }
 
       if (resultado.error) throw resultado.error;
@@ -222,17 +222,17 @@ const AdvancedConfigPage: React.FC = () => {
     setTestResponse('Processando...');
     try {
       // Buscar o slug da empresa atual
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .select('slug')
-        .eq('id', companyId)
-        .single();
+      const { data: company, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'slug')
+        /* .eq\( REMOVIDO */ ; //'id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (companyError || !company?.slug) {
         throw new Error('Slug da empresa não encontrado');
       }
 
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('agente-ia-conversa', {
         body: {
           slug_empresa: company.slug,
           user_message: testMessage,

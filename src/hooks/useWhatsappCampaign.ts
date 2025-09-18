@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -57,14 +57,14 @@ export const useWhatsappCampaign = () => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('whatsapp_integrations')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', 'marketing')
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_integrations')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'purpose', 'marketing')
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('Erro ao buscar integração WhatsApp (marketing):', error);
@@ -89,15 +89,15 @@ export const useWhatsappCampaign = () => {
 
     try {
       let query = supabase
-        .from('clientes')
-        .select('id, nome, telefone, email, status')
-        .eq('company_id', currentCompany.id)
+        /* .from REMOVIDO */ ; //'clientes')
+        /* .select\( REMOVIDO */ ; //'id, nome, telefone, email, status')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
         .not('telefone', 'is', null)
         .neq('telefone', '');
 
       // Filtrar por tipo de público
       if (audience === 'clientes-ativos') {
-        query = query.eq('status', 'ativo');
+        query = query/* .eq\( REMOVIDO */ ; //'status', 'ativo');
       }
 
       const { data, error } = await query;
@@ -273,9 +273,9 @@ export const useWhatsappCampaign = () => {
 
       console.log('Payload para inserção:', insertPayload);
 
-      const { data, error } = await supabase
-        .from('whatsapp_campaigns' as any)
-        .insert([insertPayload]);
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'whatsapp_campaigns' as any)
+        /* .insert\( REMOVIDO */ ; //[insertPayload]);
 
       if (error) {
         console.error('Erro do Supabase ao salvar campanha:', error);

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface NFCeLog {
   id: string;
   company_id: string;
@@ -33,11 +32,11 @@ export function useNFCeLogs(companyId: string | undefined) {
     console.log('🔍 Buscando logs NFCe para company:', companyId);
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('nfce_logs')
-        .select('*')
-        .eq('company_id', companyId)
-        .order('created_at', { ascending: false });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'nfce_logs')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       if (error) {
         console.error('❌ Erro ao buscar logs NFCe:', error);
@@ -103,11 +102,11 @@ export function useNFCeLogs(companyId: string | undefined) {
 
       console.log('📋 Dados preparados para insert:', logData);
 
-      const { data, error } = await supabase
-        .from('nfce_logs')
-        .insert(logData)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'nfce_logs')
+        /* .insert\( REMOVIDO */ ; //logData)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro detalhado ao salvar log NFCe:', {

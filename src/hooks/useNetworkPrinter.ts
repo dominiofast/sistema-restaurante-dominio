@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -35,9 +35,9 @@ export const useNetworkPrinter = () => {
   // Salvar configuração da impressora
   const savePrinterConfig = async (config: PrinterConfig, companyId: string) => {
     try {
-      const { error } = await supabase
-        .from('company_settings')
-        .upsert({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .upsert\( REMOVIDO */ ; //{
           company_id: companyId,
           printer_ip: config.ip,
           printer_port: config.port || 9100,
@@ -55,11 +55,11 @@ export const useNetworkPrinter = () => {
   // Buscar configuração salva
   const getPrinterConfig = async (companyId: string): Promise<PrinterConfig | null> => {
     try {
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('printer_ip, printer_port, printer_name')
-        .eq('company_id', companyId)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'company_settings')
+        /* .select\( REMOVIDO */ ; //'printer_ip, printer_port, printer_name')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
         
       if (error || !data) return null;
       
@@ -95,7 +95,7 @@ export const useNetworkPrinter = () => {
       }
       
       // Chamar Edge Function
-      const { data: response, error } = await supabase.functions.invoke('imprimir-cupom', {
+      const { data: response, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
         body: {
           printerIp: ip,
           printerPort: 9100,
@@ -142,7 +142,7 @@ export const useNetworkPrinter = () => {
         return;
       }
       
-      const { error } = await supabase.functions.invoke('imprimir-cupom', {
+      const { error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
         body: {
           printerIp: config.ip,
           printerPort: config.port,
@@ -169,7 +169,7 @@ export const useNetworkPrinter = () => {
   // Testar conexão
   const testPrinter = async (ip: string, port: number = 9100) => {
     try {
-      const { data, error } = await supabase.functions.invoke('imprimir-cupom', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('imprimir-cupom', {
         body: {
           printerIp: ip,
           printerPort: port,

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { UploadCloud, CheckCircle, Loader2, X, Image } from 'lucide-react';
 import { toast } from 'sonner';
@@ -69,8 +69,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       console.log('🔄 Iniciando upload:', fileName);
 
-      const { data, error } = await supabase.storage
-        .from('vagas_assets')
+      const { data, error } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'vagas_assets')
         .upload(fileName, file, {
           cacheControl: '3600',
           upsert: false,
@@ -83,8 +83,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       console.log('✅ Upload concluído:', data);
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('vagas_assets')
+      const { data: { publicUrl } } = /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'vagas_assets')
         .getPublicUrl(fileName);
       
       console.log('🔗 URL pública:', publicUrl);

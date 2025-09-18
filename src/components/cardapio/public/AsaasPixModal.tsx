@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Copy, CheckCircle, Clock, QrCode, Smartphone, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface AsaasPixModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -109,7 +108,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
 
 
       // Usar edge function em vez da função do banco
-      const { data, error } = await supabase.functions.invoke('create-asaas-payment', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-asaas-payment', {
         body: {
           companyId,
           amount,
@@ -176,7 +175,7 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
       
       console.log(`🔍 Verificando status do pagamento Asaas (tentativa ${retryCount + 1}):`, paymentId);
 
-      const { data, error } = await supabase.functions.invoke('check-asaas-payment', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('check-asaas-payment', {
         body: {
           paymentId
         }

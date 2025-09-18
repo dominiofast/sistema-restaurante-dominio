@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Store, Key, Globe, CheckCircle, AlertTriangle, TestTube, Save } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface IFoodGlobalConfig {
@@ -47,7 +47,7 @@ const SuperAdminIFoodGlobalConfig = () => {
       console.log('🔍 Verificando configuração existente do iFood...');
       
       // Verificar se existe configuração via função edge (que acessa os secrets)
-      const { data, error } = await supabase.functions.invoke('get-ifood-config');
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('get-ifood-config');
       
       console.log('📊 Resposta do get-ifood-config:', data);
       
@@ -100,7 +100,7 @@ const SuperAdminIFoodGlobalConfig = () => {
     try {
       console.log('🔄 Enviando configuração para validação...');
       
-      const { data, error } = await supabase.functions.invoke('save-ifood-config', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('save-ifood-config', {
         body: config
       });
 
@@ -159,7 +159,7 @@ const SuperAdminIFoodGlobalConfig = () => {
 
     setTesting(true);
     try {
-      const { data, error } = await supabase.functions.invoke('test-ifood-connection', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('test-ifood-connection', {
         body: { environment: config.environment }
       });
 
@@ -338,7 +338,7 @@ const SuperAdminIFoodGlobalConfig = () => {
                   </p>
                   <div className="mt-3">
                     <Button 
-                      onClick={() => window.open('https://supabase.com/dashboard/project/78f1b2d4-13ce-4fc8-8fc4-25d4ea8904e3/settings/functions', '_blank')}
+                      onClick={() => window.open('https:///* supabase REMOVIDO */ null; //com/dashboard/project/78f1b2d4-13ce-4fc8-8fc4-25d4ea8904e3/settings/functions', '_blank')}
                       variant="default"
                       size="sm"
                       className="bg-blue-600 hover:bg-blue-700 text-white"

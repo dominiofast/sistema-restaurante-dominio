@@ -6,10 +6,10 @@ export const cleanupAuthState = () => {
     // Limpar todas as chaves relacionadas ao Supabase Auth do localStorage
     const localStorageKeys = Object.keys(localStorage);
     localStorageKeys.forEach((key) => {
-      if (key.startsWith('supabase.auth.') || 
+      if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || 
           key.includes('sb-') || 
           key.startsWith('supabase_auth_') ||
-          key === 'supabase.auth.token') {
+          key === '/* supabase REMOVIDO */ null; //auth.token') {
         console.log('📦 Removendo chave localStorage:', key);
         localStorage.removeItem(key);
       }
@@ -19,7 +19,7 @@ export const cleanupAuthState = () => {
     if (typeof sessionStorage !== 'undefined') {
       const sessionStorageKeys = Object.keys(sessionStorage);
       sessionStorageKeys.forEach((key) => {
-        if (key.startsWith('supabase.auth.') || 
+        if (key.startsWith('/* supabase REMOVIDO */ null; //auth.') || 
             key.includes('sb-') || 
             key.startsWith('supabase_auth_')) {
           console.log('📦 Removendo chave sessionStorage:', key);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Pedido, PedidoItem, AdicionalItem } from '@/types/pedidos';
 
 interface UseOrderTrackerReturn {
@@ -38,10 +38,10 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
         console.log('🔍 Número do pedido:', numero_pedido);
 
         // Buscar empresa por slug/domain
-        const { data: todasEmpresas, error: erroTodas } = await supabase
-          .from('companies')
-          .select('id, slug, domain')
-          .eq('status', 'active');
+        const { data: todasEmpresas, error: erroTodas } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'companies')
+          /* .select\( REMOVIDO */ ; //'id, slug, domain')
+          /* .eq\( REMOVIDO */ ; //'status', 'active');
 
         if (erroTodas) {
           throw new Error(`Erro ao buscar empresas: ${erroTodas.message}`);
@@ -61,14 +61,14 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
 
         // Buscar pedido
         const numeroInteiro = parseInt(numero_pedido);
-        const { data: pedidoData, error: pedidoError } = await supabase
-          .from('pedidos')
-          .select('*')
-          .eq('numero_pedido', numeroInteiro)
-          .eq('company_id', companyId)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+        const { data: pedidoData, error: pedidoError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedidos')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'numero_pedido', numeroInteiro)
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+          /* .limit\( REMOVIDO */ ; //1)
+          /* .single\( REMOVIDO */ ; //);
 
         if (pedidoError || !pedidoData) {
           throw new Error('Pedido não encontrado');
@@ -78,10 +78,10 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
         console.log('✅ Pedido encontrado!');
 
         // Buscar itens do pedido
-        const { data: itensData, error: itensError } = await supabase
-          .from('pedido_itens')
-          .select('*')
-          .eq('pedido_id', pedidoData.id);
+        const { data: itensData, error: itensError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'pedido_itens')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'pedido_id', pedidoData.id);
 
         if (itensError) {
           console.warn('Erro ao buscar itens:', itensError);
@@ -92,10 +92,10 @@ export function useOrderTracker(numero_pedido: string): UseOrderTrackerReturn {
           const adicionaisMap: { [itemId: string]: AdicionalItem[] } = {};
           
           for (const item of itensData) {
-            const { data: adicionaisData } = await supabase
-              .from('pedido_item_adicionais')
-              .select('nome_adicional, quantidade, valor_total')
-              .eq('pedido_item_id', item.id);
+            const { data: adicionaisData } = /* await supabase REMOVIDO */ null
+              /* .from REMOVIDO */ ; //'pedido_item_adicionais')
+              /* .select\( REMOVIDO */ ; //'nome_adicional, quantidade, valor_total')
+              /* .eq\( REMOVIDO */ ; //'pedido_item_id', item.id);
 
             if (adicionaisData && adicionaisData.length > 0) {
               adicionaisMap[item.id] = adicionaisData;

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from './AuthContext';
 
 // Tipos
@@ -63,10 +64,9 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
 
   // MOCK - Carregar todas as permissões disponíveis (DESABILITADO)
   const loadPermissions = async () => {
-    console.log('⚠️ PermissionsContext: loadPermissions desabilitado - sistema usa PostgreSQL');
-    // Mock de permissões básicas para evitar erros
-    setPermissions([
-      { id: '1', name: 'Gerenciar Pedidos', slug: 'manage-orders', module: 'orders', action: 'manage' },
+    console.log('⚠️ loadPermissions desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  },
       { id: '2', name: 'Ver Pedidos', slug: 'view-orders', module: 'orders', action: 'view' },
       { id: '3', name: 'Gerenciar Cardápio', slug: 'manage-menu', module: 'menu', action: 'manage' },
     ]);
@@ -74,10 +74,9 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
 
   // MOCK - Carregar todos os roles disponíveis (DESABILITADO)
   const loadRoles = async () => {
-    console.log('⚠️ PermissionsContext: loadRoles desabilitado - sistema usa PostgreSQL');
-    // Mock de roles básicos para evitar erros
-    setRoles([
-      { id: '1', name: 'Admin', slug: 'admin', is_active: true },
+    console.log('⚠️ loadRoles desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  },
       { id: '2', name: 'Super Admin', slug: 'super_admin', is_active: true },
       { id: '3', name: 'Gerente', slug: 'manager', is_active: true },
     ]);
@@ -85,10 +84,9 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
 
   // Carregar permissões do usuário atual
   const loadUserPermissions = async () => {
-    if (!user?.id) {
-      setUserPermissions([]);
-      return;
-    }
+    console.log('⚠️ loadUserPermissions desabilitado - sistema migrado para PostgreSQL');
+    return Promise.resolve([]);
+  }
 
     try {
       const userRole = user.user_metadata?.role;
@@ -99,9 +97,9 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       }
 
       // Buscar permissões via role
-      const { data, error } = await supabase
-        .from('roles')
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'roles')
+        /* .select\( REMOVIDO */ ; //`
           role_permissions!inner(
             permissions!inner(
               slug,
@@ -110,8 +108,8 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
             )
           )
         `)
-        .eq('slug', userRole)
-        .eq('is_active', true);
+        /* .eq\( REMOVIDO */ ; //'slug', userRole)
+        /* .eq\( REMOVIDO */ ; //'is_active', true);
 
       if (error) throw error;
 
@@ -130,16 +128,16 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       });
 
       // Buscar permissões específicas por contexto
-      const { data: contextPermissions, error: contextError } = await supabase
-        .from('user_store_permissions')
-        .select(`
+      const { data: contextPermissions, error: contextError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'user_store_permissions')
+        /* .select\( REMOVIDO */ ; //`
           permissions!inner(
             slug,
             module,
             action
           )
         `)
-        .eq('user_id', user.id)
+        /* .eq\( REMOVIDO */ ; //'user_id', user.id)
         .or('expires_at.is.null,expires_at.gt.now()');
 
       if (contextError) throw contextError;
@@ -226,17 +224,17 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   ): Promise<boolean> => {
     try {
       // Buscar ID da permissão
-      const { data: permission } = await supabase
-        .from('permissions')
-        .select('id')
-        .eq('slug', permissionSlug)
-        .single();
+      const { data: permission } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'permissions')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'slug', permissionSlug)
+        /* .single\( REMOVIDO */ ; //);
 
       if (!permission) throw new Error('Permissão não encontrada');
 
-      const { error } = await supabase
-        .from('user_store_permissions')
-        .upsert({
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'user_store_permissions')
+        /* .upsert\( REMOVIDO */ ; //{
           user_id: userId,
           store_id: storeId || null,
           permission_id: permission.id,
@@ -266,20 +264,20 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   ): Promise<boolean> => {
     try {
       // Buscar ID da permissão
-      const { data: permission } = await supabase
-        .from('permissions')
-        .select('id')
-        .eq('slug', permissionSlug)
-        .single();
+      const { data: permission } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'permissions')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'slug', permissionSlug)
+        /* .single\( REMOVIDO */ ; //);
 
       if (!permission) throw new Error('Permissão não encontrada');
 
-      const { error } = await supabase
-        .from('user_store_permissions')
-        .delete()
-        .eq('user_id', userId)
-        .eq('permission_id', permission.id)
-        .eq('store_id', storeId || null);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'user_store_permissions')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'user_id', userId)
+        /* .eq\( REMOVIDO */ ; //'permission_id', permission.id)
+        /* .eq\( REMOVIDO */ ; //'store_id', storeId || null);
 
       if (error) throw error;
 

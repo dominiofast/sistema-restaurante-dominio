@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { Zap, Users, CheckCircle, AlertCircle, ArrowRight, RefreshCw, RotateCcw } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 interface CompanyMigrationStatus {
@@ -27,10 +27,10 @@ export function MigrationControlPanel() {
     console.log('🔍 Iniciando carregamento de empresas...');
     try {
       // Primeira query: buscar os assistants
-      const { data: assistantsData, error: assistantsError } = await supabase
-        .from('ai_agent_assistants')
-        .select('company_id, use_direct_mode, assistant_id')
-        .eq('is_active', true);
+      const { data: assistantsData, error: assistantsError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_assistants')
+        /* .select\( REMOVIDO */ ; //'company_id, use_direct_mode, assistant_id')
+        /* .eq\( REMOVIDO */ ; //'is_active', true);
 
       console.log('📊 Assistants data:', assistantsData);
       console.log('❌ Assistants error:', assistantsError);
@@ -48,9 +48,9 @@ export function MigrationControlPanel() {
       const companyIds = assistantsData.map(a => a.company_id);
       console.log('🏢 Company IDs:', companyIds);
       
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name, slug')
+      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name, slug')
         .in('id', companyIds);
 
       console.log('🏢 Companies data:', companiesData);
@@ -93,10 +93,10 @@ export function MigrationControlPanel() {
   const toggleCompanyMode = async (companyId: string, enabled: boolean) => {
     setMigrating(companyId);
     try {
-      const { error } = await supabase
-        .from('ai_agent_assistants')
-        .update({ use_direct_mode: enabled })
-        .eq('company_id', companyId);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_agent_assistants')
+        /* .update\( REMOVIDO */ ; //{ use_direct_mode: enabled })
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId);
 
       if (error) throw error;
 
@@ -170,7 +170,7 @@ export function MigrationControlPanel() {
     try {
       console.log('🔄 Iniciando sincronização com OpenAI...');
       
-      const { data, error } = await supabase.functions.invoke('sync-assistant-fixed', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('sync-assistant-fixed', {
         body: { 
           company_id: companyId,
           slug: companySlug 

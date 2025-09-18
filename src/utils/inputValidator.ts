@@ -147,7 +147,7 @@ export const cleanupRateLimit = () => {
   const now = Date.now();
   for (const [key, value] of rateLimitStore.entries()) {
     if (now > value.resetTime) {
-      rateLimitStore.delete(key);
+      rateLimitStore/* .delete\( REMOVIDO */ ; //key);
     }
   }
 };

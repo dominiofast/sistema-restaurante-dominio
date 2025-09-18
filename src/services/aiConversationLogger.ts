@@ -1,6 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export class AIConversationLogger {
   /**
    * Salva log da conversa
@@ -16,9 +15,9 @@ export class AIConversationLogger {
   ): Promise<void> {
     try {
       // Salva mensagem do usuário
-      await supabase
-        .from('ai_conversation_logs')
-        .insert({
+      /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_conversation_logs')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           customer_phone: customerPhone,
           customer_name: customerName,
@@ -29,9 +28,9 @@ export class AIConversationLogger {
         });
 
       // Salva resposta da IA
-      await supabase
-        .from('ai_conversation_logs')
-        .insert({
+      /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ai_conversation_logs')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: companyId,
           customer_phone: customerPhone,
           customer_name: customerName,

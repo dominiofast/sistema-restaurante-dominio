@@ -1,8 +1,7 @@
 
 import { CardapioService } from './cardapioService';
 import { CardapioJsonService } from './cardapioJsonService';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export class AICardapioService {
   private cardapioCache: Map<string, { data: any; timestamp: number }> = new Map();
 
@@ -64,15 +63,15 @@ export class AICardapioService {
       console.log('🔍 Buscando configurações do assistente e empresa...');
       const [assistantResult, companyResult] = await Promise.all([
         supabase
-          .from('ai_agent_assistants')
-          .select('produtos_path, config_path, assistant_id')
-          .eq('company_id', companyId)
-          .maybeSingle(),
+          /* .from REMOVIDO */ ; //'ai_agent_assistants')
+          /* .select\( REMOVIDO */ ; //'produtos_path, config_path, assistant_id')
+          /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+          /* .maybeSingle\( REMOVIDO */ ; //),
         supabase
-          .from('companies')
-          .select('slug')
-          .eq('id', companyId)
-          .maybeSingle()
+          /* .from REMOVIDO */ ; //'companies')
+          /* .select\( REMOVIDO */ ; //'slug')
+          /* .eq\( REMOVIDO */ ; //'id', companyId)
+          /* .maybeSingle\( REMOVIDO */ ; //)
       ]);
 
       const assistantMap = assistantResult.data;
@@ -110,8 +109,8 @@ export class AICardapioService {
       
       // Salvar no storage
       console.log('💾 Salvando cardápio no storage...');
-      const { error: uploadError } = await supabase.storage
-        .from('ai-knowledge')
+      const { error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'ai-knowledge')
         .upload(assistantMap.produtos_path, new Blob([cardapioText], { type: 'text/plain' }), {
           upsert: true
         });
@@ -132,7 +131,7 @@ export class AICardapioService {
           setTimeout(() => reject(new Error('Timeout na sincronização com Assistant')), 30000);
         });
 
-        const syncPromise = supabase.functions.invoke('sync-assistant', {
+        const syncPromise = /* supabase REMOVIDO */ null; //functions.invoke('sync-assistant', {
           body: {
             company_id: companyId,
             slug: company.slug

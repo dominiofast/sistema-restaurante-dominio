@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Plus } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
 
@@ -52,9 +53,9 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
     try {
       console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id });
       
-      await apiRequest('/api/produto-categorias-adicionais', {
-        method: 'POST',
-        body: JSON.stringify({
+      const { error } = await supabase
+        .from('produto_categorias_adicionais')
+        .insert([{
           produto_id: produto.id,
           categoria_adicional_id: categoriaId,
           is_required: false,
@@ -114,10 +115,28 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
       
       console.log('📊 Dados finais para inserção:', dadosParaInserir);
 
-      const data = await apiRequest('/api/categoria-adicionais', {
-        method: 'POST',
-        body: JSON.stringify(dadosParaInserir)
-      });
+      const { data, error } = await supabase
+        .from('categorias_adicionais')
+        .insert([dadosParaInserir])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('❌ Erro do Supabase ao criar categoria:', error);
+        console.error('📋 Detalhes do erro:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
+        
+        toast({
+          title: "Erro ao criar grupo",
+          description: error.message || "Erro desconhecido ao criar grupo de adicionais",
+          variant: "destructive",
+        });
+        return;
+      }
 
       console.log('✅ Categoria criada com sucesso!', data);
       

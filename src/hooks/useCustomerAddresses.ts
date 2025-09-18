@@ -1,7 +1,6 @@
 
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface CustomerAddress {
   id?: string;
   customer_name?: string;
@@ -52,7 +51,7 @@ export const useCustomerAddresses = () => {
       // Caso contrário, tentar query direta (para usuários autenticados)
       if (companyId) {
         // Usar função RPC segura para cardápio público
-        const { data: rpcData, error: rpcError } = await supabase
+        const { data: rpcData, error: rpcError } = /* await supabase REMOVIDO */ null
           .rpc('get_customer_addresses_for_order', {
             p_phone: cleanPhone,
             p_company_id: companyId
@@ -62,10 +61,10 @@ export const useCustomerAddresses = () => {
         error = rpcError;
       } else {
         // Query direta para usuários autenticados no painel admin
-        const { data: queryData, error: queryError } = await supabase
-          .from('customer_addresses')
-          .select('*')
-          .eq('customer_phone', cleanPhone)
+        const { data: queryData, error: queryError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'customer_addresses')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'customer_phone', cleanPhone)
           .not('customer_phone', 'is', null)
           .neq('customer_phone', '');
         
@@ -93,11 +92,11 @@ export const useCustomerAddresses = () => {
       console.log('Inserindo no Supabase...');
       console.log('Dados completos para inserção:', JSON.stringify(addressData, null, 2));
       
-      const { data, error } = await supabase
-        .from('customer_addresses')
-        .insert(addressData)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .insert\( REMOVIDO */ ; //addressData)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
       
       console.log('Resposta do Supabase:', { data, error });
       
@@ -128,12 +127,12 @@ export const useCustomerAddresses = () => {
     setError(null);
     
     try {
-      const { data, error } = await supabase
-        .from('customer_addresses')
-        .update(addressData)
-        .eq('id', id)
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .update\( REMOVIDO */ ; //addressData)
+        /* .eq\( REMOVIDO */ ; //'id', id)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
       
       if (error) throw error;
       setAddresses(prev => prev.map(addr => addr.id === id ? data : addr));
@@ -151,10 +150,10 @@ export const useCustomerAddresses = () => {
     setError(null);
     
     try {
-      const { error } = await supabase
-        .from('customer_addresses')
-        .delete()
-        .eq('id', id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'customer_addresses')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', id);
       
       if (error) throw error;
       setAddresses(prev => prev.filter(addr => addr.id !== id));

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 const SignupPage = () => {
@@ -58,9 +58,9 @@ const SignupPage = () => {
       console.log('🏢 Criando empresa com domain:', uniqueDomain);
       
       // 1. Primeiro criar a empresa
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .insert({
+      const { data: companyData, error: companyError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .insert\( REMOVIDO */ ; //{
           name: formData.businessName,
           domain: uniqueDomain,
           slug: uniqueDomain,
@@ -68,8 +68,8 @@ const SignupPage = () => {
           plan: 'trial', // Plano de teste
           user_count: 1
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (companyError) {
         console.error('❌ Erro ao criar empresa:', companyError);
@@ -83,7 +83,7 @@ const SignupPage = () => {
       // Gerar senha temporária para o usuário (será solicitada para trocar no primeiro login)
       const tempPassword = `temp${Date.now()}`;
       
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await /* supabase REMOVIDO */ null; //auth.signUp({
         email: formData.email,
         password: tempPassword,
         options: {
@@ -126,9 +126,9 @@ const SignupPage = () => {
 
       // 3. Criar credenciais da empresa para login direto
       if (authData.user) {
-        const { error: credentialsError } = await supabase
-          .from('company_credentials')
-          .insert({
+        const { error: credentialsError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'company_credentials')
+          /* .insert\( REMOVIDO */ ; //{
             email: formData.email,
             password_hash: tempPassword, // Será processado pelo trigger
             company_id: companyData.id,

@@ -11,7 +11,7 @@ export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
   if (!url) return '/placeholder.svg';
   
   // Se for uma URL do Supabase, adicionar parâmetros de transformação
-  if (url.includes('supabase.co')) {
+  if (url.includes('/* supabase REMOVIDO */ null; //co')) {
     const urlObj = new URL(url);
     
     // Adicionar transformações de imagem do Supabase

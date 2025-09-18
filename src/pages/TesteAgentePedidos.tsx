@@ -5,8 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const TesteAgentePedidos = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -48,7 +47,7 @@ const TesteAgentePedidos = () => {
     setLoading(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('criar-pedido', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('criar-pedido', {
         body: pedidoData,
         headers: {
           'Authorization': `Bearer ${token}`

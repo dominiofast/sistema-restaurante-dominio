@@ -54,7 +54,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                 />
               ))}
               {/* Preenche espaços vazios se necessário */}
-              {Array.from({ length: balcoesPorLinha - primeiraLinha.length }).map((_, index) => (
+              {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - primeiraLinha.length }).map((_, index) => (
                 <div key={`empty-top-${index}`} className="flex-1"></div>
               ))}
             </div>
@@ -73,7 +73,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                     />
                   ))}
                   {/* Preenche espaços vazios se necessário */}
-                  {Array.from({ length: balcoesPorLinha - segundaLinha.length }).map((_, index) => (
+                  {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - segundaLinha.length }).map((_, index) => (
                     <div key={`empty-bottom-${index}`} className="flex-1"></div>
                   ))}
                 </>
@@ -136,7 +136,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
                 />
               ))}
               {/* Preenche espaços vazios se necessário */}
-              {Array.from({ length: balcoesPorLinha - pedidosPaginaAtual.length }).map((_, index) => (
+              {Array/* .from REMOVIDO */ ; //{ length: balcoesPorLinha - pedidosPaginaAtual.length }).map((_, index) => (
                 <div key={`empty-${index}`} className="flex-1"></div>
               ))}
             </>

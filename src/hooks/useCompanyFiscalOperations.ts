@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { focusNFeService } from '@/services/focusNFeService';
 
 export interface FiscalNFeOperations {
@@ -33,7 +33,7 @@ export function useCompanyFiscalOperations(companyId: string | undefined): Fisca
     if (!companyId) throw new Error('Empresa não selecionada');
 
     try {
-      const response = await supabase.functions.invoke('focus-nfe-integration', {
+      const response = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
         body: {
           action: 'consultar-nfce',
           company_id: companyId,
@@ -53,7 +53,7 @@ export function useCompanyFiscalOperations(companyId: string | undefined): Fisca
     if (!companyId) throw new Error('Empresa não selecionada');
 
     try {
-      const response = await supabase.functions.invoke('focus-nfe-integration', {
+      const response = await /* supabase REMOVIDO */ null; //functions.invoke('focus-nfe-integration', {
         body: {
           action: 'cancelar-nfce',
           company_id: companyId,

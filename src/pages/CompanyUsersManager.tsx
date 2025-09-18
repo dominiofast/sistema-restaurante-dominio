@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,7 +66,7 @@ const CompanyUsersManager = () => {
     if (!editingUserId) return;
     try {
       setSavingEdit(true);
-      const { data, error } = await supabase.functions.invoke('update-user-admin', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('update-user-admin', {
         body: {
           user_id: editingUserId,
           company_id: selectedCompanyId,
@@ -112,11 +112,11 @@ const CompanyUsersManager = () => {
     try {
       setLoading(true);
       
-      const { data: companiesData, error: companiesError } = await supabase
-        .from("companies")
-        .select("id, name, domain, status")
-        .eq("status", "active")
-        .order("name");
+      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //"companies")
+        /* .select\( REMOVIDO */ ; //"id, name, domain, status")
+        /* .eq\( REMOVIDO */ ; //"status", "active")
+        /* .order\( REMOVIDO */ ; //"name");
 
       if (companiesError) throw companiesError;
 
@@ -142,7 +142,7 @@ const CompanyUsersManager = () => {
       setSelectedCompany(company || null);
 
       // Buscar usuários reais via Edge Function
-      const { data: usersResponse, error: usersError } = await supabase.functions.invoke('get-company-users', {
+      const { data: usersResponse, error: usersError } = await /* supabase REMOVIDO */ null; //functions.invoke('get-company-users', {
         body: { company_id: companyId }
       });
 
@@ -178,7 +178,7 @@ const CompanyUsersManager = () => {
       setCreating(true);
 
       // Criar usuário via Edge Function diretamente
-      const { data, error } = await supabase.functions.invoke('create-user-directly', {
+      const { data, error } = await /* supabase REMOVIDO */ null; //functions.invoke('create-user-directly', {
         body: {
           email,
           password,
@@ -222,7 +222,7 @@ const CompanyUsersManager = () => {
 
   const resetUserPassword = async (userEmail: string, userName: string) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(userEmail, {
+      const { error } = await /* supabase REMOVIDO */ null; //auth.resetPasswordForEmail(userEmail, {
         redirectTo: `${window.location.origin}/reset-password`,
       });
 

@@ -1,7 +1,25 @@
 import { useEffect } from 'react';
-// import { supabase } from '@/integrations/supabase/client'; // DESABILITADO - Sistema migrado para PostgreSQL
+// // SUPABASE REMOVIDO
+// DESABILITADO - Sistema migrado para PostgreSQL
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 
 export const useAutoPrint = () => {
   const { currentCompany } = useAuth();
@@ -15,65 +33,22 @@ export const useAutoPrint = () => {
 
       // Buscar dados do pedido
       console.log('🔍 Buscando dados do pedido:', pedidoId);
-      const { data: pedido, error: pedidoError } = await supabase
-        // .from( // DESABILITADO'pedidos')
-        .select('*')
-        .eq('id', pedidoId)
-        .single();
-
-      if (pedidoError) {
-        console.error('❌ Erro ao buscar pedido:', pedidoError);
-        throw new Error(`Erro ao buscar pedido: ${pedidoError.message}`);
-      }
+      const pedido = await apiRequest(`/api/pedidos/${pedidoId}`);
 
       console.log('📋 Dados do pedido encontrado:', pedido);
 
       // Buscar dados completos da empresa
-      const { data: empresaInfo } = await supabase
-        // .from( // DESABILITADO'company_info')
-        .select('*')
-        .eq('company_id', currentCompany?.id)
-        .maybeSingle();
+      const empresaInfo = await apiRequest(`/api/company-info?company_id=${currentCompany?.id}`);
 
       // Buscar endereço da empresa
-      const { data: empresaEndereco } = await supabase
-        // .from( // DESABILITADO'company_addresses')
-        .select('*')
-        .eq('company_id', currentCompany?.id)
-        .eq('is_principal', true)
-        .maybeSingle();
+      const empresaEndereco = await apiRequest(`/api/company-addresses?company_id=${currentCompany?.id}&is_principal=true`);
 
       // Buscar configurações da impressora
-      const { data: printerConfig } = await supabase
-        // .from( // DESABILITADO'company_settings')
-        .select('dominio_printer_name')
-        .eq('company_id', currentCompany?.id)
-        .maybeSingle();
+      const printerConfig = await apiRequest(`/api/company-settings?company_id=${currentCompany?.id}`);
 
       // Buscar itens do pedido com adicionais
       console.log('🔍 Buscando itens do pedido:', pedidoId);
-      const { data: itens, error: itensError } = await supabase
-        // .from( // DESABILITADO'pedido_itens')
-        .select(`
-          id,
-          nome_produto, 
-          quantidade, 
-          valor_unitario, 
-          valor_total,
-          observacoes,
-          pedido_item_adicionais(
-            nome_adicional,
-            categoria_nome,
-            quantidade,
-            valor_unitario,
-            valor_total
-          )
-        `)
-        .eq('pedido_id', pedidoId);
-
-      if (itensError) {
-        console.error('❌ Erro ao buscar itens:', itensError);
-      }
+      const itens = await apiRequest(`/api/pedido-itens?pedido_id=${pedidoId}`);
 
       console.log('📝 Itens encontrados:', itens?.length || 0);
       console.log('📝 Dados dos itens:', itens);
@@ -209,65 +184,64 @@ Obrigado pela preferencia!
 
     console.log('🔔 Configurando escuta para novos pedidos da empresa:', currentCompany.id);
 
-    // Escutar novos pedidos em tempo real
-    const channel = supabase
-      // .channel( // DESABILITADO'new-orders-auto-print')
-      // .on( // DESABILITADO
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'pedidos',
-          filter: `company_id=eq.${currentCompany.id}`
-        },
-        async (payload) => {
-          console.log('🆕 Novo pedido detectado para impressão automática:', payload.new);
-          
-          const pedido = payload.new;
-          
-          // Aguardar mais tempo para garantir que o pedido e itens foram salvos
-          setTimeout(async () => {
-            try {
-              console.log('⏰ Tentando impressão automática após delay...');
-              let success = await printPedidoAutomatico(pedido.id);
-              
-              // Se não conseguir na primeira tentativa, tentar novamente
-              if (!success) {
-                console.log('🔄 Primeira tentativa falhou, tentando novamente em 3 segundos...');
-                setTimeout(async () => {
-                  try {
-                    const retrySuccess = await printPedidoAutomatico(pedido.id);
-                    if (retrySuccess) {
-                      toast.success(`Pedido #${pedido.numero_pedido || pedido.id} impresso automaticamente (2ª tentativa)!`);
-                    } else {
-                      toast.error(`Erro na impressão automática do pedido #${pedido.numero_pedido || pedido.id} - Verifique se os itens foram salvos`);
-                    }
-                  } catch (retryErr) {
-                    console.error('💥 Erro na segunda tentativa:', retryErr);
-                    toast.error('Erro na segunda tentativa de impressão automática');
-                  }
-                }, 3000);
-              } else {
-                toast.success(`Pedido #${pedido.numero_pedido || pedido.id} impresso automaticamente!`);
-              }
-            } catch (err) {
-              console.error('💥 Erro ao executar impressão automática:', err);
-              toast.error('Erro ao executar impressão automática');
-            }
-          }, 5000); // Aumentado para 5 segundos
-        }
-        // )
-        // .subscribe( // DESABILITADO
-        // (status) => {
-        //   console.log('📡 Status da subscrição do canal:', status);
-        //   if (status === 'SUBSCRIBED') {
-        //     console.log('✅ Canal de escuta configurado com sucesso!');
-        //   }
-        // });
+    // Escutar novos pedidos em tempo real - DESABILITADO (Supabase removido)
+    // const channel = supabase
+    //   .channel('new-orders-auto-print')
+    //   .on(
+    //     'postgres_changes',
+    //     {
+    //       event: 'INSERT',
+    //       schema: 'public',
+    //       table: 'pedidos',
+    //       filter: `company_id=eq.${currentCompany.id}`
+    //     },
+    //     async (payload) => {
+    //       console.log('🆕 Novo pedido detectado para impressão automática:', payload.new);
+    //       
+    //       const pedido = payload.new;
+    //       
+    //       // Aguardar mais tempo para garantir que o pedido e itens foram salvos
+    //       setTimeout(async () => {
+    //         try {
+    //           console.log('⏰ Tentando impressão automática após delay...');
+    //           let success = await printPedidoAutomatico(pedido.id);
+    //           
+    //           // Se não conseguir na primeira tentativa, tentar novamente
+    //           if (!success) {
+    //             console.log('🔄 Primeira tentativa falhou, tentando novamente em 3 segundos...');
+    //             setTimeout(async () => {
+    //               try {
+    //                 const retrySuccess = await printPedidoAutomatico(pedido.id);
+    //                 if (retrySuccess) {
+    //                   toast.success(`Pedido #${pedido.numero_pedido || pedido.id} impresso automaticamente (2ª tentativa)!`);
+    //                 } else {
+    //                   toast.error(`Erro na impressão automática do pedido #${pedido.numero_pedido || pedido.id} - Verifique se os itens foram salvos`);
+    //                 }
+    //               } catch (retryErr) {
+    //                 console.error('💥 Erro na segunda tentativa:', retryErr);
+    //                 toast.error('Erro na segunda tentativa de impressão automática');
+    //               }
+    //             }, 3000);
+    //           } else {
+    //             toast.success(`Pedido #${pedido.numero_pedido || pedido.id} impresso automaticamente!`);
+    //           }
+    //         } catch (err) {
+    //           console.error('💥 Erro ao executar impressão automática:', err);
+    //           toast.error('Erro ao executar impressão automática');
+    //         }
+    //       }, 5000); // Aumentado para 5 segundos
+    //     }
+    //   )
+    //   .subscribe((status) => {
+    //     console.log('📡 Status da subscrição do canal:', status);
+    //     if (status === 'SUBSCRIBED') {
+    //       console.log('✅ Canal de escuta configurado com sucesso!');
+    //     }
+    //   });
 
     return () => {
       console.log('🔕 Removendo escuta de novos pedidos');
-      // supabase. // DESABILITADO - removeChannel(channel);
+      // /* supabase REMOVIDO */ null; // // DESABILITADO - removeChannel(channel);
     };
   }, [currentCompany?.id]); // Removida dependência da função para evitar loop
 

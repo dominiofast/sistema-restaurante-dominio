@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -14,11 +14,11 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
   useEffect(() => {
     const fetchApiKey = async () => {
       setIsLoading(true);
-      const { data, error } = await supabase
-        .from('app_settings')
-        .select('value')
-        .eq('key', SETTING_KEY)
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'app_settings')
+        /* .select\( REMOVIDO */ ; //'value')
+        /* .eq\( REMOVIDO */ ; //'key', SETTING_KEY)
+        /* .single\( REMOVIDO */ ; //);
       
       if (data && data.value) {
         setApiKey(data.value);
@@ -30,9 +30,9 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
 
   const handleSave = async () => {
     setIsLoading(true);
-    const { error } = await supabase
-      .from('app_settings')
-      .upsert({ key: SETTING_KEY, value: apiKey }, { onConflict: 'key' });
+    const { error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'app_settings')
+      /* .upsert\( REMOVIDO */ ; //{ key: SETTING_KEY, value: apiKey }, { onConflict: 'key' });
 
     setIsLoading(false);
     if (error) {

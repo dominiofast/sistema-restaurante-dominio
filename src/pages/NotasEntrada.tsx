@@ -11,7 +11,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Calendar as CalendarIcon, PlusCircle, Download, Search, ChevronDown, Trash2, Pencil, DollarSign, ShoppingCart } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface NotaEntrada {
@@ -41,10 +41,10 @@ const NotasEntradaPage: React.FC = () => {
   const fetchNotas = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('notas_entrada')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'notas_entrada')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       if (error) {
         throw error;

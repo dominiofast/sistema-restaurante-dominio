@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface OpcaoAdicional {
   descricao: string;
   venda: number;
@@ -40,12 +39,12 @@ export class CardapioJsonService {
 
       // Buscar categorias ativas
       console.log('🔍 Buscando categorias...');
-      const { data: categorias, error: categoriasError } = await supabase
-        .from('categorias')
-        .select('id, name, description')
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .order('order_position', { ascending: true });
+      const { data: categorias, error: categoriasError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'categorias')
+        /* .select\( REMOVIDO */ ; //'id, name, description')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
 
       if (categoriasError) {
         console.error('❌ Erro ao buscar categorias:', categoriasError);
@@ -56,12 +55,12 @@ export class CardapioJsonService {
 
       // Buscar produtos disponíveis
       console.log('🔍 Buscando produtos...');
-      const { data: produtos, error: produtosError } = await supabase
-        .from('produtos')
-        .select('id, name, description, price, promotional_price, is_promotional, categoria_id')
-        .eq('company_id', companyId)
-        .eq('is_available', true)
-        .order('order_position', { ascending: true });
+      const { data: produtos, error: produtosError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produtos')
+        /* .select\( REMOVIDO */ ; //'id, name, description, price, promotional_price, is_promotional, categoria_id')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .eq\( REMOVIDO */ ; //'is_available', true)
+        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
 
       if (produtosError) {
         console.error('❌ Erro ao buscar produtos:', produtosError);
@@ -72,9 +71,9 @@ export class CardapioJsonService {
 
       // Buscar relações produto-categoria adicional
       console.log('🔍 Buscando categorias adicionais...');
-      const { data: produtoCategorias, error: produtoCategoriasError } = await supabase
-        .from('produto_categorias_adicionais')
-        .select(`
+      const { data: produtoCategorias, error: produtoCategoriasError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
+        /* .select\( REMOVIDO */ ; //`
           produto_id,
           categoria_adicional_id,
           is_required,
@@ -91,7 +90,7 @@ export class CardapioJsonService {
             company_id
           )
         `)
-        .eq('categorias_adicionais.company_id', companyId);
+        /* .eq\( REMOVIDO */ ; //'categorias_adicionais.company_id', companyId);
 
       if (produtoCategoriasError) {
         console.error('❌ Erro ao buscar categorias adicionais:', produtoCategoriasError);
@@ -102,9 +101,9 @@ export class CardapioJsonService {
 
       // Buscar adicionais ativos
       console.log('🔍 Buscando adicionais...');
-      const { data: adicionais, error: adicionaisError } = await supabase
-        .from('adicionais')
-        .select(`
+      const { data: adicionais, error: adicionaisError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'adicionais')
+        /* .select\( REMOVIDO */ ; //`
           id, 
           name, 
           description, 
@@ -113,10 +112,10 @@ export class CardapioJsonService {
           order_position,
           categorias_adicionais!inner(company_id)
         `)
-        .eq('is_available', true)
-        .eq('is_active', true)
-        .eq('categorias_adicionais.company_id', companyId)
-        .order('order_position', { ascending: true });
+        /* .eq\( REMOVIDO */ ; //'is_available', true)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .eq\( REMOVIDO */ ; //'categorias_adicionais.company_id', companyId)
+        /* .order\( REMOVIDO */ ; //'order_position', { ascending: true });
 
       if (adicionaisError) {
         console.error('❌ Erro ao buscar adicionais:', adicionaisError);

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import type { Session } from '@supabase/supabase-js';
 import { cleanupAuthState } from '@/utils/authCleanup';
 import { toast } from 'sonner';
@@ -189,7 +189,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const refreshUserMetadata = useCallback(async () => {
     console.log('AuthContext: Forçando refresh dos metadados do usuário...');
     try {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const { data: { session }, error } = await /* supabase REMOVIDO */ null; //auth.getSession();
       if (error) {
         console.error('Erro ao obter sessão:', error);
         return;
@@ -197,7 +197,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (session?.user) {
         // Forçar refresh do token
-        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        const { data: refreshData, error: refreshError } = await /* supabase REMOVIDO */ null; //auth.refreshSession();
         if (refreshError) {
           console.error('Erro ao fazer refresh da sessão:', refreshError);
         } else {
@@ -292,7 +292,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const setupAuth = async () => {
       try {
         // Verificar sessão existente do Supabase primeiro
-        const { data: { session: existingSession } } = await supabase.auth.getSession();
+        const { data: { session: existingSession } } = await /* supabase REMOVIDO */ null; //auth.getSession();
         console.log('AuthProvider: Verificando sessão existente...');
         
         // Processar sessão existente se houver
@@ -302,7 +302,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         // Configurar listener apenas se não há subscription ativa
         if (!subscriptionRef.current) {
-          const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+          const { data: { subscription: authSubscription } } = /* supabase REMOVIDO */ null; //auth.onAuthStateChange(
             async (event, session) => {
               if (!isMountedLocal || !isMounted()) return;
               
@@ -539,7 +539,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsInitialized(false);
       lastUserIdRef.current = null;
       
-      const { error } = await supabase.auth.signOut({ scope: 'global' });
+      const { error } = await /* supabase REMOVIDO */ null; //auth.signOut({ scope: 'global' });
       
       if (error) {
         console.error('AuthProvider: Erro no logout:', error);

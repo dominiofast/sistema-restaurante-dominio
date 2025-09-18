@@ -1,7 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface HorarioFuncionamento {
   id: string;
   company_id: string;
@@ -34,11 +33,11 @@ const useHorario = (companyId?: string) => {
     setError(null);
 
     try {
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', companyId)
+        /* .single\( REMOVIDO */ ; //);
 
       if (horarioError && horarioError.code !== 'PGRST116') throw horarioError;
       
@@ -49,10 +48,10 @@ const useHorario = (companyId?: string) => {
         };
         setHorario(horarioTyped);
 
-        const { data: horariosDiasData, error: horariosDiasError } = await supabase
-          .from('horarios_dias')
-          .select('*')
-          .eq('horario_funcionamento_id', horarioData.id);
+        const { data: horariosDiasData, error: horariosDiasError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id);
 
         if (horariosDiasError) throw horariosDiasError;
         
@@ -92,25 +91,25 @@ export const useHorarioFuncionamento = (companyId?: string) => {
     if (!companyId) throw new Error('Company ID é obrigatório');
     
     try {
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .upsert({
+      const { data: horarioData, error: horarioError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horario_funcionamento')
+        /* .upsert\( REMOVIDO */ ; //{
           company_id: companyId,
           fuso_horario: fuso,
           tipo_disponibilidade: tipo,
         }, {
           onConflict: 'company_id'
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (horarioError) throw horarioError;
 
       // Clear existing horarios_dias
-      await supabase
-        .from('horarios_dias')
-        .delete()
-        .eq('horario_funcionamento_id', horarioData.id);
+      /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'horarios_dias')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'horario_funcionamento_id', horarioData.id);
 
       // Insert new horarios_dias
       const horariosToInsert = Object.entries(horarios)
@@ -128,9 +127,9 @@ export const useHorarioFuncionamento = (companyId?: string) => {
         );
 
       if (horariosToInsert.length > 0) {
-        const { error: diasError } = await supabase
-          .from('horarios_dias')
-          .insert(horariosToInsert);
+        const { error: diasError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'horarios_dias')
+          /* .insert\( REMOVIDO */ ; //horariosToInsert);
 
         if (diasError) throw diasError;
       }

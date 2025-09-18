@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, MapPin, Edit, Trash2 } from 'lucide-react';
 import { useCustomerAddresses, CustomerAddress } from '@/hooks/useCustomerAddresses';
 import { DeliveryAddressModal } from './DeliveryAddressModal';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface CustomerAddressSelectorProps {
@@ -35,11 +35,11 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
         console.log('🔍 Buscando cliente no PDV com telefone:', telefoneNumeros);
         
         // Buscar cliente pelo telefone
-        const { data: clientes, error } = await supabase
-          .from('clientes')
-          .select('*')
-          .eq('telefone', telefoneNumeros)
-          .limit(1);
+        const { data: clientes, error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'clientes')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'telefone', telefoneNumeros)
+          /* .limit\( REMOVIDO */ ; //1);
           
         if (!error && clientes && clientes.length > 0) {
           console.log('✅ Cliente encontrado no PDV:', clientes[0]);
@@ -50,11 +50,11 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
           console.log('📝 Cadastrando novo cliente no PDV');
           
           // Se não existe, cadastrar novo cliente
-          const { data: novoCliente, error: insertError } = await supabase
-            .from('clientes')
-            .insert({ nome: customerName || 'Cliente', telefone: telefoneNumeros, company_id: currentCompany.id })
-            .select()
-            .single();
+          const { data: novoCliente, error: insertError } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'clientes')
+            /* .insert\( REMOVIDO */ ; //{ nome: customerName || 'Cliente', telefone: telefoneNumeros, company_id: currentCompany.id })
+            /* .select\( REMOVIDO */ ; //)
+            /* .single\( REMOVIDO */ ; //);
             
           if (!insertError && novoCliente) {
             console.log('✅ Cliente cadastrado no PDV:', novoCliente);

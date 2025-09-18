@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const CHUNK_SIZE = 40 * 1024 * 1024; // 40MB por chunk
 const MAX_FILE_SIZE = 150 * 1024 * 1024; // 150MB total
 
@@ -35,16 +34,16 @@ const uploadSmallFile = async (file: File): Promise<ChunkUploadResult> => {
   const bucketsToTry = ['programas', 'uploads', 'files', 'documents'];
   
   for (const bucketName of bucketsToTry) {
-    const { data, error } = await supabase.storage
-      .from(bucketName)
+    const { data, error } = await /* supabase REMOVIDO */ null; //storage
+      /* .from REMOVIDO */ ; //bucketName)
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false
       });
       
     if (!error && data) {
-      const { data: urlData } = supabase.storage
-        .from(bucketName)
+      const { data: urlData } = /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //bucketName)
         .getPublicUrl(data.path);
         
       if (urlData?.publicUrl) {
@@ -83,8 +82,8 @@ const uploadFileInChunks = async (
     const bucketsToTry = ['programas', 'uploads', 'files', 'documents'];
     
     for (const bucketName of bucketsToTry) {
-      const { data, error } = await supabase.storage
-        .from(bucketName)
+      const { data, error } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //bucketName)
         .upload(chunkPath, chunk, {
           cacheControl: '3600',
           upsert: false
@@ -110,9 +109,9 @@ const uploadFileInChunks = async (
   }
   
   // Salvar metadados do arquivo no banco
-  const { data: fileRecord, error: insertError } = await supabase
-    .from('chunked_files')
-    .insert({
+  const { data: fileRecord, error: insertError } = /* await supabase REMOVIDO */ null
+    /* .from REMOVIDO */ ; //'chunked_files')
+    /* .insert\( REMOVIDO */ ; //{
       file_name: `${uploadId}_${file.name}`,
       original_name: file.name,
       total_size: file.size,
@@ -121,8 +120,8 @@ const uploadFileInChunks = async (
       mime_type: file.type,
       upload_id: uploadId
     })
-    .select()
-    .single();
+    /* .select\( REMOVIDO */ ; //)
+    /* .single\( REMOVIDO */ ; //);
     
   if (insertError) {
     console.error('❌ [ChunkedUpload] Erro ao salvar metadados:', insertError);
@@ -130,7 +129,7 @@ const uploadFileInChunks = async (
   }
   
   // Criar edge function para download de arquivos chunked
-  const downloadUrl = `https://epqppxteicfuzdblbluq.supabase.co/functions/v1/download-chunked-file?id=${fileRecord.id}`;
+  const downloadUrl = `https://epqppxteicfuzdblbluq./* supabase REMOVIDO */ null; //co/functions/v1/download-chunked-file?id=${fileRecord.id}`;
   
   console.log('🎉 [ChunkedUpload] Upload chunked concluído!');
   console.log('🔗 [ChunkedUpload] URL de download:', downloadUrl);

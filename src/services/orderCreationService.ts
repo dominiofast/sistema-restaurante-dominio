@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CashbackService } from './CashbackService';
 
 export interface OrderItem {
@@ -93,11 +93,11 @@ export class OrderCreationService {
 
       console.log('📦 Criando pedido com dados:', pedidoData);
 
-      const { data: pedido, error: pedidoError } = await supabase
-        .from('pedidos')
-        .insert(pedidoData)
-        .select()
-        .single();
+      const { data: pedido, error: pedidoError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedidos')
+        /* .insert\( REMOVIDO */ ; //pedidoData)
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (pedidoError) {
         console.error('❌ Erro ao criar pedido:', pedidoError);
@@ -143,10 +143,10 @@ export class OrderCreationService {
         });
       }
 
-      const { data: itensInseridos, error: itensError } = await supabase
-        .from('pedido_itens')
-        .insert(itensParaInserir)
-        .select();
+      const { data: itensInseridos, error: itensError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_itens')
+        /* .insert\( REMOVIDO */ ; //itensParaInserir)
+        /* .select\( REMOVIDO */ ; //);
 
       if (itensError) {
         console.error('❌ Erro ao criar itens do pedido:', itensError);
@@ -220,11 +220,11 @@ export class OrderCreationService {
           let categoriaNome = 'Adicional'; // Fallback
           if (isUUID) {
             try {
-              const { data: adicionalCompleto } = await supabase
-                .from('adicionais')
-                .select('categorias_adicionais!inner(name)')
-                .eq('id', adicionalId)
-                .maybeSingle();
+              const { data: adicionalCompleto } = /* await supabase REMOVIDO */ null
+                /* .from REMOVIDO */ ; //'adicionais')
+                /* .select\( REMOVIDO */ ; //'categorias_adicionais!inner(name)')
+                /* .eq\( REMOVIDO */ ; //'id', adicionalId)
+                /* .maybeSingle\( REMOVIDO */ ; //);
               if (adicionalCompleto?.categorias_adicionais) {
                 categoriaNome = adicionalCompleto.categorias_adicionais.name;
               }
@@ -250,9 +250,9 @@ export class OrderCreationService {
     if (adicionaisParaInserir.length > 0) {
       console.log('🎯 Inserindo adicionais:', adicionaisParaInserir);
       
-      const { error: adicionaisError } = await supabase
-        .from('pedido_item_adicionais')
-        .insert(adicionaisParaInserir);
+      const { error: adicionaisError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'pedido_item_adicionais')
+        /* .insert\( REMOVIDO */ ; //adicionaisParaInserir);
 
       if (adicionaisError) {
         console.error('⚠️ Erro ao criar adicionais do pedido (seguindo sem interromper):', adicionaisError);
@@ -267,7 +267,7 @@ export class OrderCreationService {
 
   private static async triggerAutoPrint(pedido: any) {
     try {
-      await supabase.functions.invoke('auto-print-pedido', {
+      await /* supabase REMOVIDO */ null; //functions.invoke('auto-print-pedido', {
         body: {
           pedido_id: pedido.id,
           numero_pedido: pedido.numero_pedido,

@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { deliveryOptionsService } from '@/services/deliveryOptionsService';
 
 /**
@@ -14,17 +14,17 @@ export async function forceDeliveryUpdate(companyId: string, options: {
   
   try {
     // 1. Atualizar no banco de dados
-    const { data, error } = await supabase
-      .from('delivery_methods')
-      .upsert({
+    const { data, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'delivery_methods')
+      /* .upsert\( REMOVIDO */ ; //{
         company_id: companyId,
         delivery: options.delivery,
         pickup: options.pickup,
         eat_in: options.eat_in,
         updated_at: new Date().toISOString()
       })
-      .select()
-      .single();
+      /* .select\( REMOVIDO */ ; //)
+      /* .single\( REMOVIDO */ ; //);
 
     if (error) {
       console.error('❌ [ForceUpdate] Database error:', error);
@@ -97,9 +97,9 @@ export async function fixAllCompaniesPickup() {
   
   try {
     // 1. Buscar todas as empresas que não têm pickup habilitado
-    const { data: companiesWithIssues, error: queryError } = await supabase
-      .from('companies')
-      .select(`
+    const { data: companiesWithIssues, error: queryError } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'companies')
+      /* .select\( REMOVIDO */ ; //`
         id, 
         name, 
         slug,
@@ -109,7 +109,7 @@ export async function fixAllCompaniesPickup() {
           eat_in
         )
       `)
-      .eq('status', 'active');
+      /* .eq\( REMOVIDO */ ; //'status', 'active');
 
     if (queryError) {
       console.error('❌ [FixAll] Erro ao buscar empresas:', queryError);
@@ -126,9 +126,9 @@ export async function fixAllCompaniesPickup() {
       if (!deliveryMethods || !deliveryMethods.pickup) {
         console.log(`🔧 [FixAll] Corrigindo empresa: ${company.name} (${company.id})`);
         
-        const { error: updateError } = await supabase
-          .from('delivery_methods')
-          .upsert({
+        const { error: updateError } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'delivery_methods')
+          /* .upsert\( REMOVIDO */ ; //{
             company_id: company.id,
             delivery: true,
             pickup: true,    // FORÇAR PICKUP TRUE

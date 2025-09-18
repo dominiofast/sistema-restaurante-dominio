@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { useCloudinaryUpload } from './useCloudinaryUpload';
 import { toast } from 'sonner';
@@ -37,17 +37,17 @@ export const useBrandingConfig = () => {
     try {
       console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
       
-      const { data, error } = await supabase
-        .from('cardapio_branding')
-        .select(`
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //`
           *
         `)
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) {
         console.error('❌ Erro ao carregar configuração de branding:', error);
@@ -66,25 +66,25 @@ export const useBrandingConfig = () => {
       } else {
         console.log('⚠️ Nenhuma configuração ativa encontrada. Buscando a mais recente...');
         // Tentar buscar o registro mais recente (mesmo que inativo)
-        const { data: latestAny } = await supabase
-          .from('cardapio_branding')
-          .select('*')
-          .eq('company_id', currentCompany.id)
-          .order('updated_at', { ascending: false })
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
+        const { data: latestAny } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .select\( REMOVIDO */ ; //'*')
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+          /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+          /* .limit\( REMOVIDO */ ; //1)
+          /* .maybeSingle\( REMOVIDO */ ; //);
 
         if (latestAny) {
           // Ativar essa configuração e desativar as demais para garantir consistência
-          await supabase
-            .from('cardapio_branding')
-            .update({ is_active: true })
-            .eq('id', latestAny.id);
-          await supabase
-            .from('cardapio_branding')
-            .update({ is_active: false })
-            .eq('company_id', currentCompany.id)
+          /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'cardapio_branding')
+            /* .update\( REMOVIDO */ ; //{ is_active: true })
+            /* .eq\( REMOVIDO */ ; //'id', latestAny.id);
+          /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'cardapio_branding')
+            /* .update\( REMOVIDO */ ; //{ is_active: false })
+            /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
             .neq('id', latestAny.id);
 
           const loadedConfig = {
@@ -136,8 +136,8 @@ export const useBrandingConfig = () => {
       const fileName = `${currentCompany.id}/${type}_${timestamp}.${fileExt}`;
 
       // Upload para o storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('media')
+      const { data: uploadData, error: uploadError } = await /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'media')
         .upload(fileName, file, { 
           upsert: true,
           contentType: file.type 
@@ -152,28 +152,28 @@ export const useBrandingConfig = () => {
       console.log('✅ Upload para storage realizado com sucesso:', uploadData.path);
 
       // Obter URL pública
-      const { data: publicUrlData } = supabase.storage
-        .from('media')
+      const { data: publicUrlData } = /* supabase REMOVIDO */ null; //storage
+        /* .from REMOVIDO */ ; //'media')
         .getPublicUrl(fileName);
 
       console.log('🔗 URL pública gerada:', publicUrlData.publicUrl);
 
       // Deletar arquivo anterior do mesmo tipo se existir
-      const { error: deleteError } = await supabase
-        .from('media_files')
-        .delete()
-        .eq('company_id', currentCompany.id)
-        .eq('file_type', type)
-        .eq('is_active', true);
+      const { error: deleteError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'media_files')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'file_type', type)
+        /* .eq\( REMOVIDO */ ; //'is_active', true);
 
       if (deleteError) {
         console.warn('⚠️ Aviso ao deletar arquivo anterior:', deleteError);
       }
 
       // Salvar registro na tabela media_files
-      const { data: mediaFile, error: mediaError } = await supabase
-        .from('media_files')
-        .insert({
+      const { data: mediaFile, error: mediaError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'media_files')
+        /* .insert\( REMOVIDO */ ; //{
           company_id: currentCompany.id,
           file_name: file.name,
           file_type: type,
@@ -182,8 +182,8 @@ export const useBrandingConfig = () => {
           mime_type: file.type,
           is_active: true,
         })
-        .select()
-        .single();
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (mediaError) {
         console.error('❌ Erro ao salvar arquivo na base:', mediaError);
@@ -232,24 +232,24 @@ export const useBrandingConfig = () => {
 
       // Garantir atualização do registro mais recente para evitar duplicatas
       // Buscar registro existente ativo para a empresa
-      const { data: existing } = await supabase
-        .from('cardapio_branding')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const { data: existing } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //'id')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       // Atualizar se já existir um registro; caso contrário, inserir um novo
       let targetId = (config?.id || existing?.id) as string | undefined;
 
       if (targetId) {
         // Atualizar registro ativo da empresa (mais robusto que por ID)
-        const { data: updatedRows, error: updErr } = await supabase
-          .from('cardapio_branding')
-          .update({
+        const { data: updatedRows, error: updErr } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .update\( REMOVIDO */ ; //{
             logo_file_id: validFields.logo_file_id,
             banner_file_id: validFields.banner_file_id,
             show_logo: validFields.show_logo,
@@ -262,9 +262,9 @@ export const useBrandingConfig = () => {
             header_style: validFields.header_style,
             is_active: true,
           })
-          .eq('company_id', currentCompany.id)
-          .eq('is_active', true)
-          .select('id');
+          /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+          /* .eq\( REMOVIDO */ ; //'is_active', true)
+          /* .select\( REMOVIDO */ ; //'id');
 
         if (updErr) {
           console.error('❌ Erro ao atualizar configuração:', updErr);
@@ -274,11 +274,11 @@ export const useBrandingConfig = () => {
 
         // Se nenhuma linha foi atualizada (registro ativo ausente), força insert
         if (!updatedRows || updatedRows.length === 0) {
-          const { data: inserted, error: insErr } = await supabase
-            .from('cardapio_branding')
-            .insert(validFields)
-            .select('id')
-            .single();
+          const { data: inserted, error: insErr } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'cardapio_branding')
+            /* .insert\( REMOVIDO */ ; //validFields)
+            /* .select\( REMOVIDO */ ; //'id')
+            /* .single\( REMOVIDO */ ; //);
 
           if (insErr) {
             console.error('❌ Erro ao inserir configuração (fallback):', insErr);
@@ -290,11 +290,11 @@ export const useBrandingConfig = () => {
           targetId = updatedRows[0]?.id || targetId;
         }
       } else {
-        const { data: inserted, error: insErr } = await supabase
-          .from('cardapio_branding')
-          .insert(validFields)
-          .select('id')
-          .single();
+        const { data: inserted, error: insErr } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'cardapio_branding')
+          /* .insert\( REMOVIDO */ ; //validFields)
+          /* .select\( REMOVIDO */ ; //'id')
+          /* .single\( REMOVIDO */ ; //);
 
         if (insErr) {
           console.error('❌ Erro ao inserir configuração:', insErr);
@@ -305,22 +305,22 @@ export const useBrandingConfig = () => {
       }
 
       // Desativar outras configurações da mesma empresa
-      await supabase
-        .from('cardapio_branding')
-        .update({ is_active: false })
-        .eq('company_id', currentCompany.id)
+      /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .update\( REMOVIDO */ ; //{ is_active: false })
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
         .neq('id', targetId);
 
       // Buscar o registro mais recente após salvar
-      const { data: latest, error: fetchError } = await supabase
-        .from('cardapio_branding')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const { data: latest, error: fetchError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'cardapio_branding')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_active', true)
+        /* .order\( REMOVIDO */ ; //'updated_at', { ascending: false })
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false })
+        /* .limit\( REMOVIDO */ ; //1)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (fetchError) {
         console.error('❌ Erro ao buscar configuração após salvar:', fetchError);

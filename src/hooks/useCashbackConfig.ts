@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { useToast } from "@/hooks/use-toast";
 
 export interface CashbackConfig {
@@ -19,11 +19,11 @@ export const useCashbackConfig = (companyId?: string) => {
     queryFn: async () => {
       if (!companyId) return null;
       
-      const { data, error } = await supabase
-        .from("cashback_config")
-        .select("*")
-        .eq("company_id", companyId)
-        .maybeSingle();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //"cashback_config")
+        /* .select\( REMOVIDO */ ; //"*")
+        /* .eq\( REMOVIDO */ ; //"company_id", companyId)
+        /* .maybeSingle\( REMOVIDO */ ; //);
 
       if (error) throw error;
       return data;
@@ -38,11 +38,11 @@ export const useSaveCashbackConfig = () => {
 
   return useMutation({
     mutationFn: async (config: CashbackConfig) => {
-      const { data, error } = await supabase
-        .from("cashback_config")
-        .upsert(config, { onConflict: "company_id" })
-        .select()
-        .single();
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //"cashback_config")
+        /* .upsert\( REMOVIDO */ ; //config, { onConflict: "company_id" })
+        /* .select\( REMOVIDO */ ; //)
+        /* .single\( REMOVIDO */ ; //);
 
       if (error) throw error;
       return data;
@@ -71,11 +71,11 @@ export const useCustomerCashback = (companyId?: string) => {
     queryFn: async () => {
       if (!companyId) return [];
       
-      const { data, error } = await supabase
-        .from("customer_cashback")
-        .select("*")
-        .eq("company_id", companyId)
-        .order("saldo_disponivel", { ascending: false });
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //"customer_cashback")
+        /* .select\( REMOVIDO */ ; //"*")
+        /* .eq\( REMOVIDO */ ; //"company_id", companyId)
+        /* .order\( REMOVIDO */ ; //"saldo_disponivel", { ascending: false });
 
       if (error) throw error;
       return data || [];
@@ -91,15 +91,15 @@ export const useCashbackTransactions = (companyId?: string, customerPhone?: stri
       if (!companyId) return [];
       
       let query = supabase
-        .from("cashback_transactions")
-        .select("*")
-        .eq("company_id", companyId);
+        /* .from REMOVIDO */ ; //"cashback_transactions")
+        /* .select\( REMOVIDO */ ; //"*")
+        /* .eq\( REMOVIDO */ ; //"company_id", companyId);
 
       if (customerPhone) {
-        query = query.eq("customer_phone", customerPhone);
+        query = query/* .eq\( REMOVIDO */ ; //"customer_phone", customerPhone);
       }
 
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error } = await query/* .order\( REMOVIDO */ ; //"created_at", { ascending: false });
 
       if (error) throw error;
       return data || [];

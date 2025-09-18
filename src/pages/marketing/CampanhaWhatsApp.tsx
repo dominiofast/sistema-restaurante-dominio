@@ -3,7 +3,7 @@ import { Send, MessageCircle, Calendar, Users, Eye, TestTube, Clock, Check, Chev
 import { useWhatsappCampaign } from '@/hooks/useWhatsappCampaign';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { ClientSelector } from '@/components/whatsapp/ClientSelector';
 
 const CampanhaWhatsApp = () => {

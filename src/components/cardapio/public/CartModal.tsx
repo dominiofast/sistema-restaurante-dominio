@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Plus, Minus, Trash2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface CartAdicionais {
@@ -73,23 +73,23 @@ export const CartModal: React.FC<CartModalProps> = ({
     queryFn: async () => {
       if (!currentCompany?.id) return [];
       
-      const { data: categorias } = await supabase
-        .from('categorias')
-        .select('id, name')
-        .eq('company_id', currentCompany.id)
+      const { data: categorias } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'categorias')
+        /* .select\( REMOVIDO */ ; //'id, name')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
         .ilike('name', '%bebida%');
       
       if (!categorias?.length) return [];
       
       const categoriaIds = categorias.map(cat => cat.id);
       
-      const { data, error } = await supabase
-        .from('produtos')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('is_available', true)
+      const { data, error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'produtos')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'company_id', currentCompany.id)
+        /* .eq\( REMOVIDO */ ; //'is_available', true)
         .in('categoria_id', categoriaIds)
-        .limit(6);
+        /* .limit\( REMOVIDO */ ; //6);
       
       if (error) throw error;
       return data || [];

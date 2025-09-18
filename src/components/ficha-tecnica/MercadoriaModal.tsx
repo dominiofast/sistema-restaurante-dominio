@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface Mercadoria {
@@ -129,9 +129,9 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       if (mercadoria?.id) {
         // Atualizar mercadoria existente
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .update(dataToSave)
-          .eq('id', mercadoria.id);
+          /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+          /* .update\( REMOVIDO */ ; //dataToSave)
+          /* .eq\( REMOVIDO */ ; //'id', mercadoria.id);
 
         if (error) throw error;
 
@@ -142,8 +142,8 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
       } else {
         // Criar nova mercadoria
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .insert([dataToSave]);
+          /* .from REMOVIDO */ ; //'mercadorias_ingredientes')
+          /* .insert\( REMOVIDO */ ; //[dataToSave]);
 
         if (error) throw error;
 

@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { ProtectedRouteWithPermissions } from '@/components/auth/ProtectedRouteWithPermissions';
 
 interface Programa {
@@ -50,7 +50,7 @@ const ProgramasPage = () => {
 
   const loadProgramas = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = /* await supabase REMOVIDO */ null
         .rpc('get_programas_saipos');
       
       if (error) throw error;
@@ -84,7 +84,7 @@ const ProgramasPage = () => {
       }
       
       // Verificar autenticação
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await /* supabase REMOVIDO */ null; //auth.getUser();
       console.log('🔑 [Upload] Usuário autenticado:', user?.id);
       
       if (!user) {
@@ -152,7 +152,7 @@ const ProgramasPage = () => {
       }
 
       if (editingPrograma) {
-        const { error } = await supabase.rpc('update_programa_saipos', {
+        const { error } = await /* supabase REMOVIDO */ null; //rpc('update_programa_saipos', {
           programa_id: editingPrograma.id,
           programa_data: finalFormData
         });
@@ -160,7 +160,7 @@ const ProgramasPage = () => {
         if (error) throw error;
         toast({ title: 'Sucesso', description: 'Programa atualizado com sucesso!' });
       } else {
-        const { error } = await supabase.rpc('insert_programa_saipos', {
+        const { error } = await /* supabase REMOVIDO */ null; //rpc('insert_programa_saipos', {
           programa_data: finalFormData
         });
         
@@ -217,14 +217,14 @@ const ProgramasPage = () => {
       if (programa.arquivo_path) {
         const fileName = programa.arquivo_path.split('/').pop();
         if (fileName) {
-          await supabase.storage
-            .from('programas')
+          await /* supabase REMOVIDO */ null; //storage
+            /* .from REMOVIDO */ ; //'programas')
             .remove([fileName]);
         }
       }
 
       // Deletar registro do banco
-      const { error } = await supabase.rpc('delete_programa_saipos', {
+      const { error } = await /* supabase REMOVIDO */ null; //rpc('delete_programa_saipos', {
         programa_id: programa.id
       });
 

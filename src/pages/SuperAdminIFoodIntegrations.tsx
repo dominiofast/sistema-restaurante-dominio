@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, Store, Settings, ExternalLink } from 'lucide-react';
 
@@ -60,30 +60,30 @@ const SuperAdminIFoodIntegrations = () => {
       setLoading(true);
       
       // Buscar empresas
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name')
-        .order('name');
+      const { data: companiesData, error: companiesError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'id, name')
+        /* .order\( REMOVIDO */ ; //'name');
 
       if (companiesError) throw companiesError;
       setCompanies(companiesData || []);
 
       // Buscar integrações
-      const { data: integrationsData, error: integrationsError } = await supabase
-        .from('ifood_integrations')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data: integrationsData, error: integrationsError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ifood_integrations')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
 
       if (integrationsError) throw integrationsError;
       
       // Buscar nomes das empresas
       const integrationsWithCompanyName = await Promise.all(
         (integrationsData || []).map(async (integration) => {
-          const { data: companyData } = await supabase
-            .from('companies')
-            .select('name')
-            .eq('id', integration.company_id)
-            .single();
+          const { data: companyData } = /* await supabase REMOVIDO */ null
+            /* .from REMOVIDO */ ; //'companies')
+            /* .select\( REMOVIDO */ ; //'name')
+            /* .eq\( REMOVIDO */ ; //'id', integration.company_id)
+            /* .single\( REMOVIDO */ ; //);
           
           return {
             ...integration,
@@ -107,17 +107,17 @@ const SuperAdminIFoodIntegrations = () => {
     
     try {
       if (editingIntegration) {
-        const { error } = await supabase
-          .from('ifood_integrations')
-          .update(integrationFormData)
-          .eq('id', editingIntegration.id);
+        const { error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ifood_integrations')
+          /* .update\( REMOVIDO */ ; //integrationFormData)
+          /* .eq\( REMOVIDO */ ; //'id', editingIntegration.id);
 
         if (error) throw error;
         toast.success('Integração atualizada!');
       } else {
-        const { error } = await supabase
-          .from('ifood_integrations')
-          .insert([integrationFormData]);
+        const { error } = /* await supabase REMOVIDO */ null
+          /* .from REMOVIDO */ ; //'ifood_integrations')
+          /* .insert\( REMOVIDO */ ; //[integrationFormData]);
 
         if (error) throw error;
         toast.success('Integração criada!');
@@ -151,10 +151,10 @@ const SuperAdminIFoodIntegrations = () => {
     if (!confirm('Tem certeza que deseja excluir esta integração?')) return;
 
     try {
-      const { error } = await supabase
-        .from('ifood_integrations')
-        .delete()
-        .eq('id', id);
+      const { error } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'ifood_integrations')
+        /* .delete\( REMOVIDO */ ; //)
+        /* .eq\( REMOVIDO */ ; //'id', id);
 
       if (error) throw error;
       toast.success('Integração excluída!');
