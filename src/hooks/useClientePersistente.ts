@@ -19,7 +19,7 @@ export function useClientePersistente() {
         console.log('🔄 Carregando dados do cliente salvos:', parsedData);
         setCliente(parsedData);
       }
-     catch (error) { console.error('Error:', error); }} catch (error) {
+     } catch (error) {
       console.error('❌ Erro ao carregar dados do cliente:', error);
       // Limpar dados corrompidos
       localStorage.removeItem(STORAGE_KEY);

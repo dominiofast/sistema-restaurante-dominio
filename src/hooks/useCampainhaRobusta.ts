@@ -175,7 +175,7 @@ export const useCampainhaRobusta = (pedidos: Pedido[]) => {;
             await playPromise;
             console.log('✅ Som tocando com sucesso!');
           }
-         catch (error) { console.error('Error:', error); }} catch (error) {
+         } catch (error) {
           console.error('❌ Erro ao tocar som:', error);
           // Fallback para notificação nativa
           mostrarNotificacao(currentCount);

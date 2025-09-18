@@ -17,7 +17,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
   
   const getDraftStorageKey = (companyId: string) => `whatsapp_integration_draft_${companyId}`;
 
-  const handleSelectCompany = (company: Company) => {;
+  const handleSelectCompany = (company: Company) => {
     setSelectedCompanyId(company.id);
     const ints = integrations[company.id];
     const defaultWebhook = 'https://dominio.tech/api/webhook';
@@ -97,7 +97,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
         if (typeof window !== 'undefined') {
           window.localStorage.removeItem(getDraftStorageKey(selectedCompanyId));
         }
-       catch (error) { console.error('Error:', error); }} catch {
+       } catch {
         // ignore
       }
     } catch (err: any) {

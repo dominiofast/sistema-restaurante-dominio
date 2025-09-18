@@ -243,7 +243,7 @@ export function useGoogleMapsGeocoding() {
             if (details) {
               detailedResults.push(details);
             }
-           catch (error) { console.error('Error:', error); }} catch (error) {
+           } catch (error) {
             console.log('❌ Erro ao buscar detalhes para:', prediction.place_id, error);
           }
         }

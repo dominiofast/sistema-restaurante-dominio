@@ -86,7 +86,7 @@ const GestorCardapio: React.FC = () => {
         console.log('✅ GestorCardapio: Produto atualizado com sucesso:', result);
         setEditingProduto(null);
       }
-     catch (error) { console.error('Error:', error); }} catch (error) {
+     } catch (error) {
       console.error('❌ GestorCardapio: Erro ao atualizar produto:', error);
       throw error;
     }

@@ -64,7 +64,7 @@ const addToRemoveQueue = (toastId: string) => {
   }
 
   const timeout = setTimeout(() => {
-    toastTimeouts
+    toastTimeouts.delete(toastId)
     dispatch({
       type: "REMOVE_TOAST",
       toastId: toastId,
@@ -120,7 +120,7 @@ export const reducer = (state: State, action: Action): State => {
         return {
           ...state,
           toasts: [],
-
+        }
       }
       return {
         ...state,

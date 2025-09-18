@@ -22,17 +22,17 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
   const [showInfo, setShowInfo] = useState(false);
 
   const handleDirectView = () => {
-    try {;
+    try {
       const newWindow = window.open(url, '_blank');
       if (!newWindow) {
         setError('Pop-up bloqueado. Tente habilitar pop-ups ou use o download.');
       }
-     catch (error) { console.error('Error:', error); }} catch (err) {
+     } catch (err) {
       setError('Erro ao abrir o arquivo. Tente o download.');
     }
   };
 
-  const handleDownload = async () => {;
+  const handleDownload = async () => {
     setIsLoading(true);
     setError(null);
 
@@ -99,7 +99,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
   };
 
   const getFileInfo = () => {
-    try {;
+    try {
       const urlObj = new URL(url);
       return {
         domain: urlObj.hostname,

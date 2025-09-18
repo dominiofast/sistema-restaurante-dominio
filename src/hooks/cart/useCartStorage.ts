@@ -33,7 +33,7 @@ export const useCartStorage = (companySlug?: string, currentCompanyId?: string) 
         if (parsedCart.length > 0) {
           setCarrinho(parsedCart);
         }
-       catch (error) { console.error('Error:', error); }} catch (error) {
+       } catch (error) {
         console.error('❌ Erro ao carregar carrinho do localStorage:', error);
         localStorage.removeItem(storageKey);
       }

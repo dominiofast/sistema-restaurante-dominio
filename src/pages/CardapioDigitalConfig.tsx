@@ -74,7 +74,7 @@ const CardapioDigitalConfig: React.FC = () => {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
 
-     catch (error) { console.error('Error:', error); }} catch (error) {
+     } catch (error) {
       console.error('Erro ao salvar:', error);
       toast.error('Erro ao salvar configurações');
     } finally {

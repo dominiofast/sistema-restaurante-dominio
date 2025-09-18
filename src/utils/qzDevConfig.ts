@@ -8,11 +8,11 @@
 // Configuração simplificada e otimizada para desenvolvimento
 export const configureQZForDevelopment = async () => {
   try {
-    if (typeof window === 'undefined' || !window.qz) {;
+    if (typeof window === 'undefined' || !window.qz) {
       throw new Error('QZ Tray não está disponível');
     }
 
-     catch (error) { console.error('Error:', error); }// Configurar certificado vazio para desenvolvimento (síncrono)
+    // Configurar certificado vazio para desenvolvimento (síncrono)
     window.qz.security.setCertificatePromise(() => {
       return Promise.resolve('');
     });
@@ -248,7 +248,7 @@ export const diagnoseQZ = async () => {
       if (!connected) {
         diagnosis.errors.push('Não foi possível conectar ao QZ Tray');
 
-     catch (error) { console.error('Error:', error); }} catch (error: any) {
+     } catch (error: any) {
       diagnosis.errors.push(`Erro na conexão: ${error.message}`);
     }
 

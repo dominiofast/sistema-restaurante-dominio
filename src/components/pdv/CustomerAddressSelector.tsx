@@ -68,12 +68,12 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
 
   const handleDeleteAddress = async (addressId: string) => {
     if (confirm('Deseja excluir este endereço?')) {
-      try {;
+      try {
         await deleteAddress(addressId);
         if (selectedAddress?.id === addressId) {
           onAddressSelect(null);
 
-       catch (error) { console.error('Error:', error); }} catch (error) {
+       } catch (error) {
         console.error('Erro ao excluir endereço:', error);
 
 
