@@ -41,7 +41,7 @@ export const configureQZForDevelopment = async () => {
   } catch (error: any) {
     console.warn('⚠️ Erro na configuração do QZ Tray:', error.message)
     return false;
-
+  }
 };
 
 // Função para diagnosticar problemas de assinatura
