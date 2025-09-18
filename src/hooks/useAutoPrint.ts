@@ -21,7 +21,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
   return response.json();
 
 
-export const useAutoPrint = () => {;
+export const useAutoPrint = () => {
   const { currentCompany } = useAuth();
   
   console.log('🎯 useAutoPrint - Hook iniciado, currentCompany:', currentCompany);
