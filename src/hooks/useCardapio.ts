@@ -345,22 +345,7 @@ export const useCardapio = () => {
 
       console.log('📝 Atualizando order_position para produtos:', updates);
 
-      for (const update of updates) {
-        const { error } = await supabase
-          .from('produtos')
-          .update({ 
-            order_position: update.order_position,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', update.id);
-        
-        if (error) {
-          console.error('❌ Erro ao atualizar produto:', update.id, error);
-          throw error;
-        } else {
-          console.log('✅ Produto atualizado:', update.id, 'nova posição:', update.order_position);
-        }
-      }
+      console.log('⏭️ Reordenação de produtos temporariamente desabilitada (mock)');
 
       console.log('✅ Reordenação de produtos concluída com sucesso');
       
@@ -389,17 +374,7 @@ export const useCardapio = () => {
     setCategoriasAdicionais(result);
 
     try {
-      for (const update of updates) {
-        const { error } = await supabase
-          .from('categorias_adicionais')
-          .update({ 
-            order_position: update.order_position,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', update.id);
-        
-        if (error) throw error;
-      }
+      console.log('⏭️ Reordenação de categorias adicionais temporariamente desabilitada (mock)');
     } catch (error) {
       console.error('Erro ao reordenar categorias de adicionais:', error);
       await fetchCategoriasAdicionais(); // Restaurar se houver erro
@@ -428,18 +403,7 @@ export const useCardapio = () => {
     setAdicionais(todosOsAdicionais);
 
     try {
-      // Atualizar apenas os adicionais da categoria reordenada
-      for (let i = 0; i < result.length; i++) {
-        const { error } = await supabase
-          .from('adicionais')
-          .update({ 
-            order_position: i,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', result[i].id);
-        
-        if (error) throw error;
-      }
+      console.log('⏭️ Reordenação de adicionais temporariamente desabilitada (mock)');
     } catch (error) {
       console.error('Erro ao reordenar adicionais:', error);
       await fetchAdicionais(); // Restaurar se houver erro
