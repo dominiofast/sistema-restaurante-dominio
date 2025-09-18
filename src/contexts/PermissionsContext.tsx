@@ -82,8 +82,9 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
   const loadUserPermissions = async () => {
     console.log('⚠️ loadUserPermissions desabilitado - sistema migrado para PostgreSQL');
     return Promise.resolve([]);
-  }
+  };
 
+  const loadUserPermissionsOld = async () => {
     try {
       const userRole = user.user_metadata?.role;
       
@@ -230,15 +231,16 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
 
       if (!permission) throw new Error('Permissão não encontrada');
 
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'user_store_permissions')
-        /* .upsert\( REMOVIDO */ ; //{
-          user_id: userId,
-          store_id: storeId || null,
-          permission_id: permission.id,
-          granted_by: user?.id,
-          expires_at: expiresAt || null
-        });
+      // const { error } = await supabase
+      //   .from('user_store_permissions')
+      //   .upsert({
+      //     user_id: userId,
+      //     store_id: storeId || null,
+      //     permission_id: permission.id,
+      //     granted_by: user?.id,
+      //     expires_at: expiresAt || null
+      //   });
+      const error = null;
 
       if (error) throw error;
 

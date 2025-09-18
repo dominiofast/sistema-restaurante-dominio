@@ -36,8 +36,8 @@ export default async function handler(req, res) {
 
       console.log('🔍 API /pedidos GET - Buscando pedidos para empresa:', company_id);
       
-      // Query simplificada para testar
-      let query = `SELECT * FROM pedidos WHERE company_id = $1 LIMIT 10`;
+      // Query com conversão de tipo para testar
+      let query = `SELECT * FROM pedidos WHERE company_id::text = $1 LIMIT 10`;
       
       let params = [company_id];
       
