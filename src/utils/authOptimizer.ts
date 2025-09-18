@@ -90,7 +90,7 @@ export class AuthOptimizer {
     try {
       if (authUser.role === 'super_admin') {
         return await this.loadSuperAdminCompanies(authUser)
-      }  catch (error) { console.error('Error:', error) }else {
+      } else {
         return await this.loadUserCompanies(authUser)
       }
     } catch (error) {

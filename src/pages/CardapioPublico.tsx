@@ -232,8 +232,8 @@ const CardapioPublico: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: company?.name || 'Cardápio Digital',;
-          text: `Confira o cardápio de ${company?.name} catch (error) { console.error('Error:', error) }`,
+          title: company?.name || 'Cardápio Digital',
+          text: `Confira o cardápio de ${company?.name}`,
           url: window.location.href,
         })
       } catch (error) {
@@ -278,7 +278,7 @@ const CardapioPublico: React.FC = () => {
   // Mover hooks para ANTES de qualquer return condicional
   const produtosDestaque = useMemo(() => 
     produtos.filter(produto => produto.destaque),
-    [produtos];
+    [produtos]
   )
 
   // Preload de imagens críticas depois que produtos estão carregados

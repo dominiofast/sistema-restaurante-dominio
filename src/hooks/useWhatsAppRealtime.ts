@@ -61,7 +61,7 @@ export const useWhatsAppRealtime = ({
     lastConnected: null,
     retryCount: 0,
     quality: 'critical',
-    latency: 0;
+    latency: 0
   })
 
   const [diagnostics, setDiagnostics] = useState<RealtimeDiagnostics>({
