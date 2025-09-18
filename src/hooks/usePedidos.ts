@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useStore } from '@/contexts/StoreContext';
 import { Pedido } from '@/types/pedidos';
@@ -14,7 +13,7 @@ export const usePedidos = () => {
   const companyId = currentCompany?.id;
 
   useEffect(() => {
-    console.log('usePedidos: useEffect triggered', { companyId, selectedStore: selectedStore?.name });
+    console.log('usePedidos: useEffect triggered via API Neon', { companyId, selectedStore: selectedStore?.name });
     
     const fetchPedidos = async () => {
       if (!companyId) {
@@ -24,35 +23,30 @@ export const usePedidos = () => {
         return;
       }
 
-      console.log('usePedidos: Fetching pedidos for company:', companyId, selectedStore ? `filtered by: ${selectedStore.name}` : '(all companies)');
+      console.log('usePedidos: Fetching pedidos via API Neon for company:', companyId, selectedStore ? `filtered by: ${selectedStore.name}` : '(all companies)');
       setLoading(true);
       setError(null);
       
       try {
-        let query = supabase
-          .from('pedidos')
-          .select('*, numero_pedido')
-          .eq('company_id', companyId);
+        // Usar empresa selecionada ou atual
+        const targetCompanyId = (selectedStore?.id && selectedStore.id !== companyId) 
+          ? selectedStore.id 
+          : companyId;
 
-        // Se há uma empresa específica selecionada, usar apenas ela
-        if (selectedStore?.id && selectedStore.id !== companyId) {
-          query = query.eq('company_id', selectedStore.id);
-        }
-
-        const { data, error } = await query.order('created_at', { ascending: false });
-          
-        if (error) {
-          console.error('usePedidos: Error fetching pedidos:', error);
-          throw error;
+        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId}`);
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'Erro ao carregar pedidos');
         }
         
-        console.log('usePedidos: Pedidos fetched successfully:', data?.length || 0);
+        console.log('usePedidos: Pedidos fetched via API successfully:', result.data?.length || 0);
         
         // Atualização inteligente: só atualiza o que mudou
         setPedidos(prevPedidos => {
-          const pedidosData = data as Pedido[] | null;
+          const pedidosData = result.data || [];
           
-          if (!pedidosData || pedidosData.length === 0) {
+          if (pedidosData.length === 0) {
             // Se não há dados, mantém o estado anterior para evitar piscadas
             if (prevPedidos.length > 0) {
               console.warn('usePedidos: Mantendo pedidos anteriores pois a consulta veio vazia');
@@ -69,7 +63,7 @@ export const usePedidos = () => {
           // Atualização incremental: mantém a ordem e só atualiza o que mudou
           const updatedPedidos = [...prevPedidos];
           const pedidosMap = new Map(prevPedidos.map(p => [p.id, p]));
-          const newPedidosMap = new Map(pedidosData.map((p) => [p.id, p]));
+          const newPedidosMap = new Map(pedidosData.map((p: any) => [p.id, p]));
           
           // Atualizar pedidos existentes
           for (let i = 0; i < updatedPedidos.length; i++) {
@@ -83,7 +77,7 @@ export const usePedidos = () => {
           // Adicionar novos pedidos no início
           for (const [id, pedido] of newPedidosMap) {
             if (!pedidosMap.has(id)) {
-              updatedPedidos.unshift(pedido);
+              updatedPedidos.unshift(pedido as any);
             }
           }
           
@@ -92,7 +86,7 @@ export const usePedidos = () => {
         });
         
       } catch (err: any) {
-        console.error('usePedidos: Catch error:', err);
+        console.error('usePedidos: Catch error via API:', err);
         setError(err.message || 'Erro ao carregar pedidos.');
         setPedidos([]);
       } finally {
@@ -103,70 +97,21 @@ export const usePedidos = () => {
     // Busca inicial dos pedidos
     fetchPedidos();
 
-    // Configurar real-time subscription com canal único
-    let channel: any = null;
+    // Configurar polling para simular real-time (removido Supabase realtime)
     let pollingInterval: any = null;
-    let realtimeWorking = false;
     
     if (companyId) {
-      const channelName = `pedidos_realtime_${companyId}`;
-      console.log('usePedidos: Creating subscription channel:', channelName);
+      console.log('usePedidos: Configurando polling para atualizações (30s)');
       
-      channel = supabase.channel(channelName)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'pedidos',
-            filter: `company_id=eq.${companyId}`
-          },
-          (payload: any) => {
-            console.log('usePedidos: Evento realtime recebido:', payload);
-            realtimeWorking = true; // Marca que o realtime está funcionando
-            
-            if (payload.eventType === 'INSERT') {
-              console.log('usePedidos: Novo pedido inserido:', payload.new);
-              setPedidos(prev => {
-                // Evitar duplicatas
-                const exists = prev.find(p => p.id === payload.new.id);
-                if (exists) return prev;
-                return [payload.new, ...prev];
-              });
-            } else if (payload.eventType === 'UPDATE') {
-              console.log('usePedidos: Pedido atualizado:', payload.new);
-              setPedidos(prev => prev.map(p => p.id === payload.new.id ? payload.new : p));
-            } else if (payload.eventType === 'DELETE') {
-              console.log('usePedidos: Pedido deletado:', payload.old);
-              setPedidos(prev => prev.filter(p => p.id !== payload.old.id));
-            }
-          }
-        )
-        .subscribe((status: any) => {
-          console.log('usePedidos: Canal realtime status:', status);
-          if (status === 'SUBSCRIBED') {
-            console.log('usePedidos: Successfully subscribed to realtime updates');
-            realtimeWorking = true;
-          } else if (status === 'CHANNEL_ERROR') {
-            console.error('usePedidos: Error subscribing to realtime updates');
-            realtimeWorking = false;
-            // Ativar polling suave como fallback
-            if (!pollingInterval) {
-              console.log('usePedidos: Ativando polling de fallback (30s)');
-              pollingInterval = setInterval(() => {
-                fetchPedidos();
-              }, 30000); // 30 segundos
-            }
-          }
-        });
+      pollingInterval = setInterval(() => {
+        console.log('usePedidos: Polling for updates...');
+        fetchPedidos();
+      }, 30000); // 30 segundos
     }
 
     return () => {
-      if (channel) {
-        console.log('usePedidos: Cleaning up subscription');
-        supabase.removeChannel(channel);
-      }
       if (pollingInterval) {
+        console.log('usePedidos: Cleaning up polling interval');
         clearInterval(pollingInterval);
       }
     };
@@ -176,26 +121,71 @@ export const usePedidos = () => {
     if (!companyId) return;
     
     try {
-      console.log('usePedidos: Updating pedido status:', { pedidoId, newStatus });
-      const { error } = await supabase
-        .from('pedidos')
-        .update({ status: newStatus })
-        .eq('id', pedidoId)
-        .eq('company_id', companyId);
-        
-      if (error) throw error;
+      console.log('usePedidos: Updating pedido status via API:', { pedidoId, newStatus });
       
-      console.log('usePedidos: Status updated successfully');
+      const response = await fetch('/api/pedidos', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: pedidoId, status: newStatus })
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao atualizar pedido');
+      }
+      
+      console.log('usePedidos: Status updated via API successfully');
+      
+      // Atualização otimista do estado local
+      setPedidos(prev => prev.map(p => 
+        p.id === pedidoId ? { ...p, ...result.data } : p
+      ));
+      
     } catch (err: any) {
-      console.error('usePedidos: Error updating status:', err);
+      console.error('usePedidos: Error updating status via API:', err);
       setError('Erro ao atualizar status do pedido: ' + (err.message || 'Erro desconhecido'));
     }
+  };
+
+  // Função para recarregar pedidos manualmente
+  const reloadPedidos = () => {
+    console.log('usePedidos: Manual reload triggered');
+    setLoading(true);
+    setError(null);
+    
+    // Força nova busca
+    const fetchPedidos = async () => {
+      if (!companyId) return;
+      
+      try {
+        const targetCompanyId = (selectedStore?.id && selectedStore.id !== companyId) 
+          ? selectedStore.id 
+          : companyId;
+
+        const response = await fetch(`/api/pedidos?company_id=${targetCompanyId}`);
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'Erro ao carregar pedidos');
+        }
+        
+        setPedidos(result.data || []);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchPedidos();
   };
 
   return {
     pedidos,
     loading,
     error,
-    updatePedidoStatus
+    updatePedidoStatus,
+    reloadPedidos
   };
 };
