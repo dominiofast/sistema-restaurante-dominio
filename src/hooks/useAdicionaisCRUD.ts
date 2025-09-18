@@ -1,8 +1,24 @@
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { Adicional } from '@/types/cardapio';
 import { useCardapio } from '@/hooks/useCardapio';
+
+// Função para fazer requests à API
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 
 export const useAdicionaisCRUD = () => {
   const { toast } = useToast();
@@ -47,17 +63,16 @@ export const useAdicionaisCRUD = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('adicionais')
-        .insert([{
+      await apiRequest('/api/adicionais', {
+        method: 'POST',
+        body: JSON.stringify({
           name: novoAdicional.name.trim(),
           description: novoAdicional.description.trim() || null,
           price: novoAdicional.price,
           categoria_adicional_id: categoriaId,
           is_available: novoAdicional.is_available
-        }]);
-
-      if (error) throw error;
+        })
+      });
 
       toast({
         title: "Sucesso",
@@ -98,17 +113,15 @@ export const useAdicionaisCRUD = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('adicionais')
-        .update({
+      await apiRequest('/api/adicionais', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: editandoAdicional,
           name: adicionalEditado.name,
           price: Number(adicionalEditado.price),
-          description: adicionalEditado.description,
-          updated_at: new Date().toISOString()
+          description: adicionalEditado.description
         })
-        .eq('id', editandoAdicional);
-
-      if (error) throw error;
+      });
 
       toast({
         title: "Adicional atualizado",
@@ -136,12 +149,9 @@ export const useAdicionaisCRUD = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('adicionais')
-        .delete()
-        .eq('id', adicionalId);
-
-      if (error) throw error;
+      await apiRequest(`/api/adicionais/${adicionalId}`, {
+        method: 'DELETE'
+      });
 
       toast({
         title: "Adicional excluído",
@@ -173,25 +183,31 @@ export const useAdicionaisCRUD = () => {
       const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
       const filePath = `adicionais/${fileName}`;
 
-      const { data, error: uploadError } = await supabase.storage
-        .from('cardapio')
-        .upload(filePath, file);
+      // Upload de imagem via API
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'cardapio');
+      formData.append('path', filePath);
+      
+      const uploadResponse = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!uploadResponse.ok) {
+        throw new Error('Erro no upload da imagem');
+      }
+      
+      const uploadResult = await uploadResponse.json();
+      const publicUrl = uploadResult.url;
 
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('cardapio')
-        .getPublicUrl(filePath);
-
-      const { error: updateError } = await supabase
-        .from('adicionais')
-        .update({ 
-          image: publicUrl,
-          updated_at: new Date().toISOString()
+      await apiRequest('/api/adicionais/image', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: adicionalId,
+          image: publicUrl
         })
-        .eq('id', adicionalId);
-
-      if (updateError) throw updateError;
+      });
 
       toast({
         title: "Imagem atualizada",

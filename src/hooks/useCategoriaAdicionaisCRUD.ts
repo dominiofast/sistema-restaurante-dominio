@@ -1,7 +1,23 @@
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { CategoriaAdicional } from '@/types/cardapio';
+
+// Função para fazer requests à API
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 
 export const useCategoriaAdicionaisCRUD = () => {
   const { toast } = useToast();
@@ -31,32 +47,30 @@ export const useCategoriaAdicionaisCRUD = () => {
       setLoading(true);
       
       if (categoriaEditada.associacao_id) {
-        const { error } = await supabase
-          .from('produto_categorias_adicionais')
-          .update({
+        await apiRequest('/api/categoria-adicionais/associacao', {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: categoriaEditada.associacao_id,
             is_required: categoriaEditada.is_required,
             min_selection: categoriaEditada.min_selection,
             max_selection: categoriaEditada.max_selection
           })
-          .eq('id', categoriaEditada.associacao_id);
-
-        if (error) throw error;
+        });
       }
 
       const selection_type = 
         (categoriaEditada.max_selection || 1) === 1 ? 'single' : 
         (categoriaEditada.max_selection || 1) > 1 ? 'multiple' : 'quantity';
 
-      const { error: categoriaError } = await supabase
-        .from('categorias_adicionais')
-        .update({
+      await apiRequest('/api/categoria-adicionais', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: editandoCategoria,
           name: categoriaEditada.name,
           description: categoriaEditada.description,
           selection_type
         })
-        .eq('id', editandoCategoria);
-
-      if (categoriaError) throw categoriaError;
+      });
 
       toast({
         title: "Sucesso",
@@ -81,12 +95,9 @@ export const useCategoriaAdicionaisCRUD = () => {
 
   const desassociarCategoriaAdicional = async (associacaoId: string) => {
     try {
-      const { error } = await supabase
-        .from('produto_categorias_adicionais')
-        .delete()
-        .eq('id', associacaoId);
-
-      if (error) throw error;
+      await apiRequest(`/api/produto-categorias-adicionais/${associacaoId}`, {
+        method: 'DELETE'
+      });
       return true;
     } catch (error) {
       console.error('Erro ao desassociar categoria:', error);
