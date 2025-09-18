@@ -105,7 +105,14 @@ const SignupPage = () => {
         console.error('❌ Erro na autenticação:', authError);
         
         // Se falhou ao criar usuário, deletar a empresa criada
-        await supabase.from('companies').delete().eq('id', companyData.id);
+        try {
+          await fetch(`/api/companies?id=${companyData.id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          });
+        } catch (deleteError) {
+          console.error('Erro ao deletar empresa após falha na autenticação:', deleteError);
+        }
         
         if (authError.message.includes('already registered')) {
           toast.error('Este email já está em uso');

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { BarChart3, Bot, Settings, Users, Building2, ArrowRight, UserPlus, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -32,29 +31,41 @@ const SuperAdminDashboard = () => {
       try {
         setLoading(true);
         
-        // Fetch all stats in parallel
-        const [
-          companiesData,
-          activeAgentsData,
-          tokensData,
-          newCustomersData
-        ] = await Promise.all([
-          supabase.from('companies').select('*', { count: 'exact', head: true }),
-          supabase.from('ai_agent_config').select('id', { count: 'exact', head: true }).eq('is_active', true),
-          supabase.from('ai_conversation_logs').select('tokens_used').gte('created_at', new Date().toISOString().split('T')[0]),
-          supabase.from('clientes').select('id', { count: 'exact', head: true }).gte('data_cadastro', new Date().toISOString().split('T')[0]),
-          supabase.from('companies').select('id, name, created_at').order('created_at', { ascending: false }).limit(5)
+        // Buscar dados via APIs do Neon
+        const [companiesResponse, recentCompaniesResponse] = await Promise.all([
+          fetch('/api/companies', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          }),
+          fetch('/api/companies', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          })
         ]);
 
-        const { count: totalCompanies } = companiesData;
-        const { count: activeAgents } = activeAgentsData;
-        const tokensUsedToday = tokensData.data?.reduce((sum, log) => sum + (log.tokens_used || 0), 0) || 0;
-        const { count: newCustomersToday } = newCustomersData;
+        if (!companiesResponse.ok || !recentCompaniesResponse.ok) {
+          throw new Error('Erro ao buscar dados do dashboard');
+        }
+
+        const companiesResult = await companiesResponse.json();
+        const recentCompaniesResult = await recentCompaniesResponse.json();
+
+        if (!companiesResult.success || !recentCompaniesResult.success) {
+          throw new Error('Erro na resposta da API');
+        }
+
+        const totalCompanies = companiesResult.data?.length || 0;
+        const recentCompaniesList = (recentCompaniesResult.data || [])
+          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0, 5);
         
-        // The fifth promise result is handled separately for recent companies
-        const { data: recentCompaniesList, error: recentCompaniesError } = await supabase.from('companies').select('id, name, created_at').order('created_at', { ascending: false }).limit(5);
-        if (recentCompaniesError) throw recentCompaniesError;
-        setRecentCompanies(recentCompaniesList || []);
+        setRecentCompanies(recentCompaniesList);
+
+        // Para outras estatísticas, usar valores mockados por enquanto
+        // TODO: Implementar APIs específicas para essas estatísticas
+        const activeAgents = 0; // Mock - implementar API específica
+        const tokensUsedToday = 0; // Mock - implementar API específica  
+        const newCustomersToday = 0; // Mock - implementar API específica
 
         setStats([
           { title: 'Total de Empresas', value: totalCompanies || 0, icon: Building2, color: 'text-blue-600' },

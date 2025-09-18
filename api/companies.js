@@ -115,6 +115,36 @@ export default async function handler(req, res) {
         data: result.rows[0]
       });
 
+    } else if (req.method === 'DELETE') {
+      // DELETAR EMPRESA
+      console.log('🏢 API /companies DELETE - Deletando empresa...');
+      
+      const { id } = req.query;
+
+      if (!id) {
+        return res.status(400).json({
+          success: false,
+          error: 'ID da empresa é obrigatório'
+        });
+      }
+
+      const deleteQuery = 'DELETE FROM companies WHERE id = $1 RETURNING *';
+      const result = await pool.query(deleteQuery, [id]);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'Empresa não encontrada'
+        });
+      }
+
+      console.log('✅ Empresa deletada:', result.rows[0].name);
+
+      return res.status(200).json({
+        success: true,
+        data: result.rows[0]
+      });
+
     } else {
       return res.status(405).json({
         success: false,

@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Search, Store, MapPin, ChevronDown, Check } from 'lucide-react';
 import { toast } from 'sonner';
@@ -45,40 +44,44 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
     try {
       setLoading(true);
       
-      console.log('🏪 StoreSelector: Buscando lojas...');
+      console.log('🏪 StoreSelector: Buscando lojas via API Neon...');
       console.log('👤 Usuário:', user?.name, 'Role:', user?.role);
       console.log('🏢 Empresa atual:', currentCompany?.name, 'ID:', currentCompany?.id);
       
-      let query = supabase
-        .from('companies')
-        .select(`
-          id,
-          name,
-          domain,
-          status,
-          plan,
-          user_count
-        `)
-        .eq('status', 'active');
+      // Usar API do Neon em vez do Supabase desabilitado
+      const response = await fetch('/api/companies', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      // Se não é super admin, filtrar apenas a empresa atual
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      console.log('📊 Resultado da API:', result);
+
+      if (!result.success) {
+        throw new Error(result.error || 'Erro desconhecido na API');
+      }
+
+      const data = result.data || [];
+      console.log(`✅ Encontradas ${data.length} lojas`);
+
+      // Filtrar por empresa se não for super admin
+      let filteredData = data;
       if (user?.role !== 'super_admin' && currentCompany?.id) {
         console.log('🔍 Filtrando por empresa:', currentCompany.id);
-        query = query.eq('id', currentCompany.id);
+        filteredData = data.filter((company: any) => company.id === currentCompany.id);
       } else if (user?.role === 'super_admin') {
         console.log('👑 Super admin - buscando todas as empresas');
       }
 
-      const { data, error } = await query.order('name');
-      
-      console.log('📊 Resultado da query:', { data, error });
-
-      if (error) throw error;
-
-      console.log(`✅ Encontradas ${data?.length || 0} lojas`);
-
       // Formatar empresas como lojas
-      const formattedStores = (data || []).map((company) => ({
+      const formattedStores = filteredData.map((company: any) => ({
         id: company.id,
         merchant_id: company.domain,
         store_name: company.name,

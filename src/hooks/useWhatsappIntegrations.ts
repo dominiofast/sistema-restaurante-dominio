@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Company, WhatsappIntegration, CompanyIntegrations, WhatsappPurpose } from '@/types/whatsapp';
 
 export const useWhatsappIntegrations = () => {
@@ -11,10 +10,31 @@ export const useWhatsappIntegrations = () => {
 
   const fetchCompanies = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('companies').select('id, name, domain, logo').order('name');
-    if (error) setError('Erro ao buscar empresas.');
-    else setCompanies(data || []);
-    setLoading(false);
+    try {
+      const response = await fetch('/api/companies', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Erro desconhecido na API');
+      }
+
+      setCompanies(result.data || []);
+    } catch (error) {
+      console.error('Erro ao buscar empresas:', error);
+      setError('Erro ao buscar empresas.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const buildMap = (rows: any[] = []): Record<string, CompanyIntegrations> => {
