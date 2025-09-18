@@ -263,6 +263,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
     
+    // Verificar localStorage primeiro (para login PostgreSQL)
+    const userAuth = localStorage.getItem('user_auth');
+    if (userAuth) {
+      try {
+        const parsed = JSON.parse(userAuth);
+        // Verificar se a sessão não expirou (24 horas)
+        if (Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+          console.log('AuthProvider: Restaurando sessão PostgreSQL...');
+          if (isMountedLocal && isMounted()) {
+            setUser(parsed.user);
+            setIsLoading(false);
+            setIsInitialized(true);
+            lastUserIdRef.current = parsed.user.id;
+          }
+          return;
+        } else {
+          // Remover sessão expirada
+          localStorage.removeItem('user_auth');
+        }
+      } catch (error) {
+        console.error('AuthProvider: Erro ao restaurar sessão PostgreSQL:', error);
+        localStorage.removeItem('user_auth');
+      }
+    }
+    
     // Configurar listener de autenticação do Supabase apenas uma vez
     const setupAuth = async () => {
       try {

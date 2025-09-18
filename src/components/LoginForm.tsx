@@ -55,10 +55,7 @@ export const LoginForm = () => {
       
       setSuccess('Login realizado com sucesso! Redirecionando...');
       
-      // Forçar refresh da página para garantir estado limpo
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
+      // O LoginPage cuidará do redirecionamento automático via Navigate
     } catch (error: any) {
       let errorMessage = 'Erro ao fazer login. Verifique suas credenciais.';
       
