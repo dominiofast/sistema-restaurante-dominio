@@ -36,6 +36,10 @@ function runCommand(command, args, options = {}) {
 
 async function start() {
   try {
+    // Set PORT for deployment (8080 as configured in .replit)
+    process.env.PORT = process.env.PORT || '8080';
+    console.log(`🔧 Server will start on port: ${process.env.PORT}`);
+    
     // Build frontend
     console.log('🏗️ Building frontend...');
     await runCommand('npm', ['run', 'build']);

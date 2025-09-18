@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Superadmin no Vercel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #0070f3;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .btn:hover {
+            background: #0051a2;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verificar Superadmin no Vercel</h1>
+        <p>Esta página verifica se o usuário superadmin existe no banco de produção do Vercel.</p>
+        
+        <button id="checkBtn" class="btn" onclick="checkSuperadmin()">
+            Verificar Superadmin no Vercel
+        </button>
+        
+        <div id="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function checkSuperadmin() {
+            const btn = document.getElementById('checkBtn');
+            const result = document.getElementById('result');
+            
+            btn.disabled = true;
+            btn.textContent = 'Verificando...';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/check-superadmin', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                result.style.display = 'block';
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <h3>✅ Sucesso!</h3>
+                        <p><strong>Mensagem:</strong> ${data.message}</p>
+                        <h4>👤 Dados do Superadmin:</h4>
+                        <pre>${JSON.stringify(data.user, null, 2)}</pre>
+                        <h4>🗄️ Informações do Banco:</h4>
+                        <pre>${JSON.stringify(data.database_info, null, 2)}</pre>
+                        <h4>👥 Todos os Usuários (${data.all_users?.length || 0}):</h4>
+                        <pre>${JSON.stringify(data.all_users, null, 2)}</pre>
+                    `;
+                    btn.textContent = '✅ Verificação Concluída!';
+                } else {
+                    result.className = 'result error';
+                    result.innerHTML = `
+                        <h3>❌ Erro</h3>
+                        <p><strong>Erro:</strong> ${data.error}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    btn.textContent = '❌ Erro - Tentar Novamente';
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                result.style.display = 'block';
+                result.className = 'result error';
+                result.innerHTML = `
+                    <h3>❌ Erro de Rede</h3>
+                    <p><strong>Erro:</strong> ${error.message}</p>
+                    <p>Verifique se o servidor está rodando e tente novamente.</p>
+                `;
+                btn.textContent = '❌ Erro - Tentar Novamente';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
