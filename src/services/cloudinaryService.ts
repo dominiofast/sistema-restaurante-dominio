@@ -56,6 +56,17 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
 // Service completo para gerenciar uploads
 export const cloudinaryService = {
   uploadFile: async (file: File, onProgress?: (progress: UploadProgress) => void): Promise<CloudinaryUploadResult> => {
+    console.log('🌩️ [Cloudinary] Configuração:', {
+      cloudName: cloudinary.CLOUD_NAME,
+      uploadPreset: cloudinary.UPLOAD_PRESET,
+      uploadUrl: cloudinary.UPLOAD_URL,
+      file: {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      }
+    });
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
@@ -75,19 +86,33 @@ export const cloudinaryService = {
       });
       
       xhr.addEventListener('load', () => {
+        console.log('🌩️ [Cloudinary] Resposta recebida:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          response: xhr.responseText
+        });
+
         if (xhr.status === 200) {
           try {
             const result = JSON.parse(xhr.responseText);
+            console.log('✅ [Cloudinary] Upload bem-sucedido:', result);
             resolve(result);
           } catch (error) {
+            console.error('❌ [Cloudinary] Erro ao parsear resposta:', error);
             reject(new Error('Invalid response format'));
           }
         } else {
-          reject(new Error(`Upload failed with status: ${xhr.status}`));
+          console.error('❌ [Cloudinary] Erro HTTP:', {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            response: xhr.responseText
+          });
+          reject(new Error(`Upload failed with status: ${xhr.status} - ${xhr.responseText}`));
         }
       });
       
-      xhr.addEventListener('error', () => {
+      xhr.addEventListener('error', (error) => {
+        console.error('❌ [Cloudinary] Erro de rede:', error);
         reject(new Error('Network error during upload'));
       });
       
