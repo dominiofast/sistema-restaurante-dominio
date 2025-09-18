@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface TipoFiscal {
@@ -32,20 +31,21 @@ export function useTiposFiscais() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('tipos_fiscais')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .order('nome');
+      const response = await fetch(`/api/tipos-fiscais?company_id=${currentCompany.id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-      if (error) {
-        console.warn('Erro ao buscar tipos fiscais:', error);
-        setError(error.message);
-        setTiposFiscais([]);
-        return;
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
       }
 
-      setTiposFiscais(data || []);
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Erro desconhecido na API');
+      }
+
+      setTiposFiscais(result.data || []);
     } catch (err: any) {
       console.warn('Erro ao buscar tipos fiscais:', err);
       setError(err.message);
@@ -58,47 +58,65 @@ export function useTiposFiscais() {
   const criarTipoFiscal = useCallback(async (dados: { nome: string; descricao?: string; ativo?: boolean }) => {
     if (!currentCompany?.id) throw new Error('Empresa não selecionada');
 
-    const { data, error } = await supabase
-      .from('tipos_fiscais')
-      .insert([{
-        nome: dados.nome,
-        descricao: dados.descricao,
-        ativo: dados.ativo ?? true,
+    const response = await fetch('/api/tipos-fiscais', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...dados,
         company_id: currentCompany.id
-      }])
-      .select()
-      .single();
+      })
+    });
 
-    if (error) throw error;
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+    }
 
-    setTiposFiscais(prev => [...prev, data]);
-    return data;
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Erro desconhecido na API');
+    }
+
+    setTiposFiscais(prev => [...prev, result.data]);
+    return result.data;
   }, [currentCompany?.id]);
 
   const atualizarTipoFiscal = useCallback(async (id: string, dados: Partial<TipoFiscal>) => {
-    const { data, error } = await supabase
-      .from('tipos_fiscais')
-      .update(dados)
-      .eq('id', id)
-      .select()
-      .single();
+    const response = await fetch('/api/tipos-fiscais', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...dados })
+    });
 
-    if (error) throw error;
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Erro desconhecido na API');
+    }
 
     setTiposFiscais(prev => 
-      prev.map(tipo => tipo.id === id ? { ...tipo, ...data } : tipo)
+      prev.map(tipo => tipo.id === id ? { ...tipo, ...result.data } : tipo)
     );
     
-    return data;
+    return result.data;
   }, []);
 
   const deletarTipoFiscal = useCallback(async (id: string) => {
-    const { error } = await supabase
-      .from('tipos_fiscais')
-      .delete()
-      .eq('id', id);
+    const response = await fetch(`/api/tipos-fiscais?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-    if (error) throw error;
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Erro desconhecido na API');
+    }
 
     setTiposFiscais(prev => prev.filter(tipo => tipo.id !== id));
   }, []);

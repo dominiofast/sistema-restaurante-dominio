@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ImageUpload } from '@/components/ui/image-upload';
+import { ImageUploader } from './ImageUploader';
 import { Categoria } from '@/types/cardapio';
 import { useTiposFiscais } from '@/hooks/useTiposFiscais';
 
@@ -23,7 +23,7 @@ interface CategoriaFormProps {
 interface FormData {
   name: string;
   description: string;
-  image: string;
+  image?: string;
   is_active: boolean;
   tipo_fiscal_id: string;
 }
@@ -44,6 +44,7 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
       is_active: categoria?.is_active ?? true,
       tipo_fiscal_id: categoria?.tipo_fiscal_id || '',
     },
+    mode: 'onChange',
   });
 
   React.useEffect(() => {
@@ -67,17 +68,45 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
   }, [categoria, reset]);
 
   const handleFormSubmit = async (data: FormData) => {
+    console.log('🔍 CategoriaForm: Dados do formulário:', data);
+    console.log('🔍 CategoriaForm: Erros do formulário:', errors);
+    
+    // Validar se há erros
+    if (Object.keys(errors).length > 0) {
+      console.error('❌ CategoriaForm: Formulário tem erros:', errors);
+      return;
+    }
+    
     // Converter string vazia para null para campos UUID
     const cleanedData = {
       ...data,
       tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,
     };
-    await onSubmit(cleanedData);
-    onClose();
+    
+    console.log('🔍 CategoriaForm: Dados limpos:', cleanedData);
+    
+    try {
+      await onSubmit(cleanedData);
+      onClose();
+    } catch (error) {
+      console.error('❌ CategoriaForm: Erro ao salvar:', error);
+      throw error;
+    }
   };
 
   const isActive = watch('is_active');
   const imageValue = watch('image');
+
+  // Debug: Log quando o formulário é renderizado
+  React.useEffect(() => {
+    console.log('🔍 CategoriaForm: Formulário renderizado', {
+      isOpen,
+      categoria,
+      loading,
+      errors: Object.keys(errors),
+      tiposFiscais: tiposFiscais?.length || 0
+    });
+  }, [isOpen, categoria, loading, errors, tiposFiscais]);
 
   // Formulário sempre renderiza, sem loading bloqueante
 
@@ -96,7 +125,17 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
               <Label htmlFor="name" className="text-black">Nome da Categoria *</Label>
               <Input
                 id="name"
-                {...register('name', { required: 'Nome é obrigatório' })}
+                {...register('name', { 
+                  required: 'Nome é obrigatório',
+                  minLength: {
+                    value: 2,
+                    message: 'Nome deve ter pelo menos 2 caracteres'
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: 'Nome deve ter no máximo 100 caracteres'
+                  }
+                })}
                 placeholder="Ex: Hambúrguers, Bebidas..."
                 className="bg-white border-gray-300 text-black placeholder:text-gray-500 focus:border-black focus:ring-black"
               />
@@ -157,11 +196,12 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
               </p>
             </div>
 
-            <ImageUpload
-              value={imageValue}
-              onChange={(value) => setValue('image', value)}
+            <ImageUploader
               label="Imagem da Categoria"
-              placeholder="Selecione uma imagem para a categoria"
+              currentImageUrl={imageValue}
+              onImageChange={(url) => setValue('image', url)}
+              folder="cardapio/categorias"
+              maxSize={5}
             />
 
             <div className="flex items-center space-x-2">
@@ -186,8 +226,8 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
             </Button>
             <Button 
               type="submit" 
-              disabled={loading}
-              className="bg-black text-white hover:bg-gray-800"
+              disabled={loading || Object.keys(errors).length > 0}
+              className="bg-black text-white hover:bg-gray-800 disabled:bg-gray-400"
             >
               {loading ? 'Salvando...' : 'Salvar'}
             </Button>
