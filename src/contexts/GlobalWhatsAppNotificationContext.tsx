@@ -128,7 +128,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
       } catch (error) {
         console.warn('Erro ao solicitar permissão de notificação:', error);
         return 'denied';
-
+      }
     }
     return 'denied';
   }, []);

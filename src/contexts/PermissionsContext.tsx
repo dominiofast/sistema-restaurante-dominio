@@ -281,8 +281,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       setRoles([]);
       setUserPermissions([]);
       setLoading(false);
-
-  }, [user]);
+    }, [user]);
 
   const value: PermissionsContextType = {
     permissions,

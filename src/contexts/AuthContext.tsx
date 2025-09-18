@@ -148,17 +148,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           });
         }
       } catch (error) {
-      console.error('AuthProvider: Erro ao carregar empresas:', error);
-      if (isMounted()) {
-        setCompanies([]);
-        setCurrentCompany(null);
-        setCompanyId(null);
-
-
-  }, [isMounted]);
+        console.error('AuthProvider: Erro ao carregar empresas:', error);
+        if (isMounted()) {
+          setCompanies([]);
+          setCurrentCompany(null);
+          setCompanyId(null);
+        }
+      }
+    }, [isMounted]);
 
   const reloadCompanies = useCallback(async () => {
-    if (!isMounted() || !user) {;
+    if (!isMounted() || !user) {
       console.warn('AuthContext: Tentativa de recarregar empresas com contexto inválido');
       return;
 

@@ -92,7 +92,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
           errorMessage += ' Erros: ' + diagnosis.errors.join(', ');
         }
         
-         catch (error) { console.error('Error:', error); }toast.error(errorMessage + ' Verifique se o QZ Tray está instalado e rodando.');
+        toast.error(errorMessage + ' Verifique se o QZ Tray está instalado e rodando.');
         throw new Error(errorMessage);
       }
 

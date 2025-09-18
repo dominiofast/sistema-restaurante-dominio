@@ -85,11 +85,11 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
         return convertToStoreInfo(userCompanies[0]);
       }
       return null;
-
+    }
   });
 
   const selectCompany = (company: StoreInfo | null) => {
-    if (!company) {;
+    if (!company) {
       console.log('❌ Clearing company selection');
       setSelectedStoreState(null);
       localStorage.removeItem('selectedCompany');
