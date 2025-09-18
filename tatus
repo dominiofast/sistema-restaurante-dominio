@@ -1,0 +1,50 @@
+[33m67ba30c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Create test-build.md
+[33m83622e9[m Update dynamicMetaTagsService.ts
+[33m5979dde[m ok
+[33m242f7ba[m ok
+[33mce807a4[m Update useWhatsAppRealtime.ts
+[33m79c38b4[m Update CardapioPublico.tsx
+[33mbd36630[m ok
+[33mb7f11a9[m ok
+[33m0afaaee[m Update authOptimizer.ts
+[33m46fe8ce[m Update qzDevConfig.ts
+[33m3635354[m Update authOptimizer.ts
+[33m17f5a06[m Update qzDevConfig.ts
+[33mbf734e2[m Update authCleanup.ts
+[33mef1ed32[m Update qzDevConfig.ts
+[33m1c6cbb8[m ok
+[33mb084fac[m ok
+[33m18fc72c[m ok
+[33m038758a[m ok
+[33m0274ea9[m Update use-toast.ts
+[33mfe713d8[m Update use-toast.ts
+[33mbe0be7d[m Update use-toast.ts
+[33m1b18292[m Update use-toast.ts
+[33mbad4594[m ok
+[33m8c804e6[m ok
+[33m0b8a62d[m ok
+[33m0aee44d[m correção 3
+[33m939b74f[m correção 4
+[33m7e30e58[m ok
+[33m4c93f81[m correcao3
+[33m1ba4596[m correcao 2
+[33m6eaf37d[m correção
+[33m0e33beb[m Created a checkpoint
+[33m84fd9a9[m Improve order management to ensure all order details are accurately displayed
+[33m5566992[m Improve how application handles user roles and permissions
+[33m88b3285[m Update database query for additional product categories
+[33m070377d[m Update order retrieval and permission handling logic
+[33m528e250[m Add endpoints to manage additional menu items and categories
+[33m03ddcca[m Fix: Corrigir erros de tipo UUID na API de pedidos e desabilitar Supabase
+[33mf9a2db4[m Merge branch 'main' of https://github.com/dominiofast/sistema-restaurante-dominio
+[33m63c420d[m Improve real-time message updates by disabling specific Supabase subscriptions
+[33m3c58eb2[m Update data fetching to use custom API requests
+[33mfd908ba[m Merge branch 'main' of https://github.com/dominiofast/sistema-restaurante-dominio
+[33mb85ec15[m remover supabase
+[33m42552f4[m Update menu management to use API for adding additional items
+[33m9d08687[m Merge branch 'main' of https://github.com/dominiofast/sistema-restaurante-dominio
+[33m08358ab[m pedidos
+[33ma58076c[m Update features to use custom API instead of Supabase directly
+[33mea14403[m Fix issue where add-on categories were not associated with products
+[33m59abbd6[m Migrate product and category association data to new database
+[33mf73aec1[m Add script to migrate all data from Supabase to Neon
