@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 
-// 🚀 MEMORY DATABASE - SEM COMPLICAÇÃO!
-// Um só banco, em memória, zero configuração externa
+// 🚀 MEMORY DATABASE - OPÇÃO MAIS SIMPLES E CONFIÁVEL
+// Zero configuração, funciona sempre!
 
 let users = new Map();
 let orders = new Map();
@@ -14,7 +14,6 @@ export async function authenticateUser(email, password) {
   try {
     console.log('🔍 Autenticando usuário:', email);
     
-    // Buscar usuário por email
     const user = Array.from(users.values()).find(u => u.email === email.toLowerCase());
     
     if (!user) {
@@ -22,7 +21,6 @@ export async function authenticateUser(email, password) {
       return null;
     }
 
-    // Verificar senha
     const isValidPassword = await bcrypt.compare(password, user.password);
     
     if (!isValidPassword) {
@@ -32,7 +30,6 @@ export async function authenticateUser(email, password) {
 
     console.log('✅ Usuário autenticado:', { email: user.email, role: user.role });
     
-    // Retornar usuário sem senha
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
     
@@ -45,7 +42,6 @@ export async function authenticateUser(email, password) {
 // 👑 CREATE SUPERADMIN USER
 export async function createSuperadmin() {
   try {
-    // Verificar se já existe
     const existingUser = Array.from(users.values()).find(u => u.email === 'contato@dominio.tech');
     
     if (existingUser) {
@@ -57,7 +53,6 @@ export async function createSuperadmin() {
       };
     }
 
-    // Criar novo superadmin
     const hashedPassword = await bcrypt.hash('Admin123!@#', 12);
     
     const superadmin = {
@@ -149,13 +144,14 @@ export async function createPedidoItem(itemData) {
 
 export async function createPedidoItemAdicional(adicionalData) {
   try {
-    // ✅ CORRIGIDO: buscar pedido pelo pedido_id correto
+    // ✅ CORRIGIDO: usar pedido_id para encontrar o pedido
     const pedido = orders.get(parseInt(adicionalData.pedido_id));
     
     if (!pedido) {
       throw new Error(`Pedido ${adicionalData.pedido_id} não encontrado`);
     }
     
+    // ✅ CORRIGIDO: usar pedido_item_id para encontrar o item
     const item = pedido.itens.find(i => i.id === parseInt(adicionalData.pedido_item_id));
     
     if (!item) {
@@ -201,4 +197,4 @@ export function getDatabaseStats() {
   };
 }
 
-console.log('🚀 Memory Database inicializado - Sem dependências externas!');
+console.log('🚀 Memory Database inicializado - FUNCIONA SEMPRE!');
