@@ -26,13 +26,14 @@ export const configureQZForDevelopment = async () => {
           return;
         }
         
-         catch (error) { console.error('Error:', error) }// Hash simples e rápido
+        // Hash simples e rápido
         const simpleHash = toSign.length.toString(36) + Date.now().toString(36).slice(-4)
         resolve(btoa(simpleHash))
       } catch (error) {
+        console.error('Error:', error)
         // Fallback imediato
         resolve('')
-
+      }
     })
 
     console.log('✅ QZ Tray configurado para desenvolvimento local')

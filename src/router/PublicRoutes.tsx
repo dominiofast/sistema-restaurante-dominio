@@ -48,7 +48,7 @@ const PublicRoutes = () => {
         {/* Rota não encontrada para o subdomínio de pedidos */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Suspense>;
+    </Suspense>
   )
 };
 

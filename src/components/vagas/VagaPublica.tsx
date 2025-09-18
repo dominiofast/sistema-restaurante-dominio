@@ -31,7 +31,10 @@ const VagaPublica: React.FC = () => {
       const vagaData = null as any; const vagaError = null as any;
       
       const configData = null as any; const configError = null as any;
-      }  catch (error) { console.error('Error:', error) }else {
+      
+      if (configError) {
+        console.error('Error:', configError)
+      } else {
         setConfig({ ...configData, company_name: vagaData.company.name })
       }
       setVaga(vagaData)

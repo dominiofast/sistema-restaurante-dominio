@@ -27,7 +27,7 @@ export const cleanupAuthState = () => {
         console.log(`🗑️ Removido sessionStorage: ${key}`)
       }
     })
-
+  }
 
   console.log('✅ Limpeza de autenticação concluída')
 };

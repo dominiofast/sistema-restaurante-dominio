@@ -10,10 +10,14 @@ export const cleanupAuthState = () => {
           key.includes('sb-') || 
           key.startsWith('supabase_auth_') ||
           key === 'supabase_session') {
-        console.log('📦 Removendo chave localStorage:', key)
-        localStorage.removeItem(key)
+        try {
+          console.log('📦 Removendo chave localStorage:', key)
+          localStorage.removeItem(key)
+        } catch (error) { 
+          console.error('Error:', error) 
+        }
       }
-     catch (error) { console.error('Error:', error) }})
+    })
     
     // Limpar sessionStorage também se necessário
     if (typeof sessionStorage !== 'undefined') {

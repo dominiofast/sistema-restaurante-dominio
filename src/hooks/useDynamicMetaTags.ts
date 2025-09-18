@@ -45,13 +45,13 @@ export const useDynamicMetaTags = () => {
           setCompany(null)
           const defaultMetaTags = DynamicMetaTagsService.getDefaultMetaTags()
           DynamicMetaTagsService.applyMetaTags(defaultMetaTags)
-
+        }
       } else {
         // URL sem slug específico, usar meta tags padrão
         setCompany(null)
         const defaultMetaTags = DynamicMetaTagsService.getDefaultMetaTags()
         DynamicMetaTagsService.applyMetaTags(defaultMetaTags)
-
+      }
       
       setLoading(false)
     };
@@ -81,6 +81,6 @@ export const useDynamicMetaTags = () => {
         type: 'website',
         url: window.location.href
       })
-
+    }
   };
-}; 
+};

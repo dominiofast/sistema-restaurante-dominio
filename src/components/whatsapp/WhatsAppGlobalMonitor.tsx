@@ -29,7 +29,7 @@ export const WhatsAppGlobalMonitor: React.FC = () => {
       };
 
       showNotification(notification);
-
+    }
   });
 
   return null; // Este componente não renderiza nada
