@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { useCompanyFiscalOperations } from './useCompanyFiscalOperations';
 import { useCompanyFiscalValidation } from './useCompanyFiscalValidation';
@@ -41,44 +41,44 @@ export interface CompanyFiscalConfig {
   nfe_proxima_numeracao?: number;
   informacao_complementar_nfce?: string;
   email_xmls?: string;
-}
+
 
 export function useCompanyFiscalConfig() {
-  const { currentCompany } = useAuth();
-  const [fiscalConfig, setFiscalConfig] = useState<CompanyFiscalConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [fiscalConfig, setFiscalConfig] = useState<CompanyFiscalConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const { gerarNFCe, consultarNFCe, cancelarNFCe } = useCompanyFiscalOperations(currentCompany?.id);
-  const { validarConfiguracao } = useCompanyFiscalValidation();
+  const { gerarNFCe, consultarNFCe, cancelarNFCe } = useCompanyFiscalOperations(currentCompany?.id)
+  const { validarConfiguracao } = useCompanyFiscalValidation()
 
   const fetchFiscalConfig = async () => {
     if (!currentCompany?.id) {
-      console.log('fetchFiscalConfig: No company ID available');
+      console.log('fetchFiscalConfig: No company ID available')
       return;
     }
 
     try {
-      setLoading(true);
-      console.log('fetchFiscalConfig: Fetching config for company:', currentCompany.id);
+      setLoading(true)
+      console.log('fetchFiscalConfig: Fetching config for company:', currentCompany.id)
       
-      const { data, error } = await supabase
-        .from('company_fiscal_config')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error) {
-        console.error('fetchFiscalConfig: Supabase error:', error);
+        console.error('fetchFiscalConfig: Supabase error:', error)
         throw error;
       }
 
-      console.log('fetchFiscalConfig: Data received:', data);
+      console.log('fetchFiscalConfig: Data received:', data)
 
       if (data) {
-        setFiscalConfig(data);
+        setFiscalConfig(data)
       } else {
-        console.log('fetchFiscalConfig: No data found, creating default config');
+        console.log('fetchFiscalConfig: No data found, creating default config')
         const defaultConfig: Omit<CompanyFiscalConfig, 'id'> = {
           company_id: currentCompany.id,
           cnpj: '',
@@ -95,31 +95,31 @@ export function useCompanyFiscalConfig() {
           consumidor_final: true,
           indicador_ie_destinatario: '9',
         };
-        setFiscalConfig(defaultConfig);
+        setFiscalConfig(defaultConfig)
       }
     } catch (err) {
-      console.error('fetchFiscalConfig: Error:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('fetchFiscalConfig: Error:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const saveFiscalConfig = async (config: Partial<CompanyFiscalConfig>) => {
-    console.log('saveFiscalConfig: Starting with config:', config);
+    console.log('saveFiscalConfig: Starting with config:', config)
     if (!currentCompany?.id) {
-      console.log('saveFiscalConfig: No company ID available');
+      console.log('saveFiscalConfig: No company ID available')
       return false;
     }
 
     try {
-      setError(null);
-      console.log('saveFiscalConfig: Saving config for company:', currentCompany.id);
+      setError(null)
+      console.log('saveFiscalConfig: Saving config for company:', currentCompany.id)
       
       // Garantir que campos obrigatórios estejam presentes e limpar campos vazios
       const cleanConfig = Object.fromEntries(
         Object.entries(config).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
-      );
+      )
 
       const dataToSave = {
         ...cleanConfig,
@@ -127,57 +127,46 @@ export function useCompanyFiscalConfig() {
         cnpj: config.cnpj || fiscalConfig?.cnpj || '',
         // Garantir que certificado_validade seja string se fornecido
         ...(config.certificado_validade 
-          ? { certificado_validade: String(config.certificado_validade) }
-          : {}
+          ? { certificado_validade: String(config.certificado_validade) };
+           catch (error) { console.error('Error:', error) }: {}
         ),
         updated_at: new Date().toISOString(),
       };
 
-      console.log('saveFiscalConfig: Data to save (final):', dataToSave);
+      console.log('saveFiscalConfig: Data to save (final):', dataToSave)
 
       if (fiscalConfig?.id) {
-        console.log('saveFiscalConfig: Updating existing record with ID:', fiscalConfig.id);
-        const { data, error } = await supabase
-          .from('company_fiscal_config')
-          .update(dataToSave)
-          .eq('id', fiscalConfig.id)
-          .select()
-          .single();
-
+        console.log('saveFiscalConfig: Updating existing record with ID:', fiscalConfig.id)
+        const { data, error  } = null as any;
         if (error) {
-          console.error('saveFiscalConfig: Update error:', error);
+          console.error('saveFiscalConfig: Update error:', error)
           throw error;
         }
-        console.log('saveFiscalConfig: Update successful:', data);
-        setFiscalConfig(data);
+        console.log('saveFiscalConfig: Update successful:', data)
+        setFiscalConfig(data)
       } else {
-        console.log('saveFiscalConfig: Creating new record');
-        const { data, error } = await supabase
-          .from('company_fiscal_config')
-          .insert(dataToSave)
-          .select()
-          .single();
-
+        console.log('saveFiscalConfig: Creating new record')
+        const { data, error  } = null as any;
         if (error) {
-          console.error('saveFiscalConfig: Insert error:', error);
+          console.error('saveFiscalConfig: Insert error:', error)
           throw error;
         }
-        console.log('saveFiscalConfig: Insert successful:', data);
-        setFiscalConfig(data);
+        console.log('saveFiscalConfig: Insert successful:', data)
+        setFiscalConfig(data)
       }
 
-      console.log('saveFiscalConfig: Operation completed successfully');
+      console.log('saveFiscalConfig: Operation completed successfully')
       return true;
     } catch (err) {
-      console.error('saveFiscalConfig: Error:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao salvar');
+      console.error('saveFiscalConfig: Error:', err)
+      setError(err instanceof Error ? err.message : 'Erro ao salvar')
       return false;
     }
   };
 
   useEffect(() => {
-    fetchFiscalConfig();
-  }, [currentCompany?.id]);
+    fetchFiscalConfig()
+  }, [currentCompany?.id])
 
   return {
     fiscalConfig,
@@ -190,4 +179,4 @@ export function useCompanyFiscalConfig() {
     cancelarNFCe,
     refetch: fetchFiscalConfig,
   };
-}
+

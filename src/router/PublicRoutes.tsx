@@ -5,22 +5,22 @@ import { Routes, Route } from "react-router-dom";
 import CardapioPublico from "@/pages/CardapioPublico";
 
 // Lazy loading para páginas secundárias
-const ConfirmarEndereco = lazy(() => import("@/pages/ConfirmarEndereco"));
-const AcompanharPedidoRefatorado = lazy(() => import("@/pages/AcompanharPedidoRefatorado").then(m => ({ default: m.AcompanharPedidoRefatorado })));
-const VagaPublica = lazy(() => import("@/components/vagas/VagaPublica"));
-const VagasPublicas = lazy(() => import("@/pages/VagasPublicas"));
-const ProdutoAdicionado = lazy(() => import("@/pages/ProdutoAdicionado"));
-const AutoatendimentoTablet = lazy(() => import("@/pages/AutoatendimentoTablet"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
-const ShortLinkRedirect = lazy(() => import("@/pages/ShortLinkRedirect"));
-const LinksDemo = lazy(() => import("@/pages/LinksDemo"));
+const ConfirmarEndereco = lazy(() => import("@/pages/ConfirmarEndereco"))
+const AcompanharPedidoRefatorado = lazy(() => import("@/pages/AcompanharPedidoRefatorado").then(m => ({ default: m.AcompanharPedidoRefatorado })))
+const VagaPublica = lazy(() => import("@/components/vagas/VagaPublica"))
+const VagasPublicas = lazy(() => import("@/pages/VagasPublicas"))
+const ProdutoAdicionado = lazy(() => import("@/pages/ProdutoAdicionado"))
+const AutoatendimentoTablet = lazy(() => import("@/pages/AutoatendimentoTablet"))
+const NotFound = lazy(() => import("@/pages/NotFound"))
+const ShortLinkRedirect = lazy(() => import("@/pages/ShortLinkRedirect"))
+const LinksDemo = lazy(() => import("@/pages/LinksDemo"))
 
 // Loading fallback component
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
   </div>
-);
+)
 
 const PublicRoutes = () => {
   return (
@@ -49,7 +49,7 @@ const PublicRoutes = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
-  );
+  )
 };
 
 export default PublicRoutes;

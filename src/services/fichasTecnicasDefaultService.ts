@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 // Dados padrão de mercadorias/ingredientes
 const MERCADORIAS_PADRAO = [
   // === MASSAS E FARINHAS ===
@@ -65,7 +64,7 @@ const MERCADORIAS_PADRAO = [
   // === EMBALAGENS ===
   { nome: 'Caixa Pizza 35cm', descricao: 'Caixa de papelão para pizza grande', unidade_medida: 'unidade', categoria: 'Embalagens', preco_unitario: 2.80, estoque_atual: 200.0, estoque_minimo: 50.0, observacoes: 'Padrão pizzaria' },
   { nome: 'Caixa Pizza 30cm', descricao: 'Caixa de papelão para pizza média', unidade_medida: 'unidade', categoria: 'Embalagens', preco_unitario: 2.20, estoque_atual: 300.0, estoque_minimo: 75.0, observacoes: 'Tamanho médio' },
-  { nome: 'Guardanapo Personalizado', descricao: 'Guardanapo com logo da empresa', unidade_medida: 'unidade', categoria: 'Embalagens', preco_unitario: 0.05, estoque_atual: 5000.0, estoque_minimo: 1000.0, observacoes: 'Identidade visual' }
+  { nome: 'Guardanapo Personalizado', descricao: 'Guardanapo com logo da empresa', unidade_medida: 'unidade', categoria: 'Embalagens', preco_unitario: 0.05, estoque_atual: 5000.0, estoque_minimo: 1000.0, observacoes: 'Identidade visual' };
 ];
 
 // Dados padrão de receitas
@@ -220,7 +219,7 @@ const RECEITAS_PADRAO = [
     custo_total: 3.50,
     preco_venda_sugerido: 8.00,
     margem_lucro: 128.57
-  }
+  };
 ];
 
 export class FichasTecnicasDefaultService {
@@ -228,45 +227,45 @@ export class FichasTecnicasDefaultService {
   // Verificar se já existem mercadorias para a empresa
   static async verificarMercadoriasExistentes(companyId: string): Promise<number> {
     try {
-      const { data, error } = await (supabase as any)
-        .from('mercadorias_ingredientes')
-        .select('id', { count: 'exact' })
-        .eq('company_id', companyId);
+      const { data, error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
+        
+        
+        
       
       if (error) throw error;
       return data?.length || 0;
     } catch (error) {
-      console.error('Erro ao verificar mercadorias existentes:', error);
+      console.error('Erro ao verificar mercadorias existentes:', error)
       return 0;
-    }
-  }
+
+
 
   // Verificar se já existem receitas para a empresa
   static async verificarReceitasExistentes(companyId: string): Promise<number> {
     try {
-      const { data, error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .select('id', { count: 'exact' })
-        .eq('company_id', companyId);
+      const { data, error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
+        
+        
+        
       
       if (error) throw error;
       return data?.length || 0;
     } catch (error) {
-      console.error('Erro ao verificar receitas existentes:', error);
+      console.error('Erro ao verificar receitas existentes:', error)
       return 0;
-    }
-  }
+
+
 
   // Carregar mercadorias padrão
   static async carregarMercadoriasPadrao(companyId: string, userId: string): Promise<{ sucesso: boolean; mensagem: string; quantidade?: number }> {
     try {
       // Verificar se já existem mercadorias
-      const existentes = await this.verificarMercadoriasExistentes(companyId);
+      const existentes = await this.verificarMercadoriasExistentes(companyId)
       
       if (existentes > 0) {
         return {
           sucesso: false,
-          mensagem: `Já existem ${existentes} mercadorias cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
+          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error) }mercadorias cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
         };
       }
 
@@ -275,22 +274,22 @@ export class FichasTecnicasDefaultService {
         ...mercadoria,
         company_id: companyId,
         created_by: userId,
-        updated_by: userId
-      }));
+        updated_by: userId;
+      }))
 
       // Inserir em lotes de 10 para evitar problemas de performance
       const batchSize = 10;
       let totalInseridas = 0;
 
       for (let i = 0; i < mercadorias.length; i += batchSize) {
-        const lote = mercadorias.slice(i, i + batchSize);
+        const lote = mercadorias.slice(i, i + batchSize)
         
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .insert(lote);
+          
+          
 
         if (error) {
-          console.error(`Erro no lote ${i / batchSize + 1}:`, error);
+          console.error(`Erro no lote ${i / batchSize + 1}:`, error)
           throw error;
         }
         
@@ -304,24 +303,24 @@ export class FichasTecnicasDefaultService {
       };
 
     } catch (error: any) {
-      console.error('Erro ao carregar mercadorias padrão:', error);
+      console.error('Erro ao carregar mercadorias padrão:', error)
       return {
         sucesso: false,
         mensagem: `Erro ao carregar mercadorias: ${error.message || 'Erro desconhecido'}`
       };
-    }
-  }
+
+
 
   // Carregar receitas padrão
   static async carregarReceitasPadrao(companyId: string, userId: string): Promise<{ sucesso: boolean; mensagem: string; quantidade?: number }> {
     try {
       // Verificar se já existem receitas
-      const existentes = await this.verificarReceitasExistentes(companyId);
+      const existentes = await this.verificarReceitasExistentes(companyId)
       
       if (existentes > 0) {
         return {
           sucesso: false,
-          mensagem: `Já existem ${existentes} receitas cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
+          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error) }receitas cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
         };
       }
 
@@ -330,16 +329,16 @@ export class FichasTecnicasDefaultService {
         ...receita,
         company_id: companyId,
         created_by: userId,
-        updated_by: userId
-      }));
+        updated_by: userId;
+      }))
 
       // Inserir todas as receitas
       const { error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .insert(receitas);
+        
+        
 
       if (error) {
-        console.error('Erro ao inserir receitas:', error);
+        console.error('Erro ao inserir receitas:', error)
         throw error;
       }
 
@@ -350,13 +349,13 @@ export class FichasTecnicasDefaultService {
       };
 
     } catch (error: any) {
-      console.error('Erro ao carregar receitas padrão:', error);
+      console.error('Erro ao carregar receitas padrão:', error)
       return {
         sucesso: false,
         mensagem: `Erro ao carregar receitas: ${error.message || 'Erro desconhecido'}`
       };
-    }
-  }
+
+
 
   // Obter estatísticas dos dados padrão
   static getDadosEstatisticas() {
@@ -372,5 +371,4 @@ export class FichasTecnicasDefaultService {
         categoriasNomes: [...new Set(RECEITAS_PADRAO.map(r => r.categoria))].sort()
       }
     };
-  }
-} 
+

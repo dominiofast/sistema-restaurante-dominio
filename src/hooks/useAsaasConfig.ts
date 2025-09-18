@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
 export interface AsaasConfig {
@@ -13,7 +13,7 @@ export interface AsaasConfig {
   webhook_token: string | null;
   created_at: string | null;
   updated_at: string | null;
-}
+
 
 export interface AsaasConfigData {
   api_key: string;
@@ -22,48 +22,48 @@ export interface AsaasConfigData {
   is_active: boolean;
   sandbox_mode: boolean;
   webhook_token: string;
-}
+
 
 export const useAsaasConfig = (companyId?: string) => {
-  const [config, setConfig] = useState<AsaasConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
+  const [config, setConfig] = useState<AsaasConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
 
   // Carregar configuração
   useEffect(() => {
     if (!companyId) {
-      setLoading(false);
+      setLoading(false)
       return;
     }
 
     const loadConfig = async () => {
       try {
-        setLoading(true);
-        setError(null);
+        setLoading(true)
+        setError(null)
 
-        const { data, error } = await supabase
-          .from('asaas_config')
-          .select('*')
-          .eq('company_id', companyId)
-          .maybeSingle();
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
+          
 
         if (error) {
-          console.error('Erro ao carregar configuração do Asaas:', error);
-          setError(error.message);
+          console.error('Erro ao carregar configuração do Asaas:', error)
+          setError(error.message)
         } else {
-          setConfig(data);
+          setConfig(data)
         }
       } catch (err) {
-        console.error('Erro inesperado:', err);
-        setError('Erro inesperado ao carregar configuração');
+        console.error('Erro inesperado:', err)
+        setError('Erro inesperado ao carregar configuração')
       } finally {
-        setLoading(false);
-      }
+        setLoading(false)
+
     };
 
-    loadConfig();
-  }, [companyId]);
+    loadConfig()
+  }, [companyId])
 
   // Salvar configuração
   const saveConfig = async (configData: AsaasConfigData): Promise<boolean> => {
@@ -71,46 +71,46 @@ export const useAsaasConfig = (companyId?: string) => {
       toast({
         title: 'Erro',
         description: 'ID da empresa não encontrado',
-        variant: 'destructive',
-      });
+        variant: 'destructive',;
+      })
       return false;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('asaas_config')
-        .upsert({
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           company_id: companyId,
           ...configData,
         }, {
           onConflict: 'company_id'
         })
-        .select()
-        .single();
+        
+        
 
       if (error) {
-        console.error('Erro ao salvar configuração do Asaas:', error);
+        console.error('Erro ao salvar configuração do Asaas:', error)
         toast({
           title: 'Erro ao salvar',
           description: error.message,
           variant: 'destructive',
-        });
+        })
         return false;
-      }
 
-      setConfig(data);
+
+      setConfig(data)
       toast({
         title: 'Configuração salva',
         description: 'Configuração do Asaas salva com sucesso!',
-      });
+      })
       return true;
     } catch (err) {
-      console.error('Erro inesperado:', err);
+      console.error('Erro inesperado:', err)
       toast({
         title: 'Erro inesperado',
         description: 'Ocorreu um erro inesperado ao salvar a configuração',
         variant: 'destructive',
-      });
+      })
       return false;
     }
   };
@@ -123,14 +123,14 @@ export const useAsaasConfig = (companyId?: string) => {
         toast({
           title: 'Formato inválido',
           description: 'API Key de sandbox deve conter o identificador de teste',
-          variant: 'destructive',
-        });
+          variant: 'destructive',;
+        } catch (error) { console.error('Error:', error) })
         return false;
-      }
+
 
       // Teste de conectividade - listar clientes (endpoint simples)
       const baseUrl = sandboxMode 
-        ? 'https://sandbox.asaas.com/api/v3'
+        ? 'https://sandbox.asaas.com/api/v3';
         : 'https://www.asaas.com/api/v3';
 
       const response = await fetch(`${baseUrl}/customers?limit=1`, {
@@ -138,31 +138,31 @@ export const useAsaasConfig = (companyId?: string) => {
         headers: {
           'access_token': apiKey,
           'Content-Type': 'application/json',
-        },
-      });
+        },;
+      })
 
       if (response.ok) {
         toast({
           title: 'Credenciais válidas',
           description: `API Key do Asaas validada (${sandboxMode ? 'Sandbox' : 'Produção'})`,
-        });
+        })
         return true;
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json()
         toast({
           title: 'Credenciais inválidas',
           description: errorData.errors?.[0]?.description || 'Erro ao validar API Key',
           variant: 'destructive',
-        });
+        })
         return false;
-      }
+
     } catch (err) {
-      console.error('Erro ao testar credenciais:', err);
+      console.error('Erro ao testar credenciais:', err)
       toast({
         title: 'Erro no teste',
         description: 'Não foi possível testar as credenciais',
         variant: 'destructive',
-      });
+      })
       return false;
     }
   };

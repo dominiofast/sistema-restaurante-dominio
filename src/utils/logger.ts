@@ -14,7 +14,7 @@ class Logger {
    */
   log(...args: any[]) {
     if (this.isDevelopment) {
-      console.log('[APP]', ...args);
+      console.log('[APP]', ...args)
     }
   }
 
@@ -23,7 +23,7 @@ class Logger {
    */
   info(...args: any[]) {
     if (this.isDevelopment) {
-      console.info('[INFO]', ...args);
+      console.info('[INFO]', ...args)
     }
   }
 
@@ -32,7 +32,7 @@ class Logger {
    */
   debug(...args: any[]) {
     if (this.isDevelopment && this.isDebugEnabled) {
-      console.debug('[DEBUG]', ...args);
+      console.debug('[DEBUG]', ...args)
     }
   }
 
@@ -40,14 +40,14 @@ class Logger {
    * Warning - aparece em desenvolvimento e produção
    */
   warn(...args: any[]) {
-    console.warn('[WARN]', ...args);
+    console.warn('[WARN]', ...args)
   }
 
   /**
    * Error - sempre aparece (importante para monitoramento)
    */
   error(...args: any[]) {
-    console.error('[ERROR]', ...args);
+    console.error('[ERROR]', ...args)
   }
 
   /**
@@ -55,11 +55,11 @@ class Logger {
    */
   perf(label: string, fn: () => void) {
     if (this.isDevelopment) {
-      console.time(`[PERF] ${label}`);
-      fn();
-      console.timeEnd(`[PERF] ${label}`);
+      console.time(`[PERF] ${label}`)
+      fn()
+      console.timeEnd(`[PERF] ${label}`)
     } else {
-      fn();
+      fn()
     }
   }
 
@@ -68,9 +68,9 @@ class Logger {
    */
   api(method: string, url: string, data?: any) {
     if (this.isDevelopment) {
-      console.group(`[API] ${method.toUpperCase()} ${url}`);
-      if (data) console.log('Data:', data);
-      console.groupEnd();
+      console.group(`[API] ${method.toUpperCase()} ${url}`)
+      if (data) console.log('Data:', data)
+      console.groupEnd()
     }
   }
 
@@ -79,13 +79,13 @@ class Logger {
    */
   state(componentName: string, state: any) {
     if (this.isDevelopment && this.isDebugEnabled) {
-      console.log(`[STATE] ${componentName}:`, state);
+      console.log(`[STATE] ${componentName}:`, state)
     }
   }
-}
+
 
 // Instância singleton
-export const logger = new Logger();
+export const logger = new Logger()
 
 // Exports individuais para facilitar uso
 export const { log, info, debug, warn, error, perf, api, state } = logger;
@@ -93,12 +93,12 @@ export const { log, info, debug, warn, error, perf, api, state } = logger;
 // Helper para logs condicionais baseados em ambiente
 export const devOnly = (fn: () => void) => {
   if (import.meta.env.DEV) {
-    fn();
+    fn()
   }
 };
 
 export const prodOnly = (fn: () => void) => {
   if (!import.meta.env.DEV) {
-    fn();
+    fn()
   }
 };

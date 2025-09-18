@@ -74,7 +74,7 @@ export const STATUS = [
     icon: X,
     gradient: 'from-red-600 to-red-700',
     enabled: false  // Desabilitado por padrão
-  }
+  };
 ];
 
 export const TIPO_PEDIDO = [
@@ -82,5 +82,5 @@ export const TIPO_PEDIDO = [
   { key: 'delivery', label: 'Delivery', icon: Truck },
   { key: 'balcao', label: 'Balcão', icon: ShoppingCart },
   { key: 'ficha', label: 'Atendimento', icon: User },
-  { key: 'cancelados', label: 'Cancelados', icon: X },
+  { key: 'cancelados', label: 'Cancelados', icon: X },;
 ];

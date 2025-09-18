@@ -17,25 +17,25 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   isClickable = false,
   onStatusChange
 }) => {
-  const { updateItemStatus, getItemStatus, loading } = useItemStatus();
-  const [currentStatus, setCurrentStatus] = useState<ItemStatus>('pendente');
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { updateItemStatus, getItemStatus, loading } = useItemStatus()
+  const [currentStatus, setCurrentStatus] = useState<ItemStatus>('pendente')
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // Buscar status atual do item ao montar o componente
   useEffect(() => {
     if (itemId && isClickable) {
-      loadItemStatus();
+      loadItemStatus()
     }
-  }, [itemId, isClickable]);
+  }, [itemId, isClickable])
 
   const loadItemStatus = async () => {
     if (!itemId) return;
     
     try {
-      const status = await getItemStatus(itemId);
-      setCurrentStatus(status || 'pendente');
+      const status = await getItemStatus(itemId)
+      setCurrentStatus(status || 'pendente')
     } catch (error) {
-      console.error('Erro ao carregar status do item:', error);
+      console.error('Erro ao carregar status do item:', error)
     }
   };
 
@@ -43,17 +43,17 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     if (!itemId || !isClickable) return;
 
     try {
-      await updateItemStatus(itemId, newStatus);
-      setCurrentStatus(newStatus);
-      onStatusChange?.(itemId, newStatus);
+      await updateItemStatus(itemId, newStatus)
+      setCurrentStatus(newStatus)
+      onStatusChange?.(itemId, newStatus)
     } catch (error) {
-      console.error('Erro ao atualizar status:', error);
+      console.error('Erro ao atualizar status:', error)
     }
   };
 
   const getStatusIcon = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return <Clock className="h-4 w-4 text-orange-500" />;
       case 'em_producao':
         return <PlayCircle className="h-4 w-4 text-blue-500" />;
@@ -68,7 +68,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getStatusColor = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return 'border-l-orange-400 bg-orange-50';
       case 'em_producao':
         return 'border-l-blue-400 bg-blue-50';
@@ -83,7 +83,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getNextStatus = (current: ItemStatus): ItemStatus | null => {
     switch (current) {
-      case 'pendente':
+      case 'pendente':;
         return 'em_producao';
       case 'em_producao':
         return 'pronto';
@@ -96,7 +96,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
   const getStatusLabel = (status: ItemStatus) => {
     switch (status) {
-      case 'pendente':
+      case 'pendente':;
         return 'Pendente';
       case 'em_producao':
         return 'Produzindo';
@@ -112,11 +112,11 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   // Função para agrupar adicionais por categoria
   const groupAdicionaisByCategory = (adicionais: Array<{nome: string; qtd?: number; valor: number; categoria?: string}>) => {
     const grouped = adicionais.reduce((acc, adicional) => {
-      // Usar nome real da categoria, apenas com limpeza básica
+      // Usar nome real da categoria, apenas com limpeza básica;
       let categoria = adicional.categoria || 'Outros';
       
       // Remove apenas emojis comuns, mantendo o nome original
-      categoria = categoria.replace(/📁|📂|🗂️|🍕|🧀|🥩|🍅/g, '').trim();
+      categoria = categoria.replace(/📁|📂|🗂️|🍕|🧀|🥩|🍅/g, '').trim()
       
       // REMOVIDO: Normalização automática que sobrescrevia nomes reais
       // Agora preserva o nome original da categoria criada no gestor
@@ -124,9 +124,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       if (!acc[categoria]) {
         acc[categoria] = [];
       }
-      acc[categoria].push(adicional);
+      acc[categoria].push(adicional)
       return acc;
-    }, {} as Record<string, Array<{nome: string; qtd?: number; valor: number; categoria?: string}>>);
+    }, {} as Record<string, Array<{nome: string; qtd?: number; valor: number; categoria?: string}>>)
 
     return grouped;
   };
@@ -193,8 +193,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               <Button
                 key={status}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleStatusUpdate(status as ItemStatus);
+                  e.stopPropagation()
+                  handleStatusUpdate(status as ItemStatus)
                 }}
                 disabled={loading || currentStatus === status}
                 size="sm"
@@ -214,10 +214,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         <div className="mt-2">
           <Button
             onClick={(e) => {
-              e.stopPropagation();
-              const nextStatus = getNextStatus(currentStatus);
+              e.stopPropagation()
+              const nextStatus = getNextStatus(currentStatus)
               if (nextStatus) {
-                handleStatusUpdate(nextStatus);
+                handleStatusUpdate(nextStatus)
               }
             }}
             disabled={loading}
@@ -229,5 +229,5 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export type ItemStatus = 'pendente' | 'em_producao' | 'pronto' | 'entregue';
@@ -14,85 +14,74 @@ export interface ItemStatusData {
 }
 
 export const useItemStatus = () => {
-  const { currentCompany } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { currentCompany } = useAuth()
+  const [loading, setLoading] = useState(false)
 
   const updateItemStatus = async (pedidoItemId: string, newStatus: ItemStatus) => {
     if (!currentCompany?.id) return;
 
     try {
-      setLoading(true);
-      console.log('🔄 Atualizando status do item:', { pedidoItemId, newStatus });
+      setLoading(true)
+      console.log('🔄 Atualizando status do item:', { pedidoItemId, newStatus } catch (error) { console.error('Error:', error) })
 
       // Verificar se já existe um registro de status para este item
-      const { data: existingStatus, error: checkError } = await supabase
-        .from('pedido_item_status')
-        .select('id')
-        .eq('pedido_item_id', pedidoItemId)
-        .single();
-
-      if (checkError && checkError.code !== 'PGRST116') {
-        console.error('❌ Erro ao verificar status existente:', checkError);
+      const existingStatus = null as any; const checkError = null as any;
         throw checkError;
       }
 
       if (existingStatus) {
         // Atualizar status existente
-        const { error: updateError } = await supabase
-          .from('pedido_item_status')
-          .update({ 
+        const { error: updateError  } = null as any;
             status: newStatus,
             updated_by: 'kds_user'
           })
-          .eq('pedido_item_id', pedidoItemId);
+          
 
         if (updateError) {
-          console.error('❌ Erro ao atualizar status:', updateError);
+          console.error('❌ Erro ao atualizar status:', updateError)
           throw updateError;
-        }
+
       } else {
         // Criar novo registro de status
-        const { error: insertError } = await supabase
-          .from('pedido_item_status')
-          .insert({
+        const { error: insertError  } = null as any;
             pedido_item_id: pedidoItemId,
             status: newStatus,
             updated_by: 'kds_user'
-          });
+          })
 
         if (insertError) {
-          console.error('❌ Erro ao inserir status:', insertError);
+          console.error('❌ Erro ao inserir status:', insertError)
           throw insertError;
-        }
+
       }
 
-      console.log('✅ Status do item atualizado com sucesso');
+      console.log('✅ Status do item atualizado com sucesso')
     } catch (error) {
-      console.error('💥 Erro ao atualizar status do item:', error);
+      console.error('💥 Erro ao atualizar status do item:', error)
       throw error;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const getItemStatus = async (pedidoItemId: string): Promise<ItemStatus | null> => {
     try {
-      const { data, error } = await supabase
-        .from('pedido_item_status')
-        .select('status')
-        .eq('pedido_item_id', pedidoItemId)
-        .single();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error && error.code !== 'PGRST116') {
-        console.error('❌ Erro ao buscar status do item:', error);
+        console.error('❌ Erro ao buscar status do item:', error)
         return null;
       }
 
       return data?.status as ItemStatus || 'pendente';
     } catch (error) {
-      console.error('💥 Erro ao buscar status do item:', error);
+      console.error('💥 Erro ao buscar status do item:', error)
       return null;
-    }
+
   };
 
   return {

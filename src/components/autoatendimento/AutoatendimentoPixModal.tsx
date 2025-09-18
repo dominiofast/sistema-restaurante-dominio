@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Clock, Copy, Loader2, AlertCircle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface AutoatendimentoPixModalProps {
@@ -19,7 +19,7 @@ interface AutoatendimentoPixModalProps {
     externalReference: string;
   };
   primaryColor: string;
-}
+
 
 export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = ({
   isOpen,
@@ -28,50 +28,50 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
   paymentData,
   primaryColor
 }) => {
-  const [pixData, setPixData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [isChecking, setIsChecking] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [customerCpf, setCustomerCpf] = useState<string>('');
-  const [showCpfForm, setShowCpfForm] = useState<boolean>(true);
+  const [pixData, setPixData] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0)
+  const [isChecking, setIsChecking] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [customerCpf, setCustomerCpf] = useState<string>('')
+  const [showCpfForm, setShowCpfForm] = useState<boolean>(true)
 
   // Format CPF
   const formatCpf = (value: string): string => {
-    const numbers = value.replace(/\D/g, '');
-    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    const numbers = value.replace(/\D/g, '')
+    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
   };
 
   const validateCpf = (cpf: string): boolean => {
-    const numbers = cpf.replace(/\D/g, '');
+    const numbers = cpf.replace(/\D/g, '')
     if (numbers.length !== 11 || /^(\d)\1{10}$/.test(numbers)) return false;
     
     let sum = 0;
     for (let i = 0; i < 9; i++) {
-      sum += parseInt(numbers.charAt(i)) * (10 - i);
+      sum += parseInt(numbers.charAt(i)) * (10 - i)
     }
-    let remainder = 11 - (sum % 11);
+    let remainder = 11 - (sum % 11)
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(numbers.charAt(9))) return false;
     
     sum = 0;
     for (let i = 0; i < 10; i++) {
-      sum += parseInt(numbers.charAt(i)) * (11 - i);
+      sum += parseInt(numbers.charAt(i)) * (11 - i)
     }
-    remainder = 11 - (sum % 11);
+    remainder = 11 - (sum % 11)
     if (remainder === 10 || remainder === 11) remainder = 0;
-    return remainder === parseInt(numbers.charAt(10));
+    return remainder === parseInt(numbers.charAt(10))
   };
 
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
-      setShowCpfForm(true);
-      setCustomerCpf('');
-      setPixData(null);
-      setError(null);
+      setShowCpfForm(true)
+      setCustomerCpf('')
+      setPixData(null)
+      setError(null)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -80,19 +80,19 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
       interval = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
-            toast.error('PIX expirado. Tente novamente.');
-            onClose();
+            toast.error('PIX expirado. Tente novamente.')
+            onClose()
             return 0;
           }
           return prev - 1;
-        });
-      }, 1000);
+        })
+      }, 1000)
     }
 
     return () => {
-      if (interval) clearInterval(interval);
+      if (interval) clearInterval(interval)
     };
-  }, [pixData, timeLeft, onClose]);
+  }, [pixData, timeLeft, onClose])
 
   // Verificar status do pagamento a cada 5 segundos
   useEffect(() => {
@@ -100,42 +100,42 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     
     if (pixData?.id) {
       checkInterval = setInterval(() => {
-        checkPaymentStatus();
-      }, 5000);
+        checkPaymentStatus()
+      }, 5000)
     }
 
     return () => {
-      if (checkInterval) clearInterval(checkInterval);
+      if (checkInterval) clearInterval(checkInterval)
     };
-  }, [pixData]);
+  }, [pixData])
 
   const createPixPayment = async () => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
-      console.log('🔄 Criando PIX via função Asaas oficial...');
+      console.log('🔄 Criando PIX via função Asaas oficial...')
 
       // Usar função oficial que já funciona no cardápio
-      const { data, error } = await supabase.rpc('create_asaas_payment_oficial', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         p_company_id: paymentData.companyId,
         p_amount: paymentData.amount,
         p_description: paymentData.description,
         p_customer_name: paymentData.customerName || 'Cliente',
         p_customer_phone: paymentData.customerPhone,
         p_customer_cpf: customerCpf.replace(/\D/g, '')
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro na função Asaas:', error);
-        throw new Error(error.message || 'Erro ao criar pagamento PIX');
-      }
+        console.error('❌ Erro na função Asaas:', error)
+        throw new Error(error.message || 'Erro ao criar pagamento PIX')
+
 
       const response = data as any;
       if (!response?.success || !response?.payment) {
-        console.error('❌ Resposta inválida:', data);
-        throw new Error(response?.error || 'Resposta inválida do servidor');
-      }
+        console.error('❌ Resposta inválida:', data)
+        throw new Error(response?.error || 'Resposta inválida do servidor')
+
 
       const asaasPayment = response.payment;
 
@@ -146,31 +146,31 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
         qr_code: asaasPayment.qr_code,
         qr_code_base64: asaasPayment.qr_code_base64,
         amount: asaasPayment.amount,
-        expires_at: asaasPayment.expires_at
+        expires_at: asaasPayment.expires_at;
       };
 
-      setPixData(pixPayment);
+      setPixData(pixPayment)
       
       // Calcular tempo de expiração baseado na resposta
       const calculateTimeLeft = (expirationDate: string): number => {
-        const now = new Date().getTime();
-        const expiry = new Date(expirationDate).getTime();
-        return Math.max(0, Math.floor((expiry - now) / 1000));
+        const now = new Date().getTime()
+        const expiry = new Date(expirationDate).getTime()
+        return Math.max(0, Math.floor((expiry - now) / 1000))
       };
       
-      setTimeLeft(calculateTimeLeft(pixPayment.expires_at));
+      setTimeLeft(calculateTimeLeft(pixPayment.expires_at))
 
       // Start checking payment status
-      startPaymentCheck(asaasPayment.id);
+      startPaymentCheck(asaasPayment.id)
 
-      toast.success('PIX gerado com sucesso!');
+      toast.success('PIX gerado com sucesso!')
 
     } catch (err: any) {
-      console.error('❌ Erro ao criar pagamento:', err);
-      setError(err.message);
-      toast.error('Erro ao gerar PIX: ' + err.message);
+      console.error('❌ Erro ao criar pagamento:', err)
+      setError(err.message)
+      toast.error('Erro ao gerar PIX: ' + err.message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 
@@ -178,40 +178,40 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
     const idToCheck = paymentId || pixData?.id;
     if (!idToCheck || isChecking) return false;
     
-    setIsChecking(true);
+    setIsChecking(true)
     try {
-      console.log('🔍 Verificando status do pagamento Asaas:', idToCheck);
+      console.log('🔍 Verificando status do pagamento Asaas:', idToCheck)
 
-      const { data, error } = await supabase.rpc('check_asaas_payment_status', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         p_payment_id: idToCheck
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro ao verificar status:', error);
+        console.error('❌ Erro ao verificar status:', error)
         return false;
-      }
+
 
       const response = data as any;
       if (response?.success && response?.payment) {
         const payment = response.payment;
-        console.log('📊 Status Asaas:', payment.status);
+        console.log('📊 Status Asaas:', payment.status)
 
         if (payment.status === 'CONFIRMED' || payment.status === 'RECEIVED') {
-          console.log('✅ Pagamento confirmado via Asaas!');
+          console.log('✅ Pagamento confirmado via Asaas!')
           
-          toast.success('Pagamento confirmado!');
+          toast.success('Pagamento confirmado!')
 
           setTimeout(() => {
-            onSuccess();
-          }, 1500);
+            onSuccess()
+          }, 1500)
           
           return true; // Stop checking
         }
       }
     } catch (err) {
-      console.error('❌ Erro ao verificar pagamento:', err);
+      console.error('❌ Erro ao verificar pagamento:', err)
     } finally {
-      setIsChecking(false);
+      setIsChecking(false)
     }
     
     return false; // Continue checking
@@ -219,32 +219,32 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
 
   // Start payment checking
   const startPaymentCheck = (paymentId: string) => {
-    // Check immediately
-    checkPaymentStatus(paymentId);
+    // Check immediately;
+    checkPaymentStatus(paymentId)
     
     // Then check every 5 seconds
     const interval = setInterval(async () => {
-      const shouldStop = await checkPaymentStatus(paymentId);
+      const shouldStop = await checkPaymentStatus(paymentId)
       if (shouldStop) {
-        clearInterval(interval);
-      }
-    }, 5000);
+        clearInterval(interval)
+
+    }, 5000)
 
     // Stop after 24 hours
     setTimeout(() => {
-      clearInterval(interval);
-    }, 24 * 60 * 60 * 1000);
+      clearInterval(interval)
+    }, 24 * 60 * 60 * 1000)
   };
 
   const copyPixCode = () => {
     if (pixData?.qr_code) {
-      navigator.clipboard.writeText(pixData.qr_code);
-      toast.success('Código PIX copiado!');
+      navigator.clipboard.writeText(pixData.qr_code)
+      toast.success('Código PIX copiado!')
     }
   };
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
+    const minutes = Math.floor(seconds / 60)
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
@@ -279,9 +279,9 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
                   type="text"
                   value={customerCpf}
                   onChange={(e) => {
-                    const formatted = formatCpf(e.target.value);
+                    const formatted = formatCpf(e.target.value)
                     if (formatted.replace(/\D/g, '').length <= 11) {
-                      setCustomerCpf(formatted);
+                      setCustomerCpf(formatted)
                     }
                   }}
                   placeholder="000.000.000-00"
@@ -301,10 +301,10 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
               <Button
                 onClick={() => {
                   if (validateCpf(customerCpf)) {
-                    setShowCpfForm(false);
-                    createPixPayment();
+                    setShowCpfForm(false)
+                    createPixPayment()
                   } else {
-                    toast.error('Por favor, digite um CPF válido');
+                    toast.error('Por favor, digite um CPF válido')
                   }
                 }}
                 disabled={!validateCpf(customerCpf)}
@@ -335,8 +335,8 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
             <p className="text-red-700 text-sm mt-1">{error}</p>
             <Button
               onClick={() => {
-                setShowCpfForm(true);
-                setError(null);
+                setShowCpfForm(true)
+                setError(null)
               }}
               className="mt-3"
               size="sm"
@@ -448,5 +448,5 @@ export const AutoatendimentoPixModal: React.FC<AutoatendimentoPixModalProps> = (
         )}
       </DialogContent>
     </Dialog>
-  );
+  )
 };

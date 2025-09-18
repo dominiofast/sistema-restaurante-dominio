@@ -4,10 +4,10 @@ import { FeaturedProductCard } from './FeaturedProductCard';
 
 // Função para aplicar opacidade nas cores
 const applyOpacity = (color: string, opacity: number) => {
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
@@ -16,10 +16,10 @@ const getOptimizedImageUrl = (url: string | undefined, width: number = 340): str
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
-  if (url.includes('supabase.co') && url.includes('/storage/')) {
+  if (url.includes('
     const baseUrl = url.split('?')[0];
     return `${baseUrl}?width=${width}&height=${width}&resize=cover&quality=85`;
-  }
+
   
   return url;
 };
@@ -31,7 +31,7 @@ interface FeaturedCarouselProps {
   textColor: string;
   onProductClick: (produto: Produto) => void;
   companyId?: string;
-}
+
 
 export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
   produtosDestaque,
@@ -43,7 +43,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
 }) => {
   if (produtosDestaque.length === 0) {
     return null;
-  }
+
 
   return (
     <section className="mt-4 sm:mt-6">
@@ -57,7 +57,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
             const hasDiscount = produto.is_promotional && 
               produto.promotional_price && 
               produto.promotional_price < produto.price && 
-              produto.price > 0 && 
+              produto.price > 0 && ;
               produto.promotional_price > 0;
 
             const discountPercentage = hasDiscount 
@@ -123,10 +123,10 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
                   </h3>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       </div>
     </section>
-  );
+  )
 };

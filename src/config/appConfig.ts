@@ -25,7 +25,7 @@ export const CLOUDINARY_CONFIG = {
   },
   
   // Configurações de upload
-  RESOURCE_TYPE: 'auto' as const,
+// RESOURCE_TYPE: 'auto' as const,
   ACCESS_MODE: 'public' as const,
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   ALLOWED_FORMATS: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'],
@@ -52,7 +52,7 @@ export const DATABASE_CONFIG = {
   // Supabase (para Edge Functions)
   SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
   SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-  SUPABASE_SERVICE_ROLE_KEY: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  SUPABASE_SERVICE_ROLE_KEY: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '',;
 } as const;
 
 // =================================
@@ -70,7 +70,7 @@ export const APP_CONFIG = {
   MAX_DOCUMENT_SIZE: 10 * 1024 * 1024, // 10MB para documentos
   
   // Configurações de cache
-  CACHE_DURATION: 3600, // 1 hora em segundos
+  CACHE_DURATION: 3600, // 1 hora em segundos;
 } as const;
 
 // =================================
@@ -81,21 +81,21 @@ export const validateConfig = () => {
   
   // Validar Cloudinary
   if (!CLOUDINARY_CONFIG.CLOUD_NAME) {
-    errors.push('VITE_CLOUDINARY_CLOUD_NAME não configurado');
+    errors.push('VITE_CLOUDINARY_CLOUD_NAME não configurado')
   }
   
   if (!CLOUDINARY_CONFIG.UPLOAD_PRESET) {
-    errors.push('VITE_CLOUDINARY_UPLOAD_PRESET não configurado');
+    errors.push('VITE_CLOUDINARY_UPLOAD_PRESET não configurado')
   }
   
   // Validar banco de dados
   if (!DATABASE_CONFIG.NEON_URL) {
-    errors.push('DATABASE_URL não configurado');
+    errors.push('DATABASE_URL não configurado')
   }
   
   if (errors.length > 0) {
-    console.error('❌ Erros de configuração:', errors);
-    throw new Error(`Configuração inválida: ${errors.join(', ')}`);
+    console.error('❌ Erros de configuração:', errors)
+    throw new Error(`Configuração inválida: ${errors.join(', ')}`)
   }
   
   return true;
@@ -116,8 +116,8 @@ export const logConfig = () => {
       database: {
         neonConfigured: !!DATABASE_CONFIG.NEON_URL,
         supabaseConfigured: !!DATABASE_CONFIG.SUPABASE_URL
-      }
-    });
+      };
+    })
   }
 };
 
@@ -132,5 +132,5 @@ export {
 
 // Inicializar logs em desenvolvimento
 if (import.meta.env.DEV) {
-  logConfig();
+  logConfig()
 }

@@ -22,34 +22,34 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
   fallback,
   showFallback = true
 }) => {
-  const { hasPermission, hasAnyPermission, hasAllPermissions, loading } = usePermissions();
+  const { hasPermission, hasAnyPermission, hasAllPermissions, loading } = usePermissions()
 
   if (loading) {
     return (
       <div className="flex items-center justify-center p-4">
         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
       </div>
-    );
+    )
   }
 
   const checkPermissions = (): boolean => {
     // Se especificou uma permissão única
     if (permission) {
-      return hasPermission(permission, storeId);
+      return hasPermission(permission, storeId)
     }
 
     // Se especificou múltiplas permissões
     if (permissions && permissions.length > 0) {
       return requireAll 
         ? hasAllPermissions(permissions, storeId)
-        : hasAnyPermission(permissions, storeId);
+        : hasAnyPermission(permissions, storeId)
     }
 
     // Se não especificou permissões, permite acesso
     return true;
   };
 
-  const isAuthorized = checkPermissions();
+  const isAuthorized = checkPermissions()
 
   if (!isAuthorized) {
     if (fallback) {
@@ -64,7 +64,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = ({
             Você não tem permissão para acessar esta funcionalidade.
           </AlertDescription>
         </Alert>
-      );
+      )
     }
 
     return null;
@@ -78,7 +78,7 @@ export const AdminOnly: React.FC<{ children: ReactNode; fallback?: ReactNode }> 
   children, 
   fallback 
 }) => {
-  const { isAdmin } = usePermissions();
+  const { isAdmin } = usePermissions()
 
   if (!isAdmin()) {
     return fallback ? <>{fallback}</> : null;
@@ -92,7 +92,7 @@ export const SuperAdminOnly: React.FC<{ children: ReactNode; fallback?: ReactNod
   children, 
   fallback 
 }) => {
-  const { isSuperAdmin } = usePermissions();
+  const { isSuperAdmin } = usePermissions()
 
   if (!isSuperAdmin()) {
     return fallback ? <>{fallback}</> : null;
@@ -103,7 +103,7 @@ export const SuperAdminOnly: React.FC<{ children: ReactNode; fallback?: ReactNod
 
 // Componente para mostrar informações de role
 export const RoleDisplay: React.FC = () => {
-  const { hasRole, isSuperAdmin, isAdmin } = usePermissions();
+  const { hasRole, isSuperAdmin, isAdmin } = usePermissions()
 
   return (
     <div className="flex items-center gap-2 text-sm">
@@ -114,5 +114,5 @@ export const RoleDisplay: React.FC = () => {
         {!isAdmin() && 'Usuário'}
       </span>
     </div>
-  );
+  )
 };

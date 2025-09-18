@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export const BrandingConfig: React.FC = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth()
+  const navigate = useNavigate()
 
   if (!user?.user_metadata?.company_id) {
     return (
@@ -19,7 +19,7 @@ export const BrandingConfig: React.FC = () => {
           </p>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -77,7 +77,7 @@ export const BrandingConfig: React.FC = () => {
         companyId={user.user_metadata.company_id}
         onBrandingUpdate={() => {
           // Aqui podemos atualizar o preview ou mostrar uma mensagem
-          console.log('Branding atualizado!');
+          console.log('Branding atualizado!')
         }}
       />
 
@@ -137,5 +137,5 @@ export const BrandingConfig: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };

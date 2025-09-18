@@ -4,10 +4,10 @@ import { formatPriceDisplay } from '@/utils/priceCalculation';
 
 // Função para aplicar opacidade nas cores
 const applyOpacity = (color: string, opacity: number) => {
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
@@ -16,7 +16,7 @@ const getOptimizedImageUrl = (url: string | undefined, width: number = 250): str
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
-  if (url.includes('supabase.co') && url.includes('/storage/')) {
+  if (url.includes('
     // O Supabase Storage suporta transformações de imagem
     const baseUrl = url.split('?')[0]; // Remove query params existentes
     return `${baseUrl}?width=${width}&height=${Math.round(width * 0.8)}&resize=contain&quality=85`;
@@ -47,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   companyId
 }) => {
   const basePrice = produto.is_promotional && produto.promotional_price 
-    ? produto.promotional_price 
+    ? produto.promotional_price ;
     : produto.price;
   
   const finalMinimumPrice = minimumPrice || basePrice;
@@ -57,8 +57,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       return (
         <div className="flex items-center gap-2">
           <div className="h-4 w-16 bg-gray-200 animate-pulse rounded"></div>
-        </div>
-      );
+        </div>;
+      )
     }
 
     // Não renderizar preço se for R$ 0,00
@@ -86,7 +86,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {priceValue}
           </span>
         </div>
-      );
+      )
     }
 
     if (produto.price === 0) {
@@ -101,7 +101,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {priceValue}
         </span>
       </div>
-    );
+    )
   };
 
   return (
@@ -164,5 +164,5 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

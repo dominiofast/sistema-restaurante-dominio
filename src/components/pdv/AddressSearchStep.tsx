@@ -78,7 +78,7 @@ const AddressInlineSuggestions: React.FC<{
         </button>
       </div>
     </div>
-  );
+  )
 };
 
 interface AddressSearchStepProps {
@@ -102,20 +102,20 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
   onSuggestionSelect,
   isFullscreen = false
 }) => {
-  const { toast } = useToast();
-  const { searchAddressSuggestions, searchAddressByCoordinates } = useGoogleMapsGeocoding();
-  const [searching, setSearching] = useState(false);
-  const [searchType, setSearchType] = useState<'text' | 'cep'>('text');
+  const { toast } = useToast()
+  const { searchAddressSuggestions, searchAddressByCoordinates } = useGoogleMapsGeocoding()
+  const [searching, setSearching] = useState(false)
+  const [searchType, setSearchType] = useState<'text' | 'cep'>('text')
 
   // Detectar se é CEP ou endereço
   useEffect(() => {
-    const cleanText = searchText.replace(/\D/g, '');
+    const cleanText = searchText.replace(/\D/g, '')
     if (cleanText.length === 8) {
-      setSearchType('cep');
+      setSearchType('cep')
     } else {
-      setSearchType('text');
+      setSearchType('text')
     }
-  }, [searchText]);
+  }, [searchText])
 
   // Buscar endereços
   const searchAddresses = async () => {
@@ -123,40 +123,40 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
       return;
     }
 
-    console.log('🔍 Iniciando busca de endereços...');
-    console.log('📝 Texto de busca:', searchText);
-    console.log('🔤 Tipo de busca:', searchType);
+    console.log('🔍 Iniciando busca de endereços...')
+    console.log('📝 Texto de busca:', searchText)
+    console.log('🔤 Tipo de busca:', searchType)
 
-    setSearching(true);
+    setSearching(true)
     try {
       let suggestions: AddressSuggestion[] = [];
 
       if (searchType === 'cep') {
         // Buscar por CEP
-        console.log('🔍 Buscando por CEP...');
-        const cleanCep = searchText.replace(/\D/g, '');
-        console.log('🧹 CEP limpo:', cleanCep);
+        console.log('🔍 Buscando por CEP...')
+        const cleanCep = searchText.replace(/\D/g, '')
+        console.log('🧹 CEP limpo:', cleanCep)
         
-        const cepResult = await searchAddressByCep(cleanCep);
-        console.log('📦 Resultado CEP:', cepResult);
+        const cepResult = await searchAddressByCep(cleanCep)
+        console.log('📦 Resultado CEP:', cepResult)
         
         if (cepResult) {
           suggestions = [{
             id: 'cep-result',
-            formatted_address: `${cepResult.logradouro}, ${cepResult.bairro}, ${cepResult.localidade}, ${cepResult.uf}`,
+            formatted_address: `${cepResult.logradouro} catch (error) { console.error('Error:', error) }, ${cepResult.bairro}, ${cepResult.localidade}, ${cepResult.uf}`,
             logradouro: cepResult.logradouro,
             bairro: cepResult.bairro,
             cidade: cepResult.localidade,
             estado: cepResult.uf,
             cep: formatCep(cleanCep)
           }];
-          console.log('✅ Sugestão CEP criada:', suggestions[0]);
-        }
+          console.log('✅ Sugestão CEP criada:', suggestions[0])
+
       } else {
         // Buscar por texto
-        console.log('🔍 Buscando por texto...');
-        const results = await searchAddressSuggestions(searchText);
-        console.log('📦 Resultados texto:', results);
+        console.log('🔍 Buscando por texto...')
+        const results = await searchAddressSuggestions(searchText)
+        console.log('📦 Resultados texto:', results)
         
         if (results && results.length > 0) {
           suggestions = results.map((result, index) => ({
@@ -169,31 +169,31 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             cep: result.cep,
             latitude: result.latitude,
             longitude: result.longitude
-          }));
-          console.log('✅ Sugestões texto criadas:', suggestions);
-        }
-      }
+          }))
+          console.log('✅ Sugestões texto criadas:', suggestions)
 
-      console.log('📋 Total de sugestões:', suggestions.length);
-      onSearchComplete(suggestions);
+
+
+      console.log('📋 Total de sugestões:', suggestions.length)
+      onSearchComplete(suggestions)
       
       if (suggestions.length === 0) {
-        console.log('❌ Nenhuma sugestão encontrada');
+        console.log('❌ Nenhuma sugestão encontrada')
         toast({
           title: "Nenhum endereço encontrado",
           description: "Tente com um endereço diferente ou use outra opção",
           variant: "destructive"
-        });
-      }
+        })
+
     } catch (error) {
-      console.error('❌ Erro ao buscar endereços:', error);
+      console.error('❌ Erro ao buscar endereços:', error)
       toast({
         title: "Erro ao buscar endereços",
         description: "Tente novamente ou use outra opção",
         variant: "destructive"
-      });
+      })
     } finally {
-      setSearching(false);
+      setSearching(false)
     }
   };
 
@@ -201,22 +201,22 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (searchText && searchText.length >= 3) {
-        searchAddresses();
-      }
-    }, 500);
+        searchAddresses()
 
-    return () => clearTimeout(timeoutId);
-  }, [searchText, searchType]);
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [searchText, searchType])
 
   const handleUseLocation = () => {
     if (navigator.geolocation) {
-      setSearching(true);
+      setSearching(true)
       
       // Configurações para geolocalização
       const geoOptions = {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000
+        maximumAge: 60000;
       };
       
       navigator.geolocation.getCurrentPosition(
@@ -224,17 +224,17 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
           const { latitude, longitude } = position.coords;
           
           try {
-            console.log('📍 Coordenadas obtidas:', latitude, longitude);
+            console.log('📍 Coordenadas obtidas:', latitude, longitude)
             
             // Buscar endereço usando as coordenadas
-            const address = await searchAddressByCoordinates(latitude, longitude);
+            const address = await searchAddressByCoordinates(latitude, longitude)
             
             if (address) {
-              console.log('✅ Endereço encontrado:', address);
+              console.log('✅ Endereço encontrado:', address)
               
               // Preencher o campo de busca com o endereço encontrado
-              const fullAddress = `${address.logradouro}, ${address.bairro}, ${address.cidade}`;
-              onSearchTextChange(fullAddress);
+              const fullAddress = `${address.logradouro} catch (error) { console.error('Error:', error) }, ${address.bairro}, ${address.cidade}`;
+              onSearchTextChange(fullAddress)
               
               // Criar sugestão com o endereço encontrado
               const locationSuggestion: AddressSuggestion = {
@@ -250,33 +250,33 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
               };
               
               // Mostrar na lista de sugestões
-              onSearchComplete([locationSuggestion]);
+              onSearchComplete([locationSuggestion])
               
               toast({
                 title: "Localização encontrada!",
                 description: "Endereço da sua localização atual foi encontrado",
-              });
+              })
             } else {
               toast({
                 title: "Endereço não encontrado",
                 description: "Não foi possível encontrar o endereço para sua localização",
                 variant: "destructive"
-              });
-            }
+              })
+
           } catch (error) {
-            console.error('Erro ao buscar endereço:', error);
+            console.error('Erro ao buscar endereço:', error)
             toast({
               title: "Erro ao buscar endereço",
               description: "Não foi possível encontrar o endereço para sua localização",
               variant: "destructive"
-            });
+            })
           } finally {
-            setSearching(false);
-          }
+            setSearching(false)
+
         },
         (error) => {
-          setSearching(false);
-          console.error('Erro de geolocalização:', error);
+          setSearching(false)
+          console.error('Erro de geolocalização:', error)
           
           let errorMessage = "Verifique as permissões de localização";
           
@@ -290,27 +290,27 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
             case error.TIMEOUT:
               errorMessage = "Tempo esgotado para obter localização. Tente novamente.";
               break;
-          }
+
           
           toast({
             title: "Erro ao obter localização",
             description: errorMessage,
             variant: "destructive"
-          });
+          })
         },
         geoOptions
-      );
+      )
     } else {
       toast({
         title: "Geolocalização não suportada",
         description: "Seu navegador não suporta geolocalização",
         variant: "destructive"
-      });
+      })
     }
   };
 
   const handleActivateLocation = () => {
-    handleUseLocation();
+    handleUseLocation()
   };
 
   // Layout para fullscreen (sem header próprio)
@@ -400,8 +400,8 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
           </Button>
         </div>
       </div>
-    );
-  }
+    )
+
 
   // Layout para modal tradicional
   return (
@@ -486,5 +486,5 @@ export const AddressSearchStep: React.FC<AddressSearchStepProps> = ({
 
       </div>
     </>
-  );
+  )
 };

@@ -44,5 +44,5 @@ export const VagasDisponiveisHeader: React.FC<VagasDisponiveisHeaderProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

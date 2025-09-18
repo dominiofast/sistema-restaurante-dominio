@@ -68,7 +68,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default PersonalInfoSection;

@@ -9,7 +9,7 @@ const VagaLoadingState: React.FC = () => {
         <p className="text-gray-600">Carregando informações...</p>
       </div>
     </div>
-  );
+  )
 };
 
 export default VagaLoadingState;

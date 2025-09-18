@@ -11,15 +11,15 @@ interface PedidosNotificationBadgeProps {
 export const PedidosNotificationBadge: React.FC<PedidosNotificationBadgeProps> = ({ 
   className = "" 
 }) => {
-  const { currentCompany } = useAuth();
-  const { pedidosPendentes, resetarContador } = useRealtimePedidosNotification(currentCompany?.id);
+  const { currentCompany } = useAuth()
+  const { pedidosPendentes, resetarContador } = useRealtimePedidosNotification(currentCompany?.id)
 
   if (pedidosPendentes === 0) {
     return (
       <div className={`relative inline-flex items-center ${className}`}>
         <Bell className="h-5 w-5" />
       </div>
-    );
+    )
   }
 
   return (
@@ -36,5 +36,5 @@ export const PedidosNotificationBadge: React.FC<PedidosNotificationBadgeProps> =
         {pedidosPendentes > 99 ? '99+' : pedidosPendentes}
       </Badge>
     </div>
-  );
+  )
 };

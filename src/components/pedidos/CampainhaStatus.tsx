@@ -130,5 +130,5 @@ export const CampainhaStatus: React.FC<CampainhaStatusProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

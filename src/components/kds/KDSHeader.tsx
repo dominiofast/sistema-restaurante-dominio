@@ -16,7 +16,7 @@ interface KDSHeaderProps {
   onOpenFilters: () => void;
   onToggleFullscreen: () => void;
   onClose: () => void;
-}
+
 
 export const KDSHeader: React.FC<KDSHeaderProps> = ({
   filtros,
@@ -122,5 +122,5 @@ export const KDSHeader: React.FC<KDSHeaderProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

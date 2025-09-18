@@ -9,10 +9,10 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
   onConfirm, 
   total 
 }) => {
-  const [tipoCartao, setTipoCartao] = useState<'credito'|'debito'>('debito');
-  const [bandeira, setBandeira] = useState('');
-  const [parcelas, setParcelas] = useState(1);
-  const [observacoes, setObservacoes] = useState('');
+  const [tipoCartao, setTipoCartao] = useState<'credito'|'debito'>('debito')
+  const [bandeira, setBandeira] = useState('')
+  const [parcelas, setParcelas] = useState(1)
+  const [observacoes, setObservacoes] = useState('')
 
   const handleConfirm = () => {
     onConfirm({
@@ -20,12 +20,12 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
       tipoCartao,
       bandeira,
       parcelas,
-      observacoes
-    });
+      observacoes;
+    })
   };
 
   const bandeiras = [
-    'Visa', 'Mastercard', 'Elo', 'American Express', 'Hipercard', 'Outros'
+    'Visa', 'Mastercard', 'Elo', 'American Express', 'Hipercard', 'Outros';
   ];
 
   return (
@@ -106,7 +106,7 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
               onChange={(e) => setParcelas(parseInt(e.target.value))}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              {Array.from({ length: 12 }, (_, i) => i + 1).map(num => (
+              {Array
                 <option key={num} value={num}>
                   {num}x de R$ {(total / num).toFixed(2)}
                 </option>
@@ -140,5 +140,5 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

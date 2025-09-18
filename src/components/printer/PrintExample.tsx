@@ -12,12 +12,12 @@ interface PrintConfig {
 }
 
 export function PrintExample() {
-  const { printReceipt, isPrinting } = usePrinter();
+  const { printReceipt, isPrinting } = usePrinter()
   const [printConfig, setPrintConfig] = useState<PrintConfig>({
     width: 48,
     removeAccents: true,
     marginLeft: 0
-  });
+  })
 
   const handleTestPrint = async () => {
     const testData = {
@@ -36,10 +36,10 @@ export function PrintExample() {
         { nome: 'Batata Frita Grande', quantidade: 1, preco: 15.00 }
       ],
       formaPagamento: 'PIX',
-      config: printConfig
+      config: printConfig;
     };
 
-    await printReceipt(testData, '550e8400-e29b-41d4-a716-446655440001');
+    await printReceipt(testData, '550e8400-e29b-41d4-a716-446655440001')
   };
 
   return (
@@ -83,11 +83,11 @@ const printData = {
     width: ${printConfig.width},
     removeAccents: ${printConfig.removeAccents},
     marginLeft: ${printConfig.marginLeft}
-  }
+  };
 };
 
 // Imprimir
-await printReceipt(printData, companyId);`}
+await printReceipt(printData, companyId)`}
                 </pre>
               </div>
 
@@ -138,5 +138,5 @@ await printReceipt(printData, companyId);`}
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

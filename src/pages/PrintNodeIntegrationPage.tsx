@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ProBadge } from '@/components/ui/pro-badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { ExternalLink, Printer, ShieldCheck, RefreshCcw, Save, TestTube2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -23,87 +23,82 @@ const SEO = () => {
     const description = 'Configure e teste a integração com a PrintNode para impressão em nuvem.';
     document.title = title;
 
-    let meta = document.querySelector('meta[name="description"]');
+    let meta = document.querySelector('meta[name="description"]')
     if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'description')
+      document.head.appendChild(meta)
     }
-    meta.setAttribute('content', description);
+    meta.setAttribute('content', description)
 
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
-      canonical = document.createElement('link');
+      canonical = document.createElement('link')
       canonical.rel = 'canonical';
-      document.head.appendChild(canonical);
+      document.head.appendChild(canonical)
     }
     canonical.href = window.location.href;
-  }, []);
+  }, [])
   return null;
 };
 
 const PrintNodeIntegrationPage: React.FC = () => {
-  const { toast } = useToast();
-  const { currentCompany } = useAuth();
+  const { toast } = useToast()
+  const { currentCompany } = useAuth()
 
   const companyId = currentCompany?.id as string | undefined;
 
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
 
-  const [accountInfo, setAccountInfo] = useState<any>(null);
-  const [printers, setPrinters] = useState<PrintNodePrinter[]>([]);
+  const [accountInfo, setAccountInfo] = useState<any>(null)
+  const [printers, setPrinters] = useState<PrintNodePrinter[]>([])
 
   // Per-loja (company) settings
-  const [enabled, setEnabled] = useState<boolean>(true);
-  const [childAccountId, setChildAccountId] = useState<string>('');
-  const [childEmail, setChildEmail] = useState<string>('');
-  const [defaultPrinterId, setDefaultPrinterId] = useState<string>('');
-  const [defaultPrinterName, setDefaultPrinterName] = useState<string>('');
+  const [enabled, setEnabled] = useState<boolean>(true)
+  const [childAccountId, setChildAccountId] = useState<string>('')
+  const [childEmail, setChildEmail] = useState<string>('')
+  const [defaultPrinterId, setDefaultPrinterId] = useState<string>('')
+  const [defaultPrinterName, setDefaultPrinterName] = useState<string>('')
 
   const childHeaders = useMemo(() => ({
     childAccountId: childAccountId ? Number(childAccountId) : undefined,
-    childAccountEmail: childEmail || undefined,
-  }), [childAccountId, childEmail]);
+    childAccountEmail: childEmail || undefined,;
+  }), [childAccountId, childEmail])
 
   const openDocs = () => {
-    window.open('https://www.printnode.com/en/docs/api/curl', '_blank', 'noopener,noreferrer');
+    window.open('https://www.printnode.com/en/docs/api/curl', '_blank', 'noopener,noreferrer')
   };
 
   // Load existing settings for the company
   useEffect(() => {
     if (!companyId) return;
     (async () => {
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('printnode_enabled, printnode_child_account_id, printnode_child_email, printnode_default_printer_id, printnode_default_printer_name')
-        .eq('company_id', companyId)
-        .maybeSingle();
-
+      const { data, error  } = null as any;
       if (error) {
-        console.error('Erro carregando settings PrintNode:', error);
+        console.error('Erro carregando settings PrintNode:', error)
         return;
       }
       if (data) {
-        setEnabled(Boolean(data.printnode_enabled));
-        setChildAccountId(data.printnode_child_account_id ? String(data.printnode_child_account_id) : '');
-        setChildEmail(data.printnode_child_email || '');
-        setDefaultPrinterId(data.printnode_default_printer_id ? String(data.printnode_default_printer_id) : '');
-        setDefaultPrinterName(data.printnode_default_printer_name || '');
+        setEnabled(Boolean(data.printnode_enabled))
+        setChildAccountId(data.printnode_child_account_id ? String(data.printnode_child_account_id) : '')
+        setChildEmail(data.printnode_child_email || '')
+        setDefaultPrinterId(data.printnode_default_printer_id ? String(data.printnode_default_printer_id) : '')
+        setDefaultPrinterName(data.printnode_default_printer_name || '')
       }
-    })();
-  }, [companyId]);
+    })()
+  }, [companyId])
 
   const saveSettings = async () => {
     if (!companyId) {
-      toast({ title: 'Empresa não selecionada', variant: 'destructive' });
+      toast({ title: 'Empresa não selecionada', variant: 'destructive' })
       return;
     }
-    setSaving(true);
+    setSaving(true)
     try {
-      const { error } = await supabase
-        .from('company_settings')
-        .upsert(
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           {
             company_id: companyId,
             printnode_enabled: enabled,
@@ -113,74 +108,74 @@ const PrintNodeIntegrationPage: React.FC = () => {
             printnode_default_printer_name: defaultPrinterName || null,
           },
           { onConflict: 'company_id' }
-        );
+        )
       if (error) throw error;
-      toast({ title: 'Configurações salvas' });
+      toast({ title: 'Configurações salvas' })
     } catch (err: any) {
-      console.error(err);
-      toast({ title: 'Erro ao salvar', description: err?.message, variant: 'destructive' });
+      console.error(err)
+      toast({ title: 'Erro ao salvar', description: err?.message, variant: 'destructive' })
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
   const testConnection = async () => {
-    setLoading(true);
-    setAccountInfo(null);
+    setLoading(true)
+    setAccountInfo(null)
     try {
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { action: 'whoami', ...childHeaders },
-      });
+      })
       if (error) throw error;
-      setAccountInfo(data);
-      toast({ title: 'Conexão OK', description: 'Credenciais válidas com a PrintNode.' });
+      setAccountInfo(data)
+      toast({ title: 'Conexão OK', description: 'Credenciais válidas com a PrintNode.' })
     } catch (err: any) {
-      console.error(err);
+      console.error(err)
       toast({
         title: 'Falha ao conectar',
         description: err?.message || 'Verifique a PRINTNODE_API_KEY e o child selecionado.',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const loadPrinters = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { action: 'printers', ...childHeaders },
-      });
+      })
       if (error) throw error;
       const arr: PrintNodePrinter[] = Array.isArray(data) ? (data as PrintNodePrinter[]) : [];
-      setPrinters(arr);
+      setPrinters(arr)
       // Auto-selecionar padrão se ainda não houver um
       if (!defaultPrinterId && arr.length > 0) {
         const firstOnline = arr.find((p) => String(p.state || '').toLowerCase() === 'online') ?? arr[0];
         if (firstOnline) {
-          setDefaultPrinterId(String(firstOnline.id));
-          setDefaultPrinterName(firstOnline.name);
+          setDefaultPrinterId(String(firstOnline.id))
+          setDefaultPrinterName(firstOnline.name)
         }
       }
-      toast({ title: 'Impressoras carregadas', description: `${arr.length} encontrada(s).` });
+      toast({ title: 'Impressoras carregadas', description: `${arr.length} encontrada(s).` })
     } catch (err: any) {
-      console.error(err);
-      toast({ title: 'Falha ao listar impressoras', description: err?.message, variant: 'destructive' });
+      console.error(err)
+      toast({ title: 'Falha ao listar impressoras', description: err?.message, variant: 'destructive' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const printTest = async () => {
     if (!defaultPrinterId) {
-      toast({ title: 'Selecione e salve uma impressora', variant: 'destructive' });
+      toast({ title: 'Selecione e salve uma impressora', variant: 'destructive' })
       return;
     }
-    setLoading(true);
+    setLoading(true)
     try {
-      const content = btoa('Teste de impressão via PrintNode\nDomínio Tech POS\n\nObrigado!');
-      const { data, error } = await supabase.functions.invoke('printnode-proxy', {
+      const content = btoa('Teste de impressão via PrintNode\nDomínio Tech POS\n\nObrigado!')
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           action: 'print',
           printerId: Number(defaultPrinterId),
@@ -190,14 +185,14 @@ const PrintNodeIntegrationPage: React.FC = () => {
           source: 'Dominio POS',
           ...childHeaders,
         },
-      });
+      })
       if (error) throw error;
-      toast({ title: 'Job enviado', description: 'Verifique a fila do PrintNode.' });
+      toast({ title: 'Job enviado', description: 'Verifique a fila do PrintNode.' })
     } catch (err: any) {
-      console.error(err);
-      toast({ title: 'Erro ao imprimir', description: err?.message, variant: 'destructive' });
+      console.error(err)
+      toast({ title: 'Erro ao imprimir', description: err?.message, variant: 'destructive' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -328,9 +323,9 @@ const PrintNodeIntegrationPage: React.FC = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => {
-                          setDefaultPrinterId(String(p.id));
-                          setDefaultPrinterName(p.name);
-                          toast({ title: 'Selecionada', description: `${p.name} (ID ${p.id})` });
+                          setDefaultPrinterId(String(p.id))
+                          setDefaultPrinterName(p.name)
+                          toast({ title: 'Selecionada', description: `${p.name} (ID ${p.id})` })
                         }}
                       >
                         Usar como padrão
@@ -344,7 +339,7 @@ const PrintNodeIntegrationPage: React.FC = () => {
         </div>
       </section>
     </main>
-  );
+  )
 };
 
 export default PrintNodeIntegrationPage;

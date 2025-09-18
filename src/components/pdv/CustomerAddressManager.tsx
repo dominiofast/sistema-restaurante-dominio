@@ -29,7 +29,7 @@ interface CustomerAddressManagerProps {
   onNovoEndereco: () => void;
   onFechar: () => void;
   onDeleteAddress: (addressId: string) => Promise<boolean>;
-}
+
 
 export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
   cliente,
@@ -39,73 +39,73 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
   onFechar,
   onDeleteAddress
 }) => {
-  const { toast } = useToast();
-  const { currentCompany } = useAuth();
-  const { validateAddress } = useAddressValidator(currentCompany?.id);
-  const [validatingAddressId, setValidatingAddressId] = React.useState<string | null>(null);
-  const [deletingAddressId, setDeletingAddressId] = React.useState<string | null>(null);
+  const { toast } = useToast()
+  const { currentCompany } = useAuth()
+  const { validateAddress } = useAddressValidator(currentCompany?.id)
+  const [validatingAddressId, setValidatingAddressId] = React.useState<string | null>(null)
+  const [deletingAddressId, setDeletingAddressId] = React.useState<string | null>(null)
 
   const handleDeliveryClick = async (endereco: CustomerAddress) => {
     if (!endereco.id) return;
     
-    setValidatingAddressId(endereco.id);
+    setValidatingAddressId(endereco.id)
     
     try {
-      console.log('🔍 Validando endereço existente:', endereco);
+      console.log('🔍 Validando endereço existente:', endereco)
       
-      const validation = await validateAddress(endereco);
+      const validation = await validateAddress(endereco)
       
       if (!validation.isValid) {
         toast({
           title: "Endereço fora da área de atendimento",
           description: validation.message || "Este endereço não está mais dentro da nossa área de entrega.",
           variant: "destructive"
-        });
+        } catch (error) { console.error('Error:', error) })
         return;
       }
       
-      console.log('✅ Endereço validado - Criando pedido delivery');
-      onNovoPedido('delivery', endereco.id);
+      console.log('✅ Endereço validado - Criando pedido delivery')
+      onNovoPedido('delivery', endereco.id)
       
     } catch (error) {
-      console.error('❌ Erro na validação do endereço:', error);
+      console.error('❌ Erro na validação do endereço:', error)
       toast({
         title: "Erro na validação",
         description: "Não foi possível validar o endereço. Tente novamente.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setValidatingAddressId(null);
-    }
+      setValidatingAddressId(null)
+
   };
 
   const handleDeleteAddress = async (addressId: string) => {
-    setDeletingAddressId(addressId);
+    setDeletingAddressId(addressId)
     
     try {
-      const success = await onDeleteAddress(addressId);
+      const success = await onDeleteAddress(addressId)
       
       if (success) {
         toast({
           title: "Endereço excluído",
           description: "O endereço foi removido com sucesso.",
-        });
+        } catch (error) { console.error('Error:', error) })
       } else {
         toast({
           title: "Erro ao excluir",
           description: "Não foi possível excluir o endereço. Tente novamente.",
           variant: "destructive"
-        });
+        })
       }
     } catch (error) {
       toast({
         title: "Erro ao excluir",
         description: "Ocorreu um erro inesperado. Tente novamente.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setDeletingAddressId(null);
-    }
+      setDeletingAddressId(null)
+
   };
 
   return (
@@ -226,5 +226,5 @@ export const CustomerAddressManager: React.FC<CustomerAddressManagerProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

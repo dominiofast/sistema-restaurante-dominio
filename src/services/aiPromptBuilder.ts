@@ -52,7 +52,7 @@ export class AIPromptBuilder {
   ): string {
     // Se não há prompt global, usa fallback
     if (!globalConfig.system_prompt) {
-      return this.buildFallbackPrompt(agentConfig, cardapioData, paymentConfig, extras);
+      return this.buildFallbackPrompt(agentConfig, cardapioData, paymentConfig, extras)
     }
 
     // Variáveis para substituição no template genérico
@@ -65,59 +65,59 @@ export class AIPromptBuilder {
       contact_phone: (agentConfig as any).telefone || undefined,
       contact_address: (agentConfig as any).endereco || undefined,
       agent_name: agentConfig.agent_name || agentConfig.nome || 'Assistente Virtual',
-      customer_name: '{{customer_name}}' // Preservar para processamento posterior
+      customer_name: '{{customer_name}}' // Preservar para processamento posterior;
     };
 
     // Substitui variáveis no prompt global
     let prompt = globalConfig.system_prompt;
     
     // Substituição de variáveis obrigatórias (suporta ambos os formatos)
-    prompt = prompt.replace(/{company_name}/g, variables.company_name);
-    prompt = prompt.replace(/\{\{company_name\}\}/g, variables.company_name);
+    prompt = prompt.replace(/{company_name}/g, variables.company_name)
+    prompt = prompt.replace(/\{\{company_name\}\}/g, variables.company_name)
     
-    prompt = prompt.replace(/{menu_url}/g, variables.menu_url);
-    prompt = prompt.replace(/\{\{menu_url\}\}/g, variables.menu_url);
+    prompt = prompt.replace(/{menu_url}/g, variables.menu_url)
+    prompt = prompt.replace(/\{\{menu_url\}\}/g, variables.menu_url)
     
-    prompt = prompt.replace(/{cardapio_url}/g, variables.cardapio_url);
-    prompt = prompt.replace(/\{\{cardapio_url\}\}/g, variables.cardapio_url);
+    prompt = prompt.replace(/{cardapio_url}/g, variables.cardapio_url)
+    prompt = prompt.replace(/\{\{cardapio_url\}\}/g, variables.cardapio_url)
     
-    prompt = prompt.replace(/{agent_name}/g, variables.agent_name);
-    prompt = prompt.replace(/\{\{agent_name\}\}/g, variables.agent_name);
+    prompt = prompt.replace(/{agent_name}/g, variables.agent_name)
+    prompt = prompt.replace(/\{\{agent_name\}\}/g, variables.agent_name)
     
     // Substituição de variáveis opcionais (apenas se existirem)
     if (variables.cashback_percent) {
-      prompt = prompt.replace(/{cashback_percent}/g, variables.cashback_percent.toString());
-      prompt = prompt.replace(/\{\{cashback_percent\}\}/g, variables.cashback_percent.toString());
+      prompt = prompt.replace(/{cashback_percent}/g, variables.cashback_percent.toString())
+      prompt = prompt.replace(/\{\{cashback_percent\}\}/g, variables.cashback_percent.toString())
     } else {
       // Remove menções a cashback se não configurado
-      prompt = prompt.replace(/\{cashback_percent\}%?/g, '');
-      prompt = prompt.replace(/\{\{cashback_percent\}\}%?/g, '');
-      prompt = prompt.replace(/cashback.*?\{cashback_percent\}.*?[.;]/gi, '');
-      prompt = prompt.replace(/cashback.*?\{\{cashback_percent\}\}.*?[.;]/gi, '');
+      prompt = prompt.replace(/\{cashback_percent\}%?/g, '')
+      prompt = prompt.replace(/\{\{cashback_percent\}\}%?/g, '')
+      prompt = prompt.replace(/cashback.*?\{cashback_percent\}.*?[.;]/gi, '')
+      prompt = prompt.replace(/cashback.*?\{\{cashback_percent\}\}.*?[.;]/gi, '')
     }
     
     if (variables.opening_hours) {
-      prompt = prompt.replace(/{opening_hours}/g, variables.opening_hours);
-      prompt = prompt.replace(/\{\{opening_hours\}\}/g, variables.opening_hours);
+      prompt = prompt.replace(/{opening_hours}/g, variables.opening_hours)
+      prompt = prompt.replace(/\{\{opening_hours\}\}/g, variables.opening_hours)
     } else {
-      prompt = prompt.replace(/{opening_hours}/g, 'consulte nossos horários');
-      prompt = prompt.replace(/\{\{opening_hours\}\}/g, 'consulte nossos horários');
+      prompt = prompt.replace(/{opening_hours}/g, 'consulte nossos horários')
+      prompt = prompt.replace(/\{\{opening_hours\}\}/g, 'consulte nossos horários')
     }
     
     if (variables.contact_phone) {
-      prompt = prompt.replace(/{contact_phone}/g, variables.contact_phone);
-      prompt = prompt.replace(/\{\{contact_phone\}\}/g, variables.contact_phone);
+      prompt = prompt.replace(/{contact_phone}/g, variables.contact_phone)
+      prompt = prompt.replace(/\{\{contact_phone\}\}/g, variables.contact_phone)
     } else {
-      prompt = prompt.replace(/{contact_phone}/g, 'consulte nosso telefone');
-      prompt = prompt.replace(/\{\{contact_phone\}\}/g, 'consulte nosso telefone');
+      prompt = prompt.replace(/{contact_phone}/g, 'consulte nosso telefone')
+      prompt = prompt.replace(/\{\{contact_phone\}\}/g, 'consulte nosso telefone')
     }
     
     if (variables.contact_address) {
-      prompt = prompt.replace(/{contact_address}/g, variables.contact_address);
-      prompt = prompt.replace(/\{\{contact_address\}\}/g, variables.contact_address);
+      prompt = prompt.replace(/{contact_address}/g, variables.contact_address)
+      prompt = prompt.replace(/\{\{contact_address\}\}/g, variables.contact_address)
     } else {
-      prompt = prompt.replace(/{contact_address}/g, 'consulte nosso endereço');
-      prompt = prompt.replace(/\{\{contact_address\}\}/g, 'consulte nosso endereço');
+      prompt = prompt.replace(/{contact_address}/g, 'consulte nosso endereço')
+      prompt = prompt.replace(/\{\{contact_address\}\}/g, 'consulte nosso endereço')
     }
     
     // Não substituir customer_name, deixar para processamento dinâmico
@@ -125,7 +125,7 @@ export class AIPromptBuilder {
     // Adiciona dados do cardápio se disponível e configurado
     const productKnowledge = agentConfig.product_knowledge !== undefined ? 
       agentConfig.product_knowledge : 
-      agentConfig.conhecimento_produtos !== undefined ? 
+      agentConfig.conhecimento_produtos !== undefined ? ;
       agentConfig.conhecimento_produtos : true;
 
     if (cardapioData && productKnowledge) {
@@ -153,7 +153,7 @@ Sempre mencione esta opção quando falarem sobre formas de pagamento.`;
     }
 
     return prompt;
-  }
+
 
   /**
    * Prompt fallback para quando não há configuração global
@@ -184,5 +184,5 @@ ${cardapioData ? `📊 CARDÁPIO:\n${cardapioData}\n\n⚠️ IMPORTANTE: Use APE
 ${extras?.cashbackPercent ? `💰 CASHBACK: ${extras.cashbackPercent}% em todos os pedidos\n` : ''}
 
 Mantenha sempre o foco no atendimento baseado em dados reais e seja proativo nas sugestões (apenas produtos reais).`;
-  }
+
 }

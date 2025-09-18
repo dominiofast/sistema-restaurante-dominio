@@ -34,10 +34,10 @@ export const MessageList: React.FC<MessageListProps> = ({
   onScrollToTop,
   isLoading = false
 }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const userScrolledRef = useRef(false);
-  const lastScrollTop = useRef(0);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const userScrolledRef = useRef(false)
+  const lastScrollTop = useRef(0)
 
   // Auto-scroll inteligente
   useEffect(() => {
@@ -53,9 +53,9 @@ export const MessageList: React.FC<MessageListProps> = ({
     if (!userScrolledRef.current || isNearBottom) {
       messagesEndRef.current.scrollIntoView({ 
         behavior: userScrolledRef.current ? 'smooth' : 'auto'
-      });
+      })
     }
-  }, [messages.length, isTyping, autoScroll]);
+  }, [messages.length, isTyping, autoScroll])
 
   // Detectar scroll manual do usuário
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -75,7 +75,7 @@ export const MessageList: React.FC<MessageListProps> = ({
 
     // Lazy loading - carregar mensagens antigas quando chegar no topo
     if (currentScrollTop === 0 && onScrollToTop) {
-      onScrollToTop();
+      onScrollToTop()
     }
     
     lastScrollTop.current = currentScrollTop;
@@ -84,7 +84,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   // Força scroll para o final
   const scrollToBottom = () => {
     userScrolledRef.current = false;
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   };
 
   // Agrupar mensagens por data
@@ -92,18 +92,18 @@ export const MessageList: React.FC<MessageListProps> = ({
     const groups: { date: string; messages: Message[] }[] = [];
     
     messages.forEach(message => {
-      const dateStr = format(message.timestamp, 'yyyy-MM-dd');
-      const existingGroup = groups.find(g => g.date === dateStr);
+      const dateStr = format(message.timestamp, 'yyyy-MM-dd')
+      const existingGroup = groups.find(g => g.date === dateStr)
       
       if (existingGroup) {
-        existingGroup.messages.push(message);
+        existingGroup.messages.push(message)
       } else {
-        groups.push({ date: dateStr, messages: [message] });
+        groups.push({ date: dateStr, messages: [message] })
       }
-    });
+    })
     
     return groups;
-  }, [messages]);
+  }, [messages])
 
   if (messages.length === 0) {
     return (
@@ -123,8 +123,8 @@ export const MessageList: React.FC<MessageListProps> = ({
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div 
@@ -227,5 +227,5 @@ export const MessageList: React.FC<MessageListProps> = ({
         </button>
       )}
     </div>
-  );
+  )
 };

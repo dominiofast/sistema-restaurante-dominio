@@ -22,17 +22,17 @@ export const NovoEnderecoForm: React.FC<NovoEnderecoFormProps> = ({ onSave, onCa
     bairro: '',
     cidade: '',
     estado: ''
-  });
-  const [buscandoCep, setBuscandoCep] = useState(false);
+  })
+  const [buscandoCep, setBuscandoCep] = useState(false)
 
   const buscarCep = async (cep: string) => {
-    const cepLimpo = cep.replace(/\D/g, '');
+    const cepLimpo = cep.replace(/\D/g, '')
     if (cepLimpo.length !== 8) return;
 
-    setBuscandoCep(true);
+    setBuscandoCep(true)
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      const data = await response.json();
+      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo} catch (error) { console.error('Error:', error) }/json/`)
+      const data = await response.json()
 
       if (!data.erro) {
         setEndereco(prev => ({
@@ -41,28 +41,28 @@ export const NovoEnderecoForm: React.FC<NovoEnderecoFormProps> = ({ onSave, onCa
           bairro: data.bairro || '',
           cidade: data.localidade || '',
           estado: data.uf || ''
-        }));
+        }))
       }
     } catch (error) {
-      console.error('Erro ao buscar CEP:', error);
+      console.error('Erro ao buscar CEP:', error)
     } finally {
-      setBuscandoCep(false);
-    }
+      setBuscandoCep(false)
+
   };
 
   const handleCepChange = (value: string) => {
-    setEndereco(prev => ({ ...prev, cep: value }));
+    setEndereco(prev => ({ ...prev, cep: value }))
     if (value.replace(/\D/g, '').length === 8) {
-      buscarCep(value);
-    }
+      buscarCep(value)
+
   };
 
   const handleSalvar = () => {
     if (!endereco.logradouro || !endereco.numero || !endereco.bairro || !endereco.cidade) {
-      alert('Por favor, preencha todos os campos obrigatórios');
+      alert('Por favor, preencha todos os campos obrigatórios')
       return;
-    }
-    onSave(endereco);
+
+    onSave(endereco)
   };
 
   return (
@@ -183,5 +183,5 @@ export const NovoEnderecoForm: React.FC<NovoEnderecoFormProps> = ({ onSave, onCa
         </Card>
       </div>
     </div>
-  );
+  )
 };

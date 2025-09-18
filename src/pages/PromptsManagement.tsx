@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   ArrowLeft, 
@@ -27,7 +27,7 @@ interface Company {
   slug: string;
   domain: string;
   status: string;
-}
+
 
 interface PromptData {
   agent_slug: string;
@@ -35,19 +35,19 @@ interface PromptData {
   vars: any;
   version: number;
   updated_at: string;
-}
+
 
 export default function PromptsManagement() {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [prompts, setPrompts] = useState<Record<string, PromptData>>({});
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [globalTemplate, setGlobalTemplate] = useState<any>(null);
-  const [showGlobalModal, setShowGlobalModal] = useState(false);
-  const [applyingTemplate, setApplyingTemplate] = useState(false);
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const { user } = useAuth()
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [prompts, setPrompts] = useState<Record<string, PromptData>>({})
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [globalTemplate, setGlobalTemplate] = useState<any>(null)
+  const [showGlobalModal, setShowGlobalModal] = useState(false)
+  const [applyingTemplate, setApplyingTemplate] = useState(false)
 
   // Apenas Super Admin pode acessar
   if (user && user.role !== 'super_admin') {
@@ -62,64 +62,49 @@ export default function PromptsManagement() {
           </CardContent>
         </Card>
       </div>
-    );
-  }
+    )
+
 
   useEffect(() => {
-    loadData();
-  }, []);
+    loadData()
+  }, [])
 
   const loadData = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
       // Carregar empresas
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name, slug, domain, status')
-        .order('name');
-
-      if (companiesError) throw companiesError;
-      setCompanies(companiesData || []);
+      const companiesData = null as any; const companiesError = null as any;
+      setCompanies(companiesData || [])
 
       // Carregar prompts de todas as empresas
-      const { data: promptsData, error: promptsError } = await supabase
-        .from('ai_agent_prompts')
-        .select('*');
-
-      if (promptsError) throw promptsError;
+      const promptsData = null as any; const promptsError = null as any;
       
-      const promptsMap: Record<string, PromptData> = {};
+      const promptsMap: Record<string, PromptData> = {} catch (error) { console.error('Error:', error) };
       (promptsData || []).forEach(prompt => {
         promptsMap[prompt.agent_slug] = prompt;
-      });
-      setPrompts(promptsMap);
+      })
+      setPrompts(promptsMap)
 
       // Carregar template global
-      const { data: globalData, error: globalError } = await supabase
-        .from('ai_global_prompt_template')
-        .select('*')
-        .single();
+      const globalData = null as any; const globalError = null as any;
 
-      if (!globalError && globalData) {
-        setGlobalTemplate(globalData);
-      }
 
     } catch (error: any) {
       toast({
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.slug.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const getPromptStatus = (companySlug: string) => {
     const prompt = prompts[companySlug];
@@ -130,7 +115,7 @@ export default function PromptsManagement() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'complete':
+      case 'complete':;
         return <Badge className="bg-green-100 text-green-800"><CheckCircle className="w-3 h-3 mr-1" />Completo</Badge>;
       case 'incomplete':
         return <Badge className="bg-yellow-100 text-yellow-800"><AlertCircle className="w-3 h-3 mr-1" />Incompleto</Badge>;
@@ -138,95 +123,94 @@ export default function PromptsManagement() {
         return <Badge className="bg-red-100 text-red-800"><Clock className="w-3 h-3 mr-1" />Faltando</Badge>;
       default:
         return <Badge variant="outline">Desconhecido</Badge>;
-    }
+
   };
 
   const updateGlobalTemplate = async (newTemplate: string) => {
     try {
-      const { error } = await supabase
-        .from('ai_global_prompt_template')
-        .update({
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           template: newTemplate,
           is_active: true,
           updated_at: new Date().toISOString()
         })
-        .eq('id', globalTemplate?.id);
+        
 
       if (error) throw error;
 
       toast({
         title: "Template global atualizado",
         description: "O template foi salvo com sucesso!",
-      });
+      })
 
-      setGlobalTemplate(prev => ({ ...prev, template: newTemplate }));
-      setShowGlobalModal(false);
+      setGlobalTemplate(prev => ({ ...prev, template: newTemplate }))
+      setShowGlobalModal(false)
     } catch (error: any) {
       toast({
         title: "Erro ao atualizar template",
         description: error.message,
         variant: "destructive"
-      });
-    }
+      })
+
   };
 
   const applyGlobalTemplate = async () => {
     try {
-      setApplyingTemplate(true);
+      setApplyingTemplate(true)
       
-      const { data, error } = await supabase.functions.invoke('apply-global-template', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { companiesToUpdate: 'all' }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Template aplicado com sucesso!",
         description: `${data.summary?.successful || 0} empresas atualizadas com horários reais`,
-      });
+      })
 
       // Recarregar dados
-      await loadData();
+      await loadData()
     } catch (error: any) {
       toast({
         title: "Erro ao aplicar template",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setApplyingTemplate(false);
-    }
+      setApplyingTemplate(false)
+
   };
 
   const fixHorariosReais = async () => {
     try {
-      setApplyingTemplate(true);
+      setApplyingTemplate(true)
       
       toast({
         title: "🚨 CORREÇÃO URGENTE INICIADA",
         description: "Aplicando horários reais aos prompts...",
-      });
+      } catch (error) { console.error('Error:', error) })
 
-      const { data, error } = await supabase.functions.invoke('fix-horarios-reais');
-
+      const { data, error } = await Promise.resolve()
       if (error) throw error;
 
       toast({
         title: "✅ CORREÇÃO CONCLUÍDA!",
         description: `${data.summary?.successful || 0} empresas corrigidas com horários reais`,
-      });
+      })
 
       // Recarregar dados
-      await loadData();
+      await loadData()
     } catch (error: any) {
       toast({
         title: "❌ Erro na correção",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setApplyingTemplate(false);
-    }
+      setApplyingTemplate(false)
+
   };
 
   const formatDate = (dateString: string) => {
@@ -235,8 +219,8 @@ export default function PromptsManagement() {
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
-    });
+      minute: '2-digit';
+    })
   };
 
   if (loading) {
@@ -246,8 +230,8 @@ export default function PromptsManagement() {
           <div className="text-lg">Carregando...</div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -366,7 +350,7 @@ export default function PromptsManagement() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredCompanies.map((company) => {
           const prompt = prompts[company.slug];
-          const status = getPromptStatus(company.slug);
+          const status = getPromptStatus(company.slug)
           
           return (
             <Card key={company.id} className="hover:shadow-lg transition-shadow">
@@ -424,7 +408,7 @@ export default function PromptsManagement() {
                         toast({
                           title: "Preview do Prompt",
                           description: `Template de ${company.name} (${prompt.template.length} chars)`,
-                        });
+                        })
                       }}
                     >
                       <Eye className="h-4 w-4" />
@@ -433,7 +417,7 @@ export default function PromptsManagement() {
                 </div>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </div>
 
@@ -504,5 +488,5 @@ export default function PromptsManagement() {
         </div>
       )}
     </div>
-  );
-}
+  )
+

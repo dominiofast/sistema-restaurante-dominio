@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Zap, Bot, CheckCircle, XCircle, Search } from 'lucide-react';
 import { aiService } from '@/services/aiService';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 interface TestResult {
@@ -19,55 +19,55 @@ interface TestResult {
 }
 
 export function MigrationTestPanel() {
-  const [companyId, setCompanyId] = useState('11e10dba-8ed0-47fc-91f5-bc88f2aef4ca');
-  const [testMessage, setTestMessage] = useState('Olá! Vocês têm promoção hoje?');
-  const [testing, setTesting] = useState(false);
-  const [results, setResults] = useState<TestResult[]>([]);
-  const [isDebugging, setIsDebugging] = useState(false);
-  const [debugResult, setDebugResult] = useState<any>(null);
+  const [companyId, setCompanyId] = useState('11e10dba-8ed0-47fc-91f5-bc88f2aef4ca')
+  const [testMessage, setTestMessage] = useState('Olá! Vocês têm promoção hoje?')
+  const [testing, setTesting] = useState(false)
+  const [results, setResults] = useState<TestResult[]>([])
+  const [isDebugging, setIsDebugging] = useState(false)
+  const [debugResult, setDebugResult] = useState<any>(null)
 
   const debugDirectMode = async () => {
     if (!companyId) {
       toast({
         title: 'Erro',
         description: 'Selecione uma empresa primeiro',
-        variant: 'destructive'
-      });
+        variant: 'destructive';
+      })
       return;
     }
 
-    setIsDebugging(true);
-    setDebugResult(null);
+    setIsDebugging(true)
+    setDebugResult(null)
 
     try {
-      console.log('🔍 Investigando modo direto para empresa:', companyId);
+      console.log('🔍 Investigando modo direto para empresa:', companyId)
       
-      const { data, error } = await supabase.functions.invoke('debug-direct-mode', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { company_id: companyId }
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro na edge function de debug:', error);
+        console.error('❌ Erro na edge function de debug:', error)
         throw error;
       }
 
-      console.log('✅ Resultado do debug:', data);
-      setDebugResult(data);
+      console.log('✅ Resultado do debug:', data)
+      setDebugResult(data)
 
       toast({
         title: 'Debug Concluído',
         description: 'Verifique o resultado abaixo',
-      });
+      })
 
     } catch (error) {
-      console.error('❌ Erro no debug:', error);
+      console.error('❌ Erro no debug:', error)
       toast({
         title: 'Erro no Debug',
         description: error instanceof Error ? error.message : 'Erro desconhecido',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setIsDebugging(false);
+      setIsDebugging(false)
     }
   };
 
@@ -76,26 +76,26 @@ export function MigrationTestPanel() {
       toast({
         title: 'Erro',
         description: 'Company ID e mensagem são obrigatórios',
-        variant: 'destructive'
-      });
+        variant: 'destructive';
+      })
       return;
     }
 
-    setTesting(true);
-    setResults([]);
+    setTesting(true)
+    setResults([])
 
     try {
       // Testar método legado (Assistants)
-      console.log('🔄 Testando método legado...');
-      aiService.setDirectMode(false);
-      const startLegacy = Date.now();
+      console.log('🔄 Testando método legado...')
+      aiService.setDirectMode(false)
+      const startLegacy = Date.now()
       const legacyResult = await aiService.generateResponse(
         companyId,
         testMessage,
         [],
         '5511999999999',
-        'Cliente Teste'
-      );
+        'Cliente Teste';
+      )
       const legacyTime = Date.now() - startLegacy;
 
       const legacyTestResult: TestResult = {
@@ -105,24 +105,24 @@ export function MigrationTestPanel() {
         tokensUsed: legacyResult?.tokensUsed || 0,
         responseTime: legacyTime,
         error: !legacyResult ? 'Falha na geração de resposta' : undefined
-      };
+      } catch (error) { console.error('Error:', error) };
 
-      setResults(prev => [...prev, legacyTestResult]);
+      setResults(prev => [...prev, legacyTestResult])
 
       // Aguardar 1 segundo entre testes
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000))
 
       // Testar método direto (Chat Completions)
-      console.log('🔄 Testando método direto...');
-      aiService.setDirectMode(true);
-      const startDirect = Date.now();
+      console.log('🔄 Testando método direto...')
+      aiService.setDirectMode(true)
+      const startDirect = Date.now()
       const directResult = await aiService.generateResponse(
         companyId,
         testMessage,
         [],
         '5511999999999',
-        'Cliente Teste'
-      );
+        'Cliente Teste';
+      )
       const directTime = Date.now() - startDirect;
 
       const directTestResult: TestResult = {
@@ -134,29 +134,29 @@ export function MigrationTestPanel() {
         error: !directResult ? 'Falha na geração de resposta' : undefined
       };
 
-      setResults(prev => [...prev, directTestResult]);
+      setResults(prev => [...prev, directTestResult])
 
       // Análise dos resultados
       if (legacyTestResult.success && directTestResult.success) {
         const speedImprovement = legacyTime > directTime ? 
-          `${Math.round(((legacyTime - directTime) / legacyTime) * 100)}% mais rápido` : 
+          `${Math.round(((legacyTime - directTime) / legacyTime) * 100)}% mais rápido` : ;
           `${Math.round(((directTime - legacyTime) / directTime) * 100)}% mais lento`;
 
         toast({
           title: 'Comparação concluída!',
           description: `Modo direto foi ${speedImprovement}`,
-        });
+        })
       }
 
     } catch (error) {
-      console.error('Erro na comparação:', error);
+      console.error('Erro na comparação:', error)
       toast({
         title: 'Erro no teste',
         description: error instanceof Error ? error.message : 'Erro desconhecido',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
@@ -215,8 +215,8 @@ export function MigrationTestPanel() {
           <p className="text-sm mt-1 text-red-700">{result.error}</p>
         </div>
       )}
-    </div>
-  );
+    </div>;
+  )
 
   return (
     <Card>
@@ -330,5 +330,5 @@ export function MigrationTestPanel() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

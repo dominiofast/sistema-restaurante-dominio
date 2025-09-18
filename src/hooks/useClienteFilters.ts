@@ -16,7 +16,7 @@ interface Cliente {
   company_id?: string;
   dias_sem_comprar?: number;
   total_pedidos?: number;
-}
+
 
 type AbaType = 'potencial' | 'inativos' | 'ativos';
 
@@ -24,47 +24,47 @@ export const useClienteFilters = (clientes: Cliente[], searchTerm: string) => {
   const filteredBySearch = useMemo(() => {
     if (!searchTerm) return clientes;
     
-    const term = searchTerm.toLowerCase();
+    const term = searchTerm.toLowerCase()
     return clientes.filter(cliente => 
       cliente.nome?.toLowerCase().includes(term) ||
       cliente.email?.toLowerCase().includes(term) ||
       cliente.telefone?.toLowerCase().includes(term) ||
       cliente.documento?.toLowerCase().includes(term)
-    );
-  }, [clientes, searchTerm]);
+    )
+  }, [clientes, searchTerm])
 
   const clientesByStatus = useMemo(() => {
-    const ativos = clientes.filter(c => c.status === 'ativo');
-    const inativos = clientes.filter(c => c.status === 'inativo');
-    const potenciais = clientes.filter(c => !c.status || (c.status !== 'ativo' && c.status !== 'inativo'));
+    const ativos = clientes.filter(c => c.status === 'ativo')
+    const inativos = clientes.filter(c => c.status === 'inativo')
+    const potenciais = clientes.filter(c => !c.status || (c.status !== 'ativo' && c.status !== 'inativo'))
 
     return {
       ativos,
       inativos,
       potenciais
     };
-  }, [clientes]);
+  }, [clientes])
 
   const getClientesByTab = (aba: AbaType) => {
     const allByStatus = clientesByStatus[aba];
     
     if (!searchTerm) return allByStatus;
     
-    const term = searchTerm.toLowerCase();
+    const term = searchTerm.toLowerCase()
     return allByStatus.filter(cliente => 
       cliente.nome?.toLowerCase().includes(term) ||
       cliente.email?.toLowerCase().includes(term) ||
       cliente.telefone?.toLowerCase().includes(term) ||
       cliente.documento?.toLowerCase().includes(term)
-    );
+    )
   };
 
   const counts = useMemo(() => ({
     total: clientes.length,
     ativos: clientesByStatus.ativos.length,
     inativos: clientesByStatus.inativos.length,
-    potenciais: clientesByStatus.potenciais.length
-  }), [clientes.length, clientesByStatus]);
+    potenciais: clientesByStatus.potenciais.length;
+  }), [clientes.length, clientesByStatus])
 
   return {
     filteredBySearch,

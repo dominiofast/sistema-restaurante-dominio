@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import ReceitaModal from '@/components/ficha-tecnica/ReceitaModal';
 import DadosPadraoButton from '@/components/ficha-tecnica/DadosPadraoButton';
@@ -26,76 +26,76 @@ interface Receita {
   is_active: boolean;
   created_at: string;
   company_id: string;
-}
+
 
 const ReceitasFichasTecnicas: React.FC = () => {
-  const [receitas, setReceitas] = useState<Receita[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingReceita, setEditingReceita] = useState<Receita | undefined>(undefined);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  const [receitas, setReceitas] = useState<Receita[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editingReceita, setEditingReceita] = useState<Receita | undefined>(undefined)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
   useEffect(() => {
-    fetchReceitas();
-  }, [user, currentCompany]);
+    fetchReceitas()
+  }, [user, currentCompany])
 
   const fetchReceitas = async () => {
     if (!user) {
-      setError('Usuário não autenticado');
-      setLoading(false);
+      setError('Usuário não autenticado')
+      setLoading(false)
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Se não há empresa selecionada, mostrar dados de todas as empresas (para super admin)
       let query = (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .select('*');
+        
+        
 
       // Se há uma empresa específica selecionada, filtrar por ela
       if (currentCompany?.id) {
-        query = query.eq('company_id', currentCompany.id);
+        query = query
       }
 
-      const { data, error: fetchError } = await query.order('nome');
+       catch (error) { console.error('Error:', error) }const { data, error: fetchError } = await query
 
       if (fetchError) {
-        console.error('Erro ao carregar receitas:', fetchError);
+        console.error('Erro ao carregar receitas:', fetchError)
         throw fetchError;
       }
 
-      setReceitas(data || []);
+      setReceitas(data || [])
     } catch (error: any) {
-      console.error('Erro completo:', error);
-      setError(error.message || 'Erro ao carregar receitas');
+      console.error('Erro completo:', error)
+      setError(error.message || 'Erro ao carregar receitas')
       toast({
         title: 'Erro ao carregar receitas',
         description: error.message || 'Tente novamente em alguns instantes',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const handleOpenModal = (receita?: Receita) => {
-    setEditingReceita(receita);
-    setModalOpen(true);
+    setEditingReceita(receita)
+    setModalOpen(true)
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
-    setEditingReceita(undefined);
+    setModalOpen(false)
+    setEditingReceita(undefined)
   };
 
   const handleSaveReceita = () => {
-    fetchReceitas(); // Recarregar a lista
+    fetchReceitas() // Recarregar a lista
   };
 
   const handleDeleteReceita = async (receita: Receita) => {
@@ -104,26 +104,26 @@ const ReceitasFichasTecnicas: React.FC = () => {
     }
 
     try {
-      const { error } = await (supabase as any)
-        .from('receitas_fichas_tecnicas')
-        .delete()
-        .eq('id', receita.id);
+      const { error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
+        
+        
+        
 
       if (error) throw error;
 
       toast({
         title: 'Receita excluída',
         description: `"${receita.nome}" foi removida com sucesso.`,
-      });
+      })
 
-      fetchReceitas(); // Recarregar a lista
+      fetchReceitas() // Recarregar a lista
     } catch (error: any) {
-      console.error('Erro ao excluir receita:', error);
+      console.error('Erro ao excluir receita:', error)
       toast({
         title: 'Erro ao excluir',
         description: error.message || 'Ocorreu um erro ao excluir a receita',
         variant: 'destructive',
-      });
+      })
     }
   };
 
@@ -131,27 +131,27 @@ const ReceitasFichasTecnicas: React.FC = () => {
     receita.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     receita.categoria?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     receita.descricao?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const formatCurrency = (value?: number) => {
     if (!value) return 'R$ 0,00';
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
-    }).format(value);
+    }).format(value)
   };
 
   const formatTime = (minutes?: number) => {
     if (!minutes) return 'N/A';
     if (minutes < 60) return `${minutes}min`;
-    const hours = Math.floor(minutes / 60);
+    const hours = Math.floor(minutes / 60)
     const mins = minutes % 60;
     return `${hours}h${mins > 0 ? ` ${mins}min` : ''}`;
   };
 
   const calcularMargemLucro = (custo?: number, preco?: number) => {
     if (!custo || !preco || custo === 0) return 0;
-    return ((preco - custo) / custo * 100);
+    return ((preco - custo) / custo * 100)
   };
 
   if (loading) {
@@ -164,8 +164,8 @@ const ReceitasFichasTecnicas: React.FC = () => {
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   if (error) {
     return (
@@ -181,8 +181,8 @@ const ReceitasFichasTecnicas: React.FC = () => {
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="w-full px-6 py-4 space-y-4 max-w-none">
@@ -355,9 +355,9 @@ const ReceitasFichasTecnicas: React.FC = () => {
           {/* Corpo da Tabela */}
           <div className="divide-y divide-gray-100">
             {filteredReceitas.map((receita, index) => {
-              const margemCalculada = calcularMargemLucro(receita.custo_total, receita.preco_venda_sugerido);
-              const dataAtualizacao = new Date(receita.created_at).toLocaleDateString('pt-BR');
-              const emUso = Math.max(1, Math.floor(Math.random() * 15));
+              const margemCalculada = calcularMargemLucro(receita.custo_total, receita.preco_venda_sugerido)
+              const dataAtualizacao = new Date(receita.created_at).toLocaleDateString('pt-BR')
+              const emUso = Math.max(1, Math.floor(Math.random() * 15))
               
               return (
                 <div 
@@ -468,7 +468,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
                     </div>
                   )}
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -482,7 +482,7 @@ const ReceitasFichasTecnicas: React.FC = () => {
         onSave={handleSaveReceita}
       />
     </div>
-  );
+  )
 };
 
 export default ReceitasFichasTecnicas; 

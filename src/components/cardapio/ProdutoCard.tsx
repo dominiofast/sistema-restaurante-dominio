@@ -134,5 +134,5 @@ export const ProdutoCard: React.FC<ProdutoCardProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

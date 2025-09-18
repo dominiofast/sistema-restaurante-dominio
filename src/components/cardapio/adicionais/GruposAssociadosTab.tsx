@@ -5,7 +5,22 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },;
+  })
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`)
+  }
+  
+  return response.json()
+
 import { Produto, CategoriaAdicional, Adicional, ProdutoCategoriaAdicional } from '@/types/cardapio';
 import { useCardapio } from '@/hooks/useCardapio';
 import { useAdicionaisCRUD } from '@/hooks/useAdicionaisCRUD';
@@ -49,7 +64,7 @@ interface SortableCategoriaProps {
   children: React.ReactNode;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 const SortableCategoria: React.FC<SortableCategoriaProps> = ({ categoria, children }) => {
   const {
@@ -59,11 +74,11 @@ const SortableCategoria: React.FC<SortableCategoriaProps> = ({ categoria, childr
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: categoria?.id || '' });
+  } = useSortable({ id: categoria?.id || '' })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -79,7 +94,7 @@ const SortableCategoria: React.FC<SortableCategoriaProps> = ({ categoria, childr
         isDragging
       })}
     </div>
-  );
+  )
 };
 
 // Componente sortable para adicionais
@@ -88,7 +103,7 @@ interface SortableAdicionalProps {
   children: React.ReactNode;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, children }) => {
   const {
@@ -98,11 +113,11 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: adicional.id });
+  } = useSortable({ id: adicional.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -118,7 +133,7 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
         isDragging
       })}
     </div>
-  );
+  )
 };
 
 interface GruposAssociadosTabProps {
@@ -127,7 +142,7 @@ interface GruposAssociadosTabProps {
   adicionais: Adicional[];
   produtoCategoriasAdicionais: ProdutoCategoriaAdicional[];
   onRefresh: () => void;
-}
+
 
 
 export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
@@ -137,23 +152,23 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
   produtoCategoriasAdicionais,
   onRefresh
 }) => {
-  const { toast } = useToast();
-  const { reorderAdicionais, adicionais: adicionaisHook } = useCardapio();
+  const { toast } = useToast()
+  const { reorderAdicionais, adicionais: adicionaisHook } = useCardapio()
   
   // Estado local para adicionais com updates otimistas
-  const [adicionaisLocal, setAdicionaisLocal] = useState<Adicional[]>(adicionaisHook);
+  const [adicionaisLocal, setAdicionaisLocal] = useState<Adicional[]>(adicionaisHook)
   
   // Sincronizar estado local com hook quando há mudanças externas
   useEffect(() => {
-    setAdicionaisLocal(adicionaisHook);
-  }, [adicionaisHook]);
+    setAdicionaisLocal(adicionaisHook)
+  }, [adicionaisHook])
   
   // Usar hooks CRUD extraídos
-  const adicionaisCRUD = useAdicionaisCRUD();
-  const categoriasCRUD = useCategoriaAdicionaisCRUD();
+  const adicionaisCRUD = useAdicionaisCRUD()
+  const categoriasCRUD = useCategoriaAdicionaisCRUD()
   
   // Estado para controlar grupos expandidos/recolhidos
-  const [gruposExpandidos, setGruposExpandidos] = useState<{ [categoriaId: string]: boolean }>({});
+  const [gruposExpandidos, setGruposExpandidos] = useState<{ [categoriaId: string]: boolean }>({})
 
   // Configuração dos sensores para drag and drop
   const sensors = useSensors(
@@ -165,7 +180,7 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
-  );
+  )
 
   // Handlers para drag and drop
   const handleDragEndCategorias = async (event: DragEndEvent) => {
@@ -173,62 +188,60 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
     
     if (!over || active.id === over.id) return;
 
-    const oldIndex = categoriasAssociadasLocal.findIndex(cat => cat?.id === active.id);
-    const newIndex = categoriasAssociadasLocal.findIndex(cat => cat?.id === over.id);
+    const oldIndex = categoriasAssociadasLocal.findIndex(cat => cat?.id === active.id)
+    const newIndex = categoriasAssociadasLocal.findIndex(cat => cat?.id === over.id)
     
     if (oldIndex !== -1 && newIndex !== -1) {
-      console.log('🔄 Reordenando categorias associadas:', { oldIndex, newIndex });
+      console.log('🔄 Reordenando categorias associadas:', { oldIndex, newIndex })
       
       // 1. Atualizar estado local IMEDIATAMENTE para feedback visual
-      const newOrder = Array.from(categoriasAssociadasLocal);
-      const [removed] = newOrder.splice(oldIndex, 1);
-      newOrder.splice(newIndex, 0, removed);
-      setCategoriasAssociadasLocal(newOrder);
+      const newOrder = Array.from(categoriasAssociadasLocal)
+      const [removed] = newOrder.splice(oldIndex, 1)
+      newOrder.splice(newIndex, 0, removed)
+      setCategoriasAssociadasLocal(newOrder)
       
       try {
         
         // 2. Persistir nova ordem no banco de dados
         const updates = newOrder.map((categoria, index) => {
           const associacao = produtoCategoriasAdicionais.find(
-            pca => pca.categoria_adicional_id === categoria?.id
-          );
+            pca => pca.categoria_adicional_id === categoria?.id;
+          )
           return {
             id: associacao?.id,
             order_position: index + 1
-          };
-        }).filter(update => update.id);
+          } catch (error) { console.error('Error:', error) };
+        }).filter(update => update.id)
 
         // Atualizar as posições no banco usando atualizações individuais
         for (const update of updates) {
-          const { error: updateError } = await supabase
-            .from('produto_categorias_adicionais')
-            .update({ order_position: update.order_position })
-            .eq('id', update.id);
-          
-          if (updateError) throw updateError;
-        }
+          await apiRequest(`/api/produto-categorias-adicionais/${update.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ order_position: update.order_position })
+          })
+
 
         toast({
           title: "Reordenação salva",
           description: `Categoria movida da posição ${oldIndex + 1} para ${newIndex + 1}`,
-        });
+        })
         
         // 3. Atualizar dados do componente pai
-        onRefresh();
+        onRefresh()
         
       } catch (error) {
-        console.error('Erro ao reordenar categorias associadas:', error);
+        console.error('Erro ao reordenar categorias associadas:', error)
         // 4. Em caso de erro, reverter o estado local
-        setCategoriasAssociadasLocal(categoriasAssociadasLocal);
+        setCategoriasAssociadasLocal(categoriasAssociadasLocal)
         toast({
           title: "Erro",
           description: "Não foi possível salvar a reordenação das categorias",
           variant: "destructive",
-        });
+        })
       } finally {
         // Usar loading dos hooks CRUD se necessário
-      }
-    }
+
+
   };
 
   const handleDragEndAdicionais = async (event: DragEndEvent, categoriaId: string) => {
@@ -236,80 +249,80 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
     
     if (!over || active.id === over.id) return;
 
-    const adicionaisCategoria = adicionaisPorCategoria(categoriaId);
-    const oldIndex = adicionaisCategoria.findIndex(adicional => adicional.id === active.id);
-    const newIndex = adicionaisCategoria.findIndex(adicional => adicional.id === over.id);
+    const adicionaisCategoria = adicionaisPorCategoria(categoriaId)
+    const oldIndex = adicionaisCategoria.findIndex(adicional => adicional.id === active.id)
+    const newIndex = adicionaisCategoria.findIndex(adicional => adicional.id === over.id)
     
     if (oldIndex !== -1 && newIndex !== -1) {
-      console.log('🎯 Reordenando adicionais:', { oldIndex, newIndex, categoriaId });
+      console.log('🎯 Reordenando adicionais:', { oldIndex, newIndex, categoriaId })
       
       try {
-        await reorderAdicionais(oldIndex, newIndex, categoriaId);
+        await reorderAdicionais(oldIndex, newIndex, categoriaId)
         toast({
           title: "Reordenação",
           description: `Adicional reordenado com sucesso!`,
-        });
+        } catch (error) { console.error('Error:', error) })
       } catch (error) {
-        console.error('Erro ao reordenar adicionais:', error);
+        console.error('Erro ao reordenar adicionais:', error)
         toast({
           title: "Erro",
           description: "Não foi possível reordenar o adicional",
           variant: "destructive",
-        });
-      }
-    }
+        })
+
+
   };
 
   // Usar funções dos hooks CRUD  
   const handleEditarCategoria = (categoria: CategoriaAdicional) => {
-    categoriasCRUD.handleEditarCategoria(categoria, produtoCategoriasAdicionais);
+    categoriasCRUD.handleEditarCategoria(categoria, produtoCategoriasAdicionais)
   };
 
   const handleSalvarEdicaoCategoria = async () => {
-    const success = await categoriasCRUD.handleSalvarEdicaoCategoria();
+    const success = await categoriasCRUD.handleSalvarEdicaoCategoria()
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const desassociarCategoriaAdicional = async (associacaoId: string) => {
-    const success = await categoriasCRUD.desassociarCategoriaAdicional(associacaoId);
+    const success = await categoriasCRUD.desassociarCategoriaAdicional(associacaoId)
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const handleCancelarEdicao = () => {
-    categoriasCRUD.handleCancelarEdicao();
-    adicionaisCRUD.handleCancelarEdicao();
+    categoriasCRUD.handleCancelarEdicao()
+    adicionaisCRUD.handleCancelarEdicao()
   };
 
   const handleCriarAdicional = async (categoriaId: string) => {
-    const success = await adicionaisCRUD.handleCriarAdicional(categoriaId);
+    const success = await adicionaisCRUD.handleCriarAdicional(categoriaId)
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const handleSaveAdicional = async () => {
-    const success = await adicionaisCRUD.handleSaveAdicional();
+    const success = await adicionaisCRUD.handleSaveAdicional()
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const handleDeleteAdicional = async (adicionalId: string) => {
-    const success = await adicionaisCRUD.handleDeleteAdicional(adicionalId);
+    const success = await adicionaisCRUD.handleDeleteAdicional(adicionalId)
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const handleImageUpload = async (file: File, adicionalId: string) => {
-    const success = await adicionaisCRUD.handleImageUpload(file, adicionalId);
+    const success = await adicionaisCRUD.handleImageUpload(file, adicionalId)
     if (success) {
-      onRefresh();
-    }
+      onRefresh()
+
   };
 
   const handleToggleAdicionalStatus = async (adicionalId: string, isActive: boolean) => {
@@ -318,25 +331,23 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
       setAdicionaisLocal(prev => 
         prev.map(adicional => 
           adicional.id === adicionalId 
-            ? { ...adicional, is_active: isActive }
-            : adicional
+            ? { ...adicional, is_active: isActive };
+             catch (error) { console.error('Error:', error) }: adicional
         )
-      );
+      )
 
-      const { error } = await supabase
-        .from('adicionais')
-        .update({ is_active: isActive } as any)
-        .eq('id', adicionalId);
-
-      if (error) throw error;
+      await apiRequest(`/api/adicionais/${adicionalId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_active: isActive })
+      })
 
       toast({
         title: "Status alterado",
         description: `Adicional ${isActive ? 'ativado' : 'desativado'} com sucesso!`,
-      });
+      })
 
     } catch (error) {
-      console.error('Erro ao alterar status do adicional:', error);
+      console.error('Erro ao alterar status do adicional:', error)
       
       // Reverter optimistic update em caso de erro
       setAdicionaisLocal(prev => 
@@ -345,43 +356,43 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
             ? { ...adicional, is_active: !isActive }
             : adicional
         )
-      );
+      )
       
       toast({
         title: "Erro",
         description: "Não foi possível alterar o status do adicional",
         variant: "destructive",
-      });
-    }
+      })
+
   };
 
   // Estado local para os grupos associados para permitir reordenação em tempo real
   const [categoriasAssociadasLocal, setCategoriasAssociadasLocal] = useState(() => {
     return produtoCategoriasAdicionais.map(pca => 
       categoriasAdicionais.find(ca => ca.id === pca.categoria_adicional_id)
-    ).filter(Boolean);
-  });
+    ).filter(Boolean)
+  })
 
   // Atualizar estado local quando as props mudarem
   useEffect(() => {
     const novasCategorias = produtoCategoriasAdicionais.map(pca => 
       categoriasAdicionais.find(ca => ca.id === pca.categoria_adicional_id)
-    ).filter(Boolean);
-    setCategoriasAssociadasLocal(novasCategorias);
-  }, [produtoCategoriasAdicionais, categoriasAdicionais]);
+    ).filter(Boolean)
+    setCategoriasAssociadasLocal(novasCategorias)
+  }, [produtoCategoriasAdicionais, categoriasAdicionais])
 
   const adicionaisPorCategoria = useMemo(() => {
     return (categoriaId: string) => {
-      // Usar o estado local em vez do hook para ter as atualizações em tempo real
-      const adicionaisExistentes = adicionaisLocal.filter(a => a.categoria_adicional_id === categoriaId);
+      // Usar o estado local em vez do hook para ter as atualizações em tempo real;
+      const adicionaisExistentes = adicionaisLocal.filter(a => a.categoria_adicional_id === categoriaId)
       return adicionaisExistentes.sort((a, b) => {
         const aOrder = a.order_position ?? 999;
         const bOrder = b.order_position ?? 999;
         if (aOrder !== bOrder) return aOrder - bOrder;
-        return a.name.localeCompare(b.name);
-      });
+        return a.name.localeCompare(b.name)
+      })
     };
-  }, [adicionaisLocal]); // Usar o estado local como dependência
+  }, [adicionaisLocal]) // Usar o estado local como dependência
 
   return (
     <div className="space-y-6 mt-6">
@@ -413,9 +424,9 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
             <div className="space-y-6">
               {categoriasAssociadasLocal.map((categoria, index) => {
                 const associacao = produtoCategoriasAdicionais.find(
-                  pca => pca.categoria_adicional_id === categoria?.id
-                );
-                const adicionaisCategoria = adicionaisPorCategoria(categoria?.id || '');
+                  pca => pca.categoria_adicional_id === categoria?.id;
+                )
+                const adicionaisCategoria = adicionaisPorCategoria(categoria?.id || '')
                 const estaEditando = categoriasCRUD.editandoCategoria === categoria?.id;
 
                 return (
@@ -455,12 +466,12 @@ export const GruposAssociadosTab: React.FC<GruposAssociadosTabProps> = ({
                       handleDragEndAdicionais={handleDragEndAdicionais}
                     />
                   </SortableCategoria>
-                );
+                )
               })}
             </div>
           </SortableContext>
         </DndContext>
       )}
     </div>
-  );
+  )
 };

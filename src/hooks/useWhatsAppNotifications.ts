@@ -6,14 +6,14 @@ import { useGlobalWhatsAppNotification } from '@/contexts/GlobalWhatsAppNotifica
  * @returns {object} Objeto com funções e estado das notificações
  */
 export const useWhatsAppNotifications = () => {
-  return useGlobalWhatsAppNotification();
+  return useGlobalWhatsAppNotification()
 };
 
 /**
  * Hook para mostrar notificação manual (para casos especiais)
  */
 export const useManualNotification = () => {
-  const { showNotification } = useGlobalWhatsAppNotification();
+  const { showNotification } = useGlobalWhatsAppNotification()
   
   const notify = (message: {
     senderName: string;
@@ -30,7 +30,7 @@ export const useManualNotification = () => {
       chatId: message.chatId,
       companyName: message.companyName,
       timestamp: new Date()
-    });
+    })
   };
 
   return { notify };

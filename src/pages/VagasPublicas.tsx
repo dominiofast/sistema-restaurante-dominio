@@ -10,18 +10,18 @@ const tiposContrato = [
   { value: 'CLT', label: 'CLT' },
   { value: 'PJ', label: 'PJ' },
   { value: 'Estágio', label: 'Estágio' },
-  { value: 'Temporário', label: 'Temporário' },
+  { value: 'Temporário', label: 'Temporário' },;
 ];
 
 export default function VagasPublicas() {
   // Pega o identificador da empresa pela URL (slug, store_code ou id)
-  const { slug_empresa } = useParams();
-  const { branding, loading } = usePublicBranding({ companyIdentifier: slug_empresa });
+  const { slug_empresa } = useParams()
+  const { branding, loading } = usePublicBranding({ companyIdentifier: slug_empresa })
 
   // Filtros de busca
-  const [busca, setBusca] = useState('');
-  const [tipoContrato, setTipoContrato] = useState('');
-  const [localizacao, setLocalizacao] = useState('');
+  const [busca, setBusca] = useState('')
+  const [tipoContrato, setTipoContrato] = useState('')
+  const [localizacao, setLocalizacao] = useState('')
 
   // Simulação de vagas (integrar com API futuramente)
   const vagas = [];
@@ -127,5 +127,5 @@ export default function VagasPublicas() {
         Portal de vagas criado com <b>Dominio Brands</b>
       </footer>
     </div>
-  );
-}
+  )
+

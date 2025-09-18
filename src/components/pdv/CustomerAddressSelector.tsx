@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, MapPin, Edit, Trash2 } from 'lucide-react';
 import { useCustomerAddresses, CustomerAddress } from '@/hooks/useCustomerAddresses';
 import { DeliveryAddressModal } from './DeliveryAddressModal';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface CustomerAddressSelectorProps {
@@ -22,73 +22,61 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
   onAddressSelect,
   onCustomerNameChange
 }) => {
-  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses();
-  const [showNewAddressModal, setShowNewAddressModal] = useState(false);
-  const { currentCompany } = useAuth();
+  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses()
+  const [showNewAddressModal, setShowNewAddressModal] = useState(false)
+  const { currentCompany } = useAuth()
 
   useEffect(() => {
     async function buscarOuCadastrarCliente() {
       if (customerPhone) {
         // Limpar telefone removendo caracteres especiais
-        const telefoneNumeros = customerPhone.replace(/\D/g, '');
+        const telefoneNumeros = customerPhone.replace(/\D/g, '')
         
-        console.log('🔍 Buscando cliente no PDV com telefone:', telefoneNumeros);
+        console.log('🔍 Buscando cliente no PDV com telefone:', telefoneNumeros)
         
         // Buscar cliente pelo telefone
-        const { data: clientes, error } = await supabase
-          .from('clientes')
-          .select('*')
-          .eq('telefone', telefoneNumeros)
-          .limit(1);
-          
+        const { data: clientes, error  } = null as any;
         if (!error && clientes && clientes.length > 0) {
-          console.log('✅ Cliente encontrado no PDV:', clientes[0]);
+          console.log('✅ Cliente encontrado no PDV:', clientes[0])
           // Se existe, preencher nome automaticamente
           const nome = clientes[0].nome || 'Cliente';
-          if (onCustomerNameChange) onCustomerNameChange(nome);
+          if (onCustomerNameChange) onCustomerNameChange(nome)
         } else if (!error && clientes && clientes.length === 0 && telefoneNumeros.length >= 8 && currentCompany?.id) {
-          console.log('📝 Cadastrando novo cliente no PDV');
+          console.log('📝 Cadastrando novo cliente no PDV')
           
           // Se não existe, cadastrar novo cliente
-          const { data: novoCliente, error: insertError } = await supabase
-            .from('clientes')
-            .insert({ nome: customerName || 'Cliente', telefone: telefoneNumeros, company_id: currentCompany.id })
-            .select()
-            .single();
-            
-          if (!insertError && novoCliente) {
-            console.log('✅ Cliente cadastrado no PDV:', novoCliente);
+          const novoCliente = null as any; const insertError = null as any;
           }
         }
-      }
-      fetchAddressesByPhone(customerPhone, currentCompany?.id);
-    }
-    buscarOuCadastrarCliente();
-  }, [customerPhone]);
+
+      fetchAddressesByPhone(customerPhone, currentCompany?.id)
+
+    buscarOuCadastrarCliente()
+  }, [customerPhone])
 
   const handleNewAddress = (newAddress: any) => {
     const addressWithId = {
       ...newAddress,
       id: Date.now().toString(),
       customer_name: customerName,
-      customer_phone: customerPhone
+      customer_phone: customerPhone;
     };
     
-    onAddressSelect(addressWithId);
-    setShowNewAddressModal(false);
+    onAddressSelect(addressWithId)
+    setShowNewAddressModal(false)
   };
 
   const handleDeleteAddress = async (addressId: string) => {
     if (confirm('Deseja excluir este endereço?')) {
       try {
-        await deleteAddress(addressId);
+        await deleteAddress(addressId)
         if (selectedAddress?.id === addressId) {
-          onAddressSelect(null);
-        }
-      } catch (error) {
-        console.error('Erro ao excluir endereço:', error);
-      }
-    }
+          onAddressSelect(null)
+
+       } catch (error) {
+        console.error('Erro ao excluir endereço:', error)
+
+
   };
 
   if (loading) {
@@ -96,8 +84,8 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
       <div className="p-4 text-center text-gray-500">
         Carregando endereços...
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-3">
@@ -155,8 +143,8 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
                     size="sm"
                     variant="ghost"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteAddress(address.id!);
+                      e.stopPropagation()
+                      handleDeleteAddress(address.id!)
                     }}
                     className="text-red-500 hover:text-red-700 hover:bg-red-50"
                   >
@@ -177,5 +165,5 @@ export const CustomerAddressSelector: React.FC<CustomerAddressSelectorProps> = (
         customerPhone={customerPhone}
       />
     </div>
-  );
+  )
 };

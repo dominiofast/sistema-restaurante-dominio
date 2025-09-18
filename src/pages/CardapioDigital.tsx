@@ -29,59 +29,59 @@ interface Produto {
   is_available: boolean;
   preparation_time?: number;
   company_id: string;
-}
+
 
 const CardapioDigital: React.FC = () => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const { currentCompany, user } = useAuth();
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate()
+  const params = useParams()
+  const { currentCompany, user } = useAuth()
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
   // Identificador: id do contexto ou slug/código na URL
-  const slugFromUrl = (params as any)?.slug || (typeof window !== 'undefined' ? window.location.pathname.split('/').filter(Boolean)[0] : '');
+  const slugFromUrl = (params as any)?.slug || (typeof window !== 'undefined' ? window.location.pathname.split('/').filter(Boolean)[0] : '')
   const companyIdentifier = currentCompany?.id || slugFromUrl || '';
 
   // Branding resolve company_id quando vier por slug/código
-  const { branding, loading: brandingLoading, error: brandingError } = usePublicBranding(companyIdentifier);
+  const { branding, loading: brandingLoading, error: brandingError } = usePublicBranding(companyIdentifier)
 
   // Company efetivo para dados
   const effectiveCompanyId = currentCompany?.id || branding?.company_id;
 
   // Carregar dados do cardápio
-  const { categorias, produtos, loading: dataLoading, error } = useCardapioData(effectiveCompanyId);
+  const { categorias, produtos, loading: dataLoading, error } = useCardapioData(effectiveCompanyId)
 
   // Carregar configurações da empresa
-  const { settings, isLoading: settingsLoading } = useCompanySettings(effectiveCompanyId);
+  const { settings, isLoading: settingsLoading } = useCompanySettings(effectiveCompanyId)
 
   // Calcular preços em lote para produtos com adicionais obrigatórios
-  const { pricingMap, loading: pricingLoading } = useBulkProductPricing(produtos);
+  const { pricingMap, loading: pricingLoading } = useBulkProductPricing(produtos)
 
   function handleProdutoClick(produto: Produto) {
-    navigate('/produto-detalhe', { state: { produto } });
+    navigate('/produto-detalhe', { state: { produto } })
   }
 
   // Selecionar primeira categoria automaticamente
   useEffect(() => {
     if (categorias.length > 0 && categoriaSelecionada === null) {
-      console.log('📌 Selecionando primeira categoria:', categorias[0].name);
-      setCategoriaSelecionada(categorias[0].id);
+      console.log('📌 Selecionando primeira categoria:', categorias[0].name)
+      setCategoriaSelecionada(categorias[0].id)
     } else if (categorias.length === 0 && categoriaSelecionada !== null) {
-      console.log('📌 Nenhuma categoria encontrada, mostrando destaques');
-      setCategoriaSelecionada(null);
+      console.log('📌 Nenhuma categoria encontrada, mostrando destaques')
+      setCategoriaSelecionada(null)
     }
-  }, [categorias, categoriaSelecionada]);
+  }, [categorias, categoriaSelecionada])
 
   // Produtos da categoria selecionada ou em destaque
   const produtosFiltrados = categoriaSelecionada
     ? produtos.filter(p => p.categoria_id === categoriaSelecionada)
-    : produtos.filter(p => p.destaque);
+    : produtos.filter(p => p.destaque)
 
   // Filtrar por busca
   const produtosFinal = produtosFiltrados.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   console.log('📊 Estado atual render:', {
     loading: dataLoading || brandingLoading,
@@ -95,7 +95,7 @@ const CardapioDigital: React.FC = () => {
     produtosFinalCount: produtosFinal.length,
     searchTerm,
     error
-  });
+  })
 
   // Mostrar erro se há erro específico
   if (error) {
@@ -108,7 +108,7 @@ const CardapioDigital: React.FC = () => {
           </AlertDescription>
         </Alert>
       </div>
-    );
+    )
   }
 
   // Caso público por slug/código: aguardar branding para resolver a empresa
@@ -120,7 +120,7 @@ const CardapioDigital: React.FC = () => {
           <div className="text-lg text-gray-800">Carregando loja...</div>
         </div>
       </div>
-    );
+    )
   }
 
   // Loja não encontrada após carregar branding
@@ -134,7 +134,7 @@ const CardapioDigital: React.FC = () => {
           </AlertDescription>
         </Alert>
       </div>
-    );
+    )
   }
 
   // Mostrar loading apenas enquanto carrega dados do cardápio (branding tem fallback)
@@ -150,7 +150,7 @@ const CardapioDigital: React.FC = () => {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // Configurações de branding com fallbacks (prioriza settings, depois branding)
@@ -159,11 +159,11 @@ const CardapioDigital: React.FC = () => {
   const backgroundColor = branding?.background_color || '#FFFFFF';
   const textColor = branding?.text_color || '#1F2937';
 
-  const headerCompany = currentCompany || (branding ? ({ id: branding.company_id, name: branding.company_name || 'Loja' } as any) : undefined);
+  const headerCompany = currentCompany || (branding ? ({ id: branding.company_id, name: branding.company_name || 'Loja' } as any) : undefined)
 
   // Configurar favicon dinâmico com o logo da loja
   const logoUrl = (branding as any)?.logo_url || (currentCompany as any)?.logo_url;
-  useDynamicFavicon({ logoUrl });
+  useDynamicFavicon({ logoUrl })
 
 
   const getSectionTitle = () => {
@@ -316,14 +316,14 @@ const CardapioDigital: React.FC = () => {
                     )}
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         )}
       </div>
 
     </div>
-  );
+  )
 };
 
 export default CardapioDigital;

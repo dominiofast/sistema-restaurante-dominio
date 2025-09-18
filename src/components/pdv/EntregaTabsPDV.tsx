@@ -36,4 +36,4 @@ export const EntregaTabsPDV = ({ tab, setTab }: { tab: string; setTab: (t: 'deli
       Consumir no local
     </button>
   </div>
-);
+)

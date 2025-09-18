@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client'
-
+// SUPABASE REMOVIDO
 export interface PedidoData {
   companyId: string
   cliente: {
@@ -26,7 +25,7 @@ export interface PedidoData {
   observacoes?: string
   endereco?: any
   pix_data?: any
-}
+
 
 export interface CriarPedidoResponse {
   success: boolean
@@ -42,18 +41,18 @@ export interface CriarPedidoResponse {
   itens_sem_produto_id: number
   warnings: string[]
   endpoint: string
-}
+
 
 export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPedidoResponse> {
   console.log('🛒 DEBUG LOCAL: Criando pedido local...', pedidoData)
 
   try {
     // 1. Buscar empresa
-    const { data: company, error: companyError } = await supabase
-      .from('companies')
-      .select('*')
-      .eq('id', pedidoData.companyId)
-      .single()
+    const { data: company, error: companyError }  catch (error) { console.error('Error:', error) }= 
+      
+      
+      
+      
 
     if (companyError || !company) {
       console.error('❌ Empresa não encontrada:', companyError)
@@ -66,9 +65,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
     const numeroPedido = Math.floor(Math.random() * 10000) + 1000
 
     // 3. Criar pedido (COLUNAS CORRETAS!)
-    const { data: novoPedido, error: pedidoError } = await supabase
-      .from('pedidos')
-      .insert({
+    const { data: novoPedido, error: pedidoError  } = null as any;
         company_id: pedidoData.companyId,
         numero_pedido: numeroPedido,
         nome: pedidoData.cliente.nome,
@@ -81,8 +78,8 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         origem: 'cardapio_publico_local',
         created_at: new Date().toISOString()
       } as any)
-      .select()
-      .single()
+      
+      
 
     if (pedidoError) {
       console.error('❌ Erro ao criar pedido:', pedidoError)
@@ -111,13 +108,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
       const valorTotalItem = item.price * item.quantity
 
       // VALIDAÇÃO: Verificar se produto existe
-      const { data: produtoExiste, error: produtoError } = await supabase
-        .from('produtos')
-        .select('id')
-        .eq('id', item.id)
-        .eq('company_id', pedidoData.companyId)
-        .single()
-
+      const { data: produtoExiste, error: produtoError  } = null as any;
       let itemSalvo = null
 
       if (produtoError || !produtoExiste) {
@@ -127,9 +118,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         })
         
         // Inserir item SEM produto_id (FALLBACK SEGURO)
-        const { data: itemResult, error: itemError } = await supabase
-          .from('pedido_itens')
-          .insert({
+        const { data: itemResult, error: itemError  } = null as any;
             pedido_id: novoPedido.id,
             produto_id: null, // NULL para IDs inválidos
             nome_produto: item.name,
@@ -137,13 +126,13 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
             valor_unitario: item.price,
             valor_total: valorTotalItem
           })
-          .select()
-          .single()
+          
+          
 
         if (itemError) {
           console.error('❌ ERRO ao salvar item sem produto_id:', itemError)
           continue
-        }
+
 
         itemSalvo = itemResult
         itensSalvos++
@@ -153,9 +142,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
 
       } else {
         // Produto existe - inserir normalmente
-        const { data: itemResult, error: itemError } = await supabase
-          .from('pedido_itens')
-          .insert({
+        const { data: itemResult, error: itemError  } = null as any;
             pedido_id: novoPedido.id,
             produto_id: item.id,
             nome_produto: item.name,
@@ -163,19 +150,19 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
             valor_unitario: item.price,
             valor_total: valorTotalItem
           })
-          .select()
-          .single()
+          
+          
 
         if (itemError) {
           console.error('❌ ERRO ao salvar item:', itemError)
           continue
-        }
+
 
         itemSalvo = itemResult
         itensSalvos++
         itensComProdutoId++
         console.log('✅ Item salvo COM produto_id:', item.name)
-      }
+
 
       // Salvar adicionais se existirem
       if (item.adicionais && item.adicionais.length > 0 && itemSalvo) {
@@ -184,9 +171,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
         for (const adicional of item.adicionais) {
           const valorTotalAdicional = adicional.price * adicional.quantity
           
-          const { error: adicionalError } = await supabase
-            .from('pedido_item_adicionais')
-            .insert({
+          const { error: adicionalError  } = null as any;
               pedido_item_id: itemSalvo.id,
               categoria_nome: 'Adicional',
               nome_adicional: adicional.name,
@@ -199,9 +184,9 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
             console.error('❌ ERRO ao salvar adicional:', adicionalError)
           } else {
             console.log('✅ Adicional salvo:', adicional.name)
-          }
-        }
-      }
+
+
+
     }
 
     // Log estatísticas finais
@@ -223,7 +208,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
       message: 'Pedido criado com sucesso via função local',
       empresa: company.name,
       // Estatísticas detalhadas
-      itens_processados: itensProcessados,
+// itens_processados: itensProcessados,
       itens_salvos: itensSalvos,
       itens_com_produto_id: itensComProdutoId,
       itens_sem_produto_id: itensSemProdutoId,
@@ -235,4 +220,4 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
     console.error('💥 ERRO na função local:', error)
     throw new Error(`Erro interno: ${error instanceof Error ? error.message : 'Erro desconhecido'}`)
   }
-}
+};

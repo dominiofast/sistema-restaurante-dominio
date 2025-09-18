@@ -40,12 +40,12 @@ interface CardapioListProps {
   onReorderCategorias: (startIndex: number, endIndex: number) => void;
   onReorderProdutos: (startIndex: number, endIndex: number, categoriaId: string) => void;
   loading?: boolean;
-}
+
 
 interface SortableItemProps {
   id: string;
   children: React.ReactNode;
-}
+
 
 const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
   const {
@@ -57,11 +57,11 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
     isDragging,
   } = useSortable({
     id,
-  });
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -81,7 +81,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
         {children}
       </div>
     </div>
-  );
+  )
 };
 
 export const CardapioList: React.FC<CardapioListProps> = ({
@@ -103,8 +103,8 @@ export const CardapioList: React.FC<CardapioListProps> = ({
   onReorderProdutos,
   loading = false
 }) => {
-  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null);
-  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null)
+  const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -113,42 +113,42 @@ export const CardapioList: React.FC<CardapioListProps> = ({
       },
     }),
     useSensor(KeyboardSensor)
-  );
+  )
 
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveDragId(event.active.id as string);
+    setActiveDragId(event.active.id as string)
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveDragId(null);
+    setActiveDragId(null)
 
     if (!over) return;
 
     if (active.id !== over.id) {
-      const activeItem = findItemById(active.id as string);
-      const overItem = findItemById(over.id as string);
+      const activeItem = findItemById(active.id as string)
+      const overItem = findItemById(over.id as string)
 
       if (activeItem?.type === 'categoria' && overItem?.type === 'categoria') {
-        const oldIndex = categorias.findIndex(c => c.id === active.id);
-        const newIndex = categorias.findIndex(c => c.id === over.id);
-        onReorderCategorias(oldIndex, newIndex);
+        const oldIndex = categorias.findIndex(c => c.id === active.id)
+        const newIndex = categorias.findIndex(c => c.id === over.id)
+        onReorderCategorias(oldIndex, newIndex)
       } else if (activeItem?.type === 'produto' && overItem?.type === 'produto') {
         if (activeItem.categoriaId === overItem.categoriaId) {
-          const produtosDaCategoria = produtos.filter(p => p.categoria_id === activeItem.categoriaId);
-          const oldIndex = produtosDaCategoria.findIndex(p => p.id === active.id);
-          const newIndex = produtosDaCategoria.findIndex(p => p.id === over.id);
-          onReorderProdutos(oldIndex, newIndex, activeItem.categoriaId!);
+          const produtosDaCategoria = produtos.filter(p => p.categoria_id === activeItem.categoriaId)
+          const oldIndex = produtosDaCategoria.findIndex(p => p.id === active.id)
+          const newIndex = produtosDaCategoria.findIndex(p => p.id === over.id)
+          onReorderProdutos(oldIndex, newIndex, activeItem.categoriaId!)
         }
       }
-    }
+
   };
 
   const findItemById = (id: string) => {
-    const categoria = categorias.find(c => c.id === id);
+    const categoria = categorias.find(c => c.id === id)
     if (categoria) return { type: 'categoria' as const, data: categoria };
 
-    const produto = produtos.find(p => p.id === id);
+    const produto = produtos.find(p => p.id === id)
     if (produto) return { type: 'produto' as const, data: produto, categoriaId: produto.categoria_id };
 
     return null;
@@ -156,23 +156,23 @@ export const CardapioList: React.FC<CardapioListProps> = ({
 
   const filteredCategorias = categorias.filter(categoria =>
     categoria.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const filteredProdutos = produtos.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const getCategoriaProdutos = (categoriaId: string) => {
-    return filteredProdutos.filter(produto => produto.categoria_id === categoriaId);
+    return filteredProdutos.filter(produto => produto.categoria_id === categoriaId)
   };
 
   // Selecionar primeira categoria se nenhuma estiver selecionada
   React.useEffect(() => {
     if (!selectedCategoria && categorias.length > 0) {
-      setSelectedCategoria(categorias[0].id);
-    }
-  }, [categorias, selectedCategoria]);
+      setSelectedCategoria(categorias[0].id)
+
+  }, [categorias, selectedCategoria])
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
@@ -243,8 +243,8 @@ export const CardapioList: React.FC<CardapioListProps> = ({
                             variant="ghost"
                             size="sm"
                             onClick={(e) => {
-                              e.stopPropagation();
-                              onEditCategoria(categoria);
+                              e.stopPropagation()
+                              onEditCategoria(categoria)
                             }}
                             className="h-7 w-7 p-0"
                           >
@@ -254,8 +254,8 @@ export const CardapioList: React.FC<CardapioListProps> = ({
                             variant="ghost"
                             size="sm"
                             onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteCategoria(categoria.id);
+                              e.stopPropagation()
+                              onDeleteCategoria(categoria.id)
                             }}
                             className="h-7 w-7 p-0 text-destructive hover:text-destructive"
                           >
@@ -431,5 +431,5 @@ export const CardapioList: React.FC<CardapioListProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

@@ -23,11 +23,11 @@ import { useTurnos } from '@/hooks/useTurnos';
 import { useCaixa } from '@/hooks/useCaixa';
 
 export const Dashboard = () => {
-  const { user, currentCompany, logout } = useAuth();
-  const { temTurnoAtivo } = useTurnos();
-  const { caixaAtual } = useCaixa();
-  const [turnoModalOpen, setTurnoModalOpen] = useState(false);
-  const [caixaModalOpen, setCaixaModalOpen] = useState(false);
+  const { user, currentCompany, logout } = useAuth()
+  const { temTurnoAtivo } = useTurnos()
+  const { caixaAtual } = useCaixa()
+  const [turnoModalOpen, setTurnoModalOpen] = useState(false)
+  const [caixaModalOpen, setCaixaModalOpen] = useState(false)
 
   const temCaixaAberto = caixaAtual && caixaAtual.status === 'aberto';
 
@@ -158,5 +158,5 @@ export const Dashboard = () => {
       <TurnoModal open={turnoModalOpen} onOpenChange={setTurnoModalOpen} />
       <CaixaModal open={caixaModalOpen} onOpenChange={setCaixaModalOpen} />
     </div>
-  );
+  )
 };

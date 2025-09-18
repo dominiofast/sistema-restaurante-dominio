@@ -35,14 +35,14 @@ export const CompanyDialog: React.FC<CompanyDialogProps> = ({
   onSave,
   loading = false
 }) => {
-  const { sendInvitation } = useInvitation();
+  const { sendInvitation } = useInvitation()
 
   const handleSubmit = async (formData: any, invitationEmail?: string) => {
     try {
-      await onSave(formData, invitationEmail);
-      onClose();
+      await onSave(formData, invitationEmail)
+      onClose()
     } catch (error) {
-      console.error('Erro ao salvar empresa:', error);
+      console.error('Erro ao salvar empresa:', error)
     }
   };
 
@@ -73,5 +73,5 @@ export const CompanyDialog: React.FC<CompanyDialogProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

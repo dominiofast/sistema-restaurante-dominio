@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CompanySettings, OperatingHours, LoyaltyProgramConfig, UICustomization } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const useCompanySettings = (companyId?: string) => {
-  const { currentCompany } = useAuth();
-  const queryClient = useQueryClient();
+  const { currentCompany } = useAuth()
+  const queryClient = useQueryClient()
   const targetCompanyId = companyId || currentCompany?.id;
 
   // Fetch company settings
@@ -19,16 +19,11 @@ export const useCompanySettings = (companyId?: string) => {
     queryFn: async (): Promise<CompanySettings | null> => {
       if (!targetCompanyId) return null;
 
-      const { data, error } = await supabase
-        .from('company_settings')
-        .select('*')
-        .eq('company_id', targetCompanyId)
-        .single();
-
+      const { data, error  } = null as any;
       if (error) {
         if (error.code === 'PGRST116') {
           // No settings found, create default settings
-          return await createDefaultSettings(targetCompanyId);
+          return await createDefaultSettings(targetCompanyId)
         }
         throw error;
       }
@@ -38,7 +33,7 @@ export const useCompanySettings = (companyId?: string) => {
     enabled: !!targetCompanyId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
-  });
+  })
 
   // Create default settings
   const createDefaultSettings = async (companyId: string): Promise<CompanySettings> => {
@@ -79,15 +74,10 @@ export const useCompanySettings = (companyId?: string) => {
         productCardStyle: 'detailed',
         navigationStyle: 'tabs',
         promotionalBannerEnabled: true
-      },
+      },;
     };
 
-    const { data, error } = await supabase
-      .from('company_settings')
-      .insert(defaultSettings as any)
-      .select()
-      .single();
-
+    const { data, error  } = null as any;
     if (error) throw error;
     return data as any;
   };
@@ -95,22 +85,16 @@ export const useCompanySettings = (companyId?: string) => {
   // Update settings mutation
   const updateSettingsMutation = useMutation({
     mutationFn: async (updates: Partial<CompanySettings>) => {
-      if (!targetCompanyId) throw new Error('Company ID is required');
+      if (!targetCompanyId) throw new Error('Company ID is required')
 
-      const { data, error } = await supabase
-        .from('company_settings')
-        .update(updates)
-        .eq('company_id', targetCompanyId)
-        .select()
-        .single();
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['company-settings', targetCompanyId] });
+      queryClient.invalidateQueries({ queryKey: ['company-settings', targetCompanyId] })
     },
-  });
+  })
 
   // Helper functions for specific updates
   const updateUICustomization = (customization: Partial<UICustomization>) => {
@@ -118,12 +102,12 @@ export const useCompanySettings = (companyId?: string) => {
     
     const updatedCustomization = {
       ...settings.ui_customization,
-      ...customization,
+      ...customization,;
     };
 
     return updateSettingsMutation.mutate({
       ui_customization: updatedCustomization,
-    });
+    })
   };
 
   const updateOperatingHours = (hours: Partial<OperatingHours>) => {
@@ -131,12 +115,12 @@ export const useCompanySettings = (companyId?: string) => {
     
     const updatedHours = {
       ...settings.operating_hours,
-      ...hours,
+      ...hours,;
     };
 
     return updateSettingsMutation.mutate({
       operating_hours: updatedHours,
-    });
+    })
   };
 
   const updateLoyaltyProgram = (config: Partial<LoyaltyProgramConfig>) => {
@@ -144,44 +128,44 @@ export const useCompanySettings = (companyId?: string) => {
     
     const updatedConfig = {
       ...settings.loyalty_program_config,
-      ...config,
+      ...config,;
     };
 
     return updateSettingsMutation.mutate({
       loyalty_program_config: updatedConfig,
-    });
+    })
   };
 
   const updateColors = (primaryColor: string, secondaryColor?: string) => {
     return updateSettingsMutation.mutate({
       primary_color: primaryColor,
-      ...(secondaryColor && { secondary_color: secondaryColor }),
-    });
+      ...(secondaryColor && { secondary_color: secondaryColor }),;
+    })
   };
 
   // Utility functions
   const isOpen = (): boolean => {
     if (!settings?.operating_hours) return true;
 
-    const now = new Date();
+    const now = new Date()
     const currentDay = now.toLocaleDateString('en', { weekday: 'long' }).toLowerCase() as keyof OperatingHours;
     const daySchedule = settings.operating_hours[currentDay];
 
     if (daySchedule.closed) return false;
 
-    const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
+    const currentTime = now.toTimeString().slice(0, 5) // HH:MM format
     return currentTime >= daySchedule.open && currentTime <= daySchedule.close;
   };
 
   const getNextOpenTime = (): string | null => {
     if (!settings?.operating_hours) return null;
 
-    const now = new Date();
+    const now = new Date()
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     
     for (let i = 1; i <= 7; i++) {
-      const checkDate = new Date(now);
-      checkDate.setDate(checkDate.getDate() + i);
+      const checkDate = new Date(now)
+      checkDate.setDate(checkDate.getDate() + i)
       const dayName = days[checkDate.getDay()] as keyof OperatingHours;
       const daySchedule = settings.operating_hours[dayName];
       

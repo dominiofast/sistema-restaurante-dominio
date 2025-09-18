@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,15 +16,15 @@ interface ShortLink {
 }
 
 const LinksCurtos = () => {
-  const [links, setLinks] = useState<ShortLink[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const [links, setLinks] = useState<ShortLink[]>([])
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
   const loadLinks = async () => {
     try {
-      const { data, error } = await supabase
-        .from("short_links")
-        .select(`
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           id,
           short_id,
           target_slug,
@@ -32,7 +32,7 @@ const LinksCurtos = () => {
           is_active,
           companies (name)
         `)
-        .order("created_at", { ascending: false });
+        
 
       if (error) throw error;
 
@@ -42,38 +42,38 @@ const LinksCurtos = () => {
         target_slug: link.target_slug,
         clicks_count: link.clicks_count,
         is_active: link.is_active,
-        company_name: link.companies?.name || "Empresa não encontrada"
+        company_name: link.companies?.name || "Empresa não encontrada";
       })) || [];
 
-      setLinks(formattedLinks);
+      setLinks(formattedLinks)
     } catch (error) {
-      console.error("Erro ao carregar links:", error);
+      console.error("Erro ao carregar links:", error)
       toast({
         title: "Erro",
         description: "Falha ao carregar os links curtos",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   useEffect(() => {
-    loadLinks();
-  }, []);
+    loadLinks()
+  }, [])
 
   const copyToClipboard = (shortId: string) => {
     const url = `https://pedido.dominio.tech/c/${shortId}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url)
     toast({
       title: "Link copiado!",
       description: "O link foi copiado para a área de transferência"
-    });
+    })
   };
 
   const openLink = (shortId: string) => {
     const url = `https://pedido.dominio.tech/c/${shortId}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank')
   };
 
   if (loading) {
@@ -86,8 +86,8 @@ const LinksCurtos = () => {
           </CardTitle>
         </CardHeader>
       </Card>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-6">
@@ -203,7 +203,7 @@ const LinksCurtos = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default LinksCurtos;

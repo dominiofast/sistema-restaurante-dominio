@@ -34,34 +34,34 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   isLoading = false,
   companyName = 'Minha Loja'
 }) => {
-  const [archiveMode, setArchiveMode] = useState(false);
+  const [archiveMode, setArchiveMode] = useState(false)
 
   // Filtrar chats baseado na busca
   const filteredChats = useMemo(() => {
     if (!searchTerm.trim()) return chats;
     
-    const searchLower = searchTerm.toLowerCase();
+    const searchLower = searchTerm.toLowerCase()
     return chats.filter(chat => 
       chat.name.toLowerCase().includes(searchLower) ||
       chat.phoneNumber.toLowerCase().includes(searchLower) ||
       chat.lastMessage.toLowerCase().includes(searchLower)
-    );
-  }, [chats, searchTerm]);
+    )
+  }, [chats, searchTerm])
 
   // Separar chats com mensagens não lidas e ordenar por timestamp mais recente
   const { unreadChats, readChats } = useMemo(() => {
     const unread = filteredChats
       .filter(chat => chat.unreadCount > 0)
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     
     const read = filteredChats
       .filter(chat => chat.unreadCount === 0)
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     
     return { unreadChats: unread, readChats: read };
-  }, [filteredChats]);
+  }, [filteredChats])
 
-  const totalUnreadCount = unreadChats.reduce((sum, chat) => sum + chat.unreadCount, 0);
+  const totalUnreadCount = unreadChats.reduce((sum, chat) => sum + chat.unreadCount, 0)
 
   // Truncar mensagem longa com melhor controle
   const truncateMessage = (message: string, maxLength = 50) => {
@@ -71,11 +71,11 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
 
   // Formatação de tempo relativa melhorada
   const formatTime = (timestamp: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - timestamp.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor(diff / (1000 * 60));
+    const now = new Date()
+    const diff = now.getTime() - timestamp.getTime()
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const minutes = Math.floor(diff / (1000 * 60))
     
     if (minutes < 1) {
       return 'Agora';
@@ -88,8 +88,8 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
     } else if (days < 7) {
       return `${days}d`;
     } else {
-      return format(timestamp, 'dd/MM');
-    }
+      return format(timestamp, 'dd/MM')
+
   };
 
   const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => (
@@ -147,7 +147,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 
   return (
     <div className="w-80 bg-white border-r border-gray-200 flex flex-col h-full shadow-sm" style={{ marginTop: '0' }}>
@@ -271,5 +271,5 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

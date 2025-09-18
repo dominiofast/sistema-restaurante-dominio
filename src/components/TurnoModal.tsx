@@ -12,20 +12,20 @@ interface TurnoModalProps {
 }
 
 export function TurnoModal({ open, onOpenChange }: TurnoModalProps) {
-  const { turnoAtual, loading, abrirTurno, fecharTurno, temTurnoAtivo } = useTurnos();
-  const [observacoes, setObservacoes] = useState('');
+  const { turnoAtual, loading, abrirTurno, fecharTurno, temTurnoAtivo } = useTurnos()
+  const [observacoes, setObservacoes] = useState('')
 
   const handleAbrirTurno = async () => {
-    await abrirTurno(observacoes);
-    setObservacoes('');
-    onOpenChange(false);
+    await abrirTurno(observacoes)
+    setObservacoes('')
+    onOpenChange(false)
   };
 
   const handleFecharTurno = async () => {
     if (turnoAtual) {
-      await fecharTurno(turnoAtual.id, observacoes);
-      setObservacoes('');
-      onOpenChange(false);
+      await fecharTurno(turnoAtual.id, observacoes)
+      setObservacoes('')
+      onOpenChange(false)
     }
   };
 
@@ -109,5 +109,5 @@ export function TurnoModal({ open, onOpenChange }: TurnoModalProps) {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

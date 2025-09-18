@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface NFCeLog {
   id: string;
   company_id: string;
@@ -20,31 +19,31 @@ export interface NFCeLog {
   error_message?: string;
   motivo_cancelamento?: string;
   justificativa_cancelamento?: string;
-}
+
 
 export function useNFCeLogs(companyId: string | undefined) {
-  const [nfceLogs, setNfceLogs] = useState<Record<number, NFCeLog>>({});
-  const [loading, setLoading] = useState(false);
+  const [nfceLogs, setNfceLogs] = useState<Record<number, NFCeLog>>({})
+  const [loading, setLoading] = useState(false)
 
   // Buscar logs existentes para a empresa
   const fetchNFCeLogs = async () => {
     if (!companyId) return;
 
-    console.log('🔍 Buscando logs NFCe para company:', companyId);
-    setLoading(true);
+    console.log('🔍 Buscando logs NFCe para company:', companyId)
+    setLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('nfce_logs')
-        .select('*')
-        .eq('company_id', companyId)
-        .order('created_at', { ascending: false });
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error) {
-        console.error('❌ Erro ao buscar logs NFCe:', error);
+        console.error('❌ Erro ao buscar logs NFCe:', error)
         return;
       }
 
-      console.log('📊 Logs NFCe encontrados:', data?.length || 0);
+      console.log('📊 Logs NFCe encontrados:', data?.length || 0)
 
       // Organizar logs por pedido_id
       const logsMap = data.reduce((acc, log) => {
@@ -52,14 +51,14 @@ export function useNFCeLogs(companyId: string | undefined) {
           acc[log.pedido_id] = log;
         }
         return acc;
-      }, {} as Record<number, NFCeLog>);
+      }, {} as Record<number, NFCeLog>)
 
-      setNfceLogs(logsMap);
+      setNfceLogs(logsMap)
     } catch (error) {
-      console.error('❌ Erro ao buscar logs NFCe:', error);
+      console.error('❌ Erro ao buscar logs NFCe:', error)
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   // Verificar se um pedido já tem NFCe gerada
@@ -79,12 +78,12 @@ export function useNFCeLogs(companyId: string | undefined) {
     responseData: any
   ): Promise<boolean> => {
     if (!companyId) {
-      console.error('❌ Company ID não encontrado para salvar log NFCe');
+      console.error('❌ Company ID não encontrado para salvar log NFCe')
       return false;
-    }
 
-    console.log('💾 Iniciando salvamento do log NFCe:', { pedidoId, companyId });
-    console.log('📊 Dados NFCe para salvar:', nfceData);
+
+    console.log('💾 Iniciando salvamento do log NFCe:', { pedidoId, companyId })
+    console.log('📊 Dados NFCe para salvar:', nfceData)
 
     try {
       const logData = {
@@ -98,17 +97,12 @@ export function useNFCeLogs(companyId: string | undefined) {
         referencia: nfceData.ref || nfceData.referencia,
         protocolo_autorizacao: nfceData.protocolo_autorizacao,
         data_autorizacao: nfceData.data_autorizacao,
-        response_data: responseData
-      };
+        response_data: responseData;
+      } catch (error) { console.error('Error:', error) };
 
-      console.log('📋 Dados preparados para insert:', logData);
+      console.log('📋 Dados preparados para insert:', logData)
 
-      const { data, error } = await supabase
-        .from('nfce_logs')
-        .insert(logData)
-        .select()
-        .single();
-
+      const { data, error  } = null as any;
       if (error) {
         console.error('❌ Erro detalhado ao salvar log NFCe:', {
           error,
@@ -116,17 +110,17 @@ export function useNFCeLogs(companyId: string | undefined) {
           details: error.details,
           hint: error.hint,
           code: error.code
-        });
+        })
         return false;
       }
 
-      console.log('✅ Log NFCe salvo com sucesso:', data);
+      console.log('✅ Log NFCe salvo com sucesso:', data)
 
       // Atualizar estado local
       setNfceLogs(prev => ({
         ...prev,
         [pedidoId]: data
-      }));
+      }))
 
       return true;
     } catch (error: any) {
@@ -134,15 +128,15 @@ export function useNFCeLogs(companyId: string | undefined) {
         error,
         message: error.message,
         stack: error.stack
-      });
+      })
       return false;
-    }
+
   };
 
   // Carregar logs ao inicializar
   useEffect(() => {
-    fetchNFCeLogs();
-  }, [companyId]);
+    fetchNFCeLogs()
+  }, [companyId])
 
   return {
     nfceLogs,
@@ -152,4 +146,3 @@ export function useNFCeLogs(companyId: string | undefined) {
     saveNFCeLog,
     refreshLogs: fetchNFCeLogs
   };
-}

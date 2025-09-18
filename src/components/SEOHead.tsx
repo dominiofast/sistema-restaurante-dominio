@@ -30,16 +30,16 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       let meta = document.querySelector(selector) as HTMLMetaElement;
       
       if (!meta) {
-        meta = document.createElement('meta');
+        meta = document.createElement('meta')
         if (property) {
-          meta.setAttribute('property', name);
+          meta.setAttribute('property', name)
         } else {
-          meta.setAttribute('name', name);
+          meta.setAttribute('name', name)
         }
-        document.head.appendChild(meta);
+        document.head.appendChild(meta)
       }
       
-      meta.setAttribute('content', content);
+      meta.setAttribute('content', content)
     };
     
     // Função para atualizar ou criar link tags
@@ -48,51 +48,51 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       let link = document.querySelector(selector) as HTMLLinkElement;
       
       if (!link) {
-        link = document.createElement('link');
-        link.setAttribute('rel', rel);
+        link = document.createElement('link')
+        link.setAttribute('rel', rel)
         if (hreflang) {
-          link.setAttribute('hreflang', hreflang);
+          link.setAttribute('hreflang', hreflang)
         }
-        document.head.appendChild(link);
+        document.head.appendChild(link)
       }
       
-      link.setAttribute('href', href);
+      link.setAttribute('href', href)
     };
     
     // Atualizar meta tags básicas
-    updateMetaTag('description', description);
-    updateMetaTag('keywords', keywords);
-    updateMetaTag('robots', noIndex ? 'noindex, nofollow' : 'index, follow');
+    updateMetaTag('description', description)
+    updateMetaTag('keywords', keywords)
+    updateMetaTag('robots', noIndex ? 'noindex, nofollow' : 'index, follow')
     
     // Atualizar Open Graph
-    updateMetaTag('og:title', title, true);
-    updateMetaTag('og:description', description, true);
-    updateMetaTag('og:image', image, true);
-    updateMetaTag('og:url', url, true);
-    updateMetaTag('og:type', 'website', true);
-    updateMetaTag('og:site_name', 'Dominio.tech', true);
+    updateMetaTag('og:title', title, true)
+    updateMetaTag('og:description', description, true)
+    updateMetaTag('og:image', image, true)
+    updateMetaTag('og:url', url, true)
+    updateMetaTag('og:type', 'website', true)
+    updateMetaTag('og:site_name', 'Dominio.tech', true)
     
     // Atualizar Twitter Card
-    updateMetaTag('twitter:card', 'summary_large_image');
-    updateMetaTag('twitter:title', title);
-    updateMetaTag('twitter:description', description);
-    updateMetaTag('twitter:image', image);
+    updateMetaTag('twitter:card', 'summary_large_image')
+    updateMetaTag('twitter:title', title)
+    updateMetaTag('twitter:description', description)
+    updateMetaTag('twitter:image', image)
     
     // Atualizar canonical URL
-    updateLinkTag('canonical', url);
+    updateLinkTag('canonical', url)
     
     // Atualizar alternate para idiomas
-    updateLinkTag('alternate', 'https://dominio.tech', 'pt-br');
-    updateLinkTag('alternate', 'https://dominio.tech', 'x-default');
+    updateLinkTag('alternate', 'https://dominio.tech', 'pt-br')
+    updateLinkTag('alternate', 'https://dominio.tech', 'x-default')
     
-  }, [title, description, keywords, image, url, noIndex]);
+  }, [title, description, keywords, image, url, noIndex])
   
   return (
     <>
       {/* Dados Estruturados */}
       <SEOStructuredData type={type} />
     </>
-  );
+  )
 };
 
 export default SEOHead;

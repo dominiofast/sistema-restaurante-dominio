@@ -8,14 +8,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const KDS = () => {
-  const [showFilters, setShowFilters] = useState(false);
-  const [visualizacao, setVisualizacao] = useState(1);
-  const [telaInteira, setTelaInteira] = useState(false);
-  const [larguraTela, setLarguraTela] = useState(1200);
-  const [paginaAtual, setPaginaAtual] = useState(0);
+  const [showFilters, setShowFilters] = useState(false)
+  const [visualizacao, setVisualizacao] = useState(1)
+  const [telaInteira, setTelaInteira] = useState(false)
+  const [larguraTela, setLarguraTela] = useState(1200)
+  const [paginaAtual, setPaginaAtual] = useState(0)
 
   // Hook para buscar pedidos reais
-  const { pedidos, loading, error, atualizarStatus } = usePedidosRealTime();
+  const { pedidos, loading, error, atualizarStatus } = usePedidosRealTime()
 
   // Configurações de filtros - agora usando status reais
   const [filtros, setFiltros] = useState({
@@ -30,31 +30,31 @@ const KDS = () => {
       'retirada': true,
       'mesa': true,
       'autoatendimento': true  // ✅ Adicionar autoatendimento
-    }
-  });
+
+  })
 
   // Converter pedidos para formato de balcões
   const convertPedidosParaBalcoes = () => {
-    console.log('🏪 KDS - Convertendo pedidos para balcões:', pedidos?.length || 0);
-    console.log('🏪 KDS - Pedidos brutos:', pedidos);
+    console.log('🏪 KDS - Convertendo pedidos para balcões:', pedidos?.length || 0)
+    console.log('🏪 KDS - Pedidos brutos:', pedidos)
     
     if (!pedidos || pedidos.length === 0) {
-      console.log('❌ KDS - Nenhum pedido encontrado');
+      console.log('❌ KDS - Nenhum pedido encontrado')
       return [];
-    }
+
 
     return pedidos
       .filter(pedido => filtros.statusAtivos[pedido.status] && filtros.tiposAtivos[pedido.tipo])
       .map((pedido) => {
-        console.log('🔄 KDS - Processando pedido:', pedido.id, pedido.itens?.length || 0, 'itens');
-        console.log('🔄 KDS - Detalhes do pedido:', pedido);
+        console.log('🔄 KDS - Processando pedido:', pedido.id, pedido.itens?.length || 0, 'itens')
+        console.log('🔄 KDS - Detalhes do pedido:', pedido)
         
         // Formatar itens do pedido
         const itensFormatados = [];
 
         // Adicionar itens do pedido
         pedido.itens.forEach(item => {
-          itensFormatados.push(`${item.qtd} × ${item.nome.toUpperCase()}`);
+          itensFormatados.push(`${item.qtd} × ${item.nome.toUpperCase()}`)
           
           // Adicionar adicionais se existirem, agrupados por categoria
           if (item.adicionais && Array.isArray(item.adicionais) && item.adicionais.length > 0) {
@@ -66,32 +66,32 @@ const KDS = () => {
               if (!adicionaisPorCategoria[categoria]) {
                 adicionaisPorCategoria[categoria] = [];
               }
-              adicionaisPorCategoria[categoria].push(adicional);
-            });
+              adicionaisPorCategoria[categoria].push(adicional)
+            })
             
             // Exibir por categoria
             Object.keys(adicionaisPorCategoria).forEach(categoria => {
-              itensFormatados.push(`  ${categoria.toUpperCase()}:`);
+              itensFormatados.push(`  ${categoria.toUpperCase()}:`)
               adicionaisPorCategoria[categoria].forEach(adicional => {
-                itensFormatados.push(`    + ${adicional.qtd || 1} ${adicional.nome.toUpperCase()}`);
-              });
-            });
-          }
+                itensFormatados.push(`    + ${adicional.qtd || 1} ${adicional.nome.toUpperCase()}`)
+              })
+            })
+
           
           // Adicionar observações do item se existirem
           if (item.observacoes) {
-            itensFormatados.push(`  💬 ${item.observacoes}`);
-          }
+            itensFormatados.push(`  💬 ${item.observacoes}`)
+
           
           // Adicionar linha em branco entre itens
-          itensFormatados.push('');
-        });
+          itensFormatados.push('')
+        })
 
         // Adicionar observações gerais do pedido
         if (pedido.observacoes) {
-          itensFormatados.push('');
-          itensFormatados.push(`💬 OBS: ${pedido.observacoes}`);
-        }
+          itensFormatados.push('')
+          itensFormatados.push(`💬 OBS: ${pedido.observacoes}`)
+
 
         return {
           id: pedido.id,
@@ -102,13 +102,13 @@ const KDS = () => {
           status: pedido.status,
           pedidoOriginal: pedido
         };
-      });
+      })
   };
 
   // Mapear status para locais
   const getLocalFromStatus = (status: string) => {
     switch (status) {
-      case 'analise':
+      case 'analise':;
         return 'COZINHA 1';
       case 'producao':
         return 'COZINHA 2';
@@ -116,32 +116,32 @@ const KDS = () => {
         return 'COPA';
       default:
         return 'CAIXA';
-    }
+
   };
 
   // Gerar balcões a partir dos pedidos reais
-  const todosBalcoes = convertPedidosParaBalcoes();
+  const todosBalcoes = convertPedidosParaBalcoes()
 
   // Filtros aplicados (agora baseado nos balcões reais)
   const balcoesFiltrados = todosBalcoes;
 
   useEffect(() => {
     const handleResize = () => {
-      setLarguraTela(window.innerWidth - 32);
+      setLarguraTela(window.innerWidth - 32)
     };
     
     // Inicialização
     if (typeof window !== 'undefined') {
-      setLarguraTela(window.innerWidth - 32);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, []);
+      setLarguraTela(window.innerWidth - 32)
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+
+  }, [])
 
   // Reset página quando mudar visualização
   useEffect(() => {
-    setPaginaAtual(0);
-  }, [visualizacao]);
+    setPaginaAtual(0)
+  }, [visualizacao])
 
   const toggleStatus = (status: string) => {
     setFiltros(prev => ({
@@ -149,8 +149,8 @@ const KDS = () => {
       statusAtivos: {
         ...prev.statusAtivos,
         [status]: !prev.statusAtivos[status]
-      }
-    }));
+      };
+    }))
   };
 
   const toggleTipo = (tipo: string) => {
@@ -159,8 +159,8 @@ const KDS = () => {
       tiposAtivos: {
         ...prev.tiposAtivos,
         [tipo]: !prev.tiposAtivos[tipo]
-      }
-    }));
+      };
+    }))
   };
 
   // Função para avançar status do pedido
@@ -173,32 +173,32 @@ const KDS = () => {
       
       if (pedido.status === 'analise') {
         novoStatus = 'producao';
-      } else if (pedido.status === 'producao') {
+      }  catch (error) { console.error('Error:', error) }else if (pedido.status === 'producao') {
         novoStatus = 'pronto';
       } else if (pedido.status === 'pronto') {
         novoStatus = 'entregue'; // Remove do KDS
       }
       
-      await atualizarStatus(pedido.id, novoStatus);
+      await atualizarStatus(pedido.id, novoStatus)
     } catch (error) {
-      console.error('Erro ao avançar pedido:', error);
-    }
+      console.error('Erro ao avançar pedido:', error)
+
   };
 
   const toggleTelaInteira = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setTelaInteira(true);
+      document.documentElement.requestFullscreen()
+      setTelaInteira(true)
     } else {
-      document.exitFullscreen();
-      setTelaInteira(false);
-    }
+      document.exitFullscreen()
+      setTelaInteira(false)
+
   };
 
   const fecharKDS = () => {
     if (window.confirm('Tem certeza que deseja fechar o KDS?')) {
-      window.close();
-    }
+      window.close()
+
   };
 
   return (
@@ -260,7 +260,7 @@ const KDS = () => {
         onPaginaChange={setPaginaAtual}
       />
     </div>
-  );
+  )
 };
 
 export default KDS;

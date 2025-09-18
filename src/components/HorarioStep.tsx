@@ -16,11 +16,11 @@ const diasSemana = [
   { label: 'Q', nome: 'Quarta', value: 3 },
   { label: 'Q', nome: 'Quinta', value: 4 },
   { label: 'S', nome: 'Sexta', value: 5 },
-  { label: 'S', nome: 'Sábado', value: 6 },
+  { label: 'S', nome: 'Sábado', value: 6 },;
 ];
 
 export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
-  const { horario, horariosDias, loading, error } = useHorarioFuncionamento(companyId);
+  const { horario, horariosDias, loading, error } = useHorarioFuncionamento(companyId)
   const [horarios, setHorarios] = useState<Record<number, {inicio: string, fim: string}[]>>({
     0: [{inicio: '', fim: ''}],
     1: [{inicio: '18:00', fim: '23:00'}],
@@ -29,7 +29,7 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
     4: [{inicio: '18:00', fim: '23:00'}],
     5: [{inicio: '18:00', fim: '23:00'}],
     6: [{inicio: '18:00', fim: '23:00'}],
-  });
+  })
 
   useEffect(() => {
     if (horario && horariosDias.length > 0) {
@@ -48,24 +48,24 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
         novoHorarios[dia.dia_semana].push({
           inicio: dia.horario_inicio,
           fim: dia.horario_fim
-        });
-      });
+        })
+      })
 
       // Ensure each day has at least one empty slot if no data
       Object.keys(novoHorarios).forEach(dia => {
-        const diaNum = parseInt(dia);
+        const diaNum = parseInt(dia)
         if (novoHorarios[diaNum].length === 0) {
           novoHorarios[diaNum] = [{inicio: '', fim: ''}];
         }
-      });
+      })
 
-      setHorarios(novoHorarios);
-    }
-  }, [horario, horariosDias]);
+      setHorarios(novoHorarios)
+
+  }, [horario, horariosDias])
 
   if (loading) {
     return <div>Carregando horários...</div>;
-  }
+
 
   if (error) {
     return (
@@ -75,8 +75,8 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
           Erro ao carregar horários: {error}
         </AlertDescription>
       </Alert>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-6">
@@ -98,7 +98,7 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
                     onChange={(e) => {
                       const novosHorarios = { ...horarios };
                       novosHorarios[dia.value][index].inicio = e.target.value;
-                      setHorarios(novosHorarios);
+                      setHorarios(novosHorarios)
                     }}
                     className="border rounded px-3 py-1"
                   />
@@ -109,7 +109,7 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
                     onChange={(e) => {
                       const novosHorarios = { ...horarios };
                       novosHorarios[dia.value][index].fim = e.target.value;
-                      setHorarios(novosHorarios);
+                      setHorarios(novosHorarios)
                     }}
                     className="border rounded px-3 py-1"
                   />
@@ -127,5 +127,5 @@ export const HorarioStep: React.FC<HorarioStepProps> = ({ companyId }) => {
         </AlertDescription>
       </Alert>
     </div>
-  );
+  )
 };

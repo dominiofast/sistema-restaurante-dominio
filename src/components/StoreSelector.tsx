@@ -23,61 +23,61 @@ interface StoreSelectorProps {
 }
 
 const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSelect }) => {
-  const { user, currentCompany } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [stores, setStores] = useState<StoreInfo[]>([]);
-  const [filteredStores, setFilteredStores] = useState<StoreInfo[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { user, currentCompany } = useAuth()
+  const [open, setOpen] = useState(false)
+  const [stores, setStores] = useState<StoreInfo[]>([])
+  const [filteredStores, setFilteredStores] = useState<StoreInfo[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (open) {
-      fetchStores();
+      fetchStores()
     }
-  }, [open, user?.role]);
+  }, [open, user?.role])
 
   useEffect(() => {
-    filterStores();
-  }, [stores, searchTerm]);
+    filterStores()
+  }, [stores, searchTerm])
 
   const fetchStores = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
-      console.log('🏪 StoreSelector: Buscando lojas via API Neon...');
-      console.log('👤 Usuário:', user?.name, 'Role:', user?.role);
-      console.log('🏢 Empresa atual:', currentCompany?.name, 'ID:', currentCompany?.id);
+      console.log('🏪 StoreSelector: Buscando lojas via API Neon...')
+      console.log('👤 Usuário:', user?.name, 'Role:', user?.role)
+      console.log('🏢 Empresa atual:', currentCompany?.name, 'ID:', currentCompany?.id)
       
       // Usar API do Neon em vez do Supabase desabilitado
       const response = await fetch('/api/companies', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error) },
+      })
 
       if (!response.ok) {
-        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+        throw new Error(`Erro na API: ${response.status} ${response.statusText}`)
       }
 
-      const result = await response.json();
+      const result = await response.json()
       
-      console.log('📊 Resultado da API:', result);
+      console.log('📊 Resultado da API:', result)
 
       if (!result.success) {
-        throw new Error(result.error || 'Erro desconhecido na API');
+        throw new Error(result.error || 'Erro desconhecido na API')
       }
 
       const data = result.data || [];
-      console.log(`✅ Encontradas ${data.length} lojas`);
+      console.log(`✅ Encontradas ${data.length} lojas`)
 
       // Filtrar por empresa se não for super admin
       let filteredData = data;
       if (user?.role !== 'super_admin' && currentCompany?.id) {
-        console.log('🔍 Filtrando por empresa:', currentCompany.id);
-        filteredData = data.filter((company: any) => company.id === currentCompany.id);
+        console.log('🔍 Filtrando por empresa:', currentCompany.id)
+        filteredData = data.filter((company: any) => company.id === currentCompany.id)
       } else if (user?.role === 'super_admin') {
-        console.log('👑 Super admin - buscando todas as empresas');
+        console.log('👑 Super admin - buscando todas as empresas')
       }
 
       // Formatar empresas como lojas
@@ -87,22 +87,22 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
         store_name: company.name,
         is_active: company.status === 'active',
         company_name: company.name,
-        environment: company.plan
-      }));
+        environment: company.plan;
+      }))
 
-      console.log('🏪 Lojas formatadas:', formattedStores);
-      setStores(formattedStores);
+      console.log('🏪 Lojas formatadas:', formattedStores)
+      setStores(formattedStores)
     } catch (error) {
-      console.error('❌ Erro ao carregar lojas:', error);
-      toast.error('Erro ao carregar lojas disponíveis');
+      console.error('❌ Erro ao carregar lojas:', error)
+      toast.error('Erro ao carregar lojas disponíveis')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const filterStores = () => {
     if (!searchTerm.trim()) {
-      setFilteredStores(stores);
+      setFilteredStores(stores)
       return;
     }
 
@@ -110,24 +110,24 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
       store.store_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.merchant_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.company_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
 
-    setFilteredStores(filtered);
+    setFilteredStores(filtered)
   };
 
   const handleStoreSelect = (store: StoreInfo) => {
-    console.log('🎯 StoreSelector: handleStoreSelect chamado com:', store);
-    onStoreSelect(store);
-    setOpen(false);
-    setSearchTerm('');
-    console.log('✅ StoreSelector: Store selecionada e modal fechado');
-    toast.success(`Loja selecionada: ${store.store_name}`);
+    console.log('🎯 StoreSelector: handleStoreSelect chamado com:', store)
+    onStoreSelect(store)
+    setOpen(false)
+    setSearchTerm('')
+    console.log('✅ StoreSelector: Store selecionada e modal fechado')
+    toast.success(`Loja selecionada: ${store.store_name}`)
   };
 
   const clearSelection = () => {
-    onStoreSelect(null);
-    setOpen(false);
-    toast.success('Filtro de loja removido - visualizando todas as lojas');
+    onStoreSelect(null)
+    setOpen(false)
+    toast.success('Filtro de loja removido - visualizando todas as lojas')
   };
 
   return (
@@ -265,7 +265,7 @@ const StoreSelector: React.FC<StoreSelectorProps> = ({ selectedStore, onStoreSel
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default StoreSelector;

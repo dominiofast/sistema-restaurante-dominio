@@ -48,5 +48,5 @@ export const InscricoesHeader: React.FC<InscricoesHeaderProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

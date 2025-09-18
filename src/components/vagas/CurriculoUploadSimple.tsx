@@ -15,15 +15,15 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
   currentFile,
   disabled = false
 }) => {
-  const [uploading, setUploading] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<string | null>(currentFile || null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false)
+  const [uploadedFile, setUploadedFile] = useState<string | null>(currentFile || null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const validateFile = (file: File): string | null => {
     const allowedTypes = [
       'application/pdf',
       'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     ];
     
     if (!allowedTypes.includes(file.type)) {
@@ -39,52 +39,52 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = error => reject(error)
+    })
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const validationError = validateFile(file);
+    const validationError = validateFile(file)
     if (validationError) {
-      toast.error(validationError);
+      toast.error(validationError)
       return;
     }
 
     try {
-      setUploading(true);
+      setUploading(true)
       
-      console.log('Convertendo arquivo para Base64:', file.name);
+      console.log('Convertendo arquivo para Base64:', file.name)
       
       // Converter arquivo para Base64
-      const base64String = await convertToBase64(file);
+      const base64String = await convertToBase64(file)
       
-      console.log('Conversão concluída, tamanho:', base64String.length, 'caracteres');
+      console.log('Conversão concluída, tamanho:', base64String.length, 'caracteres')
       
       // Criar um identificador único para o arquivo
-      const fileId = `curriculo_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+      const fileId = `curriculo_${Date.now()} catch (error) { console.error('Error:', error) }_${Math.random().toString(36).substring(2, 15)}`;
       const dataUrl = `data:${file.type};name=${file.name};base64,${base64String.split(',')[1]}`;
       
-      setUploadedFile(file.name);
-      onUploadSuccess(dataUrl, file.name);
+      setUploadedFile(file.name)
+      onUploadSuccess(dataUrl, file.name)
       
-      toast.success('Currículo processado com sucesso!');
+      toast.success('Currículo processado com sucesso!')
     } catch (error: any) {
-      console.error('Erro ao processar arquivo:', error);
-      toast.error('Erro ao processar currículo. Tente novamente.');
+      console.error('Erro ao processar arquivo:', error)
+      toast.error('Erro ao processar currículo. Tente novamente.')
     } finally {
-      setUploading(false);
+      setUploading(false)
     }
   };
 
   const removeFile = () => {
-    setUploadedFile(null);
-    onUploadSuccess('', '');
+    setUploadedFile(null)
+    onUploadSuccess('', '')
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -177,7 +177,7 @@ const CurriculoUploadSimple: React.FC<CurriculoUploadProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default CurriculoUploadSimple; 

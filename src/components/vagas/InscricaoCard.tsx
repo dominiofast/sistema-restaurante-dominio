@@ -23,13 +23,13 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 interface InscricaoCardProps {
   inscricao: Inscricao;
   index: number;
   onArquivar: (inscricaoId: string) => void;
-}
+
 
 export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, onArquivar }) => {
   const {
@@ -41,11 +41,11 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
     isDragging,
   } = useSortable({
     id: inscricao.id,
-  });
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -75,8 +75,8 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
               variant="ghost"
               size="sm"
               onClick={(e) => {
-                e.stopPropagation();
-                window.open(`mailto:${inscricao.email}`, '_blank');
+                e.stopPropagation()
+                window.open(`mailto:${inscricao.email}`, '_blank')
               }}
               className="h-8 w-8 p-0"
             >
@@ -87,8 +87,8 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
                 variant="ghost"
                 size="sm"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(inscricao.curriculo_url, '_blank');
+                  e.stopPropagation()
+                  window.open(inscricao.curriculo_url, '_blank')
                 }}
                 className="h-8 w-8 p-0"
               >
@@ -99,8 +99,8 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
               variant="ghost"
               size="sm"
               onClick={(e) => {
-                e.stopPropagation();
-                onArquivar(inscricao.id);
+                e.stopPropagation()
+                onArquivar(inscricao.id)
               }}
               className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
             >
@@ -152,5 +152,5 @@ export const InscricaoCard: React.FC<InscricaoCardProps> = ({ inscricao, index, 
         )}
       </div>
     </div>
-  );
+  )
 };

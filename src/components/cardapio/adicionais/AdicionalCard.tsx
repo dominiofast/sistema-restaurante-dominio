@@ -27,7 +27,7 @@ interface AdicionalCardProps {
   loading: boolean;
   dragHandleProps?: any;
   isDragging?: boolean;
-}
+
 
 export const AdicionalCard: React.FC<AdicionalCardProps> = ({
   adicional,
@@ -73,7 +73,7 @@ export const AdicionalCard: React.FC<AdicionalCardProps> = ({
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file) handleImageUpload(file, adicional.id);
+                if (file) handleImageUpload(file, adicional.id)
               }}
             />
             <label
@@ -186,5 +186,5 @@ export const AdicionalCard: React.FC<AdicionalCardProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

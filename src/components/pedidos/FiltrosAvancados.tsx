@@ -10,37 +10,37 @@ import {
 interface FiltrosAvancadosProps {
   onApplyFilters: (filters: any) => void;
   onClose: () => void;
-}
+
 
 export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAvancadosProps) {
   const [dateRange, setDateRange] = useState({
     start: '',
     end: ''
-  });
+  })
   
   const [priceRange, setPriceRange] = useState({
     min: '',
     max: ''
-  });
+  })
   
-  const [paymentMethod, setPaymentMethod] = useState('all');
-  const [orderStatus, setOrderStatus] = useState('all');
+  const [paymentMethod, setPaymentMethod] = useState('all')
+  const [orderStatus, setOrderStatus] = useState('all')
 
   const handleApply = () => {
     onApplyFilters({
       dateRange,
       priceRange,
       paymentMethod,
-      orderStatus
-    });
-    onClose();
+      orderStatus;
+    })
+    onClose()
   };
 
   const handleReset = () => {
-    setDateRange({ start: '', end: '' });
-    setPriceRange({ min: '', max: '' });
-    setPaymentMethod('all');
-    setOrderStatus('all');
+    setDateRange({ start: '', end: '' })
+    setPriceRange({ min: '', max: '' })
+    setPaymentMethod('all')
+    setOrderStatus('all')
   };
 
   return (
@@ -197,5 +197,4 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
         </div>
       </div>
     </div>
-  );
-} 
+  )

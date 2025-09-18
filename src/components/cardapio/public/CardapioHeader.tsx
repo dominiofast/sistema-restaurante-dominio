@@ -17,7 +17,7 @@ interface CardapioHeaderProps {
   onSearchChange: (value: string) => void;
   primaryColor: string;
   textColor: string;
-}
+
 
 export const CardapioHeader: React.FC<CardapioHeaderProps> = ({
   company,
@@ -104,5 +104,5 @@ export const CardapioHeader: React.FC<CardapioHeaderProps> = ({
         </div>
       </div>
     </header>
-  );
+  )
 };

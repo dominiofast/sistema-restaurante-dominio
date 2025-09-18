@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Shield, Plus, Edit, Trash2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface User {
@@ -20,17 +20,16 @@ interface User {
 }
 
 const UserManagement: React.FC = () => {
-  const { roles, hasPermission } = usePermissions();
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { roles, hasPermission } = usePermissions()
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
 
   const loadUsers = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
       // Buscar usuários (apenas super admins podem ver todos)
-      const { data, error } = await supabase.auth.admin.listUsers();
-      
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
       if (error) throw error;
       
       setUsers(data.users.map(user => ({
@@ -39,18 +38,18 @@ const UserManagement: React.FC = () => {
         role: user.raw_user_meta_data?.role || user.user_metadata?.role,
         created_at: user.created_at,
         user_metadata: user.user_metadata
-      })));
+      })))
     } catch (error) {
-      console.error('Erro ao carregar usuários:', error);
-      toast.error('Erro ao carregar usuários');
+      console.error('Erro ao carregar usuários:', error)
+      toast.error('Erro ao carregar usuários')
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const getRoleBadgeColor = (role?: string) => {
     switch (role) {
-      case 'super_admin':
+      case 'super_admin':;
         return 'bg-red-100 text-red-800';
       case 'admin':
         return 'bg-blue-100 text-blue-800';
@@ -60,12 +59,12 @@ const UserManagement: React.FC = () => {
         return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-600';
-    }
+
   };
 
   const getRoleLabel = (role?: string) => {
     switch (role) {
-      case 'super_admin':
+      case 'super_admin':;
         return 'Super Admin';
       case 'admin':
         return 'Admin';
@@ -75,12 +74,12 @@ const UserManagement: React.FC = () => {
         return 'Loja';
       default:
         return 'Usuário';
-    }
+
   };
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    loadUsers()
+  }, [])
 
   return (
     <div className="container mx-auto p-6">
@@ -192,7 +191,7 @@ const UserManagement: React.FC = () => {
         </Card>
       </SuperAdminOnly>
     </div>
-  );
+  )
 };
 
 export default UserManagement;

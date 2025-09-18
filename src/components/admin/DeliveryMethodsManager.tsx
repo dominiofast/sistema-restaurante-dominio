@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -24,24 +24,20 @@ interface Company {
 }
 
 export const DeliveryMethodsManager: React.FC = () => {
-  const queryClient = useQueryClient();
-  const [selectedCompany, setSelectedCompany] = useState<string>('');
-  const [localConfig, setLocalConfig] = useState<DeliveryMethod | null>(null);
-  const [hasChanges, setHasChanges] = useState(false);
+  const queryClient = useQueryClient()
+  const [selectedCompany, setSelectedCompany] = useState<string>('')
+  const [localConfig, setLocalConfig] = useState<DeliveryMethod | null>(null)
+  const [hasChanges, setHasChanges] = useState(false)
 
   // Buscar todas as empresas
   const { data: companies = [], isLoading: loadingCompanies } = useQuery({
     queryKey: ['admin-companies'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('companies')
-        .select('id, name, slug')
-        .order('name');
-      
+      const { data, error  } = null as any;
       if (error) throw error;
       return data as Company[];
     }
-  });
+  })
 
   // Buscar configurações da empresa selecionada
   const { data: deliveryConfig, isLoading: loadingConfig, refetch } = useQuery({
@@ -49,12 +45,7 @@ export const DeliveryMethodsManager: React.FC = () => {
     queryFn: async () => {
       if (!selectedCompany) return null;
       
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('*')
-        .eq('company_id', selectedCompany)
-        .single();
-      
+      const { data, error  } = null as any;
       if (error) {
         if (error.code === 'PGRST116') {
           // Não existe ainda - retornar configuração padrão
@@ -66,77 +57,51 @@ export const DeliveryMethodsManager: React.FC = () => {
           } as DeliveryMethod;
         }
         throw error;
-      }
+
       
       return data as DeliveryMethod;
     },
     enabled: !!selectedCompany
-  });
+  })
 
   // Atualizar estado local quando carregar configurações
   useEffect(() => {
     if (deliveryConfig) {
-      setLocalConfig(deliveryConfig);
-      setHasChanges(false);
+      setLocalConfig(deliveryConfig)
+      setHasChanges(false)
     }
-  }, [deliveryConfig]);
+  }, [deliveryConfig])
 
   // Mutation para salvar configurações
   const saveMutation = useMutation({
     mutationFn: async (config: DeliveryMethod) => {
       // Validar que pelo menos uma opção está ativa
       if (!config.delivery && !config.pickup && !config.eat_in) {
-        throw new Error('Pelo menos uma opção de entrega deve estar habilitada');
-      }
+        throw new Error('Pelo menos uma opção de entrega deve estar habilitada')
+
 
       // Tentar atualizar primeiro
-      const { data: updateData, error: updateError } = await supabase
-        .from('delivery_methods')
-        .update({
-          delivery: config.delivery,
-          pickup: config.pickup,
-          eat_in: config.eat_in,
-          updated_at: new Date().toISOString()
-        })
-        .eq('company_id', config.company_id)
-        .select()
-        .single();
-
-      if (updateError) {
-        if (updateError.code === 'PGRST116') {
-          // Não existe, criar novo
-          const { data: insertData, error: insertError } = await supabase
-            .from('delivery_methods')
-            .insert({
-              company_id: config.company_id,
-              delivery: config.delivery,
-              pickup: config.pickup,
-              eat_in: config.eat_in
-            })
-            .select()
-            .single();
-          
-          if (insertError) throw insertError;
+      const updateData = null as any; const updateError = null as any;
           return insertData;
         }
         throw updateError;
-      }
+
 
       return updateData;
     },
     onSuccess: () => {
-      toast.success('Configurações salvas com sucesso!');
-      setHasChanges(false);
+      toast.success('Configurações salvas com sucesso!')
+      setHasChanges(false)
       
       // Invalidar caches relevantes
-      queryClient.invalidateQueries({ queryKey: ['admin-delivery-methods', selectedCompany] });
-      queryClient.invalidateQueries({ queryKey: ['delivery-methods', selectedCompany] });
-      queryClient.invalidateQueries({ queryKey: ['delivery-options'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-delivery-methods', selectedCompany] })
+      queryClient.invalidateQueries({ queryKey: ['delivery-methods', selectedCompany] })
+      queryClient.invalidateQueries({ queryKey: ['delivery-options'] })
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Erro ao salvar configurações');
+      toast.error(error.message || 'Erro ao salvar configurações')
     }
-  });
+  })
 
   // Handler para mudanças nas configurações
   const handleConfigChange = (field: keyof DeliveryMethod, value: boolean) => {
@@ -146,25 +111,25 @@ export const DeliveryMethodsManager: React.FC = () => {
     
     // Validar que pelo menos uma opção permanece ativa
     if (!newConfig.delivery && !newConfig.pickup && !newConfig.eat_in) {
-      toast.error('Pelo menos uma opção deve permanecer ativa');
+      toast.error('Pelo menos uma opção deve permanecer ativa')
       return;
     }
     
-    setLocalConfig(newConfig);
-    setHasChanges(true);
+    setLocalConfig(newConfig)
+    setHasChanges(true)
   };
 
   // Salvar configurações
   const handleSave = () => {
     if (!localConfig) return;
-    saveMutation.mutate(localConfig);
+    saveMutation.mutate(localConfig)
   };
 
   // Resetar para configurações salvas
   const handleReset = () => {
     if (deliveryConfig) {
-      setLocalConfig(deliveryConfig);
-      setHasChanges(false);
+      setLocalConfig(deliveryConfig)
+      setHasChanges(false)
     }
   };
 
@@ -189,8 +154,8 @@ export const DeliveryMethodsManager: React.FC = () => {
         break;
     }
     
-    setLocalConfig(newConfig);
-    setHasChanges(true);
+    setLocalConfig(newConfig)
+    setHasChanges(true)
   };
 
   return (
@@ -406,5 +371,5 @@ export const DeliveryMethodsManager: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };

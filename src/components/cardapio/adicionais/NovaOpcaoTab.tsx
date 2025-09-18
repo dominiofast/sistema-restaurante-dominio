@@ -7,7 +7,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Plus, Check, Upload, ImageIcon, X } from 'lucide-react';
 import { CategoriaAdicional } from '@/types/cardapio';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },;
+  })
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`)
+  }
+  
+  return response.json()
+
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
 
@@ -19,94 +34,80 @@ interface Adicional {
   categoria_adicional_id: string;
   is_available: boolean;
   image?: string;
-}
+
 
 interface NovaOpcaoTabProps {
   categoriasAdicionais: CategoriaAdicional[];
   onRefresh?: () => void;
-}
+
 
 export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
   categoriasAdicionais,
   onRefresh
 }) => {
-  const { toast } = useToast();
-  const { fetchAdicionais } = useCardapio();
-  const [loading, setLoading] = useState(false);
-  const [adicionaisCriados, setAdicionaisCriados] = useState<Adicional[]>([]);
+  const { toast } = useToast()
+  const { fetchAdicionais } = useCardapio()
+  const [loading, setLoading] = useState(false)
+  const [adicionaisCriados, setAdicionaisCriados] = useState<Adicional[]>([])
   const [novoAdicional, setNovoAdicional] = useState({
     name: '',
     description: '',
     price: 0,
     categoria_adicional_id: '',
     is_available: true
-  });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  })
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const handleImageUpload = (file: File) => {
-    setImageFile(file);
-    const reader = new FileReader();
+    setImageFile(file)
+    const reader = new FileReader()
     reader.onload = (e) => {
-      setImagePreview(e.target?.result as string);
+      setImagePreview(e.target?.result as string)
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file)
   };
 
   const clearImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
+    setImageFile(null)
+    setImagePreview(null)
   };
 
   const handleCreateAdicional = async () => {
     if (!novoAdicional.name || !novoAdicional.categoria_adicional_id) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
       
       let imageUrl = null;
       
-      // Upload da imagem se existir
+      // Upload da imagem se existir (implementação simplificada por enquanto)
       if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-        const filePath = `adicionais/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('media')
-          .upload(filePath, imageFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: urlData } = supabase.storage
-          .from('media')
-          .getPublicUrl(filePath);
-
-        imageUrl = urlData.publicUrl;
+        // TODO: Implementar upload de imagens para PostgreSQL
+        // Por enquanto, não fazemos upload da imagem
+        imageUrl = null;
       }
 
-      const { data, error } = await supabase
-        .from('adicionais')
-        .insert([{ ...novoAdicional, image: imageUrl }])
-        .select('*');
-
-      if (error) throw error;
+       catch (error) { console.error('Error:', error) }const data = await apiRequest('/api/adicionais', {
+        method: 'POST',
+        body: JSON.stringify({ ...novoAdicional, image: imageUrl })
+      })
 
       // Adicionar o novo adicional à lista local
       if (data && data.length > 0) {
-        setAdicionaisCriados(prev => [...prev, data[0]]);
+        setAdicionaisCriados(prev => [...prev, data[0]])
       }
 
       // Atualizar o estado global dos adicionais
-      await fetchAdicionais();
+      await fetchAdicionais()
       
       // Atualizar também o componente pai (AdicionaisModal) 
-      onRefresh?.();
+      onRefresh?.()
 
       toast({
         title: "Sucesso",
         description: "Adicional criado com sucesso!",
-      });
+      })
 
       // Manter o grupo selecionado e limpar apenas os outros campos
       setNovoAdicional(prev => ({
@@ -115,18 +116,18 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         price: 0,
         categoria_adicional_id: prev.categoria_adicional_id,
         is_available: true
-      }));
-      clearImage();
+      }))
+      clearImage()
     } catch (error) {
-      console.error('Erro ao criar adicional:', error);
+      console.error('Erro ao criar adicional:', error)
       toast({
         title: "Erro",
         description: "Erro ao criar adicional",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const getCategoriaNome = (categoriaId: string) => {
@@ -263,7 +264,7 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      handleImageUpload(file);
+                      handleImageUpload(file)
                     }
                   }}
                 />
@@ -307,5 +308,5 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

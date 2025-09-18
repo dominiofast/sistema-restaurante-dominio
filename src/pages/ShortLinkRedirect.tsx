@@ -1,65 +1,65 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { Loader2 } from "lucide-react";
 
 const ShortLinkRedirect = () => {
-  const { short_id } = useParams<{ short_id: string }>();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const { short_id } = useParams<{ short_id: string }>()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const resolveShortLink = async () => {
       if (!short_id) {
-        navigate("/");
+        navigate("/")
         return;
       }
 
       try {
         // Buscar o link curto no banco
-        const { data: shortLink, error } = await supabase
-          .from("short_links")
-          .select("target_slug, clicks_count")
-          .eq("short_id", short_id)
-          .eq("is_active", true)
-          .maybeSingle();
+        const { data: shortLink, error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
+          
+          
 
         if (error) {
-          console.error("Erro ao buscar link curto:", error);
-          navigate("/");
+          console.error("Erro ao buscar link curto:", error)
+          navigate("/")
           return;
         }
 
         if (!shortLink) {
           // Link não encontrado, redirecionar para home
-          navigate("/");
+          navigate("/")
           return;
         }
 
         // Incrementar contador de cliques (sem aguardar)
         supabase
-          .from("short_links")
-          .update({ clicks_count: shortLink.clicks_count + 1 })
-          .eq("short_id", short_id)
+          
+          
+          
           .then(({ error }) => {
             if (error) {
-              console.warn("Erro ao incrementar cliques:", error);
+              console.warn("Erro ao incrementar cliques:", error)
             }
-          });
+          })
 
         // Redirecionar para o cardápio da empresa
-        navigate(`/${shortLink.target_slug}`, { replace: true });
+        navigate(`/${shortLink.target_slug}`, { replace: true })
 
       } catch (error) {
-        console.error("Erro inesperado:", error);
-        navigate("/");
+        console.error("Erro inesperado:", error)
+        navigate("/")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     };
 
-    resolveShortLink();
-  }, [short_id, navigate]);
+    resolveShortLink()
+  }, [short_id, navigate])
 
   if (loading) {
     return (
@@ -76,8 +76,8 @@ const ShortLinkRedirect = () => {
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return null;
 };

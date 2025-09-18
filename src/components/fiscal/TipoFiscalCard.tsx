@@ -20,14 +20,14 @@ interface TipoFiscal {
   nome: string;
   descricao?: string;
   ativo: boolean;
-}
+
 
 interface TipoFiscalCardProps {
   tipo: TipoFiscal;
   onConfigure: (id: string, nome: string) => void;
   onEdit: (tipo: TipoFiscal) => void;
   onDelete: (id: string) => void;
-}
+
 
 export function TipoFiscalCard({ tipo, onConfigure, onEdit, onDelete }: TipoFiscalCardProps) {
   return (
@@ -106,5 +106,4 @@ export function TipoFiscalCard({ tipo, onConfigure, onEdit, onDelete }: TipoFisc
         </div>
       </CardContent>
     </Card>
-  );
-}
+  )

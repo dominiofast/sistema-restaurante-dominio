@@ -56,7 +56,7 @@ const VagaInfoCard: React.FC<VagaInfoCardProps> = ({ vaga, primaryColor, getType
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default VagaInfoCard;

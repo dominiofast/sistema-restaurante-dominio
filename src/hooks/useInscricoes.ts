@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { DragEndEvent } from '@dnd-kit/core';
 
@@ -23,121 +23,108 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 export const useInscricoes = (companyId: string | null) => {
-  const [inscricoes, setInscricoes] = useState<Inscricao[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [inscricoes, setInscricoes] = useState<Inscricao[]>([])
+  const [loading, setLoading] = useState(true)
 
   const fetchInscricoes = useCallback(async () => {
     if (!companyId) {
-      console.log('Company ID não disponível, não buscando inscrições');
-      setLoading(false);
+      console.log('Company ID não disponível, não buscando inscrições')
+      setLoading(false)
       return;
     }
 
     try {
-      setLoading(true);
+      setLoading(true)
       
-      console.log('Buscando inscrições para company_id:', companyId);
+      console.log('Buscando inscrições para company_id:', companyId)
 
       // Primeiro, verificar o usuário atual
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      console.log('Usuário atual:', user);
-      console.log('Erro do usuário:', userError);
+      const { data: { user } catch (error) { console.error('Error:', error) }, error: userError } = await Promise.resolve()
+      console.log('Usuário atual:', user)
+      console.log('Erro do usuário:', userError)
 
       // Testar busca básica primeiro
-      console.log('Executando teste de busca básica...');
-      const { data: testData, error: testError } = await supabase
-        .from('rh_inscricoes')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('arquivado', false) // Filtrar apenas não arquivadas
-        .limit(5);
-
-      console.log('Resultado do teste básico:', { 
-        count: testData?.length || 0, 
-        data: testData, 
-        error: testError 
-      });
+      console.log('Executando teste de busca básica...')
+      const testData = null as any; const testError = null as any;
 
       if (testError) {
-        console.error('Erro no teste básico:', testError);
+        console.error('Erro no teste básico:', testError)
         throw testError;
       }
 
       // Agora fazer a busca completa com join
-      console.log('Executando busca completa com join...');
-      const { data, error } = await supabase
-        .from('rh_inscricoes')
-        .select(`
+      console.log('Executando busca completa com join...')
+      const { data, error  } = null as any;
           *,
           rh_vagas(title, location)
         `)
-        .eq('company_id', companyId)
-        .eq('arquivado', false) // Filtrar apenas não arquivadas
-        .order('created_at', { ascending: false });
+        
+        
+        
 
       console.log('Resultado da busca completa:', { 
         count: data?.length || 0, 
         data: data, 
         error: error 
-      });
+      })
 
       if (error) {
-        console.error('Erro na query de inscrições:', error);
+        console.error('Erro na query de inscrições:', error)
         throw error;
       }
 
-      console.log('Inscrições encontradas:', data?.length || 0);
-      setInscricoes(data || []);
+      console.log('Inscrições encontradas:', data?.length || 0)
+      setInscricoes(data || [])
     } catch (error: any) {
-      console.error('Erro ao carregar inscrições:', error);
-      toast.error('Erro ao carregar inscrições: ' + error.message);
+      console.error('Erro ao carregar inscrições:', error)
+      toast.error('Erro ao carregar inscrições: ' + error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [companyId]);
+  }, [companyId])
 
   useEffect(() => {
-    fetchInscricoes();
-  }, [fetchInscricoes]);
+    fetchInscricoes()
+  }, [fetchInscricoes])
 
   const updateStatus = async (inscricaoId: string, newStatus: string) => {
     try {
-      console.log('Atualizando status da inscrição:', inscricaoId, 'para:', newStatus);
+      console.log('Atualizando status da inscrição:', inscricaoId, 'para:', newStatus)
       
-      const { error } = await supabase
-        .from('rh_inscricoes')
-        .update({ status: newStatus })
-        .eq('id', inscricaoId);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
 
-      toast.success('Status atualizado com sucesso!');
-      fetchInscricoes();
+      toast.success('Status atualizado com sucesso!')
+      fetchInscricoes()
     } catch (error: any) {
-      console.error('Erro ao atualizar status:', error);
-      toast.error('Erro ao atualizar status: ' + error.message);
+      console.error('Erro ao atualizar status:', error)
+      toast.error('Erro ao atualizar status: ' + error.message)
     }
   };
 
   const arquivarInscricao = async (inscricaoId: string) => {
     try {
-      console.log('Arquivando inscrição:', inscricaoId);
+      console.log('Arquivando inscrição:', inscricaoId)
       
-      const { error } = await supabase
-        .from('rh_inscricoes')
-        .update({ arquivado: true })
-        .eq('id', inscricaoId);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
 
-      toast.success('Inscrição arquivada com sucesso!');
-      fetchInscricoes();
+      toast.success('Inscrição arquivada com sucesso!')
+      fetchInscricoes()
     } catch (error: any) {
-      console.error('Erro ao arquivar inscrição:', error);
-      toast.error('Erro ao arquivar inscrição: ' + error.message);
+      console.error('Erro ao arquivar inscrição:', error)
+      toast.error('Erro ao arquivar inscrição: ' + error.message)
     }
   };
 
@@ -146,19 +133,19 @@ export const useInscricoes = (companyId: string | null) => {
       'pendente': [],
       'em_analise': [],
       'aprovado': [],
-      'rejeitado': []
+      'rejeitado': [];
     };
 
     inscricoes.forEach(inscricao => {
       if (statusMap[inscricao.status]) {
-        statusMap[inscricao.status].push(inscricao);
+        statusMap[inscricao.status].push(inscricao)
       } else {
-        statusMap['pendente'].push(inscricao);
+        statusMap['pendente'].push(inscricao)
       }
-    });
+    })
 
     return statusMap;
-  }, [inscricoes]);
+  }, [inscricoes])
 
   const onDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
@@ -168,8 +155,8 @@ export const useInscricoes = (companyId: string | null) => {
     const inscricaoId = active.id as string;
     const newStatus = over.id as string;
     
-    updateStatus(inscricaoId, newStatus);
-  }, [updateStatus]);
+    updateStatus(inscricaoId, newStatus)
+  }, [updateStatus])
 
   return {
     inscricoes,

@@ -16,8 +16,8 @@ export const DeliveryInfo: React.FC<DeliveryInfoProps> = ({
   minimumOrderValue = 0,
   primaryColor
 }) => {
-  const hasDeliveryInfo = (showEstimatedTime && estimatedDeliveryTime) || 
-                         (showMinimumOrder && minimumOrderValue && minimumOrderValue > 0);
+  const hasDeliveryInfo = (showEstimatedTime && estimatedDeliveryTime) || ;
+                         (showMinimumOrder && minimumOrderValue && minimumOrderValue > 0)
 
   if (!hasDeliveryInfo) return null;
 
@@ -53,5 +53,5 @@ export const DeliveryInfo: React.FC<DeliveryInfoProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

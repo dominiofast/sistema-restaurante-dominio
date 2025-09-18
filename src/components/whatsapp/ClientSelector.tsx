@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Check, X, Users, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface Cliente {
@@ -23,11 +23,11 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
   onContactsChange,
   onClose
 }) => {
-  const { currentCompany } = useAuth();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [clients, setClients] = useState<Cliente[]>([]);
-  const [filteredClients, setFilteredClients] = useState<Cliente[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { currentCompany } = useAuth()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [clients, setClients] = useState<Cliente[]>([])
+  const [filteredClients, setFilteredClients] = useState<Cliente[]>([])
+  const [loading, setLoading] = useState(true)
 
   // Carregar clientes
   useEffect(() => {
@@ -35,14 +35,14 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
       if (!currentCompany?.id) return;
 
       try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('clientes')
-          .select('id, nome, telefone, email, status')
-          .eq('company_id', currentCompany.id)
+        setLoading(true)
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
           .not('telefone', 'is', null)
           .neq('telefone', '')
-          .order('nome', { ascending: true });
+          
 
         if (error) throw error;
         
@@ -50,20 +50,20 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
         const clientsWithStringId = (data || []).map(client => ({
           ...client,
           id: client.id.toString()
-        }));
+        }))
         
-        setClients(clientsWithStringId);
-        setFilteredClients(clientsWithStringId);
+        setClients(clientsWithStringId)
+        setFilteredClients(clientsWithStringId)
       } catch (error) {
-        console.error('Erro ao carregar clientes:', error);
-        toast.error('Erro ao carregar lista de clientes');
+        console.error('Erro ao carregar clientes:', error)
+        toast.error('Erro ao carregar lista de clientes')
       } finally {
-        setLoading(false);
-      }
+        setLoading(false)
+
     };
 
-    fetchClients();
-  }, [currentCompany?.id]);
+    fetchClients()
+  }, [currentCompany?.id])
 
   // Filtrar clientes conforme busca
   useEffect(() => {
@@ -71,30 +71,30 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
       client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.telefone.includes(searchTerm) ||
       (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-    setFilteredClients(filtered);
-  }, [searchTerm, clients]);
+    )
+    setFilteredClients(filtered)
+  }, [searchTerm, clients])
 
   const handleToggleContact = (client: Cliente) => {
-    const isSelected = selectedContacts.some(c => c.id === client.id);
+    const isSelected = selectedContacts.some(c => c.id === client.id)
     
     if (isSelected) {
-      onContactsChange(selectedContacts.filter(c => c.id !== client.id));
+      onContactsChange(selectedContacts.filter(c => c.id !== client.id))
     } else {
-      onContactsChange([...selectedContacts, client]);
+      onContactsChange([...selectedContacts, client])
     }
   };
 
   const handleSelectAll = () => {
     if (selectedContacts.length === filteredClients.length) {
-      onContactsChange([]);
+      onContactsChange([])
     } else {
-      onContactsChange(filteredClients);
+      onContactsChange(filteredClients)
     }
   };
 
   const isContactSelected = (clientId: string) => {
-    return selectedContacts.some(c => c.id === clientId);
+    return selectedContacts.some(c => c.id === clientId)
   };
 
   return (
@@ -239,5 +239,5 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

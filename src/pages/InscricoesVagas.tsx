@@ -27,12 +27,12 @@ interface Inscricao {
     title: string;
     location: string;
   };
-}
+
 
 const InscricoesVagas: React.FC = () => {
-  const { companyId, currentCompany, user } = useAuth();
-  const [selectedInscricao, setSelectedInscricao] = useState<Inscricao | null>(null);
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const { companyId, currentCompany, user } = useAuth()
+  const [selectedInscricao, setSelectedInscricao] = useState<Inscricao | null>(null)
+  const [detailsOpen, setDetailsOpen] = useState(false)
 
   const {
     inscricoes,
@@ -42,35 +42,35 @@ const InscricoesVagas: React.FC = () => {
     arquivarInscricao,
     onDragEnd,
     fetchInscricoes
-  } = useInscricoes(companyId);
+  } = useInscricoes(companyId)
 
   useEffect(() => {
-    console.log('InscricoesVagas - Estado atual:');
-    console.log('- User:', user);
-    console.log('- CompanyId:', companyId);
-    console.log('- CurrentCompany:', currentCompany);
-    console.log('- Loading:', loading);
-    console.log('- Inscricoes count:', inscricoes.length);
-    console.log('- Inscricoes data:', inscricoes);
-  }, [user, companyId, currentCompany, loading, inscricoes]);
+    console.log('InscricoesVagas - Estado atual:')
+    console.log('- User:', user)
+    console.log('- CompanyId:', companyId)
+    console.log('- CurrentCompany:', currentCompany)
+    console.log('- Loading:', loading)
+    console.log('- Inscricoes count:', inscricoes.length)
+    console.log('- Inscricoes data:', inscricoes)
+  }, [user, companyId, currentCompany, loading, inscricoes])
 
   const onSelectInscricao = useCallback((inscricao: Inscricao) => {
-    setSelectedInscricao(inscricao);
-    setDetailsOpen(true);
-  }, []);
+    setSelectedInscricao(inscricao)
+    setDetailsOpen(true)
+  }, [])
 
   const handleRefresh = useCallback(() => {
-    console.log('Recarregando inscrições manualmente...');
-    fetchInscricoes();
-  }, [fetchInscricoes]);
+    console.log('Recarregando inscrições manualmente...')
+    fetchInscricoes()
+  }, [fetchInscricoes])
 
   const handleArquivar = useCallback((inscricaoId: string) => {
-    arquivarInscricao(inscricaoId);
-  }, [arquivarInscricao]);
+    arquivarInscricao(inscricaoId)
+  }, [arquivarInscricao])
 
   if (loading) {
     return <InscricoesLoadingState />;
-  }
+
 
   return (
     <div className="space-y-6">
@@ -102,7 +102,7 @@ const InscricoesVagas: React.FC = () => {
         </>
       )}
     </div>
-  );
+  )
 };
 
 export default InscricoesVagas;

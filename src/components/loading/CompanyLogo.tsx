@@ -24,7 +24,7 @@ export const CompanyLogo: React.FC<EnhancedCompanyLogoProps> = ({
     baseSize: size,
     customBreakpoints,
     enableContainerQueries: enableResponsive
-  });
+  })
 
   // Calculate final size - use manual size if provided, otherwise use breakpoint size
   const finalSize = size || currentBreakpoint.logoSize;
@@ -35,28 +35,28 @@ export const CompanyLogo: React.FC<EnhancedCompanyLogoProps> = ({
     
     // Add responsive classes if enabled
     if (enableResponsive) {
-      classes.push(styles['logo-responsive']);
+      classes.push(styles['logo-responsive'])
       // Add breakpoint-specific classes from hook
       breakpointClasses.split(' ').forEach(cls => {
         if (styles[cls]) {
-          classes.push(styles[cls]);
+          classes.push(styles[cls])
         }
-      });
+      })
     } else {
       // Legacy context-specific classes for backward compatibility
       if (context === 'header') {
-        classes.push(styles['header-logo']);
+        classes.push(styles['header-logo'])
       } else if (context === 'loading') {
-        classes.push(styles['loading-logo-enhanced']);
+        classes.push(styles['loading-logo-enhanced'])
       } else {
-        classes.push(styles['company-branding-logo']);
-      }
-    }
+        classes.push(styles['company-branding-logo'])
+
+
     
-    classes.push(styles['no-crop']);
-    classes.push(styles['logo-optimized']);
+    classes.push(styles['no-crop'])
+    classes.push(styles['logo-optimized'])
     
-    return classes.join(' ');
+    return classes.join(' ')
   };
 
   return (
@@ -96,5 +96,5 @@ export const CompanyLogo: React.FC<EnhancedCompanyLogoProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

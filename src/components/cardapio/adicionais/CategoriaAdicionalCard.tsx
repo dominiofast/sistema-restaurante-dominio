@@ -42,11 +42,11 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: adicional.id });
+  } = useSortable({ id: adicional.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition,;
   };
 
   return (
@@ -60,7 +60,7 @@ const SortableAdicional: React.FC<SortableAdicionalProps> = ({ adicional, childr
         isDragging
       })}
     </div>
-  );
+  )
 };
 
 interface CategoriaAdicionalCardProps {
@@ -403,5 +403,5 @@ export const CategoriaAdicionalCard: React.FC<CategoriaAdicionalCardProps> = ({
         </CollapsibleContent>
       </Collapsible>
     </div>
-  );
+  )
 };

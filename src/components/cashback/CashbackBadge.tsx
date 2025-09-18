@@ -30,7 +30,7 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
       icon: 'h-5 w-5',
       text: 'text-base',
       percentage: 'text-xl font-bold'
-    }
+    };
   };
 
   const config = sizeConfig[size];
@@ -42,7 +42,7 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
       >
         <span className="text-xs">cashback {percentual}%</span>
       </div>
-    );
+    )
   }
 
   return (
@@ -66,5 +66,5 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
         </span>
       </div>
     </div>
-  );
+  )
 };

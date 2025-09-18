@@ -21,45 +21,45 @@ interface RecentCompany {
 }
 
 const SuperAdminDashboard = () => {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Stat[]>([]);
-  const [recentCompanies, setRecentCompanies] = useState<RecentCompany[]>([]);
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<Stat[]>([])
+  const [recentCompanies, setRecentCompanies] = useState<RecentCompany[]>([])
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
         
         // Buscar dados via APIs do Neon
         const [companiesResponse, recentCompaniesResponse] = await Promise.all([
           fetch('/api/companies', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-          }),
+           catch (error) { console.error('Error:', error) }}),
           fetch('/api/companies', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
           })
-        ]);
+        ])
 
         if (!companiesResponse.ok || !recentCompaniesResponse.ok) {
-          throw new Error('Erro ao buscar dados do dashboard');
-        }
+          throw new Error('Erro ao buscar dados do dashboard')
 
-        const companiesResult = await companiesResponse.json();
-        const recentCompaniesResult = await recentCompaniesResponse.json();
+
+        const companiesResult = await companiesResponse.json()
+        const recentCompaniesResult = await recentCompaniesResponse.json()
 
         if (!companiesResult.success || !recentCompaniesResult.success) {
-          throw new Error('Erro na resposta da API');
-        }
+          throw new Error('Erro na resposta da API')
+
 
         const totalCompanies = companiesResult.data?.length || 0;
         const recentCompaniesList = (recentCompaniesResult.data || [])
           .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0, 5);
+          .slice(0, 5)
         
-        setRecentCompanies(recentCompaniesList);
+        setRecentCompanies(recentCompaniesList)
 
         // Para outras estatísticas, usar valores mockados por enquanto
         // TODO: Implementar APIs específicas para essas estatísticas
@@ -72,26 +72,26 @@ const SuperAdminDashboard = () => {
           { title: 'Agentes de IA Ativos', value: activeAgents || 0, icon: Bot, color: 'text-green-600' },
           { title: 'Tokens Usados Hoje', value: tokensUsedToday.toLocaleString(), icon: Settings, color: 'text-purple-600' },
           { title: 'Novos Clientes Hoje', value: newCustomersToday || 0, icon: UserPlus, color: 'text-orange-600' }
-        ]);
+        ])
 
       } catch (error) {
-        console.error('Erro ao carregar dados do dashboard:', error);
-        toast.error('Não foi possível carregar os dados do dashboard.');
+        console.error('Erro ao carregar dados do dashboard:', error)
+        toast.error('Não foi possível carregar os dados do dashboard.')
       } finally {
-        setLoading(false);
-      }
+        setLoading(false)
+
     };
 
-    fetchDashboardData();
-  }, []);
+    fetchDashboardData()
+  }, [])
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -181,7 +181,7 @@ const SuperAdminDashboard = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default SuperAdminDashboard; 

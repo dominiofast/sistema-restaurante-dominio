@@ -5,7 +5,7 @@
  * for companies that don't have them, using intelligent business rules.
  */
 
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { getAutoCreationConfig, DeliveryMethodsConfig } from '@/utils/deliveryMethodsFallback';
 import { recoverFromError, logError, categorizeError } from '@/utils/errorRecovery';
 import { recordDeliveryMethodsAutoCreated } from '@/utils/deliveryMethodsMonitoring';
@@ -31,17 +31,10 @@ export async function autoCreateDeliveryMethods(
   companySlug?: string
 ): Promise<AutoConfigResult> {
   try {
-    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug });
+    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug } catch (error) { console.error('Error:', error) })
 
     // Verificar se já existe registro (double-check)
-    const { data: existing, error: checkError } = await supabase
-      .from('delivery_methods')
-      .select('delivery, pickup, eat_in')
-      .eq('company_id', companyId)
-      .single();
-
-    if (existing && !checkError) {
-      console.log('✅ [AutoConfig] Registro já existe, retornando configuração existente');
+    const existing = null as any; const checkError = null as any;
       return {
         success: true,
         data: {
@@ -50,48 +43,22 @@ export async function autoCreateDeliveryMethods(
         },
         created: false
       };
-    }
+
 
     // Obter configuração baseada nas regras de negócio
-    const config = getAutoCreationConfig(companyName, companySlug);
+    const config = getAutoCreationConfig(companyName, companySlug)
     
-    console.log('📝 [AutoConfig] Criando registro com configuração:', config);
+    console.log('📝 [AutoConfig] Criando registro com configuração:', config)
 
     // Criar o registro
-    const { data: newRecord, error: insertError } = await supabase
-      .from('delivery_methods')
-      .insert({
-        company_id: companyId,
-        delivery: config.delivery,
-        pickup: config.pickup,
-        eat_in: config.eat_in
-      })
-      .select('delivery, pickup, eat_in')
-      .single();
-
-    if (insertError) {
-      console.error('❌ [AutoConfig] Erro ao inserir registro:', insertError);
+    const newRecord = null as any; const insertError = null as any;
       
       // Verificar se é erro de duplicata (race condition)
       if (insertError.code === '23505') {
-        console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente');
+        console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente')
         
         // Tentar buscar o registro que foi criado
-        const { data: raceData, error: raceError } = await supabase
-          .from('delivery_methods')
-          .select('delivery, pickup, eat_in')
-          .eq('company_id', companyId)
-          .single();
-
-        if (raceData && !raceError) {
-          return {
-            success: true,
-            data: {
-              ...raceData,
-              source: 'database'
-            },
-            created: false
-          };
+        const raceData = null as any; const raceError = null as any;
         }
       }
 
@@ -99,17 +66,17 @@ export async function autoCreateDeliveryMethods(
         success: false,
         error: `Erro ao criar configurações: ${insertError.message}`,
       };
-    }
 
-    console.log('✅ [AutoConfig] Registro criado com sucesso:', newRecord);
+
+    console.log('✅ [AutoConfig] Registro criado com sucesso:', newRecord)
 
     const resultConfig = {
       ...newRecord,
-      source: 'auto-created' as const
+      source: 'auto-created' as const;
     };
 
     // Record auto-creation event
-    recordDeliveryMethodsAutoCreated(companyId, companyName, resultConfig);
+    recordDeliveryMethodsAutoCreated(companyId, companyName, resultConfig)
 
     return {
       success: true,
@@ -118,12 +85,12 @@ export async function autoCreateDeliveryMethods(
     };
 
   } catch (error) {
-    console.error('❌ [AutoConfig] Erro inesperado:', error);
+    console.error('❌ [AutoConfig] Erro inesperado:', error)
     return {
       success: false,
       error: `Erro inesperado: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
     };
-  }
+
 }
 
 /**
@@ -143,41 +110,31 @@ export async function ensureDeliveryMethodsExist(
   const context = `ensureDeliveryMethods for ${companyName || companyId}`;
   
   const operation = async (): Promise<DeliveryMethodsConfig> => {
-    // Primeiro, tentar buscar configuração existente
-    const { data: existing, error: fetchError } = await supabase
-      .from('delivery_methods')
-      .select('delivery, pickup, eat_in')
-      .eq('company_id', companyId)
-      .single();
+    // Primeiro, tentar buscar configuração existente;
+    const existing = null as any; const fetchError = null as any;
 
-    if (existing && !fetchError) {
-      return {
-        ...existing,
-        source: 'database'
-      };
-    }
 
     // Se não existe, auto-criar
     if (fetchError?.code === 'PGRST116') {
-      console.log('📝 [EnsureConfig] Configuração não encontrada, auto-criando...');
+      console.log('📝 [EnsureConfig] Configuração não encontrada, auto-criando...')
       
-      const result = await autoCreateDeliveryMethods(companyId, companyName, companySlug);
+      const result = await autoCreateDeliveryMethods(companyId, companyName, companySlug)
       
       if (result.success && result.data) {
         return result.data;
-      }
+
       
       // Se falhou ao criar, lançar erro para tentar recovery
-      throw new Error(`Auto-creation failed: ${result.error}`);
-    }
+      throw new Error(`Auto-creation failed: ${result.error}`)
+
 
     // Outros erros
-    throw fetchError || new Error('Unknown fetch error');
+    throw fetchError || new Error('Unknown fetch error')
   };
 
   const fallback = (): DeliveryMethodsConfig => {
-    console.warn('⚠️ [EnsureConfig] Usando configuração de fallback');
-    const fallbackConfig = getAutoCreationConfig(companyName, companySlug);
+    console.warn('⚠️ [EnsureConfig] Usando configuração de fallback')
+    const fallbackConfig = getAutoCreationConfig(companyName, companySlug)
     return {
       ...fallbackConfig,
       source: 'fallback'
@@ -191,15 +148,15 @@ export async function ensureDeliveryMethodsExist(
       context,
       retryConfig: {
         maxAttempts: 2, // Menos tentativas para operações de configuração
-        baseDelay: 1000,
+// baseDelay: 1000,
         maxDelay: 3000
-      }
-    }
-  );
+
+    };
+  )
 
   if (recoveryResult.success && recoveryResult.data) {
     return recoveryResult.data;
-  }
+
 
   // Se tudo falhou, log do erro e usar fallback final
   if (recoveryResult.error) {
@@ -209,11 +166,11 @@ export async function ensureDeliveryMethodsExist(
       companySlug,
       attempts: recoveryResult.attempts,
       recoveryMethod: recoveryResult.recoveryMethod
-    });
-  }
+    })
+
 
   // Fallback final garantido
-  return fallback();
+  return fallback()
 }
 
 /**
@@ -230,11 +187,11 @@ export async function batchCreateDeliveryMethods(
 
   for (const company of companies) {
     try {
-      const result = await autoCreateDeliveryMethods(company.id, company.name, company.slug);
+      const result = await autoCreateDeliveryMethods(company.id, company.name, company.slug)
       results.push({
         companyId: company.id,
         result
-      });
+      } catch (error) { console.error('Error:', error) })
     } catch (error) {
       results.push({
         companyId: company.id,
@@ -242,9 +199,9 @@ export async function batchCreateDeliveryMethods(
           success: false,
           error: error instanceof Error ? error.message : 'Erro desconhecido'
         }
-      });
-    }
-  }
+      })
+
+
 
   return results;
 }
@@ -262,24 +219,24 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
 }> {
   try {
     let query = supabase
-      .from('delivery_methods')
-      .select('company_id, delivery, pickup, eat_in');
+      
+      
 
     if (companyId) {
-      query = query.eq('company_id', companyId);
-    }
+      query = query
 
-    const { data: allConfigs, error: fetchError } = await query;
+
+     catch (error) { console.error('Error:', error) }const allConfigs = null as any; const fetchError = null as any;
 
     if (fetchError) {
       throw fetchError;
-    }
+
 
     const toRepair = allConfigs?.filter(config => 
-      !config.delivery && !config.pickup && !config.eat_in
+      !config.delivery && !config.pickup && !config.eat_in;
     ) || [];
 
-    console.log(`🔧 [Repair] Encontradas ${toRepair.length} configurações para reparar`);
+    console.log(`🔧 [Repair] Encontradas ${toRepair.length} configurações para reparar`)
 
     let repaired = 0;
     const errors: Array<{ companyId: string; error: string }> = [];
@@ -287,35 +244,35 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
     for (const config of toRepair) {
       try {
         // Habilitar pickup como padrão para configurações inválidas
-        const { error: updateError } = await supabase
-          .from('delivery_methods')
-          .update({
+        const { error: updateError }  catch (error) { console.error('Error:', error) }= 
+          
+          
             pickup: true,
             updated_at: new Date().toISOString()
           })
-          .eq('company_id', config.company_id);
+          
 
         if (updateError) {
           errors.push({
             companyId: config.company_id,
             error: updateError.message
-          });
+          })
         } else {
           repaired++;
-          console.log(`✅ [Repair] Reparada configuração para empresa: ${config.company_id}`);
+          console.log(`✅ [Repair] Reparada configuração para empresa: ${config.company_id}`)
         }
       } catch (error) {
         errors.push({
           companyId: config.company_id,
           error: error instanceof Error ? error.message : 'Erro desconhecido'
-        });
-      }
-    }
+        })
+
+
 
     return { repaired, errors };
 
   } catch (error) {
-    console.error('❌ [Repair] Erro no processo de reparo:', error);
+    console.error('❌ [Repair] Erro no processo de reparo:', error)
     return {
       repaired: 0,
       errors: [{
@@ -323,5 +280,5 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
         error: error instanceof Error ? error.message : 'Erro desconhecido'
       }]
     };
-  }
+
 }

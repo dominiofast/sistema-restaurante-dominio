@@ -18,7 +18,7 @@ export const PagamentoModalSimplesPDV: React.FC<PagamentoModalSimplesPDVProps> =
   onConfirm,
   total
 }) => {
-  const [tab, setTab] = useState<'dinheiro'|'cartao'|'pix'>('dinheiro');
+  const [tab, setTab] = useState<'dinheiro'|'cartao'|'pix'>('dinheiro')
 
   if (!isOpen) return null;
 
@@ -74,5 +74,5 @@ export const PagamentoModalSimplesPDV: React.FC<PagamentoModalSimplesPDVProps> =
         </div>
       </div>
     </div>
-  );
+  )
 };

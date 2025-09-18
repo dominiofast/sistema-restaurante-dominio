@@ -29,7 +29,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
   canAdvance,
   nextActionLabel
 }) => {
-  const [individualMode, setIndividualMode] = useState(false);
+  const [individualMode, setIndividualMode] = useState(false)
   // Determinar cor do tempo
   const getTempoColor = (tempo: number) => {
     if (tempo > 30) return 'text-red-600 bg-red-100';
@@ -109,7 +109,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
                 itemId={item.id}
                 isClickable={true}
                 onStatusChange={(itemId, newStatus) => {
-                  console.log('Status alterado:', itemId, newStatus);
+                  console.log('Status alterado:', itemId, newStatus)
                 }}
               />
             ))
@@ -138,5 +138,5 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

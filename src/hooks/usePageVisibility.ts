@@ -5,29 +5,29 @@ import { useState, useEffect } from 'react';
  * Útil para evitar recarregamentos desnecessários quando o usuário volta para a aba
  */
 export const usePageVisibility = () => {
-  const [isVisible, setIsVisible] = useState(!document.hidden);
-  const [wasHidden, setWasHidden] = useState(false);
+  const [isVisible, setIsVisible] = useState(!document.hidden)
+  const [wasHidden, setWasHidden] = useState(false)
 
   useEffect(() => {
     const handleVisibilityChange = () => {
       const visible = !document.hidden;
       
       if (!visible) {
-        setWasHidden(true);
+        setWasHidden(true)
       }
       
-      setIsVisible(visible);
+      setIsVisible(visible)
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     };
-  }, []);
+  }, [])
 
   // Função para resetar o estado de "foi oculto"
-  const resetWasHidden = () => setWasHidden(false);
+  const resetWasHidden = () => setWasHidden(false)
 
   return { isVisible, wasHidden, resetWasHidden };
 };

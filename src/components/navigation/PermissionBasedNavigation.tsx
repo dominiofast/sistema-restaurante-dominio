@@ -59,7 +59,7 @@ const navigationSections: NavSection[] = [
         icon: Users,
         permission: 'users.read',
         description: 'Gerenciar clientes'
-      }
+
     ]
   },
   {
@@ -85,7 +85,7 @@ const navigationSections: NavSection[] = [
         icon: Calculator,
         permission: 'cashier.read',
         description: 'Gestão de caixa'
-      }
+
     ]
   },
   {
@@ -111,7 +111,7 @@ const navigationSections: NavSection[] = [
         icon: Code,
         superAdminOnly: true,
         description: 'Editor unificado de prompts e configurações'
-      }
+
     ]
   },
   {
@@ -149,12 +149,12 @@ const navigationSections: NavSection[] = [
         description: 'Sistema de links curtos'
       },
     ]
-  }
+
 ];
 
 export const PermissionBasedNavigation: React.FC = () => {
-  const location = useLocation();
-  const { hasPermission } = usePermissions();
+  const location = useLocation()
+  const { hasPermission } = usePermissions()
 
   const renderNavItem = (item: NavItem) => {
     const isActive = location.pathname === item.path;
@@ -176,8 +176,8 @@ export const PermissionBasedNavigation: React.FC = () => {
             <div className="text-xs text-gray-500">{item.description}</div>
           )}
         </div>
-      </Link>
-    );
+      </Link>;
+    )
 
     // Verificar permissões específicas
     if (item.superAdminOnly) {
@@ -185,7 +185,7 @@ export const PermissionBasedNavigation: React.FC = () => {
         <SuperAdminOnly key={item.path}>
           {content}
         </SuperAdminOnly>
-      );
+      )
     }
 
     if (item.adminOnly) {
@@ -193,7 +193,7 @@ export const PermissionBasedNavigation: React.FC = () => {
         <AdminOnly key={item.path}>
           {content}
         </AdminOnly>
-      );
+      )
     }
 
     if (item.permission || item.permissions) {
@@ -207,7 +207,7 @@ export const PermissionBasedNavigation: React.FC = () => {
         >
           {content}
         </PermissionGuard>
-      );
+      )
     }
 
     return <div key={item.path}>{content}</div>;
@@ -216,16 +216,16 @@ export const PermissionBasedNavigation: React.FC = () => {
   const renderSection = (section: NavSection) => {
     // Verificar se pelo menos um item da seção é visível
     const hasVisibleItems = section.items.some(item => {
-      if (item.superAdminOnly) return hasPermission('*'); // Super admin
-      if (item.adminOnly) return hasPermission('users.read'); // Algum admin
-      if (item.permission) return hasPermission(item.permission);
+      if (item.superAdminOnly) return hasPermission('*') // Super admin
+      if (item.adminOnly) return hasPermission('users.read') // Algum admin
+      if (item.permission) return hasPermission(item.permission)
       if (item.permissions) {
         return item.requireAll 
           ? item.permissions.every(p => hasPermission(p))
-          : item.permissions.some(p => hasPermission(p));
-      }
+          : item.permissions.some(p => hasPermission(p))
+
       return true;
-    });
+    })
 
     if (!hasVisibleItems) return null;
 
@@ -238,19 +238,19 @@ export const PermissionBasedNavigation: React.FC = () => {
           {section.items.map(renderNavItem)}
         </div>
       </div>
-    );
+    )
   };
 
   return (
     <nav className="space-y-6">
       {navigationSections.map(renderSection)}
     </nav>
-  );
+  )
 };
 
 // Exemplo de uso em um componente de permissões inline
 export const PermissionDisplay: React.FC = () => {
-  const { userPermissions, hasRole, isAdmin, isSuperAdmin } = usePermissions();
+  const { userPermissions, hasRole, isAdmin, isSuperAdmin } = usePermissions()
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
@@ -291,5 +291,5 @@ export const PermissionDisplay: React.FC = () => {
         )}
       </div>
     </div>
-  );
+  )
 };

@@ -2,8 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, CheckCircle, X, Camera } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 interface CurriculoUploadSupabaseProps {
   onUploadSuccess: (url: string, fileName: string) => void;
   companyId: string;
@@ -20,8 +19,8 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
   primaryColor = '#1B365D',
   curriculo = { url: '', nome: '' }
 }) => {
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleFileSelect = useCallback(async (file: File) => {
     if (!file) return;
@@ -33,84 +32,83 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'image/jpeg',
       'image/jpg', 
-      'image/png'
+      'image/png';
     ];
     
     if (!allowedTypes.includes(file.type)) {
-      toast.error('Por favor, selecione um arquivo PDF, DOC, DOCX ou uma imagem (JPG, PNG).');
+      toast.error('Por favor, selecione um arquivo PDF, DOC, DOCX ou uma imagem (JPG, PNG).')
       return;
     }
 
     // Validação de tamanho (10MB)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('O arquivo deve ter no máximo 10MB.');
+      toast.error('O arquivo deve ter no máximo 10MB.')
       return;
     }
 
-    setIsUploading(true);
+    setIsUploading(true)
     
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()} catch (error) { console.error('Error:', error) }-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `curriculos/${companyId}/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from('vagas')
-        .upload(filePath, file);
+      const { error: uploadError } = await Promise.resolve()
+        .upload(filePath, file)
 
       if (uploadError) {
         throw uploadError;
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('vagas')
-        .getPublicUrl(filePath);
+      const { data: { publicUrl } } = 
+        
+        .getPublicUrl(filePath)
 
-      onUploadSuccess(publicUrl, file.name);
-      toast.success('Arquivo enviado com sucesso!');
+      onUploadSuccess(publicUrl, file.name)
+      toast.success('Arquivo enviado com sucesso!')
     } catch (error: any) {
-      console.error('Erro no upload:', error);
-      toast.error('Erro ao fazer upload do arquivo. Tente novamente.');
+      console.error('Erro no upload:', error)
+      toast.error('Erro ao fazer upload do arquivo. Tente novamente.')
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  }, [onUploadSuccess, companyId]);
+  }, [onUploadSuccess, companyId])
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const files = Array.from(e.dataTransfer.files);
+    e.preventDefault()
+    setIsDragOver(false)
+    const files = Array
     if (files.length > 0) {
-      handleFileSelect(files[0]);
+      handleFileSelect(files[0])
     }
-  }, [handleFileSelect]);
+  }, [handleFileSelect])
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
+    e.preventDefault()
+    setIsDragOver(true)
+  }, [])
 
   const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  }, []);
+    e.preventDefault()
+    setIsDragOver(false)
+  }, [])
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFileSelect(file);
+      handleFileSelect(file)
     }
-  }, [handleFileSelect]);
+  }, [handleFileSelect])
 
   const handleCameraCapture = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFileSelect(file);
+      handleFileSelect(file)
     }
-  }, [handleFileSelect]);
+  }, [handleFileSelect])
 
   const handleRemove = () => {
-    onUploadSuccess('', '');
+    onUploadSuccess('', '')
   };
 
   if (curriculo.nome) {
@@ -133,8 +131,8 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
           </button>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-4">
@@ -239,5 +237,5 @@ export const CurriculoUploadSupabase: React.FC<CurriculoUploadSupabaseProps> = (
         </div>
       </div>
     </div>
-  );
+  )
 };

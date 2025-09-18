@@ -74,20 +74,20 @@ interface MenuSection {
     isComingSoon?: boolean;
     isKiosk?: boolean;
   }[];
-}
+
 
 export const NavigationDropdown: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [turnoModalOpen, setTurnoModalOpen] = useState(false);
-  const [caixaModalOpen, setCaixaModalOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user, logout, currentCompany, exitCompanyMode, selectCompany: authSelectCompany } = useAuth();
-  const { selectedStore, selectCompany: storeSelectCompany } = useStore();
-  const { temTurnoAtivo } = useTurnos();
-  const { caixaAtual } = useCaixa();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [turnoModalOpen, setTurnoModalOpen] = useState(false)
+  const [caixaModalOpen, setCaixaModalOpen] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { user, logout, currentCompany, exitCompanyMode, selectCompany: authSelectCompany } = useAuth()
+  const { selectedStore, selectCompany: storeSelectCompany } = useStore()
+  const { temTurnoAtivo } = useTurnos()
+  const { caixaAtual } = useCaixa()
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const temCaixaAberto = caixaAtual && caixaAtual.status === 'aberto';
 
@@ -141,12 +141,12 @@ export const NavigationDropdown: React.FC = () => {
       items: [
         { label: 'Estabelecimento', path: '/settings/estabelecimento', icon: Building, description: 'Dados da empresa' },
         { label: 'Integrações', path: '/settings/integracoes', icon: Truck, description: 'Integrações externas' },
-        { label: 'QZ Tray (Impressão)', path: '/settings/qz-tray', icon: Printer, description: 'Conectar e testar' },
+        { label: 'Configurações Gerais', path: '/settings/general', icon: Settings, description: 'Configurações da empresa' },
         { label: 'Status de Pedidos', path: '/settings/status', icon: Settings, description: 'Config. status' },
         { label: 'Configuração Fiscal', path: '/settings/configuracao-fiscal', icon: Receipt, description: 'Setup fiscal' },
         { label: 'Integração PrintNode', path: '/settings/printnode-integration', icon: Printer, description: 'Impressão em nuvem', isPro: true }
       ]
-    }
+
   ];
 
   // Adicionar seções específicas para Super Admin
@@ -163,8 +163,8 @@ export const NavigationDropdown: React.FC = () => {
         { label: 'WhatsApp Admin', path: '/admin/whatsapp-integrations', icon: MessageSquare, description: 'Configurar instâncias WhatsApp' },
         { label: 'iFood Admin', path: '/super-admin/ifood-integrations', icon: Truck, description: 'Admin iFood' }
       ]
-    });
-  }
+    })
+
 
   // Seções extras (Estoque, Ficha Técnica e RH)
   const extraSections: MenuSection[] = [
@@ -191,7 +191,7 @@ export const NavigationDropdown: React.FC = () => {
         { label: 'Vagas Disponíveis', path: '/meu-rh/vagas-disponiveis', icon: UserCheck, description: 'Ver vagas', isComingSoon: true },
         { label: 'Inscrições', path: '/meu-rh/inscricoes-vagas', icon: Users, description: 'Candidatos', isComingSoon: true }
       ]
-    }
+
   ];
 
   // Filtrar itens baseado na busca
@@ -201,24 +201,24 @@ export const NavigationDropdown: React.FC = () => {
       item.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase()))
     )
-  })).filter(section => section.items.length > 0);
+  })).filter(section => section.items.length > 0)
 
   // Função para gerar identificador da empresa para URLs públicas
   const getCompanyIdentifier = (company: any): string | null => {
     if (!company) {
-      console.error('🖥️ Kiosk - No company provided');
+      console.error('🖥️ Kiosk - No company provided')
       return null;
-    }
+
 
     // 1. Primeiro tenta usar slug existente
     if (company.slug && company.slug.trim()) {
-      return company.slug.trim();
-    }
+      return company.slug.trim()
+
 
     // 2. Depois tenta usar domain
     if (company.domain && company.domain.trim()) {
-      return company.domain.trim();
-    }
+      return company.domain.trim()
+
 
     // 3. Gera slug baseado no nome da empresa
     if (company.name && company.name.trim()) {
@@ -228,8 +228,8 @@ export const NavigationDropdown: React.FC = () => {
         .replace(/[\u0300-\u036f]/g, '') // Remove acentos
         .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
         .trim()
-        .replace(/\s+/g, '-') // Substitui espaços por hífen
-        .replace(/-+/g, '-'); // Remove hífens múltiplos
+        .replace(/\s+/g, '-') // Substitui espaços por hífen;
+        .replace(/-+/g, '-') // Remove hífens múltiplos
       
       if (generatedSlug) {
         return generatedSlug;
@@ -239,82 +239,82 @@ export const NavigationDropdown: React.FC = () => {
     // 4. Fallback: usa ID da empresa
     if (company.id) {
       return company.id;
-    }
+
 
     return null;
   };
 
   const handleNavigation = (path: string, isComingSoon?: boolean, isKiosk?: boolean) => {
     if (isComingSoon) {
-      // Não navegar para páginas em desenvolvimento
+      // Não navegar para páginas em desenvolvimento;
       return;
-    }
+
     
     if (isKiosk) {
       // Abrir Kiosk em nova aba/janela para modo fullscreen
       const company = currentCompany;
-      console.log('🖥️ Kiosk - Current company:', company);
+      console.log('🖥️ Kiosk - Current company:', company)
       
-      const companyIdentifier = getCompanyIdentifier(company);
+      const companyIdentifier = getCompanyIdentifier(company)
       
       if (companyIdentifier) {
         const kioskUrl = `/autoatendimento/${companyIdentifier}`;
-        console.log('🖥️ Kiosk - Opening URL:', kioskUrl);
-        window.open(kioskUrl, '_blank');
+        console.log('🖥️ Kiosk - Opening URL:', kioskUrl)
+        window.open(kioskUrl, '_blank')
       } else {
-        console.error('🖥️ Kiosk - Could not generate company identifier:', company);
-        alert('Erro: Não foi possível abrir o Kiosk. Configure o nome da empresa primeiro.');
+        console.error('🖥️ Kiosk - Could not generate company identifier:', company)
+        alert('Erro: Não foi possível abrir o Kiosk. Configure o nome da empresa primeiro.')
       }
-      setIsOpen(false);
-      setSearchTerm('');
+      setIsOpen(false)
+      setSearchTerm('')
       return;
-    }
+
     
-    navigate(path);
-    setIsOpen(false);
-    setSearchTerm('');
+    navigate(path)
+    setIsOpen(false)
+    setSearchTerm('')
   };
 
   const handleClose = () => {
-    setIsOpen(false);
-    setSearchTerm('');
+    setIsOpen(false)
+    setSearchTerm('')
   };
 
   // Close on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        handleClose();
+        handleClose()
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
       document.body.style.overflow = 'hidden';
-    }
+
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside)
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen])
 
   // Close on ESC key
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClose();
+        handleClose()
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscKey);
-    }
+      document.addEventListener('keydown', handleEscKey)
+
 
     return () => {
-      document.removeEventListener('keydown', handleEscKey);
+      document.removeEventListener('keydown', handleEscKey)
     };
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <>
@@ -327,9 +327,9 @@ export const NavigationDropdown: React.FC = () => {
             <button
               onClick={() => {
                 if (user?.role === 'super_admin') {
-                  navigate('/empresas');
+                  navigate('/empresas')
                 } else {
-                  navigate('/pedidos');
+                  navigate('/pedidos')
                 }
               }}
               className="transition-transform duration-300 hover:scale-105"
@@ -422,7 +422,7 @@ export const NavigationDropdown: React.FC = () => {
                   company_name: selectedStore.domain
                 } : null}
                 onStoreSelect={(store) => {
-                  console.log('🏪 Loja selecionada no NavigationDropdown:', store);
+                  console.log('🏪 Loja selecionada no NavigationDropdown:', store)
                   if (store) {
                     const storeInfo = {
                       id: store.id,
@@ -430,10 +430,10 @@ export const NavigationDropdown: React.FC = () => {
                       domain: store.merchant_id,
                       status: store.is_active ? 'active' : 'inactive',
                       plan: store.environment || 'standard',
-                      user_count: 1
+                      user_count: 1;
                     };
-                    console.log('📦 Setando no StoreContext:', storeInfo);
-                    storeSelectCompany(storeInfo);
+                    console.log('📦 Setando no StoreContext:', storeInfo)
+                    storeSelectCompany(storeInfo)
                     
                     // IMPORTANTE: Também atualizar o currentCompany para carregar os dados da empresa
                     const companyForAuth = {
@@ -448,12 +448,12 @@ export const NavigationDropdown: React.FC = () => {
                       created_at: new Date().toISOString(),
                       updated_at: new Date().toISOString()
                     };
-                    console.log('🔄 Chamando selectCompany para carregar dados da empresa:', companyForAuth);
-                    authSelectCompany(companyForAuth);
+                    console.log('🔄 Chamando selectCompany para carregar dados da empresa:', companyForAuth)
+                    authSelectCompany(companyForAuth)
                   } else {
-                    console.log('❌ Removendo seleção de loja');
-                    storeSelectCompany(null);
-                  }
+                    console.log('❌ Removendo seleção de loja')
+                    storeSelectCompany(null)
+
                 }}
               />
             </div>
@@ -604,5 +604,5 @@ export const NavigationDropdown: React.FC = () => {
 
       {/* CSS Animations are handled via Tailwind classes and inline styles */}
     </>
-  );
+  )
 };

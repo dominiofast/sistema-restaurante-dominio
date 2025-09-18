@@ -48,5 +48,5 @@ export const PedidosFilters: React.FC<PedidosFiltersProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

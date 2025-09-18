@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { 
   MessageSquare, 
   BrainCircuit, 
@@ -24,7 +24,7 @@ interface WhatsAppIntegration {
   instance_key: string;
   token: string;
   webhook?: string;
-}
+
 
 interface AIPrompt {
   id: string;
@@ -33,116 +33,103 @@ interface AIPrompt {
   vars: any;
   version: number;
   updated_at: string;
-}
+
 
 export default function WhatsAppAIIntegration() {
-  const { currentCompany } = useAuth();
-  const { toast } = useToast();
-  const [whatsappIntegration, setWhatsappIntegration] = useState<WhatsAppIntegration | null>(null);
-  const [aiPrompt, setAiPrompt] = useState<AIPrompt | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [testing, setTesting] = useState(false);
-  const [testResult, setTestResult] = useState<string>("");
+  const { currentCompany } = useAuth()
+  const { toast } = useToast()
+  const [whatsappIntegration, setWhatsappIntegration] = useState<WhatsAppIntegration | null>(null)
+  const [aiPrompt, setAiPrompt] = useState<AIPrompt | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [testing, setTesting] = useState(false)
+  const [testResult, setTestResult] = useState<string>("")
 
   useEffect(() => {
     if (currentCompany) {
-      loadIntegrationData();
+      loadIntegrationData()
     }
-  }, [currentCompany]);
+  }, [currentCompany])
 
   const loadIntegrationData = async () => {
     if (!currentCompany) return;
 
-    setLoading(true);
+    setLoading(true)
     try {
       // Carregar integração WhatsApp
-      const { data: whatsappData, error: whatsappError } = await supabase
-        .from('whatsapp_integrations')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', 'primary')
-        .maybeSingle();
-
-      if (whatsappError) throw whatsappError;
-      setWhatsappIntegration(whatsappData);
+      const whatsappData = null as any; const whatsappError = null as any;
+      setWhatsappIntegration(whatsappData)
 
       // Carregar prompt IA
-      const { data: promptData, error: promptError } = await supabase
-        .from('ai_agent_prompts')
-        .select('*')
-        .eq('agent_slug', 'agente-ia-conversa')
-        .maybeSingle();
-
-      if (promptError) throw promptError;
-      setAiPrompt(promptData);
+      const promptData = null as any; const promptError = null as any;
+      setAiPrompt(promptData)
 
     } catch (error: any) {
       toast({
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const testIntegration = async () => {
     if (!whatsappIntegration || !currentCompany) return;
 
-    setTesting(true);
-    setTestResult("");
+    setTesting(true)
+    setTestResult("")
 
     try {
       // Simular uma mensagem de teste
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           slug_empresa: currentCompany.slug || 'test',
           user_message: 'oi',
           historico: [],
           customer_phone: '5511999999999'
         }
-      });
+      })
 
       if (error) throw error;
 
-      setTestResult(data?.resposta || 'Sem resposta');
+      setTestResult(data?.resposta || 'Sem resposta')
       
       toast({
         title: "Teste realizado com sucesso",
         description: "A integração WhatsApp + IA está funcionando!"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro no teste",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
   const syncPromptToEdgeConfig = async () => {
     try {
-      const { error } = await supabase.functions.invoke('push_prompt_to_edge', {
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { agent_slug: 'agente-ia-conversa' }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Prompt sincronizado",
         description: "Edge Config atualizado com sucesso"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro na sincronização",
         description: error.message,
         variant: "destructive"
-      });
+      })
     }
   };
 
@@ -153,8 +140,8 @@ export default function WhatsAppAIIntegration() {
           <div className="text-lg">Carregando configurações...</div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
@@ -398,5 +385,4 @@ export default function WhatsAppAIIntegration() {
         </Card>
       </div>
     </div>
-  );
-}
+  )

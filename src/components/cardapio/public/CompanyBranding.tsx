@@ -15,7 +15,7 @@ interface CompanyBrandingProps {
   textColor: string;
   onCartClick?: () => void;
   cartItemCount?: number;
-}
+
 
 export const CompanyBranding: React.FC<CompanyBrandingProps> = ({
   company,
@@ -29,24 +29,24 @@ export const CompanyBranding: React.FC<CompanyBrandingProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${company?.name} - Cardápio Digital`,
+          title: `${company?.name}  catch (error) { console.error('Error:', error) }- Cardápio Digital`,
           text: `Confira o cardápio digital da ${company?.name}`,
           url: window.location.href,
-        });
+        })
       } catch (error) {
         // Fallback para cópia do link
-        copyToClipboard();
+        copyToClipboard()
       }
     } else {
-      copyToClipboard();
-    }
+      copyToClipboard()
+
   };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      // Você pode adicionar um toast aqui
-      console.log('Link copiado para a área de transferência');
-    });
+      // Você pode adicionar um toast aqui;
+      console.log('Link copiado para a área de transferência')
+    })
   };
 
   return (
@@ -136,5 +136,5 @@ export const CompanyBranding: React.FC<CompanyBrandingProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

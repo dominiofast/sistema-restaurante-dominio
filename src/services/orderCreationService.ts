@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CashbackService } from './CashbackService';
 
 export interface OrderItem {
@@ -39,21 +39,21 @@ export class OrderCreationService {
 
       if (paymentMethod.startsWith('{')) {
         try {
-          const pagamentoObj = JSON.parse(paymentMethod);
+          const pagamentoObj = JSON.parse(paymentMethod)
           pagamentoDetalhes = pagamentoObj.method || paymentMethod;
           bandeiraCartao = pagamentoObj.brand || '';
         } catch (e) {
-          console.warn('Erro ao fazer parse do payment method:', e);
+          console.warn('Erro ao fazer parse do payment method:', e)
         }
       }
 
       // Calcular totais
-      const subtotal = carrinho.reduce((sum, item) => sum + item.preco_total, 0);
+      const subtotal = carrinho.reduce((sum, item) => sum + item.preco_total, 0)
       const taxaEntrega = deliveryInfo?.taxaEntrega || 0;
       const totalFinal = subtotal + taxaEntrega - cashbackAplicado;
-      const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+      const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0)
 
-      console.log('📊 Totais calculados:', { subtotal, taxaEntrega, cashbackAplicado, totalFinal });
+      console.log('📊 Totais calculados:', { subtotal, taxaEntrega, cashbackAplicado, totalFinal })
 
       // Criar endereço legível - corrigir formatação JSON
       let enderecoPedido = endereco;
@@ -62,8 +62,8 @@ export class OrderCreationService {
         if (typeof deliveryInfo.endereco === 'string') {
           try {
             // Se é uma string JSON, fazer parse e formatar
-            const enderecoObj = JSON.parse(deliveryInfo.endereco);
-            enderecoPedido = `${enderecoObj.logradouro || ''}, ${enderecoObj.numero || ''}, ${enderecoObj.bairro || ''}, ${enderecoObj.cidade || ''}/${enderecoObj.estado || ''}`;
+            const enderecoObj = JSON.parse(deliveryInfo.endereco)
+            enderecoPedido = `${enderecoObj.logradouro || ''} catch (error) { console.error('Error:', error) }, ${enderecoObj.numero || ''}, ${enderecoObj.bairro || ''}, ${enderecoObj.cidade || ''}/${enderecoObj.estado || ''}`;
           } catch {
             // Se não conseguir fazer parse, usar como string
             enderecoPedido = deliveryInfo.endereco;
@@ -88,23 +88,16 @@ export class OrderCreationService {
         total: totalFinal,
         observacoes: null,
         status: 'pendente',
-        origem: 'cardapio_publico'
+        origem: 'cardapio_publico';
       };
 
-      console.log('📦 Criando pedido com dados:', pedidoData);
+      console.log('📦 Criando pedido com dados:', pedidoData)
 
-      const { data: pedido, error: pedidoError } = await supabase
-        .from('pedidos')
-        .insert(pedidoData)
-        .select()
-        .single();
-
-      if (pedidoError) {
-        console.error('❌ Erro ao criar pedido:', pedidoError);
+      const pedido = null as any; const pedidoError = null as any;
         throw pedidoError;
       }
 
-      console.log('✅ Pedido criado com sucesso:', pedido);
+      console.log('✅ Pedido criado com sucesso:', pedido)
 
       // Criar itens do pedido
       const itensParaInserir = carrinho.map((item) => ({
@@ -114,8 +107,8 @@ export class OrderCreationService {
         quantidade: item.quantidade,
         valor_unitario: item.preco_unitario,
         valor_total: item.preco_total,
-        observacoes: item.observacoes || null
-      }));
+        observacoes: item.observacoes || null;
+      }))
 
       // Adicionar taxa de entrega como item se existir
       if (taxaEntrega > 0) {
@@ -127,7 +120,7 @@ export class OrderCreationService {
           valor_unitario: taxaEntrega,
           valor_total: taxaEntrega,
           observacoes: null
-        });
+        })
       }
 
       // Adicionar cashback como desconto se houver
@@ -140,35 +133,29 @@ export class OrderCreationService {
           valor_unitario: -cashbackAplicado,
           valor_total: -cashbackAplicado,
           observacoes: null
-        });
+        })
       }
 
-      const { data: itensInseridos, error: itensError } = await supabase
-        .from('pedido_itens')
-        .insert(itensParaInserir)
-        .select();
-
-      if (itensError) {
-        console.error('❌ Erro ao criar itens do pedido:', itensError);
+      const itensInseridos = null as any; const itensError = null as any;
         throw itensError;
       }
 
-      console.log('✅ Itens do pedido criados com sucesso:', itensInseridos);
+      console.log('✅ Itens do pedido criados com sucesso:', itensInseridos)
 
       // CRÍTICO: Processar cashback ANTES de qualquer geração automática de cashback
       if (cashbackAplicado > 0) {
-        await CashbackService.debitCashback(company?.id, cliente, cashbackAplicado, pedido.id);
+        await CashbackService.debitCashback(company?.id, cliente, cashbackAplicado, pedido.id)
       }
 
       // Gerar cashback do novo pedido usando serviço centralizado
-      await CashbackService.generateOrderCashback(company?.id, cliente, subtotal, pedido.id);
+      await CashbackService.generateOrderCashback(company?.id, cliente, subtotal, pedido.id)
 
       
       // Processar adicionais
-      await this.processOrderAdditions(carrinho, itensInseridos);
+      await this.processOrderAdditions(carrinho, itensInseridos)
 
       // Disparar auto-print
-      await this.triggerAutoPrint(pedido);
+      await this.triggerAutoPrint(pedido)
 
       return {
         pedido,
@@ -177,10 +164,10 @@ export class OrderCreationService {
       };
 
     } catch (error) {
-      console.error('❌ Erro ao finalizar pedido:', error);
+      console.error('❌ Erro ao finalizar pedido:', error)
       throw error;
-    }
-  }
+
+
 
 
   private static async processOrderAdditions(carrinho: OrderItem[], itensInseridos: any[]) {
@@ -192,45 +179,45 @@ export class OrderCreationService {
       const itemInserido = itensInseridos[index];
       
       if (itemCarrinho.adicionais && Object.keys(itemCarrinho.adicionais).length > 0) {
-        console.log('✅ ADICIONAIS ENCONTRADOS para', itemCarrinho.produto?.name, ':', itemCarrinho.adicionais);
+        console.log('✅ ADICIONAIS ENCONTRADOS para', itemCarrinho.produto?.name, ':', itemCarrinho.adicionais)
         
         // Processar cada adicional sequencialmente, mas APENAS adicionais válidos
         for (const [adicionalId, adicionalData] of Object.entries(itemCarrinho.adicionais)) {
-          console.log('🔍 Processando adicional:', { adicionalId, adicionalData });
+          console.log('🔍 Processando adicional:', { adicionalId, adicionalData })
           
           // VALIDAÇÃO: aceitar apenas adicionais com ID UUID e quantidade > 0
-          const isUUID = typeof adicionalId === 'string' && adicionalId.length === 36 && adicionalId.includes('-');
+          const isUUID = typeof adicionalId === 'string' && adicionalId.length === 36 && adicionalId.includes('-')
           const qty = Number((adicionalData as any)?.quantity) || 0;
           const isValidAdicional = (
             isUUID && qty > 0 &&
             typeof adicionalData === 'object' && adicionalData !== null &&
             'name' in (adicionalData as any) && 'price' in (adicionalData as any) && 'quantity' in (adicionalData as any)
-          );
+          )
           
-          console.log('🔍 Validação adicional:', { isUUID, qty, isValidAdicional, adicionalData });
+          console.log('🔍 Validação adicional:', { isUUID, qty, isValidAdicional, adicionalData })
           
           if (!isValidAdicional) {
-            console.warn('⚠️ ADICIONAL INVÁLIDO - Ignorando:', adicionalId, adicionalData);
+            console.warn('⚠️ ADICIONAL INVÁLIDO - Ignorando:', adicionalId, adicionalData)
             continue;
           }
           
-          console.log('✅ ADICIONAL VÁLIDO - Processando:', (adicionalData as any).name);
+          console.log('✅ ADICIONAL VÁLIDO - Processando:', (adicionalData as any).name)
           
           // Buscar categoria do adicional apenas se o ID for UUID válido
           let categoriaNome = 'Adicional'; // Fallback
           if (isUUID) {
             try {
-              const { data: adicionalCompleto } = await supabase
-                .from('adicionais')
-                .select('categorias_adicionais!inner(name)')
-                .eq('id', adicionalId)
-                .maybeSingle();
+              const { data: adicionalCompleto }  catch (error) { console.error('Error:', error) }= 
+                
+                
+                
+                
               if (adicionalCompleto?.categorias_adicionais) {
                 categoriaNome = adicionalCompleto.categorias_adicionais.name;
               }
             } catch (error) {
-              console.warn('⚠️ Não foi possível buscar categoria do adicional:', adicionalId);
-            }
+              console.warn('⚠️ Não foi possível buscar categoria do adicional:', adicionalId)
+
           }
           
           adicionaisParaInserir.push({
@@ -241,42 +228,39 @@ export class OrderCreationService {
             quantidade: (adicionalData as any).quantity,
             valor_unitario: (adicionalData as any).price,
             valor_total: (adicionalData as any).price * (adicionalData as any).quantity
-          });
+          })
         }
       }
-    }
+
 
     // Inserir adicionais se existirem
     if (adicionaisParaInserir.length > 0) {
-      console.log('🎯 Inserindo adicionais:', adicionaisParaInserir);
+      console.log('🎯 Inserindo adicionais:', adicionaisParaInserir)
       
-      const { error: adicionaisError } = await supabase
-        .from('pedido_item_adicionais')
-        .insert(adicionaisParaInserir);
-
+      const { error: adicionaisError  } = null as any;
       if (adicionaisError) {
-        console.error('⚠️ Erro ao criar adicionais do pedido (seguindo sem interromper):', adicionaisError);
+        console.error('⚠️ Erro ao criar adicionais do pedido (seguindo sem interromper):', adicionaisError)
       } else {
-        console.log('✅ Adicionais do pedido criados com sucesso');
+        console.log('✅ Adicionais do pedido criados com sucesso')
       }
     } else {
-      console.log('⚠️ NENHUM ADICIONAL PARA INSERIR - Array vazio');
-      console.log('🔍 DEBUG: adicionaisParaInserir =', adicionaisParaInserir);
-    }
-  }
+      console.log('⚠️ NENHUM ADICIONAL PARA INSERIR - Array vazio')
+      console.log('🔍 DEBUG: adicionaisParaInserir =', adicionaisParaInserir)
+
+
 
   private static async triggerAutoPrint(pedido: any) {
     try {
-      await supabase.functions.invoke('auto-print-pedido', {
+      await Promise.resolve()
         body: {
           pedido_id: pedido.id,
           numero_pedido: pedido.numero_pedido,
           company_id: pedido.company_id,
           origin: 'cardapio_publico',
-        },
-      });
+        } catch (error) { console.error('Error:', error) },
+      })
     } catch (printErr) {
-      console.warn('⚠️ Falha ao acionar auto-print-pedido (segue fluxo):', printErr);
-    }
-  }
+      console.warn('⚠️ Falha ao acionar auto-print-pedido (segue fluxo):', printErr)
+
+
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Plus, Trash2, Save, AlertCircle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -21,15 +21,15 @@ interface HorarioFuncionamento {
 }
 
 export default function HorariosFuncionamentoSimples() {
-  const { user, companyId } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [salvando, setSalvando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { user, companyId } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [salvando, setSalvando] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   
-  const [tipoDisponibilidade, setTipoDisponibilidade] = useState<'sempre' | 'especificos' | 'fechado' | 'agendados'>('especificos');
-  const [fusoHorario, setFusoHorario] = useState('America/Sao_Paulo');
-  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([]);
-  const [horarioId, setHorarioId] = useState<string | null>(null);
+  const [tipoDisponibilidade, setTipoDisponibilidade] = useState<'sempre' | 'especificos' | 'fechado' | 'agendados'>('especificos')
+  const [fusoHorario, setFusoHorario] = useState('America/Sao_Paulo')
+  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([])
+  const [horarioId, setHorarioId] = useState<string | null>(null)
 
   const diasSemana = [
     { id: 0, nome: 'Domingo', abrev: 'Dom' },
@@ -38,82 +38,63 @@ export default function HorariosFuncionamentoSimples() {
     { id: 3, nome: 'Quarta-feira', abrev: 'Qua' },
     { id: 4, nome: 'Quinta-feira', abrev: 'Qui' },
     { id: 5, nome: 'Sexta-feira', abrev: 'Sex' },
-    { id: 6, nome: 'Sábado', abrev: 'Sáb' }
+    { id: 6, nome: 'Sábado', abrev: 'Sáb' };
   ];
 
   const fusoHorarios = [
     { value: 'America/Sao_Paulo', label: 'Brasília (UTC-3)' },
     { value: 'America/Manaus', label: 'Manaus (UTC-4)' },
     { value: 'America/Rio_Branco', label: 'Rio Branco (UTC-5)' },
-    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' }
+    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' };
   ];
 
   const fetchHorarios = async () => {
     if (!companyId) {
-      setError('Empresa não identificada');
-      setLoading(false);
+      setError('Empresa não identificada')
+      setLoading(false)
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Buscar configuração de horário
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .select('*')
-        .eq('company_id', companyId)
-        .single();
+      const horarioData = null as any; const horarioError = null as any;
 
-      if (horarioError && horarioError.code !== 'PGRST116') {
-        throw horarioError;
-      }
 
-      if (!horarioData) {
+       catch (error) { console.error('Error:', error) }if (!horarioData) {
         // Criar configuração padrão se não existir
         const novoHorario = {
           company_id: companyId,
           tipo_disponibilidade: 'especificos',
-          fuso_horario: 'America/Sao_Paulo'
+          fuso_horario: 'America/Sao_Paulo';
         };
 
-        const { data: createdHorario, error: createError } = await supabase
-          .from('horario_funcionamento')
-          .insert(novoHorario)
-          .select()
-          .single();
+        const createdHorario = null as any; const createError = null as any;
 
-        if (createError) throw createError;
-
-        setHorarioId(createdHorario.id);
-        setTipoDisponibilidade(createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
-        setFusoHorario(createdHorario.fuso_horario);
-        setHorariosDias([]);
-        setLoading(false);
+        setHorarioId(createdHorario.id)
+        setTipoDisponibilidade(createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados')
+        setFusoHorario(createdHorario.fuso_horario)
+        setHorariosDias([])
+        setLoading(false)
         return;
-      }
 
-      setHorarioId(horarioData.id);
-      setTipoDisponibilidade(horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
-      setFusoHorario(horarioData.fuso_horario);
+
+      setHorarioId(horarioData.id)
+      setTipoDisponibilidade(horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados')
+      setFusoHorario(horarioData.fuso_horario)
 
       // Buscar horários dos dias
-      const { data: horariosData, error: horariosError } = await supabase
-        .from('horarios_dias')
-        .select('*')
-        .eq('horario_funcionamento_id', horarioData.id)
-        .order('dia_semana');
+      const horariosData = null as any; const horariosError = null as any;
 
-      if (horariosError) throw horariosError;
-
-      setHorariosDias(horariosData || []);
+      setHorariosDias(horariosData || [])
 
     } catch (err) {
-      console.error('Erro ao buscar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('Erro ao buscar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -122,44 +103,44 @@ export default function HorariosFuncionamentoSimples() {
       dia_semana: diaSemana,
       horario_inicio: '09:00',
       horario_fim: '18:00',
-      ativo: true
+      ativo: true;
     };
-    setHorariosDias([...horariosDias, novoHorario]);
+    setHorariosDias([...horariosDias, novoHorario])
   };
 
   const removerHorario = (index: number) => {
-    setHorariosDias(horariosDias.filter((_, i) => i !== index));
+    setHorariosDias(horariosDias.filter((_, i) => i !== index))
   };
 
   const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {
     const novosHorarios = [...horariosDias];
     novosHorarios[index] = { ...novosHorarios[index], [campo]: valor };
-    setHorariosDias(novosHorarios);
+    setHorariosDias(novosHorarios)
   };
 
   const handleSalvar = async () => {
     if (!companyId || !horarioId) return;
 
-    setSalvando(true);
+    setSalvando(true)
     try {
       // Atualizar configuração principal
-      const { error: updateError } = await supabase
-        .from('horario_funcionamento')
-        .update({
+      const { error: updateError }  catch (error) { console.error('Error:', error) }= 
+        
+        
           tipo_disponibilidade: tipoDisponibilidade,
           fuso_horario: fusoHorario
         })
-        .eq('id', horarioId);
+        
 
       if (updateError) throw updateError;
 
       // Se há horários específicos, atualizar/inserir
       if (tipoDisponibilidade === 'especificos' && horariosDias.length > 0) {
         // Remover horários existentes
-        await supabase
-          .from('horarios_dias')
-          .delete()
-          .eq('horario_funcionamento_id', horarioId);
+        
+          
+          
+          
 
         // Inserir novos horários
         const horariosParaInserir = horariosDias.map(h => ({
@@ -167,34 +148,31 @@ export default function HorariosFuncionamentoSimples() {
           dia_semana: h.dia_semana,
           horario_inicio: h.horario_inicio,
           horario_fim: h.horario_fim,
-          ativo: h.ativo
-        }));
+          ativo: h.ativo;
+        }))
 
-        const { error: insertError } = await supabase
-          .from('horarios_dias')
-          .insert(horariosParaInserir);
-
+        const { error: insertError  } = null as any;
         if (insertError) throw insertError;
-      }
 
-      toast.success('Horários salvos com sucesso!');
-      await fetchHorarios(); // Recarregar dados
+
+      toast.success('Horários salvos com sucesso!')
+      await fetchHorarios() // Recarregar dados
       
     } catch (err) {
-      console.error('Erro ao salvar horários:', err);
-      toast.error('Erro ao salvar horários');
+      console.error('Erro ao salvar horários:', err)
+      toast.error('Erro ao salvar horários')
     } finally {
-      setSalvando(false);
+      setSalvando(false)
     }
   };
 
   const getHorariosPorDia = (diaSemana: number) => {
-    return horariosDias.filter(h => h.dia_semana === diaSemana);
+    return horariosDias.filter(h => h.dia_semana === diaSemana)
   };
 
   useEffect(() => {
-    fetchHorarios();
-  }, [companyId]);
+    fetchHorarios()
+  }, [companyId])
 
   if (loading) {
     return (
@@ -204,7 +182,7 @@ export default function HorariosFuncionamentoSimples() {
           <p>Carregando horários...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -276,7 +254,7 @@ export default function HorariosFuncionamentoSimples() {
             
             <div className="space-y-6">
               {diasSemana.map(dia => {
-                const horariosHoje = getHorariosPorDia(dia.id);
+                const horariosHoje = getHorariosPorDia(dia.id)
                 
                 return (
                   <div key={dia.id} className="border rounded-lg p-4">
@@ -301,8 +279,8 @@ export default function HorariosFuncionamentoSimples() {
                           const globalIndex = horariosDias.findIndex(h => 
                             h.dia_semana === dia.id && 
                             h.horario_inicio === horario.horario_inicio &&
-                            h.horario_fim === horario.horario_fim
-                          );
+                            h.horario_fim === horario.horario_fim;
+                          )
                           
                           return (
                             <div key={index} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
@@ -349,12 +327,12 @@ export default function HorariosFuncionamentoSimples() {
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </div>
-                          );
+                          )
                         })}
                       </div>
                     )}
                   </div>
-                );
+                )
               })}
             </div>
           </div>
@@ -373,5 +351,5 @@ export default function HorariosFuncionamentoSimples() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -4,7 +4,7 @@ import { Shield, ArrowLeft, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Unauthorized: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -47,7 +47,7 @@ const Unauthorized: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default Unauthorized;

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,13 +41,13 @@ interface ConfigAgenteIA {
   message_limit: number;
   working_hours: string;
   habilitar_lancamento_pedidos: boolean;
-}
+
 
 interface StatusConexao {
   openai: boolean;
   whatsapp: boolean;
   supabase: boolean;
-}
+
 
 // ---------------------------------------------------------------------------
 // CONFIGURAÇÃO INICIAL
@@ -81,170 +81,150 @@ const configInicial: Partial<ConfigAgenteIA> = {
 // COMPONENTE PRINCIPAL
 // ---------------------------------------------------------------------------
 const AdvancedConfigPage: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const [tab, setTab] = useState('config');
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [config, setConfig] = useState<Partial<ConfigAgenteIA>>(configInicial);
-  const [testMessage, setTestMessage] = useState('Qual a promoção de hoje?');
-  const [testResponse, setTestResponse] = useState<string>('');
+  const { currentCompany } = useAuth()
+  const [tab, setTab] = useState('config')
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [config, setConfig] = useState<Partial<ConfigAgenteIA>>(configInicial)
+  const [testMessage, setTestMessage] = useState('Qual a promoção de hoje?')
+  const [testResponse, setTestResponse] = useState<string>('')
   const [statusConexao, setStatusConexao] = useState<StatusConexao>({
     openai: false,
     whatsapp: false,
     supabase: true
-  });
-  const { toast } = useToast();
+  })
+  const { toast } = useToast()
 
   const companyId = currentCompany?.id;
 
   // Verificar conexões das APIs
   const verificarConexoes = async () => {
     try {
-      // Testar conexão Supabase
-      const { error: supabaseError } = await supabase.from('ai_agent_config').select('id').limit(1);
-      setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }));
+      // Testar conexão Supabase;
+      const { error: supabaseError }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+      setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }))
 
       // Testar OpenAI via edge function
       try {
-        const { data: testData, error: testError } = await supabase.functions.invoke('agente-ia-conversa', {
-          body: { 
-            slug_empresa: 'test', 
-            user_message: 'teste conexão',
-            historico: []
-          }
-        });
-        console.log('Teste OpenAI:', { testData, testError });
-        setStatusConexao(prev => ({ ...prev, openai: testData?.resposta && !testError }));
+        const testData = null as any; const testError = null as any;
+        console.log('Teste OpenAI:', { testData, testError } catch (error) { console.error('Error:', error) })
+        setStatusConexao(prev => ({ ...prev, openai: testData?.resposta && !testError }))
       } catch (error) {
-        console.error('Erro teste OpenAI:', error);
-        setStatusConexao(prev => ({ ...prev, openai: false }));
+        console.error('Erro teste OpenAI:', error)
+        setStatusConexao(prev => ({ ...prev, openai: false }))
       }
 
       // Verificar integração WhatsApp
-      const { data: whatsappData } = await supabase.from('whatsapp_integrations').select('id, webhook').limit(1);
+      const { data: whatsappData } = await Promise.resolve()
       const hasWhatsapp = whatsappData && whatsappData.length > 0;
-      const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook');
+      const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook')
       setStatusConexao(prev => ({ 
         ...prev, 
         whatsapp: hasWhatsapp && webhookCorreto 
-      }));
+      }))
     } catch (error) {
-      console.error('Erro ao verificar conexões:', error);
-    }
+      console.error('Erro ao verificar conexões:', error)
+
   };
 
   // Carregar dados iniciais
   const carregarDados = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       // Buscar configuração do agente
-      const { data: configData, error: configError } = await supabase
-        .from('ai_agent_config')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
-
-      if (configError && configError.code !== 'PGRST116') {
-        throw configError;
+      const configData = null as any; const configError = null as any;
       }
 
-      if (configData) {
+       catch (error) { console.error('Error:', error) }if (configData) {
         setConfig({
           ...configData,
           sales_phrases: typeof configData.sales_phrases === 'string' 
             ? configData.sales_phrases 
             : ''
-        });
+        })
       }
     } catch (error: any) {
       toast({ 
         title: 'Erro ao carregar dados', 
         description: error.message, 
         variant: 'destructive' 
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   useEffect(() => {
-    carregarDados();
-    verificarConexoes();
-  }, []);
+    carregarDados()
+    verificarConexoes()
+  }, [])
 
   const salvarConfig = async () => {
-    setSaving(true);
+    setSaving(true)
     try {
       if (!config.agent_name) {
-        throw new Error('Nome do assistente é obrigatório');
+        throw new Error('Nome do assistente é obrigatório')
       }
 
-      const configParaSalvar = {
+       catch (error) { console.error('Error:', error) }const configParaSalvar = {
         ...config,
-        company_id: config.company_id || 'default-company'
+        company_id: config.company_id || 'default-company';
       };
 
       let resultado;
       if (config.id) {
-        resultado = await supabase
-          .from('ai_agent_config')
-          .update(configParaSalvar)
-          .eq('id', config.id);
+        resultado = 
+          
+          
+          
       } else {
-        resultado = await supabase
-          .from('ai_agent_config')
-          .insert(configParaSalvar)
-          .select()
-          .single();
+        resultado = 
+          
+          
+          
+          
       }
 
       if (resultado.error) throw resultado.error;
 
       if (!config.id && resultado.data) {
-        setConfig(prev => ({ ...prev, id: resultado.data.id }));
+        setConfig(prev => ({ ...prev, id: resultado.data.id }))
       }
 
-      toast({ title: 'Configuração salva com sucesso!' });
+      toast({ title: 'Configuração salva com sucesso!' })
     } catch (error: any) {
       toast({ 
         title: 'Erro ao salvar', 
         description: error.message, 
         variant: 'destructive' 
-      });
+      })
     } finally {
-      setSaving(false);
-    }
+      setSaving(false)
+
   };
 
   const testarAgente = async () => {
     if (!testMessage.trim()) return;
     
-    setTestResponse('Processando...');
+    setTestResponse('Processando...')
     try {
       // Buscar o slug da empresa atual
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .select('slug')
-        .eq('id', companyId)
-        .single();
-
-      if (companyError || !company?.slug) {
-        throw new Error('Slug da empresa não encontrado');
+      const company = null as any; const companyError = null as any;
       }
 
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+       catch (error) { console.error('Error:', error) }const { data, error } = await Promise.resolve()
         body: {
           slug_empresa: company.slug,
           user_message: testMessage,
           historico: []
         }
-      });
+      })
 
       if (error) throw error;
-      setTestResponse(data?.resposta || 'Resposta não recebida');
+      setTestResponse(data?.resposta || 'Resposta não recebida')
     } catch (error: any) {
-      setTestResponse(`Erro: ${error.message}`);
-    }
+      setTestResponse(`Erro: ${error.message}`)
+
   };
 
   const gerarPromptPreview = () => {
@@ -669,7 +649,7 @@ CONFIGURAÇÕES:
         </Alert>
       )}
     </div>
-  );
+  )
 };
 
 export default AdvancedConfigPage;

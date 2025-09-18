@@ -12,7 +12,7 @@ export const ModernInput = ({
   className = '',
   primaryColor = '#3B82F6'
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false)
   
   return (
     <div className={`relative ${className}`}>
@@ -44,7 +44,7 @@ export const ModernInput = ({
         <p className="mt-1 text-sm text-red-500 animate-fade-in">{error}</p>
       )}
     </div>
-  );
+  )
 };
 
 // Componente de TextArea moderno
@@ -59,7 +59,7 @@ export const ModernTextArea = ({
   className = '',
   primaryColor = '#3B82F6'
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false)
   
   return (
     <div className={`relative ${className}`}>
@@ -91,5 +91,5 @@ export const ModernTextArea = ({
         <p className="mt-1 text-sm text-red-500 animate-fade-in">{error}</p>
       )}
     </div>
-  );
+  )
 }; 

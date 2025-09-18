@@ -27,8 +27,8 @@ export const TipoPedidoFilter: React.FC<TipoPedidoFilterProps> = ({
             <Icon size={16} />
             {tipo.label}
           </button>
-        );
+        )
       })}
     </div>
-  );
+  )
 };

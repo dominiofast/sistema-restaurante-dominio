@@ -44,7 +44,7 @@ const VagaApplicationCard: React.FC<VagaApplicationCardProps> = ({
         </button>
       )}
     </div>
-  );
+  )
 };
 
 export default VagaApplicationCard;

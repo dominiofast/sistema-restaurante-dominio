@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
 export interface StripeConfig {
@@ -14,7 +14,7 @@ export interface StripeConfig {
   webhook_endpoint_secret: string | null;
   created_at: string | null;
   updated_at: string | null;
-}
+
 
 export interface StripeConfigData {
   publishable_key: string;
@@ -24,48 +24,48 @@ export interface StripeConfigData {
   is_active: boolean;
   test_mode: boolean;
   webhook_endpoint_secret: string;
-}
+
 
 export const useStripeConfig = (companyId?: string) => {
-  const [config, setConfig] = useState<StripeConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
+  const [config, setConfig] = useState<StripeConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
 
   // Carregar configuração
   useEffect(() => {
     if (!companyId) {
-      setLoading(false);
+      setLoading(false)
       return;
     }
 
     const loadConfig = async () => {
       try {
-        setLoading(true);
-        setError(null);
+        setLoading(true)
+        setError(null)
 
-        const { data, error } = await supabase
-          .from('stripe_config')
-          .select('*')
-          .eq('company_id', companyId)
-          .maybeSingle();
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
+          
 
         if (error) {
-          console.error('Erro ao carregar configuração do Stripe:', error);
-          setError(error.message);
+          console.error('Erro ao carregar configuração do Stripe:', error)
+          setError(error.message)
         } else {
-          setConfig(data);
+          setConfig(data)
         }
       } catch (err) {
-        console.error('Erro inesperado:', err);
-        setError('Erro inesperado ao carregar configuração');
+        console.error('Erro inesperado:', err)
+        setError('Erro inesperado ao carregar configuração')
       } finally {
-        setLoading(false);
-      }
+        setLoading(false)
+
     };
 
-    loadConfig();
-  }, [companyId]);
+    loadConfig()
+  }, [companyId])
 
   // Salvar configuração
   const saveConfig = async (configData: StripeConfigData): Promise<boolean> => {
@@ -73,46 +73,46 @@ export const useStripeConfig = (companyId?: string) => {
       toast({
         title: 'Erro',
         description: 'ID da empresa não encontrado',
-        variant: 'destructive',
-      });
+        variant: 'destructive',;
+      })
       return false;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('stripe_config')
-        .upsert({
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           company_id: companyId,
           ...configData,
         }, {
           onConflict: 'company_id'
         })
-        .select()
-        .single();
+        
+        
 
       if (error) {
-        console.error('Erro ao salvar configuração do Stripe:', error);
+        console.error('Erro ao salvar configuração do Stripe:', error)
         toast({
           title: 'Erro ao salvar',
           description: error.message,
           variant: 'destructive',
-        });
+        })
         return false;
-      }
 
-      setConfig(data);
+
+      setConfig(data)
       toast({
         title: 'Configuração salva',
         description: 'Configuração do Stripe salva com sucesso!',
-      });
+      })
       return true;
     } catch (err) {
-      console.error('Erro inesperado:', err);
+      console.error('Erro inesperado:', err)
       toast({
         title: 'Erro inesperado',
         description: 'Ocorreu um erro inesperado ao salvar a configuração',
         variant: 'destructive',
-      });
+      })
       return false;
     }
   };
@@ -120,50 +120,50 @@ export const useStripeConfig = (companyId?: string) => {
   // Testar credenciais
   const testCredentials = async (publishableKey: string, secretKey: string): Promise<boolean> => {
     try {
-      // Validação básica do formato
-      const isTestMode = publishableKey.startsWith('pk_test_') && secretKey.startsWith('sk_test_');
-      const isLiveMode = publishableKey.startsWith('pk_live_') && secretKey.startsWith('sk_live_');
+      // Validação básica do formato;
+      const isTestMode = publishableKey.startsWith('pk_test_') && secretKey.startsWith('sk_test_')
+      const isLiveMode = publishableKey.startsWith('pk_live_') && secretKey.startsWith('sk_live_')
       
       if (!isTestMode && !isLiveMode) {
         toast({
           title: 'Formato inválido',
           description: 'Verifique o formato das chaves do Stripe',
           variant: 'destructive',
-        });
+        } catch (error) { console.error('Error:', error) })
         return false;
-      }
+
 
       // Teste simples de conectividade (listar payment methods)
       const response = await fetch('https://api.stripe.com/v1/payment_methods', {
-        method: 'GET',
+// method: 'GET',
         headers: {
           'Authorization': `Bearer ${secretKey}`,
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+        },;
+      })
 
       if (response.ok) {
         toast({
           title: 'Credenciais válidas',
           description: `Chaves do Stripe validadas (${isTestMode ? 'Teste' : 'Produção'})`,
-        });
+        })
         return true;
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json()
         toast({
           title: 'Credenciais inválidas',
           description: errorData.error?.message || 'Erro ao validar credenciais',
           variant: 'destructive',
-        });
+        })
         return false;
-      }
+
     } catch (err) {
-      console.error('Erro ao testar credenciais:', err);
+      console.error('Erro ao testar credenciais:', err)
       toast({
         title: 'Erro no teste',
         description: 'Não foi possível testar as credenciais',
         variant: 'destructive',
-      });
+      })
       return false;
     }
   };

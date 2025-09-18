@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { useCloudinaryUpload } from './useCloudinaryUpload';
 import { toast } from 'sonner';
@@ -20,82 +20,74 @@ export interface BrandingConfig {
   header_style: 'modern' | 'classic' | 'minimal';
   logo_url?: string;
   banner_url?: string;
-}
+
 
 export const useBrandingConfig = () => {
-  const { currentCompany } = useAuth();
-  const [config, setConfig] = useState<BrandingConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { uploadFile: cloudinaryUpload } = useCloudinaryUpload();
+  const { currentCompany } = useAuth()
+  const [config, setConfig] = useState<BrandingConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const { uploadFile: cloudinaryUpload } = useCloudinaryUpload()
 
   const loadConfig = async () => {
     if (!currentCompany?.id) {
-      // Aguarde o company_id para evitar sobrescrever com defaults
+      // Aguarde o company_id para evitar sobrescrever com defaults;
       return;
     }
 
     try {
-      console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
+      console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id)
       
-      const { data, error } = await supabase
-        .from('cardapio_branding')
-        .select(`
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           *
         `)
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        
+        
+        
+        
+        
+        
 
       if (error) {
-        console.error('❌ Erro ao carregar configuração de branding:', error);
+        console.error('❌ Erro ao carregar configuração de branding:', error)
         return;
       }
 
-      console.log('📊 Dados carregados do banco:', data);
+      console.log('📊 Dados carregados do banco:', data)
 
       if (data) {
         const loadedConfig = {
           ...data,
-          header_style: (data as any).header_style as 'modern' | 'classic' | 'minimal',
+          header_style: (data as any).header_style as 'modern' | 'classic' | 'minimal',;
         } as BrandingConfig;
-        console.log('✅ Configuração processada:', loadedConfig);
-        setConfig(loadedConfig);
+        console.log('✅ Configuração processada:', loadedConfig)
+        setConfig(loadedConfig)
       } else {
-        console.log('⚠️ Nenhuma configuração ativa encontrada. Buscando a mais recente...');
+        console.log('⚠️ Nenhuma configuração ativa encontrada. Buscando a mais recente...')
         // Tentar buscar o registro mais recente (mesmo que inativo)
-        const { data: latestAny } = await supabase
-          .from('cardapio_branding')
-          .select('*')
-          .eq('company_id', currentCompany.id)
-          .order('updated_at', { ascending: false })
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
+        const { data: latestAny  } = null as any;
         if (latestAny) {
           // Ativar essa configuração e desativar as demais para garantir consistência
-          await supabase
-            .from('cardapio_branding')
-            .update({ is_active: true })
-            .eq('id', latestAny.id);
-          await supabase
-            .from('cardapio_branding')
-            .update({ is_active: false })
-            .eq('company_id', currentCompany.id)
-            .neq('id', latestAny.id);
+          
+            
+            
+            
+          
+            
+            
+            
+            .neq('id', latestAny.id)
 
           const loadedConfig = {
             ...latestAny,
             is_active: true,
-            header_style: (latestAny as any).header_style as 'modern' | 'classic' | 'minimal',
+            header_style: (latestAny as any).header_style as 'modern' | 'classic' | 'minimal',;
           } as BrandingConfig;
-          console.log('✅ Configuração mais recente ativada e carregada:', loadedConfig);
-          setConfig(loadedConfig);
+          console.log('✅ Configuração mais recente ativada e carregada:', loadedConfig)
+          setConfig(loadedConfig)
         } else {
-          console.log('⚠️ Nenhuma configuração encontrada, usando padrão');
+          console.log('⚠️ Nenhuma configuração encontrada, usando padrão')
           // Criar configuração padrão se não existir
           const defaultConfig = {
             company_id: currentCompany.id,
@@ -106,111 +98,84 @@ export const useBrandingConfig = () => {
             accent_color: '#F59E0B',
             text_color: '#1F2937',
             background_color: '#FFFFFF',
-            header_style: 'modern' as const,
+            header_style: 'modern' as const,;
           };
-          setConfig(defaultConfig);
-        }
+          setConfig(defaultConfig)
+
       }
     } catch (error) {
-      console.error('💥 Erro ao carregar configuração:', error);
+      console.error('💥 Erro ao carregar configuração:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
-    loadConfig();
-  }, [currentCompany?.id]);
+    loadConfig()
+  }, [currentCompany?.id])
 
   const uploadFile = async (file: File, type: 'logo' | 'banner'): Promise<string | null> => {
     if (!currentCompany?.id) {
-      toast.error('Empresa não selecionada');
+      toast.error('Empresa não selecionada')
       return null;
     }
 
     try {
-      console.log('🔄 Iniciando upload do arquivo:', file.name);
+      console.log('🔄 Iniciando upload do arquivo:', file.name)
       
-      const fileExt = file.name.split('.').pop();
-      const timestamp = Date.now();
-      const fileName = `${currentCompany.id}/${type}_${timestamp}.${fileExt}`;
+      const fileExt = file.name.split('.').pop()
+      const timestamp = Date.now()
+      const fileName = `${currentCompany.id} catch (error) { console.error('Error:', error) }/${type}_${timestamp}.${fileExt}`;
 
       // Upload para o storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('media')
-        .upload(fileName, file, { 
-          upsert: true,
-          contentType: file.type 
-        });
+      const uploadData = null as any; const uploadError = null as any;
 
       if (uploadError) {
-        console.error('❌ Erro no upload para storage:', uploadError);
-        toast.error('Erro ao fazer upload do arquivo');
+        console.error('❌ Erro no upload para storage:', uploadError)
+        toast.error('Erro ao fazer upload do arquivo')
         return null;
       }
 
-      console.log('✅ Upload para storage realizado com sucesso:', uploadData.path);
+      console.log('✅ Upload para storage realizado com sucesso:', uploadData.path)
 
       // Obter URL pública
-      const { data: publicUrlData } = supabase.storage
-        .from('media')
-        .getPublicUrl(fileName);
+      const { data: publicUrlData  } = null as any;
+        .getPublicUrl(fileName)
 
-      console.log('🔗 URL pública gerada:', publicUrlData.publicUrl);
+      console.log('🔗 URL pública gerada:', publicUrlData.publicUrl)
 
       // Deletar arquivo anterior do mesmo tipo se existir
-      const { error: deleteError } = await supabase
-        .from('media_files')
-        .delete()
-        .eq('company_id', currentCompany.id)
-        .eq('file_type', type)
-        .eq('is_active', true);
-
+      const { error: deleteError  } = null as any;
       if (deleteError) {
-        console.warn('⚠️ Aviso ao deletar arquivo anterior:', deleteError);
+        console.warn('⚠️ Aviso ao deletar arquivo anterior:', deleteError)
       }
 
       // Salvar registro na tabela media_files
-      const { data: mediaFile, error: mediaError } = await supabase
-        .from('media_files')
-        .insert({
-          company_id: currentCompany.id,
-          file_name: file.name,
-          file_type: type,
-          file_url: publicUrlData.publicUrl,
-          file_size: file.size,
-          mime_type: file.type,
-          is_active: true,
-        })
-        .select()
-        .single();
-
-      if (mediaError) {
-        console.error('❌ Erro ao salvar arquivo na base:', mediaError);
-        toast.error('Erro ao salvar arquivo na base de dados');
+      const mediaFile = null as any; const mediaError = null as any;
+        toast.error('Erro ao salvar arquivo na base de dados')
         return null;
       }
 
-      console.log('✅ Arquivo salvo na base de dados:', mediaFile.id);
-      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} enviado com sucesso!`);
+      console.log('✅ Arquivo salvo na base de dados:', mediaFile.id)
+      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} enviado com sucesso!`)
       
       return mediaFile.id;
     } catch (error) {
-      console.error('💥 Erro geral no upload:', error);
-      toast.error('Erro inesperado ao fazer upload');
+      console.error('💥 Erro geral no upload:', error)
+      toast.error('Erro inesperado ao fazer upload')
       return null;
     }
   };
 
   const saveConfig = async (newConfig: Partial<BrandingConfig>) => {
     if (!currentCompany?.id) {
-      toast.error('Empresa não selecionada');
+      toast.error('Empresa não selecionada')
       return false;
     }
 
     try {
-      console.log('💾 Salvando configuração de branding:', newConfig);
-      console.log('🏢 Empresa atual:', currentCompany);
+      console.log('💾 Salvando configuração de branding:', newConfig)
+      console.log('🏢 Empresa atual:', currentCompany)
       
       // Criar objeto com apenas os campos válidos da tabela cardapio_branding
       const validFields = {
@@ -225,117 +190,63 @@ export const useBrandingConfig = () => {
         text_color: newConfig.text_color || config?.text_color || '#1F2937',
         background_color: newConfig.background_color || config?.background_color || '#FFFFFF',
         header_style: newConfig.header_style || config?.header_style || 'modern',
-        is_active: true,
-      };
+        is_active: true,;
+      } catch (error) { console.error('Error:', error) };
 
-      console.log('📝 Dados válidos para salvar:', validFields);
+      console.log('📝 Dados válidos para salvar:', validFields)
 
       // Garantir atualização do registro mais recente para evitar duplicatas
       // Buscar registro existente ativo para a empresa
-      const { data: existing } = await supabase
-        .from('cardapio_branding')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
+      const { data: existing  } = null as any;
       // Atualizar se já existir um registro; caso contrário, inserir um novo
       let targetId = (config?.id || existing?.id) as string | undefined;
 
       if (targetId) {
         // Atualizar registro ativo da empresa (mais robusto que por ID)
-        const { data: updatedRows, error: updErr } = await supabase
-          .from('cardapio_branding')
-          .update({
-            logo_file_id: validFields.logo_file_id,
-            banner_file_id: validFields.banner_file_id,
-            show_logo: validFields.show_logo,
-            show_banner: validFields.show_banner,
-            primary_color: validFields.primary_color,
-            secondary_color: validFields.secondary_color,
-            accent_color: validFields.accent_color,
-            text_color: validFields.text_color,
-            background_color: validFields.background_color,
-            header_style: validFields.header_style,
-            is_active: true,
-          })
-          .eq('company_id', currentCompany.id)
-          .eq('is_active', true)
-          .select('id');
-
-        if (updErr) {
-          console.error('❌ Erro ao atualizar configuração:', updErr);
-          toast.error(`Erro ao salvar: ${updErr.message}`);
+        const updatedRows = null as any; const updErr = null as any;
+          toast.error(`Erro ao salvar: ${updErr.message}`)
           return false;
-        }
+
 
         // Se nenhuma linha foi atualizada (registro ativo ausente), força insert
         if (!updatedRows || updatedRows.length === 0) {
-          const { data: inserted, error: insErr } = await supabase
-            .from('cardapio_branding')
-            .insert(validFields)
-            .select('id')
-            .single();
-
-          if (insErr) {
-            console.error('❌ Erro ao inserir configuração (fallback):', insErr);
-            toast.error(`Erro ao salvar: ${insErr.message}`);
+          const inserted = null as any; const insErr = null as any;
+            toast.error(`Erro ao salvar: ${insErr.message}`)
             return false;
-          }
+
           targetId = inserted?.id;
         } else {
           targetId = updatedRows[0]?.id || targetId;
-        }
-      } else {
-        const { data: inserted, error: insErr } = await supabase
-          .from('cardapio_branding')
-          .insert(validFields)
-          .select('id')
-          .single();
 
-        if (insErr) {
-          console.error('❌ Erro ao inserir configuração:', insErr);
-          toast.error(`Erro ao salvar: ${insErr.message}`);
+      } else {
+        const inserted = null as any; const insErr = null as any;
+          toast.error(`Erro ao salvar: ${insErr.message}`)
           return false;
-        }
+
         targetId = inserted?.id;
       }
 
       // Desativar outras configurações da mesma empresa
-      await supabase
-        .from('cardapio_branding')
-        .update({ is_active: false })
-        .eq('company_id', currentCompany.id)
-        .neq('id', targetId);
+      
+        
+        
+        
+        .neq('id', targetId)
 
       // Buscar o registro mais recente após salvar
-      const { data: latest, error: fetchError } = await supabase
-        .from('cardapio_branding')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (fetchError) {
-        console.error('❌ Erro ao buscar configuração após salvar:', fetchError);
+      const latest = null as any; const fetchError = null as any;
       }
 
-      console.log('✅ Configuração salva no banco:', latest);
+      console.log('✅ Configuração salva no banco:', latest)
 
       // Forçar recarregamento completo dos dados para garantir sincronização
-      await loadConfig();
+      await loadConfig()
       
-      toast.success('Configurações salvas com sucesso!');
+      toast.success('Configurações salvas com sucesso!')
       return true;
     } catch (error) {
-      console.error('💥 Erro geral ao salvar:', error);
-      toast.error('Erro inesperado ao salvar configurações');
+      console.error('💥 Erro geral ao salvar:', error)
+      toast.error('Erro inesperado ao salvar configurações')
       return false;
     }
   };

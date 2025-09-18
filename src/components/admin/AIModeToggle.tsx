@@ -4,71 +4,67 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Zap, Bot, Info } from 'lucide-react';
 import { aiService } from '@/services/aiService';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 export function AIModeToggle() {
-  const [isDirectMode, setIsDirectMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDirectMode, setIsDirectMode] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Carregar modo salvo do localStorage na inicialização
-    const savedMode = localStorage.getItem('ai_mode_direct');
+    const savedMode = localStorage.getItem('ai_mode_direct')
     const isDirectModeEnabled = savedMode === 'true';
-    setIsDirectMode(isDirectModeEnabled);
-    aiService.setDirectMode(isDirectModeEnabled);
-    console.log(`🔄 Modo carregado: ${isDirectModeEnabled ? 'DIRETO' : 'ASSISTANTS'}`);
-  }, []);
+    setIsDirectMode(isDirectModeEnabled)
+    aiService.setDirectMode(isDirectModeEnabled)
+    console.log(`🔄 Modo carregado: ${isDirectModeEnabled ? 'DIRETO' : 'ASSISTANTS'}`)
+  }, [])
 
   const handleModeChange = async (enabled: boolean) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       // Alterar o modo no aiService
-      aiService.setDirectMode(enabled);
-      setIsDirectMode(enabled);
+      aiService.setDirectMode(enabled)
+      setIsDirectMode(enabled)
       
       // Salvar preferência no localStorage para persistir
-      localStorage.setItem('ai_mode_direct', enabled.toString());
+      localStorage.setItem('ai_mode_direct', enabled.toString())
 
       // NOVO: Atualizar flag no banco de dados para TODAS as empresas
-      const { data: companies } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('status', 'active');
+      const { data: companies }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (companies && companies.length > 0) {
-        console.log(`🔍 Atualizando use_direct_mode para ${companies.length} empresas...`);
+        console.log(`🔍 Atualizando use_direct_mode para ${companies.length} empresas...`)
         
         for (const company of companies) {
-          const { error } = await supabase
-            .from('ai_agent_assistants')
-            .update({ use_direct_mode: enabled })
-            .eq('company_id', company.id);
-
+          const { error  } = null as any;
           if (error) {
-            console.error(`❌ Erro ao atualizar empresa ${company.id}:`, error);
+            console.error(`❌ Erro ao atualizar empresa ${company.id}:`, error)
           } else {
-            console.log(`✅ Flag use_direct_mode atualizada para empresa ${company.id}: ${enabled}`);
+            console.log(`✅ Flag use_direct_mode atualizada para empresa ${company.id}: ${enabled}`)
           }
         }
-      }
+
       
       toast({
         title: `Modo ${enabled ? 'Direto' : 'Assistants'} Ativado`,
         description: enabled 
           ? 'Agora usando Chat Completions direto - mais rápido e eficiente!'
           : 'Voltando para o sistema de Assistants OpenAI',
-      });
+      })
     } catch (error) {
-      console.error('Erro ao alterar modo:', error);
+      console.error('Erro ao alterar modo:', error)
       toast({
         title: 'Erro',
         description: 'Erro ao alterar modo da IA',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setIsLoading(false);
-    }
+      setIsLoading(false)
+
   };
 
   // Verificar preferência salva no localStorage
@@ -91,7 +87,7 @@ export function AIModeToggle() {
                 {isDirectMode 
                   ? 'Chat Completions direto - Mais rápido e eficiente'
                   : 'OpenAI Assistants - Sistema legado'
-                }
+
               </CardDescription>
             </div>
           </div>
@@ -156,5 +152,4 @@ export function AIModeToggle() {
         )}
       </CardContent>
     </Card>
-  );
-}
+  )

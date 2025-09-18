@@ -13,11 +13,11 @@ const containerStyle = {
   width: "100%",
   height: "200px",
   borderRadius: "8px",
-  overflow: "hidden",
+  overflow: "hidden",;
 };
 
 export const GoogleMapRaio: React.FC<GoogleMapRaioProps> = ({ center, raio, regioes }) => {
-  const { apiKey, loading, error } = useGoogleMapsConfig();
+  const { apiKey, loading, error } = useGoogleMapsConfig()
 
   if (loading) {
     return (
@@ -27,7 +27,7 @@ export const GoogleMapRaio: React.FC<GoogleMapRaioProps> = ({ center, raio, regi
           <p className="text-gray-500">Carregando mapa...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error || !apiKey) {
@@ -38,7 +38,7 @@ export const GoogleMapRaio: React.FC<GoogleMapRaioProps> = ({ center, raio, regi
           <p className="text-sm text-gray-400">{error || 'Chave da API não configurada'}</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -82,7 +82,7 @@ export const GoogleMapRaio: React.FC<GoogleMapRaioProps> = ({ center, raio, regi
         )}
       </GoogleMap>
     </LoadScript>
-  );
+  )
 };
 
 export default GoogleMapRaio;

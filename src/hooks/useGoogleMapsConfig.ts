@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface GoogleMapsConfig {
   id?: string;
   api_key: string;
@@ -10,65 +9,61 @@ export interface GoogleMapsConfig {
 }
 
 export const useGoogleMapsConfig = () => {
-  const [config, setConfig] = useState<GoogleMapsConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [config, setConfig] = useState<GoogleMapsConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchConfig = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Get API key from Supabase edge function
-      const { data, error } = await supabase.functions.invoke('get-maps-config');
-      
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
+  } = await Promise.resolve()
       if (error) {
-        console.error('Erro ao buscar configuração do Google Maps:', error);
-        setError('Erro ao carregar configuração do Google Maps');
-        setConfig(null);
+        console.error('Erro ao buscar configuração do Google Maps:', error)
+        setError('Erro ao carregar configuração do Google Maps')
+        setConfig(null)
         return;
       }
 
       if (!data?.apiKey) {
-        console.warn('Google Maps API key not configured');
-        setError('Chave da API do Google Maps não configurada');
-        setConfig(null);
+        console.warn('Google Maps API key not configured')
+        setError('Chave da API do Google Maps não configurada')
+        setConfig(null)
         return;
       }
       
       setConfig({
         api_key: data.apiKey
-      });
+      })
     } catch (err: any) {
-      console.error('Erro ao buscar configuração do Google Maps:', err);
-      setError(err.message);
+      console.error('Erro ao buscar configuração do Google Maps:', err)
+      setError(err.message)
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const saveConfig = async (configData: Partial<GoogleMapsConfig>) => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
       
       // Save logic here
-      setConfig(prev => ({ ...prev, ...configData }));
+      setConfig(prev => ({ ...prev, ...configData } catch (error) { console.error('Error:', error) }))
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message)
       throw err;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const refetch = async () => {
-    await fetchConfig();
+    await fetchConfig()
   };
 
   useEffect(() => {
-    fetchConfig();
-  }, []);
+    fetchConfig()
+  }, [])
 
   return {
     config,

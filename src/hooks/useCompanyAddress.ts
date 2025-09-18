@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface CompanyAddress {
@@ -20,7 +20,7 @@ export interface CompanyAddress {
   manual_coordinates?: boolean;
   created_at: string;
   updated_at: string;
-}
+
 
 export interface AddressFormData {
   cep?: string;
@@ -35,62 +35,57 @@ export interface AddressFormData {
   longitude?: number;
   hide_from_customers?: boolean;
   manual_coordinates?: boolean;
-}
+
 
 export function useCompanyAddress() {
-  const { currentCompany } = useAuth();
-  const [address, setAddress] = useState<CompanyAddress | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
+  const { currentCompany } = useAuth()
+  const [address, setAddress] = useState<CompanyAddress | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
 
   // Carregar endereço
   const loadAddress = async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
       
       if (!currentCompany?.id) {
-        console.log('Company ID não encontrado');
-        setError('Empresa não encontrada');
+        console.log('Company ID não encontrado')
+        setError('Empresa não encontrada')
         return;
       }
 
-      console.log('Carregando endereço para company_id:', currentCompany.id);
+       catch (error) { console.error('Error:', error) }console.log('Carregando endereço para company_id:', currentCompany.id)
 
-      const { data, error: addressError } = await supabase
-        .from('company_addresses')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
-
+      const { data, error: addressError  } = null as any;
       if (addressError) {
-        console.error('Erro ao carregar endereço:', addressError);
+        console.error('Erro ao carregar endereço:', addressError)
         throw addressError;
       }
 
-      console.log('Endereço carregado:', data);
-      setAddress(data);
+      console.log('Endereço carregado:', data)
+      setAddress(data)
     } catch (err: any) {
-      console.error('Erro ao carregar endereço:', err);
-      setError('Erro ao carregar endereço: ' + err.message);
+      console.error('Erro ao carregar endereço:', err)
+      setError('Erro ao carregar endereço: ' + err.message)
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   // Salvar endereço
   const saveAddress = async (formData: AddressFormData) => {
     try {
-      setSaving(true);
-      setError(null);
+      setSaving(true)
+      setError(null)
       
       if (!currentCompany?.id) {
-        throw new Error('Empresa não encontrada');
+        throw new Error('Empresa não encontrada')
       }
 
-      console.log('Salvando endereço:', formData);
-      console.log('Company ID:', currentCompany.id);
+       catch (error) { console.error('Error:', error) }console.log('Salvando endereço:', formData)
+      console.log('Company ID:', currentCompany.id)
 
       const addressData = {
         company_id: currentCompany.id,
@@ -105,74 +100,63 @@ export function useCompanyAddress() {
         latitude: formData.latitude || null,
         longitude: formData.longitude || null,
         hide_from_customers: formData.hide_from_customers || false,
-        manual_coordinates: formData.manual_coordinates || false
+        manual_coordinates: formData.manual_coordinates || false;
       };
 
-      console.log('Dados a serem salvos:', addressData);
+      console.log('Dados a serem salvos:', addressData)
 
       if (address?.id) {
         // Atualizar endereço existente
-        console.log('Atualizando endereço existente, ID:', address.id);
-        const { data, error: updateError } = await supabase
-          .from('company_addresses')
-          .update(addressData)
-          .eq('id', address.id)
-          .select()
-          .single();
-
+        console.log('Atualizando endereço existente, ID:', address.id)
+        const { data, error: updateError  } = null as any;
         if (updateError) {
-          console.error('Erro ao atualizar endereço:', updateError);
+          console.error('Erro ao atualizar endereço:', updateError)
           throw updateError;
         }
         
-        console.log('Endereço atualizado com sucesso:', data);
-        setAddress(data);
+        console.log('Endereço atualizado com sucesso:', data)
+        setAddress(data)
       } else {
         // Criar novo endereço
-        console.log('Criando novo endereço');
-        const { data, error: insertError } = await supabase
-          .from('company_addresses')
-          .insert(addressData)
-          .select()
-          .single();
-
+        console.log('Criando novo endereço')
+        const { data, error: insertError  } = null as any;
         if (insertError) {
-          console.error('Erro ao criar endereço:', insertError);
+          console.error('Erro ao criar endereço:', insertError)
           throw insertError;
         }
         
-        console.log('Endereço criado com sucesso:', data);
-        setAddress(data);
+        console.log('Endereço criado com sucesso:', data)
+        setAddress(data)
       }
 
       return true;
     } catch (err: any) {
-      console.error('Erro ao salvar endereço:', err);
-      setError('Erro ao salvar endereço: ' + err.message);
+      console.error('Erro ao salvar endereço:', err)
+      setError('Erro ao salvar endereço: ' + err.message)
       return false;
     } finally {
-      setSaving(false);
-    }
+      setSaving(false)
+
   };
 
   // Buscar CEP na API ViaCEP
   const fetchAddressByCep = async (cep: string) => {
     try {
-      const cleanCep = cep.replace(/\D/g, '');
+      const cleanCep = cep.replace(/\D/g, '')
       if (cleanCep.length !== 8) {
         return null;
       }
 
-      console.log('Buscando CEP:', cleanCep);
-      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
-      const data = await response.json();
+       catch (error) { console.error('Error:', error) }console.log('Buscando CEP:', cleanCep)
+      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
+      const data = await response.json()
 
       if (data.erro) {
-        console.log('CEP não encontrado');
+        console.log('CEP não encontrado')
         return null;
       }
 
-      console.log('Dados do CEP:', data);
+      console.log('Dados do CEP:', data)
       return {
         logradouro: data.logradouro || '',
         bairro: data.bairro || '',
@@ -180,16 +164,16 @@ export function useCompanyAddress() {
         estado: data.uf || ''
       };
     } catch (err) {
-      console.error('Erro ao buscar CEP:', err);
+      console.error('Erro ao buscar CEP:', err)
       return null;
-    }
+
   };
 
   useEffect(() => {
     if (currentCompany?.id) {
-      loadAddress();
-    }
-  }, [currentCompany?.id]);
+      loadAddress()
+
+  }, [currentCompany?.id])
 
   return {
     address,
@@ -200,4 +184,4 @@ export function useCompanyAddress() {
     fetchAddressByCep,
     reload: loadAddress
   };
-}
+

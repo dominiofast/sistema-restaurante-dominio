@@ -8,47 +8,47 @@ interface UseCustomerAddressManagerProps {
 }
 
 export function useCustomerAddressManager({ customerPhone, companyId }: UseCustomerAddressManagerProps) {
-  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses();
-  const { toast } = useToast();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses()
+  const { toast } = useToast()
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Carregar endereços quando telefone ou company mudar
   useEffect(() => {
     if (customerPhone && customerPhone.length >= 10 && companyId) {
-      fetchAddressesByPhone(customerPhone, companyId);
+      fetchAddressesByPhone(customerPhone, companyId)
     }
-  }, [customerPhone, companyId, fetchAddressesByPhone]);
+  }, [customerPhone, companyId, fetchAddressesByPhone])
 
   const handleDeleteAddress = async (addressId: string): Promise<boolean> => {
-    setDeletingId(addressId);
+    setDeletingId(addressId)
     
     try {
-      await deleteAddress(addressId);
+      await deleteAddress(addressId)
       
       toast({
         title: "Endereço excluído",
         description: "O endereço foi removido com sucesso.",
-      });
+      } catch (error) { console.error('Error:', error) })
       
       return true;
     } catch (error) {
-      console.error('❌ Erro ao excluir endereço:', error);
+      console.error('❌ Erro ao excluir endereço:', error)
       
       toast({
         title: "Erro ao excluir",
         description: "Não foi possível excluir o endereço. Tente novamente.",
         variant: "destructive"
-      });
+      })
       
       return false;
     } finally {
-      setDeletingId(null);
+      setDeletingId(null)
     }
   };
 
   const refreshAddresses = () => {
     if (customerPhone && customerPhone.length >= 10 && companyId) {
-      fetchAddressesByPhone(customerPhone, companyId);
+      fetchAddressesByPhone(customerPhone, companyId)
     }
   };
 

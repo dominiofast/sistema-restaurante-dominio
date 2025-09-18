@@ -18,73 +18,73 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
   onClose,
   onSave
 }) => {
-  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({});
-  const [observacao, setObservacao] = useState('');
-  const [quantidade, setQuantidade] = useState(1);
-  const [filtroAdicionais, setFiltroAdicionais] = useState('');
+  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({})
+  const [observacao, setObservacao] = useState('')
+  const [quantidade, setQuantidade] = useState(1)
+  const [filtroAdicionais, setFiltroAdicionais] = useState('')
 
-  const { categorias: categoriasAdicionais, loading: loadingAdicionais } = useProductAdicionais(produto?.id);
+  const { categorias: categoriasAdicionais, loading: loadingAdicionais } = useProductAdicionais(produto?.id)
 
   const handleAdicionalChange = (adicionalId: string, categoria: any, novaQuantidade: number) => {
-    console.log('🔵 handleAdicionalChange chamado', { adicionalId, novaQuantidade, categoria: categoria?.name });
+    console.log('🔵 handleAdicionalChange chamado', { adicionalId, novaQuantidade, categoria: categoria?.name })
     
     const newSelected = { ...selectedAdicionais };
     
     if (categoria && categoria.selection_type === 'single') {
-      console.log('🔄 Processando seleção única para categoria:', categoria.name);
+      console.log('🔄 Processando seleção única para categoria:', categoria.name)
       categoria.adicionais.forEach((adicional: any) => {
         if (adicional.id !== adicionalId) {
-          console.log(`   Removendo seleção de ${adicional.name} (${adicional.id})`);
+          console.log(`   Removendo seleção de ${adicional.name} (${adicional.id})`)
           delete newSelected[adicional.id];
         }
-      });
+      })
       
       if (novaQuantidade > 0) {
-        console.log(`   Adicionando ${categoria.name}: ${adicionalId} (quantidade: 1)`);
+        console.log(`   Adicionando ${categoria.name}: ${adicionalId} (quantidade: 1)`)
         newSelected[adicionalId] = 1;
       } else {
-        console.log(`   Removendo ${categoria.name}: ${adicionalId}`);
+        console.log(`   Removendo ${categoria.name}: ${adicionalId}`)
         delete newSelected[adicionalId];
-      }
+
     } else {
       // Verificar limite máximo para categorias múltiplas
       if (novaQuantidade > 0 && categoria.max_selection) {
         const totalAtual = categoria.adicionais.reduce((sum: number, adicional: any) => 
-          sum + (newSelected[adicional.id] || 0), 0
-        );
+          sum + (newSelected[adicional.id] || 0), 0;
+        )
         
-        const novoTotal = totalAtual + (novaQuantidade - (selectedAdicionais[adicionalId] || 0));
+        const novoTotal = totalAtual + (novaQuantidade - (selectedAdicionais[adicionalId] || 0))
         
         console.log('🔍 Verificando limite máximo:', {
           categoria: categoria.name,
           totalAtual,
           novoTotal,
           maxSelection: categoria.max_selection
-        });
+        })
         
         if (novoTotal > categoria.max_selection) {
-          console.log('❌ LIMITE MÁXIMO ATINGIDO! Não é possível adicionar mais itens');
+          console.log('❌ LIMITE MÁXIMO ATINGIDO! Não é possível adicionar mais itens')
           return; // Não faz alteração se exceder o limite
         }
       }
       
       if (novaQuantidade > 0) {
-        console.log(`   Atualizando quantidade de ${adicionalId} para ${novaQuantidade}`);
+        console.log(`   Atualizando quantidade de ${adicionalId} para ${novaQuantidade}`)
         newSelected[adicionalId] = novaQuantidade;
       } else {
-        console.log(`   Removendo ${adicionalId} do carrinho`);
+        console.log(`   Removendo ${adicionalId} do carrinho`)
         delete newSelected[adicionalId];
-      }
-    }
+
+
     
-    console.log('🔄 Estado atualizado (antes do setState):', newSelected);
-    setSelectedAdicionais(newSelected);
+    console.log('🔄 Estado atualizado (antes do setState):', newSelected)
+    setSelectedAdicionais(newSelected)
   };
 
   const validateRequiredAdicionais = () => {
-    console.log('\n🔍 ========== INÍCIO DA VALIDAÇÃO ==========');
-    console.log('📊 Total de categorias de adicionais:', categoriasAdicionais.length);
-    console.log('🛒 Itens selecionados:', Object.keys(selectedAdicionais).length);
+    console.log('\n🔍 ========== INÍCIO DA VALIDAÇÃO ==========')
+    console.log('📊 Total de categorias de adicionais:', categoriasAdicionais.length)
+    console.log('🛒 Itens selecionados:', Object.keys(selectedAdicionais).length)
     console.log('📋 Categorias obrigatórias:', categoriasAdicionais
       .filter(cat => cat.is_required)
       .map(cat => ({
@@ -97,14 +97,14 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
           selected: selectedAdicionais[a.id] || 0
         }))
       }))
-    );
+    )
 
     // Se não há categorias obrigatórias, o botão deve estar habilitado
-    const hasRequiredCategories = categoriasAdicionais.some(cat => cat.is_required);
+    const hasRequiredCategories = categoriasAdicionais.some(cat => cat.is_required)
     if (!hasRequiredCategories) {
-      console.log('ℹ️  Nenhuma categoria obrigatória encontrada. Botão será habilitado.');
+      console.log('ℹ️  Nenhuma categoria obrigatória encontrada. Botão será habilitado.')
       return true;
-    }
+
 
     for (const categoria of categoriasAdicionais) {
       if (categoria.is_required) {
@@ -114,41 +114,41 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
           tipo_selecao: categoria.selection_type,
           min_selecao: categoria.min_selection,
           total_adicionais: categoria.adicionais.length
-        });
+        })
 
         // Verifica se há pelo menos um item selecionado na categoria
         const hasSelection = categoria.adicionais.some((adicional: any) => {
           const isSelected = selectedAdicionais[adicional.id] && selectedAdicionais[adicional.id] > 0;
-          console.log(`   ${isSelected ? '✅' : '❌'} ${adicional.name} (${adicional.id}): ${selectedAdicionais[adicional.id] || 0}`);
+          console.log(`   ${isSelected ? '✅' : '❌'} ${adicional.name} (${adicional.id}): ${selectedAdicionais[adicional.id] || 0}`)
           return isSelected;
-        });
+        })
         
-        console.log(`📌 ${categoria.name}: ${hasSelection ? 'Tem seleção' : 'Sem seleção'}`);
+        console.log(`📌 ${categoria.name}: ${hasSelection ? 'Tem seleção' : 'Sem seleção'}`)
 
         // Se não há seleção e a categoria é obrigatória, falha na validação
         if (!hasSelection) {
-          console.log(`❌ Falha na validação: Categoria obrigatória "${categoria.name}" sem seleção`);
+          console.log(`❌ Falha na validação: Categoria obrigatória "${categoria.name}" sem seleção`)
           return false;
         }
 
         // Verifica se atende ao mínimo de seleção, se definido
         if (categoria.min_selection && categoria.min_selection > 0) {
           const totalSelected = categoria.adicionais.reduce((sum: number, adicional: any) => 
-            sum + (selectedAdicionais[adicional.id] || 0), 0
-          );
+            sum + (selectedAdicionais[adicional.id] || 0), 0;
+          )
           
-          console.log(`   🔢 Total selecionado: ${totalSelected} (mínimo requerido: ${categoria.min_selection})`);
+          console.log(`   🔢 Total selecionado: ${totalSelected} (mínimo requerido: ${categoria.min_selection})`)
 
           if (totalSelected < categoria.min_selection) {
-            console.log(`❌ Falha na validação: Categoria "${categoria.name}" requer no mínimo ${categoria.min_selection} itens (selecionados: ${totalSelected})`);
+            console.log(`❌ Falha na validação: Categoria "${categoria.name}" requer no mínimo ${categoria.min_selection} itens (selecionados: ${totalSelected})`)
             return false;
           }
         }
-      }
-    }
+
+
     
-    console.log('\n✅ ========== VALIDAÇÃO BEM-SUCEDIDA ==========');
-    console.log('✅ Todas as categorias obrigatórias foram preenchidas corretamente');
+    console.log('\n✅ ========== VALIDAÇÃO BEM-SUCEDIDA ==========')
+    console.log('✅ Todas as categorias obrigatórias foram preenchidas corretamente')
     return true;
   };
 
@@ -160,17 +160,17 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
     const promotionalPriceNumber = produto.promotional_price ? Number(produto.promotional_price) : 0;
     
     const precoBase = produto.is_promotional && promotionalPriceNumber 
-      ? promotionalPriceNumber 
+      ? promotionalPriceNumber ;
       : priceNumber;
     
     const precoAdicionais = Object.entries(selectedAdicionais).reduce((total, [adicionalId, qty]) => {
       const adicional = categoriasAdicionais
         .flatMap(cat => cat.adicionais)
-        .find(a => a.id === adicionalId);
+        .find(a => a.id === adicionalId)
       
       const adicionalPrice = adicional ? Number(adicional.price) || 0 : 0;
-      return total + (adicionalPrice * qty);
-    }, 0);
+      return total + (adicionalPrice * qty)
+    }, 0)
     
     const totalPrice = (precoBase + precoAdicionais) * quantidade;
     
@@ -181,7 +181,7 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
       quantidade,
       totalPrice,
       isNaN: isNaN(totalPrice)
-    });
+    })
     
     return isNaN(totalPrice) ? 0 : totalPrice;
   };
@@ -193,7 +193,7 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
     const adicionaisCompletos = Object.entries(selectedAdicionais).reduce((acc, [adicionalId, qty]) => {
       const adicional = categoriasAdicionais
         .flatMap(cat => cat.adicionais)
-        .find(a => a.id === adicionalId);
+        .find(a => a.id === adicionalId)
       
       if (adicional && qty > 0) {
         acc[adicionalId] = {
@@ -202,21 +202,21 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
           price: Number(adicional.price) || 0,
           quantity: qty
         };
-      }
+
       return acc;
-    }, {} as { [key: string]: { id: string; name: string; price: number; quantity: number } });
+    }, {} as { [key: string]: { id: string; name: string; price: number; quantity: number } })
     
     // Reset modal state primeiro
-    setSelectedAdicionais({});
-    setObservacao('');
-    setQuantidade(1);
-    setFiltroAdicionais('');
+    setSelectedAdicionais({})
+    setObservacao('')
+    setQuantidade(1)
+    setFiltroAdicionais('')
     
     // Salvar no carrinho
-    await onSave(produto, quantidade, adicionaisCompletos);
+    await onSave(produto, quantidade, adicionaisCompletos)
     
     // Fechar modal imediatamente após salvar
-    onClose();
+    onClose()
   };
 
   const adicionaisFiltrados = categoriasAdicionais.map(categoria => ({
@@ -224,25 +224,25 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
     adicionais: categoria.adicionais.filter((adicional: any) =>
       adicional.name.toLowerCase().includes(filtroAdicionais.toLowerCase())
     )
-  })).filter(categoria => categoria.adicionais.length > 0);
+  })).filter(categoria => categoria.adicionais.length > 0)
 
   const categoriasTamanho = adicionaisFiltrados.filter(cat => 
     cat.name.toLowerCase().includes('tamanho') || cat.name.toLowerCase().includes('size') ||
     cat.name.toLowerCase().includes('borda') || cat.name.toLowerCase().includes('massa')
-  );
+  )
   
   const categoriasIngredientes = adicionaisFiltrados.filter(cat => 
     !cat.name.toLowerCase().includes('tamanho') && !cat.name.toLowerCase().includes('size') &&
     !cat.name.toLowerCase().includes('borda') && !cat.name.toLowerCase().includes('massa')
-  );
+  )
 
-  const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
-  const hasRequiredCategories = categoriasAdicionais.some(cat => cat.is_required);
+  const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false)
+  const hasRequiredCategories = categoriasAdicionais.some(cat => cat.is_required)
 
   // Update isAddToCartEnabled whenever selectedAdicionais or categoriasAdicionais changes
   React.useEffect(() => {
-    console.log('🔄 useEffect - Verificando validação de adicionais');
-    console.log('📦 Estado atual de selectedAdicionais:', selectedAdicionais);
+    console.log('🔄 useEffect - Verificando validação de adicionais')
+    console.log('📦 Estado atual de selectedAdicionais:', selectedAdicionais)
     console.log('📦 Categorias de adicionais:', categoriasAdicionais.map((c: any) => ({
       name: c.name,
       is_required: c.is_required,
@@ -252,12 +252,12 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
         name: a.name,
         selected: selectedAdicionais[a.id] || 0
       }))
-    })));
+    })))
     
-    const isValid = validateRequiredAdicionais();
-    console.log('✅ Resultado da validação:', isValid);
-    setIsAddToCartEnabled(isValid);
-  }, [selectedAdicionais, categoriasAdicionais]);
+    const isValid = validateRequiredAdicionais()
+    console.log('✅ Resultado da validação:', isValid)
+    setIsAddToCartEnabled(isValid)
+  }, [selectedAdicionais, categoriasAdicionais])
 
   if (!isOpen || !produto) return null;
 
@@ -372,5 +372,5 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
         />
       </div>
     </div>
-  );
+  )
 };

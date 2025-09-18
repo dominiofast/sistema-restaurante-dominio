@@ -4,13 +4,13 @@ import { AddressSearchFlow } from './AddressSearchFlow';
 import { CustomerAddress } from '@/types/address';
 
 export const AddressSearchExample: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null)
 
   const handleAddressConfirm = (address: CustomerAddress) => {
-    console.log('Endereço selecionado:', address);
-    setSelectedAddress(address);
-    setIsModalOpen(false);
+    console.log('Endereço selecionado:', address)
+    setSelectedAddress(address)
+    setIsModalOpen(false)
   };
 
   return (
@@ -55,5 +55,5 @@ export const AddressSearchExample: React.FC = () => {
         primaryColor="#f97316"
       />
     </div>
-  );
+  )
 };

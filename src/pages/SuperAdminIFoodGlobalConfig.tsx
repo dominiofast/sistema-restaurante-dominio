@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Store, Key, Globe, CheckCircle, AlertTriangle, TestTube, Save } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface IFoodGlobalConfig {
@@ -17,151 +17,150 @@ interface IFoodGlobalConfig {
 }
 
 const SuperAdminIFoodGlobalConfig = () => {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [testing, setTesting] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [testing, setTesting] = useState(false)
   
-  const [isConfigSet, setIsConfigSet] = useState(false);
-  const [allowEdit, setAllowEdit] = useState(false);
+  const [isConfigSet, setIsConfigSet] = useState(false)
+  const [allowEdit, setAllowEdit] = useState(false)
   
   const [config, setConfig] = useState<IFoodGlobalConfig>({
     client_id: '',
     client_secret: '',
     environment: 'sandbox',
     is_active: false
-  });
+  })
 
   const [connectionStatus, setConnectionStatus] = useState<{
     tested: boolean;
     success: boolean;
     message: string;
-  }>({ tested: false, success: false, message: '' });
+  }>({ tested: false, success: false, message: '' })
 
   useEffect(() => {
-    checkExistingConfig();
-  }, []);
+    checkExistingConfig()
+  }, [])
 
   const checkExistingConfig = async () => {
     try {
-      setLoading(true);
-      console.log('🔍 Verificando configuração existente do iFood...');
+      setLoading(true)
+      console.log('🔍 Verificando configuração existente do iFood...')
       
       // Verificar se existe configuração via função edge (que acessa os secrets)
-      const { data, error } = await supabase.functions.invoke('get-ifood-config');
-      
-      console.log('📊 Resposta do get-ifood-config:', data);
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+      console.log('📊 Resposta do get-ifood-config:', data)
       
       if (error) {
-        console.error('❌ Erro ao verificar configuração:', error);
-        setAllowEdit(true); // Permitir edição se houve erro
+        console.error('❌ Erro ao verificar configuração:', error)
+        setAllowEdit(true) // Permitir edição se houve erro
         return;
       }
       
       if (data?.hasConfig) {
-        console.log('✅ Configuração existente encontrada');
-        setIsConfigSet(true);
-        setAllowEdit(false); // Não permitir edição inicialmente
+        console.log('✅ Configuração existente encontrada')
+        setIsConfigSet(true)
+        setAllowEdit(false) // Não permitir edição inicialmente
         setConfig(prev => ({
           ...prev,
           environment: data.environment || 'sandbox',
           is_active: data.is_active || false
-        }));
+        }))
       } else {
-        console.log('❌ Nenhuma configuração encontrada - permitindo edição');
-        setIsConfigSet(false);
-        setAllowEdit(true); // Permitir edição se não há configuração
+        console.log('❌ Nenhuma configuração encontrada - permitindo edição')
+        setIsConfigSet(false)
+        setAllowEdit(true) // Permitir edição se não há configuração
       }
     } catch (error) {
-      console.error('❌ Erro ao verificar configuração:', error);
-      setIsConfigSet(false);
-      setAllowEdit(true); // Permitir edição se houve erro
+      console.error('❌ Erro ao verificar configuração:', error)
+      setIsConfigSet(false)
+      setAllowEdit(true) // Permitir edição se houve erro
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const handleSave = async () => {
     if (allowEdit && (!config.client_id || !config.client_secret)) {
-      toast.error('Client ID e Client Secret são obrigatórios');
+      toast.error('Client ID e Client Secret são obrigatórios')
       return;
-    }
+
 
     if (allowEdit && !config.client_id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
-      toast.error('Client ID deve ser um UUID válido');
+      toast.error('Client ID deve ser um UUID válido')
       return;
-    }
+
 
     if (allowEdit && config.client_secret.length < 35) {
-      toast.error('Client Secret deve ter pelo menos 35 caracteres');
+      toast.error('Client Secret deve ter pelo menos 35 caracteres')
       return;
-    }
 
-    setSaving(true);
+
+    setSaving(true)
     try {
-      console.log('🔄 Enviando configuração para validação...');
+      console.log('🔄 Enviando configuração para validação...')
       
-      const { data, error } = await supabase.functions.invoke('save-ifood-config', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: config
-      });
+      })
 
-      console.log('📊 Resposta da função:', { data, error });
+      console.log('📊 Resposta da função:', { data, error })
 
       if (error) {
-        console.error('❌ Erro na invocação da função:', error);
+        console.error('❌ Erro na invocação da função:', error)
         
         // Tentar extrair mensagem mais específica do erro
         let errorMessage = error.message;
         
         if (error.context?.body) {
           try {
-            const errorBody = JSON.parse(error.context.body);
+            const errorBody = JSON.parse(error.context.body)
             errorMessage = errorBody.error || errorMessage;
           } catch (e) {
-            console.log('Não foi possível fazer parse do erro:', e);
+            console.log('Não foi possível fazer parse do erro:', e)
           }
         }
         
-        throw new Error(errorMessage);
+        throw new Error(errorMessage)
       }
 
       if (data?.success) {
-        console.log('✅ Configuração salva com sucesso');
-        setIsConfigSet(true);
-        setAllowEdit(false);
-        setConfig(prev => ({ ...prev, client_id: '', client_secret: '' })); // Limpar campos sensíveis
+        console.log('✅ Configuração salva com sucesso')
+        setIsConfigSet(true)
+        setAllowEdit(false)
+        setConfig(prev => ({ ...prev, client_id: '', client_secret: '' })) // Limpar campos sensíveis
         
-        toast.success('✅ Configuração iFood salva com sucesso!');
-        setConnectionStatus({ tested: false, success: false, message: '' });
+        toast.success('✅ Configuração iFood salva com sucesso!')
+        setConnectionStatus({ tested: false, success: false, message: '' })
         
         // Recarregar a verificação de configuração
         setTimeout(() => {
-          checkExistingConfig();
-        }, 1000);
+          checkExistingConfig()
+        }, 1000)
       } else {
         const errorMsg = data?.error || 'Erro desconhecido ao salvar configuração';
-        console.error('❌ Erro retornado pela função:', errorMsg);
-        throw new Error(errorMsg);
+        console.error('❌ Erro retornado pela função:', errorMsg)
+        throw new Error(errorMsg)
       }
       
     } catch (error) {
-      console.error('❌ Erro ao salvar configuração:', error);
-      toast.error(`❌ ${error.message}`);
+      console.error('❌ Erro ao salvar configuração:', error)
+      toast.error(`❌ ${error.message}`)
     } finally {
-      setSaving(false);
-    }
+      setSaving(false)
+
   };
 
   const testConnection = async () => {
     if (!isConfigSet) {
-      toast.error('Configure e salve as credenciais antes de testar');
+      toast.error('Configure e salve as credenciais antes de testar')
       return;
-    }
 
-    setTesting(true);
+
+    setTesting(true)
     try {
-      const { data, error } = await supabase.functions.invoke('test-ifood-connection', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { environment: config.environment }
-      });
+      })
 
       if (error) throw error;
 
@@ -169,25 +168,25 @@ const SuperAdminIFoodGlobalConfig = () => {
         tested: true,
         success: data.success,
         message: data.message
-      });
+      })
 
       if (data.success) {
-        toast.success('✅ Conexão com iFood funcionando!');
+        toast.success('✅ Conexão com iFood funcionando!')
       } else {
-        toast.error(`❌ ${data.message}`);
+        toast.error(`❌ ${data.message}`)
       }
       
     } catch (error) {
-      console.error('Erro no teste:', error);
+      console.error('Erro no teste:', error)
       setConnectionStatus({
         tested: true,
         success: false,
         message: `Erro ao testar: ${error.message}`
-      });
-      toast.error(`❌ Erro ao testar conexão: ${error.message}`);
+      })
+      toast.error(`❌ Erro ao testar conexão: ${error.message}`)
     } finally {
-      setTesting(false);
-    }
+      setTesting(false)
+
   };
 
   if (loading) {
@@ -195,8 +194,8 @@ const SuperAdminIFoodGlobalConfig = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
@@ -338,7 +337,7 @@ const SuperAdminIFoodGlobalConfig = () => {
                   </p>
                   <div className="mt-3">
                     <Button 
-                      onClick={() => window.open('https://supabase.com/dashboard/project/78f1b2d4-13ce-4fc8-8fc4-25d4ea8904e3/settings/functions', '_blank')}
+                      onClick={() => window.open('https://
                       variant="default"
                       size="sm"
                       className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -364,13 +363,13 @@ const SuperAdminIFoodGlobalConfig = () => {
             {!allowEdit && isConfigSet && (
               <Button 
                 onClick={() => {
-                  console.log('🔓 Habilitando edição de credenciais...');
-                  setAllowEdit(true);
+                  console.log('🔓 Habilitando edição de credenciais...')
+                  setAllowEdit(true)
                   setConfig(prev => ({
                     ...prev,
                     client_id: '',
                     client_secret: ''
-                  }));
+                  }))
                 }} 
                 variant="secondary"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-900"
@@ -387,13 +386,13 @@ const SuperAdminIFoodGlobalConfig = () => {
                 </Button>
                 <Button 
                   onClick={() => {
-                    console.log('❌ Cancelando edição...');
-                    setAllowEdit(false);
+                    console.log('❌ Cancelando edição...')
+                    setAllowEdit(false)
                     setConfig(prev => ({
                       ...prev,
                       client_id: '',
                       client_secret: ''
-                    }));
+                    }))
                   }} 
                   variant="outline"
                   disabled={saving}
@@ -444,7 +443,7 @@ const SuperAdminIFoodGlobalConfig = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default SuperAdminIFoodGlobalConfig;

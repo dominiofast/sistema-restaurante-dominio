@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Upload, Image, Palette, Save, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface BrandingManagerProps {
@@ -39,10 +39,10 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
   companyId, 
   onBrandingUpdate 
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [logoFile, setLogoFile] = useState<MediaFile | null>(null);
-  const [bannerFile, setBannerFile] = useState<MediaFile | null>(null);
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [logoFile, setLogoFile] = useState<MediaFile | null>(null)
+  const [bannerFile, setBannerFile] = useState<MediaFile | null>(null)
   
   const [config, setConfig] = useState<BrandingConfig>({
     company_id: companyId,
@@ -55,138 +55,104 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
     background_color: '#FFFFFF',
     header_style: 'modern',
     is_active: true
-  });
+  })
 
   // Carregar configuração existente
   useEffect(() => {
-    loadBrandingConfig();
-  }, [companyId]);
+    loadBrandingConfig()
+  }, [companyId])
 
   const loadBrandingConfig = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
-      const { data: brandingData, error: brandingError } = await supabase
-        .from('cardapio_branding')
-        .select(`
-          *,
-          logo:media_files!cardapio_branding_logo_file_id_fkey(*),
-          banner:media_files!cardapio_branding_banner_file_id_fkey(*)
-        `)
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .maybeSingle();
-
-      if (brandingError && brandingError.code !== 'PGRST116') {
-        throw brandingError;
+      const brandingData = null as any; const brandingError = null as any;
       }
 
-      if (brandingData) {
-        setConfig(brandingData);
+       catch (error) { console.error('Error:', error) }if (brandingData) {
+        setConfig(brandingData)
         if (brandingData.logo) {
-          setLogoFile(brandingData.logo);
+          setLogoFile(brandingData.logo)
         }
         if (brandingData.banner) {
-          setBannerFile(brandingData.banner);
+          setBannerFile(brandingData.banner)
         }
       }
     } catch (error: any) {
-      console.error('Erro ao carregar branding:', error);
-      toast.error('Erro ao carregar configurações de marca');
+      console.error('Erro ao carregar branding:', error)
+      toast.error('Erro ao carregar configurações de marca')
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const uploadFile = async (file: File, fileType: 'logo' | 'banner'): Promise<MediaFile | null> => {
     try {
-      // Upload do arquivo para o Supabase Storage
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${companyId}/${fileType}-${Date.now()}.${fileExt}`;
+      // Upload do arquivo para o Supabase Storage;
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${companyId} catch (error) { console.error('Error:', error) }/${fileType}-${Date.now()}.${fileExt}`;
       
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('media')
-        .upload(fileName, file);
+      const uploadData = null as any; const uploadError = null as any;
 
       if (uploadError) throw uploadError;
 
       // Obter URL pública
-      const { data: { publicUrl } } = supabase.storage
-        .from('media')
-        .getPublicUrl(fileName);
+      const { data: { publicUrl } } = 
+        
+        .getPublicUrl(fileName)
 
       // Salvar referência no banco
-      const { data: mediaData, error: mediaError } = await supabase
-        .from('media_files')
-        .insert({
-          company_id: companyId,
-          file_name: file.name,
-          file_type: fileType,
-          file_url: publicUrl,
-          file_size: file.size,
-          mime_type: file.type,
-          alt_text: `${fileType} da empresa`,
-          is_active: true
-        })
-        .select()
-        .single();
-
-      if (mediaError) throw mediaError;
+      const mediaData = null as any; const mediaError = null as any;
 
       return mediaData;
     } catch (error: any) {
-      console.error('Erro ao fazer upload:', error);
-      toast.error(`Erro ao fazer upload do ${fileType}`);
+      console.error('Erro ao fazer upload:', error)
+      toast.error(`Erro ao fazer upload do ${fileType}`)
       return null;
-    }
+
   };
 
   const handleFileUpload = async (file: File, type: 'logo' | 'banner') => {
-    const mediaFile = await uploadFile(file, type);
+    const mediaFile = await uploadFile(file, type)
     if (mediaFile) {
       if (type === 'logo') {
-        setLogoFile(mediaFile);
-        setConfig(prev => ({ ...prev, logo_file_id: mediaFile.id }));
+        setLogoFile(mediaFile)
+        setConfig(prev => ({ ...prev, logo_file_id: mediaFile.id }))
       } else {
-        setBannerFile(mediaFile);
-        setConfig(prev => ({ ...prev, banner_file_id: mediaFile.id }));
+        setBannerFile(mediaFile)
+        setConfig(prev => ({ ...prev, banner_file_id: mediaFile.id }))
       }
-      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} carregado com sucesso!`);
-    }
+      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} carregado com sucesso!`)
+
   };
 
   const saveBrandingConfig = async () => {
     try {
-      setSaving(true);
+      setSaving(true)
 
       if (config.id) {
         // Atualizar configuração existente
-        const { error } = await supabase
-          .from('cardapio_branding')
-          .update(config)
-          .eq('id', config.id);
+        const { error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
 
         if (error) throw error;
       } else {
         // Criar nova configuração
-        const { data, error } = await supabase
-          .from('cardapio_branding')
-          .insert(config)
-          .select()
-          .single();
-
+        const { data, error  } = null as any;
         if (error) throw error;
-        setConfig(data);
+        setConfig(data)
       }
 
-      toast.success('Configurações de marca salvas com sucesso!');
-      onBrandingUpdate?.();
+      toast.success('Configurações de marca salvas com sucesso!')
+      onBrandingUpdate?.()
     } catch (error: any) {
-      console.error('Erro ao salvar branding:', error);
-      toast.error('Erro ao salvar configurações');
+      console.error('Erro ao salvar branding:', error)
+      toast.error('Erro ao salvar configurações')
     } finally {
-      setSaving(false);
-    }
+      setSaving(false)
+
   };
 
   if (loading) {
@@ -196,8 +162,8 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
           <Loader2 className="h-8 w-8 animate-spin" />
         </CardContent>
       </Card>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-6">
@@ -252,7 +218,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, 'logo');
+                  if (file) handleFileUpload(file, 'logo')
                 }}
               />
             </div>
@@ -262,7 +228,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 checked={config.show_logo}
                 onCheckedChange={(checked) => 
                   setConfig(prev => ({ ...prev, show_logo: checked }))
-                }
+
               />
               <Label htmlFor="show-logo" className="text-sm">Exibir logo no cardápio</Label>
             </div>
@@ -310,7 +276,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, 'banner');
+                  if (file) handleFileUpload(file, 'banner')
                 }}
               />
             </div>
@@ -320,7 +286,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 checked={config.show_banner}
                 onCheckedChange={(checked) => 
                   setConfig(prev => ({ ...prev, show_banner: checked }))
-                }
+
               />
               <Label htmlFor="show-banner" className="text-sm">Exibir banner no cabeçalho</Label>
             </div>
@@ -346,14 +312,14 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 value={config.primary_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, primary_color: e.target.value }))
-                }
+
                 className="w-12 h-10 p-1"
               />
               <Input
                 value={config.primary_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, primary_color: e.target.value }))
-                }
+
                 placeholder="#3B82F6"
               />
             </div>
@@ -367,14 +333,14 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 value={config.accent_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, accent_color: e.target.value }))
-                }
+
                 className="w-12 h-10 p-1"
               />
               <Input
                 value={config.accent_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, accent_color: e.target.value }))
-                }
+
                 placeholder="#F59E0B"
               />
             </div>
@@ -388,14 +354,14 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 value={config.background_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, background_color: e.target.value }))
-                }
+
                 className="w-12 h-10 p-1"
               />
               <Input
                 value={config.background_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, background_color: e.target.value }))
-                }
+
                 placeholder="#FFFFFF"
               />
             </div>
@@ -409,14 +375,14 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 value={config.text_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, text_color: e.target.value }))
-                }
+
                 className="w-12 h-10 p-1"
               />
               <Input
                 value={config.text_color}
                 onChange={(e) => 
                   setConfig(prev => ({ ...prev, text_color: e.target.value }))
-                }
+
                 placeholder="#1F2937"
               />
             </div>
@@ -443,5 +409,5 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
         )}
       </Button>
     </div>
-  );
+  )
 };

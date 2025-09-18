@@ -13,7 +13,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   onError?: () => void;
   fallback?: React.ReactNode;
   aspectRatio?: string;
-}
+
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
@@ -31,10 +31,10 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   style,
   ...props
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [isInView, setIsInView] = useState(priority);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [isInView, setIsInView] = useState(priority)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   // Implementar Intersection Observer para lazy loading
   useEffect(() => {
@@ -44,32 +44,32 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsInView(true);
-            observer.disconnect();
+            setIsInView(true)
+            observer.disconnect()
           }
-        });
+        })
       },
       {
         rootMargin: '50px', // Começar a carregar 50px antes de entrar na viewport
       }
-    );
+    )
 
-    observer.observe(imgRef.current);
+    observer.observe(imgRef.current)
 
     return () => {
-      observer.disconnect();
+      observer.disconnect()
     };
-  }, [priority]);
+  }, [priority])
 
   const handleLoad = () => {
-    setIsLoading(false);
-    onLoad?.();
+    setIsLoading(false)
+    onLoad?.()
   };
 
   const handleError = () => {
-    setIsLoading(false);
-    setHasError(true);
-    onError?.();
+    setIsLoading(false)
+    setHasError(true)
+    onError?.()
   };
 
   // Otimizar URL da imagem para diferentes CDNs
@@ -77,37 +77,37 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     if (!originalSrc) return originalSrc;
     
     try {
-      const url = new URL(originalSrc);
+      const url = new URL(originalSrc)
       
       // Cloudinary optimizations
       if (url.hostname.includes('cloudinary.com')) {
         // Adicionar transformações automáticas
-        const pathParts = url.pathname.split('/');
-        const uploadIndex = pathParts.indexOf('upload');
+        const pathParts = url.pathname.split('/')
+        const uploadIndex = pathParts.indexOf('upload')
         if (uploadIndex !== -1) {
           // Adicionar parâmetros de otimização após 'upload'
           const optimizations = 'f_auto,q_auto:good';
           if (width) {
-            const widthParam = `w_${width}`;
-            pathParts.splice(uploadIndex + 1, 0, `${optimizations},${widthParam}`);
+            const widthParam = `w_${width} catch (error) { console.error('Error:', error) }`;
+            pathParts.splice(uploadIndex + 1, 0, `${optimizations},${widthParam}`)
           } else {
-            pathParts.splice(uploadIndex + 1, 0, optimizations);
+            pathParts.splice(uploadIndex + 1, 0, optimizations)
           }
-          url.pathname = pathParts.join('/');
+          url.pathname = pathParts.join('/')
         }
       }
       
-      return url.toString();
+      return url.toString()
     } catch {
       return originalSrc;
-    }
+
   };
 
   if (hasError && fallback) {
     return <>{fallback}</>;
-  }
 
-  const optimizedSrc = getOptimizedSrc(src);
+
+  const optimizedSrc = getOptimizedSrc(src)
   const shouldShowPlaceholder = placeholder === 'blur' && blurDataURL && isLoading;
 
   return (
@@ -159,17 +159,17 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         <div className="absolute inset-0 bg-gray-200 animate-pulse" />
       )}
     </div>
-  );
+  )
 };
 
 // Hook para preload de imagens críticas
 export const useImagePreload = (urls: string[]) => {
   useEffect(() => {
     urls.forEach((url) => {
-      const img = new Image();
+      const img = new Image()
       img.src = url;
-    });
-  }, [urls]);
+    })
+  }, [urls])
 };
 
 // Componente para Picture com múltiplas fontes (WebP, AVIF)
@@ -183,20 +183,20 @@ export const OptimizedPicture: React.FC<{
 }> = ({ src, alt, width, height, className, priority = false }) => {
   const getImageFormat = (originalSrc: string, format: string): string => {
     try {
-      const url = new URL(originalSrc);
+      const url = new URL(originalSrc)
       
       if (url.hostname.includes('cloudinary.com')) {
-        const pathParts = url.pathname.split('.');
+        const pathParts = url.pathname.split('.')
         if (pathParts.length > 1) {
           pathParts[pathParts.length - 1] = format;
-          url.pathname = pathParts.join('.');
+          url.pathname = pathParts.join('.')
         }
-      }
+       catch (error) { console.error('Error:', error) }}
       
-      return url.toString();
+      return url.toString()
     } catch {
       return originalSrc;
-    }
+
   };
 
   return (
@@ -223,7 +223,7 @@ export const OptimizedPicture: React.FC<{
         priority={priority}
       />
     </picture>
-  );
+  )
 };
 
 export default OptimizedImage;

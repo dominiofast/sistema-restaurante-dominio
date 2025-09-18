@@ -13,7 +13,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         color: 'text-green-600',
         bgColor: 'bg-green-100',
         text: 'Pedido Confirmado',
-        description: 'Seu pedido foi aceito e está sendo preparado'
+        description: 'Seu pedido foi aceito e está sendo preparado';
       };
     
     case 'analise':
@@ -43,7 +43,7 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
     case 'pronto_entrega':
     case 'ready':
       const descricaoPronto = tipoPedido === 'delivery' 
-        ? 'Pedido pronto, logo sairá para entrega'
+        ? 'Pedido pronto, logo sairá para entrega';
         : 'Pedido pronto, pode vir retirar';
       
       return {
@@ -94,15 +94,15 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
         text: status || 'Status não identificado',
         description: 'Verificando status do pedido'
       };
-  }
+
 };
 
 export const AcompanharPedidoRefatorado: React.FC = () => {
-  const { numero_pedido } = useParams<{ numero_pedido: string }>();
-  const navigate = useNavigate();
+  const { numero_pedido } = useParams<{ numero_pedido: string }>()
+  const navigate = useNavigate()
   
   // Usar o hook customizado para isolar toda a lógica
-  const { pedido, itens, adicionais, loading, error, companySlug } = useOrderTracker(numero_pedido || '');
+  const { pedido, itens, adicionais, loading, error, companySlug } = useOrderTracker(numero_pedido || '')
 
   // Loading state
   if (loading) {
@@ -114,8 +114,8 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           <p className="text-gray-600">Buscando informações do pedido</p>
         </div>
       </div>
-    );
-  }
+    )
+
 
   // Error state
   if (error) {
@@ -131,8 +131,8 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           </Button>
         </div>
       </div>
-    );
-  }
+    )
+
 
   // No pedido found
   if (!pedido) {
@@ -148,10 +148,10 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           </Button>
         </div>
       </div>
-    );
-  }
+    )
 
-  const statusInfo = getStatusInfo(pedido.status, pedido.tipo);
+
+  const statusInfo = getStatusInfo(pedido.status, pedido.tipo)
   const StatusIcon = statusInfo.icon;
 
   return (
@@ -281,5 +281,5 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };

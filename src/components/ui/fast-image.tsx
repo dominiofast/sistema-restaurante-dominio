@@ -26,14 +26,14 @@ export const FastImage: React.FC<FastImageProps> = ({
   onLoad,
   onError,
 }) => {
-  const [imageSrc, setImageSrc] = useState<string>(placeholder);
-  const [isLoading, setIsLoading] = useState(true);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [imageSrc, setImageSrc] = useState<string>(placeholder)
+  const [isLoading, setIsLoading] = useState(true)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     if (!src || priority) {
       // Se priority, carrega imediatamente
-      setImageSrc(src || placeholder);
+      setImageSrc(src || placeholder)
       return;
     }
 
@@ -42,50 +42,50 @@ export const FastImage: React.FC<FastImageProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Otimizar URL se for do Supabase
+            // Otimizar URL se for do Supabase;
             let optimizedSrc = src;
             
-            if (src.includes('supabase.co')) {
-              const url = new URL(src);
+            if (src.includes('
+              const url = new URL(src)
               // Adicionar parâmetros de otimização
-              url.searchParams.set('width', (width || 400).toString());
-              url.searchParams.set('quality', '80');
-              url.searchParams.set('format', 'webp');
-              optimizedSrc = url.toString();
-            }
+              url.searchParams.set('width', (width || 400).toString())
+              url.searchParams.set('quality', '80')
+              url.searchParams.set('format', 'webp')
+              optimizedSrc = url.toString()
+
             
             // Pré-carregar a imagem
-            const img = new Image();
+            const img = new Image()
             img.onload = () => {
-              setImageSrc(optimizedSrc);
-              setIsLoading(false);
-              onLoad?.();
+              setImageSrc(optimizedSrc)
+              setIsLoading(false)
+              onLoad?.()
             };
             img.onerror = () => {
-              setImageSrc(placeholder);
-              setIsLoading(false);
-              onError?.();
+              setImageSrc(placeholder)
+              setIsLoading(false)
+              onError?.()
             };
             img.src = optimizedSrc;
             
-            observer.disconnect();
-          }
-        });
+            observer.disconnect()
+
+        })
       },
       {
         rootMargin: '50px', // Começa a carregar 50px antes
         threshold: 0.01,
-      }
-    );
+
+    )
 
     if (imgRef.current) {
-      observer.observe(imgRef.current);
+      observer.observe(imgRef.current)
     }
 
     return () => {
-      observer.disconnect();
+      observer.disconnect()
     };
-  }, [src, priority, width, placeholder, onLoad, onError]);
+  }, [src, priority, width, placeholder, onLoad, onError])
 
   return (
     <img
@@ -101,7 +101,7 @@ export const FastImage: React.FC<FastImageProps> = ({
         aspectRatio: width && height ? `${width}/${height}` : undefined,
       }}
     />
-  );
+  )
 };
 
 export default FastImage;

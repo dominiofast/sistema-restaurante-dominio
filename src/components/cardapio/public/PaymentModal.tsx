@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CreditCard, DollarSign, Smartphone, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { AsaasPixModal } from './AsaasPixModal';
 import { CashbackInput } from '@/components/cashback/CashbackInput';
 
@@ -28,24 +28,24 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   onCashbackUpdate,
   taxaEntrega = 0
 }) => {
-  const [selectedPayment, setSelectedPayment] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [needsChange, setNeedsChange] = useState(false);
-  const [changeAmount, setChangeAmount] = useState('');
-  const [selectedCardBrand, setSelectedCardBrand] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [totalComCashback, setTotalComCashback] = useState(totalCarrinho);
-  const [cashbackAplicado, setCashbackAplicado] = useState(0);
-  const [showPixModal, setShowPixModal] = useState(false);
-  const [observacoes, setObservacoes] = useState('');
+  const [selectedPayment, setSelectedPayment] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [needsChange, setNeedsChange] = useState(false)
+  const [changeAmount, setChangeAmount] = useState('')
+  const [selectedCardBrand, setSelectedCardBrand] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [totalComCashback, setTotalComCashback] = useState(totalCarrinho)
+  const [cashbackAplicado, setCashbackAplicado] = useState(0)
+  const [showPixModal, setShowPixModal] = useState(false)
+  const [observacoes, setObservacoes] = useState('')
 
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+  const formatCurrency = (value: number) =>;
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0)
 
   // Gerar cores acessíveis baseadas na cor principal
   const accessibleColors = {
     backgroundColor: primaryColor,
-    textColor: '#ffffff'
+    textColor: '#ffffff';
   };
 
   // Buscar configurações de pagamento da empresa
@@ -54,36 +54,26 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!companyId) return null;
       
-      const { data, error } = await supabase
-        .from('payment_delivery_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
-      
+      const { data, error  } = null as any;
       if (error) {
-        console.error('❌ Erro ao buscar configuração de pagamento:', error);
+        console.error('❌ Erro ao buscar configuração de pagamento:', error)
         return null;
       }
       
       return data;
     },
     enabled: !!companyId
-  });
+  })
 
   // Buscar configuração do Asaas
   const { data: asaasConfig, isLoading: asaasLoading } = useQuery({
     queryKey: ['asaas-config', companyId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('asaas_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .maybeSingle();
-      
-      console.log('🔍 ASAAS DEBUG - Query result:', { data, error });
+      const { data, error  } = null as any;
+      console.log('🔍 ASAAS DEBUG - Query result:', { data, error })
       
       if (error) {
-        console.error('❌ Erro ao buscar configuração do Asaas:', error);
+        console.error('❌ Erro ao buscar configuração do Asaas:', error)
         return null;
       }
 
@@ -93,15 +83,15 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           pix_enabled: data.pix_enabled,
           has_api_key: !!data.api_key,
           api_key_length: data.api_key?.length
-        });
+        })
       } else {
-        console.log('🔍 ASAAS DEBUG - Nenhuma config encontrada');
+        console.log('🔍 ASAAS DEBUG - Nenhuma config encontrada')
       }
 
       return data;
     },
     enabled: !!companyId,
-  });
+  })
 
   // Debug logs APÓS as queries
   console.log('🔍 FINAL DEBUG - Estado atual:', {
@@ -115,7 +105,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     'has_api_key': !!asaasConfig?.api_key,
     'should_show_basic_pix': !!paymentConfig?.accept_pix,
     'should_show_asaas_pix': !!(asaasConfig?.is_active && asaasConfig?.pix_enabled && asaasConfig?.api_key)
-  });
+  })
 
   // Buscar bandeiras de cartão se necessário
   const { data: cardBrands } = useQuery({
@@ -123,26 +113,22 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     queryFn: async () => {
       if (!paymentConfig?.id || !paymentConfig?.ask_card_brand) return [];
       
-      const { data, error } = await supabase
-        .from('payment_delivery_card_brands')
-        .select('*')
-        .eq('config_id', paymentConfig.id);
-      
+      const { data, error  } = null as any;
       if (error) {
-        console.error('❌ Erro ao buscar bandeiras de cartão:', error);
+        console.error('❌ Erro ao buscar bandeiras de cartão:', error)
         return [];
       }
       
       return data || [];
     },
     enabled: !!paymentConfig?.id && !!paymentConfig?.ask_card_brand
-  });
+  })
 
   const handlePaymentChange = (paymentType: string) => {
-    setSelectedPayment(paymentType);
+    setSelectedPayment(paymentType)
     if (paymentType === 'dinheiro' || paymentType === 'cartao') {
-      setShowModal(true);
-    }
+      setShowModal(true)
+
   };
 
   const handleFinalizarPedido = async () => {
@@ -150,11 +136,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     
     // Se for PIX Online via Asaas, abrir modal específico
     if (selectedPayment === 'pix_online_asaas') {
-      setShowPixModal(true);
+      setShowPixModal(true)
       return;
-    }
+
     
-    setIsProcessing(true);
+    setIsProcessing(true)
     
     try {
       let paymentData;
@@ -167,7 +153,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           cardBrand: '',
           cashbackApplied: cashbackAplicado,
           totalWithCashback: totalComCashback
-        };
+        } catch (error) { console.error('Error:', error) };
       } else if (selectedPayment === 'dinheiro') {
         paymentData = {
           method: 'dinheiro',
@@ -189,44 +175,44 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       }
       
       // Simular um pequeno delay para mostrar o efeito
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000))
       
-      onConfirm(JSON.stringify(paymentData));
+      onConfirm(JSON.stringify(paymentData))
     } catch (error) {
-      console.error('Erro ao processar pagamento:', error);
-      setIsProcessing(false);
-    }
+      console.error('Erro ao processar pagamento:', error)
+      setIsProcessing(false)
+
   };
 
   const handleModalConfirm = () => {
     if (selectedPayment === 'dinheiro') {
       if (needsChange && !changeAmount) {
-        alert('Por favor, informe o valor para o troco');
+        alert('Por favor, informe o valor para o troco')
         return;
       }
       // Apenas atualizar o estado local e fechar o modal - não finalizar o pedido
-      setShowModal(false);
-      resetModalState();
+      setShowModal(false)
+      resetModalState()
     } else if (selectedPayment === 'cartao') {
       if (paymentConfig?.ask_card_brand && !selectedCardBrand) {
-        alert('Por favor, selecione a bandeira do cartão');
+        alert('Por favor, selecione a bandeira do cartão')
         return;
       }
       // Apenas atualizar o estado local e fechar o modal - não finalizar o pedido
-      setShowModal(false);
-      resetModalState();
-    }
+      setShowModal(false)
+      resetModalState()
+
   };
 
   const resetModalState = () => {
-    setNeedsChange(false);
-    setChangeAmount('');
-    setSelectedCardBrand('');
+    setNeedsChange(false)
+    setChangeAmount('')
+    setSelectedCardBrand('')
   };
 
   const closeModal = () => {
-    setShowModal(false);
-    resetModalState();
+    setShowModal(false)
+    resetModalState()
   };
 
   // Sem ícones coloridos para bandeiras, mantendo visual neutro e profissional
@@ -239,7 +225,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           <p className="text-gray-600">Carregando formas de pagamento...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -505,8 +491,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               customerPhone={customerPhone}
               totalPedido={totalCarrinho}
               onCashbackApplied={(valor) => {
-                setCashbackAplicado(valor);
-                setTotalComCashback(totalCarrinho - valor);
+                setCashbackAplicado(valor)
+                setTotalComCashback(totalCarrinho - valor)
               }}
               onSaldoUpdate={onCashbackUpdate}
             />
@@ -755,10 +741,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       <AsaasPixModal
         isOpen={showPixModal}
         onClose={() => {
-          setShowPixModal(false);
+          setShowPixModal(false)
         }}
         onPaymentSuccess={() => {
-          setShowPixModal(false);
+          setShowPixModal(false)
           // Dados de pagamento PIX aprovado via Asaas
           const paymentData = {
             method: 'pix_online_asaas',
@@ -767,9 +753,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             cardBrand: '',
             cashbackApplied: cashbackAplicado,
             totalWithCashback: totalComCashback,
-            pixApproved: true
+            pixApproved: true;
           };
-          onConfirm(JSON.stringify(paymentData));
+          onConfirm(JSON.stringify(paymentData))
         }}
         companyId={companyId}
         amount={totalComCashback}
@@ -780,5 +766,5 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         primaryColor={primaryColor}
       />
     </div>
-  );
+  )
 };

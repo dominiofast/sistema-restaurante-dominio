@@ -9,38 +9,38 @@ import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function FacebookPixelConfig() {
-  const { config, isLoading, saveConfig } = usePixelConfig();
-  const [pixelId, setPixelId] = useState('');
-  const [accessToken, setAccessToken] = useState('');
-  const [isActive, setIsActive] = useState(false);
-  const [testMode, setTestMode] = useState(false);
-  const [testEventCode, setTestEventCode] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
+  const { config, isLoading, saveConfig } = usePixelConfig()
+  const [pixelId, setPixelId] = useState('')
+  const [accessToken, setAccessToken] = useState('')
+  const [isActive, setIsActive] = useState(false)
+  const [testMode, setTestMode] = useState(false)
+  const [testEventCode, setTestEventCode] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
     if (config) {
-      setPixelId(config.pixel_id || '');
-      setAccessToken(config.access_token || ''); // Idealmente, isso viria descriptografado
-      setIsActive(config.is_active);
-      setTestMode(config.test_mode);
-      setTestEventCode(config.test_event_code || '');
+      setPixelId(config.pixel_id || '')
+      setAccessToken(config.access_token || '') // Idealmente, isso viria descriptografado
+      setIsActive(config.is_active)
+      setTestMode(config.test_mode)
+      setTestEventCode(config.test_event_code || '')
     }
-  }, [config]);
+  }, [config])
   
   const handleSave = async () => {
-    setIsSaving(true);
+    setIsSaving(true)
     await saveConfig({
       pixel_id: pixelId,
       access_token: accessToken,
       is_active: isActive,
       test_mode: testMode,
       test_event_code: testEventCode,
-    });
-    setIsSaving(false);
+    })
+    setIsSaving(false)
   };
 
   const status = config?.is_active 
-    ? { text: "Ativo", color: "text-green-500", Icon: CheckCircle }
+    ? { text: "Ativo", color: "text-green-500", Icon: CheckCircle };
     : { text: "Inativo", color: "text-gray-500", Icon: AlertCircle };
 
   return (
@@ -73,7 +73,7 @@ export function FacebookPixelConfig() {
               <Skeleton className="h-10 w-full" />
             </div>
           ) : (
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault() handleSave() }}>
               <div className="space-y-2">
                 <Label htmlFor="pixel-id">Pixel ID</Label>
                 <Input 
@@ -140,5 +140,4 @@ export function FacebookPixelConfig() {
         </CardContent>
       </Card>
     </div>
-  );
-} 
+  )

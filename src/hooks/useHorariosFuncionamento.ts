@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface HorarioDia {
@@ -19,10 +19,10 @@ export interface HorarioFuncionamento {
 }
 
 export const useHorariosFuncionamento = () => {
-  const { user } = useAuth();
-  const [horarios, setHorarios] = useState<HorarioFuncionamento | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth()
+  const [horarios, setHorarios] = useState<HorarioFuncionamento | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const diasSemana = [
     { id: 0, nome: 'Domingo', abrev: 'Dom' },
@@ -31,106 +31,87 @@ export const useHorariosFuncionamento = () => {
     { id: 3, nome: 'Quarta-feira', abrev: 'Qua' },
     { id: 4, nome: 'Quinta-feira', abrev: 'Qui' },
     { id: 5, nome: 'Sexta-feira', abrev: 'Sex' },
-    { id: 6, nome: 'Sábado', abrev: 'Sáb' }
+    { id: 6, nome: 'Sábado', abrev: 'Sáb' };
   ];
 
   const fusoHorarios = [
     { value: 'America/Sao_Paulo', label: 'Brasília (UTC-3)' },
     { value: 'America/Manaus', label: 'Manaus (UTC-4)' },
     { value: 'America/Rio_Branco', label: 'Rio Branco (UTC-5)' },
-    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' }
+    { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' };
   ];
 
   const fetchHorarios = async () => {
     if (!user?.user_metadata?.company_id) return;
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Buscar configuração de horário
-      const { data: horarioData, error: horarioError } = await supabase
-        .from('horario_funcionamento')
-        .select('*')
-        .eq('company_id', user.user_metadata.company_id)
-        .single();
-
-      if (horarioError && horarioError.code !== 'PGRST116') {
-        throw horarioError;
+      const horarioData = null as any; const horarioError = null as any;
       }
 
-      if (!horarioData) {
+       catch (error) { console.error('Error:', error) }if (!horarioData) {
         // Criar configuração padrão se não existir
         const novoHorario = {
           company_id: user.user_metadata.company_id,
           tipo_disponibilidade: 'especificos' as const,
-          fuso_horario: 'America/Sao_Paulo'
+          fuso_horario: 'America/Sao_Paulo';
         };
 
-        const { data: createdHorario, error: createError } = await supabase
-          .from('horario_funcionamento')
-          .insert(novoHorario)
-          .select()
-          .single();
-
-        if (createError) throw createError;
+        const createdHorario = null as any; const createError = null as any;
 
         setHorarios({
           ...createdHorario,
           tipo_disponibilidade: createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados',
           horarios_dias: []
-        });
+        })
         return;
       }
 
       // Buscar horários dos dias
-      const { data: horariosData, error: horariosError } = await supabase
-        .from('horarios_dias')
-        .select('*')
-        .eq('horario_funcionamento_id', horarioData.id)
-        .order('dia_semana');
-
-      if (horariosError) throw horariosError;
+      const horariosData = null as any; const horariosError = null as any;
 
       setHorarios({
         ...horarioData,
         tipo_disponibilidade: horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados',
         horarios_dias: horariosData || []
-      });
+      })
 
     } catch (err) {
-      console.error('Erro ao buscar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('Erro ao buscar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const salvarHorarios = async (dadosHorarios: Partial<HorarioFuncionamento>) => {
     if (!user?.user_metadata?.company_id || !horarios) return;
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Atualizar configuração principal
-      const { error: updateError } = await supabase
-        .from('horario_funcionamento')
-        .update({
+      const { error: updateError }  catch (error) { console.error('Error:', error) }= 
+        
+        
           tipo_disponibilidade: dadosHorarios.tipo_disponibilidade,
           fuso_horario: dadosHorarios.fuso_horario
         })
-        .eq('id', horarios.id);
+        
 
       if (updateError) throw updateError;
 
       // Se há horários específicos, atualizar/inserir
       if (dadosHorarios.horarios_dias && dadosHorarios.horarios_dias.length > 0) {
         // Remover horários existentes
-        await supabase
-          .from('horarios_dias')
-          .delete()
-          .eq('horario_funcionamento_id', horarios.id);
+        
+          
+          
+          
 
         // Inserir novos horários
         const horariosParaInserir = dadosHorarios.horarios_dias.map(h => ({
@@ -138,32 +119,29 @@ export const useHorariosFuncionamento = () => {
           dia_semana: h.dia_semana,
           horario_inicio: h.horario_inicio,
           horario_fim: h.horario_fim,
-          ativo: h.ativo
-        }));
+          ativo: h.ativo;
+        }))
 
-        const { error: insertError } = await supabase
-          .from('horarios_dias')
-          .insert(horariosParaInserir);
-
+        const { error: insertError  } = null as any;
         if (insertError) throw insertError;
       }
 
       // Recarregar dados
-      await fetchHorarios();
+      await fetchHorarios()
       
       return true;
     } catch (err) {
-      console.error('Erro ao salvar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao salvar');
+      console.error('Erro ao salvar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro ao salvar')
       return false;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   useEffect(() => {
-    fetchHorarios();
-  }, [user?.user_metadata?.company_id]);
+    fetchHorarios()
+  }, [user?.user_metadata?.company_id])
 
   return {
     horarios,

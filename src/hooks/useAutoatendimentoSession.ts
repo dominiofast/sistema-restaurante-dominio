@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import type { Json } from '@/integrations/supabase/types';
 
 interface AutoatendimentoSession {
@@ -30,178 +30,178 @@ interface AutoatendimentoConfig {
 }
 
 export const useAutoatendimentoSession = (companyId?: string) => {
-  const [session, setSession] = useState<AutoatendimentoSession | null>(null);
-  const [config, setConfig] = useState<AutoatendimentoConfig | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [session, setSession] = useState<AutoatendimentoSession | null>(null)
+  const [config, setConfig] = useState<AutoatendimentoConfig | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [timeLeft, setTimeLeft] = useState(0)
 
   // Carregar configuração da empresa
   const loadConfig = useCallback(async () => {
     if (!companyId) {
-      console.log('⚠️ useAutoatendimentoSession - CompanyId não fornecido');
+      console.log('⚠️ useAutoatendimentoSession - CompanyId não fornecido')
       return;
     }
 
-    console.log('🔧 useAutoatendimentoSession - Carregando config para empresa:', companyId);
+    console.log('🔧 useAutoatendimentoSession - Carregando config para empresa:', companyId)
 
     try {
-      const { data, error } = await supabase
-        .from('autoatendimento_config')
-        .select('*')
-        .eq('company_id', companyId)
-        .eq('is_enabled', true)
-        .maybeSingle();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
+        
 
       if (error) {
-        console.error('❌ useAutoatendimentoSession - Erro ao carregar config:', error);
+        console.error('❌ useAutoatendimentoSession - Erro ao carregar config:', error)
         return;
       }
 
-      console.log('✅ useAutoatendimentoSession - Config carregada:', data);
-      setConfig(data);
+      console.log('✅ useAutoatendimentoSession - Config carregada:', data)
+      setConfig(data)
     } catch (error) {
-      console.error('💥 useAutoatendimentoSession - Erro ao carregar configuração:', error);
+      console.error('💥 useAutoatendimentoSession - Erro ao carregar configuração:', error)
     }
-  }, [companyId]);
+  }, [companyId])
 
   // Gerar token único para sessão
   const generateSessionToken = () => {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
+    return Math.random().toString(36).substring(2, 15) + ;
+           Math.random().toString(36).substring(2, 15)
   };
 
   // Criar nova sessão
   const createSession = useCallback(async (): Promise<string | null> => {
-    console.log('📝 useAutoatendimentoSession - createSession chamado');
-    console.log('🏢 useAutoatendimentoSession - companyId:', companyId);
-    console.log('⚙️ useAutoatendimentoSession - config:', config);
+    console.log('📝 useAutoatendimentoSession - createSession chamado')
+    console.log('🏢 useAutoatendimentoSession - companyId:', companyId)
+    console.log('⚙️ useAutoatendimentoSession - config:', config)
     
     if (!companyId || !config) {
-      console.log('❌ useAutoatendimentoSession - CompanyId ou config não disponível');
+      console.log('❌ useAutoatendimentoSession - CompanyId ou config não disponível')
       return null;
     }
 
     try {
-      const sessionToken = generateSessionToken();
+      const sessionToken = generateSessionToken()
       const timeoutMinutes = config.session_timeout_minutes || 10;
       
-      console.log('🔑 useAutoatendimentoSession - Token gerado:', sessionToken);
-      console.log('⏱️ useAutoatendimentoSession - Timeout (min):', timeoutMinutes);
+      console.log('🔑 useAutoatendimentoSession - Token gerado:', sessionToken)
+      console.log('⏱️ useAutoatendimentoSession - Timeout (min):', timeoutMinutes)
       
-      const { data, error } = await supabase
-        .from('autoatendimento_sessions')
-        .insert({
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           company_id: companyId,
           session_token: sessionToken,
           status: 'active',
           timeout_at: new Date(Date.now() + timeoutMinutes * 60 * 1000).toISOString()
         })
-        .select()
-        .single();
+        
+        
 
       if (error) {
-        console.error('❌ useAutoatendimentoSession - Erro ao criar sessão:', error);
+        console.error('❌ useAutoatendimentoSession - Erro ao criar sessão:', error)
         return null;
       }
 
-      console.log('✅ useAutoatendimentoSession - Sessão criada com sucesso:', data);
-      setSession(data as AutoatendimentoSession);
-      startTimeoutTimer(data.timeout_at);
+      console.log('✅ useAutoatendimentoSession - Sessão criada com sucesso:', data)
+      setSession(data as AutoatendimentoSession)
+      startTimeoutTimer(data.timeout_at)
       return data.id;
     } catch (error) {
-      console.error('💥 useAutoatendimentoSession - Erro ao criar sessão:', error);
+      console.error('💥 useAutoatendimentoSession - Erro ao criar sessão:', error)
       return null;
     }
-  }, [companyId, config]);
+  }, [companyId, config])
 
   // Atualizar sessão
   const updateSession = useCallback(async (updates: Partial<AutoatendimentoSession>) => {
     if (!session) return false;
 
     try {
-      const { data, error } = await supabase
-        .from('autoatendimento_sessions')
-        .update(updates)
-        .eq('id', session.id)
-        .select()
-        .single();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
+        
 
       if (error) {
-        console.error('Erro ao atualizar sessão:', error);
+        console.error('Erro ao atualizar sessão:', error)
         return false;
       }
 
-      setSession(data as AutoatendimentoSession);
+      setSession(data as AutoatendimentoSession)
       return true;
     } catch (error) {
-      console.error('Erro ao atualizar sessão:', error);
+      console.error('Erro ao atualizar sessão:', error)
       return false;
     }
-  }, [session]);
+  }, [session])
 
   // Finalizar sessão
   const completeSession = useCallback(async (orderData: any) => {
     if (!session) return false;
 
     try {
-      const { error } = await supabase
-        .from('autoatendimento_sessions')
-        .update({
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           status: 'completed',
           completed_at: new Date().toISOString(),
           cart_data: orderData
         })
-        .eq('id', session.id);
+        
 
       if (error) {
-        console.error('Erro ao finalizar sessão:', error);
+        console.error('Erro ao finalizar sessão:', error)
         return false;
       }
 
-      setSession(null);
-      setTimeLeft(0);
+      setSession(null)
+      setTimeLeft(0)
       return true;
     } catch (error) {
-      console.error('Erro ao finalizar sessão:', error);
+      console.error('Erro ao finalizar sessão:', error)
       return false;
     }
-  }, [session]);
+  }, [session])
 
   // Timer de timeout
   const startTimeoutTimer = useCallback((timeoutAt: string) => {
     const updateTimer = () => {
-      const now = Date.now();
-      const timeout = new Date(timeoutAt).getTime();
-      const diff = Math.max(0, Math.floor((timeout - now) / 1000));
+      const now = Date.now()
+      const timeout = new Date(timeoutAt).getTime()
+      const diff = Math.max(0, Math.floor((timeout - now) / 1000))
       
-      setTimeLeft(diff);
+      setTimeLeft(diff)
       
       if (diff === 0) {
-        setSession(null);
+        setSession(null)
       }
     };
 
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
+    updateTimer()
+    const interval = setInterval(updateTimer, 1000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   // Carregar configuração na inicialização
   useEffect(() => {
     if (companyId) {
-      loadConfig().finally(() => setIsLoading(false));
+      loadConfig().finally(() => setIsLoading(false))
     } else {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [companyId, loadConfig]);
+  }, [companyId, loadConfig])
 
   // Iniciar timer se já tem sessão ativa
   useEffect(() => {
     if (session?.timeout_at) {
-      return startTimeoutTimer(session.timeout_at);
+      return startTimeoutTimer(session.timeout_at)
     }
-  }, [session?.timeout_at, startTimeoutTimer]);
+  }, [session?.timeout_at, startTimeoutTimer])
 
   // Limpeza automática de sessões expiradas
   useEffect(() => {
@@ -209,17 +209,17 @@ export const useAutoatendimentoSession = (companyId?: string) => {
 
     const cleanupExpiredSessions = async () => {
       try {
-        await supabase.rpc('cleanup_expired_autoatendimento_sessions');
+        await Promise.resolve()
       } catch (error) {
-        console.error('Erro ao limpar sessões expiradas:', error);
+        console.error('Erro ao limpar sessões expiradas:', error)
       }
     };
 
     // Limpar sessões expiradas a cada 5 minutos
-    const cleanupInterval = setInterval(cleanupExpiredSessions, 5 * 60 * 1000);
+    const cleanupInterval = setInterval(cleanupExpiredSessions, 5 * 60 * 1000)
     
-    return () => clearInterval(cleanupInterval);
-  }, [companyId]);
+    return () => clearInterval(cleanupInterval)
+  }, [companyId])
 
   return {
     session,
@@ -230,7 +230,7 @@ export const useAutoatendimentoSession = (companyId?: string) => {
     updateSession,
     completeSession,
     formatTimeLeft: () => {
-      const minutes = Math.floor(timeLeft / 60);
+      const minutes = Math.floor(timeLeft / 60)
       const seconds = timeLeft % 60;
       return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }

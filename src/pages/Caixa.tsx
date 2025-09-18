@@ -31,12 +31,12 @@ export default function Caixa() {
     abrirCaixa,
     fecharCaixa,
     adicionarLancamento
-  } = useCaixa();
+  } = useCaixa()
 
-  const [valorAbertura, setValorAbertura] = useState(0);
-  const [modal, setModal] = useState(false);
-  const [modalFechar, setModalFechar] = useState(false);
-  const [observacoesFechamento, setObservacoesFechamento] = useState('');
+  const [valorAbertura, setValorAbertura] = useState(0)
+  const [modal, setModal] = useState(false)
+  const [modalFechar, setModalFechar] = useState(false)
+  const [observacoesFechamento, setObservacoesFechamento] = useState('')
   const [novo, setNovo] = useState<NovoLancamento>({
     tipo: 'entrada',
     valor: 0,
@@ -44,25 +44,25 @@ export default function Caixa() {
     forma_pagamento: '',
     descricao: '',
     observacoes: ''
-  });
-  const [filtros, setFiltros] = useState({ data: '', tipo: 'todos', busca: '' });
+  })
+  const [filtros, setFiltros] = useState({ data: '', tipo: 'todos', busca: '' })
 
   const handleAbrirCaixa = async () => {
     if (valorAbertura <= 0) {
       return;
     }
     
-    const sucesso = await abrirCaixa(valorAbertura);
+    const sucesso = await abrirCaixa(valorAbertura)
     if (sucesso) {
-      setValorAbertura(0);
+      setValorAbertura(0)
     }
   };
 
   const handleFecharCaixa = async () => {
-    const sucesso = await fecharCaixa(observacoesFechamento);
+    const sucesso = await fecharCaixa(observacoesFechamento)
     if (sucesso) {
-      setModalFechar(false);
-      setObservacoesFechamento('');
+      setModalFechar(false)
+      setObservacoesFechamento('')
     }
   };
 
@@ -77,9 +77,9 @@ export default function Caixa() {
       hora_lancamento: new Date().toTimeString().split(' ')[0].slice(0, 5)
     };
 
-    const sucesso = await adicionarLancamento(lancamentoData);
+    const sucesso = await adicionarLancamento(lancamentoData)
     if (sucesso) {
-      setModal(false);
+      setModal(false)
       setNovo({
         tipo: 'entrada',
         valor: 0,
@@ -87,7 +87,7 @@ export default function Caixa() {
         forma_pagamento: '',
         descricao: '',
         observacoes: ''
-      });
+      })
     }
   };
 
@@ -98,7 +98,7 @@ export default function Caixa() {
     if (filtros.busca && !l.descricao.toLowerCase().includes(filtros.busca.toLowerCase()) && 
         !l.categoria.toLowerCase().includes(filtros.busca.toLowerCase())) return false;
     return true;
-  });
+  })
 
   return (
     <div className="px-2 py-4 md:p-8 max-w-7xl mx-auto w-full">
@@ -364,5 +364,5 @@ export default function Caixa() {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -11,19 +11,19 @@ export interface StoreStatus {
 export const useStoreStatus = (companyId?: string) => {
   const [status, setStatus] = useState<StoreStatus>({
     isOpen: true,
-    message: 'Verificando horário...'
-  });
-  const [loading, setLoading] = useState(true);
+    message: 'Verificando horário...';
+  })
+  const [loading, setLoading] = useState(true)
 
   const checkStoreStatus = async () => {
-    console.log('🏪 useStoreStatus - Verificação mock temporária para company:', companyId);
+    console.log('🏪 useStoreStatus - Verificação mock temporária para company:', companyId)
     
     // Mock temporário - sempre considerar loja aberta
     setStatus({
       isOpen: true,
       message: 'Loja disponível'
-    });
-    setLoading(false);
+    })
+    setLoading(false)
     
     // TODO: Implementar verificação real de horários quando necessário
   };
@@ -31,13 +31,13 @@ export const useStoreStatus = (companyId?: string) => {
   // Funções mock removidas temporariamente - não necessárias para versão básica
 
   useEffect(() => {
-    checkStoreStatus();
+    checkStoreStatus()
     
     // Verificar a cada minuto
-    const interval = setInterval(checkStoreStatus, 60000);
+    const interval = setInterval(checkStoreStatus, 60000)
     
-    return () => clearInterval(interval);
-  }, [companyId]);
+    return () => clearInterval(interval)
+  }, [companyId])
 
   return {
     status,

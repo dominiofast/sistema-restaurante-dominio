@@ -9,13 +9,13 @@ interface FeaturedCategoryResult {
 export const useFeaturedCategory = (): FeaturedCategoryResult => {
   const featuredCategoryNames = useMemo(() => [
     'destaque',
-    'destaques'
-  ], []);
+    'destaques';
+  ], [])
 
   const isFeaturedCategory = useMemo(() => (categoria: Categoria): boolean => {
-    const categoryNameLower = categoria.name.toLowerCase().trim();
-    return featuredCategoryNames.includes(categoryNameLower);
-  }, [featuredCategoryNames]);
+    const categoryNameLower = categoria.name.toLowerCase().trim()
+    return featuredCategoryNames.includes(categoryNameLower)
+  }, [featuredCategoryNames])
 
   return {
     isFeaturedCategory,

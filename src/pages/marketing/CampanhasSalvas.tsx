@@ -4,7 +4,7 @@ import {
   Clock, Check, X, Loader2, ArrowLeft, Eye, Copy, AlertCircle
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,37 +24,37 @@ interface Campaign {
   media_mime_type?: string;
   media_file_name?: string;
   media_type?: string;
-}
+
 
 const CampanhasSalvas = () => {
-  const { currentCompany } = useAuth();
-  const navigate = useNavigate();
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const { currentCompany } = useAuth()
+  const navigate = useNavigate()
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState<string>('all')
 
   // SEO
   useEffect(() => {
     document.title = 'Campanhas WhatsApp Salvas | Domínio Tech';
     const desc = 'Gerencie suas campanhas de WhatsApp salvas, rascunhos e agendadas.';
-    let meta = document.querySelector('meta[name="description"]');
+    let meta = document.querySelector('meta[name="description"]')
     if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'description')
+      document.head.appendChild(meta)
     }
-    meta.setAttribute('content', desc);
+    meta.setAttribute('content', desc)
 
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
     }
-    canonical.setAttribute('href', window.location.href);
-  }, []);
+    canonical.setAttribute('href', window.location.href)
+  }, [])
 
   // Carregar campanhas
   useEffect(() => {
@@ -62,43 +62,43 @@ const CampanhasSalvas = () => {
       if (!currentCompany?.id) return;
 
       try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('whatsapp_campaigns')
-          .select(`
+        setLoading(true)
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
+          
+          
             id, name, message, audience, status, created_at, scheduled_date, 
             is_active, country, last_run_at, next_run_at, media_base64, 
             media_mime_type, media_file_name, media_type
           `)
-          .eq('company_id', currentCompany.id)
-          .order('created_at', { ascending: false });
+          
+          
 
         if (error) throw error;
         
-        setCampaigns(data || []);
+        setCampaigns(data || [])
       } catch (error) {
-        console.error('Erro ao carregar campanhas:', error);
-        toast.error('Erro ao carregar campanhas salvas');
+        console.error('Erro ao carregar campanhas:', error)
+        toast.error('Erro ao carregar campanhas salvas')
       } finally {
-        setLoading(false);
-      }
+        setLoading(false)
+
     };
 
-    fetchCampaigns();
-  }, [currentCompany?.id]);
+    fetchCampaigns()
+  }, [currentCompany?.id])
 
   // Filtrar campanhas
   const filteredCampaigns = campaigns.filter(campaign => {
-    const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         campaign.message.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||;
+                         campaign.message.toLowerCase().includes(searchTerm.toLowerCase())
     
     const matchesStatus = statusFilter === 'all' || 
                          (statusFilter === 'active' && campaign.is_active) ||
-                         (statusFilter === 'inactive' && !campaign.is_active) ||
+                         (statusFilter === 'inactive' && !campaign.is_active) ||;
                          campaign.status === statusFilter;
     
     return matchesSearch && matchesStatus;
-  });
+  })
 
   const handleDeleteCampaign = async (campaignId: string) => {
     if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {
@@ -106,21 +106,21 @@ const CampanhasSalvas = () => {
     }
 
     try {
-      setDeleting(campaignId);
-      const { error } = await supabase
-        .from('whatsapp_campaigns')
-        .delete()
-        .eq('id', campaignId);
+      setDeleting(campaignId)
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
 
-      setCampaigns(campaigns.filter(c => c.id !== campaignId));
-      toast.success('Campanha excluída com sucesso');
+      setCampaigns(campaigns.filter(c => c.id !== campaignId))
+      toast.success('Campanha excluída com sucesso')
     } catch (error) {
-      console.error('Erro ao excluir campanha:', error);
-      toast.error('Erro ao excluir campanha');
+      console.error('Erro ao excluir campanha:', error)
+      toast.error('Erro ao excluir campanha')
     } finally {
-      setDeleting(null);
+      setDeleting(null)
     }
   };
 
@@ -142,13 +142,13 @@ const CampanhasSalvas = () => {
         mimeType: campaign.media_mime_type,
         fileName: campaign.media_file_name,
         type: campaign.media_type
-      } : null
+      } : null;
     };
     
     // Salvar dados no sessionStorage para serem carregados na outra página
-    sessionStorage.setItem('loadCampaignData', JSON.stringify(campaignData));
-    navigate('/marketing/campanha-whatsapp');
-    toast.success('Campanha carregada para edição');
+    sessionStorage.setItem('loadCampaignData', JSON.stringify(campaignData))
+    navigate('/marketing/campanha-whatsapp')
+    toast.success('Campanha carregada para edição')
   };
 
   const getStatusColor = (status: string, isActive: boolean) => {
@@ -187,7 +187,7 @@ const CampanhasSalvas = () => {
 
   const getAudienceText = (audience: string) => {
     switch (audience) {
-      case 'todos-clientes':
+      case 'todos-clientes':;
         return 'Todos os clientes';
       case 'clientes-ativos':
         return 'Clientes ativos';
@@ -206,10 +206,10 @@ const CampanhasSalvas = () => {
     try {
       // Verificar se é uma imagem válida
       if (campaign.media_mime_type.startsWith('image/')) {
-        return `data:${campaign.media_mime_type};base64,${campaign.media_base64}`;
-      }
+        return `data:${campaign.media_mime_type} catch (error) { console.error('Error:', error) };base64,${campaign.media_base64}`;
+
     } catch (error) {
-      console.error('Erro ao processar mídia:', error);
+      console.error('Erro ao processar mídia:', error)
     }
     
     return null;
@@ -307,8 +307,8 @@ const CampanhasSalvas = () => {
                   <p className="text-lg mb-2">Nenhuma campanha encontrada com os filtros aplicados</p>
                   <button
                     onClick={() => {
-                      setSearchTerm('');
-                      setStatusFilter('all');
+                      setSearchTerm('')
+                      setStatusFilter('all')
                     }}
                     className="text-purple-600 hover:text-purple-800 text-sm mt-4"
                   >
@@ -477,7 +477,7 @@ const CampanhasSalvas = () => {
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default CampanhasSalvas;

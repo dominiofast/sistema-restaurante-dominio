@@ -18,7 +18,7 @@ const MainRoutes = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
-  );
+  )
 };
 
 export default MainRoutes;

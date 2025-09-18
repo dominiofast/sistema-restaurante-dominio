@@ -31,7 +31,7 @@ const VagaDetailsPage: React.FC<VagaDetailsPageProps> = ({
   const primaryColor = config.primary_color || '#1B365D';
   const dynamicStyles = {
     '--primary-color': primaryColor,
-    '--primary-color-hover': `${primaryColor}E6`,
+    '--primary-color-hover': `${primaryColor}E6`,;
   } as React.CSSProperties;
 
   return (
@@ -137,7 +137,7 @@ const VagaDetailsPage: React.FC<VagaDetailsPageProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default VagaDetailsPage;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 import { 
   RefreshCw, 
@@ -16,7 +16,7 @@ import {
 
 interface AsaasMonitoringProps {
   companyId: string;
-}
+
 
 interface PaymentStats {
   total_payments: number;
@@ -25,41 +25,36 @@ interface PaymentStats {
   orphan_payments: number;
   total_amount: number;
   success_rate: number;
-}
+
 
 export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) => {
-  const [stats, setStats] = useState<PaymentStats | null>(null);
-  const [orphanPayments, setOrphanPayments] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [recovering, setRecovering] = useState(false);
-  const { toast } = useToast();
+  const [stats, setStats] = useState<PaymentStats | null>(null)
+  const [orphanPayments, setOrphanPayments] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [recovering, setRecovering] = useState(false)
+  const { toast } = useToast()
 
   const loadStats = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
 
       // Buscar estatísticas gerais
-      const { data: paymentsData, error: paymentsError } = await supabase
-        .from('asaas_payments')
-        .select('status, amount, confirmed_at')
-        .eq('company_id', companyId)
-        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+      const paymentsData = null as any; const paymentsError = null as any;
 
       if (paymentsError) throw paymentsError;
 
       const totalPayments = paymentsData.length;
       const confirmedPayments = paymentsData.filter(p => p.status === 'CONFIRMED' || p.status === 'RECEIVED').length;
       const pendingPayments = paymentsData.filter(p => p.status === 'PENDING').length;
-      const totalAmount = paymentsData.reduce((sum, p) => sum + Number(p.amount), 0);
+      const totalAmount = paymentsData.reduce((sum, p) => sum + Number(p.amount), 0)
       const successRate = totalPayments > 0 ? (confirmedPayments / totalPayments) * 100 : 0;
 
       // Buscar pagamentos órfãos
-      const { data: orphanData, error: orphanError } = await supabase
-        .rpc('identify_orphan_payments');
+      const orphanData = null as any; const orphanError = null as any;
 
       if (orphanError) throw orphanError;
 
-      const orphans = orphanData.filter((p: any) => !p.has_matching_order && p.days_since_payment <= 7);
+      const orphans = orphanData.filter((p: any) => !p.has_matching_order && p.days_since_payment <= 7)
 
       setStats({
         total_payments: totalPayments,
@@ -68,28 +63,27 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
         orphan_payments: orphans.length,
         total_amount: totalAmount,
         success_rate: successRate
-      });
+      } catch (error) { console.error('Error:', error) })
 
-      setOrphanPayments(orphans);
+      setOrphanPayments(orphans)
 
     } catch (error) {
-      console.error('❌ Erro ao carregar estatísticas:', error);
+      console.error('❌ Erro ao carregar estatísticas:', error)
       toast({
         title: 'Erro ao carregar dados',
         description: 'Não foi possível carregar as estatísticas',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const handleRecoverOrphans = async () => {
     try {
-      setRecovering(true);
+      setRecovering(true)
 
-      const { data, error } = await supabase.functions.invoke('recover-orphan-payments');
-
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
       if (error) throw error;
 
       const result = data;
@@ -97,33 +91,33 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
       toast({
         title: 'Recuperação concluída',
         description: `${result.summary.recovered} pedidos recuperados de ${result.summary.total_orphans} órfãos`,
-      });
+      })
 
       // Recarregar dados
-      loadStats();
+      loadStats()
 
     } catch (error) {
-      console.error('❌ Erro na recuperação:', error);
+      console.error('❌ Erro na recuperação:', error)
       toast({
         title: 'Erro na recuperação',
         description: 'Não foi possível recuperar os pagamentos órfãos',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setRecovering(false);
-    }
+      setRecovering(false)
+
   };
 
   useEffect(() => {
-    loadStats();
+    loadStats()
     
     // Atualizar a cada 30 segundos
-    const interval = setInterval(loadStats, 30000);
-    return () => clearInterval(interval);
-  }, [companyId]);
+    const interval = setInterval(loadStats, 30000)
+    return () => clearInterval(interval)
+  }, [companyId])
 
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+  const formatCurrency = (value: number) =>;
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 
   if (loading) {
     return (
@@ -135,8 +129,8 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
           </div>
         </CardContent>
       </Card>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-6">
@@ -298,5 +292,5 @@ export const AsaasMonitoring: React.FC<AsaasMonitoringProps> = ({ companyId }) =
         </Card>
       )}
     </div>
-  );
+  )
 };

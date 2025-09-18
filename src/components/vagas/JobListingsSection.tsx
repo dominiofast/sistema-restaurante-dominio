@@ -19,8 +19,8 @@ const JobListingsSection: React.FC<JobListingsSectionProps> = ({
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'long',
-      year: 'numeric'
-    });
+      year: 'numeric';
+    })
   };
 
   return (
@@ -104,7 +104,7 @@ const JobListingsSection: React.FC<JobListingsSectionProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default JobListingsSection;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,47 +14,47 @@ interface InvitationData {
 }
 
 export default function AcceptInvitation() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const token = searchParams.get('token');
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const token = searchParams.get('token')
 
-  const [invitation, setInvitation] = useState<InvitationData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [invitation, setInvitation] = useState<InvitationData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   useEffect(() => {
     if (!token) {
-      toast.error('Token de convite não encontrado');
-      navigate('/login');
+      toast.error('Token de convite não encontrado')
+      navigate('/login')
       return;
     }
 
-    loadInvitation();
-  }, [token, navigate]);
+    loadInvitation()
+  }, [token, navigate])
 
   const loadInvitation = async () => {
     try {
-      console.log('🔍 Loading invitation with token:', token);
-      const { data, error } = await supabase
-        .from('user_invitations')
-        .select(`
+      console.log('🔍 Loading invitation with token:', token)
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           email,
           role,
           expires_at,
           companies:company_id(name)
         `)
-        .eq('token', token)
-        .eq('accepted_at', null)
+        
+        
         .gt('expires_at', new Date().toISOString())
-        .maybeSingle();
+        
 
-      console.log('📊 Query result:', { data, error });
+      console.log('📊 Query result:', { data, error })
 
       if (error || !data) {
-        toast.error('Convite inválido ou expirado');
-        navigate('/login');
+        toast.error('Convite inválido ou expirado')
+        navigate('/login')
         return;
       }
 
@@ -63,80 +63,68 @@ export default function AcceptInvitation() {
         company_name: (data.companies as any)?.name || 'Empresa',
         role: data.role,
         expires_at: data.expires_at
-      });
+      })
     } catch (error) {
-      console.error('Erro ao carregar convite:', error);
-      toast.error('Erro ao carregar convite');
-      navigate('/login');
+      console.error('Erro ao carregar convite:', error)
+      toast.error('Erro ao carregar convite')
+      navigate('/login')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const handleAcceptInvitation = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
     if (!password || password.length < 6) {
-      toast.error('Senha deve ter pelo menos 6 caracteres');
+      toast.error('Senha deve ter pelo menos 6 caracteres')
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error('Senhas não coincidem');
+      toast.error('Senhas não coincidem')
       return;
     }
 
-    setSubmitting(true);
+    setSubmitting(true)
 
     try {
       // 1. Criar usuário no Supabase Auth
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email: invitation!.email,
-        password: password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/login`,
-        }
-      });
+      const authData = null as any; const signUpError = null as any;
 
       if (signUpError) {
         throw signUpError;
       }
 
-      if (!authData.user) {
-        throw new Error('Usuário não foi criado');
+       catch (error) { console.error('Error:', error) }if (!authData.user) {
+        throw new Error('Usuário não foi criado')
       }
 
       // 2. Aceitar convite (criar associação usuário-empresa)
-      const { data: acceptResult, error: acceptError } = await supabase.rpc(
-        'accept_user_invitation',
-        {
-          p_token: token,
-          p_user_id: authData.user.id
-        }
-      );
+      const acceptResult = null as any; const acceptError = null as any;
 
       if (acceptError || !(acceptResult as any)?.success) {
-        throw new Error((acceptResult as any)?.error || 'Erro ao aceitar convite');
+        throw new Error((acceptResult as any)?.error || 'Erro ao aceitar convite')
       }
 
-      toast.success('Convite aceito com sucesso! Faça login para continuar.');
+      toast.success('Convite aceito com sucesso! Faça login para continuar.')
       
       // Redirecionar para o login
       setTimeout(() => {
-        navigate('/login');
-      }, 1000);
+        navigate('/login')
+      }, 1000)
 
     } catch (error: any) {
-      console.error('Erro ao aceitar convite:', error);
+      console.error('Erro ao aceitar convite:', error)
       
       if (error.message?.includes('User already registered')) {
-        toast.error('Este email já está cadastrado. Faça login normalmente.');
-        navigate('/login');
+        toast.error('Este email já está cadastrado. Faça login normalmente.')
+        navigate('/login')
       } else {
-        toast.error(error.message || 'Erro ao aceitar convite');
+        toast.error(error.message || 'Erro ao aceitar convite')
       }
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   };
 
@@ -148,15 +136,15 @@ export default function AcceptInvitation() {
           <p className="mt-2 text-gray-600">Carregando convite...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (!invitation) {
     return null;
   }
 
-  const expiresAt = new Date(invitation.expires_at);
-  const isExpired = expiresAt < new Date();
+  const expiresAt = new Date(invitation.expires_at)
+  const isExpired = expiresAt < new Date()
 
   if (isExpired) {
     return (
@@ -175,7 +163,7 @@ export default function AcceptInvitation() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
@@ -249,5 +237,5 @@ export default function AcceptInvitation() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

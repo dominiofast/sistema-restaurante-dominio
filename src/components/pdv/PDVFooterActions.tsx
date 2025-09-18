@@ -35,5 +35,5 @@ export const PDVFooterActions: React.FC<PDVFooterActionsProps> = ({
       </div>
       <div className="w-32" /> {/* Espaço para alinhamento */}
     </footer>
-  );
+  )
 };

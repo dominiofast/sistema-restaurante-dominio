@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { MessageSquare, Bot, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { LandingHeader } from '@/components/landing/LandingHeader';
 
 interface DemoForm {
@@ -19,9 +19,9 @@ interface DemoForm {
 }
 
 const DemonstracaoPage = () => {
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [formData, setFormData] = useState<DemoForm>({
     nome: '',
     telefone: '',
@@ -29,7 +29,7 @@ const DemonstracaoPage = () => {
     tipoEstabelecimento: '',
     tipoOperacao: '',
     desafios: []
-  });
+  })
 
   const handleDesafioChange = (desafio: string, checked: boolean) => {
     setFormData(prev => ({
@@ -37,27 +37,27 @@ const DemonstracaoPage = () => {
       desafios: checked 
         ? [...prev.desafios, desafio]
         : prev.desafios.filter(d => d !== desafio)
-    }));
+    }))
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      const { error } = await supabase.functions.invoke('send-demo-request', {
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           ...formData,
           timestamp: new Date().toISOString()
         }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Solicitação enviada!",
         description: "Nossa equipe entrará em contato em breve para agendar sua demonstração.",
-      });
+      })
 
       // Reset form
       setFormData({
@@ -67,18 +67,18 @@ const DemonstracaoPage = () => {
         tipoEstabelecimento: '',
         tipoOperacao: '',
         desafios: []
-      });
+      })
 
     } catch (error) {
-      console.error('Erro ao enviar solicitação:', error);
+      console.error('Erro ao enviar solicitação:', error)
       toast({
         title: "Erro ao enviar",
         description: "Tente novamente ou entre em contato conosco.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   return (
@@ -255,7 +255,7 @@ const DemonstracaoPage = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default DemonstracaoPage;

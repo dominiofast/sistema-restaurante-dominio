@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { ProtectedRouteWithPermissions } from '@/components/auth/ProtectedRouteWithPermissions';
 
 interface Programa {
@@ -25,14 +25,14 @@ interface Programa {
 }
 
 const ProgramasPage = () => {
-  const [programas, setProgramas] = useState<Programa[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingPrograma, setEditingPrograma] = useState<Programa | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { toast } = useToast();
+  const [programas, setProgramas] = useState<Programa[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingPrograma, setEditingPrograma] = useState<Programa | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const { toast } = useToast()
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -42,74 +42,74 @@ const ProgramasPage = () => {
     icone: '',
     ativo: true,
     arquivo_path: ''
-  });
+  })
 
   useEffect(() => {
-    loadProgramas();
-  }, []);
+    loadProgramas()
+  }, [])
 
   const loadProgramas = async () => {
     try {
-      const { data, error } = await supabase
-        .rpc('get_programas_saipos');
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        .rpc('get_programas_saipos')
       
       if (error) throw error;
-      setProgramas((data as Programa[]) || []);
+      setProgramas((data as Programa[]) || [])
     } catch (error) {
-      console.error('Erro ao carregar programas:', error);
+      console.error('Erro ao carregar programas:', error)
       toast({
         title: 'Erro',
         description: 'Erro ao carregar programas',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const handleFileUpload = async (file: File): Promise<string | null> => {
     try {
-      setUploading(true);
-      setUploadProgress(0);
+      setUploading(true)
+      setUploadProgress(0)
       
-      console.log('📤 [Upload] Usando upload chunked para:', file.name);
-      console.log('📤 [Upload] Tamanho do arquivo:', (file.size / 1024 / 1024).toFixed(2), 'MB');
+      console.log('📤 [Upload] Usando upload chunked para:', file.name)
+      console.log('📤 [Upload] Tamanho do arquivo:', (file.size / 1024 / 1024).toFixed(2), 'MB')
       
       // Verificar tipos de arquivo permitidos
       const allowedTypes = ['.exe', '.msi', '.zip', '.rar', '.7z', '.pdf', '.txt', '.docx', '.doc'];
-      const fileExt = '.' + file.name.split('.').pop()?.toLowerCase();
+      const fileExt = '.' + file.name.split('.').pop()?.toLowerCase()
       
       if (!allowedTypes.includes(fileExt)) {
-        throw new Error(`Tipo de arquivo não permitido. Tipos aceitos: ${allowedTypes.join(', ')}`);
+        throw new Error(`Tipo de arquivo não permitido. Tipos aceitos: ${allowedTypes.join(', ')} catch (error) { console.error('Error:', error) }`)
       }
       
       // Verificar autenticação
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('🔑 [Upload] Usuário autenticado:', user?.id);
+      const { data: { user } } = await Promise.resolve()
+      console.log('🔑 [Upload] Usuário autenticado:', user?.id)
       
       if (!user) {
-        throw new Error('Usuário não está autenticado');
+        throw new Error('Usuário não está autenticado')
       }
       
       // Usar o novo serviço de upload chunked
       const result = await uploadLargeFile(file, (progress) => {
-        setUploadProgress(progress);
-        console.log(`📊 [Upload] Progresso: ${progress.toFixed(1)}%`);
-      });
+        setUploadProgress(progress)
+        console.log(`📊 [Upload] Progresso: ${progress.toFixed(1)}%`)
+      })
       
-      console.log('🎉 [Upload] Upload concluído com sucesso!');
-      console.log('🔗 [Upload] URL:', result.downloadUrl);
+      console.log('🎉 [Upload] Upload concluído com sucesso!')
+      console.log('🔗 [Upload] URL:', result.downloadUrl)
       
       toast({
         title: 'Sucesso!',
         description: `Arquivo de ${(file.size / 1024 / 1024).toFixed(1)}MB enviado com sucesso!`,
         variant: 'default'
-      });
+      })
       
       return result.downloadUrl;
       
     } catch (error) {
-      console.error('❌ [Upload] Erro no upload:', error);
+      console.error('❌ [Upload] Erro no upload:', error)
       
       let errorMessage = 'Erro desconhecido no upload';
       
@@ -123,23 +123,23 @@ const ProgramasPage = () => {
         title: 'Erro no Upload',
         description: errorMessage,
         variant: 'destructive'
-      });
+      })
       return null;
     } finally {
-      setUploading(false);
-      setUploadProgress(0);
-    }
+      setUploading(false)
+      setUploadProgress(0)
+
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
     try {
-      let finalFormData = { ...formData };
+      let finalFormData = { ...formData } catch (error) { console.error('Error:', error) };
 
       // Se tem arquivo selecionado, fazer upload primeiro
       if (selectedFile) {
-        const uploadedUrl = await handleFileUpload(selectedFile);
+        const uploadedUrl = await handleFileUpload(selectedFile)
         if (uploadedUrl) {
           finalFormData.arquivo_path = uploadedUrl;
           // Se não tem URL de download manual, usar o arquivo uploadado
@@ -152,33 +152,33 @@ const ProgramasPage = () => {
       }
 
       if (editingPrograma) {
-        const { error } = await supabase.rpc('update_programa_saipos', {
+        const { error } = await Promise.resolve()
           programa_id: editingPrograma.id,
           programa_data: finalFormData
-        });
+        })
         
         if (error) throw error;
-        toast({ title: 'Sucesso', description: 'Programa atualizado com sucesso!' });
+        toast({ title: 'Sucesso', description: 'Programa atualizado com sucesso!' })
       } else {
-        const { error } = await supabase.rpc('insert_programa_saipos', {
+        const { error } = await Promise.resolve()
           programa_data: finalFormData
-        });
+        })
         
         if (error) throw error;
-        toast({ title: 'Sucesso', description: 'Programa adicionado com sucesso!' });
+        toast({ title: 'Sucesso', description: 'Programa adicionado com sucesso!' })
       }
       
-      setDialogOpen(false);
-      resetForm();
-      loadProgramas();
+      setDialogOpen(false)
+      resetForm()
+      loadProgramas()
     } catch (error) {
-      console.error('Erro ao salvar programa:', error);
+      console.error('Erro ao salvar programa:', error)
       toast({
         title: 'Erro',
         description: 'Erro ao salvar programa',
         variant: 'destructive'
-      });
-    }
+      })
+
   };
 
   const resetForm = () => {
@@ -189,14 +189,14 @@ const ProgramasPage = () => {
       versao: '',
       icone: '',
       ativo: true,
-      arquivo_path: ''
-    });
-    setEditingPrograma(null);
-    setSelectedFile(null);
+      arquivo_path: '';
+    })
+    setEditingPrograma(null)
+    setSelectedFile(null)
   };
 
   const editPrograma = (programa: Programa) => {
-    setEditingPrograma(programa);
+    setEditingPrograma(programa)
     setFormData({
       nome: programa.nome,
       descricao: programa.descricao || '',
@@ -205,8 +205,8 @@ const ProgramasPage = () => {
       icone: programa.icone || '',
       ativo: programa.ativo,
       arquivo_path: programa.arquivo_path || ''
-    });
-    setDialogOpen(true);
+    })
+    setDialogOpen(true)
   };
 
   const deletePrograma = async (programa: Programa) => {
@@ -215,38 +215,37 @@ const ProgramasPage = () => {
     try {
       // Deletar arquivo do storage se existir
       if (programa.arquivo_path) {
-        const fileName = programa.arquivo_path.split('/').pop();
+        const fileName = programa.arquivo_path.split('/').pop()
         if (fileName) {
-          await supabase.storage
-            .from('programas')
-            .remove([fileName]);
+          await Promise.resolve()
+            .remove([fileName])
         }
-      }
+       catch (error) { console.error('Error:', error) }}
 
       // Deletar registro do banco
-      const { error } = await supabase.rpc('delete_programa_saipos', {
+      const { error } = await Promise.resolve()
         programa_id: programa.id
-      });
+      })
 
       if (error) throw error;
 
-      toast({ title: 'Sucesso', description: 'Programa excluído com sucesso!' });
-      loadProgramas();
+      toast({ title: 'Sucesso', description: 'Programa excluído com sucesso!' })
+      loadProgramas()
     } catch (error) {
-      console.error('Erro ao deletar programa:', error);
+      console.error('Erro ao deletar programa:', error)
       toast({
         title: 'Erro',
         description: 'Erro ao excluir programa',
         variant: 'destructive'
-      });
-    }
+      })
+
   };
 
   const openUrl = (url: string) => {
     if (url) {
-      console.log('🔗 [Download] Abrindo URL:', url);
-      window.open(url, '_blank');
-    }
+      console.log('🔗 [Download] Abrindo URL:', url)
+      window.open(url, '_blank')
+
   };
 
   if (loading) {
@@ -257,7 +256,7 @@ const ProgramasPage = () => {
           <p className="text-muted-foreground">Carregando programas...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -438,7 +437,7 @@ const ProgramasPage = () => {
         </div>
       </div>
     </ProtectedRouteWithPermissions>
-  );
+  )
 };
 
 export default ProgramasPage;

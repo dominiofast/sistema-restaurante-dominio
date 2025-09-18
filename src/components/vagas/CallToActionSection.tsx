@@ -21,7 +21,7 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({ primaryColor 
         Cadastrar Currículo
       </button>
     </div>
-  );
+  )
 };
 
 export default CallToActionSection;

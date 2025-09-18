@@ -17,64 +17,64 @@ export default function HorariosFuncionamento() {
     diasSemana, 
     fusoHorarios, 
     salvarHorarios 
-  } = useHorariosFuncionamento();
+  } = useHorariosFuncionamento()
 
-  const [tipoDisponibilidade, setTipoDisponibilidade] = useState(horarios?.tipo_disponibilidade || 'especificos');
-  const [fusoHorario, setFusoHorario] = useState(horarios?.fuso_horario || 'America/Sao_Paulo');
-  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([]);
-  const [salvando, setSalvando] = useState(false);
+  const [tipoDisponibilidade, setTipoDisponibilidade] = useState(horarios?.tipo_disponibilidade || 'especificos')
+  const [fusoHorario, setFusoHorario] = useState(horarios?.fuso_horario || 'America/Sao_Paulo')
+  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([])
+  const [salvando, setSalvando] = useState(false)
 
   useEffect(() => {
     if (horarios) {
-      setTipoDisponibilidade(horarios.tipo_disponibilidade);
-      setFusoHorario(horarios.fuso_horario);
-      setHorariosDias(horarios.horarios_dias || []);
+      setTipoDisponibilidade(horarios.tipo_disponibilidade)
+      setFusoHorario(horarios.fuso_horario)
+      setHorariosDias(horarios.horarios_dias || [])
     }
-  }, [horarios]);
+  }, [horarios])
 
   const adicionarHorario = (diaSemana: number) => {
     const novoHorario: HorarioDia = {
       dia_semana: diaSemana,
       horario_inicio: '09:00',
       horario_fim: '18:00',
-      ativo: true
+      ativo: true;
     };
-    setHorariosDias([...horariosDias, novoHorario]);
+    setHorariosDias([...horariosDias, novoHorario])
   };
 
   const removerHorario = (index: number) => {
-    setHorariosDias(horariosDias.filter((_, i) => i !== index));
+    setHorariosDias(horariosDias.filter((_, i) => i !== index))
   };
 
   const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {
     const novosHorarios = [...horariosDias];
     novosHorarios[index] = { ...novosHorarios[index], [campo]: valor };
-    setHorariosDias(novosHorarios);
+    setHorariosDias(novosHorarios)
   };
 
   const handleSalvar = async () => {
-    setSalvando(true);
+    setSalvando(true)
     try {
       const sucesso = await salvarHorarios({
         tipo_disponibilidade: tipoDisponibilidade,
         fuso_horario: fusoHorario,
-        horarios_dias: tipoDisponibilidade === 'especificos' ? horariosDias : []
-      });
+        horarios_dias: tipoDisponibilidade === 'especificos' ? horariosDias : [];
+      } catch (error) { console.error('Error:', error) })
 
       if (sucesso) {
-        toast.success('Horários salvos com sucesso!');
+        toast.success('Horários salvos com sucesso!')
       } else {
-        toast.error('Erro ao salvar horários');
+        toast.error('Erro ao salvar horários')
       }
     } catch (err) {
-      toast.error('Erro ao salvar horários');
+      toast.error('Erro ao salvar horários')
     } finally {
-      setSalvando(false);
+      setSalvando(false)
     }
   };
 
   const getHorariosPorDia = (diaSemana: number) => {
-    return horariosDias.filter(h => h.dia_semana === diaSemana);
+    return horariosDias.filter(h => h.dia_semana === diaSemana)
   };
 
   if (loading) {
@@ -85,7 +85,7 @@ export default function HorariosFuncionamento() {
           <p>Carregando horários...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -189,7 +189,7 @@ export default function HorariosFuncionamento() {
             <CardContent>
               <div className="space-y-6">
                 {diasSemana.map(dia => {
-                  const horariosHoje = getHorariosPorDia(dia.id);
+                  const horariosHoje = getHorariosPorDia(dia.id)
                   
                   return (
                     <div key={dia.id} className="border rounded-lg p-4">
@@ -215,8 +215,8 @@ export default function HorariosFuncionamento() {
                             const globalIndex = horariosDias.findIndex(h => 
                               h.dia_semana === dia.id && 
                               h.horario_inicio === horario.horario_inicio &&
-                              h.horario_fim === horario.horario_fim
-                            );
+                              h.horario_fim === horario.horario_fim;
+                            )
                             
                             return (
                               <div key={index} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
@@ -265,12 +265,12 @@ export default function HorariosFuncionamento() {
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
                               </div>
-                            );
+                            )
                           })}
                         </div>
                       )}
                     </div>
-                  );
+                  )
                 })}
               </div>
             </CardContent>
@@ -290,5 +290,5 @@ export default function HorariosFuncionamento() {
         </div>
       </div>
     </div>
-  );
-}
+  )
+

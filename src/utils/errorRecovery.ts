@@ -59,51 +59,51 @@ class CircuitBreaker {
     if (this.state === 'open') {
       if (Date.now() - this.lastFailureTime > this.config.resetTimeout) {
         this.state = 'half-open';
-        console.log('🔄 [CircuitBreaker] Transitioning to half-open state');
+        console.log('🔄 [CircuitBreaker] Transitioning to half-open state')
       } else {
-        throw new Error('Circuit breaker is open - operation blocked');
+        throw new Error('Circuit breaker is open - operation blocked')
       }
     }
 
     try {
-      const result = await operation();
+      const result = await operation()
       
       if (this.state === 'half-open') {
-        this.reset();
-        console.log('✅ [CircuitBreaker] Operation successful, circuit closed');
+        this.reset()
+        console.log('✅ [CircuitBreaker] Operation successful, circuit closed')
       }
       
-      return result;
+       catch (error) { console.error('Error:', error) }return result;
     } catch (error) {
-      this.recordFailure();
+      this.recordFailure()
       throw error;
     }
   }
 
   private recordFailure(): void {
     this.failures++;
-    this.lastFailureTime = Date.now();
+    this.lastFailureTime = Date.now()
 
     if (this.failures >= this.config.failureThreshold) {
       this.state = 'open';
-      console.warn('⚠️ [CircuitBreaker] Circuit opened due to failures:', this.failures);
+      console.warn('⚠️ [CircuitBreaker] Circuit opened due to failures:', this.failures)
     }
   }
 
   private reset(): void {
     this.failures = 0;
     this.state = 'closed';
-  }
+
 
   getState(): string {
     return this.state;
-  }
+
 }
 
 /**
  * Global circuit breaker instance for delivery methods
  */
-const deliveryMethodsCircuitBreaker = new CircuitBreaker();
+const deliveryMethodsCircuitBreaker = new CircuitBreaker()
 
 /**
  * Retry function with exponential backoff
@@ -117,11 +117,11 @@ export async function retryWithBackoff<T>(
 
   for (let attempt = 1; attempt <= finalConfig.maxAttempts; attempt++) {
     try {
-      console.log(`🔄 [Retry] Attempt ${attempt}/${finalConfig.maxAttempts}`);
+      console.log(`🔄 [Retry] Attempt ${attempt} catch (error) { console.error('Error:', error) }/${finalConfig.maxAttempts}`)
       
-      const result = await operation();
+      const result = await operation()
       
-      console.log(`✅ [Retry] Success on attempt ${attempt}`);
+      console.log(`✅ [Retry] Success on attempt ${attempt}`)
       return {
         success: true,
         data: result,
@@ -129,21 +129,21 @@ export async function retryWithBackoff<T>(
         recoveryMethod: 'retry'
       };
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
-      console.warn(`❌ [Retry] Attempt ${attempt} failed:`, lastError.message);
+      lastError = error instanceof Error ? error : new Error(String(error))
+      console.warn(`❌ [Retry] Attempt ${attempt} failed:`, lastError.message)
 
       // Don't wait after the last attempt
       if (attempt < finalConfig.maxAttempts) {
         const delay = Math.min(
           finalConfig.baseDelay * Math.pow(finalConfig.backoffMultiplier, attempt - 1),
-          finalConfig.maxDelay
-        );
+          finalConfig.maxDelay;
+        )
         
-        console.log(`⏳ [Retry] Waiting ${delay}ms before next attempt`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        console.log(`⏳ [Retry] Waiting ${delay}ms before next attempt`)
+        await new Promise(resolve => setTimeout(resolve, delay))
       }
     }
-  }
+
 
   return {
     success: false,
@@ -160,14 +160,14 @@ export async function executeWithCircuitBreaker<T>(
   operation: () => Promise<T>
 ): Promise<ErrorRecoveryResult<T>> {
   try {
-    const result = await deliveryMethodsCircuitBreaker.execute(operation);
+    const result = await deliveryMethodsCircuitBreaker.execute(operation)
     
     return {
       success: true,
       data: result,
       attempts: 1,
       recoveryMethod: 'circuit-breaker'
-    };
+    } catch (error) { console.error('Error:', error) };
   } catch (error) {
     return {
       success: false,
@@ -175,7 +175,7 @@ export async function executeWithCircuitBreaker<T>(
       attempts: 1,
       recoveryMethod: 'circuit-breaker'
     };
-  }
+
 }
 
 /**
@@ -192,29 +192,29 @@ export async function recoverFromError<T>(
 ): Promise<ErrorRecoveryResult<T>> {
   const { retryConfig, useCircuitBreaker = true, context = 'unknown' } = options;
 
-  console.log(`🔧 [ErrorRecovery] Starting recovery for: ${context}`);
+  console.log(`🔧 [ErrorRecovery] Starting recovery for: ${context}`)
 
   try {
     // First, try with circuit breaker if enabled
     if (useCircuitBreaker) {
-      const circuitResult = await executeWithCircuitBreaker(operation);
+      const circuitResult = await executeWithCircuitBreaker(operation)
       if (circuitResult.success) {
         return circuitResult;
       }
       
-      console.warn(`⚠️ [ErrorRecovery] Circuit breaker failed for: ${context}`);
+       catch (error) { console.error('Error:', error) }console.warn(`⚠️ [ErrorRecovery] Circuit breaker failed for: ${context}`)
     }
 
     // Then try with retry mechanism
-    const retryResult = await retryWithBackoff(operation, retryConfig);
+    const retryResult = await retryWithBackoff(operation, retryConfig)
     if (retryResult.success) {
       return retryResult;
     }
 
-    console.warn(`⚠️ [ErrorRecovery] Retry failed for: ${context}, using fallback`);
+    console.warn(`⚠️ [ErrorRecovery] Retry failed for: ${context}, using fallback`)
 
     // Finally, use fallback
-    const fallbackData = fallback();
+    const fallbackData = fallback()
     return {
       success: true,
       data: fallbackData,
@@ -223,17 +223,17 @@ export async function recoverFromError<T>(
     };
 
   } catch (error) {
-    console.error(`❌ [ErrorRecovery] Complete failure for: ${context}`, error);
+    console.error(`❌ [ErrorRecovery] Complete failure for: ${context}`, error)
     
     // Last resort fallback
     try {
-      const fallbackData = fallback();
+      const fallbackData = fallback()
       return {
         success: true,
         data: fallbackData,
         attempts: 1,
         recoveryMethod: 'fallback'
-      };
+      } catch (error) { console.error('Error:', error) };
     } catch (fallbackError) {
       return {
         success: false,
@@ -253,7 +253,7 @@ export function categorizeError(error: Error): {
   isRetryable: boolean;
   severity: 'low' | 'medium' | 'high' | 'critical';
 } {
-  const message = error.message.toLowerCase();
+  const message = error.message.toLowerCase()
   
   // Network errors
   if (message.includes('fetch') || message.includes('network') || message.includes('timeout')) {
@@ -262,7 +262,7 @@ export function categorizeError(error: Error): {
       isRetryable: true,
       severity: 'medium'
     };
-  }
+
   
   // Database errors
   if (message.includes('pgrst') || message.includes('database') || message.includes('sql')) {
@@ -271,7 +271,7 @@ export function categorizeError(error: Error): {
       isRetryable: true,
       severity: 'high'
     };
-  }
+
   
   // Permission errors
   if (message.includes('permission') || message.includes('unauthorized') || message.includes('forbidden')) {
@@ -280,7 +280,7 @@ export function categorizeError(error: Error): {
       isRetryable: false,
       severity: 'high'
     };
-  }
+
   
   // Validation errors
   if (message.includes('validation') || message.includes('invalid') || message.includes('constraint')) {
@@ -289,7 +289,7 @@ export function categorizeError(error: Error): {
       isRetryable: false,
       severity: 'medium'
     };
-  }
+
   
   // Unknown errors
   return {
@@ -308,7 +308,7 @@ export function getUserFriendlyErrorMessage(error: Error, context?: string): {
   actionable: boolean;
   actions?: Array<{ label: string; action: string }>;
 } {
-  const { category, severity } = categorizeError(error);
+  const { category, severity } = categorizeError(error)
   
   switch (category) {
     case 'network':
@@ -364,7 +364,7 @@ export function getUserFriendlyErrorMessage(error: Error, context?: string): {
           { label: 'Recarregar página', action: 'reload' }
         ]
       };
-  }
+
 }
 
 /**
@@ -375,7 +375,7 @@ export function logError(
   context: string,
   additionalData?: Record<string, any>
 ): void {
-  const { category, severity } = categorizeError(error);
+  const { category, severity } = categorizeError(error)
   
   const logData = {
     error: {
@@ -387,22 +387,22 @@ export function logError(
     category,
     severity,
     timestamp: new Date().toISOString(),
-    ...additionalData
+    ...additionalData;
   };
   
   // Use appropriate logging level based on severity
   switch (severity) {
     case 'critical':
-      console.error('🚨 [CRITICAL ERROR]', logData);
+      console.error('🚨 [CRITICAL ERROR]', logData)
       break;
     case 'high':
-      console.error('❌ [HIGH ERROR]', logData);
+      console.error('❌ [HIGH ERROR]', logData)
       break;
     case 'medium':
-      console.warn('⚠️ [MEDIUM ERROR]', logData);
+      console.warn('⚠️ [MEDIUM ERROR]', logData)
       break;
     case 'low':
-      console.info('ℹ️ [LOW ERROR]', logData);
+      console.info('ℹ️ [LOW ERROR]', logData)
       break;
-  }
+
 }

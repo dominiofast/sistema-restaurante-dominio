@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { MessageSquare, Play, RefreshCw, X, Trash2, CheckCircle } from 'lucide-react';
 
 import type { WhatsappIntegration } from '@/types/whatsapp';
@@ -13,177 +13,164 @@ interface WhatsappStatus {
 }
 
 export const WhatsappConnect: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const [integration, setIntegration] = useState<WhatsappIntegration | null>(null);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
-  const [whatsappStatus, setWhatsappStatus] = useState<WhatsappStatus>({ connected: false });
-  const [loading, setLoading] = useState(true);
-  const [connecting, setConnecting] = useState(false);
-  const [disconnecting, setDisconnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [logs, setLogs] = useState<Array<{timestamp: string, level: string, message: string}>>([]);
+  const { currentCompany } = useAuth()
+  const [integration, setIntegration] = useState<WhatsappIntegration | null>(null)
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null)
+  const [whatsappStatus, setWhatsappStatus] = useState<WhatsappStatus>({ connected: false })
+  const [loading, setLoading] = useState(true)
+  const [connecting, setConnecting] = useState(false)
+  const [disconnecting, setDisconnecting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [logs, setLogs] = useState<Array<{timestamp: string, level: string, message: string}>>([])
   const [selectedPurpose, setSelectedPurpose] = useState<'primary' | 'marketing'>(() => {
     try {
-      const saved = localStorage.getItem('wa:selectedPurpose');
+      const saved = localStorage.getItem('wa:selectedPurpose')
       if (saved === 'primary' || saved === 'marketing') return saved as 'primary' | 'marketing';
     } catch {}
     return 'primary';
-  });
-  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
-  const [credentialsWarning, setCredentialsWarning] = useState<string | null>(null);
-  const [otherIntegration, setOtherIntegration] = useState<Partial<WhatsappIntegration> | null>(null);
-  const logsContainerRef = useRef<HTMLDivElement>(null);
+  })
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null)
+  const [credentialsWarning, setCredentialsWarning] = useState<string | null>(null)
+  const [otherIntegration, setOtherIntegration] = useState<Partial<WhatsappIntegration> | null>(null)
+  const logsContainerRef = useRef<HTMLDivElement>(null)
 
   // Adicionar log
   const addLog = (level: string, message: string) => {
-    const timestamp = new Date().toLocaleTimeString('pt-BR');
+    const timestamp = new Date().toLocaleTimeString('pt-BR')
     const newLog = { timestamp, level, message };
-    setLogs(prev => [...prev, newLog]);
+    setLogs(prev => [...prev, newLog])
     
     // Auto scroll para o final
     setTimeout(() => {
       if (logsContainerRef.current) {
         logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
       }
-    }, 100);
+    }, 100)
   };
 
   const clearLogs = () => {
-    setLogs([]);
-    addLog('info', 'Logs limpos');
+    setLogs([])
+    addLog('info', 'Logs limpos')
   };
 
   useEffect(() => {
     const fetchIntegration = async () => {
       if (!currentCompany?.id) {
-        setError('Nenhuma empresa selecionada.');
-        setLoading(false);
-        setIntegration(null);
+        setError('Nenhuma empresa selecionada.')
+        setLoading(false)
+        setIntegration(null)
         return;
       }
-      addLog('info', 'Sistema iniciado');
-      addLog('info', 'Carregando configuração WhatsApp...');
-      setLoading(true);
-      setError(null);
+      addLog('info', 'Sistema iniciado')
+      addLog('info', 'Carregando configuração WhatsApp...')
+      setLoading(true)
+      setError(null)
       // Evita estado antigo de outra instância
-      setIntegration(null);
-      setQrCodeUrl(null);
-      setWhatsappStatus({ connected: false });
+      setIntegration(null)
+      setQrCodeUrl(null)
+      setWhatsappStatus({ connected: false })
       
-const { data, error } = await supabase
-        .from('whatsapp_integrations')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', selectedPurpose)
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+const { data, error  } = null as any;
       if (error) {
-        addLog('error', `Erro ao buscar integração (${selectedPurpose}): ${error.message || 'desconhecido'}`);
+        addLog('error', `Erro ao buscar integração (${selectedPurpose}): ${error.message || 'desconhecido'}`)
       }
       if (!data) {
-        setError(`Configuração de integração WhatsApp (${selectedPurpose === 'primary' ? 'Agente IA' : 'Marketing'}) não encontrada para esta loja.`);
-        addLog('error', 'Configuração não encontrada');
-        setLoading(false);
-        setIntegration(null); // Garante que não usamos a integração anterior
+        setError(`Configuração de integração WhatsApp (${selectedPurpose === 'primary' ? 'Agente IA' : 'Marketing'}) não encontrada para esta loja.`)
+        addLog('error', 'Configuração não encontrada')
+        setLoading(false)
+        setIntegration(null) // Garante que não usamos a integração anterior
         return;
       }
-      setIntegration(data as WhatsappIntegration);
+      setIntegration(data as WhatsappIntegration)
       
       // Verificar se a outra instância usa a mesma instance_key (o que faria conectar o mesmo número)
       const otherPurpose = selectedPurpose === 'primary' ? 'marketing' : 'primary';
-      const { data: other } = await supabase
-        .from('whatsapp_integrations')
-        .select('instance_key, host, token, control_id, purpose')
-        .eq('company_id', currentCompany.id)
-        .eq('purpose', otherPurpose)
-        .maybeSingle();
-
-      setOtherIntegration(other as any);
+      const { data: other  } = null as any;
+      setOtherIntegration(other as any)
 
       if (other?.instance_key && other.instance_key === (data as any).instance_key) {
-        setDuplicateWarning('Atenção: as instâncias Agente IA e Marketing estão usando a MESMA Instance Key. Cada QR conectará o mesmo número. Configure chaves diferentes para números separados.');
-        addLog('warn', 'Instance Key duplicada entre Agente IA e Marketing');
+        setDuplicateWarning('Atenção: as instâncias Agente IA e Marketing estão usando a MESMA Instance Key. Cada QR conectará o mesmo número. Configure chaves diferentes para números separados.')
+        addLog('warn', 'Instance Key duplicada entre Agente IA e Marketing')
       } else {
-        setDuplicateWarning(null);
+        setDuplicateWarning(null)
       }
 
       if (other && (other as any).host === (data as any).host && (other as any).token === (data as any).token) {
-        setCredentialsWarning('As duas instâncias usam o MESMO Host e Token (mesma conta/servidor). Isso pode causar conexão espelhada ao escanear um QR. Recomenda-se usar tokens diferentes para cada instância.');
-        addLog('warn', 'Host+Token idênticos entre instâncias');
+        setCredentialsWarning('As duas instâncias usam o MESMO Host e Token (mesma conta/servidor). Isso pode causar conexão espelhada ao escanear um QR. Recomenda-se usar tokens diferentes para cada instância.')
+        addLog('warn', 'Host+Token idênticos entre instâncias')
       } else {
-        setCredentialsWarning(null);
+        setCredentialsWarning(null)
       }
 
-      addLog('success', 'Configuração carregada com sucesso');
-      setLoading(false);
+      addLog('success', 'Configuração carregada com sucesso')
+      setLoading(false)
     };
-    fetchIntegration();
-  }, [currentCompany, selectedPurpose]);
+    fetchIntegration()
+  }, [currentCompany, selectedPurpose])
 
   // Ao trocar a instância, limpar estado visual para evitar confusão entre instâncias
   useEffect(() => {
-    setQrCodeUrl(null);
-    setWhatsappStatus({ connected: false });
-    setIntegration(null);
-    setError(null);
-    addLog('info', `Instância selecionada: ${selectedPurpose === 'primary' ? 'Agente IA' : 'Marketing'}`);
-  }, [selectedPurpose]);
+    setQrCodeUrl(null)
+    setWhatsappStatus({ connected: false })
+    setIntegration(null)
+    setError(null)
+    addLog('info', `Instância selecionada: ${selectedPurpose === 'primary' ? 'Agente IA' : 'Marketing'}`)
+  }, [selectedPurpose])
 
   // Persistir seleção da instância entre recarregamentos
   useEffect(() => {
     try {
-      localStorage.setItem('wa:selectedPurpose', selectedPurpose);
+      localStorage.setItem('wa:selectedPurpose', selectedPurpose)
     } catch {}
-  }, [selectedPurpose]);
+  }, [selectedPurpose])
 
   useEffect(() => {
     if (integration) {
-      checkWhatsappStatus();
+      checkWhatsappStatus()
     }
-  }, [integration]);
+  }, [integration])
 
   const checkWhatsappStatus = async () => {
     if (!integration) return;
     
-    addLog('info', 'Verificando status da conexão...');
+    addLog('info', 'Verificando status da conexão...')
     
     try {
       // Endpoint correto conforme documentação da Mega API
-      const url = `https://${integration.host}/rest/instance/${integration.instance_key}`;
-      console.log('🔍 Verificando status no endpoint:', url);
+      const url = `https://${integration.host} catch (error) { console.error('Error:', error) }/rest/instance/${integration.instance_key}`;
+      console.log('🔍 Verificando status no endpoint:', url)
       
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
-        }
-      });
+        };
+      })
       
-      console.log('📡 Status da resposta:', response.status, response.statusText);
+      console.log('📡 Status da resposta:', response.status, response.statusText)
       
       if (response.ok) {
-        const res = await response.json();
-        console.log('📋 Resposta completa da API:', JSON.stringify(res, null, 2));
+        const res = await response.json()
+        console.log('📋 Resposta completa da API:', JSON.stringify(res, null, 2))
         
         // Garantir que a resposta pertence à instância solicitada
-        const instanceKeyFromResponse = String(res?.instance?.key || res?.instance?.instance_key || '');
+        const instanceKeyFromResponse = String(res?.instance?.key || res?.instance?.instance_key || '')
         if (instanceKeyFromResponse && instanceKeyFromResponse !== integration.instance_key) {
           console.warn('⚠️ Instância divergente na resposta', {
             requested: integration.instance_key,
             received: instanceKeyFromResponse,
-          });
-          addLog('warn', 'Resposta de status pertence a outra instância. Ignorando.');
-          setWhatsappStatus({ connected: false });
+          })
+          addLog('warn', 'Resposta de status pertence a outra instância. Ignorando.')
+          setWhatsappStatus({ connected: false })
           return;
         }
         
         // Conforme documentação: conectado somente quando há usuário e status indica conexão
         const user = res?.instance?.user;
         const userId = user?.id || user?.wid || null;
-        const status = String(res?.instance?.status || '').toLowerCase();
-        const isConnected = !!userId && (status === 'open' || status === 'connected');
+        const status = String(res?.instance?.status || '').toLowerCase()
+        const isConnected = !!userId && (status === 'open' || status === 'connected')
         
         console.log('🔍 Análise do status:', {
           hasUser: !!user,
@@ -193,7 +180,7 @@ const { data, error } = await supabase
           instanceKeyFromResponse: instanceKeyFromResponse || '(vazio)',
           requestedInstanceKey: integration.instance_key,
           fullInstance: res?.instance
-        });
+        })
         
         if (isConnected) {
           const phoneNumber = userId || res.instance.key || 'Número não disponível';
@@ -202,35 +189,35 @@ const { data, error } = await supabase
           console.log('✅ WhatsApp CONECTADO:', {
             phone: phoneNumber,
             name: profileName
-          });
+          })
           
           setWhatsappStatus({
             connected: true,
             phone_number: phoneNumber,
             profile_name: profileName,
             profile_picture: user?.profilePicture
-          });
-          addLog('success', 'WhatsApp conectado com sucesso');
-          addLog('info', 'Sincronização concluída');
+          })
+          addLog('success', 'WhatsApp conectado com sucesso')
+          addLog('info', 'Sincronização concluída')
         } else {
           console.log('❌ WhatsApp DESCONECTADO:', {
             hasUser: !!user,
             status: status,
             reason: !userId ? 'Sem usuário' : 'Status não indica conexão'
-          });
-          setWhatsappStatus({ connected: false });
-          addLog('info', `Status atual: desconectado`);
+          })
+          setWhatsappStatus({ connected: false })
+          addLog('info', `Status atual: desconectado`)
         }
       } else {
-        const errorText = await response.text();
-        console.log('❌ Erro ao verificar status:', response.status, response.statusText, errorText);
-        setWhatsappStatus({ connected: false });
-        addLog('info', `Status atual: desconectado`);
+        const errorText = await response.text()
+        console.log('❌ Erro ao verificar status:', response.status, response.statusText, errorText)
+        setWhatsappStatus({ connected: false })
+        addLog('info', `Status atual: desconectado`)
       }
     } catch (err) {
-      console.error('💥 Erro ao verificar status:', err);
-      setWhatsappStatus({ connected: false });
-      addLog('info', `Status atual: desconectado`);
+      console.error('💥 Erro ao verificar status:', err)
+      setWhatsappStatus({ connected: false })
+      addLog('info', `Status atual: desconectado`)
     }
   };
 
@@ -238,24 +225,24 @@ const { data, error } = await supabase
     if (!integration) return;
     // Segurança: garantir que a integração corresponde ao propósito selecionado
     if (integration.purpose && integration.purpose !== selectedPurpose) {
-      addLog('warn', 'Integração carregada não corresponde à instância selecionada. Abortando.');
-      setError('A integração carregada não corresponde à instância selecionada.');
+      addLog('warn', 'Integração carregada não corresponde à instância selecionada. Abortando.')
+      setError('A integração carregada não corresponde à instância selecionada.')
       return;
     }
-    setConnecting(true);
-    setQrCodeUrl(null);
-    setError(null);
+    setConnecting(true)
+    setQrCodeUrl(null)
+    setError(null)
     
-    addLog('info', 'Iniciando processo de conexão...');
+    addLog('info', 'Iniciando processo de conexão...')
     
     const endpoints = [
       `/rest/instance/qrcode/${integration.instance_key}`,
-      `/rest/instance/qrcode_base64/${integration.instance_key}`
+      `/rest/instance/qrcode_base64/${integration.instance_key}`;
     ];
     
     for (const endpoint of endpoints) {
       try {
-        console.log(`Tentando endpoint: https://${integration.host}${endpoint}`);
+        console.log(`Tentando endpoint: https://${integration.host} catch (error) { console.error('Error:', error) }${endpoint}`)
         
         const url = `https://${integration.host}${endpoint}`;
         const response = await fetch(url, {
@@ -263,18 +250,18 @@ const { data, error } = await supabase
           headers: {
             'Authorization': `Bearer ${integration.token}`,
             'Content-Type': 'application/json'
-          }
-        });
+          };
+        })
         
-        console.log(`Status da resposta: ${response.status} ${response.statusText}`);
+        console.log(`Status da resposta: ${response.status} ${response.statusText}`)
         
         if (!response.ok) {
-          console.log(`Endpoint ${endpoint} falhou com status ${response.status}`);
+          console.log(`Endpoint ${endpoint} falhou com status ${response.status}`)
           continue;
         }
         
-        const res = await response.json();
-        console.log('Resposta da API:', res);
+        const res = await response.json()
+        console.log('Resposta da API:', res)
         
         let qrCodeData = null;
         
@@ -293,68 +280,68 @@ const { data, error } = await supabase
         }
         
         if (qrCodeData) {
-          console.log('QR Code encontrado:', qrCodeData.substring(0, 50) + '...');
-          setQrCodeUrl(qrCodeData);
-          addLog('success', 'QR Code gerado com sucesso');
-          addLog('info', 'Aguardando escaneamento...');
-          setConnecting(false);
+          console.log('QR Code encontrado:', qrCodeData.substring(0, 50) + '...')
+          setQrCodeUrl(qrCodeData)
+          addLog('success', 'QR Code gerado com sucesso')
+          addLog('info', 'Aguardando escaneamento...')
+          setConnecting(false)
           return;
         }
         
       } catch (err: any) {
-        console.error(`Erro no endpoint ${endpoint}:`, err);
+        console.error(`Erro no endpoint ${endpoint}:`, err)
         continue;
       }
     }
     
-    setError('Não foi possível gerar o QR Code. Isso pode acontecer se o WhatsApp já estiver conectado ou se houver um problema temporário.');
-    addLog('error', 'Erro ao gerar QR Code');
-    setConnecting(false);
+    setError('Não foi possível gerar o QR Code. Isso pode acontecer se o WhatsApp já estiver conectado ou se houver um problema temporário.')
+    addLog('error', 'Erro ao gerar QR Code')
+    setConnecting(false)
   };
 
   const disconnectWhatsapp = async () => {
     if (!integration) return;
-    setDisconnecting(true);
-    setError(null);
+    setDisconnecting(true)
+    setError(null)
     
-    addLog('info', 'Desconectando WhatsApp...');
+    addLog('info', 'Desconectando WhatsApp...')
     
     try {
       // Endpoint correto conforme documentação da Mega API
-      const url = `https://${integration.host}/rest/instance/${integration.instance_key}/logout`;
-      console.log('🔌 Desconectando WhatsApp no endpoint:', url);
+      const url = `https://${integration.host} catch (error) { console.error('Error:', error) }/rest/instance/${integration.instance_key}/logout`;
+      console.log('🔌 Desconectando WhatsApp no endpoint:', url)
       
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${integration.token}`,
           'Content-Type': 'application/json'
-        }
-      });
+        };
+      })
       
-      console.log('📡 Status da desconexão:', response.status, response.statusText);
+      console.log('📡 Status da desconexão:', response.status, response.statusText)
       
       if (response.ok) {
-        const res = await response.json();
-        console.log('✅ Resposta da desconexão:', res);
+        const res = await response.json()
+        console.log('✅ Resposta da desconexão:', res)
         
-        setWhatsappStatus({ connected: false });
-        setQrCodeUrl(null);
-        addLog('info', 'WhatsApp desconectado');
-        console.log('✅ WhatsApp desconectado com sucesso');
+        setWhatsappStatus({ connected: false })
+        setQrCodeUrl(null)
+        addLog('info', 'WhatsApp desconectado')
+        console.log('✅ WhatsApp desconectado com sucesso')
       } else {
-        const errorText = await response.text();
-        console.log('❌ Erro ao desconectar:', response.status, response.statusText, errorText);
-        addLog('error', `Erro ao desconectar: ${response.status}`);
-        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        const errorText = await response.text()
+        console.log('❌ Erro ao desconectar:', response.status, response.statusText, errorText)
+        addLog('error', `Erro ao desconectar: ${response.status}`)
+        throw new Error(`Erro ${response.status}: ${response.statusText}`)
       }
     } catch (err: any) {
-      console.error('💥 Erro ao desconectar:', err);
-      setError(`Erro ao desconectar: ${err.message}`);
-      addLog('error', `Erro: ${err.message}`);
+      console.error('💥 Erro ao desconectar:', err)
+      setError(`Erro ao desconectar: ${err.message}`)
+      addLog('error', `Erro: ${err.message}`)
     }
     
-    setDisconnecting(false);
+    setDisconnecting(false)
   };
 
   if (loading) {
@@ -381,8 +368,8 @@ const { data, error } = await supabase
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   if (error && !integration) {
     return (
@@ -421,8 +408,8 @@ const { data, error } = await supabase
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -663,7 +650,7 @@ const { data, error } = await supabase
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default WhatsappConnect;

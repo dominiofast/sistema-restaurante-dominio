@@ -32,7 +32,7 @@ export default function PedidosDashboard() {
     onStatusChange,
     testarCampainha,
     campainhaInfo
-  } = usePedidosDashboardLogic();
+  } = usePedidosDashboardLogic()
 
   // Verificar estados de carregamento, erro ou falta de empresa
   if (loading) {
@@ -41,8 +41,8 @@ export default function PedidosDashboard() {
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
         <span className="ml-4 text-lg text-blue-700 font-semibold">Carregando pedidos...</span>
       </div>
-    );
-  }
+    )
+
   
   if (error) {
     return (
@@ -57,8 +57,8 @@ export default function PedidosDashboard() {
           Recarregar Pedidos
         </button>
       </div>
-    );
-  }
+    )
+
 
   if (!companyId) {
     return (
@@ -67,8 +67,8 @@ export default function PedidosDashboard() {
         <span className="text-lg text-yellow-700 font-semibold mb-2">Nenhuma empresa selecionada</span>
         <span className="text-gray-700">Selecione uma empresa para visualizar os pedidos</span>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -110,5 +110,5 @@ export default function PedidosDashboard() {
         setFiltrosAtivos={setFiltrosAtivos}
       />
     </div>
-  );
-}
+  )
+

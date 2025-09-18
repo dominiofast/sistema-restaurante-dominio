@@ -19,7 +19,7 @@ export const ClienteSearch: React.FC<ClienteSearchProps> = ({
 }) => {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      onSearch();
+      onSearch()
     }
   };
   return (
@@ -44,5 +44,5 @@ export const ClienteSearch: React.FC<ClienteSearchProps> = ({
       </div>
       <div className="text-gray-700 mb-2">Total de registros {totalRecords}</div>
     </>
-  );
+  )
 };

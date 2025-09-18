@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -16,61 +16,47 @@ import {
 } from 'lucide-react';
 
 const DebugCurriculoUpload: React.FC = () => {
-  const { companyId } = useAuth();
-  const [testUrl, setTestUrl] = useState('');
-  const [fileName, setFileName] = useState('');
-  const [candidateName, setCandidateName] = useState('');
-  const [candidateEmail, setCandidateEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { companyId } = useAuth()
+  const [testUrl, setTestUrl] = useState('')
+  const [fileName, setFileName] = useState('')
+  const [candidateName, setCandidateName] = useState('')
+  const [candidateEmail, setCandidateEmail] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const createTestInscricao = async () => {
     if (!companyId) {
-      toast.error('Company ID não encontrado');
+      toast.error('Company ID não encontrado')
       return;
     }
 
     if (!testUrl || !candidateName || !candidateEmail) {
-      toast.error('Preencha todos os campos obrigatórios');
+      toast.error('Preencha todos os campos obrigatórios')
       return;
     }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
       // Primeiro, verificar se existe uma vaga de teste
-      let { data: vaga, error: vagaError } = await (supabase as any)
-        .from('rh_vagas')
-        .select('id')
-        .eq('company_id', companyId)
-        .eq('title', 'Vaga de Teste - Debug PDF')
-        .single();
+      let { data: vaga, error: vagaError }  catch (error) { console.error('Error:', error) }= await (supabase as any)
+        
+        
+        
+        
+        
 
       if (vagaError || !vaga) {
         // Criar vaga de teste
-        const { data: newVaga, error: createVagaError } = await (supabase as any)
-          .from('rh_vagas')
-          .insert({
-            company_id: companyId,
-            title: 'Vaga de Teste - Debug PDF',
-            description: 'Vaga criada automaticamente para teste de PDFs',
-            location: 'Teste',
-            type: 'CLT',
-            is_active: true
-          })
-          .select()
-          .single();
-
-        if (createVagaError) {
-          throw new Error('Erro ao criar vaga de teste: ' + createVagaError.message);
+        const newVaga = null as any; const createVagaError = null as any;
         }
 
         vaga = newVaga;
-      }
+
 
       // Criar inscrição de teste
       const { error: inscricaoError } = await (supabase as any)
-        .from('rh_inscricoes')
-        .insert({
+        
+        
           company_id: companyId,
           vaga_id: vaga.id,
           nome_completo: candidateName,
@@ -79,75 +65,75 @@ const DebugCurriculoUpload: React.FC = () => {
           curriculo_nome: fileName || 'teste-curriculo.pdf',
           experiencia_relevante: 'Esta é uma inscrição de teste criada para debug de PDFs.',
           status: 'pendente'
-        });
+        })
 
       if (inscricaoError) {
-        throw new Error('Erro ao criar inscrição: ' + inscricaoError.message);
-      }
+        throw new Error('Erro ao criar inscrição: ' + inscricaoError.message)
 
-      toast.success('Inscrição de teste criada com sucesso!');
+
+      toast.success('Inscrição de teste criada com sucesso!')
       
       // Limpar formulário
-      setTestUrl('');
-      setFileName('');
-      setCandidateName('');
-      setCandidateEmail('');
+      setTestUrl('')
+      setFileName('')
+      setCandidateName('')
+      setCandidateEmail('')
 
     } catch (error: any) {
-      console.error('Erro ao criar inscrição de teste:', error);
-      toast.error('Erro: ' + error.message);
+      console.error('Erro ao criar inscrição de teste:', error)
+      toast.error('Erro: ' + error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const testDirectAccess = () => {
     if (!testUrl) {
-      toast.error('Digite uma URL primeiro');
+      toast.error('Digite uma URL primeiro')
       return;
     }
 
-    console.log('🔍 [Debug] Testando acesso direto à URL:', testUrl);
-    window.open(testUrl, '_blank');
+    console.log('🔍 [Debug] Testando acesso direto à URL:', testUrl)
+    window.open(testUrl, '_blank')
   };
 
   const testDownload = async () => {
     if (!testUrl) {
-      toast.error('Digite uma URL primeiro');
+      toast.error('Digite uma URL primeiro')
       return;
     }
 
-    console.log('🔍 [Debug] Testando download da URL:', testUrl);
+    console.log('🔍 [Debug] Testando download da URL:', testUrl)
     
     try {
       const response = await fetch(testUrl, {
         method: 'GET',
-        mode: 'cors'
-      });
+        mode: 'cors';
+      } catch (error) { console.error('Error:', error) })
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
 
-      const blob = await response.blob();
+
+      const blob = await response.blob()
       console.log('📦 [Debug] Blob criado:', {
         size: blob.size,
         type: blob.type
-      });
+      })
 
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
       link.href = downloadUrl;
       link.download = fileName || 'teste-download.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(downloadUrl)
 
-      toast.success(`Download concluído! (${blob.size} bytes)`);
+      toast.success(`Download concluído! (${blob.size} bytes)`)
     } catch (error: any) {
-      console.error('❌ [Debug] Erro no download:', error);
-      toast.error('Erro no download: ' + error.message);
+      console.error('❌ [Debug] Erro no download:', error)
+      toast.error('Erro no download: ' + error.message)
     }
   };
 
@@ -268,7 +254,7 @@ const DebugCurriculoUpload: React.FC = () => {
         </Alert>
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default DebugCurriculoUpload; 

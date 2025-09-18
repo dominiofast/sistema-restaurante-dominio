@@ -10,61 +10,44 @@ import JobListingsSection from './JobListingsSection';
 import CallToActionSection from './CallToActionSection';
 
 const PublicVagasPage = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const [vagas, setVagas] = useState<Vaga[]>([]);
-  const [filteredVagas, setFilteredVagas] = useState<Vaga[]>([]);
-  const [config, setConfig] = useState<PageConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { slug } = useParams<{ slug: string }>()
+  const [vagas, setVagas] = useState<Vaga[]>([])
+  const [filteredVagas, setFilteredVagas] = useState<Vaga[]>([])
+  const [config, setConfig] = useState<PageConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  console.log('PublicVagasPage: slug =', slug);
+  console.log('PublicVagasPage: slug =', slug)
 
   useEffect(() => {
     const fetchVagasAndConfig = async () => {
       if (!slug) {
-        console.log('No slug provided');
-        setError("Página não encontrada.");
-        setLoading(false);
+        console.log('No slug provided')
+        setError("Página não encontrada.")
+        setLoading(false)
         return;
       }
 
       try {
-        console.log('Fetching config for slug:', slug);
+        console.log('Fetching config for slug:', slug)
         
         // Buscar configuração da página de vagas
-        const { data: configData, error: configError } = await supabase
-          .from('rh_vagas_config')
-          .select(`
-            *,
-            companies!inner(name)
-          `)
-          .eq('slug', slug)
-          .eq('is_active', true)
-          .single();
-        
-        console.log('Config data:', configData, 'Error:', configError);
+        const configData = null as any; const configError = null as any;
         
         if (configError) {
-          console.error('Config error:', configError);
-          throw new Error('Página de vagas não encontrada ou não configurada.');
+          console.error('Config error:', configError)
+          throw new Error('Página de vagas não encontrada ou não configurada.')
         }
 
-        if (!configData || !configData.companies) {
-          throw new Error('Configuração inválida ou empresa não encontrada.');
+         catch (error) { console.error('Error:', error) }if (!configData || !configData.companies) {
+          throw new Error('Configuração inválida ou empresa não encontrada.')
         }
 
         // Buscar vagas da empresa
-        const { data: vagasData, error: vagasError } = await supabase
-          .from('rh_vagas')
-          .select('*')
-          .eq('company_id', configData.company_id)
-          .eq('is_active', true)
-          .order('created_at', { ascending: false });
-
-        console.log('Vagas data:', vagasData, 'Error:', vagasError);
+        const vagasData = null as any; const vagasError = null as any;
 
         if (vagasError) {
-          console.error('Vagas error:', vagasError);
+          console.error('Vagas error:', vagasError)
           throw vagasError;
         }
 
@@ -79,48 +62,48 @@ const PublicVagasPage = () => {
           company_id: configData.company_id
         };
         
-        console.log('Transformed config:', transformedConfig);
+        console.log('Transformed config:', transformedConfig)
         
-        setConfig(transformedConfig);
-        setVagas(vagasData || []);
-        setFilteredVagas(vagasData || []);
+        setConfig(transformedConfig)
+        setVagas(vagasData || [])
+        setFilteredVagas(vagasData || [])
 
       } catch (err: any) {
-        console.error('Error fetching data:', err);
-        setError(err.message || 'Ocorreu um erro ao carregar a página.');
+        console.error('Error fetching data:', err)
+        setError(err.message || 'Ocorreu um erro ao carregar a página.')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     };
 
-    fetchVagasAndConfig();
-  }, [slug]);
+    fetchVagasAndConfig()
+  }, [slug])
 
   const handleSearch = (filters: { busca: string; tipoContrato: string; localizacao: string }) => {
-    console.log('Applying filters:', filters);
+    console.log('Applying filters:', filters)
     let filtered = [...vagas];
 
     if (filters.busca) {
       filtered = filtered.filter(vaga =>
         vaga.title.toLowerCase().includes(filters.busca.toLowerCase()) ||
         (vaga.description && vaga.description.toLowerCase().includes(filters.busca.toLowerCase()))
-      );
+      )
     }
 
     if (filters.tipoContrato) {
       filtered = filtered.filter(vaga =>
         vaga.type.toLowerCase().includes(filters.tipoContrato.toLowerCase())
-      );
+      )
     }
 
     if (filters.localizacao) {
       filtered = filtered.filter(vaga =>
         vaga.location.toLowerCase().includes(filters.localizacao.toLowerCase())
-      );
+      )
     }
 
-    console.log('Filtered vagas:', filtered);
-    setFilteredVagas(filtered);
+    console.log('Filtered vagas:', filtered)
+    setFilteredVagas(filtered)
   };
 
   if (loading) {
@@ -131,7 +114,7 @@ const PublicVagasPage = () => {
           <p className="text-gray-600">Carregando oportunidades...</p>
         </div>
       </div>
-    );
+    )
   }
   
   if (error) {
@@ -145,7 +128,7 @@ const PublicVagasPage = () => {
           </div>
         </div>
       </div>
-    );
+    )
   }
   
   if (!config) {
@@ -153,14 +136,14 @@ const PublicVagasPage = () => {
       <div className="flex justify-center items-center h-screen font-sans bg-gray-50">
         <p className="text-gray-600">Configuração não encontrada.</p>
       </div>
-    );
+    )
   }
 
   const primaryColor = config.primary_color || '#1B365D';
   const titleColor = config.title_color || '#FFFFFF';
   
   const dynamicStyles = {
-    '--primary-color': primaryColor,
+    '--primary-color': primaryColor,;
   } as React.CSSProperties;
 
   return (
@@ -199,7 +182,7 @@ const PublicVagasPage = () => {
         logoUrl={config.logo_url} 
       />
     </div>
-  );
+  )
 };
 
 export default PublicVagasPage;

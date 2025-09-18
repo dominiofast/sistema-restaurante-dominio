@@ -26,14 +26,14 @@ interface StoreContextType {
   isStoreFilterActive: boolean;
 }
 
-const StoreContext = createContext<StoreContextType | undefined>(undefined);
+const StoreContext = createContext<StoreContextType | undefined>(undefined)
 
 interface StoreProviderProps {
   children: ReactNode;
 }
 
 export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
-  const { user, currentCompany, companies } = useAuth();
+  const { user, currentCompany, companies } = useAuth()
   
   // CRITICAL: Extract companies from AuthContext
   const userCompanies = companies || [];
@@ -46,64 +46,66 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
     status: company.status,
     plan: company.plan || 'standard',
     user_count: company.user_count || 0
-  });
+  })
   
   // Enhanced initialization with validation
   const [selectedStore, setSelectedStoreState] = useState<StoreInfo | null>(() => {
     try {
       // Priority: 1. Stored in localStorage 2. Current company 3. First company 4. Null
-      const storedCompany = localStorage.getItem('selectedCompany');
+      const storedCompany = localStorage.getItem('selectedCompany')
       const parsedStoredCompany = storedCompany ? JSON.parse(storedCompany) : null;
       
       // Validate stored company exists in user's companies
       const validatedCompany = userCompanies.find(
         (company: Company) => company.id === parsedStoredCompany?.id
-      );
+      )
       
       if (validatedCompany) {
-        return convertToStoreInfo(validatedCompany);
+        return convertToStoreInfo(validatedCompany)
       }
       
       if (currentCompany) {
-        return convertToStoreInfo(currentCompany);
+        return convertToStoreInfo(currentCompany)
       }
       
       if (userCompanies[0]) {
-        return convertToStoreInfo(userCompanies[0]);
+        return convertToStoreInfo(userCompanies[0])
       }
       
       return null;
-    } catch {
+    } catch (error) {
+      console.error('Error:', error)
+      
       if (currentCompany) {
-        return convertToStoreInfo(currentCompany);
+        return convertToStoreInfo(currentCompany)
       }
       if (userCompanies[0]) {
-        return convertToStoreInfo(userCompanies[0]);
+        return convertToStoreInfo(userCompanies[0])
       }
       return null;
     }
-  });
+  })
 
   const selectCompany = (company: StoreInfo | null) => {
     if (!company) {
-      console.log('❌ Clearing company selection');
-      setSelectedStoreState(null);
-      localStorage.removeItem('selectedCompany');
+      console.log('❌ Clearing company selection')
+      setSelectedStoreState(null)
+      localStorage.removeItem('selectedCompany')
       return;
     }
     
     // ENHANCED VALIDATION
     if (!userCompanies.some((c: Company) => c.id === company.id)) {
-      console.error('❌ Invalid company selection', { company, userCompanies });
+      console.error('❌ Invalid company selection', { company, userCompanies })
       return;
     }
     
-    console.log('✅ Selecting company:', company.name, 'ID:', company.id);
-    setSelectedStoreState(company);
-    localStorage.setItem('selectedCompany', JSON.stringify(company));
+    console.log('✅ Selecting company:', company.name, 'ID:', company.id)
+    setSelectedStoreState(company)
+    localStorage.setItem('selectedCompany', JSON.stringify(company))
     
     // Optional: Dispatch event for cross-component communication
-    window.dispatchEvent(new CustomEvent('companyChanged', { detail: company }));
+    window.dispatchEvent(new CustomEvent('companyChanged', { detail: company }))
   };
 
   const isStoreFilterActive = selectedStore !== null;
@@ -115,8 +117,8 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       userCompanies,
       currentCompany,
       storedCompany: localStorage.getItem('selectedCompany')
-    });
-  }, [selectedStore, userCompanies, currentCompany]);
+    })
+  }, [selectedStore, userCompanies, currentCompany])
 
   return (
     <StoreContext.Provider value={{
@@ -127,13 +129,13 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
     }}>
       {children}
     </StoreContext.Provider>
-  );
+  )
 };
 
 export const useStore = () => {
-  const context = useContext(StoreContext);
+  const context = useContext(StoreContext)
   if (context === undefined) {
-    throw new Error('useStore must be used within a StoreProvider');
+    throw new Error('useStore must be used within a StoreProvider')
   }
   return context;
 };

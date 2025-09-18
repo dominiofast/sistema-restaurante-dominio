@@ -5,9 +5,9 @@ import { ImageUploader } from './ImageUploader';
 import { useCloudinaryUpload } from '@/hooks/useCloudinaryUpload';
 
 export const ImageUploadTest: React.FC = () => {
-  const [singleImage, setSingleImage] = useState<string>('');
-  const [multipleImages, setMultipleImages] = useState<string[]>([]);
-  const { uploading, progress } = useCloudinaryUpload();
+  const [singleImage, setSingleImage] = useState<string>('')
+  const [multipleImages, setMultipleImages] = useState<string[]>([])
+  const { uploading, progress } = useCloudinaryUpload()
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -144,5 +144,5 @@ export const ImageUploadTest: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };

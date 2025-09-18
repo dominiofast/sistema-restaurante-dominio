@@ -21,7 +21,7 @@ export const EntregaModalPDV: React.FC<EntregaModalPDVProps> = ({
   customerPhone,
   customerName
 }) => {
-  const [tab, setTab] = useState<'delivery'|'pickup'|'eat_in'>('delivery');
+  const [tab, setTab] = useState<'delivery'|'pickup'|'eat_in'>('delivery')
 
   if (!isOpen) return null;
 
@@ -66,5 +66,5 @@ export const EntregaModalPDV: React.FC<EntregaModalPDVProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

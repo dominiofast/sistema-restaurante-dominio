@@ -5,7 +5,7 @@ import { Save, CheckCircle } from 'lucide-react';
 
 const bandeirasPadrao = [
   'Visa', 'Mastercard', 'Elo', 'Hipercard', 'Diners Club', 'American Express', 'Maestro', 'Visa Electron',
-  'Pix Maquininha', 'Alelo', 'Sodexo Alimentação', 'VR Refeição', 'VR Benefícios', 'Ben Alimentação', 'Ben Refeição'
+  'Pix Maquininha', 'Alelo', 'Sodexo Alimentação', 'VR Refeição', 'VR Benefícios', 'Ben Alimentação', 'Ben Refeição';
 ];
 
 export interface PagamentoEntregaConfigData {
@@ -23,41 +23,41 @@ export const PagamentoEntregaConfig: React.FC<{
   onSave?: (config: PagamentoEntregaConfigData) => Promise<boolean>;
   saving?: boolean;
 }> = ({ config, onChange, onSave, saving = false }) => {
-  const [input, setInput] = useState('');
-  const [localConfig, setLocalConfig] = useState(config);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [hasChanges, setHasChanges] = useState(true);
+  const [input, setInput] = useState('')
+  const [localConfig, setLocalConfig] = useState(config)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [hasChanges, setHasChanges] = useState(true)
 
   const updateConfig = (newConfig: PagamentoEntregaConfigData) => {
-    setLocalConfig(newConfig);
-    onChange(newConfig);
-    setHasChanges(true);
-    setSaveSuccess(false);
+    setLocalConfig(newConfig)
+    onChange(newConfig)
+    setHasChanges(true)
+    setSaveSuccess(false)
   };
 
   const handleSave = async () => {
     if (onSave) {
-      const success = await onSave(localConfig);
+      const success = await onSave(localConfig)
       if (success) {
-        setHasChanges(false);
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
+        setHasChanges(false)
+        setSaveSuccess(true)
+        setTimeout(() => setSaveSuccess(false), 3000)
       }
     }
   };
 
   const addBandeira = (b: string) => {
     if (b && !localConfig.card_brands.includes(b)) {
-      updateConfig({ ...localConfig, card_brands: [...localConfig.card_brands, b] });
+      updateConfig({ ...localConfig, card_brands: [...localConfig.card_brands, b] })
     }
-    setInput('');
+    setInput('')
   };
 
   // Sincronizar com config externo quando ele mudar
   React.useEffect(() => {
-    setLocalConfig(config);
+    setLocalConfig(config)
     // Não resetar hasChanges aqui para permitir salvamento inicial
-  }, [config]);
+  }, [config])
 
   return (
     <div className="bg-gray-50 p-6 rounded-xl border max-w-2xl mx-auto mt-6">
@@ -142,8 +142,8 @@ export const PagamentoEntregaConfig: React.FC<{
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Enter') {
-                addBandeira(input.trim());
-                e.preventDefault();
+                addBandeira(input.trim())
+                e.preventDefault()
               }
             }}
           />
@@ -206,5 +206,5 @@ export const PagamentoEntregaConfig: React.FC<{
         </Button>
       </div>
     </div>
-  );
+  )
 };

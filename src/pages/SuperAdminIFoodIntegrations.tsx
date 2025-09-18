@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, Store, Settings, ExternalLink } from 'lucide-react';
 
@@ -25,21 +25,21 @@ interface IFoodIntegration {
   webhook_url: string | null;
   webhook_secret: string | null;
   company_name?: string;
-}
+
 
 interface Company {
   id: string;
   name: string;
-}
+
 
 const SuperAdminIFoodIntegrations = () => {
-  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([]);
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([])
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [loading, setLoading] = useState(true)
   
   // Integration states
-  const [integrationDialogOpen, setIntegrationDialogOpen] = useState(false);
-  const [editingIntegration, setEditingIntegration] = useState<IFoodIntegration | null>(null);
+  const [integrationDialogOpen, setIntegrationDialogOpen] = useState(false)
+  const [editingIntegration, setEditingIntegration] = useState<IFoodIntegration | null>(null)
   const [integrationFormData, setIntegrationFormData] = useState({
     company_id: '',
     merchant_id: '',
@@ -49,91 +49,78 @@ const SuperAdminIFoodIntegrations = () => {
     webhook_secret: '',
     is_active: true,
     notes: ''
-  });
+  })
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const fetchData = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       
       // Buscar empresas
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name')
-        .order('name');
-
-      if (companiesError) throw companiesError;
-      setCompanies(companiesData || []);
+      const companiesData = null as any; const companiesError = null as any;
+      setCompanies(companiesData || [])
 
       // Buscar integrações
-      const { data: integrationsData, error: integrationsError } = await supabase
-        .from('ifood_integrations')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (integrationsError) throw integrationsError;
+      const integrationsData = null as any; const integrationsError = null as any;
       
       // Buscar nomes das empresas
       const integrationsWithCompanyName = await Promise.all(
         (integrationsData || []).map(async (integration) => {
-          const { data: companyData } = await supabase
-            .from('companies')
-            .select('name')
-            .eq('id', integration.company_id)
-            .single();
+          const { data: companyData }  catch (error) { console.error('Error:', error) }= 
+            
+            
+            
+            
           
           return {
             ...integration,
             company_name: companyData?.name || 'Empresa não encontrada'
           };
         })
-      );
+      )
 
-      setIntegrations(integrationsWithCompanyName);
+      setIntegrations(integrationsWithCompanyName)
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
-      toast.error('Erro ao carregar dados');
+      console.error('Erro ao carregar dados:', error)
+      toast.error('Erro ao carregar dados')
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   // Integration functions
   const handleIntegrationSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
     try {
       if (editingIntegration) {
-        const { error } = await supabase
-          .from('ifood_integrations')
-          .update(integrationFormData)
-          .eq('id', editingIntegration.id);
+        const { error }  catch (error) { console.error('Error:', error) }= 
+          
+          
+          
 
         if (error) throw error;
-        toast.success('Integração atualizada!');
+        toast.success('Integração atualizada!')
       } else {
-        const { error } = await supabase
-          .from('ifood_integrations')
-          .insert([integrationFormData]);
-
+        const { error  } = null as any;
         if (error) throw error;
-        toast.success('Integração criada!');
-      }
+        toast.success('Integração criada!')
 
-      setIntegrationDialogOpen(false);
-      resetIntegrationForm();
-      fetchData();
+
+      setIntegrationDialogOpen(false)
+      resetIntegrationForm()
+      fetchData()
     } catch (error) {
-      console.error('Erro ao salvar integração:', error);
-      toast.error('Erro ao salvar integração');
-    }
+      console.error('Erro ao salvar integração:', error)
+      toast.error('Erro ao salvar integração')
+
   };
 
   const handleEditIntegration = (integration: IFoodIntegration) => {
-    setEditingIntegration(integration);
+    setEditingIntegration(integration)
     setIntegrationFormData({
       company_id: integration.company_id,
       merchant_id: integration.merchant_id || '',
@@ -143,26 +130,26 @@ const SuperAdminIFoodIntegrations = () => {
       webhook_secret: integration.webhook_secret || '',
       is_active: integration.is_active,
       notes: integration.notes || ''
-    });
-    setIntegrationDialogOpen(true);
+    })
+    setIntegrationDialogOpen(true)
   };
 
   const handleDeleteIntegration = async (id: string) => {
     if (!confirm('Tem certeza que deseja excluir esta integração?')) return;
 
     try {
-      const { error } = await supabase
-        .from('ifood_integrations')
-        .delete()
-        .eq('id', id);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
-      toast.success('Integração excluída!');
-      fetchData();
+      toast.success('Integração excluída!')
+      fetchData()
     } catch (error) {
-      console.error('Erro ao excluir:', error);
-      toast.error('Erro ao excluir integração');
-    }
+      console.error('Erro ao excluir:', error)
+      toast.error('Erro ao excluir integração')
+
   };
 
   const resetIntegrationForm = () => {
@@ -174,9 +161,9 @@ const SuperAdminIFoodIntegrations = () => {
       webhook_url: '',
       webhook_secret: '',
       is_active: true,
-      notes: ''
-    });
-    setEditingIntegration(null);
+      notes: '';
+    })
+    setEditingIntegration(null)
   };
 
   if (loading) {
@@ -184,8 +171,8 @@ const SuperAdminIFoodIntegrations = () => {
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -419,7 +406,7 @@ const SuperAdminIFoodIntegrations = () => {
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default SuperAdminIFoodIntegrations;

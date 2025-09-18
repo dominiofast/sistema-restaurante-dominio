@@ -6,7 +6,7 @@ interface DynamicMetaTagsProps {
 }
 
 const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({ children }) => {
-  const { company, loading } = useDynamicMetaTags();
+  const { company, loading } = useDynamicMetaTags()
 
   // Este componente não renderiza nada visível
   // Apenas aplica as meta tags baseadas na rota atual
@@ -19,7 +19,7 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({ children }) => {
 
   // Log para debug (remover em produção)
   if (process.env.NODE_ENV === 'development' && company) {
-    console.log(`Meta tags aplicadas para: ${company.name} (${company.slug})`);
+    console.log(`Meta tags aplicadas para: ${company.name} (${company.slug})`)
   }
 
   return (
@@ -28,7 +28,7 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({ children }) => {
       {/* O conteúdo real será renderizado pelos children */}
       {children}
     </>
-  );
+  )
 };
 
 export default DynamicMetaTags; 

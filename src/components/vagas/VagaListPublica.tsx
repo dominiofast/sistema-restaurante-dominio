@@ -15,7 +15,7 @@ const VagaListPublica: React.FC<VagaListPublicaProps> = ({ vagas, config, slug }
   const primaryColor = config.primary_color || '#1B365D';
   const dynamicStyles = {
     '--primary-color': primaryColor,
-    '--primary-color-hover': `${primaryColor}E6`,
+    '--primary-color-hover': `${primaryColor}E6`,;
   } as React.CSSProperties;
 
   return (
@@ -74,7 +74,7 @@ const VagaListPublica: React.FC<VagaListPublicaProps> = ({ vagas, config, slug }
         )}
       </section>
     </div>
-  );
+  )
 };
 
 export default VagaListPublica;

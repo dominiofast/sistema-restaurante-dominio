@@ -8,19 +8,19 @@ import { useToast } from "@/hooks/use-toast";
 // import { useStore } from "@/contexts/StoreContext"; // TODO: Implementar quando disponível
 
 const ImportCardapio = () => {
-  const [jsonData, setJsonData] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [importResult, setImportResult] = useState<any>(null);
-  const { toast } = useToast();
-  // const { currentCompany } = useStore(); // TODO: Implementar quando disponível
+  const [jsonData, setJsonData] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [importResult, setImportResult] = useState<any>(null)
+  const { toast } = useToast()
+  // const { currentCompany } = useStore() // TODO: Implementar quando disponível
 
   const handleImport = async () => {
     if (!jsonData.trim()) {
       toast({
         title: "Erro",
         description: "Por favor, cole os dados JSON para importação",
-        variant: "destructive",
-      });
+        variant: "destructive",;
+      })
       return;
     }
 
@@ -32,40 +32,40 @@ const ImportCardapio = () => {
         title: "Erro",
         description: "Nenhuma empresa selecionada. Por favor, selecione uma empresa primeiro.",
         variant: "destructive",
-      });
+      })
       return;
     }
 
-    setIsLoading(true);
-    setImportResult(null);
+    setIsLoading(true)
+    setImportResult(null)
 
     try {
-      const data = JSON.parse(jsonData);
+      const data = JSON.parse(jsonData)
       
       const response = await fetch('/api/import/cardapio', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json',;
+        } catch (error) { console.error('Error:', error) },
         body: JSON.stringify({
           company_id: companyId,
           ...data
         }),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (response.ok && result.success) {
-        setImportResult(result.data);
+        setImportResult(result.data)
         toast({
           title: "Importação realizada com sucesso!",
           description: `${result.data.stats.categorias_criadas} categorias e ${result.data.stats.adicionais_criados} adicionais importados.`,
-        });
+        })
       } else {
-        throw new Error(result.error || result.message || 'Erro na importação');
+        throw new Error(result.error || result.message || 'Erro na importação')
       }
     } catch (error: any) {
-      console.error('Erro na importação:', error);
+      console.error('Erro na importação:', error)
       let errorMessage = "Erro ao processar os dados";
       if (error.message.includes('JSON')) {
         errorMessage = "JSON inválido. Verifique o formato dos dados.";
@@ -76,9 +76,9 @@ const ImportCardapio = () => {
         title: "Erro na importação",
         description: errorMessage,
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 
@@ -118,7 +118,7 @@ const ImportCardapio = () => {
         is_available: true,
         is_active: true
       }
-    ]
+    ];
   };
 
   return (
@@ -280,7 +280,7 @@ const ImportCardapio = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default ImportCardapio;

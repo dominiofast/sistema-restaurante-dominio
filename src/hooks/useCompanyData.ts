@@ -37,83 +37,83 @@ interface Produto {
 }
 
 export const useCompanyData = (company_slug: string) => {
-  const [company, setCompany] = useState<PublicCompany | null>(null);
-  const [categorias, setCategorias] = useState<PublicCategoria[]>([]);
-  const [produtos, setProdutos] = useState<Produto[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [retryKey, setRetryKey] = useState(0);
+  const [company, setCompany] = useState<PublicCompany | null>(null)
+  const [categorias, setCategorias] = useState<PublicCategoria[]>([])
+  const [produtos, setProdutos] = useState<Produto[]>([])
+  const [loadingData, setLoadingData] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [retryKey, setRetryKey] = useState(0)
 
   const fetchCompanyData = async () => {
     if (!company_slug || company_slug === '') {
-      console.error('❌ Company slug não fornecido');
-      setError('Parâmetro de empresa não encontrado na URL');
-      setLoadingData(false);
+      console.error('❌ Company slug não fornecido')
+      setError('Parâmetro de empresa não encontrado na URL')
+      setLoadingData(false)
       return;
     }
     
-    setLoadingData(true);
+    setLoadingData(true)
     
     try {
-      console.log('🔍 useCompanyData: Buscando empresa com slug via API Neon:', company_slug);
+      console.log('🔍 useCompanyData: Buscando empresa com slug via API Neon:', company_slug)
       
       // Buscar empresa via API /api/companies
-      const companyResponse = await fetch('/api/companies');
-      const companyResult = await companyResponse.json();
+      const companyResponse = await fetch('/api/companies')
+      const companyResult = await companyResponse.json()
       
       if (!companyResponse.ok || !companyResult.success) {
-        throw new Error(companyResult.error || 'Erro ao carregar empresas');
+        throw new Error(companyResult.error || 'Erro ao carregar empresas')
       }
       
-      // Procurar empresa por slug/domain
+       catch (error) { console.error('Error:', error) }// Procurar empresa por slug/domain
       const companyData = companyResult.data?.find((company: any) => {
         return company.slug === company_slug || 
-               company.domain === company_slug ||
+               company.domain === company_slug ||;
                company.id === company_slug;
-      });
+      })
 
       if (!companyData) {
-        console.error('❌ Empresa não encontrada para slug:', company_slug);
-        throw new Error(`Empresa '${company_slug}' não encontrada ou inativa`);
+        console.error('❌ Empresa não encontrada para slug:', company_slug)
+        throw new Error(`Empresa '${company_slug}' não encontrada ou inativa`)
       }
 
-      console.log('✅ useCompanyData: Empresa encontrada via API:', companyData.name);
-      setCompany(companyData);
+      console.log('✅ useCompanyData: Empresa encontrada via API:', companyData.name)
+      setCompany(companyData)
 
       // Buscar categorias via API /api/categorias
-      const categoriasResponse = await fetch(`/api/categorias?company_id=${companyData.id}`);
-      const categoriasResult = await categoriasResponse.json();
+      const categoriasResponse = await fetch(`/api/categorias?company_id=${companyData.id}`)
+      const categoriasResult = await categoriasResponse.json()
       
       if (!categoriasResponse.ok || !categoriasResult.success) {
-        throw new Error(categoriasResult.error || 'Erro ao carregar categorias');
+        throw new Error(categoriasResult.error || 'Erro ao carregar categorias')
       }
 
-      console.log('✅ useCompanyData: Categorias carregadas via API:', categoriasResult.data?.length || 0);
-      setCategorias(categoriasResult.data || []);
+      console.log('✅ useCompanyData: Categorias carregadas via API:', categoriasResult.data?.length || 0)
+      setCategorias(categoriasResult.data || [])
 
       // Buscar produtos via API /api/produtos
-      const produtosResponse = await fetch(`/api/produtos?company_id=${companyData.id}`);
-      const produtosResult = await produtosResponse.json();
+      const produtosResponse = await fetch(`/api/produtos?company_id=${companyData.id}`)
+      const produtosResult = await produtosResponse.json()
       
       if (!produtosResponse.ok || !produtosResult.success) {
-        throw new Error(produtosResult.error || 'Erro ao carregar produtos');
+        throw new Error(produtosResult.error || 'Erro ao carregar produtos')
       }
 
-      console.log('✅ useCompanyData: Produtos carregados via API:', produtosResult.data?.length || 0);
-      setProdutos(produtosResult.data || []);
+      console.log('✅ useCompanyData: Produtos carregados via API:', produtosResult.data?.length || 0)
+      setProdutos(produtosResult.data || [])
       
-      setError(null);
+      setError(null)
     } catch (err) {
-      console.error('❌ useCompanyData: Erro ao carregar dados:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('❌ useCompanyData: Erro ao carregar dados:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoadingData(false);
+      setLoadingData(false)
     }
   };
 
   useEffect(() => {
-    fetchCompanyData();
-  }, [company_slug, retryKey]);
+    fetchCompanyData()
+  }, [company_slug, retryKey])
 
   return {
     company,

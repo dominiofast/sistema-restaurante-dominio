@@ -42,7 +42,7 @@ const VagasHeader: React.FC<VagasHeaderProps> = ({
         </div>
       </div>
     </header>
-  );
+  )
 };
 
 export default VagasHeader;

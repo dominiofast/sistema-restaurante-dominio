@@ -13,13 +13,13 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
   const sizeClasses = {
     sm: 'w-1 h-1',
     md: 'w-1.5 h-1.5',
-    lg: 'w-2 h-2'
+    lg: 'w-2 h-2';
   };
 
   const containerClasses = {
     sm: 'gap-1 p-2',
     md: 'gap-1.5 p-3',
-    lg: 'gap-2 p-4'
+    lg: 'gap-2 p-4';
   };
 
   return (
@@ -61,7 +61,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
         />
       </div>
     </div>
-  );
+  )
 };
 
 interface TypingMessageProps {
@@ -90,5 +90,5 @@ export const TypingMessage: React.FC<TypingMessageProps> = ({
         <span className="text-xs text-muted-foreground mt-1">digitando...</span>
       </div>
     </div>
-  );
+  )
 };

@@ -37,11 +37,11 @@ const brandExamples = [
     primaryColor: '#92400E', // Marrom
     accentColor: '#78350F',
     logo: '🥐'
-  }
+  };
 ];
 
 export const CashbackAdaptiveExamples: React.FC = () => {
-  const [selectedBrand, setSelectedBrand] = useState(0);
+  const [selectedBrand, setSelectedBrand] = useState(0)
   const brand = brandExamples[selectedBrand];
 
   // Mock do branding para demonstração
@@ -49,7 +49,7 @@ export const CashbackAdaptiveExamples: React.FC = () => {
     primary_color: brand.primaryColor,
     accent_color: brand.accentColor,
     text_color: '#1F2937',
-    background_color: '#FFFFFF'
+    background_color: '#FFFFFF';
   };
 
   return (
@@ -217,7 +217,7 @@ export const CashbackAdaptiveExamples: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 // Componente Mock para demonstração (simula o CashbackCardAdaptive)
@@ -225,29 +225,29 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
   const percentual = '10';
   
   const createGradient = (color: string) => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    const lighterR = Math.min(255, r + 30);
-    const lighterG = Math.min(255, g + 30);
-    const lighterB = Math.min(255, b + 30);
-    const darkerR = Math.max(0, r - 20);
-    const darkerG = Math.max(0, g - 20);
-    const darkerB = Math.max(0, b - 20);
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
+    const lighterR = Math.min(255, r + 30)
+    const lighterG = Math.min(255, g + 30)
+    const lighterB = Math.min(255, b + 30)
+    const darkerR = Math.max(0, r - 20)
+    const darkerG = Math.max(0, g - 20)
+    const darkerB = Math.max(0, b - 20)
     return `linear-gradient(135deg, rgb(${lighterR}, ${lighterG}, ${lighterB}) 0%, rgb(${darkerR}, ${darkerG}, ${darkerB}) 100%)`;
   };
 
   const isLightColor = (color: string) => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
     return brightness > 128;
   };
 
-  const isDark = !isLightColor(brand.primary_color);
+  const isDark = !isLightColor(brand.primary_color)
   const contrastColor = isDark ? '#FFFFFF' : '#1F2937';
 
   if (variant === 'compact') {
@@ -264,8 +264,8 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
         </svg>
         <span>Cashback {percentual}%</span>
       </div>
-    );
-  }
+    )
+
 
   if (variant === 'banner') {
     return (
@@ -307,8 +307,8 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   // Full variant (default)
   return (
@@ -347,5 +347,5 @@ const MockCashbackCard: React.FC<{ variant: string; brand: any }> = ({ variant, 
         </div>
       </div>
     </div>
-  );
+  )
 };

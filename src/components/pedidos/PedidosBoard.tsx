@@ -16,7 +16,7 @@ interface PedidosBoardProps {
     pedidosEmAnalise: number;
     pararCampainha: () => void;
   };
-}
+
 
 export const PedidosBoard: React.FC<PedidosBoardProps> = ({
   pedidosPorStatus,
@@ -39,5 +39,5 @@ export const PedidosBoard: React.FC<PedidosBoardProps> = ({
         campainhaInfo={campainhaInfo}
       />
     </div>
-  );
+  )
 };

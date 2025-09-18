@@ -9,8 +9,8 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user, isLoading, currentCompany, companies } = useAuth();
-  const location = useLocation();
+  const { user, isLoading, currentCompany, companies } = useAuth()
+  const location = useLocation()
 
   if (isLoading) {
     return (
@@ -19,7 +19,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         isVisible={true}
         message="Carregando sistema..."
       />
-    );
+    )
   }
 
   if (!user) {
@@ -35,8 +35,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                        location.pathname.startsWith('/gestor-cardapio') ||
                        location.pathname.startsWith('/settings') ||
                        location.pathname.startsWith('/opcoes-loja') ||
-                       location.pathname.startsWith('/estoque') ||
-                       location.pathname.startsWith('/meu-rh');
+                        location.pathname.startsWith('/estoque') ||
+                       location.pathname.startsWith('/meu-rh')
     
     if (isLojaRoute) {
       return <Navigate to="/super-admin/dashboard" replace />;

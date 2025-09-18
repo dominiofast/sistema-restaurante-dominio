@@ -17,54 +17,54 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
   onAddressSelect,
   selectedAddress
 }) => {
-  const { currentCompany } = useAuth();
-  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<CustomerAddress | null>(null);
+  const { currentCompany } = useAuth()
+  const { addresses, loading, fetchAddressesByPhone, deleteAddress } = useCustomerAddresses()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editingAddress, setEditingAddress] = useState<CustomerAddress | null>(null)
 
   useEffect(() => {
     if (customerPhone) {
-      fetchAddressesByPhone(customerPhone, currentCompany?.id);
+      fetchAddressesByPhone(customerPhone, currentCompany?.id)
     }
-  }, [customerPhone, currentCompany?.id]);
+  }, [customerPhone, currentCompany?.id])
 
   const handleEditAddress = (address: CustomerAddress) => {
-    setEditingAddress(address);
-    setModalOpen(true);
+    setEditingAddress(address)
+    setModalOpen(true)
   };
 
   const handleDeleteAddress = async (addressId: string) => {
     if (confirm('Deseja excluir este endereço?')) {
       try {
-        await deleteAddress(addressId);
+        await deleteAddress(addressId)
         if (selectedAddress?.id === addressId) {
-          onAddressSelect?.(null);
+          onAddressSelect?.(null)
         }
-      } catch (error) {
-        console.error('Erro ao excluir endereço:', error);
+       } catch (error) {
+        console.error('Erro ao excluir endereço:', error)
       }
     }
   };
 
   const handleNewAddress = () => {
-    setEditingAddress(null);
-    setModalOpen(true);
+    setEditingAddress(null)
+    setModalOpen(true)
   };
 
   const handleConfirmAddress = (address: CustomerAddress) => {
-    console.log('handleConfirmAddress chamado com:', address);
-    console.log('Selecionando endereço...');
-    onAddressSelect?.(address);
+    console.log('handleConfirmAddress chamado com:', address)
+    console.log('Selecionando endereço...')
+    onAddressSelect?.(address)
     
-    console.log('Fechando modal...');
-    setModalOpen(false);
-    setEditingAddress(null);
+    console.log('Fechando modal...')
+    setModalOpen(false)
+    setEditingAddress(null)
     
-    console.log('Atualizando lista de endereços...');
+    console.log('Atualizando lista de endereços...')
     if (customerPhone) {
-      fetchAddressesByPhone(customerPhone, currentCompany?.id);
+      fetchAddressesByPhone(customerPhone, currentCompany?.id)
     }
-    console.log('handleConfirmAddress concluído');
+    console.log('handleConfirmAddress concluído')
   };
 
   if (loading) {
@@ -72,8 +72,8 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
       <div className="mb-4 text-center text-gray-500">
         Carregando endereços...
       </div>
-    );
-  }
+    )
+
 
   return (
     <>
@@ -136,8 +136,8 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
       <NovoEnderecoModalPDV
         isOpen={modalOpen}
         onClose={() => {
-          setModalOpen(false);
-          setEditingAddress(null);
+          setModalOpen(false)
+          setEditingAddress(null)
         }}
         onConfirm={handleConfirmAddress}
         customerName={customerName}
@@ -145,5 +145,5 @@ export const EnderecoListPDV: React.FC<EnderecoListPDVProps> = ({
         editingAddress={editingAddress}
       />
     </>
-  );
+  )
 };

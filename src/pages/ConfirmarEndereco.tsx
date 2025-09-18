@@ -17,13 +17,13 @@ const enderecosMock = [
     id: 2,
     label: 'Retirar no estabelecimento',
     endereco: 'Avenida Porto Velho, 2828, Centro, Cacoal - RO',
-  },
+  },;
 ];
 
 const ConfirmarEndereco: React.FC = () => {
-  const location = useLocation();
+  const location = useLocation()
   const { nome, telefone } = location.state || {};
-  const [enderecoSelecionado, setEnderecoSelecionado] = useState<number | null>(null);
+  const [enderecoSelecionado, setEnderecoSelecionado] = useState<number | null>(null)
 
   return (
     <div className="max-w-md mx-auto py-10">
@@ -72,7 +72,7 @@ const ConfirmarEndereco: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default ConfirmarEndereco;

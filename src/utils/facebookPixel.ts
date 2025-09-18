@@ -7,10 +7,10 @@ declare global {
 export const trackFacebookPixel = (event: string, params?: any) => {
   try {
     if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('track', event, params || {});
+      window.fbq('track', event, params || {} catch (error) { console.error('Error:', error) })
     }
   } catch (e) {
-    console.warn('[FacebookPixel] track error', event, e);
+    console.warn('[FacebookPixel] track error', event, e)
   }
 };
 
@@ -28,8 +28,8 @@ export const trackAddToCart = (produto: any, quantidade: number) => {
       item_price: Number(produto?.is_promotional && produto?.promotional_price 
         ? produto.promotional_price 
         : produto?.price) || 0,
-    }],
-  });
+    }],;
+  })
 };
 
 export const trackPurchase = (carrinho: any[], totalFinal: number, totalItens: number) => {
@@ -43,6 +43,6 @@ export const trackPurchase = (carrinho: any[], totalFinal: number, totalItens: n
       item_price: Number(item.produto?.is_promotional && item.produto?.promotional_price 
         ? item.produto.promotional_price 
         : item.produto?.price) || 0,
-    })),
-  });
+    })),;
+  })
 };

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 interface Mercadoria {
@@ -23,24 +23,24 @@ interface Mercadoria {
   codigo_produto?: string;
   observacoes?: string;
   is_active: boolean;
-}
+
 
 interface MercadoriaModalProps {
   isOpen: boolean;
   onClose: () => void;
   mercadoria?: Mercadoria;
   onSave: () => void;
-}
+
 
 const UNIDADES_MEDIDA = [
-  'kg', 'g', 'L', 'ml', 'unidade', 'caixa', 'pacote', 'dúzia', 'metro', 'cm'
+  'kg', 'g', 'L', 'ml', 'unidade', 'caixa', 'pacote', 'dúzia', 'metro', 'cm';
 ];
 
 const CATEGORIAS_PADRAO = [
   'Carnes', 'Aves', 'Peixes e Frutos do Mar', 'Laticínios', 'Ovos',
   'Cereais e Grãos', 'Farinhas e Massas', 'Temperos e Condimentos',
   'Óleos e Gorduras', 'Frutas', 'Legumes e Verduras', 'Conservas',
-  'Bebidas', 'Doces e Sobremesas', 'Embalagens', 'Outros'
+  'Bebidas', 'Doces e Sobremesas', 'Embalagens', 'Outros';
 ];
 
 const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
@@ -61,14 +61,14 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
     codigo_produto: '',
     observacoes: '',
     is_active: true
-  });
-  const [loading, setSaving] = useState(false);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  })
+  const [loading, setSaving] = useState(false)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
   useEffect(() => {
     if (mercadoria) {
-      setFormData(mercadoria);
+      setFormData(mercadoria)
     } else {
       setFormData({
         nome: '',
@@ -82,28 +82,28 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         codigo_produto: '',
         observacoes: '',
         is_active: true
-      });
-    }
-  }, [mercadoria, isOpen]);
+      })
+
+  }, [mercadoria, isOpen])
 
   const handleSave = async () => {
     if (!formData.nome.trim()) {
       toast({
         title: 'Erro',
         description: 'Nome da mercadoria é obrigatório',
-        variant: 'destructive'
-      });
+        variant: 'destructive';
+      })
       return;
-    }
+
 
     if (!user) {
       toast({
         title: 'Erro',
         description: 'Usuário não autenticado',
         variant: 'destructive'
-      });
+      })
       return;
-    }
+
 
     // Para super admin, empresa deve estar selecionada
     const companyId = currentCompany?.id;
@@ -112,59 +112,59 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         title: 'Erro',
         description: 'Selecione uma empresa primeiro',
         variant: 'destructive'
-      });
+      })
       return;
-    }
 
-    setSaving(true);
+
+    setSaving(true)
 
     try {
       const dataToSave = {
         ...formData,
         company_id: companyId,
-        updated_by: user.id,
-        ...(mercadoria ? {} : { created_by: user.id })
+        updated_by: user.id,;
+        ...(mercadoria ? {}  catch (error) { console.error('Error:', error) }: { created_by: user.id })
       };
 
       if (mercadoria?.id) {
         // Atualizar mercadoria existente
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .update(dataToSave)
-          .eq('id', mercadoria.id);
+          
+          
+          
 
         if (error) throw error;
 
         toast({
           title: 'Sucesso',
           description: 'Mercadoria atualizada com sucesso!'
-        });
+        })
       } else {
         // Criar nova mercadoria
         const { error } = await (supabase as any)
-          .from('mercadorias_ingredientes')
-          .insert([dataToSave]);
+          
+          
 
         if (error) throw error;
 
         toast({
           title: 'Sucesso',
           description: 'Mercadoria criada com sucesso!'
-        });
-      }
+        })
 
-      onSave();
-      onClose();
+
+      onSave()
+      onClose()
     } catch (error: any) {
-      console.error('Erro ao salvar mercadoria:', error);
+      console.error('Erro ao salvar mercadoria:', error)
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao salvar mercadoria',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setSaving(false);
-    }
+      setSaving(false)
+
   };
 
   return (
@@ -343,7 +343,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default MercadoriaModal; 

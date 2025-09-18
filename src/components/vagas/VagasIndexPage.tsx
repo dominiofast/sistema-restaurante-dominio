@@ -2,7 +2,7 @@
 import React from 'react';
 
 const VagasIndexPage = () => {
-  console.log('VagasIndexPage loaded');
+  console.log('VagasIndexPage loaded')
   
   return (
     <div style={{ padding: '40px', fontFamily: 'sans-serif', textAlign: 'center' }}>
@@ -12,7 +12,7 @@ const VagasIndexPage = () => {
         Debug: Página index do portal de vagas carregada com sucesso
       </div>
     </div>
-  );
+  )
 };
 
 export default VagasIndexPage;

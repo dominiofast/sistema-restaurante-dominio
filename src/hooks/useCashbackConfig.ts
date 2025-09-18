@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+// SUPABASE REMOVIDO
 import { useToast } from "@/hooks/use-toast";
 
 export interface CashbackConfig {
@@ -19,50 +19,40 @@ export const useCashbackConfig = (companyId?: string) => {
     queryFn: async () => {
       if (!companyId) return null;
       
-      const { data, error } = await supabase
-        .from("cashback_config")
-        .select("*")
-        .eq("company_id", companyId)
-        .maybeSingle();
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
     enabled: !!companyId,
-  });
+  })
 };
 
 export const useSaveCashbackConfig = () => {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
 
   return useMutation({
     mutationFn: async (config: CashbackConfig) => {
-      const { data, error } = await supabase
-        .from("cashback_config")
-        .upsert(config, { onConflict: "company_id" })
-        .select()
-        .single();
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["cashback-config"] });
+      queryClient.invalidateQueries({ queryKey: ["cashback-config"] })
       toast({
         title: "Sucesso",
         description: "Configuração de cashback salva com sucesso!",
-      });
+      })
     },
     onError: (error) => {
       toast({
         title: "Erro",
         description: "Erro ao salvar configuração de cashback.",
         variant: "destructive",
-      });
-      console.error("Erro ao salvar cashback config:", error);
+      })
+      console.error("Erro ao salvar cashback config:", error)
     },
-  });
+  })
 };
 
 export const useCustomerCashback = (companyId?: string) => {
@@ -71,17 +61,12 @@ export const useCustomerCashback = (companyId?: string) => {
     queryFn: async () => {
       if (!companyId) return [];
       
-      const { data, error } = await supabase
-        .from("customer_cashback")
-        .select("*")
-        .eq("company_id", companyId)
-        .order("saldo_disponivel", { ascending: false });
-
+      const { data, error  } = null as any;
       if (error) throw error;
       return data || [];
     },
     enabled: !!companyId,
-  });
+  })
 };
 
 export const useCashbackTransactions = (companyId?: string, customerPhone?: string) => {
@@ -91,19 +76,19 @@ export const useCashbackTransactions = (companyId?: string, customerPhone?: stri
       if (!companyId) return [];
       
       let query = supabase
-        .from("cashback_transactions")
-        .select("*")
-        .eq("company_id", companyId);
+        
+        
+        
 
       if (customerPhone) {
-        query = query.eq("customer_phone", customerPhone);
+        query = query
       }
 
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data, error } = await query
 
       if (error) throw error;
       return data || [];
     },
     enabled: !!companyId,
-  });
+  })
 };

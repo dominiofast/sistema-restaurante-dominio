@@ -2,13 +2,13 @@
 
 export const SECURITY_HEADERS = {
   // Content Security Policy - previne XSS
-  'Content-Security-Policy': 
+  'Content-Security-Policy': ;
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:/
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' https:; " +
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co; " +
+    "connect-src 'self' https:/
     "media-src 'self'; " +
     "object-src 'none'; " +
     "frame-src 'none'; " +
@@ -39,7 +39,7 @@ export const SECURITY_HEADERS = {
 export const addSecurityHeaders = (headers: Record<string, string> = {}): Record<string, string> => {
   return {
     ...headers,
-    ...SECURITY_HEADERS
+    ...SECURITY_HEADERS;
   };
 };
 
@@ -55,7 +55,7 @@ export const sanitizeInput = (input: string): string => {
         '&': '&amp;'
       };
       return entities[char] || char;
-    });
+    })
 };
 
 // Validação de email mais rigorosa
@@ -69,23 +69,23 @@ export const isStrongPassword = (password: string): { valid: boolean; errors: st
   const errors: string[] = [];
   
   if (password.length < 8) {
-    errors.push('Senha deve ter pelo menos 8 caracteres');
+    errors.push('Senha deve ter pelo menos 8 caracteres')
   }
   
   if (!/[A-Z]/.test(password)) {
-    errors.push('Senha deve conter pelo menos uma letra maiúscula');
+    errors.push('Senha deve conter pelo menos uma letra maiúscula')
   }
   
   if (!/[a-z]/.test(password)) {
-    errors.push('Senha deve conter pelo menos uma letra minúscula');
+    errors.push('Senha deve conter pelo menos uma letra minúscula')
   }
   
   if (!/\d/.test(password)) {
-    errors.push('Senha deve conter pelo menos um número');
+    errors.push('Senha deve conter pelo menos um número')
   }
   
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-    errors.push('Senha deve conter pelo menos um caractere especial');
+    errors.push('Senha deve conter pelo menos um caractere especial')
   }
   
   return {
@@ -96,20 +96,20 @@ export const isStrongPassword = (password: string): { valid: boolean; errors: st
 
 // Rate limiting simples no frontend (complementa o backend)
 class FrontendRateLimit {
-  private attempts: Map<string, { count: number; firstAttempt: number }> = new Map();
+  private attempts: Map<string, { count: number; firstAttempt: number }> = new Map()
   
   isAllowed(key: string, maxAttempts: number = 5, windowMs: number = 900000): boolean {
-    const now = Date.now();
-    const record = this.attempts.get(key);
+    const now = Date.now()
+    const record = this.attempts.get(key)
     
     if (!record) {
-      this.attempts.set(key, { count: 1, firstAttempt: now });
+      this.attempts.set(key, { count: 1, firstAttempt: now })
       return true;
     }
     
     // Reset window se passou o tempo
     if (now - record.firstAttempt > windowMs) {
-      this.attempts.set(key, { count: 1, firstAttempt: now });
+      this.attempts.set(key, { count: 1, firstAttempt: now })
       return true;
     }
     
@@ -124,8 +124,8 @@ class FrontendRateLimit {
   }
   
   reset(key: string): void {
-    this.attempts.delete(key);
+    this.attempts
   }
 }
 
-export const frontendRateLimit = new FrontendRateLimit();
+export const frontendRateLimit = new FrontendRateLimit()

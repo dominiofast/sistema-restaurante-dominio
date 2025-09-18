@@ -8,14 +8,14 @@ interface LogoCacheEntry {
   /** Optimized URL for specific size */
   optimizedUrl: string;
   /** Natural dimensions of the logo */
-  naturalDimensions: { width: number; height: number };
+  naturalDimensions: { width: number; height: number } catch (error) { console.error('Error:', error) };
   /** Calculated aspect ratio */
   aspectRatio: number;
   /** Timestamp when cached */
   timestamp: number;
   /** Size this entry was optimized for */
   targetSize: number;
-}
+
 
 interface LogoDimensionCache {
   /** Logo URL as key */
@@ -23,7 +23,7 @@ interface LogoDimensionCache {
     /** Different sizes cached for this logo */
     [size: number]: LogoCacheEntry;
   };
-}
+
 
 class LogoCacheManager {
   private cache: LogoDimensionCache = {};
@@ -50,14 +50,14 @@ class LogoCacheManager {
     }
 
     return entry;
-  }
+
 
   /**
    * Set cached entry for a logo URL and size
    */
   set(logoUrl: string, size: number, entry: Omit<LogoCacheEntry, 'timestamp'>): void {
     // Ensure we don't exceed max entries
-    this.cleanup();
+    this.cleanup()
 
     if (!this.cache[logoUrl]) {
       this.cache[logoUrl] = {};
@@ -67,7 +67,7 @@ class LogoCacheManager {
       ...entry,
       timestamp: Date.now()
     };
-  }
+
 
   /**
    * Get natural dimensions for a logo (any size)
@@ -85,23 +85,23 @@ class LogoCacheManager {
       height: firstEntry.naturalDimensions.height,
       aspectRatio: firstEntry.aspectRatio
     };
-  }
+
 
   /**
    * Cache natural dimensions for a logo
    */
   async cacheNaturalDimensions(logoUrl: string): Promise<{ width: number; height: number; aspectRatio: number }> {
     // Check if already cached
-    const cached = this.getNaturalDimensions(logoUrl);
+    const cached = this.getNaturalDimensions(logoUrl)
     if (cached) return cached;
 
     return new Promise((resolve, reject) => {
-      const img = new Image();
+      const img = new Image()
       img.onload = () => {
         const dimensions = {
           width: img.naturalWidth,
           height: img.naturalHeight,
-          aspectRatio: img.naturalWidth / img.naturalHeight
+          aspectRatio: img.naturalWidth / img.naturalHeight;
         };
 
         // Cache with a dummy size entry
@@ -111,40 +111,40 @@ class LogoCacheManager {
           naturalDimensions: dimensions,
           aspectRatio: dimensions.aspectRatio,
           targetSize: 0
-        });
+        })
 
-        resolve(dimensions);
+        resolve(dimensions)
       };
-      img.onerror = () => reject(new Error('Failed to load image'));
+      img.onerror = () => reject(new Error('Failed to load image'))
       img.src = logoUrl;
-    });
-  }
+    })
+
 
   /**
    * Clear expired entries and enforce max entries limit
    */
   private cleanup(): void {
-    const now = Date.now();
+    const now = Date.now()
     let totalEntries = 0;
 
     // Remove expired entries
     Object.keys(this.cache).forEach(logoUrl => {
       const logoCache = this.cache[logoUrl];
       Object.keys(logoCache).forEach(sizeKey => {
-        const size = parseInt(sizeKey);
+        const size = parseInt(sizeKey)
         const entry = logoCache[size];
         if (now - entry.timestamp > this.maxAge) {
           delete logoCache[size];
         } else {
           totalEntries++;
         }
-      });
+      })
 
       // Remove empty logo caches
       if (Object.keys(logoCache).length === 0) {
         delete this.cache[logoUrl];
       }
-    });
+    })
 
     // If still over limit, remove oldest entries
     if (totalEntries > this.maxEntries) {
@@ -152,17 +152,17 @@ class LogoCacheManager {
       
       Object.keys(this.cache).forEach(logoUrl => {
         Object.keys(this.cache[logoUrl]).forEach(sizeKey => {
-          const size = parseInt(sizeKey);
+          const size = parseInt(sizeKey)
           allEntries.push({
             logoUrl,
             size,
             timestamp: this.cache[logoUrl][size].timestamp
-          });
-        });
-      });
+          })
+        })
+      })
 
       // Sort by timestamp (oldest first)
-      allEntries.sort((a, b) => a.timestamp - b.timestamp);
+      allEntries.sort((a, b) => a.timestamp - b.timestamp)
 
       // Remove oldest entries
       const entriesToRemove = totalEntries - this.maxEntries;
@@ -183,7 +183,7 @@ class LogoCacheManager {
    */
   clear(): void {
     this.cache = {};
-  }
+
 
   /**
    * Get cache statistics
@@ -194,14 +194,14 @@ class LogoCacheManager {
 
     Object.values(this.cache).forEach(logoCache => {
       totalEntries += Object.keys(logoCache).length;
-    });
+    })
 
     return {
       totalLogos,
       totalEntries,
       cacheSize: JSON.stringify(this.cache).length
     };
-  }
+
 
   /**
    * Preload and cache a logo
@@ -209,27 +209,27 @@ class LogoCacheManager {
   async preload(logoUrl: string, sizes: number[] = [32, 48, 64, 72]): Promise<void> {
     try {
       // First cache natural dimensions
-      await this.cacheNaturalDimensions(logoUrl);
+      await this.cacheNaturalDimensions(logoUrl)
 
       // Then preload different sizes
       const preloadPromises = sizes.map(size => {
         return new Promise<void>((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve();
-          img.onerror = () => resolve(); // Don't fail the whole preload
+          const img = new Image()
+          img.onload = () => resolve()
+          img.onerror = () => resolve() // Don't fail the whole preload
           img.src = logoUrl; // In a real implementation, this would be the optimized URL
-        });
-      });
+        } catch (error) { console.error('Error:', error) })
+      })
 
-      await Promise.all(preloadPromises);
+      await Promise.all(preloadPromises)
     } catch (error) {
-      console.warn('Failed to preload logo:', logoUrl, error);
+      console.warn('Failed to preload logo:', logoUrl, error)
     }
   }
-}
+
 
 // Global cache instance
-export const logoCache = new LogoCacheManager();
+export const logoCache = new LogoCacheManager()
 
 /**
  * Hook for using the logo cache

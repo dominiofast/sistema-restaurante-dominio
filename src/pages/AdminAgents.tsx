@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   ArrowLeft, 
@@ -32,7 +32,7 @@ interface PromptHistory {
   vars: any;
   version: number;
   created_at: string;
-}
+
 
 interface AssistantForm {
   bot_name: string;
@@ -40,7 +40,7 @@ interface AssistantForm {
   cardapio_url: string;
   produtos_path: string;
   config_path: string;
-}
+
 
 // Função para processar prompt - substitui todas as variáveis disponíveis
 const processPromptTemplate = (template: string, vars: Record<string, any>): string => {
@@ -55,9 +55,9 @@ const processPromptTemplate = (template: string, vars: Record<string, any>): str
     Object.entries(vars).forEach(([key, value]) => {
       const placeholder = `{{${key}}}`;
       if (typeof value === 'string' && !value.startsWith('{{')) {
-        processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value);
+        processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value)
       }
-    });
+    })
   }
   
   // Mapear variáveis com nomes diferentes
@@ -70,48 +70,48 @@ const processPromptTemplate = (template: string, vars: Record<string, any>): str
     'cashback_percent': vars.cashback_percent || vars.percentual_cashback,
     'opening_hours': vars.working_hours || vars.opening_hours,
     'contact_phone': vars.telefone || vars.contact_phone,
-    'contact_address': vars.company_address || vars.contact_address
+    'contact_address': vars.company_address || vars.contact_address;
   };
   
   // Aplicar mapeamento de variáveis
   Object.entries(varMapping).forEach(([key, value]) => {
     if (value && typeof value === 'string' && !value.startsWith('{{')) {
       const placeholder = `{{${key}}}`;
-      processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value);
+      processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value)
     }
-  });
+  })
   
   return processedTemplate;
 };
 
 export default function AdminAgents() {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [testing, setTesting] = useState(false);
-  const [testResponse, setTestResponse] = useState('');
-  const [history, setHistory] = useState<PromptHistory[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
+  const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [testing, setTesting] = useState(false)
+  const [testResponse, setTestResponse] = useState('')
+  const [history, setHistory] = useState<PromptHistory[]>([])
+  const [showHistory, setShowHistory] = useState(false)
   const [assistantForm, setAssistantForm] = useState<AssistantForm>({
     bot_name: "RangoBot",
     assistant_id: "",
     cardapio_url: "",
     produtos_path: "",
     config_path: ""
-  });
-  const [vars, setVars] = useState<Record<string, any>>({});
+  })
+  const [vars, setVars] = useState<Record<string, any>>({})
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       template: '',
       vars: '{}'
     }
-  });
+  })
 
-  const template = watch('template');
+  const template = watch('template')
 
   // Apenas Super Admin pode acessar
   if (user && user.role !== 'super_admin') {
@@ -126,57 +126,47 @@ export default function AdminAgents() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   useEffect(() => {
     if (slug) {
-      loadData();
+      loadData()
     }
-  }, [slug]);
+  }, [slug])
 
   const loadData = async () => {
     if (!slug) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
 
       // Carregar dados da empresa
-      const { data: companyData } = await supabase
-        .from('companies')
-        .select('id, name, slug')
-        .eq('slug', slug)
-        .single();
+      const { data: companyData }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (!companyData) {
         toast({
           title: "Empresa não encontrada",
           description: "A empresa especificada não existe.",
           variant: "destructive"
-        });
+        })
         return;
       }
 
       // Carregar prompt atual
-      const { data: promptData } = await supabase
-        .from('ai_agent_prompts')
-        .select('*')
-        .eq('agent_slug', slug)
-        .single();
-
+      const { data: promptData  } = null as any;
       if (promptData) {
-        setValue('template', promptData.template);
-        setValue('vars', JSON.stringify(promptData.vars, null, 2));
-        setVars((promptData.vars as Record<string, any>) || {});
+        setValue('template', promptData.template)
+        setValue('vars', JSON.stringify(promptData.vars, null, 2))
+        setVars((promptData.vars as Record<string, any>) || {})
       }
 
       // Carregar configurações do assistant
-      const { data: assistantData } = await supabase
-        .from('ai_agent_assistants')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .single();
-
+      const { data: assistantData  } = null as any;
       if (assistantData) {
         setAssistantForm({
           bot_name: assistantData.bot_name || companyData.name || 'RangoBot',
@@ -184,20 +174,20 @@ export default function AdminAgents() {
           cardapio_url: assistantData.cardapio_url || `https://pedido.dominio.tech/${companyData.slug}`,
           produtos_path: assistantData.produtos_path || `${companyData.id}/produtos.json`,
           config_path: assistantData.config_path || `${companyData.id}/config.json`
-        });
+        })
       }
 
       // Carregar histórico
-      loadHistory();
+      loadHistory()
 
     } catch (error: any) {
       toast({
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -205,12 +195,12 @@ export default function AdminAgents() {
     if (!slug) return;
 
     try {
-      const { data } = await supabase
-        .from('ai_prompt_history')
-        .select('*')
-        .eq('agent_id', slug)
-        .order('version', { ascending: false })
-        .limit(10);
+      const { data }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
+        
 
       setHistory(data?.map(item => ({
         id: item.id.toString(),
@@ -218,9 +208,9 @@ export default function AdminAgents() {
         vars: item.vars as any || {},
         version: item.version || 1,
         created_at: item.updated_at || new Date().toISOString()
-      })) || []);
+      })) || [])
     } catch (error) {
-      console.error('Erro ao carregar histórico:', error);
+      console.error('Erro ao carregar histórico:', error)
     }
   };
 
@@ -228,49 +218,47 @@ export default function AdminAgents() {
     if (!slug) return;
 
     try {
-      setSaving(true);
+      setSaving(true)
 
-      const varsObj = JSON.parse(data.vars || '{}');
+      const varsObj = JSON.parse(data.vars || '{} catch (error) { console.error('Error:', error) }')
 
       // Salvar prompt usando upsert com onConflict
-      const { error } = await supabase
-        .from('ai_agent_prompts')
-        .upsert({
+      const { error  } = null as any;
           agent_slug: slug,
           template: data.template,
           vars: varsObj,
           version: (history[0]?.version || 0) + 1
         }, {
           onConflict: 'agent_slug'
-        });
+        })
 
       if (error) throw error;
 
       // Chamar edge function para sincronizar
-      const { error: pushError } = await supabase.functions.invoke('push_prompt_to_edge', {
+      const { error: pushError } = await Promise.resolve()
         body: { agent_slug: slug }
-      });
+      })
 
       if (pushError) {
-        console.warn('Aviso: Edge Config pode não ter sido atualizado:', pushError);
+        console.warn('Aviso: Edge Config pode não ter sido atualizado:', pushError)
       }
 
       toast({
         title: "Prompt salvo com sucesso!",
         description: "O template foi atualizado e sincronizado."
-      });
+      })
 
       // Recarregar histórico
-      loadHistory();
+      loadHistory()
 
     } catch (error: any) {
       toast({
         title: "Erro ao salvar prompt",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
@@ -278,21 +266,19 @@ export default function AdminAgents() {
     if (!slug) return;
 
     try {
-      setSaving(true);
+      setSaving(true)
 
       // Buscar company_id
-      const { data: companyData } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('slug', slug)
-        .single();
+      const { data: companyData }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
-      if (!companyData) throw new Error('Empresa não encontrada');
+      if (!companyData) throw new Error('Empresa não encontrada')
 
       // Salvar configurações do assistant
-      const { error } = await supabase
-        .from('ai_agent_assistants')
-        .upsert({
+      const { error  } = null as any;
           company_id: companyData.id,
           bot_name: assistantForm.bot_name,
           assistant_id: assistantForm.assistant_id,
@@ -300,116 +286,115 @@ export default function AdminAgents() {
           produtos_path: assistantForm.produtos_path,
           config_path: assistantForm.config_path,
           use_direct_mode: true
-        });
+        })
 
       if (error) throw error;
 
       toast({
         title: "Configurações salvas!",
         description: "As configurações do assistant foram atualizadas."
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro ao salvar configurações",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
   const testPrompt = async () => {
     if (!slug) return;
 
-    setTesting(true);
-    setTestResponse("");
+    setTesting(true)
+    setTestResponse("")
 
     try {
-      const { data, error } = await supabase.functions.invoke('agente-ia-conversa', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           slug_empresa: slug,
           user_message: 'teste de prompt',
           historico: [],
           customer_phone: '5511999999999'
         }
-      });
+      })
 
       if (error) throw error;
 
-      setTestResponse(data?.resposta || 'Sem resposta');
+      setTestResponse(data?.resposta || 'Sem resposta')
 
       toast({
         title: "Teste executado",
         description: "Verifique a resposta abaixo"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro no teste",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
   const revertToVersion = async (historyItem: PromptHistory) => {
-    setValue('template', historyItem.template);
-    setValue('vars', JSON.stringify(historyItem.vars, null, 2));
-    setVars(historyItem.vars || {});
+    setValue('template', historyItem.template)
+    setValue('vars', JSON.stringify(historyItem.vars, null, 2))
+    setVars(historyItem.vars || {})
     
     toast({
       title: "Versão carregada",
       description: `Template da versão ${historyItem.version} carregado. Clique em Salvar para aplicar.`
-    });
+    })
   };
 
   const addVar = () => {
     const newKey = `var_${Object.keys(vars).length + 1}`;
-    setVars(prev => ({ ...prev, [newKey]: '' }));
+    setVars(prev => ({ ...prev, [newKey]: '' }))
   };
 
   const updateVar = (key: string, value: string) => {
-    setVars(prev => ({ ...prev, [key]: value }));
-    setValue('vars', JSON.stringify({ ...vars, [key]: value }, null, 2));
+    setVars(prev => ({ ...prev, [key]: value }))
+    setValue('vars', JSON.stringify({ ...vars, [key]: value }, null, 2))
   };
 
   const removeVar = (key: string) => {
     const newVars = { ...vars };
     delete newVars[key];
-    setVars(newVars);
-    setValue('vars', JSON.stringify(newVars, null, 2));
+    setVars(newVars)
+    setValue('vars', JSON.stringify(newVars, null, 2))
   };
 
   const uploadJson = async (type: 'produtos' | 'config', file: File) => {
     if (!slug) return;
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', type);
-      formData.append('company_slug', slug);
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('type', type)
+      formData.append('company_slug', slug)
 
-      const { error } = await supabase.storage
-        .from('ai-knowledge')
-        .upload(`${slug}/${type}.json`, file);
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+        .upload(`${slug}/${type}.json`, file)
 
       if (error) throw error;
 
       toast({
         title: "Arquivo enviado!",
         description: `${type}.json foi enviado com sucesso.`
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro ao enviar arquivo",
         description: error.message,
         variant: "destructive"
-      });
+      })
     }
   };
 
@@ -420,7 +405,7 @@ export default function AdminAgents() {
           <div className="text-lg">Carregando...</div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -655,5 +640,4 @@ export default function AdminAgents() {
         </div>
       </div>
     </div>
-  );
-}
+  )

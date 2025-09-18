@@ -20,14 +20,14 @@ interface Vaga {
   config_id: string;
   company_id: string;
   apply_url?: string;
-}
+
 
 interface VagaCardProps {
   vaga: Vaga;
   currentCompanySlug?: string;
   onEdit: (vaga: Vaga) => void;
   onDelete: (vaga: Vaga) => void;
-}
+
 
 export const VagaCard: React.FC<VagaCardProps> = ({
   vaga,
@@ -35,7 +35,7 @@ export const VagaCard: React.FC<VagaCardProps> = ({
   onEdit,
   onDelete
 }) => {
-  console.log('VagaCard props:', { vaga, currentCompanySlug, onEdit, onDelete });
+  console.log('VagaCard props:', { vaga, currentCompanySlug, onEdit, onDelete })
   const getStatusColor = (isActive: boolean) => {
     return isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700';
   };
@@ -46,7 +46,7 @@ export const VagaCard: React.FC<VagaCardProps> = ({
       'part-time': 'Meio Período',
       'contract': 'Contrato',
       'freelance': 'Freelance',
-      'internship': 'Estágio'
+      'internship': 'Estágio';
     };
     return types[type] || type;
   };
@@ -108,8 +108,8 @@ export const VagaCard: React.FC<VagaCardProps> = ({
                   currentCompanySlug, 
                   slug, 
                   url 
-                });
-                window.open(url, '_blank');
+                })
+                window.open(url, '_blank')
               }}
               className="bg-black text-white hover:bg-gray-800 px-6 py-3 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
@@ -138,5 +138,5 @@ export const VagaCard: React.FC<VagaCardProps> = ({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };

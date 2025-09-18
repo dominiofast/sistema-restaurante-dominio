@@ -1,0 +1,230 @@
+// SUPABASE REMOVIDO
+interface AuthUser {
+  id: string;
+  email: string;
+  name?: string;
+  role?: string;
+  avatar?: string;
+  company_domain?: string;
+  user_metadata?: {
+    company_id?: string;
+    [key: string]: any;
+  };
+}
+
+interface Company {
+  id: string;
+  name: string;
+  logo?: string;
+  domain: string;
+  status: string;
+  store_code: number;
+  slug?: string;
+  plan?: string;
+  userCount?: number;
+}
+
+/**
+ * Cache para empresas carregadas
+ */
+const companiesCache = new Map<string, { companies: Company[], timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+/**
+ * Otimizador para carregamento de empresas
+ */
+export class AuthOptimizer {
+  private static instance: AuthOptimizer;
+  private loadingPromises = new Map<string, Promise<Company[]>>();
+
+  static getInstance(): AuthOptimizer {
+    if (!AuthOptimizer.instance) {
+      AuthOptimizer.instance = new AuthOptimizer();
+    }
+    return AuthOptimizer.instance;
+  }
+
+  /**
+   * Carrega empresas com cache e deduplicação
+   */
+  async loadCompaniesOptimized(authUser: AuthUser): Promise<Company[]> {
+    const cacheKey = `${authUser.id}_${authUser.role}`;
+    
+    // Verificar cache primeiro
+    const cached = companiesCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      console.log('AuthOptimizer: Usando empresas do cache');
+      return cached.companies;
+    }
+
+    // Verificar se já há uma requisição em andamento
+    if (this.loadingPromises.has(cacheKey)) {
+      console.log('AuthOptimizer: Aguardando requisição em andamento');
+      return this.loadingPromises.get(cacheKey)!;
+    }
+
+    // Criar nova requisição
+    const loadingPromise = this.performCompanyLoad(authUser);
+    this.loadingPromises.set(cacheKey, loadingPromise);
+
+    try {
+      const companies = await loadingPromise;
+      
+      // Salvar no cache
+      companiesCache.set(cacheKey, {
+        companies,
+        timestamp: Date.now()
+      });
+
+      return companies;
+    } finally {
+      // Remover da lista de requisições em andamento
+      this.loadingPromises/* .delete\( REMOVIDO */ ; //cacheKey);
+    }
+  }
+
+  /**
+   * Executa o carregamento real das empresas
+   */
+  private async performCompanyLoad(authUser: AuthUser): Promise<Company[]> {
+    try {
+      if (authUser.role === 'super_admin') {
+        return await this.loadSuperAdminCompanies(authUser);
+      } else {
+        return await this.loadUserCompanies(authUser);
+      }
+    } catch (error) {
+      console.error('AuthOptimizer: Erro ao carregar empresas:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Carrega empresas para super admin
+   */
+  private async loadSuperAdminCompanies(authUser: AuthUser): Promise<Company[]> {
+    const { data: companiesData, error } = /* await supabase REMOVIDO */ null
+      /* .from REMOVIDO */ ; //'companies')
+      /* .select\( REMOVIDO */ ; //'*')
+      /* .order\( REMOVIDO */ ; //'created_at', { ascending: false });
+
+    if (error) {
+      console.error('AuthOptimizer: Erro ao carregar empresas para super admin:', error);
+      return [];
+    }
+
+    return (companiesData || []).map(company => ({
+      id: company.id,
+      name: company.name,
+      domain: company.domain,
+      status: company.status,
+      store_code: company.store_code,
+      slug: company.slug,
+      plan: company.plan,
+      userCount: company.user_count,
+      logo: company.logo
+    }));
+  }
+
+  /**
+   * Carrega empresas para usuário regular
+   */
+  private async loadUserCompanies(authUser: AuthUser): Promise<Company[]> {
+    // Primeiro, tentar buscar através da tabela user_companies
+    // const { data: userCompanies, error: userCompError } = await supabase
+    //   .from('user_companies')
+    //   .select(`
+    //     company_id,
+    //     role,
+    //     companies!inner (
+    //       id,
+    //       name,
+    //       domain,
+    //       status,
+    //       store_code,
+    //       slug,
+    //       plan,
+    //       user_count,
+    //       logo
+    //     )
+    //   `)
+    //   .eq('user_id', authUser.id)
+    //   .eq('is_active', true);
+    const userCompanies = null; const userCompError = true;
+
+    if (!userCompError && userCompanies && userCompanies.length > 0) {
+      return userCompanies.map(uc => ({
+        id: uc.companies.id,
+        name: uc.companies.name,
+        domain: uc.companies.domain,
+        status: uc.companies.status,
+        store_code: uc.companies.store_code,
+        slug: uc.companies.slug,
+        plan: uc.companies.plan,
+        userCount: uc.companies.user_count,
+        logo: uc.companies.logo
+      }));
+    }
+
+    // Fallback: buscar por company_domain
+    if (authUser.company_domain && authUser.company_domain !== 'all') {
+      const { data: singleCompany, error: singleError } = /* await supabase REMOVIDO */ null
+        /* .from REMOVIDO */ ; //'companies')
+        /* .select\( REMOVIDO */ ; //'*')
+        /* .eq\( REMOVIDO */ ; //'domain', authUser.company_domain)
+        /* .single\( REMOVIDO */ ; //);
+
+      if (!singleError && singleCompany) {
+        return [{
+          id: singleCompany.id,
+          name: singleCompany.name,
+          domain: singleCompany.domain,
+          status: singleCompany.status,
+          store_code: singleCompany.store_code,
+          slug: singleCompany.slug,
+          plan: singleCompany.plan,
+          userCount: singleCompany.user_count,
+          logo: singleCompany.logo
+        }];
+      }
+    }
+
+    return [];
+  }
+
+  /**
+   * Limpa o cache de empresas
+   */
+  clearCache(userId?: string): void {
+    if (userId) {
+      // Limpar cache específico do usuário
+      for (const key of companiesCache.keys()) {
+        if (key.startsWith(userId)) {
+          companiesCache.delete(key);
+        }
+      }
+    } else {
+      // Limpar todo o cache
+      companiesCache.clear();
+    }
+  }
+
+  /**
+   * Limpa requisições em andamento
+   */
+  clearLoadingPromises(): void {
+    this.loadingPromises.clear();
+  }
+
+  /**
+   * Obtém estatísticas do cache
+   */
+  getCacheStats(): { size: number, keys: string[] } {
+    return {
+      size: companiesCache.size,
+      keys: Array.from(companiesCache.keys())
+    };
+  }
+}
+
+export const authOptimizer = AuthOptimizer.getInstance();

@@ -36,11 +36,11 @@ interface Vaga {
 }
 
 const VagasDisponiveis: React.FC = () => {
-  const { companyId, currentCompany } = useAuth();
-  const { vagas, loading, saveVaga, deleteVaga } = useVagas(companyId);
+  const { companyId, currentCompany } = useAuth()
+  const { vagas, loading, saveVaga, deleteVaga } = useVagas(companyId)
   
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingVaga, setEditingVaga] = useState<Vaga | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingVaga, setEditingVaga] = useState<Vaga | null>(null)
 
   // Estado do formulário
   const [formData, setFormData] = useState<FormData>({
@@ -52,19 +52,19 @@ const VagasDisponiveis: React.FC = () => {
     requirements: '',
     benefits: '',
     is_active: true
-  });
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const success = await saveVaga(formData, editingVaga);
+    e.preventDefault()
+    const success = await saveVaga(formData, editingVaga)
     if (success) {
-      setDialogOpen(false);
-      resetForm();
+      setDialogOpen(false)
+      resetForm()
     }
   };
 
   const handleEdit = (vaga: Vaga) => {
-    setEditingVaga(vaga);
+    setEditingVaga(vaga)
     setFormData({
       title: vaga.title,
       description: vaga.description,
@@ -74,8 +74,8 @@ const VagasDisponiveis: React.FC = () => {
       requirements: vaga.requirements || '',
       benefits: vaga.benefits || '',
       is_active: vaga.is_active
-    });
-    setDialogOpen(true);
+    })
+    setDialogOpen(true)
   };
 
   const resetForm = () => {
@@ -87,14 +87,14 @@ const VagasDisponiveis: React.FC = () => {
       salary_range: '',
       requirements: '',
       benefits: '',
-      is_active: true
-    });
-    setEditingVaga(null);
+      is_active: true;
+    })
+    setEditingVaga(null)
   };
 
   const handleNewVaga = () => {
-    resetForm();
-    setDialogOpen(true);
+    resetForm()
+    setDialogOpen(true)
   };
 
   if (loading) {
@@ -105,7 +105,7 @@ const VagasDisponiveis: React.FC = () => {
           <p className="text-gray-600">Carregando vagas...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -147,7 +147,7 @@ const VagasDisponiveis: React.FC = () => {
         onSubmit={handleSubmit}
       />
     </>
-  );
+  )
 };
 
 export default VagasDisponiveis;

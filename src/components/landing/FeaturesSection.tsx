@@ -161,5 +161,5 @@ export const FeaturesSection = () => {
         </div>
       </div>
     </section>
-  );
+  )
 };

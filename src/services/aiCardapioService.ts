@@ -1,18 +1,17 @@
 
 import { CardapioService } from './cardapioService';
 import { CardapioJsonService } from './cardapioJsonService';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export class AICardapioService {
-  private cardapioCache: Map<string, { data: any; timestamp: number }> = new Map();
+  private cardapioCache: Map<string, { data: any; timestamp: number }> = new Map()
 
   /**
    * Carrega dados do cardápio com cache
    */
   async loadCardapioData(companyId: string): Promise<any> {
     const cacheKey = companyId;
-    const cached = this.cardapioCache.get(cacheKey);
-    const now = Date.now();
+    const cached = this.cardapioCache.get(cacheKey)
+    const now = Date.now()
     
     // Cache por 5 minutos
     if (cached && (now - cached.timestamp) < 5 * 60 * 1000) {
@@ -20,24 +19,24 @@ export class AICardapioService {
     }
 
     try {
-      console.log('📋 Gerando JSON estruturado do cardápio para IA...');
-      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId);
+      console.log('📋 Gerando JSON estruturado do cardápio para IA...')
+      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId)
       
       if (cardapioJson) {
         // Converte o JSON estruturado para texto formatado para a IA
-        const cardapioText = CardapioJsonService.formatJsonToText(cardapioJson);
+        const cardapioText = CardapioJsonService.formatJsonToText(cardapioJson)
         
         this.cardapioCache.set(cacheKey, {
           data: cardapioText,
           timestamp: now
-        });
+        } catch (error) { console.error('Error:', error) })
         
         return cardapioText;
       }
       
       return null;
     } catch (error) {
-      console.error('Erro ao carregar cardápio JSON estruturado:', error);
+      console.error('Erro ao carregar cardápio JSON estruturado:', error)
       return null;
     }
   }
@@ -46,55 +45,55 @@ export class AICardapioService {
    * Atualiza o cardápio na configuração da IA automaticamente
    */
   async updateAICardapio(companyId: string): Promise<boolean> {
-    console.log('🚀 Iniciando updateAICardapio para company:', companyId);
+    console.log('🚀 Iniciando updateAICardapio para company:', companyId)
     
     try {
       // Gerar o JSON do cardápio
-      console.log('📋 Gerando JSON do cardápio...');
-      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId);
+      console.log('📋 Gerando JSON do cardápio...')
+      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId)
       
       if (!cardapioJson) {
-        console.warn('❌ Nenhum cardápio encontrado para atualizar na IA');
+        console.warn('❌ Nenhum cardápio encontrado para atualizar na IA')
         return false;
       }
 
-      console.log('✅ JSON do cardápio gerado com sucesso');
+       catch (error) { console.error('Error:', error) }console.log('✅ JSON do cardápio gerado com sucesso')
 
       // Buscar a configuração do assistente e slug da empresa em paralelo
-      console.log('🔍 Buscando configurações do assistente e empresa...');
+      console.log('🔍 Buscando configurações do assistente e empresa...')
       const [assistantResult, companyResult] = await Promise.all([
         supabase
-          .from('ai_agent_assistants')
-          .select('produtos_path, config_path, assistant_id')
-          .eq('company_id', companyId)
-          .maybeSingle(),
+          
+          
+          
+          
         supabase
-          .from('companies')
-          .select('slug')
-          .eq('id', companyId)
-          .maybeSingle()
-      ]);
+          
+          
+          
+          
+      ])
 
       const assistantMap = assistantResult.data;
       const company = companyResult.data;
 
       if (assistantResult.error) {
-        console.error('❌ Erro ao buscar configuração do assistente:', assistantResult.error);
+        console.error('❌ Erro ao buscar configuração do assistente:', assistantResult.error)
         return false;
       }
 
       if (companyResult.error) {
-        console.error('❌ Erro ao buscar dados da empresa:', companyResult.error);
+        console.error('❌ Erro ao buscar dados da empresa:', companyResult.error)
         return false;
       }
 
       if (!assistantMap?.produtos_path) {
-        console.error('❌ Configuração do assistente não encontrada');
+        console.error('❌ Configuração do assistente não encontrada')
         return false;
       }
 
       if (!company?.slug) {
-        console.error('❌ Slug da empresa não encontrado');
+        console.error('❌ Slug da empresa não encontrado')
         return false;
       }
 
@@ -102,68 +101,63 @@ export class AICardapioService {
         produtos_path: assistantMap.produtos_path,
         assistant_id: assistantMap.assistant_id,
         slug: company.slug
-      });
+      })
 
       // Criar texto formatado para a IA
-      console.log('📝 Formatando texto para IA...');
-      const cardapioText = CardapioJsonService.formatJsonToText(cardapioJson);
+      console.log('📝 Formatando texto para IA...')
+      const cardapioText = CardapioJsonService.formatJsonToText(cardapioJson)
       
       // Salvar no storage
-      console.log('💾 Salvando cardápio no storage...');
-      const { error: uploadError } = await supabase.storage
-        .from('ai-knowledge')
+      console.log('💾 Salvando cardápio no storage...')
+      const { error: uploadError } = await Promise.resolve()
         .upload(assistantMap.produtos_path, new Blob([cardapioText], { type: 'text/plain' }), {
           upsert: true
-        });
+        })
 
       if (uploadError) {
-        console.error('❌ Erro ao salvar cardápio no storage:', uploadError);
+        console.error('❌ Erro ao salvar cardápio no storage:', uploadError)
         return false;
       }
 
-      console.log('✅ Cardápio salvo no storage com sucesso');
+      console.log('✅ Cardápio salvo no storage com sucesso')
 
       // Sincronizar com o Assistant da OpenAI
-      console.log('🤖 Iniciando sincronização com Assistant da OpenAI...');
+      console.log('🤖 Iniciando sincronização com Assistant da OpenAI...')
       
       try {
         // Adicionar timeout para evitar loops infinitos
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Timeout na sincronização com Assistant')), 30000);
-        });
+          setTimeout(() => reject(new Error('Timeout na sincronização com Assistant')), 30000)
+        } catch (error) { console.error('Error:', error) })
 
-        const syncPromise = supabase.functions.invoke('sync-assistant', {
-          body: {
+        const syncPromise = body: {
             company_id: companyId,
             slug: company.slug
-          }
-        });
+          };
+        })
 
-        const { data: syncResult, error: syncError } = await Promise.race([
-          syncPromise,
-          timeoutPromise
-        ]) as any;
+        const syncResult = null as any; const syncError = null as any;
 
         if (syncError) {
-          console.error('❌ Erro ao sincronizar com Assistant:', syncError);
+          console.error('❌ Erro ao sincronizar com Assistant:', syncError)
           return false;
-        }
 
-        console.log('✅ Assistant sincronizado com sucesso:', syncResult);
+
+        console.log('✅ Assistant sincronizado com sucesso:', syncResult)
       } catch (syncError) {
-        console.error('❌ Erro ao chamar sync-assistant:', syncError);
+        console.error('❌ Erro ao chamar sync-assistant:', syncError)
         // Não retornar false aqui, pois o upload já foi feito
-        console.warn('⚠️ Sincronização falhou, mas cardápio foi salvo no storage');
+        console.warn('⚠️ Sincronização falhou, mas cardápio foi salvo no storage')
       }
 
       // Limpar cache para forçar recarregamento
-      this.clearCache();
+      this.clearCache()
       
-      console.log('🎉 Processo concluído com sucesso!');
+      console.log('🎉 Processo concluído com sucesso!')
       return true;
 
     } catch (error) {
-      console.error('💥 Erro crítico ao atualizar cardápio na IA:', error);
+      console.error('💥 Erro crítico ao atualizar cardápio na IA:', error)
       return false;
     }
   }
@@ -172,8 +166,8 @@ export class AICardapioService {
    * Limpa o cache do cardápio
    */
   clearCache(): void {
-    this.cardapioCache.clear();
-  }
-}
+    this.cardapioCache.clear()
 
-export const aiCardapioService = new AICardapioService();
+
+
+export const aiCardapioService = new AICardapioService()

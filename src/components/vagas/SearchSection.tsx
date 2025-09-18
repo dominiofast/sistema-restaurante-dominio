@@ -11,24 +11,24 @@ interface SearchSectionProps {
 }
 
 const SearchSection: React.FC<SearchSectionProps> = ({ primaryColor, onSearch }) => {
-  const [busca, setBusca] = useState('');
-  const [tipoContrato, setTipoContrato] = useState('');
-  const [localizacao, setLocalizacao] = useState('');
+  const [busca, setBusca] = useState('')
+  const [tipoContrato, setTipoContrato] = useState('')
+  const [localizacao, setLocalizacao] = useState('')
 
   const tiposContrato = [
     { value: 'todos', label: 'Todos' },
     { value: 'CLT', label: 'CLT' },
     { value: 'PJ', label: 'PJ' },
     { value: 'Estágio', label: 'Estágio' },
-    { value: 'Temporário', label: 'Temporário' },
+    { value: 'Temporário', label: 'Temporário' },;
   ];
 
   const handleSearch = () => {
     onSearch({ 
       busca, 
       tipoContrato: tipoContrato === 'todos' ? '' : tipoContrato, 
-      localizacao 
-    });
+      localizacao ;
+    })
   };
 
   return (
@@ -83,7 +83,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ primaryColor, onSearch })
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default SearchSection;

@@ -176,7 +176,7 @@ const ContextMenuShortcut = ({
       {...props}
     />
   )
-}
+
 ContextMenuShortcut.displayName = "ContextMenuShortcut"
 
 export {
@@ -195,4 +195,5 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
-}
+
+;

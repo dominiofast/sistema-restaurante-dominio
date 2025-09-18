@@ -42,7 +42,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
   onSubmit,
   loading = false
 }) => {
-  const { sendInvitation, fetchExistingEmail, isSending } = useInvitation();
+  const { sendInvitation, fetchExistingEmail, isSending } = useInvitation()
   
   const [formData, setFormData] = useState({
     name: '',
@@ -51,9 +51,9 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
     plan: 'basic' as 'basic' | 'pro' | 'enterprise',
     status: 'active' as 'active' | 'inactive' | 'suspended',
     user_count: 0,
-  });
+  })
   
-  const [invitationEmail, setInvitationEmail] = useState('');
+  const [invitationEmail, setInvitationEmail] = useState('')
 
   useEffect(() => {
     if (company) {
@@ -64,12 +64,12 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         plan: (company.plan as 'basic' | 'pro' | 'enterprise') || 'basic',
         status: (company.status as 'active' | 'inactive' | 'suspended') || 'active',
         user_count: company.user_count,
-      });
+      })
       
       // Buscar email existente para edição
       fetchExistingEmail(company.id).then(email => {
-        if (email) setInvitationEmail(email);
-      });
+        if (email) setInvitationEmail(email)
+      })
     } else {
       setFormData({
         name: '',
@@ -78,20 +78,20 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         plan: 'basic',
         status: 'active',
         user_count: 0,
-      });
-      setInvitationEmail('');
-    }
-  }, [company]);
+      })
+      setInvitationEmail('')
+
+  }, [company])
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData, invitationEmail);
+    e.preventDefault()
+    onSubmit(formData, invitationEmail)
   };
 
   const handleSendInvite = () => {
     if (company && invitationEmail) {
-      sendInvitation(invitationEmail, company.id);
-    }
+      sendInvitation(invitationEmail, company.id)
+
   };
 
   return (
@@ -188,7 +188,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
           value={formData.plan} 
           onValueChange={(value: 'basic' | 'pro' | 'enterprise') => 
             setFormData({ ...formData, plan: value })
-          }
+
         >
           <SelectTrigger className="bg-white border border-gray-300 text-gray-900 focus:bg-white">
             <SelectValue />
@@ -207,7 +207,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
           value={formData.status} 
           onValueChange={(value: 'active' | 'inactive' | 'suspended') => 
             setFormData({ ...formData, status: value })
-          }
+
         >
           <SelectTrigger className="bg-white border border-gray-300 text-gray-900 focus:bg-white">
             <SelectValue />
@@ -242,5 +242,5 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         </Button>
       </div>
     </form>
-  );
+  )
 };

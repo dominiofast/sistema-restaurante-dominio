@@ -28,14 +28,14 @@ export class DynamicMetaTagsService {
   // Buscar empresa pelo slug, domain ou ID
   static async getCompanyBySlug(slugOrId: string): Promise<CompanyMetaTags | null> {
     try {
-      console.log('🔍 DynamicMetaTagsService - getCompanyBySlug via API Neon para:', slugOrId);
+      console.log('🔍 DynamicMetaTagsService - getCompanyBySlug via API Neon para:', slugOrId)
       
       // Buscar empresa via API /api/companies
-      const response = await fetch('/api/companies');
-      const result = await response.json();
+      const response = await fetch('/api/companies')
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        console.error('❌ DynamicMetaTagsService - Erro na API:', result.error);
+        console.error('❌ DynamicMetaTagsService - Erro na API:', result.error)
         return null;
       }
       
@@ -44,14 +44,14 @@ export class DynamicMetaTagsService {
         return comp.slug === slugOrId || 
                comp.domain === slugOrId ||
                comp.id === slugOrId;
-      });
+      })
 
       if (!company) {
-        console.error('❌ DynamicMetaTagsService - Empresa não encontrada para:', slugOrId);
+        console.error('❌ DynamicMetaTagsService - Empresa não encontrada para:', slugOrId)
         return null;
       }
 
-      console.log('✅ DynamicMetaTagsService - Empresa encontrada via API:', company);
+      console.log('✅ DynamicMetaTagsService - Empresa encontrada via API:', company)
 
       // Mapear para a interface esperada
       return {
@@ -65,10 +65,10 @@ export class DynamicMetaTagsService {
         meta_image: company.logo
       } as CompanyMetaTags;
     } catch (error) {
-      console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa por slug via API:', error);
+      console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa por slug via API:', error)
       return null;
-    }
-  }
+
+
 
   // Gerar meta tags para uma empresa
   static generateCompanyMetaTags(company: CompanyMetaTags, currentUrl?: string): MetaTagsConfig {
@@ -83,7 +83,7 @@ export class DynamicMetaTagsService {
       type: 'website',
       url: currentUrl || `https://pedido.dominio.tech/${company.slug}`
     };
-  }
+
 
   // Meta tags padrão da plataforma (fallback)
   static getDefaultMetaTags(): MetaTagsConfig {
@@ -95,49 +95,49 @@ export class DynamicMetaTagsService {
       type: 'website',
       url: 'https://pedido.dominio.tech'
     };
-  }
+
 
   // Aplicar meta tags no documento
   static applyMetaTags(metaTags: MetaTagsConfig) {
     // Title
     if (metaTags.title) {
       document.title = metaTags.title;
-    }
+
 
     // Meta description
-    this.setMetaTag('name', 'description', metaTags.description || '');
+    this.setMetaTag('name', 'description', metaTags.description || '')
 
     // Open Graph tags
-    this.setMetaTag('property', 'og:title', metaTags.title || '');
-    this.setMetaTag('property', 'og:description', metaTags.description || '');
-    this.setMetaTag('property', 'og:image', metaTags.image || '');
-    this.setMetaTag('property', 'og:site_name', metaTags.siteName || '');
-    this.setMetaTag('property', 'og:type', metaTags.type || 'website');
-    this.setMetaTag('property', 'og:url', metaTags.url || '');
+    this.setMetaTag('property', 'og:title', metaTags.title || '')
+    this.setMetaTag('property', 'og:description', metaTags.description || '')
+    this.setMetaTag('property', 'og:image', metaTags.image || '')
+    this.setMetaTag('property', 'og:site_name', metaTags.siteName || '')
+    this.setMetaTag('property', 'og:type', metaTags.type || 'website')
+    this.setMetaTag('property', 'og:url', metaTags.url || '')
 
     // Twitter Card tags
-    this.setMetaTag('name', 'twitter:card', 'summary_large_image');
-    this.setMetaTag('name', 'twitter:title', metaTags.title || '');
-    this.setMetaTag('name', 'twitter:description', metaTags.description || '');
-    this.setMetaTag('name', 'twitter:image', metaTags.image || '');
+    this.setMetaTag('name', 'twitter:card', 'summary_large_image')
+    this.setMetaTag('name', 'twitter:title', metaTags.title || '')
+    this.setMetaTag('name', 'twitter:description', metaTags.description || '')
+    this.setMetaTag('name', 'twitter:image', metaTags.image || '')
 
     // WhatsApp específico (mesmo que Open Graph)
-    this.setMetaTag('property', 'og:image:width', '1200');
-    this.setMetaTag('property', 'og:image:height', '630');
-  }
+    this.setMetaTag('property', 'og:image:width', '1200')
+    this.setMetaTag('property', 'og:image:height', '630')
+
 
   // Helper para definir meta tags
   private static setMetaTag(attribute: string, name: string, content: string) {
     let metaTag = document.querySelector(`meta[${attribute}="${name}"]`) as HTMLMetaElement;
     
     if (!metaTag) {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute(attribute, name);
-      document.head.appendChild(metaTag);
-    }
+      metaTag = document.createElement('meta')
+      metaTag.setAttribute(attribute, name)
+      document.head.appendChild(metaTag)
+
     
-    metaTag.setAttribute('content', content);
-  }
+    metaTag.setAttribute('content', content)
+
 
   // Limpar meta tags antigas
   static clearMetaTags() {
@@ -152,16 +152,16 @@ export class DynamicMetaTagsService {
       'meta[name="twitter:card"]',
       'meta[name="twitter:title"]',
       'meta[name="twitter:description"]',
-      'meta[name="twitter:image"]'
+      'meta[name="twitter:image"]';
     ];
 
     metaTagsToRemove.forEach(selector => {
-      const metaTag = document.querySelector(selector);
+      const metaTag = document.querySelector(selector)
       if (metaTag) {
-        metaTag.remove();
+        metaTag.remove()
       }
-    });
-  }
+    })
+
 
   // Extrair slug da URL atual
   static getSlugFromPath(pathname: string): string | null {
@@ -172,15 +172,15 @@ export class DynamicMetaTagsService {
     // /autoatendimento/empresa-slug
     // /empresa-slug/categoria
     
-    console.log('🔍 DynamicMetaTagsService - getSlugFromPath chamado para pathname:', pathname);
+    console.log('🔍 DynamicMetaTagsService - getSlugFromPath chamado para pathname:', pathname)
     
-    const pathSegments = pathname.split('/').filter(segment => segment.length > 0);
-    console.log('🔍 DynamicMetaTagsService - pathSegments:', pathSegments);
+    const pathSegments = pathname.split('/').filter(segment => segment.length > 0)
+    console.log('🔍 DynamicMetaTagsService - pathSegments:', pathSegments)
     
     if (pathSegments.length === 0) {
-      console.log('🔍 DynamicMetaTagsService - Nenhum segmento encontrado, retornando null');
+      console.log('🔍 DynamicMetaTagsService - Nenhum segmento encontrado, retornando null')
       return null;
-    }
+
 
     // Se o primeiro segmento não é uma rota conhecida, assume que é um slug
     const knownRoutes = [
@@ -190,25 +190,25 @@ export class DynamicMetaTagsService {
       'empresas', 'companies', 'super-admin', 'caixa', 'pdv', 'clientes', 'marketing',
       'whatsapp', 'chat', 'kds', 'cashback', 'agente-ia', 'teste-agente',
       'ferramentas', 'tools', 'estoque', 'gestor-cardapio', 'opcoes-loja',
-      'autoatendimento'
+      'autoatendimento';
     ];
     const firstSegment = pathSegments[0];
-    console.log('🔍 DynamicMetaTagsService - firstSegment:', firstSegment, 'é rota conhecida?', knownRoutes.includes(firstSegment));
+    console.log('🔍 DynamicMetaTagsService - firstSegment:', firstSegment, 'é rota conhecida?', knownRoutes.includes(firstSegment))
     
     if (!knownRoutes.includes(firstSegment)) {
-      console.log('🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug:', firstSegment);
+      console.log('🔍 DynamicMetaTagsService - Primeiro segmento não é rota conhecida, retornando como slug:', firstSegment)
       return firstSegment;
-    }
+
 
     // Se é uma rota conhecida, verifica se há slug no segundo segmento
     if (pathSegments.length > 1 && ['cardapio', 'pedido', 'autoatendimento'].includes(firstSegment)) {
-      console.log('🔍 DynamicMetaTagsService - Rota conhecida detectada, extraindo slug do segundo segmento:', pathSegments[1]);
+      console.log('🔍 DynamicMetaTagsService - Rota conhecida detectada, extraindo slug do segundo segmento:', pathSegments[1])
       return pathSegments[1];
-    }
 
-    console.log('🔍 DynamicMetaTagsService - Nenhum slug encontrado, retornando null');
+
+    console.log('🔍 DynamicMetaTagsService - Nenhum slug encontrado, retornando null')
     return null;
-  }
+
 
   // Atualização de meta tags via API (temporariamente desabilitado)
   static async updateCompanyMetaTags(
@@ -217,9 +217,8 @@ export class DynamicMetaTagsService {
       name?: string;
       domain?: string;
       logo?: string;
-    }
+
   ): Promise<boolean> {
-    console.log('⏭️ DynamicMetaTagsService - updateCompanyMetaTags temporariamente desabilitado');
+    console.log('⏭️ DynamicMetaTagsService - updateCompanyMetaTags temporariamente desabilitado')
     return false;
-  }
-} 
+

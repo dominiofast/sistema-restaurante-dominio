@@ -14,14 +14,14 @@ interface TipoFiscal {
   nome: string;
   descricao?: string;
   ativo: boolean;
-}
+
 
 interface TipoFiscalFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editingTipo?: TipoFiscal | null;
   onSubmit: (data: any) => Promise<void>;
-}
+
 
 export function TipoFiscalFormModal({ 
   open, 
@@ -30,8 +30,8 @@ export function TipoFiscalFormModal({
   onSubmit 
 }: TipoFiscalFormModalProps) {
   const handleSubmit = async (data: any) => {
-    await onSubmit(data);
-    onOpenChange(false);
+    await onSubmit(data)
+    onOpenChange(false)
   };
 
   return (
@@ -54,5 +54,4 @@ export function TipoFiscalFormModal({
         </div>
       </DialogContent>
     </Dialog>
-  );
-}
+  )

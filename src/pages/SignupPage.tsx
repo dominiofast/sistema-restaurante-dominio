@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 const SignupPage = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,36 +12,36 @@ const SignupPage = () => {
     ordersPerDay: '',
     hasComputer: '',
     acceptTerms: false
-  });
+  })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
-    }));
+    }))
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
     if (loading) return;
 
     // Validação
     if (!formData.phone.trim()) {
-      toast.error('Celular é obrigatório');
+      toast.error('Celular é obrigatório')
       return;
     }
 
     if (!formData.acceptTerms) {
-      toast.error('Você deve aceitar os termos e condições');
+      toast.error('Você deve aceitar os termos e condições')
       return;
     }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      console.log('🔄 Iniciando cadastro:', formData);
+      console.log('🔄 Iniciando cadastro:', formData)
       
       // Gerar um domain/slug único para a empresa baseado no nome do negócio
       const companyDomain = formData.businessName
@@ -49,99 +49,69 @@ const SignupPage = () => {
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '') // Remove acentos
         .replace(/[^a-z0-9\s]/g, '') // Remove caracteres especiais
-        .replace(/\s+/g, '') // Remove espaços
-        .substring(0, 20); // Limita tamanho
+        .replace(/\s+/g, '') // Remove espaços;
+        .substring(0, 20) // Limita tamanho
       
       // Adicionar timestamp para garantir unicidade
-      const uniqueDomain = `${companyDomain}${Date.now().toString().slice(-4)}`;
+      const uniqueDomain = `${companyDomain} catch (error) { console.error('Error:', error) }${Date.now().toString().slice(-4)}`;
       
-      console.log('🏢 Criando empresa com domain:', uniqueDomain);
+      console.log('🏢 Criando empresa com domain:', uniqueDomain)
       
       // 1. Primeiro criar a empresa
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .insert({
-          name: formData.businessName,
-          domain: uniqueDomain,
-          slug: uniqueDomain,
-          status: 'active',
-          plan: 'trial', // Plano de teste
-          user_count: 1
-        })
-        .select()
-        .single();
-
+      const companyData = null as any; const companyError = null as any;
+      
       if (companyError) {
-        console.error('❌ Erro ao criar empresa:', companyError);
-        toast.error('Erro ao criar empresa: ' + companyError.message);
+        toast.error('Erro ao criar empresa: ' + companyError.message)
         return;
       }
 
-      console.log('✅ Empresa criada:', companyData);
+      console.log('✅ Empresa criada:', companyData)
       
       // 2. Criar usuário no Supabase Auth com a empresa associada
       // Gerar senha temporária para o usuário (será solicitada para trocar no primeiro login)
       const tempPassword = `temp${Date.now()}`;
       
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: tempPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            name: formData.name,
-            phone: formData.phone,
-            businessName: formData.businessName,
-            company_id: companyData.id,
-            company_domain: uniqueDomain,
-            role: 'admin',
-            orders_per_day: formData.ordersPerDay,
-            has_computer: formData.hasComputer
-          }
-        }
-      });
+      const authData = null as any; const authError = null as any;
 
       if (authError) {
-        console.error('❌ Erro na autenticação:', authError);
+        console.error('❌ Erro na autenticação:', authError)
         
         // Se falhou ao criar usuário, deletar a empresa criada
         try {
-          await fetch(`/api/companies?id=${companyData.id}`, {
+          await fetch(`/api/companies?id=${companyData.id} catch (error) { console.error('Error:', error) }`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
-          });
+          })
         } catch (deleteError) {
-          console.error('Erro ao deletar empresa após falha na autenticação:', deleteError);
+          console.error('Erro ao deletar empresa após falha na autenticação:', deleteError)
         }
         
         if (authError.message.includes('already registered')) {
-          toast.error('Este email já está em uso');
+          toast.error('Este email já está em uso')
         } else {
-          toast.error('Erro ao criar conta: ' + authError.message);
+          toast.error('Erro ao criar conta: ' + authError.message)
         }
         return;
       }
 
-      console.log('✅ Usuário criado no auth:', authData);
+      console.log('✅ Usuário criado no auth:', authData)
 
       // 3. Criar credenciais da empresa para login direto
       if (authData.user) {
-        const { error: credentialsError } = await supabase
-          .from('company_credentials')
-          .insert({
+        const { error: credentialsError  } = null as any;
             email: formData.email,
             password_hash: tempPassword, // Será processado pelo trigger
             company_id: companyData.id,
             is_hashed: false
-          });
+          })
 
         if (credentialsError) {
-          console.warn('⚠️ Aviso ao criar credenciais:', credentialsError);
+          console.warn('⚠️ Aviso ao criar credenciais:', credentialsError)
         }
       }
 
       // Se chegou até aqui, o cadastro foi bem-sucedido
-      toast.success('Conta criada com sucesso! Seu teste gratuito de 14 dias já começou. Verifique seu email para confirmar.');
+      toast.success('Conta criada com sucesso! Seu teste gratuito de 14 dias já começou. Verifique seu email para confirmar.')
       
       // Limpar formulário
       setFormData({
@@ -152,18 +122,18 @@ const SignupPage = () => {
         ordersPerDay: '',
         hasComputer: '',
         acceptTerms: false
-      });
+      })
       
       // Redirecionar para login após um delay
       setTimeout(() => {
         window.location.href = '/login';
-      }, 3000);
+      }, 3000)
 
     } catch (error) {
-      console.error('❌ Erro no cadastro:', error);
-      toast.error('Erro inesperado ao criar conta');
+      console.error('❌ Erro no cadastro:', error)
+      toast.error('Erro inesperado ao criar conta')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -464,7 +434,7 @@ const SignupPage = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default SignupPage;

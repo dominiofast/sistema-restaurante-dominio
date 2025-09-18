@@ -17,8 +17,8 @@ export const SearchAndCategories: React.FC<SearchAndCategoriesProps> = ({
   categoriaSelecionada,
   setCategoriaSelecionada
 }) => {
-  console.log('🔍 SearchAndCategories: Renderizando com categorias:', categorias.length, categorias);
-  console.log('🔍 SearchAndCategories: Categoria selecionada:', categoriaSelecionada);
+  console.log('🔍 SearchAndCategories: Renderizando com categorias:', categorias.length, categorias)
+  console.log('🔍 SearchAndCategories: Categoria selecionada:', categoriaSelecionada)
 
   return (
     <div className="bg-white border-b border-gray-200 shadow-sm">
@@ -89,5 +89,5 @@ export const SearchAndCategories: React.FC<SearchAndCategoriesProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

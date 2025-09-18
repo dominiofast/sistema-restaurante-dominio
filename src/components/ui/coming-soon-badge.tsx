@@ -15,13 +15,13 @@ export const ComingSoonBadge: React.FC<ComingSoonBadgeProps> = ({
   const sizeClasses = {
     sm: 'text-xs px-1.5 py-0.5',
     md: 'text-sm px-2 py-1',
-    lg: 'text-base px-3 py-1.5'
+    lg: 'text-base px-3 py-1.5';
   };
 
   const variantClasses = {
     default: 'bg-gradient-to-r from-blue-400 to-indigo-500 text-white shadow-sm',
     outline: 'border-2 border-blue-400 text-blue-600 bg-blue-50',
-    minimal: 'bg-blue-100 text-blue-700'
+    minimal: 'bg-blue-100 text-blue-700';
   };
 
   return (
@@ -35,5 +35,5 @@ export const ComingSoonBadge: React.FC<ComingSoonBadgeProps> = ({
     >
       BREVE
     </span>
-  );
+  )
 };

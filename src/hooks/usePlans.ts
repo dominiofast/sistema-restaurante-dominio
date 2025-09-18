@@ -12,7 +12,7 @@ export interface Plan {
   auto_renew: boolean;
   active: boolean;
   plan_features?: PlanFeature[];
-}
+
 
 export interface PlanFeature {
   feature_id: string;
@@ -23,7 +23,7 @@ export interface PlanFeature {
     description: string;
     category: string;
   };
-}
+
 
 // Mock data based on the database structure until types are updated
 const mockPlansData: Plan[] = [
@@ -118,15 +118,15 @@ const mockPlansData: Plan[] = [
       { feature_id: 'priority_support', included: true, features: { id: 'priority_support', name: 'Suporte prioritário', description: '', category: 'support' } },
       { feature_id: 'dedicated_training', included: true, features: { id: 'dedicated_training', name: 'Treinamento dedicado', description: '', category: 'support' } },
     ]
-  }
+
 ];
 
 export const usePlans = () => {
   return useQuery({
     queryKey: ['plans'],
     queryFn: async () => {
-      // Return mock data for now until database types are synced
+      // Return mock data for now until database types are synced;
       return mockPlansData;
     },
-  });
+  })
 };

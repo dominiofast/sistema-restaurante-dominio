@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { Store, Calendar, Globe, Settings, MessageSquare, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,48 +18,46 @@ interface IFoodIntegration {
   environment: string | null;
   webhook_url: string | null;
   webhook_secret: string | null;
-}
+
 
 interface IntegrationData {
   accessToken: string;
   expiresIn: number;
   environment: string;
   message: string;
-}
+
 
 const IFoodIntegrationsLojista = () => {
-  const { currentCompany } = useAuth();
-  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [requestingToken, setRequestingToken] = useState(false);
-  const [integrationData, setIntegrationData] = useState<IntegrationData | null>(null);
+  const { currentCompany } = useAuth()
+  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([])
+  const [loading, setLoading] = useState(true)
+  const [requestingToken, setRequestingToken] = useState(false)
+  const [integrationData, setIntegrationData] = useState<IntegrationData | null>(null)
 
   useEffect(() => {
     if (currentCompany?.id) {
-      fetchIntegrations();
+      fetchIntegrations()
     }
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   const fetchIntegrations = async () => {
-    if (!currentCompany?.id) return;
-
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('ifood_integrations')
-        .select(`
+    console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
+  } = 
+        
+        
           *
         `)
-        .eq('company_id', currentCompany.id)
-        .order('created_at', { ascending: false });
+        
+        
 
       if (error) throw error;
-      setIntegrations(data || []);
+      setIntegrations(data || [])
     } catch (error) {
-      console.error('Erro ao carregar integrações:', error);
-      toast.error('Erro ao carregar integrações');
+      console.error('Erro ao carregar integrações:', error)
+      toast.error('Erro ao carregar integrações')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -67,27 +65,27 @@ const IFoodIntegrationsLojista = () => {
     if (!currentCompany?.id) return;
 
     try {
-      setRequestingToken(true);
+      setRequestingToken(true)
       
-      const { data, error } = await supabase.functions.invoke('ifood-request-linking-code', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { environment: 'sandbox' } // Por padrão usar sandbox
-      });
+      })
 
       if (error) throw error;
 
       if (data.success) {
-        setIntegrationData(data);
-        toast.success(data.message);
+        setIntegrationData(data)
+        toast.success(data.message)
         // Recarregar integrações após sucesso
-        fetchIntegrations();
+        fetchIntegrations()
       } else {
-        toast.error(data.error || 'Erro ao configurar integração');
+        toast.error(data.error || 'Erro ao configurar integração')
       }
     } catch (error) {
-      console.error('Erro ao configurar integração:', error);
-      toast.error('Erro ao configurar integração iFood');
+      console.error('Erro ao configurar integração:', error)
+      toast.error('Erro ao configurar integração iFood')
     } finally {
-      setRequestingToken(false);
+      setRequestingToken(false)
     }
   };
 
@@ -96,8 +94,8 @@ const IFoodIntegrationsLojista = () => {
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -380,7 +378,7 @@ const IFoodIntegrationsLojista = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default IFoodIntegrationsLojista;

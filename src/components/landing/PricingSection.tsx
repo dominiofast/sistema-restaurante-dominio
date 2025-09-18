@@ -3,11 +3,11 @@ import { usePlans } from '@/hooks/usePlans';
 import { PlanCard } from './PlanCard';
 
 export const PricingSection = () => {
-  const [billingType, setBillingType] = useState<'monthly' | 'yearly'>('monthly');
-  const { data: plans = [], isLoading } = usePlans();
+  const [billingType, setBillingType] = useState<'monthly' | 'yearly'>('monthly')
+  const { data: plans = [], isLoading } = usePlans()
 
   const toggleBilling = (type: 'monthly' | 'yearly') => {
-    setBillingType(type);
+    setBillingType(type)
   };
 
   if (isLoading) {
@@ -22,8 +22,8 @@ export const PricingSection = () => {
           </div>
         </div>
       </section>
-    );
-  }
+    )
+
 
   return (
     <section id="precos" className="py-16 bg-[hsl(var(--dominio-neutral-background))]">
@@ -74,5 +74,5 @@ export const PricingSection = () => {
         </div>
       </div>
     </section>
-  );
+  )
 };

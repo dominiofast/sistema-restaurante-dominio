@@ -18,7 +18,7 @@ interface PedidoData {
   forma_pagamento?: string;
   tipo?: string;
   observacoes?: string | null;
-}
+
 
 interface OrderResponse {
   success: boolean;
@@ -32,26 +32,26 @@ interface OrderResponse {
   total_itens: number;
   error?: string;
   details?: string;
-}
+
 
 /**
  * 🚀 FUNÇÃO PRINCIPAL - Cria pedido via API backend segura
  */
 export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse> {
-  console.log('🚀 OrderGateway - Criando pedido via API backend segura');
+  console.log('🚀 OrderGateway - Criando pedido via API backend segura')
   console.log('📦 Dados:', {
     companyId: pedidoData.companyId,
     cliente: pedidoData.cliente?.nome,
     itens: pedidoData.itens?.length || 0,
     total: pedidoData.total
-  });
+  })
 
   try {
     // 🎯 ENDPOINT PROFISSIONAL: Sempre usar /api/orders relativo com override opcional
-    const base = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
-    const apiUrl = `${base}/api/orders`; // Se base=='' => same-origin /api/orders
+    const base = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+    const apiUrl = `${base} catch (error) { console.error('Error:', error) }/api/orders`; // Se base=='' => same-origin /api/orders
     
-    console.log('🎯 Usando endpoint:', apiUrl);
+    console.log('🎯 Usando endpoint:', apiUrl)
     
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -59,27 +59,27 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(pedidoData)
-    });
+    })
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error('❌ Erro na resposta do servidor:', errorData);
-      throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
-    }
+      const errorData = await response.json().catch(() => ({}))
+      console.error('❌ Erro na resposta do servidor:', errorData)
+      throw new Error(errorData.error || `Erro HTTP: ${response.status}`)
 
-    const result = await response.json();
+
+    const result = await response.json()
 
     console.log('✅ OrderGateway - Pedido criado com sucesso:', {
       pedido_id: result.pedido?.id,
       numero: result.pedido?.numero_pedido,
       itens_salvos: result.itens_salvos,
       total_itens: result.total_itens
-    });
+    })
 
     return result;
 
   } catch (error) {
-    console.error('💥 OrderGateway - Erro ao criar pedido:', error);
+    console.error('💥 OrderGateway - Erro ao criar pedido:', error)
     
     return {
       success: false,
@@ -93,8 +93,8 @@ export async function createOrder(pedidoData: PedidoData): Promise<OrderResponse
       itens_salvos: 0,
       total_itens: 0
     };
-  }
-}
+
+
 
 /**
  * 🔄 FUNÇÃO DE MIGRAÇÃO - Para substituir chamadas antigas
@@ -107,7 +107,7 @@ export const criarPedidoViaGateway = createOrder;
  * Detecta e converte diferentes formatos de entrada
  */
 export async function createOrderLegacyCompat(data: any): Promise<OrderResponse> {
-  console.log('🔄 OrderGateway - Convertendo dados legados');
+  console.log('🔄 OrderGateway - Convertendo dados legados')
   
   // Normaliza dados de diferentes origens
   const normalizedData: PedidoData = {
@@ -124,8 +124,8 @@ export async function createOrderLegacyCompat(data: any): Promise<OrderResponse>
     observacoes: data.observacoes || data.notes || null
   };
 
-  return createOrder(normalizedData);
-}
+  return createOrder(normalizedData)
+
 
 export default {
   createOrder,

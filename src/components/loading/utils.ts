@@ -12,7 +12,7 @@ export const extractBrandingColors = (branding?: any): BrandingColors => {
     textColor: branding?.text_color || DEFAULT_BRANDING_COLORS.textColor,
     backgroundColor: branding?.background_color === '#FFFFFF' 
       ? DEFAULT_BRANDING_COLORS.backgroundColor 
-      : branding?.background_color || DEFAULT_BRANDING_COLORS.backgroundColor
+      : branding?.background_color || DEFAULT_BRANDING_COLORS.backgroundColor;
   };
 };
 
@@ -25,7 +25,7 @@ export const getResponsiveSizes = (): ResponsiveSizes => {
   return {
     logoSize: `${RESPONSIVE_LOGO_CLASSES.mobile} md:${RESPONSIVE_LOGO_CLASSES.tablet} lg:${RESPONSIVE_LOGO_CLASSES.desktop}`,
     animationSize: 'md' as const,
-    containerPadding: `${RESPONSIVE_PADDING_CLASSES.mobile} md:${RESPONSIVE_PADDING_CLASSES.tablet} lg:${RESPONSIVE_PADDING_CLASSES.desktop}`
+    containerPadding: `${RESPONSIVE_PADDING_CLASSES.mobile} md:${RESPONSIVE_PADDING_CLASSES.tablet} lg:${RESPONSIVE_PADDING_CLASSES.desktop}`;
   };
 };
 
@@ -41,7 +41,7 @@ export const calculateCircumference = (radius: number): number => {
  */
 export const createStrokeDashArray = (circumference: number, percentage: number = 0.25): string => {
   const dashLength = circumference * percentage;
-  const gapLength = circumference * (1 - percentage);
+  const gapLength = circumference * (1 - percentage)
   return `${dashLength} ${gapLength}`;
 };
 
@@ -49,8 +49,8 @@ export const createStrokeDashArray = (circumference: number, percentage: number 
  * Determines if device supports GPU acceleration
  */
 export const supportsGPUAcceleration = (): boolean => {
-  // Check for CSS transform3d support
-  const testElement = document.createElement('div');
+  // Check for CSS transform3d support;
+  const testElement = document.createElement('div')
   testElement.style.transform = 'translate3d(0,0,0)';
   return testElement.style.transform !== '';
 };
@@ -110,8 +110,8 @@ export const debounce = <T extends (...args: any[]) => any>(
   let timeout: NodeJS.Timeout;
   
   return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func(...args), wait)
   };
 };
 
@@ -126,9 +126,9 @@ export const createTimeoutPromise = <T>(
   return Promise.race([
     promise,
     new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+      setTimeout(() => reject(new Error(errorMessage)), timeoutMs)
     })
-  ]);
+  ])
 };
 
 /**
@@ -136,13 +136,13 @@ export const createTimeoutPromise = <T>(
  */
 export const isValidImageUrl = (url: string): boolean => {
   try {
-    const urlObj = new URL(url);
+    const urlObj = new URL(url)
     const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.avif'];
-    const pathname = urlObj.pathname.toLowerCase();
+    const pathname = urlObj.pathname.toLowerCase()
     
     return validExtensions.some(ext => pathname.endsWith(ext)) ||
            pathname.includes('/image/') ||
-           urlObj.searchParams.has('format');
+           urlObj.searchParams.has('format')
   } catch {
     return false;
   }
@@ -154,12 +154,12 @@ export const isValidImageUrl = (url: string): boolean => {
 export const preloadImage = (src: string, timeout: number = 5000): Promise<HTMLImageElement> => {
   return createTimeoutPromise(
     new Promise<HTMLImageElement>((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('Failed to load image'));
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = () => reject(new Error('Failed to load image'))
       img.src = src;
     }),
     timeout,
     'Image loading timed out'
-  );
+  )
 };

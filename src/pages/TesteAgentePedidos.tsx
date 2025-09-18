@@ -5,12 +5,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const TesteAgentePedidos = () => {
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState('');
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
+  const [token, setToken] = useState('')
   const [pedidoData, setPedidoData] = useState({
     nome: 'João da Silva',
     telefone: '(11) 99999-9999',
@@ -30,64 +29,64 @@ const TesteAgentePedidos = () => {
             quantidade: 1
           }
         ]
-      }
+
     ],
     observacoes: 'Teste do agente IA'
-  });
+  })
 
   const handleTestarPedido = async () => {
     if (!token) {
       toast({
         title: "Erro",
         description: "Token é obrigatório",
-        variant: "destructive"
-      });
+        variant: "destructive";
+      })
       return;
     }
 
-    setLoading(true);
+    setLoading(true)
     
     try {
-      const { data, error } = await supabase.functions.invoke('criar-pedido', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: pedidoData,
         headers: {
           'Authorization': `Bearer ${token}`
         }
-      });
+      })
 
       if (error) {
-        console.error('Erro na função:', error);
+        console.error('Erro na função:', error)
         toast({
           title: "Erro",
           description: error.message || "Erro ao criar pedido",
           variant: "destructive"
-        });
+        })
         return;
-      }
+
 
       toast({
         title: "Sucesso!",
         description: `Pedido criado com ID: ${data.pedido_id}`,
-      });
+      })
 
-      console.log('Resposta da função:', data);
+      console.log('Resposta da função:', data)
 
     } catch (err) {
-      console.error('Erro:', err);
+      console.error('Erro:', err)
       toast({
         title: "Erro",
         description: "Erro inesperado",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const updateItem = (index: number, field: string, value: any) => {
     const newItens = [...pedidoData.itens];
     newItens[index] = { ...newItens[index], [field]: value };
-    setPedidoData({ ...pedidoData, itens: newItens });
+    setPedidoData({ ...pedidoData, itens: newItens })
   };
 
   return (
@@ -236,7 +235,7 @@ const TesteAgentePedidos = () => {
             <p className="text-lg font-semibold">
               Total: R$ {pedidoData.itens.reduce((acc, item) => {
                 const subtotalItem = item.preco_unitario * item.quantidade;
-                const subtotalAdicionais = item.adicionais?.reduce((accAd, ad) => 
+                const subtotalAdicionais = item.adicionais?.reduce((accAd, ad) => ;
                   accAd + (ad.preco * ad.quantidade), 0) || 0;
                 return acc + subtotalItem + subtotalAdicionais;
               }, 0).toFixed(2)}
@@ -266,7 +265,7 @@ const TesteAgentePedidos = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default TesteAgentePedidos;

@@ -39,7 +39,7 @@ const InscricaoSucesso: React.FC<InscricaoSucessoProps> = ({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default InscricaoSucesso;

@@ -39,7 +39,7 @@ interface ConnectionStatusProps {
   getFallbackState?: () => any;
   forceFallbackMode?: (mode: 'realtime' | 'polling') => void;
   onRunDiagnostic?: () => Promise<any>;
-}
+
 
 // Componente simples para status inline
 export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
@@ -91,7 +91,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
         </button>
       )}
     </div>
-  );
+  )
 };
 
 // Componente avançado com métricas detalhadas
@@ -110,26 +110,26 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   forceFallbackMode,
   onRunDiagnostic
 }) => {
-  const [metrics, setMetrics] = useState<any>(null);
-  const [qualityData, setQualityData] = useState<any>(null);
-  const [alerts, setAlerts] = useState<any[]>([]);
-  const [fallbackState, setFallbackState] = useState<any>(null);
-  const [showDetails, setShowDetails] = useState(false);
-  const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false);
+  const [metrics, setMetrics] = useState<any>(null)
+  const [qualityData, setQualityData] = useState<any>(null)
+  const [alerts, setAlerts] = useState<any[]>([])
+  const [fallbackState, setFallbackState] = useState<any>(null)
+  const [showDetails, setShowDetails] = useState(false)
+  const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false)
 
   // Atualizar dados periodicamente
   useEffect(() => {
     const updateData = () => {
-      if (getConnectionMetrics) setMetrics(getConnectionMetrics());
-      if (getConnectionQuality) setQualityData(getConnectionQuality());
-      if (getConnectionAlerts) setAlerts(getConnectionAlerts(true)); // Apenas não resolvidos
-      if (getFallbackState) setFallbackState(getFallbackState());
+      if (getConnectionMetrics) setMetrics(getConnectionMetrics())
+      if (getConnectionQuality) setQualityData(getConnectionQuality())
+      if (getConnectionAlerts) setAlerts(getConnectionAlerts(true)) // Apenas não resolvidos
+      if (getFallbackState) setFallbackState(getFallbackState())
     };
 
-    updateData();
-    const interval = setInterval(updateData, 2000);
-    return () => clearInterval(interval);
-  }, [getConnectionMetrics, getConnectionQuality, getConnectionAlerts, getFallbackState]);
+    updateData()
+    const interval = setInterval(updateData, 2000)
+    return () => clearInterval(interval)
+  }, [getConnectionMetrics, getConnectionQuality, getConnectionAlerts, getFallbackState])
 
   const getQualityColor = (level: string) => {
     switch (level) {
@@ -154,11 +154,11 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   const runDiagnostic = async () => {
     if (!onRunDiagnostic) return;
     
-    setIsRunningDiagnostic(true);
+    setIsRunningDiagnostic(true)
     try {
-      await onRunDiagnostic();
+      await onRunDiagnostic()
     } finally {
-      setIsRunningDiagnostic(false);
+      setIsRunningDiagnostic(false)
     }
   };
 
@@ -387,7 +387,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
         )}
       </CardContent>
     </Card>
-  );
+  )
 };
 
 // Componente para banner de status mais visível
@@ -410,7 +410,7 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
           return {
             bg: 'bg-green-100 border-green-200 text-green-800',
             icon: <Wifi className="h-4 w-4" />,
-            message: `Conectado - Qualidade excelente (${latency}ms)`
+            message: `Conectado - Qualidade excelente (${latency}ms)`;
           };
         case 'good':
           return {
@@ -448,7 +448,7 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
     };
   };
 
-  const config = getStatusConfig();
+  const config = getStatusConfig()
 
   return (
     <div className={`px-4 py-2 flex items-center justify-between text-sm ${config.bg} border-b`}>
@@ -467,5 +467,5 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
         </button>
       )}
     </div>
-  );
+  )
 };

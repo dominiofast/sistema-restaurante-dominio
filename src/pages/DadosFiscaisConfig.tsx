@@ -7,48 +7,48 @@ import { DadosFiscaisForm } from '@/components/fiscal/DadosFiscaisForm';
 import { useDadosFiscais } from '@/hooks/useDadosFiscais';
 
 export default function DadosFiscaisConfig() {
-  const { tipoId } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { tipoId } = useParams()
+  const location = useLocation()
+  const navigate = useNavigate()
   
   const tipoNome = location.state?.tipoNome || 'Tipo Fiscal';
-  const { dadosFiscais, loading, buscarDadosFiscais, salvarDadosFiscais } = useDadosFiscais();
+  const { dadosFiscais, loading, buscarDadosFiscais, salvarDadosFiscais } = useDadosFiscais()
 
   useEffect(() => {
     if (tipoId) {
-      buscarDadosFiscais(tipoId);
+      buscarDadosFiscais(tipoId)
     }
-  }, [tipoId, buscarDadosFiscais]);
+  }, [tipoId, buscarDadosFiscais])
 
   const handleSubmit = async (data: any) => {
-    console.log('=== SUBMIT DADOS FISCAIS ===');
-    console.log('TipoId:', tipoId);
-    console.log('Data recebida:', data);
+    console.log('=== SUBMIT DADOS FISCAIS ===')
+    console.log('TipoId:', tipoId)
+    console.log('Data recebida:', data)
     console.log('Campos principais:', {
       descricao: data.descricao,
       ncm: data.ncm,
       cfop: data.cfop,
       origem_mercadoria: data.origem_mercadoria
-    });
+    })
     
     if (!tipoId) {
-      toast.error('ID do tipo fiscal não encontrado');
+      toast.error('ID do tipo fiscal não encontrado')
       return;
     }
 
     try {
-      const resultado = await salvarDadosFiscais(tipoId, data);
-      console.log('Resultado do salvamento:', resultado);
-      toast.success('Dados fiscais salvos com sucesso!');
-      navigate('/opcoes-loja/dados-fiscais');
+      const resultado = await salvarDadosFiscais(tipoId, data)
+      console.log('Resultado do salvamento:', resultado)
+      toast.success('Dados fiscais salvos com sucesso!')
+      navigate('/opcoes-loja/dados-fiscais')
     } catch (error: any) {
-      console.error('Erro ao salvar:', error);
-      toast.error('Erro ao salvar dados fiscais: ' + error.message);
+      console.error('Erro ao salvar:', error)
+      toast.error('Erro ao salvar dados fiscais: ' + error.message)
     }
   };
 
   const handleCancel = () => {
-    navigate('/opcoes-loja/dados-fiscais');
+    navigate('/opcoes-loja/dados-fiscais')
   };
 
   return (
@@ -76,5 +76,4 @@ export default function DadosFiscaisConfig() {
         onCancel={handleCancel}
       />
     </div>
-  );
-}
+  )

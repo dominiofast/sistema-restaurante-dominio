@@ -44,7 +44,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
   onSubmit,
   loading = false,
 }) => {
-  const { tiposFiscais, loading: loadingTipos, error: errorTipos } = useTiposFiscais();
+  const { tiposFiscais, loading: loadingTipos, error: errorTipos } = useTiposFiscais()
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FormData>({
     defaultValues: {
       name: produto?.name || '',
@@ -60,7 +60,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
       ingredients: produto?.ingredients || '',
       tipo_fiscal_id: produto?.tipo_fiscal_id || '',
     },
-  });
+  })
 
   React.useEffect(() => {
     if (produto) {
@@ -77,7 +77,7 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
         preparation_time: produto.preparation_time || 0,
         ingredients: produto.ingredients || '',
         tipo_fiscal_id: produto.tipo_fiscal_id || '',
-      });
+      })
     } else {
       reset({
         name: '',
@@ -92,31 +92,31 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
         preparation_time: 0,
         ingredients: '',
         tipo_fiscal_id: '',
-      });
-    }
-  }, [produto, reset]);
+      })
+
+  }, [produto, reset])
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      console.log('🔍 ProdutoForm: handleFormSubmit iniciado');
-      console.log('🔍 ProdutoForm: Dados recebidos do formulário:', data);
+      console.log('🔍 ProdutoForm: handleFormSubmit iniciado')
+      console.log('🔍 ProdutoForm: Dados recebidos do formulário:', data)
       
       // Validação básica
       if (!data.name || data.name.trim() === '') {
-        console.error('❌ ProdutoForm: Nome é obrigatório');
-        alert('Nome do produto é obrigatório');
+        console.error('❌ ProdutoForm: Nome é obrigatório')
+        alert('Nome do produto é obrigatório')
         return;
       }
       
-      if (!data.categoria_id || data.categoria_id === '') {
-        console.error('❌ ProdutoForm: Categoria é obrigatória');
-        alert('Categoria é obrigatória');
+       catch (error) { console.error('Error:', error) }if (!data.categoria_id || data.categoria_id === '') {
+        console.error('❌ ProdutoForm: Categoria é obrigatória')
+        alert('Categoria é obrigatória')
         return;
       }
       
       if (!data.price && data.price !== 0) {
-        console.error('❌ ProdutoForm: Preço é obrigatório');
-        alert('Preço é obrigatório');
+        console.error('❌ ProdutoForm: Preço é obrigatório')
+        alert('Preço é obrigatório')
         return;
       }
       
@@ -124,27 +124,27 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
       const cleanedData = {
         ...data,
         categoria_id: data.categoria_id === '' ? null : data.categoria_id,
-        tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,
+        tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,;
       };
       
-      console.log('🔍 ProdutoForm: Dados limpos:', cleanedData);
-      console.log('🔍 ProdutoForm: Chaves dos dados:', Object.keys(cleanedData));
+      console.log('🔍 ProdutoForm: Dados limpos:', cleanedData)
+      console.log('🔍 ProdutoForm: Chaves dos dados:', Object.keys(cleanedData))
       
-      console.log('🔍 ProdutoForm: Chamando onSubmit...');
-      await onSubmit(cleanedData);
+      console.log('🔍 ProdutoForm: Chamando onSubmit...')
+      await onSubmit(cleanedData)
       
-      console.log('✅ ProdutoForm: onSubmit concluído com sucesso');
-      onClose();
+      console.log('✅ ProdutoForm: onSubmit concluído com sucesso')
+      onClose()
     } catch (error) {
-      console.error('❌ ProdutoForm: Erro em handleFormSubmit:', error);
-      alert(`Erro ao salvar produto: ${error?.message || error}`);
-    }
+      console.error('❌ ProdutoForm: Erro em handleFormSubmit:', error)
+      alert(`Erro ao salvar produto: ${error?.message || error}`)
+
   };
 
-  const isAvailable = watch('is_available');
-  const destaque = watch('destaque');
-  const isPromotional = watch('is_promotional');
-  const imageValue = watch('image');
+  const isAvailable = watch('is_available')
+  const destaque = watch('destaque')
+  const isPromotional = watch('is_promotional')
+  const imageValue = watch('image')
 
   // Formulário sempre renderiza, sem loading bloqueante
 
@@ -382,5 +382,5 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

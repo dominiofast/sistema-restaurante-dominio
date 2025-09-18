@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -28,122 +28,122 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { currentCompany } = useAuth();
-  const { categorias } = useCardapio();
+  const { currentCompany } = useAuth()
+  const { categorias } = useCardapio()
   
-  const [url, setUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isImporting, setIsImporting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [previewItems, setPreviewItems] = useState<PreviewItem[]>([]);
+  const [url, setUrl] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isImporting, setIsImporting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [previewItems, setPreviewItems] = useState<PreviewItem[]>([])
 
   const handlePreview = async () => {
-    setIsLoading(true);
-    setError(null);
-    setPreviewItems([]);
+    setIsLoading(true)
+    setError(null)
+    setPreviewItems([])
 
     try {
       // Usar a função Supabase para fazer o preview
-      const { data, error: functionError } = await supabase.functions.invoke('ifood-import-preview', {
+      const { data, error: functionError }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { url }
-      });
+      })
 
       if (functionError) {
-        throw new Error(functionError.message || 'Erro ao chamar a função de preview');
+        throw new Error(functionError.message || 'Erro ao chamar a função de preview')
       }
 
       if (data?.error) {
-        throw new Error(data.error);
+        throw new Error(data.error)
       }
 
       if (!data || !Array.isArray(data)) {
-        throw new Error('Resposta inválida do servidor');
+        throw new Error('Resposta inválida do servidor')
       }
 
       // Adicionar o campo selected e categoria_id aos itens
       const itemsWithSelection = data.map(item => ({
         ...item,
         selected: true,
-        categoria_id: categorias[0]?.id || '' // Seleciona a primeira categoria por padrão
-      }));
+        categoria_id: categorias[0]?.id || '' // Seleciona a primeira categoria por padrão;
+      }))
 
-      setPreviewItems(itemsWithSelection);
+      setPreviewItems(itemsWithSelection)
 
       if (itemsWithSelection.length === 0) {
-        throw new Error('Nenhum item encontrado. A loja pode estar fechada ou a URL pode estar incorreta.');
+        throw new Error('Nenhum item encontrado. A loja pode estar fechada ou a URL pode estar incorreta.')
       }
 
     } catch (err: any) {
-      console.error('Erro ao fazer preview:', err);
-      setError(err.message || 'Ocorreu um erro ao analisar o cardápio.');
+      console.error('Erro ao fazer preview:', err)
+      setError(err.message || 'Ocorreu um erro ao analisar o cardápio.')
     } finally {
-      setIsLoading(false);
-    }
+      setIsLoading(false)
+
   };
   
   const handleImport = async () => {
-    setIsImporting(true);
-    setError(null);
-    setSuccessMessage(null);
-    const itemsToImport = previewItems.filter(item => item.selected);
+    setIsImporting(true)
+    setError(null)
+    setSuccessMessage(null)
+    const itemsToImport = previewItems.filter(item => item.selected)
 
     try {
-      const { data, error: functionError } = await supabase.functions.invoke('ifood-import-execute', {
+      const { data, error: functionError }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { 
           company_id: currentCompany?.id,
           items: itemsToImport,
           source_url: url 
         },
-      });
+      })
 
       // Tratamento de erro mais robusto
       if (functionError) {
-        console.error('Erro da função Supabase:', functionError);
-        throw new Error(functionError.message || 'Ocorreu um erro na execução da importação.');
+        console.error('Erro da função Supabase:', functionError)
+        throw new Error(functionError.message || 'Ocorreu um erro na execução da importação.')
       }
       
       if (data && data.error) {
-        console.error('Erro retornado no corpo da função:', data.error);
-        throw new Error(data.error);
+        console.error('Erro retornado no corpo da função:', data.error)
+        throw new Error(data.error)
       }
       
       if (data && data.message) {
-        setSuccessMessage(data.message);
-        setPreviewItems([]); // Limpa a lista de preview no sucesso
+        setSuccessMessage(data.message)
+        setPreviewItems([]) // Limpa a lista de preview no sucesso
       } else {
         // Lida com casos onde a resposta é 200 OK, mas o corpo é inesperado
-        console.error('Resposta de sucesso inesperada do servidor:', data);
-        throw new Error('A importação parece ter sido concluída, mas a resposta do servidor foi inválida.');
+        console.error('Resposta de sucesso inesperada do servidor:', data)
+        throw new Error('A importação parece ter sido concluída, mas a resposta do servidor foi inválida.')
       }
 
     } catch (err: any) {
-      console.error('Erro capturado durante a importação:', err);
-      setError(err.message || 'Ocorreu um erro desconhecido durante a importação.');
+      console.error('Erro capturado durante a importação:', err)
+      setError(err.message || 'Ocorreu um erro desconhecido durante a importação.')
     } finally {
-      setIsImporting(false);
-    }
+      setIsImporting(false)
+
   };
   
   const handleClose = () => {
-    // Resetar o estado ao fechar
-    setUrl('');
-    setPreviewItems([]);
-    setError(null);
-    setSuccessMessage(null);
-    onClose();
+    // Resetar o estado ao fechar;
+    setUrl('')
+    setPreviewItems([])
+    setError(null)
+    setSuccessMessage(null)
+    onClose()
   };
 
   const toggleItemSelection = (index: number) => {
     const updatedItems = [...previewItems];
     updatedItems[index].selected = !updatedItems[index].selected;
-    setPreviewItems(updatedItems);
+    setPreviewItems(updatedItems)
   };
 
   const handleCategoryChange = (index: number, categoria_id: string) => {
     const updatedItems = [...previewItems];
     updatedItems[index].categoria_id = categoria_id;
-    setPreviewItems(updatedItems);
+    setPreviewItems(updatedItems)
   };
 
   return (
@@ -268,5 +268,5 @@ export const IFoodImportModal: React.FC<IFoodImportModalProps> = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }; 

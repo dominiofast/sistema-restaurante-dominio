@@ -19,22 +19,22 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
   customerPhone, 
   customerName 
 }) => {
-  const { currentCompany } = useAuth();
-  const { calculateDeliveryFee } = useDeliveryFeeCalculator(currentCompany?.id);
-  const { geocodeAddress, updateAddressWithCoordinates } = useAddressGeocoding();
-  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null);
-  const [taxaEntrega, setTaxaEntrega] = useState(0);
+  const { currentCompany } = useAuth()
+  const { calculateDeliveryFee } = useDeliveryFeeCalculator(currentCompany?.id)
+  const { geocodeAddress, updateAddressWithCoordinates } = useAddressGeocoding()
+  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null)
+  const [taxaEntrega, setTaxaEntrega] = useState(0)
 
   // Calcular taxa automaticamente quando endereço for selecionado
   useEffect(() => {
     const handleAddressSelection = async () => {
       if (selectedAddress) {
-        console.log('📍 PDV - Endereço selecionado:', selectedAddress);
-        console.log('🏢 PDV - Company ID:', currentCompany?.id);
+        console.log('📍 PDV - Endereço selecionado:', selectedAddress)
+        console.log('🏢 PDV - Company ID:', currentCompany?.id)
         
         // Se o endereço não tem coordenadas, tentar buscar automaticamente
         if (!selectedAddress.latitude || !selectedAddress.longitude) {
-          console.log('⚠️ Endereço sem coordenadas, tentando geocoding...');
+          console.log('⚠️ Endereço sem coordenadas, tentando geocoding...')
           
           const coordinates = await geocodeAddress(
             selectedAddress.logradouro || '',
@@ -42,53 +42,53 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
             selectedAddress.bairro || '',
             selectedAddress.cidade || '',
             selectedAddress.estado || '',
-            selectedAddress.cep || ''
-          );
+            selectedAddress.cep || '';
+          )
           
           if (coordinates && selectedAddress.id) {
             // Atualizar o endereço com as coordenadas
-            await updateAddressWithCoordinates(selectedAddress.id, coordinates);
+            await updateAddressWithCoordinates(selectedAddress.id, coordinates)
             
             // Atualizar o objeto do endereço selecionado
             const updatedAddress = {
               ...selectedAddress,
               latitude: coordinates.latitude,
-              longitude: coordinates.longitude
+              longitude: coordinates.longitude;
             };
             
-            setSelectedAddress(updatedAddress);
+            setSelectedAddress(updatedAddress)
             
             // Calcular taxa com as novas coordenadas
-            const calculatedFee = await calculateDeliveryFee(updatedAddress);
-            console.log('💰 PDV - Taxa calculada com coordenadas:', calculatedFee);
-            setTaxaEntrega(calculatedFee);
+            const calculatedFee = await calculateDeliveryFee(updatedAddress)
+            console.log('💰 PDV - Taxa calculada com coordenadas:', calculatedFee)
+            setTaxaEntrega(calculatedFee)
           } else {
             // Se não conseguiu as coordenadas, calcular sem elas
-            const calculatedFee = await calculateDeliveryFee(selectedAddress);
-            console.log('💰 PDV - Taxa calculada sem coordenadas:', calculatedFee);
-            setTaxaEntrega(calculatedFee);
-          }
+            const calculatedFee = await calculateDeliveryFee(selectedAddress)
+            console.log('💰 PDV - Taxa calculada sem coordenadas:', calculatedFee)
+            setTaxaEntrega(calculatedFee)
+
         } else {
           // Endereço já tem coordenadas
-          const calculatedFee = await calculateDeliveryFee(selectedAddress);
-          console.log('💰 PDV - Taxa calculada com coordenadas existentes:', calculatedFee);
-          setTaxaEntrega(calculatedFee);
-        }
+          const calculatedFee = await calculateDeliveryFee(selectedAddress)
+          console.log('💰 PDV - Taxa calculada com coordenadas existentes:', calculatedFee)
+          setTaxaEntrega(calculatedFee)
+
       } else {
-        setTaxaEntrega(0);
-      }
+        setTaxaEntrega(0)
+
     };
 
-    handleAddressSelection();
-  }, [selectedAddress, calculateDeliveryFee, geocodeAddress, updateAddressWithCoordinates]);
+    handleAddressSelection()
+  }, [selectedAddress, calculateDeliveryFee, geocodeAddress, updateAddressWithCoordinates])
 
   const handleConfirm = () => {
-    console.log('✅ PDV - Confirmando entrega com taxa:', taxaEntrega);
+    console.log('✅ PDV - Confirmando entrega com taxa:', taxaEntrega)
     onConfirm({ 
       tipo: 'delivery', 
       endereco: selectedAddress,
       taxaEntrega: taxaEntrega 
-    });
+    })
   };
 
   return (
@@ -125,5 +125,5 @@ export const EntregaDeliveryPDV: React.FC<EntregaDeliveryPDVProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

@@ -4,8 +4,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const RevisaoProduto: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
   const { produto } = location.state || {};
 
   if (!produto) {
@@ -34,7 +34,7 @@ const RevisaoProduto: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default RevisaoProduto;

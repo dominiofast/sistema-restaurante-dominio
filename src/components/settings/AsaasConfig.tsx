@@ -23,11 +23,11 @@ import { AsaasMonitoring } from './AsaasMonitoring';
 
 interface AsaasConfigProps {
   companyId: string;
-}
+
 
 export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
-  const { config, loading, error, saveConfig, testCredentials } = useAsaasConfig(companyId);
-  const { toast } = useToast();
+  const { config, loading, error, saveConfig, testCredentials } = useAsaasConfig(companyId)
+  const { toast } = useToast()
   
   const [formData, setFormData] = useState<AsaasConfigData>({
     api_key: '',
@@ -36,10 +36,10 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
     is_active: false,
     sandbox_mode: true,
     webhook_token: '',
-  });
+  })
   
-  const [saving, setSaving] = useState(false);
-  const [testing, setTesting] = useState(false);
+  const [saving, setSaving] = useState(false)
+  const [testing, setTesting] = useState(false)
 
   // Atualizar formData quando config for carregado
   useEffect(() => {
@@ -51,23 +51,23 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
         is_active: config.is_active || false,
         sandbox_mode: config.sandbox_mode !== false,
         webhook_token: config.webhook_token || '',
-      });
+      })
     }
-  }, [config]);
+  }, [config])
 
   const handleInputChange = (field: keyof AsaasConfigData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
-    }));
+      [field]: value;
+    }))
   };
 
   const handleSave = async () => {
-    setSaving(true);
+    setSaving(true)
     try {
-      await saveConfig(formData);
+      await saveConfig(formData)
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
@@ -76,16 +76,16 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
       toast({
         title: 'Dados incompletos',
         description: 'Preencha a API Key para testar',
-        variant: 'destructive',
-      });
+        variant: 'destructive',;
+      })
       return;
     }
 
-    setTesting(true);
+    setTesting(true)
     try {
-      await testCredentials(formData.api_key, formData.sandbox_mode);
+      await testCredentials(formData.api_key, formData.sandbox_mode)
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
@@ -95,8 +95,8 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
         <span className="ml-2">Carregando configurações do Asaas...</span>
       </div>
-    );
-  }
+    )
+
 
   if (error) {
     return (
@@ -106,8 +106,8 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
           Erro ao carregar configurações: {error}
         </AlertDescription>
       </Alert>
-    );
-  }
+    )
+
 
   return (
     <div className="space-y-6">
@@ -311,5 +311,5 @@ export const AsaasConfig: React.FC<AsaasConfigProps> = ({ companyId }) => {
         <AsaasMonitoring companyId={companyId} />
       )}
     </div>
-  );
+  )
 };

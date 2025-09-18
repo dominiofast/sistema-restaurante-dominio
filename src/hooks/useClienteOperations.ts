@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -18,100 +18,95 @@ interface Cliente {
   status?: string;
   data_nascimento?: string;
   company_id: string; // Obrigatório agora
-}
+
 
 export const useClienteOperations = () => {
-  const [loading, setLoading] = useState(false);
-  const { currentCompany } = useAuth();
+  const [loading, setLoading] = useState(false)
+  const { currentCompany } = useAuth()
 
   const createCliente = async (formData: Partial<Cliente>) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      console.log('🔄 Iniciando cadastro de cliente:', formData);
+      console.log('🔄 Iniciando cadastro de cliente:', formData)
       
       if (!currentCompany?.id) {
-        console.error('❌ Nenhuma empresa selecionada');
-        toast.error('Nenhuma empresa selecionada');
+        console.error('❌ Nenhuma empresa selecionada')
+        toast.error('Nenhuma empresa selecionada')
         return false;
       }
 
-      if (!formData.nome?.trim()) {
-        console.error('❌ Nome do cliente é obrigatório');
-        toast.error('Nome do cliente é obrigatório');
+       catch (error) { console.error('Error:', error) }if (!formData.nome?.trim()) {
+        console.error('❌ Nome do cliente é obrigatório')
+        toast.error('Nome do cliente é obrigatório')
         return false;
       }
 
       const clienteData = {
         ...formData,
         nome: formData.nome,
-        company_id: currentCompany.id
+        company_id: currentCompany.id;
       };
 
-      console.log('📝 Dados do cliente a serem inseridos:', clienteData);
+      console.log('📝 Dados do cliente a serem inseridos:', clienteData)
 
-      const { data, error } = await supabase
-        .from('clientes')
-        .insert([clienteData])
-        .select()
-        .single();
-
+      const { data, error  } = null as any;
       if (error) {
-        console.error('❌ Erro na inserção:', error);
+        console.error('❌ Erro na inserção:', error)
         throw error;
       }
       
-      console.log('✅ Cliente cadastrado com sucesso:', data);
-      toast.success('Cliente cadastrado com sucesso');
+      console.log('✅ Cliente cadastrado com sucesso:', data)
+      toast.success('Cliente cadastrado com sucesso')
       return true;
     } catch (error) {
-      console.error('❌ Erro ao salvar cliente:', error);
-      toast.error('Erro ao salvar cliente: ' + (error as any)?.message);
+      console.error('❌ Erro ao salvar cliente:', error)
+      toast.error('Erro ao salvar cliente: ' + (error as any)?.message)
       return false;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const updateCliente = async (id: number, formData: Partial<Cliente>) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const { error } = await supabase
-        .from('clientes')
-        .update(formData)
-        .eq('id', id);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
-      toast.success('Cliente atualizado com sucesso');
+      toast.success('Cliente atualizado com sucesso')
       return true;
     } catch (error) {
-      console.error('Erro ao salvar cliente:', error);
-      toast.error('Erro ao salvar cliente');
+      console.error('Erro ao salvar cliente:', error)
+      toast.error('Erro ao salvar cliente')
       return false;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const deleteCliente = async (id: number) => {
     if (!confirm('Tem certeza que deseja excluir este cliente?')) return false;
 
-    setLoading(true);
+    setLoading(true)
     try {
-      const { error } = await supabase
-        .from('clientes')
-        .delete()
-        .eq('id', id);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
-      toast.success('Cliente excluído com sucesso');
+      toast.success('Cliente excluído com sucesso')
       return true;
     } catch (error) {
-      console.error('Erro ao excluir cliente:', error);
-      toast.error('Erro ao excluir cliente');
+      console.error('Erro ao excluir cliente:', error)
+      toast.error('Erro ao excluir cliente')
       return false;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   return {

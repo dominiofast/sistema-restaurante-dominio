@@ -35,7 +35,7 @@ export const PedidosStats: React.FC<PedidosStatsProps> = ({ pedidosPorStatus }) 
       icon: Truck,
       color: 'text-purple-600',
       bg: 'bg-purple-50'
-    }
+    };
   ];
 
   return (
@@ -52,8 +52,8 @@ export const PedidosStats: React.FC<PedidosStatsProps> = ({ pedidosPorStatus }) 
               <Icon className={`h-8 w-8 ${stat.color}`} />
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 };

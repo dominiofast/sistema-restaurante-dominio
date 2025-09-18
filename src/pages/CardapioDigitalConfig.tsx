@@ -16,8 +16,8 @@ import { useBrandingConfigCloudinary, BrandingConfig } from '@/hooks/useBranding
 import { toast } from 'sonner';
 
 const CardapioDigitalConfig: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const { config: brandingConfig, loading, uploadFile, saveConfig } = useBrandingConfigCloudinary();
+  const { currentCompany } = useAuth()
+  const { config: brandingConfig, loading, uploadFile, saveConfig } = useBrandingConfigCloudinary()
   
   const [config, setConfig] = useState<BrandingConfig>({
     company_id: currentCompany?.id || '',
@@ -29,56 +29,56 @@ const CardapioDigitalConfig: React.FC = () => {
     header_style: 'modern',
     show_banner: true,
     show_logo: true,
-  });
+  })
   
-  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop')
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const bannerInputRef = useRef<HTMLInputElement>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null)
+  const bannerInputRef = useRef<HTMLInputElement>(null)
 
   // Sincronizar com dados carregados do banco
   useEffect(() => {
     if (brandingConfig) {
-      setConfig(brandingConfig);
+      setConfig(brandingConfig)
     }
-  }, [brandingConfig]);
+  }, [brandingConfig])
 
   const handleImageUpload = async (type: 'logo' | 'banner', file: File) => {
     try {
-      const fileId = await uploadFile(file, type);
+      const fileId = await uploadFile(file, type)
       if (fileId) {
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = (e) => {
           const result = e.target?.result as string;
           setConfig(prev => ({
             ...prev,
-            [`${type}_url`]: result,
+            [`${type} catch (error) { console.error('Error:', error) }_url`]: result,
             [`${type}_file_id`]: fileId,
-          }));
+          }))
         };
-        reader.readAsDataURL(file);
-      }
+        reader.readAsDataURL(file)
+
     } catch (error) {
-      console.error('Erro no upload:', error);
-      toast.error('Erro ao fazer upload do arquivo');
+      console.error('Erro no upload:', error)
+      toast.error('Erro ao fazer upload do arquivo')
     }
   };
 
   const handleSave = async () => {
-    setSaving(true);
+    setSaving(true)
     try {
-      const success = await saveConfig(config);
+      const success = await saveConfig(config)
       if (success) {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
-      }
-    } catch (error) {
-      console.error('Erro ao salvar:', error);
-      toast.error('Erro ao salvar configurações');
+        setSaved(true)
+        setTimeout(() => setSaved(false), 3000)
+
+     } catch (error) {
+      console.error('Erro ao salvar:', error)
+      toast.error('Erro ao salvar configurações')
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
@@ -92,8 +92,8 @@ const CardapioDigitalConfig: React.FC = () => {
       background_color: '#FFFFFF',
       header_style: 'modern',
       show_banner: true,
-      show_logo: true,
-    }));
+      show_logo: true,;
+    }))
   };
 
   const previewUrl = `https://pedido.dominio.tech/${currentCompany?.slug || currentCompany?.id}`;
@@ -106,7 +106,7 @@ const CardapioDigitalConfig: React.FC = () => {
           <p className="text-gray-600">Carregando configurações...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -190,7 +190,7 @@ const CardapioDigitalConfig: React.FC = () => {
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) handleImageUpload('logo', file);
+                    if (file) handleImageUpload('logo', file)
                   }}
                 />
                 <div className="mt-3">
@@ -242,7 +242,7 @@ const CardapioDigitalConfig: React.FC = () => {
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) handleImageUpload('banner', file);
+                    if (file) handleImageUpload('banner', file)
                   }}
                 />
                 <div className="mt-3">
@@ -484,7 +484,7 @@ const CardapioDigitalConfig: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default CardapioDigitalConfig;

@@ -5,54 +5,64 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Copy } from 'lucide-react';
 import { Produto } from '@/types/cardapio';
-import { supabase } from '@/integrations/supabase/client';
+// Função para fazer requests à API PostgreSQL
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },;
+  })
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`)
+  }
+  
+  return response.json()
 
 interface CopiarAdicionaisTabProps {
   produto: Produto;
   produtos: Produto[];
   onRefresh: () => void;
-}
+
 
 export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
   produto,
   produtos,
   onRefresh
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [produtoParaCopiar, setProdutoParaCopiar] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [produtoParaCopiar, setProdutoParaCopiar] = useState('')
 
   const copiarAdicionaisDeProduto = async () => {
     if (!produtoParaCopiar) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
       
-      const { data: categoriasParaCopiar, error } = await supabase
-        .from('produto_categorias_adicionais')
-        .select('*')
-        .eq('produto_id', produtoParaCopiar);
-
-      if (error) throw error;
+      const categoriasParaCopiar = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produtoParaCopiar} catch (error) { console.error('Error:', error) }`)
 
       for (const categoria of categoriasParaCopiar || []) {
-        await supabase
-          .from('produto_categorias_adicionais')
-          .insert([{
+        await apiRequest('/api/produto-categorias-adicionais', {
+          method: 'POST',
+          body: JSON.stringify({
             produto_id: produto.id,
             categoria_adicional_id: categoria.categoria_adicional_id,
             is_required: categoria.is_required,
             min_selection: categoria.min_selection,
             max_selection: categoria.max_selection
-          }]);
-      }
+          })
+        })
 
-      onRefresh();
-      setProdutoParaCopiar('');
+
+      onRefresh()
+      setProdutoParaCopiar('')
     } catch (error) {
-      console.error('Erro ao copiar adicionais:', error);
+      console.error('Erro ao copiar adicionais:', error)
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   return (
@@ -86,5 +96,5 @@ export const CopiarAdicionaisTab: React.FC<CopiarAdicionaisTabProps> = ({
         Copiar Adicionais
       </Button>
     </div>
-  );
+  )
 };

@@ -75,7 +75,7 @@ const VagaApplicationSection: React.FC<VagaApplicationSectionProps> = ({
         </DialogContent>
       </Dialog>
     </>
-  );
+  )
 };
 
 export default VagaApplicationSection;

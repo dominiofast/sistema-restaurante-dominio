@@ -11,7 +11,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Calendar as CalendarIcon, PlusCircle, Download, Search, ChevronDown, Trash2, Pencil, DollarSign, ShoppingCart } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 
 interface NotaEntrada {
@@ -26,25 +26,25 @@ interface NotaEntrada {
   conciliacao_estoque: boolean;
   observacoes: string | null;
   company_id: string;
-}
+
 
 const NotasEntradaPage: React.FC = () => {
-  const [notas, setNotas] = useState<NotaEntrada[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [dateFrom, setDateFrom] = useState<Date | undefined>(new Date());
-  const [dateTo, setDateTo] = useState<Date | undefined>(new Date());
+  const [notas, setNotas] = useState<NotaEntrada[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(new Date())
+  const [dateTo, setDateTo] = useState<Date | undefined>(new Date())
 
   useEffect(() => {
-    fetchNotas();
-  }, []);
+    fetchNotas()
+  }, [])
 
   const fetchNotas = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('notas_entrada')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) {
         throw error;
@@ -54,16 +54,16 @@ const NotasEntradaPage: React.FC = () => {
         ...nota,
         data_entrada: new Date(nota.data_entrada),
         data_emissao: new Date(nota.data_emissao),
-        created_at: new Date(nota.created_at),
+        created_at: new Date(nota.created_at),;
       })) as NotaEntrada[];
 
-      setNotas(formattedData);
+      setNotas(formattedData)
     } catch (error: any) {
-      console.error('Erro ao buscar notas de entrada:', error);
-      toast.error('Falha ao buscar as notas de entrada.', { description: error.message });
+      console.error('Erro ao buscar notas de entrada:', error)
+      toast.error('Falha ao buscar as notas de entrada.', { description: error.message })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const DatePicker = ({ date, setDate }: { date: Date | undefined, setDate: (date: Date | undefined) => void }) => (
@@ -77,8 +77,8 @@ const NotasEntradaPage: React.FC = () => {
       <PopoverContent className="w-auto p-0">
         <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
       </PopoverContent>
-    </Popover>
-  );
+    </Popover>;
+  )
 
   if (loading) {
     return (
@@ -86,7 +86,7 @@ const NotasEntradaPage: React.FC = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <p className="ml-4 text-gray-600">Carregando notas...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -190,7 +190,7 @@ const NotasEntradaPage: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default NotasEntradaPage;

@@ -29,22 +29,22 @@ import type { ClientePublico } from '@/hooks/useCheckoutFlow';
 
 const CardapioPublico: React.FC = () => {
   // Detectar se é dispositivo móvel
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 768)
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
     
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
-  const params = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const params = useParams()
+  const location = useLocation()
+  const navigate = useNavigate()
   
   // Tentar extrair company_slug de diferentes formas
   let company_slug = params.company_slug || params['*'] || location.pathname.split('/')[1];
@@ -59,23 +59,23 @@ const CardapioPublico: React.FC = () => {
 
   // Validar se company_slug está definido antes de continuar
   if (!company_slug) {
-    console.error('❌ Company slug não encontrado na URL:', location.pathname);
+    console.error('❌ Company slug não encontrado na URL:', location.pathname)
   }
 
-  console.log('🔍 CardapioPublico - company_slug:', company_slug, 'pathname:', location.pathname);
+  console.log('🔍 CardapioPublico - company_slug:', company_slug, 'pathname:', location.pathname)
 
   // Hooks personalizados
-  const { company, categorias, produtos, loadingData, error, retryKey, setRetryKey } = useCompanyData(company_slug);
-  const { createOrder, isCreatingOrder } = useOrderCreation();
-  const clientePublico = useClientePublico();
-  const { cliente: clientePersistente, salvarCliente, temDadosSalvos } = useClientePersistente();
+  const { company, categorias, produtos, loadingData, error, retryKey, setRetryKey } = useCompanyData(company_slug)
+  const { createOrder, isCreatingOrder } = useOrderCreation()
+  const clientePublico = useClientePublico()
+  const { cliente: clientePersistente, salvarCliente, temDadosSalvos } = useClientePersistente()
   const { branding, loading: brandingLoading, error: brandingError } = usePublicBranding({
     companyIdentifier: company?.id,
     updateFavicon: true,
     updateTitle: true,
     pageTitle: 'Cardápio Digital'
-  });
-  const { status: storeStatus } = useStoreStatus(company?.id);
+  })
+  const { status: storeStatus } = useStoreStatus(company?.id)
 
   // Estados do checkout extraídos para hook customizado
   const {
@@ -83,13 +83,13 @@ const CardapioPublico: React.FC = () => {
     cliente, setCliente,
     endereco, setEndereco,
     deliveryInfo, setDeliveryInfo
-  } = useCheckoutFlow();
+  } = useCheckoutFlow()
 
   // Estados locais para UI
-  const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null);
-  const [showingSkeleton, setShowingSkeleton] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null)
+  const [cartOpen, setCartOpen] = useState(false)
+  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null)
+  const [showingSkeleton, setShowingSkeleton] = useState(true)
 
   // Carrinho
   const {
@@ -100,7 +100,7 @@ const CardapioPublico: React.FC = () => {
     limparCarrinho,
     totalCarrinho,
     totalItens
-  } = useCart(company_slug, company?.id);
+  } = useCart(company_slug, company?.id)
 
   // Handlers do checkout extraídos para hook customizado
   const {
@@ -126,79 +126,79 @@ const CardapioPublico: React.FC = () => {
     salvarCliente,
     createOrder,
     limparCarrinho
-  });
+  })
 
   // Verificar se deve abrir o carrinho via state
   useEffect(() => {
     if (location.state?.openCart) {
-      setCartOpen(true);
+      setCartOpen(true)
       setTimeout(() => {
-        navigate(location.pathname, { replace: true });
-      }, 100);
+        navigate(location.pathname, { replace: true })
+      }, 100)
     }
-  }, [location.state, navigate, location.pathname]);
+  }, [location.state, navigate, location.pathname])
 
   // Efeito separado para detectar rota de carrinho
   useEffect(() => {
     // Se está na rota /carrinho, abrir carrinho automaticamente
     if (location.pathname.endsWith('/carrinho')) {
-      console.log('🛒 Detectada rota de carrinho:', location.pathname);
+      console.log('🛒 Detectada rota de carrinho:', location.pathname)
       
       // Aguardar dados carregarem antes de validar
       if (loadingData || !company) {
-        console.log('🛒 Aguardando dados carregarem...');
+        console.log('🛒 Aguardando dados carregarem...')
         return;
       }
 
-      console.log('🛒 Abrindo carrinho automaticamente');
-      setCartOpen(true);
+      console.log('🛒 Abrindo carrinho automaticamente')
+      setCartOpen(true)
     }
-  }, [location.pathname, loadingData, company]);
+  }, [location.pathname, loadingData, company])
 
   // Efeito separado para detectar rota de checkout
   useEffect(() => {
     // Se está na rota /checkout, abrir checkout automaticamente
     if (location.pathname.endsWith('/checkout')) {
-      console.log('🛒 Detectada rota de checkout:', location.pathname);
-      console.log('🛒 Carrinho:', carrinho);
-      console.log('🛒 Carrinho length:', carrinho.length);
-      console.log('🛒 Loading data:', loadingData);
-      console.log('🛒 Company:', company?.name, company?.id);
-      console.log('🛒 Company slug:', company_slug);
+      console.log('🛒 Detectada rota de checkout:', location.pathname)
+      console.log('🛒 Carrinho:', carrinho)
+      console.log('🛒 Carrinho length:', carrinho.length)
+      console.log('🛒 Loading data:', loadingData)
+      console.log('🛒 Company:', company?.name, company?.id)
+      console.log('🛒 Company slug:', company_slug)
       
       // Aguardar dados carregarem antes de validar
       if (loadingData || !company) {
-        console.log('🛒 Aguardando dados carregarem...');
+        console.log('🛒 Aguardando dados carregarem...')
         return;
       }
 
       // Aguardar um pouco para o carrinho carregar
       setTimeout(() => {
-        console.log('🛒 Verificando carrinho após timeout:', carrinho.length);
+        console.log('🛒 Verificando carrinho após timeout:', carrinho.length)
         
         // Verificar se há itens no carrinho
         if (carrinho.length === 0) {
-          console.log('🛒 Carrinho vazio, redirecionando para cardápio');
+          console.log('🛒 Carrinho vazio, redirecionando para cardápio')
           // Se carrinho vazio, redirecionar para cardápio
-          navigate(`/${company_slug}`, { replace: true });
-          toast.error('Seu carrinho está vazio. Adicione produtos antes de finalizar o pedido.');
+          navigate(`/${company_slug}`, { replace: true })
+          toast.error('Seu carrinho está vazio. Adicione produtos antes de finalizar o pedido.')
           return;
         }
         
-        console.log('🛒 Abrindo checkout automaticamente');
+        console.log('🛒 Abrindo checkout automaticamente')
         // Se tem dados salvos, usar diretamente e ir direto para checkout
         if (temDadosSalvos && clientePersistente) {
-          console.log('🛒 Usando dados salvos do cliente');
-          setCliente(clientePersistente);
-          setEndereco('');
-          setStep('checkout');
+          console.log('🛒 Usando dados salvos do cliente')
+          setCliente(clientePersistente)
+          setEndereco('')
+          setStep('checkout')
         } else {
-          console.log('🛒 Abrindo modal de identificação');
-          setStep('identificacao');
+          console.log('🛒 Abrindo modal de identificação')
+          setStep('identificacao')
         }
-      }, 100);
+      }, 100)
     }
-  }, [location.pathname, carrinho, company_slug, temDadosSalvos, clientePersistente, loadingData, company, navigate]);
+  }, [location.pathname, carrinho, company_slug, temDadosSalvos, clientePersistente, loadingData, company, navigate])
 
   // Atualizar meta tags quando a empresa carrega
   useEffect(() => {
@@ -207,26 +207,26 @@ const CardapioPublico: React.FC = () => {
         company_name: company.name,
         company_description: company.description,
         company_slug
-      });
+      })
     }
-  }, [company, company_slug]);
+  }, [company, company_slug])
 
   // Effect para controlar o skeleton
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowingSkeleton(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+      setShowingSkeleton(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Definir categoria selecionada inicial
   useEffect(() => {
     if (categorias.length > 0 && !selectedCategoria) {
-      setSelectedCategoria(categorias[0].id);
+      setSelectedCategoria(categorias[0].id)
     }
-  }, [categorias, selectedCategoria]);
+  }, [categorias, selectedCategoria])
 
-  console.log('🔍 CardapioPublico iniciado com slug:', company_slug);
+  console.log('🔍 CardapioPublico iniciado com slug:', company_slug)
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -235,51 +235,51 @@ const CardapioPublico: React.FC = () => {
           title: company?.name || 'Cardápio Digital',
           text: `Confira o cardápio de ${company?.name}`,
           url: window.location.href,
-        });
+        })
       } catch (error) {
-        console.log('Erro ao compartilhar:', error);
-        handleFallbackShare();
+        console.log('Erro ao compartilhar:', error)
+        handleFallbackShare()
       }
     } else {
-      handleFallbackShare();
+      handleFallbackShare()
     }
   };
 
   const handleFallbackShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert('Link copiado para a área de transferência!');
+    navigator.clipboard.writeText(window.location.href)
+    alert('Link copiado para a área de transferência!')
   };
 
   const handleProductClick = (produto: Produto) => {
-    setSelectedProduct(produto);
+    setSelectedProduct(produto)
   };
 
   const handleAddToCart = async (produto: Produto, quantidade: number, observacoes?: string, adicionais?: { [adicionalId: string]: number }) => {
     // Verificar se a loja está aberta antes de adicionar ao carrinho
     if (!storeStatus?.isOpen) {
-      alert(storeStatus?.message || 'Loja fechada no momento');
+      alert(storeStatus?.message || 'Loja fechada no momento')
       return;
     }
     
-    await adicionarAoCarrinho(produto, quantidade, observacoes, adicionais);
+    await adicionarAoCarrinho(produto, quantidade, observacoes, adicionais)
 
     // Facebook Pixel: AddToCart
     try {
-      trackAddToCart(produto, quantidade);
+      trackAddToCart(produto, quantidade)
     } catch (e) {
-      console.warn('[FacebookPixel] AddToCart error', e);
+      console.warn('[FacebookPixel] AddToCart error', e)
     }
   };
 
   const handleCartClick = () => {
-    setCartOpen(true);
+    setCartOpen(true)
   };
 
   // Mover hooks para ANTES de qualquer return condicional
   const produtosDestaque = useMemo(() => 
     produtos.filter(produto => produto.destaque),
     [produtos]
-  );
+  )
 
   // Preload de imagens críticas depois que produtos estão carregados
   useEffect(() => {
@@ -287,29 +287,29 @@ const CardapioPublico: React.FC = () => {
       const imagesToPreload = produtosDestaque
         .slice(0, 3)
         .filter(p => p.image)
-        .map(p => p.image!);
+        .map(p => p.image!)
         
       imagesToPreload.forEach(imageUrl => {
-        const link = document.createElement('link');
+        const link = document.createElement('link')
         link.rel = 'preload';
         link.as = 'image';
         link.href = imageUrl;
-        document.head.appendChild(link);
-      });
+        document.head.appendChild(link)
+      })
     }
-  }, [produtosDestaque]);
+  }, [produtosDestaque])
 
   const produtosFiltrados = produtos.filter(produto => 
     produto.categoria_id === selectedCategoria
-  );
+  )
 
   const produtosPorCategoria = categorias.reduce((acc, categoria) => {
-    acc[categoria.id] = produtos.filter(produto => produto.categoria_id === categoria.id);
+    acc[categoria.id] = produtos.filter(produto => produto.categoria_id === categoria.id)
     return acc;
-  }, {} as { [catId: string]: Produto[] });
+  }, {} as { [catId: string]: Produto[] })
 
   // Determinar se está carregando
-  const isLoading = brandingLoading || loadingData || (!company && !error);
+  const isLoading = brandingLoading || loadingData || (!company && !error)
 
   if (isLoading) {
     return (
@@ -329,7 +329,7 @@ const CardapioPublico: React.FC = () => {
           )}
         </div>
       </div>
-    );
+    )
   }
 
   if (error || brandingError) {
@@ -347,7 +347,7 @@ const CardapioPublico: React.FC = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   if (!company) {
@@ -357,7 +357,7 @@ const CardapioPublico: React.FC = () => {
           <p className="text-gray-600">Empresa não encontrada</p>
         </div>
       </div>
-    );
+    )
   }
 
   // Definir cores sempre após ter branding
@@ -403,7 +403,7 @@ const CardapioPublico: React.FC = () => {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // Só mostrar mensagem de "nenhum produto" se não está carregando dados e realmente não há produtos
@@ -415,11 +415,11 @@ const CardapioPublico: React.FC = () => {
           <p className="text-gray-600">Este estabelecimento ainda não cadastrou produtos.</p>
         </div>
       </div>
-    );
+    )
   }
 
-  console.log('🎉 Renderizando cardápio público com sucesso!');
-  console.log('🎨 Branding final:', branding);
+  console.log('🎉 Renderizando cardápio público com sucesso!')
+  console.log('🎨 Branding final:', branding)
 
   return (
     <div className="min-h-screen cardapio-publico" style={{ backgroundColor, color: textColor }}>
@@ -443,10 +443,10 @@ const CardapioPublico: React.FC = () => {
               <li key={categoria.id}>
                 <button
                   onClick={() => {
-                    setSelectedCategoria(categoria.id);
-                    const el = document.getElementById(`cat-${categoria.id}`);
+                    setSelectedCategoria(categoria.id)
+                    const el = document.getElementById(`cat-${categoria.id}`)
                     if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
                     }
                   }}
                   className={`flex items-center gap-1 px-1 sm:px-2 py-2 text-sm font-medium border-b-2 transition-colors ${
@@ -492,22 +492,22 @@ const CardapioPublico: React.FC = () => {
               onAdvance={async (produto, selectedAdicionais, observacoes = '') => {
                 try {
                   // Verificar se há observação temporária
-                  const tempObs = localStorage.getItem('temp_observacao');
+                  const tempObs = localStorage.getItem('temp_observacao')
                   const finalObservacoes = tempObs || observacoes;
                   
                   if (tempObs) {
-                    localStorage.removeItem('temp_observacao');
+                    localStorage.removeItem('temp_observacao')
                   }
                   
-                  await handleAddToCart(produto, 1, finalObservacoes, selectedAdicionais);
-                  await new Promise(resolve => setTimeout(resolve, 100));
+                   catch (error) { console.error('Error:', error) }await handleAddToCart(produto, 1, finalObservacoes, selectedAdicionais)
+                  await new Promise(resolve => setTimeout(resolve, 100))
                   navigate(`/${company_slug}/produto-adicionado`, { 
                     state: { produto, company } 
-                  });
+                  })
                 } catch (error) {
-                  console.error('🛒 [CardapioPublico] MOBILE - ERRO em onAdvance:', error);
-                  alert(`ERRO: ${error.message}`);
-                }
+                  console.error('🛒 [CardapioPublico] MOBILE - ERRO em onAdvance:', error)
+                  alert(`ERRO: ${error.message}`)
+
               }}
               primaryColor={primaryColor}
               companyId={company?.id}
@@ -519,15 +519,15 @@ const CardapioPublico: React.FC = () => {
               onClose={() => setSelectedProduct(null)}
               onAdvance={async (produto, selectedAdicionais, observacoes = '') => {
                 try {
-                  await handleAddToCart(selectedProduct, 1, observacoes, selectedAdicionais);
-                  await new Promise(resolve => setTimeout(resolve, 100));
-                  navigate(`/${company_slug}/produto-adicionado`, { 
+                  await handleAddToCart(selectedProduct, 1, observacoes, selectedAdicionais)
+                  await new Promise(resolve => setTimeout(resolve, 100))
+                  navigate(`/${company_slug} catch (error) { console.error('Error:', error) }/produto-adicionado`, { 
                     state: { produto: selectedProduct, company } 
-                  });
+                  })
                 } catch (error) {
-                  console.error('🛒 [CardapioPublico] DESKTOP - ERRO em onAdvance:', error);
-                  alert(`ERRO: ${error.message}`);
-                }
+                  console.error('🛒 [CardapioPublico] DESKTOP - ERRO em onAdvance:', error)
+                  alert(`ERRO: ${error.message}`)
+
               }}
               primaryColor={primaryColor}
               companyId={company?.id}
@@ -560,7 +560,7 @@ const CardapioPublico: React.FC = () => {
               created_at: '',
               updated_at: ''
             };
-            await handleAddToCart(produtoCompleto, 1);
+            await handleAddToCart(produtoCompleto, 1)
           }}
           primaryColor={primaryColor}
         />
@@ -584,18 +584,18 @@ const CardapioPublico: React.FC = () => {
             companyName={company.name}
             companyId={company.id}
             onClose={() => {
-              setStep('cart');
+              setStep('cart')
               // Se estava na rota de checkout, voltar para cardápio
               if (location.pathname.endsWith('/checkout')) {
-                navigate(`/${company_slug}`, { replace: true });
+                navigate(`/${company_slug}`, { replace: true })
               }
             }}
             onVoltarCarrinho={() => {
-              setStep('cart');
-              setCartOpen(true);
+              setStep('cart')
+              setCartOpen(true)
               // Se estava na rota de checkout, voltar para cardápio
               if (location.pathname.endsWith('/checkout')) {
-                navigate(`/${company_slug}`, { replace: true });
+                navigate(`/${company_slug}`, { replace: true })
               }
             }}
             onPedidoFinalizado={handleCheckoutComplete}
@@ -627,12 +627,12 @@ const CardapioPublico: React.FC = () => {
           customerPhone={cliente.telefone}
           onCashbackUpdate={() => {
             // Força atualização do saldo de cashback após pedido criado
-            console.log('🔄 Atualizando saldo de cashback...');
+            console.log('🔄 Atualizando saldo de cashback...')
           }}
         />
       )}
     </div>
-  );
+  )
 };
 
 export default CardapioPublico;

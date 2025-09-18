@@ -14,13 +14,13 @@ export const CashbackCarousel: React.FC<CashbackCarouselProps> = ({
   customerPhone,
   className = ''
 }) => {
-  const { saldoDisponivel, loading } = useCashback(companyId, customerPhone);
+  const { saldoDisponivel, loading } = useCashback(companyId, customerPhone)
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
-    }).format(value);
+      currency: 'BRL';
+    }).format(value)
   };
 
   // Se não tem telefone do cliente ou está carregando, não mostra
@@ -50,7 +50,7 @@ export const CashbackCarousel: React.FC<CashbackCarouselProps> = ({
       subtitle: "A cada compra você acumula",
       bgColor: "bg-blue-500",
       textColor: "text-white"
-    }
+    };
   ];
 
   return (
@@ -88,5 +88,5 @@ export const CashbackCarousel: React.FC<CashbackCarouselProps> = ({
         <CarouselNext className="right-2" />
       </Carousel>
     </div>
-  );
+  )
 };

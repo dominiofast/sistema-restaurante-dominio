@@ -13,14 +13,14 @@ export const CashbackFloatingTip: React.FC<CashbackFloatingTipProps> = ({
   primaryColor = '#3B82F6',
   className = '' 
 }) => {
-  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId);
+  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId)
 
   // Se não há configuração ou não está ativo, não renderiza
   if (!cashbackConfig || !cashbackConfig.is_active || isLoading) {
     return null;
   }
 
-  const percentual = Number(cashbackConfig.percentual_cashback);
+  const percentual = Number(cashbackConfig.percentual_cashback)
 
   return (
     <div className={`fixed bottom-20 right-4 z-40 ${className}`}>
@@ -50,5 +50,5 @@ export const CashbackFloatingTip: React.FC<CashbackFloatingTipProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

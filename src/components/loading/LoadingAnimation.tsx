@@ -12,13 +12,13 @@ export interface LoadingAnimationProps {
 const sizeMap = {
   sm: 48,
   md: 64,
-  lg: 80
+  lg: 80;
 };
 
 const strokeWidthMap = {
   sm: 3,
   md: 4,
-  lg: 5
+  lg: 5;
 };
 
 export const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
@@ -28,7 +28,7 @@ export const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
   duration = 2,
   className = ''
 }) => {
-  const { prefersReducedMotion, shouldUseGPUAcceleration } = useLoadingOptimizations();
+  const { prefersReducedMotion, shouldUseGPUAcceleration } = useLoadingOptimizations()
   
   const radius = sizeMap[size];
   const stroke = strokeWidth || strokeWidthMap[size];
@@ -96,5 +96,5 @@ export const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
         />
       </svg>
     </div>
-  );
+  )
 };

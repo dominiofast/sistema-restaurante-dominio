@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
@@ -15,37 +15,37 @@ interface DeliveryMethods {
 }
 
 export const FormasEntregaConfig: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const queryClient = useQueryClient();
+  const { currentCompany } = useAuth()
+  const queryClient = useQueryClient()
   const [formas, setFormas] = useState<DeliveryMethods>({
     delivery: false,
     pickup: true,
     eat_in: false,
-  });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (currentCompany?.id) {
-      loadDeliveryMethods();
+      loadDeliveryMethods()
     }
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   const loadDeliveryMethods = async () => {
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('delivery, pickup, eat_in')
-        .eq('company_id', currentCompany!.id)
-        .single();
+      setLoading(true)
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error) {
         if (error.code === 'PGRST116') {
           // Não encontrou registro, criar um padrão
-          await createDefaultDeliveryMethods();
+          await createDefaultDeliveryMethods()
         } else {
           throw error;
         }
@@ -54,27 +54,25 @@ export const FormasEntregaConfig: React.FC = () => {
           delivery: data.delivery,
           pickup: data.pickup,
           eat_in: data.eat_in
-        });
-      }
+        })
+
     } catch (err) {
-      console.error('Erro ao carregar formas de entrega:', err);
-      setError('Erro ao carregar configurações');
+      console.error('Erro ao carregar formas de entrega:', err)
+      setError('Erro ao carregar configurações')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const createDefaultDeliveryMethods = async () => {
-    const { data, error } = await supabase
-      .from('delivery_methods')
-      .insert({
+    const { data, error  } = null as any;
         company_id: currentCompany!.id,
         delivery: false,
         pickup: true,
         eat_in: false
       })
-      .select('delivery, pickup, eat_in')
-      .single();
+      
+      
 
     if (error) {
       throw error;
@@ -84,60 +82,60 @@ export const FormasEntregaConfig: React.FC = () => {
       delivery: data.delivery,
       pickup: data.pickup,
       eat_in: data.eat_in
-    });
+    })
   };
 
   const handleSave = async () => {
     if (!currentCompany?.id) return;
 
     try {
-      setSaving(true);
-      setError(null);
+      setSaving(true)
+      setError(null)
 
-      const { error } = await supabase
-        .from('delivery_methods')
-        .update({
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
           delivery: formas.delivery,
           pickup: formas.pickup,
           eat_in: formas.eat_in
         })
-        .eq('company_id', currentCompany.id);
+        
 
       if (error) {
         throw error;
-      }
+
 
       // Invalidar cache do serviço de delivery options
-      deliveryOptionsService.invalidateCache(currentCompany.id);
+      deliveryOptionsService.invalidateCache(currentCompany.id)
       
       // Invalidar cache do React Query - TODAS as queries relacionadas
       await queryClient.invalidateQueries({
         queryKey: ['delivery-options', currentCompany.id]
-      });
+      })
       
       await queryClient.invalidateQueries({
         queryKey: ['delivery-methods', currentCompany.id]
-      });
+      })
       
       // Forçar refetch imediato
       await queryClient.refetchQueries({
         queryKey: ['delivery-methods', currentCompany.id]
-      });
+      })
 
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
     } catch (err) {
-      console.error('Erro ao salvar:', err);
-      setError('Erro ao salvar configurações');
+      console.error('Erro ao salvar:', err)
+      setError('Erro ao salvar configurações')
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
   const handleChange = (key: keyof DeliveryMethods, value: boolean) => {
-    setFormas(prev => ({ ...prev, [key]: value }));
-    setSaved(false);
-    setError(null);
+    setFormas(prev => ({ ...prev, [key]: value }))
+    setSaved(false)
+    setError(null)
   };
 
   if (loading) {
@@ -146,8 +144,8 @@ export const FormasEntregaConfig: React.FC = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-2">Carregando configurações...</span>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div>
@@ -224,5 +222,5 @@ export const FormasEntregaConfig: React.FC = () => {
         </div>
       )}
     </div>
-  );
+  )
 };

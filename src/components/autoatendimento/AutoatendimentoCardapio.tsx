@@ -23,26 +23,26 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
 }) => {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string | null>(
     categorias[0]?.id || null
-  );
-  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null);
-  const [modalAberto, setModalAberto] = useState(false);
+  )
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null)
+  const [modalAberto, setModalAberto] = useState(false)
   
-  const { carrinho, adicionarAoCarrinho, totalCarrinho, totalItens } = useCart();
+  const { carrinho, adicionarAoCarrinho, totalCarrinho, totalItens } = useCart()
 
   // Produtos da categoria selecionada
   const produtosFiltrados = categoriaSelecionada
     ? produtos.filter(p => p.categoria_id === categoriaSelecionada)
-    : produtos.filter(p => p.destaque);
+    : produtos.filter(p => p.destaque)
 
   const obterQuantidadeProduto = (produtoId: string) => {
-    const item = carrinho.find(item => item.produto.id === produtoId);
+    const item = carrinho.find(item => item.produto.id === produtoId)
     return item ? item.quantidade : 0;
   };
 
   const handleSelecionarProduto = (produto: Produto) => {
-    console.log('🛍️ Produto selecionado:', produto.name);
-    setProdutoSelecionado(produto);
-    setModalAberto(true);
+    console.log('🛍️ Produto selecionado:', produto.name)
+    setProdutoSelecionado(produto)
+    setModalAberto(true)
   };
 
   const handleAdicionarAoCarrinhoComAdicionais = async (
@@ -51,10 +51,10 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
     observacoes?: string
   ) => {
     try {
-      console.log('🛒 Adicionando ao carrinho:', { produto: produto.name, adicionais, observacoes });
-      await adicionarAoCarrinho(produto, 1, observacoes, adicionais);
+      console.log('🛒 Adicionando ao carrinho:', { produto: produto.name, adicionais, observacoes } catch (error) { console.error('Error:', error) })
+      await adicionarAoCarrinho(produto, 1, observacoes, adicionais)
     } catch (error) {
-      console.error('Erro ao adicionar ao carrinho:', error);
+      console.error('Erro ao adicionar ao carrinho:', error)
     }
   };
 
@@ -109,7 +109,7 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
           {/* Grid responsivo otimizado para tablets de 8 polegadas */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             {produtosFiltrados.map(produto => {
-              const quantidade = obterQuantidadeProduto(produto.id);
+              const quantidade = obterQuantidadeProduto(produto.id)
               
               return (
                 <div
@@ -188,7 +188,7 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
                     )}
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -233,5 +233,5 @@ export const AutoatendimentoCardapio: React.FC<AutoatendimentoCardapioProps> = (
         primaryColor={primaryColor}
       />
     </div>
-  );
+  )
 };

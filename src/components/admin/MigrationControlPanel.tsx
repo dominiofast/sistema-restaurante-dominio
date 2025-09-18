@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { Zap, Users, CheckCircle, AlertCircle, ArrowRight, RefreshCw, RotateCcw } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from '@/hooks/use-toast';
 
 interface CompanyMigrationStatus {
@@ -17,50 +17,42 @@ interface CompanyMigrationStatus {
 }
 
 export function MigrationControlPanel() {
-  const [companies, setCompanies] = useState<CompanyMigrationStatus[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [migrating, setMigrating] = useState<string | null>(null);
-  const [syncing, setSyncing] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
+  const [companies, setCompanies] = useState<CompanyMigrationStatus[]>([])
+  const [loading, setLoading] = useState(true)
+  const [migrating, setMigrating] = useState<string | null>(null)
+  const [syncing, setSyncing] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const loadCompanies = async () => {
-    console.log('🔍 Iniciando carregamento de empresas...');
+    console.log('🔍 Iniciando carregamento de empresas...')
     try {
       // Primeira query: buscar os assistants
-      const { data: assistantsData, error: assistantsError } = await supabase
-        .from('ai_agent_assistants')
-        .select('company_id, use_direct_mode, assistant_id')
-        .eq('is_active', true);
-
-      console.log('📊 Assistants data:', assistantsData);
-      console.log('❌ Assistants error:', assistantsError);
+      const assistantsData = null as any; const assistantsError = null as any;
+      console.log('❌ Assistants error:', assistantsError)
 
       if (assistantsError) throw assistantsError;
 
       if (!assistantsData || assistantsData.length === 0) {
-        console.log('⚠️ Nenhum assistant encontrado');
-        setCompanies([]);
-        setProgress(0);
+        console.log('⚠️ Nenhum assistant encontrado')
+        setCompanies([])
+        setProgress(0)
         return;
       }
 
-      // Buscar dados das empresas
-      const companyIds = assistantsData.map(a => a.company_id);
-      console.log('🏢 Company IDs:', companyIds);
+       catch (error) { console.error('Error:', error) }// Buscar dados das empresas
+      const companyIds = assistantsData.map(a => a.company_id)
+      console.log('🏢 Company IDs:', companyIds)
       
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id, name, slug')
-        .in('id', companyIds);
+      const companiesData = null as any; const companiesError = null as any;
 
-      console.log('🏢 Companies data:', companiesData);
-      console.log('❌ Companies error:', companiesError);
+      console.log('🏢 Companies data:', companiesData)
+      console.log('❌ Companies error:', companiesError)
 
       if (companiesError) throw companiesError;
 
       // Combinar os dados
       const combinedData = assistantsData.map(assistant => {
-        const company = companiesData?.find(c => c.id === assistant.company_id);
+        const company = companiesData?.find(c => c.id === assistant.company_id)
         return {
           id: assistant.company_id,
           name: company?.name || 'Sem nome',
@@ -68,35 +60,35 @@ export function MigrationControlPanel() {
           use_direct_mode: assistant.use_direct_mode || false,
           assistant_id: assistant.assistant_id
         };
-      });
+      })
 
-      console.log('✅ Dados combinados finais:', combinedData);
-      setCompanies(combinedData);
+      console.log('✅ Dados combinados finais:', combinedData)
+      setCompanies(combinedData)
       
       // Calcular progresso
       const directModeCount = combinedData.filter(c => c.use_direct_mode).length;
       const totalCount = combinedData.length;
-      setProgress(totalCount > 0 ? (directModeCount / totalCount) * 100 : 0);
+      setProgress(totalCount > 0 ? (directModeCount / totalCount) * 100 : 0)
       
     } catch (error) {
-      console.error('Erro ao carregar empresas:', error);
+      console.error('Erro ao carregar empresas:', error)
       toast({
         title: 'Erro',
         description: 'Erro ao carregar dados das empresas',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const toggleCompanyMode = async (companyId: string, enabled: boolean) => {
-    setMigrating(companyId);
+    setMigrating(companyId)
     try {
-      const { error } = await supabase
-        .from('ai_agent_assistants')
-        .update({ use_direct_mode: enabled })
-        .eq('company_id', companyId);
+      const { error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
 
       if (error) throw error;
 
@@ -105,86 +97,86 @@ export function MigrationControlPanel() {
         company.id === companyId 
           ? { ...company, use_direct_mode: enabled }
           : company
-      ));
+      ))
 
       const companyName = companies.find(c => c.id === companyId)?.name;
       
       toast({
         title: `${companyName} migrada!`,
         description: `Agora usando modo ${enabled ? 'direto' : 'legado'}`,
-      });
+      })
 
       // Recalcular progresso
       setTimeout(() => {
         const updatedCompanies = companies.map(c => 
-          c.id === companyId ? { ...c, use_direct_mode: enabled } : c
-        );
+          c.id === companyId ? { ...c, use_direct_mode: enabled } : c;
+        )
         const directCount = updatedCompanies.filter(c => c.use_direct_mode).length;
-        setProgress((directCount / updatedCompanies.length) * 100);
-      }, 100);
+        setProgress((directCount / updatedCompanies.length) * 100)
+      }, 100)
 
     } catch (error) {
-      console.error('Erro ao migrar empresa:', error);
+      console.error('Erro ao migrar empresa:', error)
       toast({
         title: 'Erro na migração',
         description: error instanceof Error ? error.message : 'Erro desconhecido',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setMigrating(null);
-    }
+      setMigrating(null)
+
   };
 
   const migrateAllToDirectMode = async () => {
-    const legacyCompanies = companies.filter(c => !c.use_direct_mode);
+    const legacyCompanies = companies.filter(c => !c.use_direct_mode)
     
     if (legacyCompanies.length === 0) {
       toast({
         title: 'Nada para migrar',
         description: 'Todas as empresas já estão no modo direto',
-      });
+      })
       return;
-    }
 
-    setMigrating('ALL');
+
+    setMigrating('ALL')
     
     try {
       for (const company of legacyCompanies) {
-        await toggleCompanyMode(company.id, true);
-        await new Promise(resolve => setTimeout(resolve, 500)); // Throttle
+        await toggleCompanyMode(company.id, true)
+        await new Promise(resolve => setTimeout(resolve, 500)) // Throttle
       }
       
-      toast({
+       catch (error) { console.error('Error:', error) }toast({
         title: 'Migração completa!',
         description: `${legacyCompanies.length} empresas migradas para modo direto`,
-      });
+      })
     } catch (error) {
-      console.error('Erro na migração em lote:', error);
+      console.error('Erro na migração em lote:', error)
     } finally {
-      setMigrating(null);
-    }
+      setMigrating(null)
+
   };
 
   const syncAssistantWithOpenAI = async (companyId: string, companySlug: string) => {
-    setSyncing(companyId);
+    setSyncing(companyId)
     try {
-      console.log('🔄 Iniciando sincronização com OpenAI...');
+      console.log('🔄 Iniciando sincronização com OpenAI...')
       
-      const { data, error } = await supabase.functions.invoke('sync-assistant-fixed', {
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { 
           company_id: companyId,
           slug: companySlug 
         }
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro na função edge:', error);
-        throw new Error(`Erro na sincronização: ${error.message}`);
+        console.error('❌ Erro na função edge:', error)
+        throw new Error(`Erro na sincronização: ${error.message}`)
       }
 
       if (!data?.success) {
-        console.error('❌ Função retornou erro:', data);
-        throw new Error(data?.error || 'Erro desconhecido na sincronização');
+        console.error('❌ Função retornou erro:', data)
+        throw new Error(data?.error || 'Erro desconhecido na sincronização')
       }
 
       const companyName = companies.find(c => c.id === companyId)?.name;
@@ -192,25 +184,25 @@ export function MigrationControlPanel() {
       toast({
         title: `${companyName} sincronizada!`,
         description: 'Assistant atualizado com sucesso na OpenAI',
-      });
+      })
 
-      console.log('✅ Sincronização bem-sucedida:', data);
+      console.log('✅ Sincronização bem-sucedida:', data)
 
     } catch (error) {
-      console.error('❌ Erro na sincronização:', error);
+      console.error('❌ Erro na sincronização:', error)
       toast({
         title: 'Erro na sincronização',
         description: error instanceof Error ? error.message : 'Erro desconhecido',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setSyncing(null);
-    }
+      setSyncing(null)
+
   };
 
   useEffect(() => {
-    loadCompanies();
-  }, []);
+    loadCompanies()
+  }, [])
 
   if (loading) {
     return (
@@ -219,8 +211,8 @@ export function MigrationControlPanel() {
           <div className="text-center">Carregando empresas...</div>
         </CardContent>
       </Card>
-    );
-  }
+    )
+
 
   const directModeCount = companies.filter(c => c.use_direct_mode).length;
   const legacyCount = companies.length - directModeCount;
@@ -272,8 +264,8 @@ export function MigrationControlPanel() {
           <Button 
             variant="outline" 
             onClick={() => {
-              setLoading(true);
-              loadCompanies();
+              setLoading(true)
+              loadCompanies()
             }}
             className="flex items-center gap-2"
           >
@@ -354,5 +346,5 @@ export function MigrationControlPanel() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

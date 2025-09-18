@@ -45,5 +45,5 @@ export function TipoFiscalEmptyState({ onCreate }: TipoFiscalEmptyStateProps) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

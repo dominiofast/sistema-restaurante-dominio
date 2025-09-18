@@ -78,5 +78,5 @@ export const KDSColumn: React.FC<KDSColumnProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

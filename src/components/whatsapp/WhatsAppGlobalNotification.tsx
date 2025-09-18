@@ -25,20 +25,20 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
   onClose,
   onNavigate
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     if (notification) {
-      setIsVisible(true);
-      setIsAnimating(true);
+      setIsVisible(true)
+      setIsAnimating(true)
       
       // Remove animation class after animation completes
       const timer = setTimeout(() => {
-        setIsAnimating(false);
-      }, 300);
+        setIsAnimating(false)
+      }, 300)
       
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     } else {
       setIsVisible(false);
       setIsAnimating(false);
@@ -48,12 +48,12 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
   if (!notification || !isVisible) return null;
 
   const handleClick = () => {
-    onNavigate(notification.chatId);
+    onNavigate(notification.chatId)
   };
 
   const handleClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onClose();
+    e.stopPropagation()
+    onClose()
   };
 
   const truncateContent = (content: string, maxLength: number = 80) => {
@@ -152,5 +152,5 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
         <div className="h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-b-lg"></div>
       </div>
     </>
-  );
+  )
 };

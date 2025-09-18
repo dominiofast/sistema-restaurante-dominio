@@ -16,7 +16,7 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+
 )
 
 const Alert = React.forwardRef<
@@ -57,3 +57,4 @@ const AlertDescription = React.forwardRef<
 AlertDescription.displayName = "AlertDescription"
 
 export { Alert, AlertTitle, AlertDescription }
+;

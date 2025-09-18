@@ -10,7 +10,7 @@ import { DiasSemanaSelector } from './horario/DiasSemanaSelector';
 import { HorariosPorDia } from './horario/HorariosPorDia';
 
 export const HorarioStepNovo: React.FC = () => {
-  const { currentCompany } = useAuth();
+  const { currentCompany } = useAuth()
   const companyId = currentCompany?.id;
   const {
     horario,
@@ -18,15 +18,15 @@ export const HorarioStepNovo: React.FC = () => {
     loading,
     error,
     salvarHorarios
-  } = useHorarioFuncionamento(companyId);
+  } = useHorarioFuncionamento(companyId)
 
-  const { validateHorarios } = useHorarioValidation();
+  const { validateHorarios } = useHorarioValidation()
 
   // Estados locais
-  const [fuso, setFuso] = useState('America/Sao_Paulo');
-  const [tab, setTab] = useState<'funcionamento' | 'indisponibilidade'>('funcionamento');
-  const [disponibilidade, setDisponibilidade] = useState('especificos');
-  const [diasAtivos, setDiasAtivos] = useState<number[]>([0,1,2,3,4,5,6]);
+  const [fuso, setFuso] = useState('America/Sao_Paulo')
+  const [tab, setTab] = useState<'funcionamento' | 'indisponibilidade'>('funcionamento')
+  const [disponibilidade, setDisponibilidade] = useState('especificos')
+  const [diasAtivos, setDiasAtivos] = useState<number[]>([0,1,2,3,4,5,6])
   const [horarios, setHorarios] = useState<Record<number, {inicio: string, fim: string}[]>>({
     0: [{inicio: '', fim: ''}],
     1: [{inicio: '', fim: ''}],
@@ -35,40 +35,40 @@ export const HorarioStepNovo: React.FC = () => {
     4: [{inicio: '', fim: ''}],
     5: [{inicio: '', fim: ''}],
     6: [{inicio: '', fim: ''}],
-  });
+  })
 
-  const [salvando, setSalvando] = useState(false);
-  const [sucesso, setSucesso] = useState(false);
-  const [erroSalvar, setErroSalvar] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false)
+  const [sucesso, setSucesso] = useState(false)
+  const [erroSalvar, setErroSalvar] = useState<string | null>(null)
 
   // Carregar dados do banco
   useEffect(() => {
     if (!loading && horario) {
-      setFuso(horario.fuso_horario || 'America/Sao_Paulo');
-      setDisponibilidade(horario.tipo_disponibilidade);
+      setFuso(horario.fuso_horario || 'America/Sao_Paulo')
+      setDisponibilidade(horario.tipo_disponibilidade)
     }
     if (!loading && horariosDias && horariosDias.length > 0) {
       const horariosPorDia: Record<number, {inicio: string, fim: string}[]> = {};
-      [0,1,2,3,4,5,6].forEach(d => { horariosPorDia[d] = []; });
+      [0,1,2,3,4,5,6].forEach(d => { horariosPorDia[d] = []; })
       horariosDias.forEach(h => {
         if (!horariosPorDia[h.dia_semana]) horariosPorDia[h.dia_semana] = [];
-        horariosPorDia[h.dia_semana].push({ inicio: h.horario_inicio, fim: h.horario_fim });
-      });
+        horariosPorDia[h.dia_semana].push({ inicio: h.horario_inicio, fim: h.horario_fim })
+      })
       Object.keys(horariosPorDia).forEach(d => {
         if (horariosPorDia[parseInt(d)].length === 0) horariosPorDia[parseInt(d)] = [{inicio: '', fim: ''}];
-      });
-      setHorarios(horariosPorDia);
+      })
+      setHorarios(horariosPorDia)
       setDiasAtivos(
         Object.entries(horariosPorDia)
           .filter(([_, hs]) => hs.some(h => h.inicio && h.fim))
           .map(([d]) => parseInt(d))
-      );
+      )
     }
-  }, [loading, horario, horariosDias]);
+  }, [loading, horario, horariosDias])
 
   // Handlers
   const toggleDia = (dia: number) => {
-    setDiasAtivos(prev => prev.includes(dia) ? prev.filter(d => d !== dia) : [...prev, dia]);
+    setDiasAtivos(prev => prev.includes(dia) ? prev.filter(d => d !== dia) : [...prev, dia])
   };
 
   const handleHorarioChange = (dia: number, idx: number, campo: 'inicio'|'fim', valor: string) => {
@@ -76,35 +76,35 @@ export const HorarioStepNovo: React.FC = () => {
       const novo = { ...prev };
       novo[dia][idx][campo] = valor;
       return novo;
-    });
+    })
   };
 
   const addHorario = (dia: number) => {
     setHorarios(prev => {
       const novo = { ...prev };
-      novo[dia].push({inicio: '', fim: ''});
+      novo[dia].push({inicio: '', fim: ''})
       return novo;
-    });
+    })
   };
 
   const removeHorario = (dia: number, idx: number) => {
     setHorarios(prev => {
       const novo = { ...prev };
-      novo[dia] = novo[dia].filter((_, i) => i !== idx);
+      novo[dia] = novo[dia].filter((_, i) => i !== idx)
       if (novo[dia].length === 0) novo[dia] = [{inicio: '', fim: ''}];
       return novo;
-    });
+    })
   };
 
   const handleSalvar = async () => {
-    setSalvando(true);
-    setSucesso(false);
-    setErroSalvar(null);
+    setSalvando(true)
+    setSucesso(false)
+    setErroSalvar(null)
     
-    const validacao = validateHorarios(disponibilidade, diasAtivos, horarios);
+    const validacao = validateHorarios(disponibilidade, diasAtivos, horarios)
     if (!validacao.isValid) {
-      setErroSalvar(validacao.errors[0]);
-      setSalvando(false);
+      setErroSalvar(validacao.errors[0])
+      setSalvando(false)
       return;
     }
     
@@ -115,14 +115,14 @@ export const HorarioStepNovo: React.FC = () => {
         [0,1,2,3,4,5,6].reduce((acc, d) => {
           if (diasAtivos.includes(d)) acc[d] = horarios[d];
           return acc;
-        }, {} as Record<number, {inicio: string, fim: string}[]>)
-      );
-      setSucesso(true);
-      setTimeout(() => setSucesso(false), 3000);
+        } catch (error) { console.error('Error:', error) }, {} as Record<number, {inicio: string, fim: string}[]>)
+      )
+      setSucesso(true)
+      setTimeout(() => setSucesso(false), 3000)
     } catch (err: any) {
-      setErroSalvar(err.message || 'Erro ao salvar configurações');
+      setErroSalvar(err.message || 'Erro ao salvar configurações')
     } finally {
-      setSalvando(false);
+      setSalvando(false)
     }
   };
 
@@ -218,5 +218,5 @@ export const HorarioStepNovo: React.FC = () => {
         )}
       </div>
     </div>
-  );
+  )
 };

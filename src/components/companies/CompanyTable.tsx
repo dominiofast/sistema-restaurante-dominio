@@ -43,18 +43,18 @@ const getStatusIcon = (status: string) => {
   return status === 'active' ? (
     <CheckCircle className="h-4 w-4 text-green-600" />
   ) : (
-    <XCircle className="h-4 w-4 text-red-600" />
-  );
+    <XCircle className="h-4 w-4 text-red-600" />;
+  )
 };
 
 const getStatusColor = (status: string) => {
   return status === 'active' 
-    ? 'bg-green-100 text-green-800' 
+    ? 'bg-green-100 text-green-800' ;
     : 'bg-red-100 text-red-800';
 };
 
 const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('pt-BR');
+  return new Date(dateString).toLocaleDateString('pt-BR')
 };
 
 export const CompanyTable: React.FC<CompanyTableProps> = ({
@@ -70,7 +70,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
         <p className="text-gray-500 mt-2">Carregando empresas...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -155,5 +155,5 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
         </TableBody>
       </Table>
     </div>
-  );
+  )
 };

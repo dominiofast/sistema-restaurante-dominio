@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface DadosFiscais {
@@ -55,98 +55,87 @@ export interface DadosFiscais {
   
   created_at?: string;
   updated_at?: string;
-}
+
 
 export function useDadosFiscais() {
-  const { currentCompany } = useAuth();
-  const [dadosFiscais, setDadosFiscais] = useState<DadosFiscais | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [dadosFiscais, setDadosFiscais] = useState<DadosFiscais | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const buscarDadosFiscais = useCallback(async (tipoFiscalId: string) => {
     if (!currentCompany?.id) return;
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
-      const { data, error } = await supabase
-        .from('dados_fiscais')
-        .select('*')
-        .eq('tipo_fiscal_id', tipoFiscalId)
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
+        
 
       if (error && error.code !== 'PGRST116') throw error;
 
-      setDadosFiscais(data);
+      setDadosFiscais(data)
     } catch (err: any) {
-      console.error('Erro ao buscar dados fiscais:', err);
-      setError(err.message);
+      console.error('Erro ao buscar dados fiscais:', err)
+      setError(err.message)
     } finally {
-      setLoading(false);
-    }
-  }, [currentCompany?.id]);
+      setLoading(false)
+
+  }, [currentCompany?.id])
 
   const salvarDadosFiscais = async (tipoFiscalId: string, dados: Omit<DadosFiscais, 'id' | 'tipo_fiscal_id' | 'company_id' | 'created_at' | 'updated_at'>) => {
-    if (!currentCompany?.id) throw new Error('Empresa não selecionada');
+    if (!currentCompany?.id) throw new Error('Empresa não selecionada')
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
-      console.log('Salvando dados fiscais - TipoFiscalId:', tipoFiscalId);
-      console.log('Salvando dados fiscais - CompanyId:', currentCompany.id);
-      console.log('Salvando dados fiscais - Dados recebidos:', dados);
+      console.log('Salvando dados fiscais - TipoFiscalId:', tipoFiscalId)
+      console.log('Salvando dados fiscais - CompanyId:', currentCompany.id)
+      console.log('Salvando dados fiscais - Dados recebidos:', dados)
 
       const dadosCompletos = {
         ...dados,
         tipo_fiscal_id: tipoFiscalId,
-        company_id: currentCompany.id
-      };
+        company_id: currentCompany.id;
+      } catch (error) { console.error('Error:', error) };
 
-      console.log('Salvando dados fiscais - Dados completos:', dadosCompletos);
-      console.log('Salvando dados fiscais - Existe ID?', dadosFiscais?.id);
+      console.log('Salvando dados fiscais - Dados completos:', dadosCompletos)
+      console.log('Salvando dados fiscais - Existe ID?', dadosFiscais?.id)
 
       let result;
 
       if (dadosFiscais?.id) {
         // Atualizar existente
-        console.log('Atualizando dados existentes com ID:', dadosFiscais.id);
-        const { data, error } = await supabase
-          .from('dados_fiscais')
-          .update(dadosCompletos)
-          .eq('id', dadosFiscais.id)
-          .select()
-          .single();
-
-        console.log('Resultado da atualização:', { data, error });
+        console.log('Atualizando dados existentes com ID:', dadosFiscais.id)
+        const { data, error  } = null as any;
+        console.log('Resultado da atualização:', { data, error })
         if (error) throw error;
         result = data;
       } else {
         // Criar novo
-        console.log('Criando novos dados fiscais');
-        const { data, error } = await supabase
-          .from('dados_fiscais')
-          .insert(dadosCompletos)
-          .select()
-          .single();
-
-        console.log('Resultado da inserção:', { data, error });
+        console.log('Criando novos dados fiscais')
+        const { data, error  } = null as any;
+        console.log('Resultado da inserção:', { data, error })
         if (error) throw error;
         result = data;
-      }
 
-      console.log('Resultado final:', result);
-      setDadosFiscais(result);
+
+      console.log('Resultado final:', result)
+      setDadosFiscais(result)
       return result;
     } catch (err: any) {
-      console.error('Erro ao salvar dados fiscais:', err);
-      setError(err.message);
+      console.error('Erro ao salvar dados fiscais:', err)
+      setError(err.message)
       throw err;
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   return {
@@ -157,4 +146,3 @@ export function useDadosFiscais() {
     salvarDadosFiscais,
     setDadosFiscais
   };
-}

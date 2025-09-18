@@ -32,7 +32,7 @@ export const SEOStructuredData: React.FC<SEOStructuredDataProps> = ({ type = 'ho
         "https://twitter.com/dominiotech",
         "https://www.facebook.com/dominiotech",
         "https://www.instagram.com/dominiotech"
-      ]
+      ];
     };
 
     if (type === 'homepage') {
@@ -54,9 +54,9 @@ export const SEOStructuredData: React.FC<SEOStructuredDataProps> = ({ type = 'ho
           "priceCurrency": "BRL",
           "availability": "https://schema.org/InStock",
           "validFrom": "2024-01-01"
-        }
+
       };
-    }
+
 
     if (type === 'product') {
       return {
@@ -89,7 +89,7 @@ export const SEOStructuredData: React.FC<SEOStructuredDataProps> = ({ type = 'ho
           "Automação de Processos"
         ]
       };
-    }
+
 
     return baseData;
   };
@@ -101,7 +101,7 @@ export const SEOStructuredData: React.FC<SEOStructuredDataProps> = ({ type = 'ho
         __html: JSON.stringify(getStructuredData(), null, 2)
       }}
     />
-  );
+  )
 };
 
 export default SEOStructuredData;

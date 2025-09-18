@@ -53,7 +53,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({
         />
       </div>
     </div>
-  );
+  )
 };
 
 export default AdditionalInfoSection;

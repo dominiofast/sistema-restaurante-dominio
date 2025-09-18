@@ -12,7 +12,7 @@ const sanitizerConfig = {
   FORCE_BODY: true,
   USE_PROFILES: {
     html: true
-  }
+  };
 };
 
 /**
@@ -26,9 +26,9 @@ export const sanitizeHtml = (html: string): string => {
   }
   
   try {
-    return DOMPurify.sanitize(html, sanitizerConfig);
+    return DOMPurify.sanitize(html, sanitizerConfig)
   } catch (error) {
-    console.error('Erro ao sanitizar HTML:', error);
+    console.error('Erro ao sanitizar HTML:', error)
     return '';
   }
 };
@@ -43,7 +43,7 @@ export const isHtmlSafe = (html: string): boolean => {
     return true;
   }
   
-  const sanitized = sanitizeHtml(html);
+  const sanitized = sanitizeHtml(html)
   return sanitized === html;
 };
 
@@ -58,9 +58,9 @@ export const stripHtml = (html: string): string => {
   }
   
   try {
-    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] });
+    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] } catch (error) { console.error('Error:', error) })
   } catch (error) {
-    console.error('Erro ao remover HTML:', error);
+    console.error('Erro ao remover HTML:', error)
     return '';
   }
 };

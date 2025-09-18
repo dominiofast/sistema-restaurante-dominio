@@ -8,22 +8,22 @@ import { usePublicBrandingNew } from '@/hooks/usePublicBrandingNew';
 import { useCart } from '@/hooks/useCart';
 
 const ProdutoAdicionado: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { company_slug } = useParams();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { company_slug } = useParams()
   const { produto, company, quantidade = 1, adicionais } = location.state || {};
   
   // Estado para controlar o carregamento das cores
-  const [isColorsLoaded, setIsColorsLoaded] = useState(false);
+  const [isColorsLoaded, setIsColorsLoaded] = useState(false)
   
   // Estado para as observações
-  const [observacao, setObservacao] = useState('');
+  const [observacao, setObservacao] = useState('')
   
   // Hook do carrinho para verificar se o produto foi realmente adicionado
-  const { carrinho, totalCarrinho, totalItens, atualizarObservacoes } = useCart(company_slug, company?.id);
+  const { carrinho, totalCarrinho, totalItens, atualizarObservacoes } = useCart(company_slug, company?.id)
   
   // Obter configurações de branding da empresa
-  const { branding, loading: brandingLoading } = usePublicBrandingNew(company_slug);
+  const { branding, loading: brandingLoading } = usePublicBrandingNew(company_slug)
   
   // Definir cores da empresa - só usa se já carregou
   const primaryColor = branding?.primary_color;
@@ -36,36 +36,36 @@ const ProdutoAdicionado: React.FC = () => {
     if (!brandingLoading && branding) {
       // Adicionar um pequeno delay para suavizar a transição
       setTimeout(() => {
-        setIsColorsLoaded(true);
-      }, 150);
+        setIsColorsLoaded(true)
+      }, 150)
     }
-  }, [branding, brandingLoading]);
+  }, [branding, brandingLoading])
 
   // Verificar se o produto está no carrinho
   useEffect(() => {
     // Estado do carrinho verificado
-  }, [carrinho, produto]);
+  }, [carrinho, produto])
 
   if (!produto) {
-    navigate(-1);
+    navigate(-1)
     return null;
-  }
+
 
   const handleContinuarComprando = () => {
     // Voltar para o cardápio (o produto já está no carrinho)
-    navigate(`/${company?.slug || company_slug}`);
+    navigate(`/${company?.slug || company_slug}`)
   };
 
   const handleIrParaCarrinho = () => {
     // Se há observações, salvar no localStorage temporariamente
     if (observacao.trim()) {
-      localStorage.setItem('temp_observacao', observacao.trim());
+      localStorage.setItem('temp_observacao', observacao.trim())
     }
     
     // Navegando para a página do carrinho
     navigate(`/${company?.slug || company_slug}/carrinho`, { 
       replace: true,
-    });
+    })
   };
 
   return (
@@ -132,13 +132,13 @@ const ProdutoAdicionado: React.FC = () => {
             {(() => {
               // Calcular preço base do produto
               const precoBase = produto.is_promotional && produto.promotional_price 
-                ? Number(produto.promotional_price) 
-                : Number(produto.price);
+                ? Number(produto.promotional_price) ;
+                : Number(produto.price)
               
               // Encontrar o item correspondente no carrinho para obter o preço real com adicionais
               const itemNoCarrinho = carrinho.find(item => 
-                item.produto.id === produto.id || item.produto.name === produto.name
-              );
+                item.produto.id === produto.id || item.produto.name === produto.name;
+              )
               
               // Se encontrou no carrinho, usar o preço calculado com adicionais
               const precoFinal = itemNoCarrinho ? itemNoCarrinho.preco_unitario : precoBase;
@@ -154,7 +154,7 @@ const ProdutoAdicionado: React.FC = () => {
                 <span className="text-3xl font-bold text-foreground">
                   R$ {precoFinal.toFixed(2).replace('.', ',')}
                 </span>
-              );
+              )
             })()}
           </div>
 
@@ -236,7 +236,7 @@ const ProdutoAdicionado: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default ProdutoAdicionado;

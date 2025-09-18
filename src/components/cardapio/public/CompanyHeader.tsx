@@ -10,10 +10,10 @@ import { CompanyLogo } from '@/components/loading/CompanyLogo';
 
 // Função para aplicar opacidade nas cores
 const applyOpacity = (color: string, opacity: number) => {
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
@@ -21,7 +21,7 @@ interface Company {
   id: string;
   name: string;
   min_order_value?: number;
-}
+
 
 interface Branding {
   logo_url?: string;
@@ -32,17 +32,17 @@ interface Branding {
   accent_color?: string;
   text_color?: string;
   background_color?: string;
-}
+
 
 interface CompanyHeaderProps {
   company: Company & { slug?: string };
   branding?: Branding | null;
   onShare: () => void;
-}
+
 
 export const CompanyHeader: React.FC<CompanyHeaderProps> = ({ company, branding, onShare }) => {
-  const { status, message, nextChange, loading } = useOperatingStatus(company.id);
-  const { data: cashbackConfig } = useCashbackConfig(company?.id);
+  const { status, message, nextChange, loading } = useOperatingStatus(company.id)
+  const { data: cashbackConfig } = useCashbackConfig(company?.id)
 
   // Cores dinâmicas do branding
   const primaryColor = branding?.primary_color || '#3B82F6';
@@ -53,7 +53,7 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({ company, branding,
 
   const formatCurrency = (value: number | undefined) => {
     if (value === undefined || value === null) return '';
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
   };
 
   const minOrderValue = company.min_order_value ?? 0;
@@ -186,5 +186,5 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({ company, branding,
       )}
 
     </div>
-  );
+  )
 };

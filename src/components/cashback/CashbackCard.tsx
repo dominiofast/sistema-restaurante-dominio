@@ -12,14 +12,14 @@ export const CashbackCard: React.FC<CashbackCardProps> = ({
   companyId, 
   className = '' 
 }) => {
-  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId);
+  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId)
 
   // Se não há configuração ou não está ativo, não renderiza
   if (!cashbackConfig || !cashbackConfig.is_active || isLoading) {
     return null;
   }
 
-  const percentual = Number(cashbackConfig.percentual_cashback).toFixed(0);
+  const percentual = Number(cashbackConfig.percentual_cashback).toFixed(0)
 
   return (
     <div className={`${styles.cashbackCard} ${className}`}>
@@ -36,5 +36,5 @@ export const CashbackCard: React.FC<CashbackCardProps> = ({
         <span className={styles.badgeValue}>{percentual}%</span>
       </div>
     </div>
-  );
+  )
 };

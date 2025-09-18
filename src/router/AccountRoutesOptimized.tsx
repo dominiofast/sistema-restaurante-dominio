@@ -14,8 +14,8 @@ import Unauthorized from "@/pages/Unauthorized";
 const ProtectedAppLayout = () => (
   <ProtectedRoute>
     <AppLayout />
-  </ProtectedRoute>
-);
+  </ProtectedRoute>;
+)
 
 const AccountRoutes = () => {
   return (
@@ -34,8 +34,8 @@ const AccountRoutes = () => {
       
       {/* Rota não encontrada */}
       <Route path="*" element={<NotFound />} />
-    </Routes>
-  );
+    </Routes>;
+  )
 };
 
 export default AccountRoutes;

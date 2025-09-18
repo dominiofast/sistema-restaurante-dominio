@@ -28,20 +28,20 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
 }) => {
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'analise':
+      case 'analise':;
         return '🔍 EM ANÁLISE';
       case 'producao':
         return '🍳 EM PRODUÇÃO';
       case 'pronto':
         return '✅ PRONTO';
       default:
-        return status.toUpperCase();
+        return status.toUpperCase()
     }
   };
 
   const getTipoLabel = (tipo: string) => {
     switch (tipo) {
-      case 'delivery':
+      case 'delivery':;
         return '🚚 DELIVERY';
       case 'balcao':
         return '🏪 BALCÃO';
@@ -50,7 +50,7 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
       case 'mesa':
         return '🍽️ MESA';
       default:
-        return tipo.toUpperCase();
+        return tipo.toUpperCase()
     }
   };
 
@@ -106,5 +106,5 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

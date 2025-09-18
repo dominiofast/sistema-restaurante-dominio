@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Save } from 'lucide-react';
@@ -21,31 +21,31 @@ interface PrintConfigFormProps {
 }
 
 export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps) {
-  const [localConfig, setLocalConfig] = useState<PrintConfig>(config);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { currentCompany } = useAuth();
+  const [localConfig, setLocalConfig] = useState<PrintConfig>(config)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const { currentCompany } = useAuth()
 
   const handleChange = (field: keyof PrintConfig, value: any) => {
     const newConfig = { ...localConfig, [field]: value };
-    setLocalConfig(newConfig);
-    onConfigChange(newConfig);
+    setLocalConfig(newConfig)
+    onConfigChange(newConfig)
   };
 
   const loadSavedConfig = async () => {
     if (!currentCompany?.id) return;
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('printer_configs')
-        .select('largura_papel, texto_header, texto_footer')
-        .eq('company_id', currentCompany.id)
-        .eq('is_active', true)
-        .maybeSingle();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
+        
 
       if (error) {
-        console.error('Erro ao carregar configuração:', error);
+        console.error('Erro ao carregar configuração:', error)
         return;
       }
 
@@ -56,28 +56,28 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
           removeAccents: data.texto_header?.includes('removeAccents:true') || true,
           marginLeft: parseInt(data.texto_footer?.match(/marginLeft:(\d+)/)?.[1] || '0')
         };
-        setLocalConfig(savedConfig);
-        onConfigChange(savedConfig);
+        setLocalConfig(savedConfig)
+        onConfigChange(savedConfig)
       }
     } catch (error) {
-      console.error('Erro ao carregar configuração:', error);
+      console.error('Erro ao carregar configuração:', error)
     } finally {
-      setIsLoading(false);
-    }
+      setIsLoading(false)
+
   };
 
   const saveConfig = async () => {
     if (!currentCompany?.id) {
-      toast.error('Empresa não encontrada');
+      toast.error('Empresa não encontrada')
       return;
-    }
 
-    setIsSaving(true);
+
+    setIsSaving(true)
     try {
       // Verificar se o usuário está autenticado
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      const { data: { user } catch (error) { console.error('Error:', error) }, error: authError } = await Promise.resolve()
       if (authError || !user) {
-        toast.error('Usuário não autenticado');
+        toast.error('Usuário não autenticado')
         return;
       }
 
@@ -86,18 +86,11 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
       const footerConfig = `marginLeft:${localConfig.marginLeft}`;
 
       // Primeiro, verificar se já existe uma configuração para a empresa
-      const { data: existingConfig } = await supabase
-        .from('printer_configs')
-        .select('id')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
-
+      const { data: existingConfig  } = null as any;
       let error;
       if (existingConfig) {
         // Atualizar configuração existente
-        const { error: updateError } = await supabase
-          .from('printer_configs')
-          .update({
+        const { error: updateError  } = null as any;
             largura_papel: localConfig.width,
             texto_header: headerConfig,
             texto_footer: footerConfig,
@@ -105,13 +98,11 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
             is_default: true,
             impressao_automatica: false
           })
-          .eq('id', existingConfig.id);
+          
         error = updateError;
       } else {
         // Criar nova configuração
-        const { error: insertError } = await supabase
-          .from('printer_configs')
-          .insert({
+        const { error: insertError  } = null as any;
             company_id: currentCompany.id,
             printer_name: 'Configuração de Formatação',
             largura_papel: localConfig.width,
@@ -120,34 +111,34 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
             is_active: true,
             is_default: true,
             impressao_automatica: false
-          });
+          })
         error = insertError;
       }
 
       if (error) {
-        console.error('Erro ao salvar configuração:', error);
-        toast.error(`Erro ao salvar configuração: ${error.message}`);
+        console.error('Erro ao salvar configuração:', error)
+        toast.error(`Erro ao salvar configuração: ${error.message}`)
         return;
       }
 
-      toast.success('Configuração de formatação salva com sucesso!');
+      toast.success('Configuração de formatação salva com sucesso!')
     } catch (error) {
-      console.error('Erro ao salvar configuração:', error);
-      toast.error('Erro ao salvar configuração');
+      console.error('Erro ao salvar configuração:', error)
+      toast.error('Erro ao salvar configuração')
     } finally {
-      setIsSaving(false);
-    }
+      setIsSaving(false)
+
   };
 
   useEffect(() => {
-    loadSavedConfig();
-  }, [currentCompany?.id]);
+    loadSavedConfig()
+  }, [currentCompany?.id])
 
   const presets = [
     { name: 'Cupom Fiscal (48)', width: 48, removeAccents: true, marginLeft: 0 },
     { name: 'Cupom Pequeno (32)', width: 32, removeAccents: true, marginLeft: 0 },
     { name: 'Etiqueta (24)', width: 24, removeAccents: false, marginLeft: 2 },
-    { name: 'Recibo (40)', width: 40, removeAccents: true, marginLeft: 1 }
+    { name: 'Recibo (40)', width: 40, removeAccents: true, marginLeft: 1 };
   ];
 
   return (
@@ -244,5 +235,5 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

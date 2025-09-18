@@ -3,8 +3,8 @@ import React from 'react';
 
 export const EntregaConsumoLocalPDV = ({ onConfirm }: { onConfirm: (data: any) => void }) => {
   const handleConfirm = () => {
-    // Pass eat-in data
-    onConfirm({ tipo: 'eat_in' });
+    // Pass eat-in data;
+    onConfirm({ tipo: 'eat_in' })
   };
 
   return (
@@ -32,5 +32,5 @@ export const EntregaConsumoLocalPDV = ({ onConfirm }: { onConfirm: (data: any) =
         </button>
       </div>
     </div>
-  );
+  )
 };

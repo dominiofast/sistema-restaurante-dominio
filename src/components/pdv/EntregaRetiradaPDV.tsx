@@ -3,8 +3,8 @@ import React from 'react';
 
 export const EntregaRetiradaPDV = ({ onConfirm }: { onConfirm: (data: any) => void }) => {
   const handleConfirm = () => {
-    // Pass pickup data
-    onConfirm({ tipo: 'pickup' });
+    // Pass pickup data;
+    onConfirm({ tipo: 'pickup' })
   };
 
   return (
@@ -32,5 +32,5 @@ export const EntregaRetiradaPDV = ({ onConfirm }: { onConfirm: (data: any) => vo
         </button>
       </div>
     </div>
-  );
+  )
 };

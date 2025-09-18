@@ -1,5 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 export interface DeliveryOptions {
   delivery: boolean;
   pickup: boolean;
@@ -12,26 +11,26 @@ export interface DeliveryOptionsService {
 }
 
 class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
-  private cache = new Map<string, { data: DeliveryOptions; timestamp: number }>();
+  private cache = new Map<string, { data: DeliveryOptions; timestamp: number }>()
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
   async getDeliveryOptions(companyId: string): Promise<DeliveryOptions> {
     if (!companyId) {
-      throw new Error('Company ID is required');
+      throw new Error('Company ID is required')
     }
 
     // Verificar cache
-    const cached = this.cache.get(companyId);
+    const cached = this.cache.get(companyId)
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       return cached.data;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('delivery_methods')
-        .select('delivery, pickup, eat_in')
-        .eq('company_id', companyId)
-        .single();
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -45,12 +44,12 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
           this.cache.set(companyId, {
             data: defaultOptions,
             timestamp: Date.now()
-          });
+          })
           
           return defaultOptions;
-        }
+
         throw error;
-      }
+
 
       const options: DeliveryOptions = {
         delivery: !!data.delivery,
@@ -59,17 +58,17 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
       };
 
       if (!this.validateDeliveryOptions(options)) {
-        console.warn(`Company ${companyId} has no delivery options enabled`);
-      }
+        console.warn(`Company ${companyId} has no delivery options enabled`)
+
 
       this.cache.set(companyId, {
         data: options,
         timestamp: Date.now()
-      });
+      })
 
       return options;
     } catch (error) {
-      console.error('Error fetching delivery options:', error);
+      console.error('Error fetching delivery options:', error)
       
       const fallbackOptions: DeliveryOptions = {
         delivery: false,
@@ -83,20 +82,20 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
 
   validateDeliveryOptions(options: DeliveryOptions): boolean {
     return options.delivery || options.pickup || options.eat_in;
-  }
+
 
   invalidateCache(companyId: string): void {
-    this.cache.delete(companyId);
-  }
+    this.cache
+
 
   clearCache(): void {
-    this.cache.clear();
-  }
+    this.cache.clear()
+
 
   async forceRefresh(companyId: string): Promise<DeliveryOptions> {
-    this.invalidateCache(companyId);
-    return this.getDeliveryOptions(companyId);
-  }
+    this.invalidateCache(companyId)
+    return this.getDeliveryOptions(companyId)
+
 }
 
-export const deliveryOptionsService = new DeliveryOptionsServiceImpl();
+export const deliveryOptionsService = new DeliveryOptionsServiceImpl()

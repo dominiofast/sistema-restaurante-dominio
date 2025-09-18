@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 import MercadoriaModal from '@/components/ficha-tecnica/MercadoriaModal';
 import DadosPadraoButton from '@/components/ficha-tecnica/DadosPadraoButton';
@@ -25,76 +25,76 @@ interface Mercadoria {
   is_active: boolean;
   created_at: string;
   company_id: string;
-}
+
 
 const MercadoriasIngredientes: React.FC = () => {
-  const [mercadorias, setMercadorias] = useState<Mercadoria[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingMercadoria, setEditingMercadoria] = useState<Mercadoria | undefined>(undefined);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  const [mercadorias, setMercadorias] = useState<Mercadoria[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editingMercadoria, setEditingMercadoria] = useState<Mercadoria | undefined>(undefined)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
   useEffect(() => {
-    fetchMercadorias();
-  }, [user, currentCompany]);
+    fetchMercadorias()
+  }, [user, currentCompany])
 
   const fetchMercadorias = async () => {
     if (!user) {
-      setError('Usuário não autenticado');
-      setLoading(false);
+      setError('Usuário não autenticado')
+      setLoading(false)
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Se não há empresa selecionada, mostrar dados de todas as empresas (para super admin)
       let query = (supabase as any)
-        .from('mercadorias_ingredientes')
-        .select('*');
+        
+        
 
       // Se há uma empresa específica selecionada, filtrar por ela
       if (currentCompany?.id) {
-        query = query.eq('company_id', currentCompany.id);
+        query = query
       }
 
-      const { data, error: fetchError } = await query.order('nome');
+       catch (error) { console.error('Error:', error) }const { data, error: fetchError } = await query
 
       if (fetchError) {
-        console.error('Erro ao carregar mercadorias:', fetchError);
+        console.error('Erro ao carregar mercadorias:', fetchError)
         throw fetchError;
       }
 
-      setMercadorias(data || []);
+      setMercadorias(data || [])
     } catch (error: any) {
-      console.error('Erro completo:', error);
-      setError(error.message || 'Erro ao carregar mercadorias');
+      console.error('Erro completo:', error)
+      setError(error.message || 'Erro ao carregar mercadorias')
       toast({
         title: 'Erro ao carregar mercadorias',
         description: error.message || 'Tente novamente em alguns instantes',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const handleOpenModal = (mercadoria?: Mercadoria) => {
-    setEditingMercadoria(mercadoria);
-    setModalOpen(true);
+    setEditingMercadoria(mercadoria)
+    setModalOpen(true)
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
-    setEditingMercadoria(undefined);
+    setModalOpen(false)
+    setEditingMercadoria(undefined)
   };
 
   const handleSaveMercadoria = () => {
-    fetchMercadorias(); // Recarregar a lista
+    fetchMercadorias() // Recarregar a lista
   };
 
   const handleDeleteMercadoria = async (mercadoria: Mercadoria) => {
@@ -103,26 +103,26 @@ const MercadoriasIngredientes: React.FC = () => {
     }
 
     try {
-      const { error } = await (supabase as any)
-        .from('mercadorias_ingredientes')
-        .delete()
-        .eq('id', mercadoria.id);
+      const { error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
+        
+        
+        
 
       if (error) throw error;
 
       toast({
         title: 'Mercadoria excluída',
         description: `"${mercadoria.nome}" foi removida com sucesso.`,
-      });
+      })
 
-      fetchMercadorias(); // Recarregar a lista
+      fetchMercadorias() // Recarregar a lista
     } catch (error: any) {
-      console.error('Erro ao excluir mercadoria:', error);
+      console.error('Erro ao excluir mercadoria:', error)
       toast({
         title: 'Erro ao excluir',
         description: error.message || 'Ocorreu um erro ao excluir a mercadoria',
         variant: 'destructive',
-      });
+      })
     }
   };
 
@@ -130,14 +130,14 @@ const MercadoriasIngredientes: React.FC = () => {
     mercadoria.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     mercadoria.categoria?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     mercadoria.fornecedor?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const formatCurrency = (value?: number) => {
     if (!value) return 'R$ 0,00';
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
-    }).format(value);
+    }).format(value)
   };
 
   const getEstoqueStatus = (atual: number, minimo: number) => {
@@ -156,8 +156,8 @@ const MercadoriasIngredientes: React.FC = () => {
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   if (error) {
     return (
@@ -173,8 +173,8 @@ const MercadoriasIngredientes: React.FC = () => {
           </div>
         </div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="w-full px-6 py-4 space-y-4 max-w-none">
@@ -299,9 +299,9 @@ const MercadoriasIngredientes: React.FC = () => {
           {/* Corpo da Tabela */}
           <div className="divide-y divide-gray-100">
             {filteredMercadorias.map((mercadoria, index) => {
-              const estoqueStatus = getEstoqueStatus(mercadoria.estoque_atual, mercadoria.estoque_minimo);
-              const dataAtualizacao = new Date(mercadoria.created_at).toLocaleDateString('pt-BR');
-              const emUso = Math.max(1, Math.floor(Math.random() * 20));
+              const estoqueStatus = getEstoqueStatus(mercadoria.estoque_atual, mercadoria.estoque_minimo)
+              const dataAtualizacao = new Date(mercadoria.created_at).toLocaleDateString('pt-BR')
+              const emUso = Math.max(1, Math.floor(Math.random() * 20))
               
               return (
                 <div 
@@ -402,7 +402,7 @@ const MercadoriasIngredientes: React.FC = () => {
                     </div>
                   )}
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -416,7 +416,7 @@ const MercadoriasIngredientes: React.FC = () => {
         onSave={handleSaveMercadoria}
       />
     </div>
-  );
+  )
 };
 
 export default MercadoriasIngredientes; 

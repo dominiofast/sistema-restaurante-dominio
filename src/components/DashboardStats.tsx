@@ -5,8 +5,8 @@ import { TrendingUp, Users, ShoppingCart, DollarSign } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const DashboardStats = () => {
-  const { currentCompany, getCompanyData } = useAuth();
-  const companyData = getCompanyData();
+  const { currentCompany, getCompanyData } = useAuth()
+  const companyData = getCompanyData()
 
   if (!currentCompany || !companyData) {
     return (
@@ -22,8 +22,8 @@ export const DashboardStats = () => {
           </Card>
         ))}
       </div>
-    );
-  }
+    )
+
 
   const stats = [
     {
@@ -53,7 +53,7 @@ export const DashboardStats = () => {
       icon: TrendingUp,
       change: "+2.5% em relação ao mês passado",
       changeType: "positive"
-    }
+    };
   ];
 
   return (
@@ -75,5 +75,5 @@ export const DashboardStats = () => {
         </Card>
       ))}
     </div>
-  );
+  )
 };

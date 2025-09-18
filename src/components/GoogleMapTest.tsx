@@ -6,13 +6,13 @@ const containerStyle = {
   width: "100%",
   height: "200px",
   borderRadius: "8px",
-  overflow: "hidden",
+  overflow: "hidden",;
 };
 
 export const GoogleMapTest: React.FC = () => {
-  const { apiKey, loading, error } = useGoogleMapsConfig();
+  const { apiKey, loading, error } = useGoogleMapsConfig()
 
-  console.log('🔍 GoogleMapTest - Debug:', { apiKey, loading, error });
+  console.log('🔍 GoogleMapTest - Debug:', { apiKey, loading, error })
 
   if (loading) {
     return (
@@ -22,7 +22,7 @@ export const GoogleMapTest: React.FC = () => {
           <p className="text-gray-500">Carregando mapa...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error || !apiKey) {
@@ -34,7 +34,7 @@ export const GoogleMapTest: React.FC = () => {
           <p className="text-xs text-gray-300 mt-2">API Key: {apiKey ? 'Configurada' : 'Não configurada'}</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -53,7 +53,7 @@ export const GoogleMapTest: React.FC = () => {
         </GoogleMap>
       </LoadScript>
     </div>
-  );
+  )
 };
 
 export default GoogleMapTest;

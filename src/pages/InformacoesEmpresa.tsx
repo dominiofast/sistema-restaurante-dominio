@@ -11,16 +11,15 @@ import { useCompanyFiscalConfig } from '@/hooks/useCompanyFiscalConfig';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Upload, Eye, EyeOff, Download } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-
+// SUPABASE REMOVIDO
 const InformacoesEmpresa = () => {
-  const { currentCompany } = useAuth();
-  const { companyInfo, loading, saveCompanyInfo } = useCompanyInfo();
-  const { fiscalConfig, loading: fiscalLoading, saveFiscalConfig } = useCompanyFiscalConfig();
-  const [activeTab, setActiveTab] = useState('loja');
-  const [showPassword, setShowPassword] = useState(false);
-  const [uploadingCertificate, setUploadingCertificate] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { currentCompany } = useAuth()
+  const { companyInfo, loading, saveCompanyInfo } = useCompanyInfo()
+  const { fiscalConfig, loading: fiscalLoading, saveFiscalConfig } = useCompanyFiscalConfig()
+  const [activeTab, setActiveTab] = useState('loja')
+  const [showPassword, setShowPassword] = useState(false)
+  const [uploadingCertificate, setUploadingCertificate] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   
   const [formData, setFormData] = useState({
     // Informações da Loja
@@ -41,7 +40,7 @@ const InformacoesEmpresa = () => {
     estado: '',
     
     // Informações Fiscais
-    regime_tributario: 'simples_nacional',
+// regime_tributario: 'simples_nacional',
     email_xmls: '',
     certificado_status: 'ativo',
     certificado_validade: '18/07/2025',
@@ -55,7 +54,7 @@ const InformacoesEmpresa = () => {
     nfe_serie: 1,
     nfe_proxima_numeracao: 2,
     info_complementar_nfce: ''
-  });
+  })
 
   // Atualizar form quando dados carregarem
   useEffect(() => {
@@ -76,9 +75,9 @@ const InformacoesEmpresa = () => {
         cidade: companyInfo.cidade || '',
         estado: companyInfo.estado || '',
         cnae: companyInfo.cnae || '',
-      }));
-    }
-  }, [companyInfo]);
+      }))
+
+  }, [companyInfo])
 
   // Atualizar código da empresa quando currentCompany carrega
   useEffect(() => {
@@ -86,12 +85,12 @@ const InformacoesEmpresa = () => {
       setFormData(prev => ({
         ...prev,
         codigo: currentCompany.store_code.toString(),
-      }));
-    }
-  }, [currentCompany]);
+      }))
+
+  }, [currentCompany])
 
   useEffect(() => {
-    console.log('InformacoesEmpresa: fiscalConfig updated:', fiscalConfig);
+    console.log('InformacoesEmpresa: fiscalConfig updated:', fiscalConfig)
     if (fiscalConfig) {
       setFormData(prev => ({
         ...prev,
@@ -110,15 +109,15 @@ const InformacoesEmpresa = () => {
         nfe_serie: fiscalConfig.nfe_serie || 1,
         nfe_proxima_numeracao: fiscalConfig.nfe_proxima_numeracao || 2,
         info_complementar_nfce: fiscalConfig.informacao_complementar_nfce || ''
-      }));
-    }
-  }, [fiscalConfig]);
+      }))
+
+  }, [fiscalConfig])
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
-    }));
+      [field]: value;
+    }))
   };
 
   const handleNumberChange = (field: string, value: string, defaultValue: number) => {
@@ -126,68 +125,67 @@ const InformacoesEmpresa = () => {
     setFormData(prev => ({
       ...prev,
       [field]: numValue
-    }));
+    }))
   };
 
   const handleCertificateUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !currentCompany?.id) {
-      console.log('handleCertificateUpload: Missing file or company ID', { file: !!file, companyId: currentCompany?.id });
+      console.log('handleCertificateUpload: Missing file or company ID', { file: !!file, companyId: currentCompany?.id })
       return;
-    }
 
-    console.log('handleCertificateUpload: Starting upload', { fileName: file.name, fileSize: file.size, companyId: currentCompany.id });
+
+    console.log('handleCertificateUpload: Starting upload', { fileName: file.name, fileSize: file.size, companyId: currentCompany.id })
 
     // Validar tipo de arquivo (apenas .p12 ou .pfx)
     const allowedTypes = ['.p12', '.pfx'];
-    const fileExtension = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+    const fileExtension = file.name.toLowerCase().slice(file.name.lastIndexOf('.'))
     
     if (!allowedTypes.includes(fileExtension)) {
-      console.error('handleCertificateUpload: Invalid file type', { fileExtension, allowedTypes });
-      toast.error('Apenas arquivos .p12 ou .pfx são permitidos');
+      console.error('handleCertificateUpload: Invalid file type', { fileExtension, allowedTypes })
+      toast.error('Apenas arquivos .p12 ou .pfx são permitidos')
       return;
-    }
+
 
     try {
-      setUploadingCertificate(true);
+      setUploadingCertificate(true)
       
       const fileExt = fileExtension;
-      const fileName = `certificado_${currentCompany.id}_${Date.now()}${fileExt}`;
+      const fileName = `certificado_${currentCompany.id} catch (error) { console.error('Error:', error) }_${Date.now()}${fileExt}`;
       const filePath = `${currentCompany.id}/${fileName}`;
 
-      console.log('handleCertificateUpload: Uploading to storage', { filePath, bucketId: 'certificados' });
+      console.log('handleCertificateUpload: Uploading to storage', { filePath, bucketId: 'certificados' })
 
-      const { data, error: uploadError } = await supabase.storage
-        .from('certificados')
-        .upload(filePath, file);
+      const { data, error: uploadError } = await Promise.resolve()
+        .upload(filePath, file)
 
       if (uploadError) {
-        console.error('handleCertificateUpload: Storage upload error:', uploadError);
+        console.error('handleCertificateUpload: Storage upload error:', uploadError)
         throw uploadError;
       }
 
-      console.log('handleCertificateUpload: Upload successful', { data });
+      console.log('handleCertificateUpload: Upload successful', { data })
 
       // Atualizar o caminho do certificado na configuração fiscal
-      console.log('handleCertificateUpload: Updating fiscal config with certificate path');
+      console.log('handleCertificateUpload: Updating fiscal config with certificate path')
       const result = await saveFiscalConfig({
         certificado_path: filePath,
         certificado_status: 'ativo',
-        certificado_validade: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 ano de validade padrão
-      });
+        certificado_validade: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 ano de validade padrão;
+      })
 
-      console.log('handleCertificateUpload: Fiscal config update result:', result);
+      console.log('handleCertificateUpload: Fiscal config update result:', result)
 
       if (result) {
-        toast.success('Certificado enviado com sucesso!');
+        toast.success('Certificado enviado com sucesso!')
       } else {
-        toast.error('Erro ao salvar configuração do certificado');
+        toast.error('Erro ao salvar configuração do certificado')
       }
     } catch (error) {
-      console.error('handleCertificateUpload: Error:', error);
-      toast.error(`Erro ao enviar certificado: ${error.message || 'Erro desconhecido'}`);
+      console.error('handleCertificateUpload: Error:', error)
+      toast.error(`Erro ao enviar certificado: ${error.message || 'Erro desconhecido'}`)
     } finally {
-      setUploadingCertificate(false);
+      setUploadingCertificate(false)
       // Limpar o input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -197,41 +195,40 @@ const InformacoesEmpresa = () => {
 
   const handleCertificateDownload = async () => {
     if (!fiscalConfig?.certificado_path || !currentCompany?.id) {
-      toast.error('Nenhum certificado encontrado');
+      toast.error('Nenhum certificado encontrado')
       return;
-    }
+
 
     try {
-      const { data, error } = await supabase.storage
-        .from('certificados')
-        .download(fiscalConfig.certificado_path);
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+        .download(fiscalConfig.certificado_path)
 
       if (error) throw error;
 
       // Criar URL para download
-      const url = URL.createObjectURL(data);
-      const a = document.createElement('a');
+      const url = URL.createObjectURL(data)
+      const a = document.createElement('a')
       a.href = url;
       a.download = `certificado_${currentCompany.name}.p12`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
 
-      toast.success('Download iniciado');
+      toast.success('Download iniciado')
     } catch (error) {
-      console.error('Erro ao baixar certificado:', error);
-      toast.error('Erro ao baixar certificado');
-    }
+      console.error('Erro ao baixar certificado:', error)
+      toast.error('Erro ao baixar certificado')
+
   };
 
   const handleSave = async () => {
-    console.log('handleSave: Starting save operation for tab:', activeTab);
-    console.log('handleSave: Form data:', formData);
+    console.log('handleSave: Starting save operation for tab:', activeTab)
+    console.log('handleSave: Form data:', formData)
     
     try {
       if (activeTab === 'loja') {
-        console.log('handleSave: Saving company info');
+        console.log('handleSave: Saving company info')
         await saveCompanyInfo({
           razao_social: formData.razao_social,
           nome_estabelecimento: formData.nome_fantasia,
@@ -247,20 +244,20 @@ const InformacoesEmpresa = () => {
           cidade: formData.cidade,
           estado: formData.estado,
           cnae: formData.cnae,
-        });
+        } catch (error) { console.error('Error:', error) })
         
         // Salvar também a inscrição estadual na configuração fiscal
         if (formData.inscricao_estadual) {
-          console.log('handleSave: Also saving inscricao_estadual to fiscal config');
+          console.log('handleSave: Also saving inscricao_estadual to fiscal config')
           await saveFiscalConfig({
             cnpj: formData.cnpj_cpf,
             inscricao_estadual: formData.inscricao_estadual,
-          });
-        }
+          })
+
       } else if (activeTab === 'fiscais') {
-        console.log('handleSave: Saving fiscal config');
-        console.log('handleSave: CNPJ/CPF value:', formData.cnpj_cpf);
-        console.log('handleSave: Inscrição Estadual value:', formData.inscricao_estadual);
+        console.log('handleSave: Saving fiscal config')
+        console.log('handleSave: CNPJ/CPF value:', formData.cnpj_cpf)
+        console.log('handleSave: Inscrição Estadual value:', formData.inscricao_estadual)
         
         const fiscalData = {
           cnpj: formData.cnpj_cpf,
@@ -276,18 +273,18 @@ const InformacoesEmpresa = () => {
           nfce_proxima_numeracao: formData.nfce_proxima_numeracao,
           nfe_serie: formData.nfe_serie,
           nfe_proxima_numeracao: formData.nfe_proxima_numeracao,
-          informacao_complementar_nfce: formData.info_complementar_nfce
+          informacao_complementar_nfce: formData.info_complementar_nfce;
         };
         
-        console.log('handleSave: Fiscal data to save:', fiscalData);
-        const result = await saveFiscalConfig(fiscalData);
-        console.log('handleSave: Fiscal config save result:', result);
+        console.log('handleSave: Fiscal data to save:', fiscalData)
+        const result = await saveFiscalConfig(fiscalData)
+        console.log('handleSave: Fiscal config save result:', result)
       }
-      toast.success('Informações salvas com sucesso!');
+      toast.success('Informações salvas com sucesso!')
     } catch (error) {
-      console.error('handleSave: Error saving information:', error);
-      toast.error('Erro ao salvar informações');
-    }
+      console.error('handleSave: Error saving information:', error)
+      toast.error('Erro ao salvar informações')
+
   };
 
   if (loading) {
@@ -295,8 +292,8 @@ const InformacoesEmpresa = () => {
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
-    );
-  }
+    )
+
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -776,7 +773,7 @@ const InformacoesEmpresa = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default InformacoesEmpresa;

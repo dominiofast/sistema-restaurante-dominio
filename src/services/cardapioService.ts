@@ -1,5 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { CardapioJsonService } from './cardapioJsonService';
 
 interface CardapioData {
@@ -19,7 +19,7 @@ interface CardapioData {
       ingredients?: string;
     }>;
   }>;
-}
+
 
 export class CardapioService {
   /**
@@ -27,30 +27,15 @@ export class CardapioService {
    */
   static async getCardapioForAI(companyId: string): Promise<CardapioData | null> {
     try {
-      console.log('🍽️ Buscando cardápio para IA - Company:', companyId);
+      console.log('🍽️ Buscando cardápio para IA - Company:', companyId)
 
       // Buscar categorias ativas
-      const { data: categorias, error: categoriasError } = await supabase
-        .from('categorias')
-        .select('id, name, description')
-        .eq('company_id', companyId)
-        .eq('is_active', true)
-        .order('order_position', { ascending: true });
-
-      if (categoriasError) {
-        console.error('❌ Erro ao buscar categorias:', categoriasError);
+      const categorias = null as any; const categoriasError = null as any;
         return null;
       }
 
-      // Buscar produtos disponíveis
-      const { data: produtos, error: produtosError } = await supabase
-        .from('produtos')
-        .select('id, name, description, price, promotional_price, is_promotional, is_available, preparation_time, ingredients, categoria_id')
-        .eq('company_id', companyId)
-        .eq('is_available', true);
-
-      if (produtosError) {
-        console.error('❌ Erro ao buscar produtos:', produtosError);
+       catch (error) { console.error('Error:', error) }// Buscar produtos disponíveis
+      const produtos = null as any; const produtosError = null as any;
         return null;
       }
 
@@ -79,14 +64,14 @@ export class CardapioService {
       console.log('✅ Cardápio carregado para IA:', {
         categorias: cardapioData.categorias.length,
         totalProdutos: cardapioData.categorias.reduce((acc, cat) => acc + cat.produtos.length, 0)
-      });
+      })
 
       return cardapioData;
     } catch (error) {
-      console.error('❌ Erro ao buscar cardápio para IA:', error);
+      console.error('❌ Erro ao buscar cardápio para IA:', error)
       return null;
-    }
-  }
+
+
 
   /**
    * Formata o cardápio em texto para o prompt do Agente IA
@@ -94,7 +79,7 @@ export class CardapioService {
   static formatCardapioForPrompt(cardapioData: CardapioData): string {
     if (!cardapioData || cardapioData.categorias.length === 0) {
       return 'Nenhum produto disponível no momento.';
-    }
+
 
     let cardapioText = 'CARDÁPIO DISPONÍVEL:\n\n';
 
@@ -115,7 +100,7 @@ export class CardapioService {
         }
         
         const precoAtual = produto.is_promotional && produto.promotional_price 
-          ? produto.promotional_price 
+          ? produto.promotional_price ;
           : produto.price;
         
         cardapioText += `Preço: R$ ${precoAtual.toFixed(2)}`;
@@ -129,24 +114,24 @@ export class CardapioService {
         }
         
         cardapioText += '\n\n';
-      });
-    });
+      })
+    })
 
     return cardapioText;
-  }
+
 
   /**
    * Gera JSON estruturado do cardápio para alimentar a IA
    */
   static async getCardapioJsonForAI(companyId: string): Promise<any | null> {
     try {
-      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId);
+      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId)
       if (!cardapioJson) return null;
 
-      return CardapioJsonService.formatJsonToText(cardapioJson);
+      return CardapioJsonService.formatJsonToText(cardapioJson)
     } catch (error) {
-      console.error('❌ Erro ao gerar JSON estruturado:', error);
+      console.error('❌ Erro ao gerar JSON estruturado:', error)
       return null;
-    }
-  }
-}
+
+
+

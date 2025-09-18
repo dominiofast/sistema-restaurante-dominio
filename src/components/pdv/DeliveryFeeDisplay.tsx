@@ -30,5 +30,5 @@ export const DeliveryFeeDisplay: React.FC<DeliveryFeeDisplayProps> = ({ taxaEntr
         </p>
       )}
     </div>
-  );
+  )
 };

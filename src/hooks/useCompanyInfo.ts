@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface CompanyInfo {
@@ -22,92 +22,81 @@ export interface CompanyInfo {
   cidade?: string;
   estado?: string;
   cnae?: string;
-}
+
 
 export function useCompanyInfo() {
-  const { currentCompany } = useAuth();
-  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchCompanyInfo = async () => {
     if (!currentCompany?.id) return;
 
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('company_info')
-        .select('*')
-        .eq('company_id', currentCompany.id)
-        .maybeSingle();
+      setLoading(true)
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
+        
+        
+        
+        
 
       if (error) throw error;
 
       if (data) {
-        setCompanyInfo(data);
+        setCompanyInfo(data)
       } else {
         // Criar registro inicial se não existir
         const newInfo: Omit<CompanyInfo, 'id'> = {
           company_id: currentCompany.id,
           nome_estabelecimento: currentCompany.name,
         };
-        setCompanyInfo(newInfo);
+        setCompanyInfo(newInfo)
       }
     } catch (err) {
-      console.error('Erro ao buscar informações da empresa:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('Erro ao buscar informações da empresa:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
-    }
+      setLoading(false)
+
   };
 
   const saveCompanyInfo = async (info: Partial<CompanyInfo>) => {
     if (!currentCompany?.id) return;
 
     try {
-      setError(null);
+      setError(null)
       
       // Garantir que nome_estabelecimento sempre tenha um valor
       const dataToSave = {
         ...info,
         company_id: currentCompany.id,
-        nome_estabelecimento: info.nome_estabelecimento || currentCompany.name,
-      };
+        nome_estabelecimento: info.nome_estabelecimento || currentCompany.name,;
+      } catch (error) { console.error('Error:', error) };
 
       if (companyInfo?.id) {
         // Atualizar registro existente
-        const { data, error } = await supabase
-          .from('company_info')
-          .update(dataToSave)
-          .eq('id', companyInfo.id)
-          .select()
-          .single();
-
+        const { data, error  } = null as any;
         if (error) throw error;
-        setCompanyInfo(data);
+        setCompanyInfo(data)
       } else {
         // Criar novo registro
-        const { data, error } = await supabase
-          .from('company_info')
-          .insert(dataToSave)
-          .select()
-          .single();
-
+        const { data, error  } = null as any;
         if (error) throw error;
-        setCompanyInfo(data);
+        setCompanyInfo(data)
       }
 
       return true;
     } catch (err) {
-      console.error('Erro ao salvar informações da empresa:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao salvar');
+      console.error('Erro ao salvar informações da empresa:', err)
+      setError(err instanceof Error ? err.message : 'Erro ao salvar')
       return false;
-    }
+
   };
 
   useEffect(() => {
-    fetchCompanyInfo();
-  }, [currentCompany?.id]);
+    fetchCompanyInfo()
+  }, [currentCompany?.id])
 
   return {
     companyInfo,
@@ -116,4 +105,4 @@ export function useCompanyInfo() {
     saveCompanyInfo,
     refetch: fetchCompanyInfo,
   };
-}
+

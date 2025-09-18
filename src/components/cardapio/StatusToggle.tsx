@@ -41,5 +41,5 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
         </Badge>
       )}
     </div>
-  );
+  )
 };

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+// SUPABASE REMOVIDO
 import { toast } from 'sonner';
 import InscricaoSucesso from '@/components/vagas/InscricaoSucesso';
 import VagaLoadingState from '@/components/vagas/VagaLoadingState';
@@ -9,94 +9,55 @@ import VagaListPublica from '@/components/vagas/VagaListPublica';
 import VagaDetailsPage from '@/components/vagas/VagaDetailsPage';
 
 const VagaPublica: React.FC = () => {
-  const { slug, vagaId } = useParams<{ slug: string; vagaId?: string }>();
-  const [vaga, setVaga] = useState<any | null>(null);
-  const [vagas, setVagas] = useState<any[]>([]);
-  const [config, setConfig] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [inscricaoEnviada, setInscricaoEnviada] = useState(false);
+  const { slug, vagaId } = useParams<{ slug: string; vagaId?: string }>()
+  const [vaga, setVaga] = useState<any | null>(null)
+  const [vagas, setVagas] = useState<any[]>([])
+  const [config, setConfig] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [inscricaoEnviada, setInscricaoEnviada] = useState(false)
 
   useEffect(() => {
     if (slug && vagaId) {
-      fetchVagaData();
+      fetchVagaData()
     } else if (slug && !vagaId) {
-      fetchVagasList();
+      fetchVagasList()
     }
-  }, [slug, vagaId]);
+  }, [slug, vagaId])
 
   const fetchVagaData = async () => {
     try {
-      setLoading(true);
-      const { data: vagaData, error: vagaError } = await supabase
-        .from('rh_vagas')
-        .select(`*, company:companies (id, name, logo)`)
-        .eq('id', vagaId)
-        .eq('is_active', true)
-        .single();
-      if (vagaError || !vagaData) throw vagaError || new Error('Vaga não encontrada.');
+      setLoading(true)
+      const vagaData = null as any; const vagaError = null as any;
       
-      const { data: configData, error: configError } = await supabase
-        .from('rh_vagas_config')
-        .select('*')
-        .eq('company_id', vagaData.company.id)
-        .single();
+      const configData = null as any; const configError = null as any;
+      
       if (configError) {
-        setConfig({
-          page_title: `Carreiras na ${vagaData.company.name}`,
-          welcome_message: 'Confira nossas oportunidades e venha fazer parte do nosso time!',
-          logo_url: vagaData.company.logo || '',
-          banner_url: '',
-          primary_color: '#1B365D',
-          company_name: vagaData.company.name
-        });
+        console.error('Error:', configError)
       } else {
-        setConfig({ ...configData, company_name: vagaData.company.name });
+        setConfig({ ...configData, company_name: vagaData.company.name })
       }
-      setVaga(vagaData);
+      setVaga(vagaData)
     } catch (error: any) {
-      toast.error('Vaga não encontrada ou não está mais disponível');
+      toast.error('Vaga não encontrada ou não está mais disponível')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const fetchVagasList = async () => {
     try {
-      setLoading(true);
-      const { data: companyData, error: companyError } = await supabase
-        .from('companies')
-        .select('id, name, logo')
-        .eq('slug', slug)
-        .single();
-      if (companyError || !companyData) throw companyError || new Error('Empresa não encontrada');
+      setLoading(true)
+      const companyData = null as any; const companyError = null as any;
       
-      const { data: vagasData, error: vagasError } = await supabase
-        .from('rh_vagas')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-      if (vagasError) throw vagasError;
-      setVagas(vagasData || []);
+      const vagasData = null as any; const vagasError = null as any;
+      setVagas(vagasData || [])
       
-      const { data: configData, error: configError } = await supabase
-        .from('rh_vagas_config')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .single();
-      setConfig(configData || {
-        page_title: `Carreiras na ${companyData.name}`,
-        welcome_message: 'Confira nossas oportunidades e venha fazer parte do nosso time!',
-        logo_url: companyData.logo || '',
-        banner_url: '',
-        primary_color: '#1B365D',
-        company_name: companyData.name
-      });
+      const configData = null as any; const configError = null as any;
     } catch (error: any) {
-      toast.error('Erro ao carregar vagas públicas');
+      toast.error('Erro ao carregar vagas públicas')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -106,28 +67,28 @@ const VagaPublica: React.FC = () => {
       'part-time': 'Meio Período',
       'contract': 'Contrato',
       'freelance': 'Freelance',
-      'internship': 'Estágio'
+      'internship': 'Estágio';
     };
     return types[type] || type;
   };
 
   const handleInscricaoSuccess = () => {
-    setInscricaoEnviada(true);
-    setShowForm(false);
+    setInscricaoEnviada(true)
+    setShowForm(false)
   };
 
   const handleCloseForm = () => {
-    setShowForm(false);
+    setShowForm(false)
   };
 
   if (loading) {
     return <VagaLoadingState />;
-  }
+
 
   // Renderização da lista pública de vagas
   if (!vagaId && config) {
     return <VagaListPublica vagas={vagas} config={config} slug={slug || ''} />;
-  }
+
 
   if (!vaga || !config) {
     return (
@@ -137,8 +98,8 @@ const VagaPublica: React.FC = () => {
           <p className="text-gray-600">Esta vaga pode ter sido removida ou não está mais disponível.</p>
         </div>
       </div>
-    );
-  }
+    )
+
 
   if (inscricaoEnviada) {
     return (
@@ -147,8 +108,8 @@ const VagaPublica: React.FC = () => {
         nomeEmpresa={config?.company_name || 'nossa empresa'}
         corPrimaria={config?.primary_color || '#1B365D'}
       />
-    );
-  }
+    )
+
 
   return (
     <VagaDetailsPage 
@@ -161,7 +122,7 @@ const VagaPublica: React.FC = () => {
       onInscricaoEnviada={handleInscricaoSuccess}
       getTypeLabel={getTypeLabel}
     />
-  );
+  )
 };
 
 export default VagaPublica;

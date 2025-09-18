@@ -14,24 +14,24 @@ export const ObservacaoModalPDV: React.FC<ObservacaoModalPDVProps> = ({
   onConfirm,
   observacaoAtual = ''
 }) => {
-  const [observacao, setObservacao] = useState(observacaoAtual);
+  const [observacao, setObservacao] = useState(observacaoAtual)
 
   useEffect(() => {
     if (isOpen) {
-      setObservacao(observacaoAtual);
+      setObservacao(observacaoAtual)
     }
-  }, [isOpen, observacaoAtual]);
+  }, [isOpen, observacaoAtual])
 
   const handleConfirm = () => {
-    onConfirm(observacao);
-    onClose();
+    onConfirm(observacao)
+    onClose()
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && e.ctrlKey) {
-      handleConfirm();
+      handleConfirm()
     } else if (e.key === 'Escape') {
-      onClose();
+      onClose()
     }
   };
 
@@ -96,5 +96,5 @@ export const ObservacaoModalPDV: React.FC<ObservacaoModalPDVProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

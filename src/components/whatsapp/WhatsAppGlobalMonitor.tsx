@@ -8,8 +8,8 @@ import { useGlobalWhatsAppNotification } from '@/contexts/GlobalWhatsAppNotifica
  * Separado do provider para evitar dependências circulares
  */
 export const WhatsAppGlobalMonitor: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const { showNotification, isEnabled } = useGlobalWhatsAppNotification();
+  const { currentCompany } = useAuth()
+  const { showNotification, isEnabled } = useGlobalWhatsAppNotification()
 
   // Monitor WhatsApp messages globally
   useWhatsAppRealtime({

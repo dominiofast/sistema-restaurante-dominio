@@ -14,8 +14,8 @@ const AppLayout = () => {
       <div className="pt-16">
         <Outlet />
       </div>
-    </div>
-  );
+    </div>;
+  )
 };
 
 export default AppLayout;

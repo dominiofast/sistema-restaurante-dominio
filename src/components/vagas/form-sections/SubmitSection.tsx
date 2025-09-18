@@ -43,7 +43,7 @@ const SubmitSection: React.FC<SubmitSectionProps> = ({
         )}
       </button>
     </div>
-  );
+  )
 };
 
 export default SubmitSection;

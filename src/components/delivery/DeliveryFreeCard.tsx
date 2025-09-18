@@ -16,10 +16,10 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
   variant = 'full',
   className = '' 
 }) => {
-  const { deliveryStatus, loading } = useDeliveryFreeConfig(companyId);
+  const { deliveryStatus, loading } = useDeliveryFreeConfig(companyId)
   const { branding, loading: brandingLoading } = usePublicBranding({
     companyIdentifier: companySlug || companyId
-  });
+  })
 
   // Debug para ver o que está acontecendo
   console.log('🚚 [DELIVERY CARD] Status:', {
@@ -28,7 +28,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
     brandingLoading,
     deliveryStatus,
     shouldShow: deliveryStatus.hasFreeDelivery && !loading && !brandingLoading
-  });
+  })
 
   // Se não há entrega grátis ou está carregando, não renderiza
   if (!deliveryStatus.hasFreeDelivery || loading || brandingLoading) {
@@ -36,9 +36,9 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
       hasFreeDelivery: deliveryStatus.hasFreeDelivery,
       loading,
       brandingLoading
-    });
+    })
     return null;
-  }
+
 
   // Cores da marca ou padrão verde
   const primaryColor = branding?.primary_color || '#22c55e';
@@ -47,33 +47,33 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
 
   // Função para criar gradiente baseado na cor primária
   const createGradient = (color: string) => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
     
-    const lighterR = Math.min(255, r + 30);
-    const lighterG = Math.min(255, g + 30);
-    const lighterB = Math.min(255, b + 30);
+    const lighterR = Math.min(255, r + 30)
+    const lighterG = Math.min(255, g + 30)
+    const lighterB = Math.min(255, b + 30)
     
-    const darkerR = Math.max(0, r - 20);
-    const darkerG = Math.max(0, g - 20);
-    const darkerB = Math.max(0, b - 20);
+    const darkerR = Math.max(0, r - 20)
+    const darkerG = Math.max(0, g - 20)
+    const darkerB = Math.max(0, b - 20)
     
     return `linear-gradient(135deg, rgb(${lighterR}, ${lighterG}, ${lighterB}) 0%, rgb(${darkerR}, ${darkerG}, ${darkerB}) 100%)`;
   };
 
   // Função para determinar se a cor é clara ou escura
   const isLightColor = (color: string) => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
     return brightness > 128;
   };
 
-  const isDark = !isLightColor(primaryColor);
+  const isDark = !isLightColor(primaryColor)
   const contrastColor = isDark ? '#FFFFFF' : textColor;
 
   // Determinar texto baseado no status
@@ -81,7 +81,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
     if (deliveryStatus.allRegionsFree) {
       return {
         title: 'Entrega grátis',
-        subtitle: 'em todas as regiões'
+        subtitle: 'em todas as regiões';
       };
     } else {
       return {
@@ -91,7 +91,7 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
     }
   };
 
-  const deliveryText = getDeliveryText();
+  const deliveryText = getDeliveryText()
 
   if (variant === 'compact') {
     return (
@@ -107,8 +107,8 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
           {deliveryText.title}
         </span>
       </div>
-    );
-  }
+    )
+
 
   if (variant === 'banner') {
     return (
@@ -142,8 +142,8 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
           </span>
         </div>
       </div>
-    );
-  }
+    )
+
 
   // Variant full (padrão) - melhor design inspirado na referência
   return (
@@ -202,5 +202,5 @@ export const DeliveryFreeCard: React.FC<DeliveryFreeCardProps> = ({
         style={{ backgroundColor: contrastColor }}
       />
     </div>
-  );
+  )
 };

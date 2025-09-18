@@ -86,5 +86,5 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, billingType }) => {
         {plan.type === 'trial' ? 'Começar Teste Gratuito' : `Assinar ${plan.name}`}
       </a>
     </div>
-  );
+  )
 };

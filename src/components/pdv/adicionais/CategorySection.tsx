@@ -17,12 +17,12 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
 }) => {
   const handleAdicionalClick = (adicional: any) => {
     if (categoria.selection_type === 'single') {
-      onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1);
+      onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1)
     } else if (categoria.selection_type === 'multiple') {
-      onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1);
+      onAdicionalChange(adicional.id, categoria, selectedAdicionais[adicional.id] ? 0 : 1)
     } else {
       const currentQty = selectedAdicionais[adicional.id] || 0;
-      onAdicionalChange(adicional.id, categoria, currentQty + 1);
+      onAdicionalChange(adicional.id, categoria, currentQty + 1)
     }
   };
 
@@ -63,5 +63,5 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         ))}
       </div>
     </div>
-  );
+  )
 };

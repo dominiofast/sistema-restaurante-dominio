@@ -117,11 +117,11 @@ export function getFallbackDeliveryMethods(companyIdentifier?: string): Delivery
   // Normalize identifier for matching
   const normalizedIdentifier = companyIdentifier.toLowerCase()
     .replace(/\s+/g, '')
-    .replace(/[^\w]/g, '');
+    .replace(/[^\w]/g, '')
 
   // Try to find a specific configuration
   for (const [key, config] of Object.entries(COMPANY_SPECIFIC_FALLBACKS)) {
-    const normalizedKey = key.toLowerCase().replace(/[^\w]/g, '');
+    const normalizedKey = key.toLowerCase().replace(/[^\w]/g, '')
     
     if (normalizedIdentifier.includes(normalizedKey) || normalizedKey.includes(normalizedIdentifier)) {
       return {
@@ -147,7 +147,7 @@ export function getFallbackDeliveryMethods(companyIdentifier?: string): Delivery
  */
 export function shouldEnablePickup(companyName?: string, companySlug?: string): boolean {
   const identifier = companyName || companySlug || '';
-  const config = getFallbackDeliveryMethods(identifier);
+  const config = getFallbackDeliveryMethods(identifier)
   return config.pickup;
 }
 
@@ -160,7 +160,7 @@ export function shouldEnablePickup(companyName?: string, companySlug?: string): 
  */
 export function shouldEnableDelivery(companyName?: string, companySlug?: string): boolean {
   const identifier = companyName || companySlug || '';
-  const config = getFallbackDeliveryMethods(identifier);
+  const config = getFallbackDeliveryMethods(identifier)
   return config.delivery;
 }
 
@@ -174,7 +174,7 @@ export function shouldEnableDelivery(companyName?: string, companySlug?: string)
  */
 export function getAutoCreationConfig(companyName?: string, companySlug?: string): Omit<DeliveryMethodsConfig, 'source'> {
   const identifier = companyName || companySlug || '';
-  const fallbackConfig = getFallbackDeliveryMethods(identifier);
+  const fallbackConfig = getFallbackDeliveryMethods(identifier)
   
   return {
     delivery: fallbackConfig.delivery,
@@ -203,7 +203,7 @@ export function logFallbackUsage(
     reason,
     config,
     timestamp: new Date().toISOString(),
-  });
+  })
 }
 
 /**
@@ -220,5 +220,5 @@ export function validateDeliveryMethodsConfig(config: any): config is DeliveryMe
     typeof config.pickup === 'boolean' &&
     typeof config.eat_in === 'boolean' &&
     ['database', 'auto-created', 'fallback'].includes(config.source)
-  );
+  )
 }

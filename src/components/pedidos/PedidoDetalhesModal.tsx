@@ -32,7 +32,7 @@ const statusConfig = {
   analise: { label: 'Em análise', color: 'text-orange-600', bg: 'bg-orange-100' },
   producao: { label: 'Em produção', color: 'text-blue-600', bg: 'bg-blue-100' },
   pronto: { label: 'Pronto para entrega', color: 'text-green-600', bg: 'bg-green-100' },
-  entregue: { label: 'Entregue', color: 'text-gray-600', bg: 'bg-gray-100' },
+  entregue: { label: 'Entregue', color: 'text-gray-600', bg: 'bg-gray-100' },;
 };
 
 interface PagamentoParcial {
@@ -42,31 +42,31 @@ interface PagamentoParcial {
 }
 
 export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }: PedidoDetalhesModalProps) {
-  console.log('🔍 PedidoDetalhesModal - Pedido recebido:', pedido);
+  console.log('🔍 PedidoDetalhesModal - Pedido recebido:', pedido)
   
   // Checagens defensivas para evitar tela branca
   if (!pedido) {
-    console.log('📝 PedidoDetalhesModal - Aguardando pedido...');
+    console.log('📝 PedidoDetalhesModal - Aguardando pedido...')
     return null;
   }
   
   if (!pedido.itens || !Array.isArray(pedido.itens) || typeof pedido.total !== 'number') {
-    console.error('Pedido inválido:', pedido);
+    console.error('Pedido inválido:', pedido)
     return null;
   }
   
-  const { caixaAtual, adicionarLancamento } = useCaixa();
-  const { config: pagamentoConfig } = usePagamentoEntregaConfig(pedido?.company_id);
+  const { caixaAtual, adicionarLancamento } = useCaixa()
+  const { config: pagamentoConfig } = usePagamentoEntregaConfig(pedido?.company_id)
 
   // Log defensivo para caixaAtual e adicionarLancamento
   useEffect(() => {
     if (!caixaAtual || typeof adicionarLancamento !== 'function') {
-      console.error('Caixa ou função de lançamento inválida:', { caixaAtual, adicionarLancamento });
+      console.error('Caixa ou função de lançamento inválida:', { caixaAtual, adicionarLancamento })
     }
-  }, [caixaAtual, adicionarLancamento]);
+  }, [caixaAtual, adicionarLancamento])
   
-  const [showPagamentoModal, setShowPagamentoModal] = useState(false);
-  const [pagamentos, setPagamentos] = useState<PagamentoParcial[]>([]);
+  const [showPagamentoModal, setShowPagamentoModal] = useState(false)
+  const [pagamentos, setPagamentos] = useState<PagamentoParcial[]>([])
   
   
 
@@ -75,43 +75,43 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
   // Gerar formas de pagamento disponíveis baseadas na configuração da empresa
   const formasPagamentoDisponiveis = (() => {
     const formas: string[] = [];
-    if (pagamentoConfig?.accept_cash) formas.push('Dinheiro');
-    if (pagamentoConfig?.accept_pix) formas.push('Pix');
-    if (pagamentoConfig?.accept_card) formas.push('Cartão');
+    if (pagamentoConfig?.accept_cash) formas.push('Dinheiro')
+    if (pagamentoConfig?.accept_pix) formas.push('Pix')
+    if (pagamentoConfig?.accept_card) formas.push('Cartão')
     
     // Se nenhuma forma foi configurada, usar padrão
     if (formas.length === 0) {
-      formas.push('Dinheiro', 'Pix', 'Cartão');
+      formas.push('Dinheiro', 'Pix', 'Cartão')
     }
     
     return formas;
-  })();
+  })()
   
-  console.log('💳 Formas de pagamento disponíveis:', formasPagamentoDisponiveis, 'Config:', pagamentoConfig);
+  console.log('💳 Formas de pagamento disponíveis:', formasPagamentoDisponiveis, 'Config:', pagamentoConfig)
   
   // Debug: Log todos os itens do pedido para investigar a taxa de entrega
-  console.log('🔍 DEBUG - Itens do pedido:', pedido.itens.map(item => ({ nome: item.nome, valor: item.valor })));
+  console.log('🔍 DEBUG - Itens do pedido:', pedido.itens.map(item => ({ nome: item.nome, valor: item.valor })))
   
-  const subtotal = pedido.itens.reduce((acc, item) => acc + (item.qtd * item.valor), 0);
+  const subtotal = pedido.itens.reduce((acc, item) => acc + (item.qtd * item.valor), 0)
   
   // DEBUG: Listar todos os itens do pedido
   console.log('📋 DEBUG - Todos os itens do pedido:', pedido.itens.map(item => ({
     nome: item.nome,
     valor: item.valor,
     qtd: item.qtd
-  })));
+  })))
   
   // Melhorar a busca pela taxa de entrega - buscar por diferentes variações
   const taxaEntregaItem = pedido.itens.find(item => {
-    const nomeItem = item.nome.toLowerCase();
-    console.log('🔍 DEBUG - Verificando item:', nomeItem);
+    const nomeItem = item.nome.toLowerCase()
+    console.log('🔍 DEBUG - Verificando item:', nomeItem)
     const isMatch = nomeItem.includes('taxa') || 
                    nomeItem.includes('entrega') || 
-                   nomeItem === 'taxa de entrega' ||
+                   nomeItem === 'taxa de entrega' ||;
                    nomeItem === 'delivery';
-    console.log('🎯 DEBUG - Item match:', isMatch);
+    console.log('🎯 DEBUG - Item match:', isMatch)
     return isMatch;
-  });
+  })
   
   const taxaEntrega = taxaEntregaItem?.valor || 0;
   
@@ -119,7 +119,7 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
     itemEncontrado: taxaEntregaItem,
     valorTaxa: taxaEntrega,
     totalItens: pedido.itens.length
-  });
+  })
 
   // Inicializar pagamentos quando abre o modal
   useEffect(() => {
@@ -130,46 +130,46 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
         formaPagamento, 
         pedidoPagamento: pedido.pagamento,
         total: pedido.total 
-      });
+      })
       
       setPagamentos([{
         id: '1',
         forma: formaPagamento,
         valor: pedido.total
-      }]);
+      }])
     }
-  }, [showPagamentoModal, pedido?.id]); // Adicionado pedido.id para reinicializar quando mudada o pedido
+  }, [showPagamentoModal, pedido?.id]) // Adicionado pedido.id para reinicializar quando mudada o pedido
 
   const adicionarPagamento = () => {
-    const novoId = (pagamentos.length + 1).toString();
+    const novoId = (pagamentos.length + 1).toString()
     setPagamentos([...pagamentos, {
       id: novoId,
       forma: 'Dinheiro',
       valor: 0
-    }]);
+    }])
   };
 
   const removerPagamento = (id: string) => {
     if (pagamentos.length > 1) {
-      setPagamentos(pagamentos.filter(p => p.id !== id));
+      setPagamentos(pagamentos.filter(p => p.id !== id))
     }
   };
 
   const atualizarPagamento = (id: string, campo: 'forma' | 'valor', valor: string | number) => {
     setPagamentos(pagamentos.map(p => 
-      p.id === id ? { ...p, [campo]: valor } : p
-    ));
+      p.id === id ? { ...p, [campo]: valor } : p;
+    ))
   };
 
-  const totalPagamentos = pagamentos.reduce((acc, p) => acc + Number(p.valor), 0);
+  const totalPagamentos = pagamentos.reduce((acc, p) => acc + Number(p.valor), 0)
   const diferenca = pedido ? pedido.total - totalPagamentos : 0;
 
   const handleRegistrarPagamentos = async () => {
-    console.log('🔄 Iniciando registro de pagamentos...', { caixaAtual, pagamentos, diferenca });
+    console.log('🔄 Iniciando registro de pagamentos...', { caixaAtual, pagamentos, diferenca })
     
     if (!caixaAtual) {
-      console.error('❌ Nenhum caixa aberto:', caixaAtual);
-      toast.error('Nenhum caixa aberto para registrar o pagamento');
+      console.error('❌ Nenhum caixa aberto:', caixaAtual)
+      toast.error('Nenhum caixa aberto para registrar o pagamento')
       return;
     }
 
@@ -177,21 +177,21 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
 
     // Validações
     if (pagamentos.some(p => !p.forma || p.valor <= 0)) {
-      toast.error('Preencha todos os pagamentos corretamente');
+      toast.error('Preencha todos os pagamentos corretamente')
       return;
     }
 
     if (Math.abs(diferenca) > 0.01) {
-      toast.error('O valor total dos pagamentos deve ser igual ao valor do pedido');
+      toast.error('O valor total dos pagamentos deve ser igual ao valor do pedido')
       return;
     }
 
     try {
-      console.log('📝 Iniciando loop de pagamentos...', { totalPagamentos: pagamentos.length });
+      console.log('📝 Iniciando loop de pagamentos...', { totalPagamentos: pagamentos.length } catch (error) { console.error('Error:', error) })
       
       // Registrar cada pagamento no caixa
       for (const pagamento of pagamentos) {
-        console.log('💸 Processando pagamento:', pagamento);
+        console.log('💸 Processando pagamento:', pagamento)
         
         const dadosLancamento = {
           tipo: 'entrada' as const,
@@ -201,27 +201,27 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
           descricao: `Pagamento Pedido #${pedido.numero_pedido || pedido.id} - ${pedido.nome}${pagamentos.length > 1 ? ` (${pagamento.forma})` : ''}`,
           data_lancamento: new Date().toISOString().split('T')[0],
           hora_lancamento: new Date().toTimeString().split(' ')[0].slice(0, 5),
-          observacoes: `Cliente: ${pedido.nome}, Telefone: ${pedido.telefone}`
+          observacoes: `Cliente: ${pedido.nome}, Telefone: ${pedido.telefone}`;
         };
         
-        console.log('📋 Dados do lançamento:', dadosLancamento);
+        console.log('📋 Dados do lançamento:', dadosLancamento)
         
-        const sucesso = await adicionarLancamento(dadosLancamento);
+        const sucesso = await adicionarLancamento(dadosLancamento)
         
-        console.log('✅ Resultado do lançamento:', sucesso);
+        console.log('✅ Resultado do lançamento:', sucesso)
 
         if (!sucesso) {
-          console.error('❌ Falha ao registrar pagamento:', pagamento.forma);
-          toast.error(`Erro ao registrar pagamento ${pagamento.forma}`);
+          console.error('❌ Falha ao registrar pagamento:', pagamento.forma)
+          toast.error(`Erro ao registrar pagamento ${pagamento.forma}`)
           return;
         }
       }
 
-      toast.success('Pagamentos registrados no caixa com sucesso!');
-      setShowPagamentoModal(false);
-      setPagamentos([]);
+      toast.success('Pagamentos registrados no caixa com sucesso!')
+      setShowPagamentoModal(false)
+      setPagamentos([])
     } catch (error) {
-      toast.error('Erro ao registrar pagamentos');
+      toast.error('Erro ao registrar pagamentos')
     }
   };
 
@@ -536,5 +536,5 @@ export default function PedidoDetalhesModal({ pedido, onClose, onStatusChange }:
         </div>
       )}
     </div>
-  );
+  )
 }

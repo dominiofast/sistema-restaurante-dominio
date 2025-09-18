@@ -81,7 +81,7 @@ const SidebarProvider = React.forwardRef<
           _setOpen(openState)
         }
 
-        // This sets the cookie to keep the sidebar state.
+        // This sets the cookie to keep the sidebar state.;
         document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
       },
       [setOpenProp, open]
@@ -188,7 +188,7 @@ const Sidebar = React.forwardRef<
           {children}
         </div>
       )
-    }
+
 
     if (isMobile) {
       return (
@@ -208,7 +208,7 @@ const Sidebar = React.forwardRef<
           </SheetContent>
         </Sheet>
       )
-    }
+
 
     return (
       <div
@@ -567,7 +567,7 @@ const SidebarMenuButton = React.forwardRef<
 
     if (!tooltip) {
       return button
-    }
+
 
     if (typeof tooltip === "string") {
       tooltip = {
@@ -759,3 +759,4 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+;

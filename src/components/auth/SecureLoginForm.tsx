@@ -11,61 +11,61 @@ export const SecureLoginForm: React.FC<SecureLoginFormProps> = ({
   onSubmit,
   isLoading = false
 }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [errors, setErrors] = useState<string[]>([])
+  const [isBlocked, setIsBlocked] = useState(false)
   
   const { 
     validateEmail, 
     checkRateLimit, 
     resetRateLimit,
     sanitizeInput 
-  } = useSecurityValidation();
+  } = useSecurityValidation()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors([]);
+    e.preventDefault()
+    setErrors([])
 
     // Verificar rate limiting
     const rateLimitKey = `login_${email.toLowerCase()}`;
     if (!checkRateLimit(rateLimitKey, 5)) {
-      setIsBlocked(true);
-      setErrors(['Muitas tentativas de login. Aguarde alguns minutos.']);
+      setIsBlocked(true)
+      setErrors(['Muitas tentativas de login. Aguarde alguns minutos.'])
       return;
     }
 
     // Validação de email
-    const emailValidation = validateEmail(email);
+    const emailValidation = validateEmail(email)
     if (!emailValidation.isValid) {
-      setErrors(emailValidation.errors);
+      setErrors(emailValidation.errors)
       return;
     }
 
     // Validação básica de senha (não aplicar regras rigorosas para login)
     if (!password) {
-      setErrors(['Senha é obrigatória']);
+      setErrors(['Senha é obrigatória'])
       return;
     }
 
     try {
       // Sanitizar inputs
-      const sanitizedEmail = sanitizeInput(email.trim().toLowerCase());
+      const sanitizedEmail = sanitizeInput(email.trim().toLowerCase())
       
-      await onSubmit(sanitizedEmail, password);
+      await onSubmit(sanitizedEmail, password)
       
       // Reset rate limit em caso de sucesso
-      resetRateLimit(rateLimitKey);
-      setIsBlocked(false);
+      resetRateLimit(rateLimitKey)
+      setIsBlocked(false)
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro no login';
-      setErrors([errorMessage]);
+      setErrors([errorMessage])
       
       // Se erro de credenciais, não resetar rate limit
       if (errorMessage.includes('bloqueado') || errorMessage.includes('tentativas')) {
-        setIsBlocked(true);
+        setIsBlocked(true)
       }
     }
   };
@@ -191,5 +191,5 @@ export const SecureLoginForm: React.FC<SecureLoginFormProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

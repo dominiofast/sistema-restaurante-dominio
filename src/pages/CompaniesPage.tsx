@@ -19,16 +19,16 @@ interface Company {
   store_code: number;
   slug?: string;
   created_at: string;
-}
+
 
 export const CompaniesPage = () => {
-  const { companies, isLoading: loading, createCompany, updateCompany, deleteCompany, isCreating, isUpdating, isDeleting } = useCompanies();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingCompany, setEditingCompany] = useState<Company | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const { toast } = useToast();
-  const { selectCompany, user } = useAuth();
-  const navigate = useNavigate();
+  const { companies, isLoading: loading, createCompany, updateCompany, deleteCompany, isCreating, isUpdating, isDeleting } = useCompanies()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingCompany, setEditingCompany] = useState<Company | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const { toast } = useToast()
+  const { selectCompany, user } = useAuth()
+  const navigate = useNavigate()
 
   // Proteger a página - apenas super admins podem gerenciar empresas
   if (user?.role !== 'super_admin') {
@@ -39,12 +39,12 @@ export const CompaniesPage = () => {
           <p className="text-gray-600">Apenas super administradores podem acessar esta página.</p>
         </div>
       </div>
-    );
+    )
   }
 
   const handleEdit = (company: Company) => {
-    setEditingCompany(company);
-    setDialogOpen(true);
+    setEditingCompany(company)
+    setDialogOpen(true)
   };
 
   const handleDelete = async (company: Company) => {
@@ -52,12 +52,12 @@ export const CompaniesPage = () => {
       return;
     }
 
-    deleteCompany(company.id);
+    deleteCompany(company.id)
   };
 
   const handleDialogClose = () => {
-    setDialogOpen(false);
-    setEditingCompany(null);
+    setDialogOpen(false)
+    setEditingCompany(null)
   };
 
   const filteredCompanies = (() => {
@@ -66,15 +66,15 @@ export const CompaniesPage = () => {
     return companies.filter(company =>
       company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       company.domain.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  })();
+    )
+  })()
 
   const getCompanyInitials = (name: string) => {
-    const words = name.split(' ');
+    const words = name.split(' ')
     if (words.length === 1) {
-      return words[0].substring(0, 2).toUpperCase();
+      return words[0].substring(0, 2).toUpperCase()
     }
-    return words.slice(0, 2).map(word => word[0]).join('').toUpperCase();
+    return words.slice(0, 2).map(word => word[0]).join('').toUpperCase()
   };
 
   const getPlanConfig = (plan: string) => {
@@ -93,7 +93,7 @@ export const CompaniesPage = () => {
         label: 'Enterprise', 
         color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
         icon: Award
-      }
+      };
     };
     return configs[plan] || configs.basic;
   };
@@ -114,22 +114,22 @@ export const CompaniesPage = () => {
         label: 'Suspenso', 
         color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
         dot: 'bg-yellow-500'
-      }
+      };
     };
     return configs[status] || configs.active;
   };
 
   const handleLoginAsAdmin = (company: Company) => {
-    // Selecionar a empresa no contexto de autenticação
-    selectCompany(company);
+    // Selecionar a empresa no contexto de autenticação;
+    selectCompany(company)
     
     toast({
       title: 'Acesso concedido',
       description: `Agora você está logado como admin da empresa: ${company.name}`,
-    });
+    })
     
     // Redirecionar para o dashboard da empresa
-    navigate('/pedidos');
+    navigate('/pedidos')
   };
 
   if (loading) {
@@ -140,7 +140,7 @@ export const CompaniesPage = () => {
           <p className="text-gray-600">Carregando empresas...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -245,8 +245,8 @@ export const CompaniesPage = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredCompanies.map((company) => {
-                  const planConfig = getPlanConfig(company.plan);
-                  const statusConfig = getStatusConfig(company.status);
+                  const planConfig = getPlanConfig(company.plan)
+                  const statusConfig = getStatusConfig(company.status)
                   const PlanIcon = planConfig.icon;
                   
                   return (
@@ -325,7 +325,7 @@ export const CompaniesPage = () => {
                         </div>
                       </td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -359,13 +359,13 @@ export const CompaniesPage = () => {
         company={editingCompany}
         onSave={async (formData, invitationEmail) => {
           if (editingCompany) {
-            updateCompany({ ...formData, id: editingCompany.id });
+            updateCompany({ ...formData, id: editingCompany.id })
           } else {
-            createCompany(formData);
+            createCompany(formData)
           }
         }}
         loading={isCreating || isUpdating}
       />
     </div>
-  );
+  )
 };

@@ -6,12 +6,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 interface ProdutoDetalheProps {}
 
 const ProdutoDetalhe: React.FC<ProdutoDetalheProps> = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
   const { produto } = location.state || {};
 
   // Simula adicionais, ajuste conforme necessário
-  const [adicionais, setAdicionais] = useState<any[]>([]);
+  const [adicionais, setAdicionais] = useState<any[]>([])
 
   if (!produto) {
     return <div>Produto não encontrado.</div>;
@@ -46,7 +46,7 @@ const ProdutoDetalhe: React.FC<ProdutoDetalheProps> = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default ProdutoDetalhe;

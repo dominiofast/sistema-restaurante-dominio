@@ -15,23 +15,23 @@ export const CashbackHeader: React.FC<CashbackHeaderProps> = ({
   textColor = '#1F2937',
   className = '' 
 }) => {
-  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId);
-  const [showPulse, setShowPulse] = useState(true);
+  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId)
+  const [showPulse, setShowPulse] = useState(true)
 
   // Se não há configuração ou não está ativo, não renderiza
   if (!cashbackConfig || !cashbackConfig.is_active || isLoading) {
     return null;
   }
 
-  const percentual = Number(cashbackConfig.percentual_cashback);
+  const percentual = Number(cashbackConfig.percentual_cashback)
 
   // Remover pulse após 3 segundos
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowPulse(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+      setShowPulse(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div 
@@ -79,5 +79,5 @@ export const CashbackHeader: React.FC<CashbackHeaderProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

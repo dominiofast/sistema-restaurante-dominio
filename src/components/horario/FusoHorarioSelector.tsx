@@ -14,7 +14,7 @@ const fusos = [
   { value: 'America/Recife', label: 'Pernambuco (GMT-3)' },
   { value: 'America/Porto_Velho', label: 'Rondônia (GMT-4)' },
   { value: 'America/Rio_Branco', label: 'Acre (GMT-5)' },
-  { value: 'America/Boa_Vista', label: 'Roraima (GMT-4)' },
+  { value: 'America/Boa_Vista', label: 'Roraima (GMT-4)' },;
 ];
 
 export const FusoHorarioSelector: React.FC<FusoHorarioSelectorProps> = ({
@@ -39,5 +39,5 @@ export const FusoHorarioSelector: React.FC<FusoHorarioSelectorProps> = ({
         </SelectContent>
       </Select>
     </div>
-  );
+  )
 };

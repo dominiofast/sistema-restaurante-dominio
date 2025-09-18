@@ -36,4 +36,4 @@ export const PagamentoTabsPDV = ({ tab, setTab }: { tab: string; setTab: (t: 'di
       PIX
     </button>
   </div>
-);
+)

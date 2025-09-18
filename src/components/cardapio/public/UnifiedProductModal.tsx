@@ -20,12 +20,12 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
   primaryColor = '#dc2626',
   companyId
 }) => {
-  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({});
-  const [searchTerm, setSearchTerm] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState<{ [categoriaId: string]: boolean }>({});
+  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({})
+  const [searchTerm, setSearchTerm] = useState('')
+  const [expandedCategories, setExpandedCategories] = useState<{ [categoriaId: string]: boolean }>({})
   
   
-  const { categorias, loading, error } = useProductAdicionais(produto?.id);
+  const { categorias, loading, error } = useProductAdicionais(produto?.id)
 
   // Inicializar categorias expandidas quando carregarem
   useEffect(() => {
@@ -33,19 +33,19 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
       const initialExpanded: { [categoriaId: string]: boolean } = {};
       categorias.forEach(categoria => {
         initialExpanded[categoria.id] = true;
-      });
-      setExpandedCategories(initialExpanded);
+      })
+      setExpandedCategories(initialExpanded)
     }
-  }, [categorias]);
+  }, [categorias])
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
-      setSelectedAdicionais({});
-      setSearchTerm('');
+      setSelectedAdicionais({})
+      setSearchTerm('')
       
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   // Facebook Pixel: ViewContent ao abrir o modal do produto
   useEffect(() => {
@@ -57,32 +57,32 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
           content_type: 'product',
           value: Number((produto as any).promotional_price || (produto as any).price) || 0,
           currency: 'BRL',
-        });
+        } catch (error) { console.error('Error:', error) })
       } catch (e) {
-        console.warn('[FacebookPixel] ViewContent error', e);
+        console.warn('[FacebookPixel] ViewContent error', e)
       }
     }
-  }, [isOpen, produto?.id]);
+  }, [isOpen, produto?.id])
 
   const toggleCategory = (categoriaId: string) => {
     setExpandedCategories(prev => ({
       ...prev,
-      [categoriaId]: !prev[categoriaId]
-    }));
+      [categoriaId]: !prev[categoriaId];
+    }))
   };
 
   const getTotalSelectedInCategory = (categoriaId: string) => {
-    const categoria = categorias.find(cat => cat.id === categoriaId);
+    const categoria = categorias.find(cat => cat.id === categoriaId)
     if (!categoria) return 0;
     
     return categoria.adicionais.reduce((total: number, adicional: any) => {
-      return total + (selectedAdicionais[adicional.id] || 0);
-    }, 0);
+      return total + (selectedAdicionais[adicional.id] || 0)
+    }, 0)
   };
 
   const addAdicional = (adicionalId: string, categoria: any) => {
     const currentQuantity = selectedAdicionais[adicionalId] || 0;
-    const totalSelectedInCategory = getTotalSelectedInCategory(categoria.id);
+    const totalSelectedInCategory = getTotalSelectedInCategory(categoria.id)
     
     if (categoria.selection_type === 'single') {
       // Para seleção única, limpar outros itens da categoria
@@ -91,12 +91,12 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
         if (adicional.id !== adicionalId) {
           delete newSelection[adicional.id];
         }
-      });
+      })
       newSelection[adicionalId] = currentQuantity > 0 ? 0 : 1;
-      setSelectedAdicionais(newSelection);
+      setSelectedAdicionais(newSelection)
       
       // Auto-scroll para próxima categoria se for seleção única
-      setTimeout(() => scrollToNextCategory(categoria.id), 300);
+      setTimeout(() => scrollToNextCategory(categoria.id), 300)
     } else {
       // Para multiple e quantity, usar a mesma lógica
       const newQuantity = currentQuantity + 1;
@@ -108,62 +108,62 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
       
       const newSelection = {
         ...selectedAdicionais,
-        [adicionalId]: newQuantity
+        [adicionalId]: newQuantity;
       };
       
-      setSelectedAdicionais(newSelection);
+      setSelectedAdicionais(newSelection)
       
       // Verificar se atingiu o limite máximo após atualizar
-      const newTotalInCategory = getTotalSelectedInCategoryWithNewSelection(categoria.id, newSelection);
+      const newTotalInCategory = getTotalSelectedInCategoryWithNewSelection(categoria.id, newSelection)
       if (categoria.max_selection && newTotalInCategory >= categoria.max_selection) {
         // Auto-scroll para próxima categoria quando atingir o limite
-        setTimeout(() => scrollToNextCategory(categoria.id), 300);
+        setTimeout(() => scrollToNextCategory(categoria.id), 300)
       }
     }
   };
 
   // Função auxiliar para calcular total com nova seleção
   const getTotalSelectedInCategoryWithNewSelection = (categoriaId: string, newSelection: { [adicionalId: string]: number }) => {
-    const categoria = categorias.find(cat => cat.id === categoriaId);
+    const categoria = categorias.find(cat => cat.id === categoriaId)
     if (!categoria) return 0;
     
     return categoria.adicionais.reduce((total: number, adicional: any) => {
-      return total + (newSelection[adicional.id] || 0);
-    }, 0);
+      return total + (newSelection[adicional.id] || 0)
+    }, 0)
   };
 
   // Função para rolar para a próxima categoria
   const scrollToNextCategory = (currentCategoriaId: string) => {
-    const currentIndex = categorias.findIndex(cat => cat.id === currentCategoriaId);
+    const currentIndex = categorias.findIndex(cat => cat.id === currentCategoriaId)
     if (currentIndex === -1 || currentIndex === categorias.length - 1) {
       // Se é a última categoria, rolar para o botão de avançar
-      const advanceButton = document.getElementById('advance-button');
+      const advanceButton = document.getElementById('advance-button')
       if (advanceButton) {
         advanceButton.scrollIntoView({ 
           behavior: 'smooth', 
           block: 'center'
-        });
+        })
       }
       return;
     }
     
     const nextCategoria = categorias[currentIndex + 1];
     if (nextCategoria) {
-      const nextCategoryElement = document.getElementById(`category-${nextCategoria.id}`);
+      const nextCategoryElement = document.getElementById(`category-${nextCategoria.id}`)
       if (nextCategoryElement) {
         // Expandir a próxima categoria se não estiver expandida
         setExpandedCategories(prev => ({
           ...prev,
           [nextCategoria.id]: true
-        }));
+        }))
         
         // Rolar para a próxima categoria
         setTimeout(() => {
           nextCategoryElement.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'start'
-          });
-        }, 150);
+          })
+        }, 150)
       }
     }
   };
@@ -174,12 +174,12 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
       if (currentQuantity === 1) {
         const newSelection = { ...selectedAdicionais };
         delete newSelection[adicionalId];
-        setSelectedAdicionais(newSelection);
+        setSelectedAdicionais(newSelection)
       } else {
         setSelectedAdicionais(prev => ({
           ...prev,
           [adicionalId]: currentQuantity - 1
-        }));
+        }))
       }
     }
   };
@@ -191,8 +191,8 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
       categoria.adicionais.forEach((adicional: any) => {
         const quantity = selectedAdicionais[adicional.id] || 0;
         total += adicional.price * quantity;
-      });
-    });
+      })
+    })
     
     return total;
   };
@@ -201,16 +201,16 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
     return categorias.every(categoria => {
       if (!categoria.is_required) return true;
       
-      const totalSelected = getTotalSelectedInCategory(categoria.id);
+      const totalSelected = getTotalSelectedInCategory(categoria.id)
       const minSelection = categoria.min_selection || 1;
       
       return totalSelected >= minSelection;
-    });
+    })
   };
 
   const handleAdvance = () => {
     if (canAdvance()) {
-      onAdvance(produto, selectedAdicionais);
+      onAdvance(produto, selectedAdicionais)
     }
   };
 
@@ -220,7 +220,7 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
     return categoria.adicionais.filter((adicional: any) =>
       adicional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (adicional.description && adicional.description.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    )
   };
 
   if (!produto || !isOpen) return null;
@@ -274,7 +274,7 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
           className="flex-1 overflow-y-auto"
           style={{
             height: 'calc(100vh - 140px)', // Header + Footer
-            overflowY: 'scroll',
+// overflowY: 'scroll',
             WebkitOverflowScrolling: 'touch',
             maxHeight: 'calc(100vh - 140px)'
           }}
@@ -309,7 +309,7 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
                         R$ {produto.price.toFixed(2).replace('.', ',')}
                       </span>
                       {(() => {
-                        const discount = Math.round(((produto.price - produto.promotional_price) / produto.price) * 100);
+                        const discount = Math.round(((produto.price - produto.promotional_price) / produto.price) * 100)
                         return discount > 0 ? (
                           <span 
                             className="text-white text-xs md:text-sm px-2 py-1 rounded"
@@ -376,8 +376,8 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
             {!loading && !error && categorias.length > 0 && (
               <div className="space-y-6">
                 {categorias.map((categoria) => {
-                  const filteredAdicionais = getFilteredAdicionais(categoria);
-                  const totalSelected = getTotalSelectedInCategory(categoria.id);
+                  const filteredAdicionais = getFilteredAdicionais(categoria)
+                  const totalSelected = getTotalSelectedInCategory(categoria.id)
                   const isExpanded = expandedCategories[categoria.id];
                   
                   return (
@@ -413,7 +413,7 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
                           {filteredAdicionais.map((adicional: any) => {
                             const quantity = selectedAdicionais[adicional.id] || 0;
                             const canAdd = categoria.selection_type === 'single' ? 
-                              totalSelected === 0 || quantity > 0 :
+                              totalSelected === 0 || quantity > 0 :;
                               !categoria.max_selection || totalSelected < categoria.max_selection;
                             const canRemove = quantity > 0;
                             
@@ -506,12 +506,12 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
                                    )}
                                  </div>
                                </div>
-                             );
+                             )
                            })}
                          </div>
                        )}
                      </div>
-                   );
+                   )
                  })}
                </div>
              )}
@@ -542,7 +542,7 @@ const UnifiedProductModal: React.FC<UnifiedProductModalProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default UnifiedProductModal;

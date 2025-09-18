@@ -20,12 +20,12 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
   onSucesso,
   className = ''
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  const [loading, setLoading] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
-  const stats = FichasTecnicasDefaultService.getDadosEstatisticas();
+  const stats = FichasTecnicasDefaultService.getDadosEstatisticas()
   const dadosInfo = tipo === 'mercadorias' ? stats.mercadorias : stats.receitas;
 
   const handleCarregarDados = async () => {
@@ -33,13 +33,13 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
       toast({
         title: 'Erro',
         description: 'Usuário ou empresa não identificados',
-        variant: 'destructive',
-      });
+        variant: 'destructive',;
+      })
       return;
     }
 
-    setLoading(true);
-    setDialogOpen(false);
+    setLoading(true)
+    setDialogOpen(false)
 
     try {
       let resultado;
@@ -48,12 +48,12 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
         resultado = await FichasTecnicasDefaultService.carregarMercadoriasPadrao(
           currentCompany.id, 
           user.id
-        );
-      } else {
+        )
+      }  catch (error) { console.error('Error:', error) }else {
         resultado = await FichasTecnicasDefaultService.carregarReceitasPadrao(
           currentCompany.id, 
           user.id
-        );
+        )
       }
 
       if (resultado.sucesso) {
@@ -61,42 +61,42 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
           title: 'Dados carregados!',
           description: resultado.mensagem,
           duration: 5000,
-        });
+        })
         
         // Callback de sucesso para recarregar a lista
         if (onSucesso) {
-          setTimeout(() => onSucesso(), 1000);
+          setTimeout(() => onSucesso(), 1000)
         }
       } else {
         toast({
           title: 'Aviso',
           description: resultado.mensagem,
           variant: 'destructive',
-        });
+        })
       }
 
     } catch (error: any) {
-      console.error('Erro ao carregar dados padrão:', error);
+      console.error('Erro ao carregar dados padrão:', error)
       toast({
         title: 'Erro',
         description: 'Ocorreu um erro inesperado ao carregar os dados',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const getTitulo = () => {
     return tipo === 'mercadorias' 
-      ? 'Carregar Ingredientes Padrão' 
+      ? 'Carregar Ingredientes Padrão' ;
       : 'Carregar Receitas Padrão';
   };
 
   const getDescricao = () => {
     const itemNome = tipo === 'mercadorias' ? 'ingredientes' : 'receitas';
     const exemplos = tipo === 'mercadorias' 
-      ? 'farinha de trigo, mussarela, calabresa, molho de tomate, etc.'
+      ? 'farinha de trigo, mussarela, calabresa, molho de tomate, etc.';
       : 'massa de pizza, molho base, pizza margherita, pizza calabresa, etc.';
 
     return (
@@ -128,7 +128,7 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
           </p>
         </div>
       </div>
-    );
+    )
   };
 
   return (
@@ -190,7 +190,7 @@ const DadosPadraoButton: React.FC<DadosPadraoButtonProps> = ({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 };
 
 export default DadosPadraoButton; 

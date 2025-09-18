@@ -3,12 +3,12 @@ import { CartAdicionais } from './types';
 
 export const useCartCalculations = () => {
   const calculateItemPrices = (produto: Produto, quantidade: number, adicionais?: CartAdicionais) => {
-    // Converter strings para números para evitar NaN
+    // Converter strings para números para evitar NaN;
     const priceNumber = Number(produto.price) || 0;
     const promotionalPriceNumber = produto.promotional_price ? Number(produto.promotional_price) : 0;
     
     const precoBase = produto.is_promotional && promotionalPriceNumber 
-      ? promotionalPriceNumber 
+      ? promotionalPriceNumber ;
       : priceNumber;
     
     const precoAdicionais = adicionais 

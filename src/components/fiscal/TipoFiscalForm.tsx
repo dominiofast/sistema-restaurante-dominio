@@ -19,9 +19,9 @@ export function TipoFiscalForm({ initialData, onSubmit, onCancel }: TipoFiscalFo
       descricao: initialData?.descricao || '',
       ativo: initialData?.ativo ?? true
     }
-  });
+  })
 
-  const ativo = watch('ativo');
+  const ativo = watch('ativo')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -69,5 +69,5 @@ export function TipoFiscalForm({ initialData, onSubmit, onCancel }: TipoFiscalFo
         </Button>
       </div>
     </form>
-  );
+  )
 }

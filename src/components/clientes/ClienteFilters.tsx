@@ -23,13 +23,13 @@ interface FilterState {
   
   // Quantidade de pedidos
   pedidosRange: PedidosRange;
-}
+
 
 interface ClienteFiltersProps {
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
   onClearFilters: () => void;
-}
+
 
 export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
   filters,
@@ -43,7 +43,7 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
     if (filters.cadastroDateTo && value && value > filters.cadastroDateTo) {
       newFilters.cadastroDateTo = '';
     }
-    onFiltersChange(newFilters);
+    onFiltersChange(newFilters)
   };
 
   const handleCadastroDateToChange = (value: string) => {
@@ -51,7 +51,7 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
     if (filters.cadastroDateFrom && value && value < filters.cadastroDateFrom) {
       return;
     }
-    onFiltersChange({ ...filters, cadastroDateTo: value });
+    onFiltersChange({ ...filters, cadastroDateTo: value })
   };
 
   // Validação para data de nascimento
@@ -61,7 +61,7 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
     if (filters.nascimentoDateTo && value && value > filters.nascimentoDateTo) {
       newFilters.nascimentoDateTo = '';
     }
-    onFiltersChange(newFilters);
+    onFiltersChange(newFilters)
   };
 
   const handleNascimentoDateToChange = (value: string) => {
@@ -69,7 +69,7 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
     if (filters.nascimentoDateFrom && value && value < filters.nascimentoDateFrom) {
       return;
     }
-    onFiltersChange({ ...filters, nascimentoDateTo: value });
+    onFiltersChange({ ...filters, nascimentoDateTo: value })
   };
   return (
     <div className="bg-gray-50 p-4 rounded-lg mb-6">
@@ -205,5 +205,5 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };
