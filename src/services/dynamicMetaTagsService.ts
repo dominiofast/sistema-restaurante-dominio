@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+// Removido Supabase - agora usa APIs Neon
 
 interface MetaTagsConfig {
   title?: string;
@@ -28,56 +28,44 @@ export class DynamicMetaTagsService {
   // Buscar empresa pelo slug, domain ou ID
   static async getCompanyBySlug(slugOrId: string): Promise<CompanyMetaTags | null> {
     try {
-      console.log('🔍 DynamicMetaTagsService - getCompanyBySlug chamado para:', slugOrId);
+      console.log('🔍 DynamicMetaTagsService - getCompanyBySlug via API Neon para:', slugOrId);
       
-      // Verificar se é um UUID (formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slugOrId);
+      // Buscar empresa via API /api/companies
+      const response = await fetch('/api/companies');
+      const result = await response.json();
       
-      let query = supabase
-        .from('companies')
-        .select(`
-          id,
-          name,
-          slug,
-          logo,
-          domain,
-          status
-        `)
-        .eq('status', 'active');
-      
-      // Se é UUID, buscar por ID; senão, buscar por slug ou domain
-      if (isUUID) {
-        console.log('🔍 DynamicMetaTagsService - Searching by UUID:', slugOrId);
-        query = query.eq('id', slugOrId);
-      } else {
-        console.log('🔍 DynamicMetaTagsService - Searching by slug/domain:', slugOrId);
-        query = query.or(`slug.eq."${slugOrId}",domain.eq."${slugOrId}"`);
+      if (!response.ok || !result.success) {
+        console.error('❌ DynamicMetaTagsService - Erro na API:', result.error);
+        return null;
       }
       
-      const { data, error } = await query.maybeSingle();
-      
-      console.log('🔍 DynamicMetaTagsService - Query result:', { data, error });
+      // Procurar empresa por slug/domain/id
+      const company = result.data?.find((comp: any) => {
+        return comp.slug === slugOrId || 
+               comp.domain === slugOrId ||
+               comp.id === slugOrId;
+      });
 
-      if (error || !data) {
-        console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa:', error);
+      if (!company) {
+        console.error('❌ DynamicMetaTagsService - Empresa não encontrada para:', slugOrId);
         return null;
       }
 
-      console.log('✅ DynamicMetaTagsService - Empresa encontrada:', data);
+      console.log('✅ DynamicMetaTagsService - Empresa encontrada via API:', company);
 
       // Mapear para a interface esperada
       return {
-        id: data.id,
-        name: data.name,
-        slug: data.slug,
-        logo_url: data.logo,
-        description: `Faça seu pedido online na ${data.name}`,
-        meta_title: `${data.name}`,
-        meta_description: `Faça seu pedido online na ${data.name}. Delivery rápido e seguro!`,
-        meta_image: data.logo
+        id: company.id,
+        name: company.name,
+        slug: company.slug,
+        logo_url: company.logo,
+        description: `Faça seu pedido online na ${company.name}`,
+        meta_title: `${company.name}`,
+        meta_description: `Faça seu pedido online na ${company.name}. Delivery rápido e seguro!`,
+        meta_image: company.logo
       } as CompanyMetaTags;
     } catch (error) {
-      console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa por slug:', error);
+      console.error('❌ DynamicMetaTagsService - Erro ao buscar empresa por slug via API:', error);
       return null;
     }
   }
@@ -222,7 +210,7 @@ export class DynamicMetaTagsService {
     return null;
   }
 
-  // TODO: Implementar atualização de meta tags após adicionar colunas na tabela
+  // Atualização de meta tags via API (temporariamente desabilitado)
   static async updateCompanyMetaTags(
     companyId: string, 
     metaTags: {
@@ -231,21 +219,7 @@ export class DynamicMetaTagsService {
       logo?: string;
     }
   ): Promise<boolean> {
-    try {
-      const { error } = await supabase
-        .from('companies')
-        .update(metaTags)
-        .eq('id', companyId);
-
-      if (error) {
-        console.error('Erro ao atualizar empresa:', error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Erro ao atualizar empresa:', error);
-      return false;
-    }
+    console.log('⏭️ DynamicMetaTagsService - updateCompanyMetaTags temporariamente desabilitado');
+    return false;
   }
 } 

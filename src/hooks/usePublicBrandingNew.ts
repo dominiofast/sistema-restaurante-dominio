@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+// Removido Supabase - agora usa APIs Neon
 
 export interface PublicBrandingData {
   id?: string;
@@ -34,91 +34,46 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {
         setLoading(true);
         setError(null);
 
-        console.log('🎨 usePublicBrandingNew - Buscando branding público para:', companyIdentifier);
+        console.log('🎨 usePublicBrandingNew - Buscando branding público via API Neon para:', companyIdentifier);
 
-        // Primeiro, buscar a empresa
-        let companyQuery = supabase
-          .from('companies')
-          .select('id, name, domain, slug, status')
-          .eq('status', 'active');
+        // Buscar empresa via API /api/companies
+        const companyResponse = await fetch('/api/companies');
+        const companyResult = await companyResponse.json();
+        
+        if (!companyResponse.ok || !companyResult.success) {
+          throw new Error(companyResult.error || 'Erro ao carregar empresas');
+        }
 
-        console.log('🔍 usePublicBrandingNew - Base query setup for active companies');
-
-        // Priorizar slug, depois domain, depois store_code, depois id
-        if (isNaN(Number(companyIdentifier))) {
-          // É texto - verificar se é slug, domain ou id
-          if (companyIdentifier.length === 36 && companyIdentifier.includes('-')) {
-            console.log('🔍 usePublicBrandingNew - Searching by ID (UUID):', companyIdentifier);
-            companyQuery = companyQuery.eq('id', companyIdentifier);
+        // Procurar empresa por identificador
+        const company = companyResult.data?.find((comp: any) => {
+          if (!isNaN(Number(companyIdentifier))) {
+            // É número - usar store_code
+            return comp.store_code === Number(companyIdentifier);
+          } else if (companyIdentifier.length === 36 && companyIdentifier.includes('-')) {
+            // É UUID - usar ID
+            return comp.id === companyIdentifier;
           } else {
-            console.log('🔍 usePublicBrandingNew - Searching by slug/domain:', companyIdentifier);
-            companyQuery = companyQuery.or(`slug.eq."${companyIdentifier}",domain.eq."${companyIdentifier}"`);
+            // É slug ou domain
+            return comp.slug === companyIdentifier || comp.domain === companyIdentifier;
           }
-        } else {
-          // É número - usar store_code
-          console.log('🔍 usePublicBrandingNew - Searching by store_code:', companyIdentifier);
-          companyQuery = companyQuery.eq('store_code', Number(companyIdentifier));
-        }
-
-        const { data: company, error: companyError } = await companyQuery.maybeSingle();
-
-        console.log('🔍 usePublicBrandingNew - Query result:', { company, companyError });
-
-        if (companyError) {
-          console.error('❌ usePublicBrandingNew - Erro ao buscar empresa:', companyError);
-          throw new Error(`Erro ao buscar empresa: ${companyError.message}`);
-        }
+        });
 
         if (!company) {
           console.error('❌ usePublicBrandingNew - Empresa não encontrada para identificador:', companyIdentifier);
           throw new Error('Empresa não encontrada ou inativa');
         }
 
-        console.log('✅ usePublicBrandingNew - Empresa encontrada:', company);
+        console.log('✅ usePublicBrandingNew - Empresa encontrada via API:', company);
 
-        // Buscar configuração de branding
-        const { data: brandingData, error: brandingError } = await supabase
-          .from('cardapio_branding')
-          .select('*')
-          .eq('company_id', company.id)
-          .eq('is_active', true)
-          .order('updated_at', { ascending: false })
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
-        if (brandingError) {
-          console.warn('⚠️ Erro ao buscar branding:', brandingError);
-        }
-
-        console.log('🎨 Dados de branding encontrados:', brandingData);
-
-        let logoUrl: string | undefined;
-        let bannerUrl: string | undefined;
-
-        if (brandingData) {
-          // Buscar logo se existe logo_file_id
-          if (brandingData.logo_file_id) {
-            const { data: logoFile } = await supabase
-              .from('media_files')
-              .select('file_url')
-              .eq('id', brandingData.logo_file_id)
-              .maybeSingle();
-            logoUrl = logoFile?.file_url;
-          }
-
-          // Buscar banner se existe banner_file_id  
-          if (brandingData.banner_file_id) {
-            const { data: bannerFile } = await supabase
-              .from('media_files')
-              .select('file_url')
-              .eq('id', brandingData.banner_file_id)
-              .maybeSingle();
-            bannerUrl = bannerFile?.file_url;
-          }
-          
-          console.log('🖼️ URLs extraídas:', { logoUrl, bannerUrl });
-        }
+        // Por enquanto, usar configuração básica do branding (sem busca adicional)
+        // TODO: Criar API para buscar dados de branding quando necessário
+        console.log('🎨 usePublicBrandingNew - Usando configuração básica de branding (mock)');
+        
+        const brandingData = null; // Mock - sem dados de branding avançado por enquanto
+        const logoUrl = company.logo; // Usar logo da empresa
+        const bannerUrl = undefined; // Sem banner por enquanto
+        
+        console.log('🖼️ URLs extraídas:', { logoUrl, bannerUrl });
 
         // Montar objeto final de branding
         const finalBranding: PublicBrandingData = {
