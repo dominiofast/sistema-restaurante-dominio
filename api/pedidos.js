@@ -52,10 +52,9 @@ export default async function handler(req, res) {
           30 as estimated_time,
           p.created_at,
           p.updated_at,
-          c.name as company_name
+          'Empresa' as company_name
         FROM pedidos p
-        LEFT JOIN companies c ON p.company_id::uuid = c.id
-        WHERE p.company_id::text = $1
+        WHERE p.company_id = $1
       `;
       
       let params = [company_id];
@@ -121,7 +120,7 @@ export default async function handler(req, res) {
 
       // Gerar número do pedido único
       const numeroResult = await pool.query(
-        'SELECT COALESCE(MAX(CAST(numero_pedido AS INTEGER)), 0) + 1 as next_numero FROM pedidos WHERE company_id::text = $1',
+        'SELECT COALESCE(MAX(CAST(numero_pedido AS INTEGER)), 0) + 1 as next_numero FROM pedidos WHERE company_id = $1',
         [company_id]
       );
       

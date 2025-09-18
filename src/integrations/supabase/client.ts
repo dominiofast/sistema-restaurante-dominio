@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// Usar chaves reais do Supabase do usuário
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder./* supabase REMOVIDO */ null; //co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key';
+// SUPABASE DESABILITADO - Sistema migrado para PostgreSQL
+const supabaseUrl = 'https://placeholder.supabase.co';
+const supabaseKey = 'placeholder-key';
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
   auth: {
