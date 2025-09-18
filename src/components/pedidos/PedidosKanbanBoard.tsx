@@ -65,18 +65,25 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-lg bg-white shadow-sm border border-gray-200 overflow-hidden transition-all flex flex-col h-full ${
-        isOver ? 'ring-2 ring-blue-400 shadow-lg' : ''
+      className={`rounded-xl bg-white shadow-md border-2 overflow-hidden transition-all flex flex-col h-full ${
+        isOver ? 'ring-4 ring-blue-300 shadow-2xl transform scale-105' : 'border-gray-100'
       }`}
     >
-      {/* Header da coluna */}
-      <div className={`bg-gradient-to-r ${status.gradient} p-${isMobile ? '3' : '2'} sticky top-0 z-10`}>
+      {/* Header da coluna - Design mais moderno */}
+      <div className={`bg-gradient-to-br ${status.gradient} p-4 sticky top-0 z-10 border-b-2 border-white border-opacity-20`}>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Icon className={status.textColor} size={isMobile ? 20 : 16} />
-            <span className={`font-bold ${isMobile ? 'text-sm' : 'text-xs'} ${status.textColor}`}>
-              {status.label}
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+              <Icon className="text-white" size={24} />
+            </div>
+            <div>
+              <h3 className="font-bold text-sm text-white mb-0.5">
+                {status.label}
+              </h3>
+              <p className="text-xs text-white text-opacity-80">
+                {status.description || 'Pedidos neste status'}
+              </p>
+            </div>
             {/* Filtro de tempo só para Entregue */}
             {status.key === 'entregue' && (
               <div className={`flex gap-${isMobile ? '1' : '0.5'} ml-${isMobile ? '2' : '1'}`}>
@@ -99,19 +106,24 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
               </div>
             )}
           </div>
-          <span className={`rounded-full px-${isMobile ? '2' : '1.5'} py-${isMobile ? '1' : '0.5'} ${isMobile ? 'text-sm' : 'text-xs'} font-bold ${status.textColor} bg-white bg-opacity-30`}>
-            {pedidos.length}
-          </span>
+          <div className="bg-white bg-opacity-20 rounded-full px-3 py-1.5 min-w-[2.5rem] text-center">
+            <span className="font-bold text-sm text-white">
+              {pedidos.length}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Lista de pedidos */}
-      <div className={`p-${isMobile ? '3' : '1.5'} ${isMobile ? 'space-y-3' : 'space-y-1'} flex-1 overflow-y-auto min-h-0`}>
+      {/* Lista de pedidos - Espaçamento melhorado */}
+      <div className="p-4 space-y-3 flex-1 overflow-y-auto min-h-0 bg-gray-50">
         <SortableContext items={pedidoIds} strategy={verticalListSortingStrategy}>
           {pedidos.length === 0 ? (
-            <div className={`text-gray-400 ${isMobile ? 'text-sm' : 'text-xs'} text-center py-${isMobile ? '8' : '6'}`}>
-              <Icon className="mx-auto mb-2 text-gray-300" size={isMobile ? 32 : 24} />
-              Nenhum pedido
+            <div className="text-gray-400 text-center py-12">
+              <div className="bg-gray-200 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Icon className="text-gray-400" size={32} />
+              </div>
+              <p className="text-sm font-medium text-gray-500 mb-1">Nenhum pedido</p>
+              <p className="text-xs text-gray-400">Os pedidos aparecerão aqui</p>
             </div>
           ) : (
             pedidos.map((pedido, idx) => (
