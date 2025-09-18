@@ -11,7 +11,7 @@ async function apiRequest(url: string, options: RequestInit = {}) {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
-    },;
+    },
   });
   
   if (!response.ok) {
