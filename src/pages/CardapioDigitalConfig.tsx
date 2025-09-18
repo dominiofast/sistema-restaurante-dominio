@@ -12,12 +12,12 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useBrandingConfig, BrandingConfig } from '@/hooks/useBrandingConfig';
+import { useBrandingConfigCloudinary, BrandingConfig } from '@/hooks/useBrandingConfigCloudinary';
 import { toast } from 'sonner';
 
 const CardapioDigitalConfig: React.FC = () => {
   const { currentCompany } = useAuth();
-  const { config: brandingConfig, loading, uploadFile, saveConfig } = useBrandingConfig();
+  const { config: brandingConfig, loading, uploadFile, saveConfig } = useBrandingConfigCloudinary();
   
   const [config, setConfig] = useState<BrandingConfig>({
     company_id: currentCompany?.id || '',

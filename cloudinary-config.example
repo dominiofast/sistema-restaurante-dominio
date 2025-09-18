@@ -1,0 +1,50 @@
+# =================================
+# EXEMPLO DE CONFIGURAÇÃO CLOUDINARY
+# =================================
+# 
+# Copie este arquivo para .env e configure com suas credenciais
+# 
+# 1. Acesse: https://cloudinary.com/console
+# 2. Copie seu Cloud Name
+# 3. Crie um Upload Preset "cardapio_unsigned"
+# 4. Configure as variáveis abaixo
+#
+# =================================
+
+# =================================
+# CONFIGURAÇÕES OBRIGATÓRIAS
+# =================================
+
+# Nome do seu cloud no Cloudinary (OBRIGATÓRIO)
+VITE_CLOUDINARY_CLOUD_NAME=dztzpttib
+
+# Upload preset PÚBLICO (OBRIGATÓRIO)
+VITE_CLOUDINARY_UPLOAD_PRESET=cardapio_unsigned
+
+# =================================
+# CONFIGURAÇÕES OPCIONAIS
+# =================================
+# 
+# ⚠️ IMPORTANTE: Estas chaves NÃO são necessárias para nossa implementação!
+# Elas são usadas apenas para uploads "signed" (autenticados) ou operações no backend.
+# 
+# Para uploads "unsigned" (nossa implementação atual), você pode deixar vazio:
+VITE_CLOUDINARY_API_KEY=
+VITE_CLOUDINARY_API_SECRET=
+
+# =================================
+# CONFIGURAÇÃO DO UPLOAD PRESET
+# =================================
+# 
+# No painel do Cloudinary:
+# 1. Settings → Upload presets
+# 2. Add upload preset
+# 3. Configure:
+#    - Name: cardapio_unsigned
+#    - Signing Mode: Unsigned
+#    - Access Mode: Public
+#    - Resource Type: Auto
+#    - Folder: cardapio
+# 4. Save
+#
+# =================================

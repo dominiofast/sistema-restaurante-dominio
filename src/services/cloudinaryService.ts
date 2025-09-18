@@ -27,17 +27,16 @@ export interface CloudinaryUploadResult {
   created_at: string;
 }
 
+import { cloudinary } from '@/config/appConfig';
+
 // Service para upload de arquivos no Cloudinary
 export const uploadToCloudinary = async (file: File): Promise<string> => {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dztzpttib';
-  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'curriculos_unsigned';
-  
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', uploadPreset);
+  formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
   
   try {
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+    const response = await fetch(cloudinary.UPLOAD_URL, {
       method: 'POST',
       body: formData,
     });
@@ -57,12 +56,9 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
 // Service completo para gerenciar uploads
 export const cloudinaryService = {
   uploadFile: async (file: File, onProgress?: (progress: UploadProgress) => void): Promise<CloudinaryUploadResult> => {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dztzpttib';
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'curriculos_unsigned';
-    
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', uploadPreset);
+    formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
     
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -95,7 +91,7 @@ export const cloudinaryService = {
         reject(new Error('Network error during upload'));
       });
       
-      xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`);
+      xhr.open('POST', cloudinary.UPLOAD_URL);
       xhr.send(formData);
     });
   },

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCloudinaryUpload } from './useCloudinaryUpload';
 import { toast } from 'sonner';
 
 export interface BrandingConfig {
@@ -25,6 +26,7 @@ export const useBrandingConfig = () => {
   const { currentCompany } = useAuth();
   const [config, setConfig] = useState<BrandingConfig | null>(null);
   const [loading, setLoading] = useState(true);
+  const { uploadFile: cloudinaryUpload } = useCloudinaryUpload();
 
   const loadConfig = async () => {
     if (!currentCompany?.id) {

@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ImageUpload } from '@/components/ui/image-upload';
+import { ImageUploader } from './ImageUploader';
 import { Produto, Categoria } from '@/types/cardapio';
 import { GerarDescricaoButton } from './GerarDescricaoButton';
 import { useTiposFiscais } from '@/hooks/useTiposFiscais';
@@ -321,11 +321,12 @@ export const ProdutoForm: React.FC<ProdutoFormProps> = ({
             </div>
 
             <div className="md:col-span-2">
-              <ImageUpload
-                value={imageValue}
-                onChange={(value) => setValue('image', value)}
+              <ImageUploader
                 label="Imagem do Produto"
-                placeholder="Selecione uma imagem para o produto"
+                currentImageUrl={imageValue}
+                onImageChange={(url) => setValue('image', url)}
+                folder="cardapio/produtos"
+                maxSize={5}
               />
             </div>
 
