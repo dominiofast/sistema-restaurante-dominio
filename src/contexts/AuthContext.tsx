@@ -127,16 +127,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 setCompanyId(existingCompany.id);
               }
             } else {
-                localStorage.removeItem('super_admin_selected_company');
-              }
-            } else {
               localStorage.removeItem('super_admin_selected_company');
             }
           } catch (error) {
             console.error('AuthProvider: Erro ao restaurar empresa selecionada:', error);
             localStorage.removeItem('super_admin_selected_company');
-
-
+          }
+        }
       } else {
         // Para usuários regulares, selecionar automaticamente se há apenas uma empresa
         if (loadedCompanies.length === 1 && isMounted()) {

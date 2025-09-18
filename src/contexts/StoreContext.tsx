@@ -57,14 +57,18 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       
       // Validate stored company exists in user's companies
       const validatedCompany = userCompanies.find(
-        (company: Company) => company.id === parsedStoredCompany?.id;
+        (company: Company) => company.id === parsedStoredCompany?.id
       );
       
       if (validatedCompany) {
         return convertToStoreInfo(validatedCompany);
       }
       
-       catch (error) { console.error('Error:', error); }if (currentCompany) {
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      
+      if (currentCompany) {
         return convertToStoreInfo(currentCompany);
       }
       

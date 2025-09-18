@@ -76,9 +76,9 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
 
   // Conectar ao QZ Tray
   const connectToQZ = useCallback(async (): Promise<boolean> => {
-    if (isConnecting) {;
+    if (isConnecting) {
       return isConnected;
-
+    }
 
     setIsConnecting(true);
     

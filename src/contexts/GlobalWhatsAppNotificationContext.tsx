@@ -97,9 +97,8 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
         setCurrentNotification(message);
         scheduleAutoHide();
 
-    }
-    // Se não tem permissão e página inativa, mostrar popup quando voltar
-    else if (document.hidden) {
+    } else if (document.hidden) {
+      // Se não tem permissão e página inativa, mostrar popup quando voltar
       // Aguardar usuário voltar à aba para mostrar popup
       const showWhenVisible = () => {
         if (!document.hidden) {

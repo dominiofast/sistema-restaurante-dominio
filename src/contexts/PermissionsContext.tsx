@@ -149,7 +149,7 @@ export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ childr
       const allPermissions = [...rolePermissions, ...specificPermissions];
       const uniquePermissions = allPermissions.filter(
         (permission, index, self) => 
-          index === self.findIndex(p => p.slug === permission.slug);
+          index === self.findIndex(p => p.slug === permission.slug)
       );
 
       setUserPermissions(uniquePermissions);
