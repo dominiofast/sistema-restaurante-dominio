@@ -74,7 +74,7 @@ export class AuthOptimizer {
       companiesCache.set(cacheKey, {
         companies,
         timestamp: Date.now()
-      } catch (error) { console.error('Error:', error) })
+      });
 
       return companies;
     } finally {

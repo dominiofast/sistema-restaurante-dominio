@@ -58,7 +58,7 @@ const ImportCardapioSupabase = lazy(() => import("@/pages/ImportCardapioSupabase
 const CampanhaWhatsApp = lazy(() => import("@/pages/marketing/CampanhaWhatsApp"))
 const CampanhasSalvas = lazy(() => import("@/pages/marketing/CampanhasSalvas"))
 
-const ImpressaoQZTrayConfig = lazy(() => import("@/pages/ImpressaoQZTrayConfig"))
+const ConfiguracaoFiscal = lazy(() => import("@/pages/ConfiguracaoFiscal"))
 const HorariosFuncionamentoSimples = lazy(() => import("@/pages/HorariosFuncionamentoSimples"))
 const PrintNodeIntegrationPage = lazy(() => import("@/pages/PrintNodeIntegrationPage"))
 const TesteAgentePedidos = lazy(() => import("@/pages/TesteAgentePedidos"))
@@ -139,7 +139,6 @@ const AccountRoutes = () => {
         {/* Rotas de Configuração */}
         <Route path="/settings/estabelecimento" element={<EstabelecimentoConfig />} />
         <Route path="/settings/integracoes" element={<IntegracoesConfig />} />
-        <Route path="/settings/qz-tray" element={<ImpressaoQZTrayConfig />} />
         <Route path="/settings/cardapio-digital" element={<CardapioDigitalConfig />} />
         <Route path="/settings/horarios" element={<HorariosFuncionamentoSimples />} />
         <Route path="/settings/printnode-integration" element={<PrintNodeIntegrationPage />} />

@@ -1,7 +1,6 @@
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { PermissionsProvider } from "./contexts/PermissionsContext";
 import { StoreProvider } from "./contexts/StoreContext";
-import { QZTrayProvider } from "./contexts/QZTrayContext";
 import { GlobalWhatsAppNotificationProvider } from "./contexts/GlobalWhatsAppNotificationContext";
 import AppRouter from "./router/AppRouter";
 import DynamicMetaTags from "./components/DynamicMetaTags";
@@ -42,13 +41,11 @@ const AuthenticatedApp = () => {
   return (
     <PermissionsProvider>
       <StoreProvider>
-        <QZTrayProvider>
-          <GlobalWhatsAppNotificationProvider>
-            <DynamicMetaTags>
-              <AppRouter />
-            </DynamicMetaTags>
-          </GlobalWhatsAppNotificationProvider>
-        </QZTrayProvider>
+        <GlobalWhatsAppNotificationProvider>
+          <DynamicMetaTags>
+            <AppRouter />
+          </DynamicMetaTags>
+        </GlobalWhatsAppNotificationProvider>
       </StoreProvider>
     </PermissionsProvider>
   )
@@ -78,11 +75,9 @@ function App() {
   if (isLandingPage) {
     console.log('✅ App.tsx - Carregando página sem AuthProvider')
     return (
-      <QZTrayProvider>
-        <DynamicMetaTags>
-          <AppRouter />
-        </DynamicMetaTags>
-      </QZTrayProvider>
+      <DynamicMetaTags>
+        <AppRouter />
+      </DynamicMetaTags>
     )
   }
 

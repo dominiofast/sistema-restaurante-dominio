@@ -141,7 +141,7 @@ export const NavigationDropdown: React.FC = () => {
       items: [
         { label: 'Estabelecimento', path: '/settings/estabelecimento', icon: Building, description: 'Dados da empresa' },
         { label: 'Integrações', path: '/settings/integracoes', icon: Truck, description: 'Integrações externas' },
-        { label: 'QZ Tray (Impressão)', path: '/settings/qz-tray', icon: Printer, description: 'Conectar e testar' },
+        { label: 'Configurações Gerais', path: '/settings/general', icon: Settings, description: 'Configurações da empresa' },
         { label: 'Status de Pedidos', path: '/settings/status', icon: Settings, description: 'Config. status' },
         { label: 'Configuração Fiscal', path: '/settings/configuracao-fiscal', icon: Receipt, description: 'Setup fiscal' },
         { label: 'Integração PrintNode', path: '/settings/printnode-integration', icon: Printer, description: 'Impressão em nuvem', isPro: true }
