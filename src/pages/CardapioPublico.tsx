@@ -300,7 +300,7 @@ const CardapioPublico: React.FC = () => {
   }, [produtosDestaque])
 
   const produtosFiltrados = produtos.filter(produto => 
-    produto.categoria_id === selectedCategoria;
+    produto.categoria_id === selectedCategoria
   )
 
   const produtosPorCategoria = categorias.reduce((acc, categoria) => {
