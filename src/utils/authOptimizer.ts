@@ -27,7 +27,7 @@ interface Company {
 /**
  * Cache para empresas carregadas
  */
-const companiesCache = new Map<string, { companies: Company[], timestamp: number }>();
+const companiesCache = new Map<string, { companies: Company[], timestamp: number }>()
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
 /**
@@ -35,11 +35,11 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
  */
 export class AuthOptimizer {
   private static instance: AuthOptimizer;
-  private loadingPromises = new Map<string, Promise<Company[]>>();
+  private loadingPromises = new Map<string, Promise<Company[]>>()
 
   static getInstance(): AuthOptimizer {
     if (!AuthOptimizer.instance) {
-      AuthOptimizer.instance = new AuthOptimizer();
+      AuthOptimizer.instance = new AuthOptimizer()
     }
     return AuthOptimizer.instance;
   }
@@ -51,21 +51,21 @@ export class AuthOptimizer {
     const cacheKey = `${authUser.id}_${authUser.role}`;
     
     // Verificar cache primeiro
-    const cached = companiesCache.get(cacheKey);
+    const cached = companiesCache.get(cacheKey)
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      console.log('AuthOptimizer: Usando empresas do cache');
+      console.log('AuthOptimizer: Usando empresas do cache')
       return cached.companies;
     }
 
     // Verificar se já há uma requisição em andamento
     if (this.loadingPromises.has(cacheKey)) {
-      console.log('AuthOptimizer: Aguardando requisição em andamento');
+      console.log('AuthOptimizer: Aguardando requisição em andamento')
       return this.loadingPromises.get(cacheKey)!;
     }
 
     // Criar nova requisição
-    const loadingPromise = this.performCompanyLoad(authUser);
-    this.loadingPromises.set(cacheKey, loadingPromise);
+    const loadingPromise = this.performCompanyLoad(authUser)
+    this.loadingPromises.set(cacheKey, loadingPromise)
 
     try {
       const companies = await loadingPromise;
@@ -74,7 +74,7 @@ export class AuthOptimizer {
       companiesCache.set(cacheKey, {
         companies,
         timestamp: Date.now()
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
 
       return companies;
     } finally {
@@ -89,12 +89,12 @@ export class AuthOptimizer {
   private async performCompanyLoad(authUser: AuthUser): Promise<Company[]> {
     try {
       if (authUser.role === 'super_admin') {
-        return await this.loadSuperAdminCompanies(authUser);
-      }  catch (error) { console.error('Error:', error); }else {
-        return await this.loadUserCompanies(authUser);
+        return await this.loadSuperAdminCompanies(authUser)
+      }  catch (error) { console.error('Error:', error) }else {
+        return await this.loadUserCompanies(authUser)
       }
     } catch (error) {
-      console.error('AuthOptimizer: Erro ao carregar empresas:', error);
+      console.error('AuthOptimizer: Erro ao carregar empresas:', error)
       return [];
     }
   }
@@ -107,7 +107,7 @@ export class AuthOptimizer {
     const error = null as any;
 
     if (error) {
-      console.error('AuthOptimizer: Erro ao carregar empresas para super admin:', error);
+      console.error('AuthOptimizer: Erro ao carregar empresas para super admin:', error)
       return [];
     }
 
@@ -121,7 +121,7 @@ export class AuthOptimizer {
       plan: company.plan,
       userCount: company.user_count,
       logo: company.logo
-    }));
+    }))
   }
 
   /**
@@ -143,7 +143,7 @@ export class AuthOptimizer {
         plan: uc.companies.plan,
         userCount: uc.companies.user_count,
         logo: uc.companies.logo
-      }));
+      }))
     }
 
     // Fallback: buscar por company_domain
@@ -165,12 +165,12 @@ export class AuthOptimizer {
       // Limpar cache específico do usuário
       for (const key of companiesCache.keys()) {
         if (key.startsWith(userId)) {
-          companiesCache.delete(key);
+          companiesCache.delete(key)
         }
       }
     } else {
       // Limpar todo o cache
-      companiesCache.clear();
+      companiesCache.clear()
     }
   }
 
@@ -178,7 +178,7 @@ export class AuthOptimizer {
    * Limpa requisições em andamento
    */
   clearLoadingPromises(): void {
-    this.loadingPromises.clear();
+    this.loadingPromises.clear()
   }
 
   /**
@@ -192,4 +192,4 @@ export class AuthOptimizer {
   }
 }
 
-export const authOptimizer = AuthOptimizer.getInstance();
+export const authOptimizer = AuthOptimizer.getInstance()

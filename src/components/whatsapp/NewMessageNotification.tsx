@@ -22,38 +22,38 @@ export const NewMessageNotification: React.FC<NewMessageNotificationProps> = ({
   onChatSelect,
   isVisible
 }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     if (isVisible && message) {
-      setShow(true);
+      setShow(true)
       
       // Auto-dismiss after 5 seconds
-      const timeout = setTimeout(() => {;
-        handleClose();
-      }, 5000);
+      const timeout = setTimeout(() => {
+        handleClose()
+      }, 5000)
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timeout)
     } else {
-      setShow(false);
+      setShow(false)
 
-  }, [isVisible, message]);
+  }, [isVisible, message])
 
-  const handleClose = () => {;
-    setShow(false);
+  const handleClose = () => {
+    setShow(false)
     setTimeout(() => {
-      onClose();
-    }, 300); // Wait for animation
+      onClose()
+    }, 300) // Wait for animation
   };
 
   const handleClick = () => {
-    if (message) {;
-      onChatSelect(message.chatId);
-      handleClose();
+    if (message) {
+      onChatSelect(message.chatId)
+      handleClose()
 
   };
 
-  const truncateMessage = (text: string, maxLength = 80) => {;
+  const truncateMessage = (text: string, maxLength = 80) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
@@ -123,5 +123,5 @@ export const NewMessageNotification: React.FC<NewMessageNotificationProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

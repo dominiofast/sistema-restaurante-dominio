@@ -12,7 +12,7 @@ import { Categoria, Produto } from '@/types/cardapio';
 import { IFoodImportModal } from '@/components/cardapio/IFoodImportModal';
 
 const GestorCardapio: React.FC = () => {
-  const { currentCompany } = useAuth();
+  const { currentCompany } = useAuth()
   const {
     loading,
     categorias,
@@ -27,95 +27,95 @@ const GestorCardapio: React.FC = () => {
     deleteProduto,
     toggleProdutoStatus,
     reorderProdutos,
-  } = useCardapio();
+  } = useCardapio()
 
   // Modais
-  const [categoriaModalOpen, setCategoriaModalOpen] = useState(false);
-  const [produtoModalOpen, setProdutoModalOpen] = useState(false);
-  const [adicionaisModalOpen, setAdicionaisModalOpen] = useState(false);
-  const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null);
-  const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
-  const [managingAdicionaisProduto, setManagingAdicionaisProduto] = useState<Produto | null>(null);
+  const [categoriaModalOpen, setCategoriaModalOpen] = useState(false)
+  const [produtoModalOpen, setProdutoModalOpen] = useState(false)
+  const [adicionaisModalOpen, setAdicionaisModalOpen] = useState(false)
+  const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null)
+  const [editingProduto, setEditingProduto] = useState<Produto | null>(null)
+  const [managingAdicionaisProduto, setManagingAdicionaisProduto] = useState<Produto | null>(null)
 
   // Filtros e busca
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('')
 
   // Estado para modais
-  const [importModalOpen, setImportModalOpen] = useState(false);
-  const [jsonViewerOpen, setJsonViewerOpen] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false)
+  const [jsonViewerOpen, setJsonViewerOpen] = useState(false)
 
   // Handlers
-  const handleCreateCategoria = async (data: any) => {;
-    await createCategoria({ ...data, company_id: currentCompany!.id, order_position: categorias.length });
+  const handleCreateCategoria = async (data: any) => {
+    await createCategoria({ ...data, company_id: currentCompany!.id, order_position: categorias.length })
   };
 
   const handleUpdateCategoria = async (data: any) => {
-    if (editingCategoria) {;
-      await updateCategoria(editingCategoria.id, data);
-      setEditingCategoria(null);
+    if (editingCategoria) {
+      await updateCategoria(editingCategoria.id, data)
+      setEditingCategoria(null)
     }
   };
 
-  const handleEditCategoria = (categoria: Categoria) => {;
-    setEditingCategoria(categoria);
-    setCategoriaModalOpen(true);
+  const handleEditCategoria = (categoria: Categoria) => {
+    setEditingCategoria(categoria)
+    setCategoriaModalOpen(true)
   };
 
   const handleDeleteCategoria = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir esta categoria?')) {;
-      await deleteCategoria(id);
+    if (confirm('Tem certeza que deseja excluir esta categoria?')) {
+      await deleteCategoria(id)
     }
   };
 
   const handleCreateProduto = async (data: any) => {
-    try {;
-      console.log('🔍 GestorCardapio: handleCreateProduto chamado com:', data);
-      const result = await createProduto({ ...data, company_id: currentCompany!.id } catch (error) { console.error('Error:', error); });
-      console.log('✅ GestorCardapio: Produto criado com sucesso:', result);
+    try {
+      console.log('🔍 GestorCardapio: handleCreateProduto chamado com:', data)
+      const result = await createProduto({ ...data, company_id: currentCompany!.id } catch (error) { console.error('Error:', error) })
+      console.log('✅ GestorCardapio: Produto criado com sucesso:', result)
     } catch (error) {
-      console.error('❌ GestorCardapio: Erro ao criar produto:', error);
+      console.error('❌ GestorCardapio: Erro ao criar produto:', error)
       throw error;
     }
   };
 
   const handleUpdateProduto = async (data: any) => {
     try {
-      if (editingProduto) {;
-        console.log('🔍 GestorCardapio: handleUpdateProduto chamado com:', data);
-        const result = await updateProduto(editingProduto.id, data);
-        console.log('✅ GestorCardapio: Produto atualizado com sucesso:', result);
-        setEditingProduto(null);
+      if (editingProduto) {
+        console.log('🔍 GestorCardapio: handleUpdateProduto chamado com:', data)
+        const result = await updateProduto(editingProduto.id, data)
+        console.log('✅ GestorCardapio: Produto atualizado com sucesso:', result)
+        setEditingProduto(null)
       }
      } catch (error) {
-      console.error('❌ GestorCardapio: Erro ao atualizar produto:', error);
+      console.error('❌ GestorCardapio: Erro ao atualizar produto:', error)
       throw error;
     }
   };
 
-  const handleEditProduto = (produto: Produto) => {;
-    setEditingProduto(produto);
-    setProdutoModalOpen(true);
+  const handleEditProduto = (produto: Produto) => {
+    setEditingProduto(produto)
+    setProdutoModalOpen(true)
   };
 
   const handleDeleteProduto = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir este produto?')) {;
-      await deleteProduto(id);
+    if (confirm('Tem certeza que deseja excluir este produto?')) {
+      await deleteProduto(id)
     }
   };
 
-  const handleManageAdicionais = (produto: Produto) => {;
-    setManagingAdicionaisProduto(produto);
-    setAdicionaisModalOpen(true);
+  const handleManageAdicionais = (produto: Produto) => {
+    setManagingAdicionaisProduto(produto)
+    setAdicionaisModalOpen(true)
   };
 
   const handleCloneProduto = async (produto: Produto) => {
-    try {;
-      console.log('🔄 Clonando produto:', produto.name);
+    try {
+      console.log('🔄 Clonando produto:', produto.name)
       
       // Criar uma cópia do produto removendo o ID e ajustando o nome
       const clonedData = {
         ...produto,;
-        name: `${produto.name}  catch (error) { console.error('Error:', error); }(Cópia)`,
+        name: `${produto.name}  catch (error) { console.error('Error:', error) }(Cópia)`,
         company_id: currentCompany!.id,
         // Remover campos que não devem ser clonados
 // id: undefined,
@@ -128,29 +128,29 @@ const GestorCardapio: React.FC = () => {
         if (clonedData[key as keyof typeof clonedData] === undefined) {
           delete clonedData[key as keyof typeof clonedData];
         }
-      });
+      })
       
-      await createProduto(clonedData);
-      console.log('✅ Produto clonado com sucesso');
+      await createProduto(clonedData)
+      console.log('✅ Produto clonado com sucesso')
     } catch (error) {
-      console.error('❌ Erro ao clonar produto:', error);
-      alert('Erro ao clonar produto. Tente novamente.');
+      console.error('❌ Erro ao clonar produto:', error)
+      alert('Erro ao clonar produto. Tente novamente.')
     }
   };
 
   const closeCategoriaModal = () => { ;
-    setCategoriaModalOpen(false); 
-    setEditingCategoria(null); 
+    setCategoriaModalOpen(false) 
+    setEditingCategoria(null) 
   };
 
   const closeProdutoModal = () => { ;
-    setProdutoModalOpen(false); 
-    setEditingProduto(null); 
+    setProdutoModalOpen(false) 
+    setEditingProduto(null) 
   };
 
   const closeAdicionaisModal = () => { ;
-    setAdicionaisModalOpen(false); 
-    setManagingAdicionaisProduto(null); 
+    setAdicionaisModalOpen(false) 
+    setManagingAdicionaisProduto(null) 
   };
 
   if (!currentCompany) {
@@ -160,7 +160,7 @@ const GestorCardapio: React.FC = () => {
           Selecione uma empresa para gerenciar o cardápio.
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -275,7 +275,7 @@ const GestorCardapio: React.FC = () => {
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default GestorCardapio;

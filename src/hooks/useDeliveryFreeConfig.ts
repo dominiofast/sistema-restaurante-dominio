@@ -17,25 +17,25 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
     someRegionsFree: false,
     freeRegionsCount: 0,
     totalRegionsCount: 0,;
-  });
-  const [loading, setLoading] = useState(true);
+  })
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (companyId) {
-      loadDeliveryFreeStatus();
+      loadDeliveryFreeStatus()
     }
-  }, [companyId]);
+  }, [companyId])
 
   const loadDeliveryFreeStatus = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
 
       // Buscar regiões de atendimento ativas
       const regioes = null as any; const regioesError = null as any;
         return;
 
 
-       catch (error) { console.error('Error:', error); }const totalRegions = regioes?.length || 0;
+       catch (error) { console.error('Error:', error) }const totalRegions = regioes?.length || 0;
       const freeRegions = regioes?.filter(r => (r.valor || 0) === 0) || [];
       const freeRegionsCount = freeRegions.length;
 
@@ -51,7 +51,7 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
         someRegionsFree,
         freeRegionsCount,
         totalRegionsCount: totalRegions,
-      });
+      })
 
       console.log('🚚 [DELIVERY FREE] Status calculado via regiões:', {
         companyId,
@@ -62,17 +62,17 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
         freeRegionsCount,
         totalRegions,
         regioesData: regioes
-      });
+      })
 
       // Log detalhado para debug
       console.log('🚚 [DELIVERY FREE] Debug detalhado:', {
         regioes: regioes?.map(r => ({ nome: r.nome || 'Sem nome', valor: r.valor, status: r.status })),
         freeRegions: regioes?.filter(r => (r.valor || 0) === 0),
         activeRegions: regioes?.filter(r => r.status === true)
-      });
+      })
 
     } catch (error) {
-      console.error('Erro ao carregar status de entrega grátis:', error);
+      console.error('Erro ao carregar status de entrega grátis:', error)
       setDeliveryStatus({
         hasDelivery: false,
         hasFreeDelivery: false,
@@ -80,9 +80,9 @@ export const useDeliveryFreeConfig = (companyId: string | undefined) => {
         someRegionsFree: false,
         freeRegionsCount: 0,
         totalRegionsCount: 0,
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 

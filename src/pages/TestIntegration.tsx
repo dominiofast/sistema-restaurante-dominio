@@ -5,21 +5,21 @@ import { Badge } from "@/components/ui/badge";
 import { testWhatsAppIntegration } from "@/utils/testIntegration";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
-const TestIntegration = () => {;
-  const [testing, setTesting] = useState(false);
-  const [result, setResult] = useState<any>(null);
+const TestIntegration = () => {
+  const [testing, setTesting] = useState(false)
+  const [result, setResult] = useState<any>(null)
 
-  const runTest = async () => {;
-    setTesting(true);
-    setResult(null);
+  const runTest = async () => {
+    setTesting(true)
+    setResult(null)
     
     try {
-      const testResult = await testWhatsAppIntegration();
-      setResult(testResult);
+      const testResult = await testWhatsAppIntegration()
+      setResult(testResult)
     } catch (error) {
-      setResult({ success: false, error: (error as Error).message });
+      setResult({ success: false, error: (error as Error).message })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
@@ -134,7 +134,7 @@ const TestIntegration = () => {;
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default TestIntegration;

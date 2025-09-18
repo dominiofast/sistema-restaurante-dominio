@@ -28,18 +28,18 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
     telefone: '',
     experiencia_relevante: '',
     carta_apresentacao: ''
-  });
+  })
 
   const [curriculo, setCurriculo] = useState({
     url: '',
     nome: ''
-  });
+  })
 
-  const [errors, setErrors] = useState<any>({});
-  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<any>({})
+  const [loading, setLoading] = useState(false)
 
-  const onFormDataChange = useCallback((newData: any) => {;
-    setFormData(prev => ({ ...prev, ...newData }));
+  const onFormDataChange = useCallback((newData: any) => {
+    setFormData(prev => ({ ...prev, ...newData }))
     
     // Limpar erros quando o campo for preenchido
     const newErrors = { ...errors };
@@ -47,20 +47,20 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
       if (newData[key] && newErrors[key]) {
         delete newErrors[key];
       }
-    });
-    setErrors(newErrors);
-  }, [errors]);
+    })
+    setErrors(newErrors)
+  }, [errors])
 
-  const onCurriculoUpload = useCallback((url: string, nome: string) => {;
-    setCurriculo({ url, nome });
+  const onCurriculoUpload = useCallback((url: string, nome: string) => {
+    setCurriculo({ url, nome })
     if(url) {
       const newErrors = { ...errors };
       delete newErrors['curriculo'];
-      setErrors(newErrors);
+      setErrors(newErrors)
 
-  }, [errors]);
+  }, [errors])
 
-  const validateForm = () => {;
+  const validateForm = () => {
     const newErrors: any = {};
     
     if (!formData.nome_completo?.trim()) {
@@ -79,17 +79,17 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
     
     if (!curriculo.url) {
       newErrors.curriculo = 'Currículo é obrigatório';
-      toast.error('Por favor, anexe seu currículo');
+      toast.error('Por favor, anexe seu currículo')
 
     
-    setErrors(newErrors);
+    setErrors(newErrors)
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {;
+  const handleSubmit = async () => {
     if (!validateForm()) return;
     
-    setLoading(true);
+    setLoading(true)
     
     try {
       const inscricaoData = {
@@ -103,19 +103,19 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
         curriculo_url: curriculo.url,
         curriculo_nome: curriculo.nome,
         status: 'pendente';
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
       
       const { error  } = null as any;
       if (error) throw error;
       
-      toast.success('Candidatura enviada com sucesso!');
-      if (onSuccess) onSuccess();
+      toast.success('Candidatura enviada com sucesso!')
+      if (onSuccess) onSuccess()
       
     } catch (error: any) {
-      console.error('Erro ao enviar candidatura:', error);
-      toast.error('Erro ao enviar candidatura. Tente novamente.');
+      console.error('Erro ao enviar candidatura:', error)
+      toast.error('Erro ao enviar candidatura. Tente novamente.')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -223,7 +223,7 @@ const FormularioInscricao: React.FC<FormularioInscricaoProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default FormularioInscricao;

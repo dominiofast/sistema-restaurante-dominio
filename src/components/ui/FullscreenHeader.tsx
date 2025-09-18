@@ -54,5 +54,5 @@ export const FullscreenHeader: React.FC<FullscreenHeaderProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

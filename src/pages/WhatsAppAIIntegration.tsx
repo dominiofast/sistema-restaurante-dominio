@@ -36,100 +36,100 @@ interface AIPrompt {
 
 
 export default function WhatsAppAIIntegration() {
-  const { currentCompany } = useAuth();
-  const { toast } = useToast();
-  const [whatsappIntegration, setWhatsappIntegration] = useState<WhatsAppIntegration | null>(null);
-  const [aiPrompt, setAiPrompt] = useState<AIPrompt | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [testing, setTesting] = useState(false);
-  const [testResult, setTestResult] = useState<string>("");
+  const { currentCompany } = useAuth()
+  const { toast } = useToast()
+  const [whatsappIntegration, setWhatsappIntegration] = useState<WhatsAppIntegration | null>(null)
+  const [aiPrompt, setAiPrompt] = useState<AIPrompt | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [testing, setTesting] = useState(false)
+  const [testResult, setTestResult] = useState<string>("")
 
   useEffect(() => {
     if (currentCompany) {
-      loadIntegrationData();
+      loadIntegrationData()
     }
-  }, [currentCompany]);
+  }, [currentCompany])
 
-  const loadIntegrationData = async () => {;
+  const loadIntegrationData = async () => {
     if (!currentCompany) return;
 
-    setLoading(true);
+    setLoading(true)
     try {
       // Carregar integração WhatsApp
       const whatsappData = null as any; const whatsappError = null as any;
-      setWhatsappIntegration(whatsappData);
+      setWhatsappIntegration(whatsappData)
 
       // Carregar prompt IA
       const promptData = null as any; const promptError = null as any;
-      setAiPrompt(promptData);
+      setAiPrompt(promptData)
 
     } catch (error: any) {
       toast({
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const testIntegration = async () => {;
+  const testIntegration = async () => {
     if (!whatsappIntegration || !currentCompany) return;
 
-    setTesting(true);
-    setTestResult("");
+    setTesting(true)
+    setTestResult("")
 
     try {
       // Simular uma mensagem de teste
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           slug_empresa: currentCompany.slug || 'test',
           user_message: 'oi',
           historico: [],
           customer_phone: '5511999999999'
         }
-      });
+      })
 
       if (error) throw error;
 
-      setTestResult(data?.resposta || 'Sem resposta');
+      setTestResult(data?.resposta || 'Sem resposta')
       
       toast({
         title: "Teste realizado com sucesso",
         description: "A integração WhatsApp + IA está funcionando!"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro no teste",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
   const syncPromptToEdgeConfig = async () => {
-    try {;
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+    try {
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { agent_slug: 'agente-ia-conversa' }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Prompt sincronizado",
         description: "Edge Config atualizado com sucesso"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro na sincronização",
         description: error.message,
         variant: "destructive"
-      });
+      })
     }
   };
 
@@ -140,7 +140,7 @@ export default function WhatsAppAIIntegration() {
           <div className="text-lg">Carregando configurações...</div>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -385,4 +385,4 @@ export default function WhatsAppAIIntegration() {
         </Card>
       </div>
     </div>
-  );
+  )

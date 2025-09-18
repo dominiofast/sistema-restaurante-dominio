@@ -27,45 +27,45 @@ export const ClienteImportModal: React.FC<ClienteImportModalProps> = ({
   onClose,
   onImportComplete
 }) => {
-  const { currentCompany } = useAuth();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [importing, setImporting] = useState(false);
-  const [importStatus, setImportStatus] = useState<ImportStatus | null>(null);
-  const [step, setStep] = useState<'upload' | 'processing' | 'complete'>('upload');
+  const { currentCompany } = useAuth()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [importing, setImporting] = useState(false)
+  const [importStatus, setImportStatus] = useState<ImportStatus | null>(null)
+  const [step, setStep] = useState<'upload' | 'processing' | 'complete'>('upload')
 
   // Prevenir navegação durante importação
   useEffect(() => {
     if (importing || step === 'processing') {
-      const handleBeforeUnload = (e: BeforeUnloadEvent) => {;
-        e.preventDefault();
+      const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+        e.preventDefault()
         e.returnValue = 'Há uma importação em andamento. Tem certeza que deseja sair? Você perderá o progresso.';
         return e.returnValue;
       };
 
       const handlePopState = () => {
-        if (importing) {;
-          const confirmLeave = window.confirm('Há uma importação em andamento. Tem certeza que deseja sair? Você perderá o progresso.');
+        if (importing) {
+          const confirmLeave = window.confirm('Há uma importação em andamento. Tem certeza que deseja sair? Você perderá o progresso.')
           if (!confirmLeave) {
-            window.history.pushState(null, '', window.location.href);
+            window.history.pushState(null, '', window.location.href)
           }
         }
       };
 
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      window.addEventListener('popstate', handlePopState);
+      window.addEventListener('beforeunload', handleBeforeUnload)
+      window.addEventListener('popstate', handlePopState)
 
       // Adicionar estado ao histórico para capturar navegação
       if (importing) {
-        window.history.pushState(null, '', window.location.href);
+        window.history.pushState(null, '', window.location.href)
 
 
       return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-        window.removeEventListener('popstate', handlePopState);
+        window.removeEventListener('beforeunload', handleBeforeUnload)
+        window.removeEventListener('popstate', handlePopState)
       };
 
-  }, [importing, step]);
+  }, [importing, step])
 
   const downloadTemplate = () => {
     const csvContent = `Nome do Cliente,Número Telefone,Quantidade de Pedidos,Dias de Inatividade
@@ -73,30 +73,30 @@ João Silva,11999999999,5,10
 Maria Santos,11888888888,12,3;
 Pedro Costa,11777777777,0,45`;
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
     link.download = 'template_clientes.csv';
-    link.click();
-    URL.revokeObjectURL(link.href);
+    link.click()
+    URL.revokeObjectURL(link.href)
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.type !== 'text/csv' && !selectedFile.name.endsWith('.csv')) {
-        toast.error('Por favor, selecione um arquivo CSV válido');
+        toast.error('Por favor, selecione um arquivo CSV válido')
         return;
 
-      setFile(selectedFile);
+      setFile(selectedFile)
 
   };
 
-  const parseCSV = (csvText: string): any[] => {;
-    const lines = csvText.split('\n').filter(line => line.trim());
+  const parseCSV = (csvText: string): any[] => {
+    const lines = csvText.split('\n').filter(line => line.trim())
     if (lines.length < 2) return [];
 
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''));
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''))
     const data = [];
 
     for (let i = 1; i < lines.length; i++) {
@@ -111,79 +111,79 @@ Pedro Costa,11777777777,0,45`;
         if (char === '"' || char === "'") {
           inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
-          values.push(current.trim().replace(/^["']|["']$/g, ''));
+          values.push(current.trim().replace(/^["']|["']$/g, ''))
           current = '';
         } else {
           current += char;
         }
       }
-      values.push(current.trim().replace(/^["']|["']$/g, ''));
+      values.push(current.trim().replace(/^["']|["']$/g, ''))
       
       if (values.length >= headers.length) {
         const row: any = {};
         headers.forEach((header, index) => {
           row[header] = values[index] || null;
-        });
-        data.push(row);
+        })
+        data.push(row)
 
 
 
     return data;
   };
 
-  const validateClienteData = (cliente: any): string[] => {;
+  const validateClienteData = (cliente: any): string[] => {
     const errors: string[] = [];
     
     if (!cliente['Nome do Cliente'] || cliente['Nome do Cliente'].trim() === '') {
-      errors.push('Nome do Cliente é obrigatório');
+      errors.push('Nome do Cliente é obrigatório')
 
     
     if (!cliente['Número Telefone'] || cliente['Número Telefone'].toString().replace(/\D/g, '').length < 10) {
-      errors.push('Número Telefone deve ter pelo menos 10 dígitos');
+      errors.push('Número Telefone deve ter pelo menos 10 dígitos')
 
     
-    const quantidadePedidos = parseInt(cliente['Quantidade de Pedidos']);
+    const quantidadePedidos = parseInt(cliente['Quantidade de Pedidos'])
     if (isNaN(quantidadePedidos) || quantidadePedidos < 0) {
-      errors.push('Quantidade de Pedidos deve ser um número válido');
+      errors.push('Quantidade de Pedidos deve ser um número válido')
 
     
-    const diasInatividade = parseInt(cliente['Dias de Inatividade']);
+    const diasInatividade = parseInt(cliente['Dias de Inatividade'])
     if (isNaN(diasInatividade) || diasInatividade < 0) {
-      errors.push('Dias de Inatividade deve ser um número válido');
+      errors.push('Dias de Inatividade deve ser um número válido')
 
 
     return errors;
   };
 
-  const processImport = async () => {;
+  const processImport = async () => {
     if (!file || !currentCompany?.id) return;
 
     // Check file size (max 10MB for large imports)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('Arquivo muito grande. Máximo de 10MB permitido.');
+      toast.error('Arquivo muito grande. Máximo de 10MB permitido.')
       return;
 
 
-    setImporting(true);
-    setStep('processing');
+    setImporting(true)
+    setStep('processing')
 
     try {
-      const csvText = await file.text();
-      console.log('Arquivo CSV lido, tamanho:', csvText.length);
+      const csvText = await file.text()
+      console.log('Arquivo CSV lido, tamanho:', csvText.length)
       
-      const clientesData = parseCSV(csvText);
-      console.log('Dados parseados:', clientesData.length, 'registros');
+      const clientesData = parseCSV(csvText)
+      console.log('Dados parseados:', clientesData.length, 'registros')
       
       // Limit to 10k records
       if (clientesData.length > 10000) {
-        toast.error('Máximo de 10.000 registros permitidos por importação.');
-        setImporting(false);
+        toast.error('Máximo de 10.000 registros permitidos por importação.')
+        setImporting(false)
         return;
 
       
-       catch (error) { console.error('Error:', error); }if (clientesData.length === 0) {
-        toast.error('Nenhum dado válido encontrado no arquivo CSV. Verifique o formato.');
-        setImporting(false);
+       catch (error) { console.error('Error:', error) }if (clientesData.length === 0) {
+        toast.error('Nenhum dado válido encontrado no arquivo CSV. Verifique o formato.')
+        setImporting(false)
         return;
 
       
@@ -194,13 +194,13 @@ Pedro Costa,11777777777,0,45`;
         success: 0
       };
 
-      setImportStatus(status);
+      setImportStatus(status)
 
       // Process in larger batches for better performance (50 records per batch for reliability)
       const batchSize = 50;
       
       for (let i = 0; i < clientesData.length; i += batchSize) {
-        const batch = clientesData.slice(i, i + batchSize);
+        const batch = clientesData.slice(i, i + batchSize)
         
         // Prepare batch for bulk insert
         const validBatch = [];
@@ -209,14 +209,14 @@ Pedro Costa,11777777777,0,45`;
           const clienteRaw = batch[j];
           const lineNumber = i + j + 2; // +2 because CSV starts at line 1 and we skip header
           
-          console.log(`Processando linha ${lineNumber}:`, clienteRaw);
+          console.log(`Processando linha ${lineNumber}:`, clienteRaw)
           
-          const validationErrors = validateClienteData(clienteRaw);
+          const validationErrors = validateClienteData(clienteRaw)
           
           if (validationErrors.length > 0) {
             const errorMsg = `Linha ${lineNumber}: ${validationErrors.join(', ')}`;
-            console.error('Erro de validação:', errorMsg);
-            status.errors.push(errorMsg);
+            console.error('Erro de validação:', errorMsg)
+            status.errors.push(errorMsg)
           } else {
             const clienteData = {
               company_id: currentCompany.id,
@@ -233,8 +233,8 @@ Pedro Costa,11777777777,0,45`;
               status: 'ativo';
             };
             
-            console.log('Cliente preparado para inserção:', clienteData);
-            validBatch.push(clienteData);
+            console.log('Cliente preparado para inserção:', clienteData)
+            validBatch.push(clienteData)
           }
           
           status.processed++;
@@ -243,9 +243,9 @@ Pedro Costa,11777777777,0,45`;
         // Insert each record individually for better error tracking
         for (const cliente of validBatch) {
           try {
-            console.log('Inserindo cliente:', cliente.nome);
+            console.log('Inserindo cliente:', cliente.nome)
             
-            const { data, error }  catch (error) { console.error('Error:', error); }= 
+            const { data, error }  catch (error) { console.error('Error:', error) }= 
               
               
               
@@ -256,10 +256,10 @@ Pedro Costa,11777777777,0,45`;
                 details: error.details,
                 hint: error.hint,
                 code: error.code
-              });
-              status.errors.push(`Erro ao inserir ${cliente.nome}: ${error.message}`);
+              })
+              status.errors.push(`Erro ao inserir ${cliente.nome}: ${error.message}`)
             } else {
-              console.log('Cliente inserido com sucesso:', data);
+              console.log('Cliente inserido com sucesso:', data)
               status.success++;
 
           } catch (err: any) {
@@ -267,40 +267,40 @@ Pedro Costa,11777777777,0,45`;
               message: err.message,
               stack: err.stack,
               cliente: cliente
-            });
-            status.errors.push(`Erro inesperado ao inserir ${cliente.nome}: ${err.message}`);
+            })
+            status.errors.push(`Erro inesperado ao inserir ${cliente.nome}: ${err.message}`)
           }
         }
         
         // Update progress
-        setImportStatus({ ...status });
+        setImportStatus({ ...status })
         
         // Small delay between batches
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 100))
 
 
-      setStep('complete');
-      toast.success(`Importação concluída! ${status.success} clientes importados com sucesso.`);
+      setStep('complete')
+      toast.success(`Importação concluída! ${status.success} clientes importados com sucesso.`)
       
       if (status.errors.length > 0) {
-        toast.warning(`${status.errors.length} registros com erro. Verifique os detalhes.`);
+        toast.warning(`${status.errors.length} registros com erro. Verifique os detalhes.`)
 
 
     } catch (error: any) {
-      toast.error('Erro ao processar arquivo: ' + error.message);
+      toast.error('Erro ao processar arquivo: ' + error.message)
     } finally {
-      setImporting(false);
+      setImporting(false)
 
   };
 
   const handleClose = () => {
-    if (step === 'complete') {;
-      onImportComplete();
+    if (step === 'complete') {
+      onImportComplete()
 
-    setFile(null);
-    setImportStatus(null);
-    setStep('upload');
-    onClose();
+    setFile(null)
+    setImportStatus(null)
+    setStep('upload')
+    onClose()
   };
 
   return (
@@ -464,5 +464,5 @@ Pedro Costa,11777777777,0,45`;
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

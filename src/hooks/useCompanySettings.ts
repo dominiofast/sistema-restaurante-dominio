@@ -3,9 +3,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CompanySettings, OperatingHours, LoyaltyProgramConfig, UICustomization } from '@/types/cardapio';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const useCompanySettings = (companyId?: string) => {;
-  const { currentCompany } = useAuth();
-  const queryClient = useQueryClient();
+export const useCompanySettings = (companyId?: string) => {
+  const { currentCompany } = useAuth()
+  const queryClient = useQueryClient()
   const targetCompanyId = companyId || currentCompany?.id;
 
   // Fetch company settings
@@ -23,7 +23,7 @@ export const useCompanySettings = (companyId?: string) => {;
       if (error) {
         if (error.code === 'PGRST116') {
           // No settings found, create default settings
-          return await createDefaultSettings(targetCompanyId);
+          return await createDefaultSettings(targetCompanyId)
         }
         throw error;
       }
@@ -33,7 +33,7 @@ export const useCompanySettings = (companyId?: string) => {;
     enabled: !!targetCompanyId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
-  });
+  })
 
   // Create default settings
   const createDefaultSettings = async (companyId: string): Promise<CompanySettings> => {
@@ -84,20 +84,20 @@ export const useCompanySettings = (companyId?: string) => {;
 
   // Update settings mutation
   const updateSettingsMutation = useMutation({
-    mutationFn: async (updates: Partial<CompanySettings>) => {;
-      if (!targetCompanyId) throw new Error('Company ID is required');
+    mutationFn: async (updates: Partial<CompanySettings>) => {
+      if (!targetCompanyId) throw new Error('Company ID is required')
 
       const { data, error  } = null as any;
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['company-settings', targetCompanyId] });
+      queryClient.invalidateQueries({ queryKey: ['company-settings', targetCompanyId] })
     },
-  });
+  })
 
   // Helper functions for specific updates
-  const updateUICustomization = (customization: Partial<UICustomization>) => {;
+  const updateUICustomization = (customization: Partial<UICustomization>) => {
     if (!settings) return;
     
     const updatedCustomization = {
@@ -107,10 +107,10 @@ export const useCompanySettings = (companyId?: string) => {;
 
     return updateSettingsMutation.mutate({
       ui_customization: updatedCustomization,
-    });
+    })
   };
 
-  const updateOperatingHours = (hours: Partial<OperatingHours>) => {;
+  const updateOperatingHours = (hours: Partial<OperatingHours>) => {
     if (!settings) return;
     
     const updatedHours = {
@@ -120,10 +120,10 @@ export const useCompanySettings = (companyId?: string) => {;
 
     return updateSettingsMutation.mutate({
       operating_hours: updatedHours,
-    });
+    })
   };
 
-  const updateLoyaltyProgram = (config: Partial<LoyaltyProgramConfig>) => {;
+  const updateLoyaltyProgram = (config: Partial<LoyaltyProgramConfig>) => {
     if (!settings) return;
     
     const updatedConfig = {
@@ -133,39 +133,39 @@ export const useCompanySettings = (companyId?: string) => {;
 
     return updateSettingsMutation.mutate({
       loyalty_program_config: updatedConfig,
-    });
+    })
   };
 
   const updateColors = (primaryColor: string, secondaryColor?: string) => {
     return updateSettingsMutation.mutate({
       primary_color: primaryColor,
       ...(secondaryColor && { secondary_color: secondaryColor }),;
-    });
+    })
   };
 
   // Utility functions
-  const isOpen = (): boolean => {;
+  const isOpen = (): boolean => {
     if (!settings?.operating_hours) return true;
 
-    const now = new Date();
+    const now = new Date()
     const currentDay = now.toLocaleDateString('en', { weekday: 'long' }).toLowerCase() as keyof OperatingHours;
     const daySchedule = settings.operating_hours[currentDay];
 
     if (daySchedule.closed) return false;
 
-    const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
+    const currentTime = now.toTimeString().slice(0, 5) // HH:MM format
     return currentTime >= daySchedule.open && currentTime <= daySchedule.close;
   };
 
-  const getNextOpenTime = (): string | null => {;
+  const getNextOpenTime = (): string | null => {
     if (!settings?.operating_hours) return null;
 
-    const now = new Date();
+    const now = new Date()
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     
     for (let i = 1; i <= 7; i++) {
-      const checkDate = new Date(now);
-      checkDate.setDate(checkDate.getDate() + i);
+      const checkDate = new Date(now)
+      checkDate.setDate(checkDate.getDate() + i)
       const dayName = days[checkDate.getDay()] as keyof OperatingHours;
       const daySchedule = settings.operating_hours[dayName];
       
@@ -177,11 +177,11 @@ export const useCompanySettings = (companyId?: string) => {;
     return null;
   };
 
-  const hasLoyaltyProgram = (): boolean => {;
+  const hasLoyaltyProgram = (): boolean => {
     return settings?.show_loyalty_program && settings?.loyalty_program_config?.enabled || false;
   };
 
-  const hasCashback = (): boolean => {;
+  const hasCashback = (): boolean => {
     return settings?.show_cashback && (settings?.cashback_rate || 0) > 0;
   };
 

@@ -20,7 +20,7 @@ const JobListingsSection: React.FC<JobListingsSectionProps> = ({
       day: '2-digit',
       month: 'long',
       year: 'numeric';
-    });
+    })
   };
 
   return (
@@ -104,7 +104,7 @@ const JobListingsSection: React.FC<JobListingsSectionProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default JobListingsSection;

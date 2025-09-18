@@ -24,9 +24,9 @@ interface CompanyFormData {
   user_count: number;
 }
 
-export const useCompanies = () => {;
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+export const useCompanies = () => {
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
   
   // Fetch all companies
   const {
@@ -37,25 +37,25 @@ export const useCompanies = () => {;
   } = useQuery({
     queryKey: ['companies'],
     queryFn: async (): Promise<Company[]> => {
-      console.log('🏢 useCompanies: Buscando empresas via API...');
+      console.log('🏢 useCompanies: Buscando empresas via API...')
       
-      const response = await fetch('/api/companies');
-      const result = await response.json();
+      const response = await fetch('/api/companies')
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Erro ao buscar empresas');
+        throw new Error(result.error || 'Erro ao buscar empresas')
       }
       
-      console.log(`✅ useCompanies: ${result.data.length} empresas encontradas`);
+      console.log(`✅ useCompanies: ${result.data.length} empresas encontradas`)
       return result.data || [];
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-  });
+  })
 
   // Create company mutation
   const createCompanyMutation = useMutation({
-    mutationFn: async (companyData: CompanyFormData) => {;
-      console.log('🏢 useCompanies: Criando empresa via API...');
+    mutationFn: async (companyData: CompanyFormData) => {
+      console.log('🏢 useCompanies: Criando empresa via API...')
       
       const response = await fetch('/api/companies', {
         method: 'POST',
@@ -69,23 +69,23 @@ export const useCompanies = () => {;
           plan: companyData.plan,
           status: companyData.status,
           user_count: companyData.user_count,
-        });
-      });
+        })
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Erro ao criar empresa');
+        throw new Error(result.error || 'Erro ao criar empresa')
       }
       
       return result.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['companies'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] })
       toast({
         title: 'Sucesso',
         description: 'Empresa criada com sucesso.',
-      });
+      })
       return data;
     },
     onError: (error: any) => {
@@ -93,14 +93,14 @@ export const useCompanies = () => {;
         title: 'Erro',
         description: error.message || 'Não foi possível criar a empresa.',
         variant: 'destructive',
-      });
+      })
     },
-  });
+  })
 
   // Update company mutation
   const updateCompanyMutation = useMutation({
-    mutationFn: async ({ id, ...updates }: CompanyFormData & { id: string }) => {;
-      console.log('🏢 useCompanies: Atualizando empresa via API...');
+    mutationFn: async ({ id, ...updates }: CompanyFormData & { id: string }) => {
+      console.log('🏢 useCompanies: Atualizando empresa via API...')
       
       const response = await fetch(`/api/companies/${id}`, {
         method: 'PUT',
@@ -114,65 +114,65 @@ export const useCompanies = () => {;
           plan: updates.plan,
           status: updates.status,
           user_count: updates.user_count,
-        });
-      });
+        })
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Erro ao atualizar empresa');
+        throw new Error(result.error || 'Erro ao atualizar empresa')
       }
       
       return result.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['companies'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] })
       toast({
         title: 'Sucesso',
         description: 'Empresa atualizada com sucesso.',
-      });
+      })
     },
     onError: (error: any) => {
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível atualizar a empresa.',
         variant: 'destructive',
-      });
+      })
     },
-  });
+  })
 
   // Delete company mutation
   const deleteCompanyMutation = useMutation({
-    mutationFn: async (id: string) => {;
-      console.log('🏢 useCompanies: Deletando empresa via API...');
+    mutationFn: async (id: string) => {
+      console.log('🏢 useCompanies: Deletando empresa via API...')
       
       const response = await fetch(`/api/companies/${id}`, {
         method: 'DELETE';
-      });
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Erro ao deletar empresa');
+        throw new Error(result.error || 'Erro ao deletar empresa')
       }
       
       return { id };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['companies'] });
+      queryClient.invalidateQueries({ queryKey: ['companies'] })
       toast({
         title: 'Sucesso',
         description: 'Empresa excluída com sucesso.',
-      });
+      })
     },
     onError: (error: any) => {
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível excluir a empresa.',
         variant: 'destructive',
-      });
+      })
     },
-  });
+  })
 
   return {
     companies,
@@ -188,8 +188,8 @@ export const useCompanies = () => {;
   };
 };
 
-export const useCompanyDetails = (companyId?: string) => {;
-  const { currentCompany } = useAuth();
+export const useCompanyDetails = (companyId?: string) => {
+  const { currentCompany } = useAuth()
   const targetId = companyId || currentCompany?.id;
 
   return useQuery({
@@ -197,17 +197,17 @@ export const useCompanyDetails = (companyId?: string) => {;
     queryFn: async (): Promise<Company | null> => {
       if (!targetId) return null;
 
-      const response = await fetch(`/api/companies`);
-      const result = await response.json();
+      const response = await fetch(`/api/companies`)
+      const result = await response.json()
       
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Erro ao buscar detalhes da empresa');
+        throw new Error(result.error || 'Erro ao buscar detalhes da empresa')
       }
       
-      const company = result.data?.find((c: Company) => c.id === targetId);
+      const company = result.data?.find((c: Company) => c.id === targetId)
       return company || null;
     },
     enabled: !!targetId,
     staleTime: 5 * 60 * 1000,
-  });
+  })
 };

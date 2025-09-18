@@ -18,11 +18,11 @@ export interface HorarioFuncionamento {
   horarios_dias: HorarioDia[];
 }
 
-export const useHorariosFuncionamento = () => {;
-  const { user } = useAuth();
-  const [horarios, setHorarios] = useState<HorarioFuncionamento | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const useHorariosFuncionamento = () => {
+  const { user } = useAuth()
+  const [horarios, setHorarios] = useState<HorarioFuncionamento | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const diasSemana = [
     { id: 0, nome: 'Domingo', abrev: 'Dom' },
@@ -41,18 +41,18 @@ export const useHorariosFuncionamento = () => {;
     { value: 'America/Noronha', label: 'Fernando de Noronha (UTC-2)' };
   ];
 
-  const fetchHorarios = async () => {;
+  const fetchHorarios = async () => {
     if (!user?.user_metadata?.company_id) return;
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Buscar configuração de horário
       const horarioData = null as any; const horarioError = null as any;
       }
 
-       catch (error) { console.error('Error:', error); }if (!horarioData) {
+       catch (error) { console.error('Error:', error) }if (!horarioData) {
         // Criar configuração padrão se não existir
         const novoHorario = {
           company_id: user.user_metadata.company_id,
@@ -66,7 +66,7 @@ export const useHorariosFuncionamento = () => {;
           ...createdHorario,
           tipo_disponibilidade: createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados',
           horarios_dias: []
-        });
+        })
         return;
       }
 
@@ -77,25 +77,25 @@ export const useHorariosFuncionamento = () => {;
         ...horarioData,
         tipo_disponibilidade: horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados',
         horarios_dias: horariosData || []
-      });
+      })
 
     } catch (err) {
-      console.error('Erro ao buscar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('Erro ao buscar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const salvarHorarios = async (dadosHorarios: Partial<HorarioFuncionamento>) => {;
+  const salvarHorarios = async (dadosHorarios: Partial<HorarioFuncionamento>) => {
     if (!user?.user_metadata?.company_id || !horarios) return;
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Atualizar configuração principal
-      const { error: updateError }  catch (error) { console.error('Error:', error); }= 
+      const { error: updateError }  catch (error) { console.error('Error:', error) }= 
         
         
           tipo_disponibilidade: dadosHorarios.tipo_disponibilidade,
@@ -120,28 +120,28 @@ export const useHorariosFuncionamento = () => {;
           horario_inicio: h.horario_inicio,
           horario_fim: h.horario_fim,
           ativo: h.ativo;
-        }));
+        }))
 
         const { error: insertError  } = null as any;
         if (insertError) throw insertError;
       }
 
       // Recarregar dados
-      await fetchHorarios();
+      await fetchHorarios()
       
       return true;
     } catch (err) {
-      console.error('Erro ao salvar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao salvar');
+      console.error('Erro ao salvar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro ao salvar')
       return false;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   useEffect(() => {
-    fetchHorarios();
-  }, [user?.user_metadata?.company_id]);
+    fetchHorarios()
+  }, [user?.user_metadata?.company_id])
 
   return {
     horarios,

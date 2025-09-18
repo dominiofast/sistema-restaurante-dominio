@@ -71,12 +71,12 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
       // Observações
 // observacoes: '',
 
-  });
+  })
 
   // Atualizar o formulário quando os dados chegam
   useEffect(() => {
     if (initialData) {
-      console.log('Atualizando formulário com dados:', initialData);
+      console.log('Atualizando formulário com dados:', initialData)
       reset({
         // Dados Básicos
         descricao: initialData.descricao || '',
@@ -129,9 +129,9 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
         
         // Observações
         observacoes: initialData.observacoes || '',
-      });
+      })
 
-  }, [initialData, reset]);
+  }, [initialData, reset])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -684,5 +684,5 @@ export function DadosFiscaisForm({ initialData, onSubmit, onCancel }: DadosFisca
         </Button>
       </div>
     </form>
-  );
+  )
 }

@@ -9,12 +9,12 @@ interface NotificationMessage {
   timestamp: Date;
 }
 
-export const useNewMessageNotification = () => {;
-  const [notification, setNotification] = useState<NotificationMessage | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+export const useNewMessageNotification = () => {
+  const [notification, setNotification] = useState<NotificationMessage | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   const showNotification = useCallback((message: any) => {
-    // Only show notifications for received messages (not sent by me);
+    // Only show notifications for received messages (not sent by me)
     if (message.is_from_me) return;
     
     // Create notification object
@@ -27,22 +27,22 @@ export const useNewMessageNotification = () => {;
       timestamp: new Date(message.timestamp || Date.now())
     };
     
-    setNotification(notificationData);
-    setIsVisible(true);
-  }, []);
+    setNotification(notificationData)
+    setIsVisible(true)
+  }, [])
 
-  const hideNotification = useCallback(() => {;
-    setIsVisible(false);
+  const hideNotification = useCallback(() => {
+    setIsVisible(false)
     // Clear notification after animation
     setTimeout(() => {
-      setNotification(null);
-    }, 300);
-  }, []);
+      setNotification(null)
+    }, 300)
+  }, [])
 
-  const clearNotification = useCallback(() => {;
-    setNotification(null);
-    setIsVisible(false);
-  }, []);
+  const clearNotification = useCallback(() => {
+    setNotification(null)
+    setIsVisible(false)
+  }, [])
 
   return {
     notification,

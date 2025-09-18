@@ -10,7 +10,7 @@ const PedidosPage = () => {
   ];
 
   const getStatusColor = (status: string) => {
-    switch (status) {;
+    switch (status) {
       case 'pendente': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'preparando': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'pronto': return 'bg-green-100 text-green-800 border-green-200';
@@ -20,7 +20,7 @@ const PedidosPage = () => {
   };
 
   const getStatusIcon = (status: string) => {
-    switch (status) {;
+    switch (status) {
       case 'pendente': return <Clock className="h-4 w-4" />;
       case 'preparando': return <ShoppingCart className="h-4 w-4" />;
       case 'pronto': return <CheckCircle className="h-4 w-4" />;
@@ -99,7 +99,7 @@ const PedidosPage = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default PedidosPage;

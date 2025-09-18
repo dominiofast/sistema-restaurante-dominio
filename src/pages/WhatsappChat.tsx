@@ -66,7 +66,7 @@ interface Chat {
 }
 
 // Função para limpar o nome do contato removendo domínios do WhatsApp
-const cleanContactName = (name: string): string => {;
+const cleanContactName = (name: string): string => {
   if (!name) return 'Contato';
   
   // Remove domínios comuns do WhatsApp (@c.us, @g.us, @s.whatsapp.net)
@@ -75,7 +75,7 @@ const cleanContactName = (name: string): string => {;
     .replace(/@g\.us$/, '')
     .replace(/@s\.whatsapp\.net$/, '')
     .replace(/^\+?55/, '') // Remove código do país brasileiro se presente;
-    .trim();
+    .trim()
   
   // Se após a limpeza o nome ficou vazio ou é apenas números, retorna "Contato"
   if (!cleanName || /^\d+$/.test(cleanName)) {
@@ -86,33 +86,33 @@ const cleanContactName = (name: string): string => {;
 };
 
 // Função para formatar número de telefone
-const formatPhoneNumber = (phone: string): string => {;
+const formatPhoneNumber = (phone: string): string => {
   if (!phone) return '';
   
   // Remove domínios do WhatsApp se presentes
   const cleanPhone = phone
     .replace(/@c\.us$/, '')
-    .replace(/@g\.us$/, '');
-    .replace(/@s\.whatsapp\.net$/, '');
+    .replace(/@g\.us$/, '')
+    .replace(/@s\.whatsapp\.net$/, '')
   
   // Se começar com 55, formata como número brasileiro
   if (cleanPhone.startsWith('55') && cleanPhone.length === 13) {
-    const ddd = cleanPhone.substring(2, 4);
-    const numero = cleanPhone.substring(4);
+    const ddd = cleanPhone.substring(2, 4)
+    const numero = cleanPhone.substring(4)
     return `+55 (${ddd}) ${numero.substring(0, 5)}-${numero.substring(5)}`;
   }
   
   // Se for um número com 11 dígitos (celular brasileiro)
   if (cleanPhone.length === 11) {
-    const ddd = cleanPhone.substring(0, 2);
-    const numero = cleanPhone.substring(2);
+    const ddd = cleanPhone.substring(0, 2)
+    const numero = cleanPhone.substring(2)
     return `(${ddd}) ${numero.substring(0, 5)}-${numero.substring(5)}`;
   }
   
   // Se for um número com 10 dígitos (fixo brasileiro)
   if (cleanPhone.length === 10) {
-    const ddd = cleanPhone.substring(0, 2);
-    const numero = cleanPhone.substring(2);
+    const ddd = cleanPhone.substring(0, 2)
+    const numero = cleanPhone.substring(2)
     return `(${ddd}) ${numero.substring(0, 4)}-${numero.substring(4)}`;
   }
   
@@ -120,70 +120,70 @@ const formatPhoneNumber = (phone: string): string => {;
 };
 
 // Normaliza número de telefone para comparação (apenas dígitos, remove sufixos do WhatsApp e 55 inicial opcional)
-const normalizePhone = (phone: string): string => {;
+const normalizePhone = (phone: string): string => {
   if (!phone) return '';
   const onlyDigits = phone
     .replace(/@c\.us$/, '')
     .replace(/@g\.us$/, '')
-    .replace(/@s\.whatsapp\.net$/, '');
-    .replace(/\D/g, '');
+    .replace(/@s\.whatsapp\.net$/, '')
+    .replace(/\D/g, '')
   // Remove 55 inicial se existir
   return onlyDigits.startsWith('55') ? onlyDigits.substring(2) : onlyDigits;
 };
 
 // Remove prefixo indevido inserido em mensagens antigas
-const sanitizeMessage = (text: string): string => {;
+const sanitizeMessage = (text: string): string => {
   if (!text) return '';
   return text
     .replace(/^(?:\s*\/\/\s*Ajusta\s+cores\s+e\s+adiciona\s+caudas\s*\n?)+/i, '')
-    .trim();
+    .trim()
 };
 
 // Função para sanitizar links sem quebrar o preview
-const sanitizeLinks = (text: string): string => {;
+const sanitizeLinks = (text: string): string => {
   if (!text) return text;
   // Simplesmente retorna o texto sem modificações nos links
   return text;
 };
 
 function WhatsappChat() {
-  const { currentCompany } = useAuth();
-  const { companyInfo } = useCompanyInfo();
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [messageText, setMessageText] = useState('');
+  const { currentCompany } = useAuth()
+  const { companyInfo } = useCompanyInfo()
+  const [chats, setChats] = useState<Chat[]>([])
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [messageText, setMessageText] = useState('')
   const [pedidoWizard, setPedidoWizard] = useState<{
     etapa: 'idle' | 'produtos' | 'entrega' | 'pagamento' | 'confirmacao' | 'finalizado';
     produtos: Array<{ nome: string; quantidade: number }>;
     entrega: null | { tipo: 'delivery' | 'retirada'; endereco?: string };
     pagamento: null | { forma: string };
     resumo: string;
-  } | null>(null);
-  const [wizardMessage, setWizardMessage] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [integration, setIntegration] = useState<any>(null);
+  } | null>(null)
+  const [wizardMessage, setWizardMessage] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [integration, setIntegration] = useState<any>(null)
   const effectiveCompanyId = integration?.company_id || currentCompany?.id;
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const hasInitialized = useRef(false);
-  const selectedChatIdRef = useRef<string | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const hasInitialized = useRef(false)
+  const selectedChatIdRef = useRef<string | null>(null)
+  const [searchParams, setSearchParams] = useSearchParams()
   const SELECTED_CHAT_KEY = 'whatsapp:selectedChatId';
   const AI_PAUSED_KEY_PREFIX = 'whatsapp:aiPaused:'; // persistência por chat
-  const [isAIPaused, setIsAIPaused] = useState(false);
-  const [isAITyping, setIsAITyping] = useState(false);
-  const [showDiagnostic, setShowDiagnostic] = useState(false);
+  const [isAIPaused, setIsAIPaused] = useState(false)
+  const [isAITyping, setIsAITyping] = useState(false)
+  const [showDiagnostic, setShowDiagnostic] = useState(false)
 
   // Notificação agora é global - removida daqui
 
   // Buscar integração WhatsApp
   useEffect(() => {
-    const fetchIntegration = async () => {;
+    const fetchIntegration = async () => {
       if (!currentCompany?.id) return;
       
       try {
-        const { data, error }  catch (error) { console.error('Error:', error); }= 
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -191,45 +191,45 @@ function WhatsappChat() {
           
         
         if (error || !data) {
-          console.error('Erro ao buscar integração:', error);
-          setError('Integração WhatsApp (primary) não configurada');
-          setLoading(false);
+          console.error('Erro ao buscar integração:', error)
+          setError('Integração WhatsApp (primary) não configurada')
+          setLoading(false)
           return;
         }
         
-        setIntegration(data);
-        console.log('🧭 Integração carregada. company_id efetivo:', data.company_id);
+        setIntegration(data)
+        console.log('🧭 Integração carregada. company_id efetivo:', data.company_id)
       } catch (err) {
-        console.error('Erro na busca da integração:', err);
-        setError('Erro ao buscar integração WhatsApp');
-        setLoading(false);
+        console.error('Erro na busca da integração:', err)
+        setError('Erro ao buscar integração WhatsApp')
+        setLoading(false)
 
     };
     
-  fetchIntegration();
+  fetchIntegration()
 
   // Rodar limpeza de mensagens antigas com prefixo indevido
   if (currentCompany?.id) {
     
       .invoke('cleanup-whatsapp-comments', { body: { company_id: currentCompany.id } })
-      .catch(() => {});
+      .catch(() => {})
   }
 
-  }, [currentCompany]);
+  }, [currentCompany])
 
   // Sincronizar estado de pausa quando o chat muda
   useEffect(() => {
     const chatId = selectedChat?.chatId;
     if (!currentCompany?.id || !chatId) return;
     const localKey = AI_PAUSED_KEY_PREFIX + chatId;
-    const saved = localStorage.getItem(localKey);
+    const saved = localStorage.getItem(localKey)
     if (saved !== null) {
-      setIsAIPaused(saved === 'true');
+      setIsAIPaused(saved === 'true')
     }
     // Buscar no banco para garantir consistência
     const syncAIPausedState = async () => {
-      try {;
-        const { data }  catch (error) { console.error('Error:', error); }= 
+      try {
+        const { data }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -237,61 +237,61 @@ function WhatsappChat() {
           
         
         if (data && typeof data.ai_paused === 'boolean') {
-          setIsAIPaused(data.ai_paused);
-          localStorage.setItem(localKey, String(data.ai_paused));
+          setIsAIPaused(data.ai_paused)
+          localStorage.setItem(localKey, String(data.ai_paused))
         }
       } catch (error) {
-        console.error('Erro ao sincronizar estado da IA:', error);
+        console.error('Erro ao sincronizar estado da IA:', error)
 
     };
     
-    syncAIPausedState();
-  }, [selectedChat?.chatId, currentCompany?.id]);
+    syncAIPausedState()
+  }, [selectedChat?.chatId, currentCompany?.id])
 
   // Sincronizar avatar do contato quando um chat é selecionado
   useEffect(() => {
-    const syncContactAvatar = async () => {;
+    const syncContactAvatar = async () => {
       if (!selectedChat || !currentCompany?.id) return;
       
       // Verificar se o chat já tem avatar
       if (selectedChat.avatar) return;
       
       try {
-        console.log('🔄 Sincronizando avatar para:', selectedChat.name);
+        console.log('🔄 Sincronizando avatar para:', selectedChat.name)
         
         // Chamar função para sincronizar avatar
-        const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+        const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
           body: {
             company_id: currentCompany.id,
             phone_numbers: [selectedChat.phoneNumber.replace(/\D/g, '')]
           }
-        });
+        })
         
         if (error) {
-          console.error('Erro ao sincronizar avatar:', error);
+          console.error('Erro ao sincronizar avatar:', error)
           return;
         }
         
         if (data && data.updated > 0) {
-          console.log('✅ Avatar sincronizado com sucesso');
+          console.log('✅ Avatar sincronizado com sucesso')
           // Recarregar chats para mostrar o novo avatar
-          fetchChats();
+          fetchChats()
         }
       } catch (error) {
-        console.error('Erro ao sincronizar avatar:', error);
+        console.error('Erro ao sincronizar avatar:', error)
 
     };
     
-    syncContactAvatar();
-  }, [selectedChat?.chatId, currentCompany?.id]);
+    syncContactAvatar()
+  }, [selectedChat?.chatId, currentCompany?.id])
 
   // Buscar chats com otimização para velocidade máxima
-  const fetchChats = async () => {;
+  const fetchChats = async () => {
     const companyIdToUse = effectiveCompanyId;
     if (!companyIdToUse) return;
     
     try {
-      console.log('⚡ CARREGANDO CHATS - MODO SUPER RÁPIDO');
+      console.log('⚡ CARREGANDO CHATS - MODO SUPER RÁPIDO')
 
       const chatsData = null as any; const chatsError = null as any;
       
@@ -299,19 +299,19 @@ function WhatsappChat() {
       
       // Tentar resolver nomes reais dos clientes via tabela clientes
       const phoneList = Array
-        .map((c: any) => normalizePhone(c.contact_phone || ''));
-        .filter((p: string) => !!p)));
+        .map((c: any) => normalizePhone(c.contact_phone || ''))
+        .filter((p: string) => !!p)))
 
-      let clientesMap = new Map<string, string>();
+      let clientesMap = new Map<string, string>()
       if (phoneList.length > 0) {
-        const { data: clientesData }  catch (error) { console.error('Error:', error); }= 
+        const { data: clientesData }  catch (error) { console.error('Error:', error) }= 
           
           
           
-          .in('telefone', phoneList);
+          .in('telefone', phoneList)
         (clientesData || []).forEach((cli: any) => {
-          clientesMap.set(normalizePhone(cli.telefone || ''), cli.nome);
-        });
+          clientesMap.set(normalizePhone(cli.telefone || ''), cli.nome)
+        })
 
 
       const chatsWithMessages = chatsData.map((chat: any) => {
@@ -326,12 +326,12 @@ function WhatsappChat() {
             type: msg.message_type as 'text' | 'image' | 'audio' | 'document',
             messageId: msg.message_id,
             senderName: msg.is_from_me ? 'Eu' : (msg.contact_name || chat.contact_name || 'Contato'),
-            senderAvatar: msg.is_from_me ? undefined : (msg.contact_avatar || chat.contact_avatar);
-          }));
+            senderAvatar: msg.is_from_me ? undefined : (msg.contact_avatar || chat.contact_avatar)
+          }))
 
-        const normalized = normalizePhone(chat.contact_phone || '');
+        const normalized = normalizePhone(chat.contact_phone || '')
         const nameFromChat = (chat.contact_name && chat.contact_name.trim() && chat.contact_name.trim().toLowerCase() !== 'desconhecido' && !/^\d+$/.test(chat.contact_name.trim()))
-          ? cleanContactName(chat.contact_name);
+          ? cleanContactName(chat.contact_name)
           : '';
         const resolvedName = nameFromChat || clientesMap.get(normalized) || '';
 
@@ -346,12 +346,12 @@ function WhatsappChat() {
           unreadCount: chat.unread_count || 0,
           messages: chatMessages
         };
-      });
+      })
 
-      setChats(chatsWithMessages);
+      setChats(chatsWithMessages)
     } catch (error) {
-      console.error('Erro ao buscar chats:', error);
-      setError('Erro ao carregar conversas');
+      console.error('Erro ao buscar chats:', error)
+      setError('Erro ao carregar conversas')
     }
   };
 
@@ -372,14 +372,14 @@ function WhatsappChat() {
     // Notificação agora é global - não precisa chamar aqui
     
     setChats(prevChats => {
-      const existingChatIndex = prevChats.findIndex(chat => chat.chatId === newMessage.chat_id);
+      const existingChatIndex = prevChats.findIndex(chat => chat.chatId === newMessage.chat_id)
       
       if (existingChatIndex >= 0) {
         const updatedChats = [...prevChats];
         const existingChat = updatedChats[existingChatIndex];
         
         // Verifica se a mensagem já existe para evitar duplicatas
-        const messageExists = existingChat.messages.some(msg => msg.id === message.id);
+        const messageExists = existingChat.messages.some(msg => msg.id === message.id)
         if (!messageExists) {
           updatedChats[existingChatIndex] = {
             ...existingChat,
@@ -408,13 +408,13 @@ function WhatsappChat() {
         
         return [newChat, ...prevChats];
 
-    });
+    })
     
     // Atualizar chat selecionado se for o mesmo
     if (selectedChat && selectedChat.chatId === newMessage.chat_id) {
       setSelectedChat(prev => {
         if (!prev) return null;
-        const messageExists = prev.messages.some(msg => msg.id === message.id);
+        const messageExists = prev.messages.some(msg => msg.id === message.id)
         if (!messageExists) {
           return {
             ...prev,
@@ -424,16 +424,16 @@ function WhatsappChat() {
           };
         }
         return prev;
-      });
+      })
     }
   };
 
   // handleNotificationChatSelect removido - notificação agora é global
-const processPedidoWizard = async (input: string) => {;
+const processPedidoWizard = async (input: string) => {
   if (!pedidoWizard) return;
   
   // Simular delay de processamento
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 1000))
   
   let etapa = pedidoWizard.etapa;
   let produtos = pedidoWizard.produtos;
@@ -445,36 +445,36 @@ const processPedidoWizard = async (input: string) => {;
     // Espera: "Produto x quantidade" ou "finalizar"
     if (/finalizar/i.test(input)) {
       if (produtos.length === 0) {
-        setWizardMessage('Adicione pelo menos um produto antes de finalizar. Informe o nome do produto e a quantidade.');
+        setWizardMessage('Adicione pelo menos um produto antes de finalizar. Informe o nome do produto e a quantidade.')
         return;
 
       etapa = 'entrega';
-      setWizardMessage('Qual a forma de entrega? Responda "delivery" ou "retirada".');
+      setWizardMessage('Qual a forma de entrega? Responda "delivery" ou "retirada".')
     } else {
       // Tenta extrair produto e quantidade
-      const match = input.match(/(.+)\s+x\s*(\d+)/i);
+      const match = input.match(/(.+)\s+x\s*(\d+)/i)
       if (match) {
         produtos = [...produtos, { nome: match[1].trim(), quantidade: parseInt(match[2]) }];
-        setWizardMessage('Produto adicionado! Informe outro produto e quantidade, ou digite "finalizar" para continuar.');
+        setWizardMessage('Produto adicionado! Informe outro produto e quantidade, ou digite "finalizar" para continuar.')
       } else {
-        setWizardMessage('Por favor, informe o produto no formato: "Nome do Produto x quantidade".');
+        setWizardMessage('Por favor, informe o produto no formato: "Nome do Produto x quantidade".')
 
     }
   } else if (etapa === 'entrega') {
     if (/delivery/i.test(input)) {
       etapa = 'pagamento';
       entrega = { tipo: 'delivery', endereco: undefined };
-      setWizardMessage('Informe o endereço de entrega:');
+      setWizardMessage('Informe o endereço de entrega:')
     } else if (/retirada/i.test(input)) {
       etapa = 'pagamento';
       entrega = { tipo: 'retirada' };
-      setWizardMessage('Qual a forma de pagamento? (Dinheiro, Cartão, Pix, etc.)');
+      setWizardMessage('Qual a forma de pagamento? (Dinheiro, Cartão, Pix, etc.)')
     } else if (entrega?.tipo === 'delivery' && !entrega.endereco) {
       entrega = { tipo: 'delivery', endereco: input };
       etapa = 'pagamento';
-      setWizardMessage('Qual a forma de pagamento? (Dinheiro, Cartão, Pix, etc.)');
+      setWizardMessage('Qual a forma de pagamento? (Dinheiro, Cartão, Pix, etc.)')
     } else {
-      setWizardMessage('Escolha "delivery" ou "retirada".');
+      setWizardMessage('Escolha "delivery" ou "retirada".')
     }
   } else if (etapa === 'pagamento') {
     pagamento = { forma: input };
@@ -482,48 +482,48 @@ const processPedidoWizard = async (input: string) => {;
     // Monta resumo
     resumo = `Resumo do Pedido:\nProdutos:\n` + produtos.map(p => `- ${p.nome} x${p.quantidade}`).join('\n') +
       `\nEntrega: ${entrega?.tipo}${entrega?.endereco ? ' - ' + entrega.endereco : ''}\nPagamento: ${pagamento.forma}`;
-    setWizardMessage(resumo + '\n\nDigite "confirmar" para lançar o pedido ou "cancelar" para abortar.');
+    setWizardMessage(resumo + '\n\nDigite "confirmar" para lançar o pedido ou "cancelar" para abortar.')
   } else if (etapa === 'confirmacao') {
     if (/confirmar/i.test(input)) {
       etapa = 'finalizado';
-      setWizardMessage('Pedido lançado! Aguarde a confirmação.');
+      setWizardMessage('Pedido lançado! Aguarde a confirmação.')
       // Aqui você pode chamar a função de lançamento de pedido (exemplo fictício):
-      // await criarPedidoNoBackend(produtos, entrega, pagamento);
+      // await criarPedidoNoBackend(produtos, entrega, pagamento)
     } else if (/cancelar/i.test(input)) {
-      setPedidoWizard(null);
-      setWizardMessage('Pedido cancelado.');
+      setPedidoWizard(null)
+      setWizardMessage('Pedido cancelado.')
       return;
     } else {
-      setWizardMessage('Digite "confirmar" para lançar o pedido ou "cancelar" para abortar.');
+      setWizardMessage('Digite "confirmar" para lançar o pedido ou "cancelar" para abortar.')
     }
   }
 
-  setPedidoWizard({ etapa, produtos, entrega, pagamento, resumo });
+  setPedidoWizard({ etapa, produtos, entrega, pagamento, resumo })
 };
 
-const handlePauseAI = async () => {;
+const handlePauseAI = async () => {
   const newPausedState = !isAIPaused;
-  setIsAIPaused(newPausedState);
+  setIsAIPaused(newPausedState)
   
   // Persistir por conversa no localStorage
   if (selectedChat?.chatId) {
-    localStorage.setItem(AI_PAUSED_KEY_PREFIX + selectedChat.chatId, newPausedState.toString());
+    localStorage.setItem(AI_PAUSED_KEY_PREFIX + selectedChat.chatId, newPausedState.toString())
   }
   
   // CORRIGIDO: Salvar APENAS para a empresa atual - sem sincronização cross-empresa
   if (currentCompany?.id && selectedChat?.chatId) {
     try {
-      console.log(`🎯 Pausando IA APENAS para empresa: ${currentCompany.id}  catch (error) { console.error('Error:', error); }| Chat: ${selectedChat.chatId}`);
+      console.log(`🎯 Pausando IA APENAS para empresa: ${currentCompany.id}  catch (error) { console.error('Error:', error) }| Chat: ${selectedChat.chatId}`)
       
       const { error  } = null as any;
       if (error) throw error;
       
-      console.log(`✅ Pausa aplicada com sucesso para empresa: ${currentCompany.id}`);
+      console.log(`✅ Pausa aplicada com sucesso para empresa: ${currentCompany.id}`)
       
       // REMOVIDO: Sincronização entre empresas (era isso que causava o problema)
     } catch (err) {
-      console.error('Erro ao salvar estado de pausa:', err);
-      toast.error('Erro ao salvar pausa deste chat');
+      console.error('Erro ao salvar estado de pausa:', err)
+      toast.error('Erro ao salvar pausa deste chat')
     }
   }
   
@@ -532,34 +532,34 @@ const handlePauseAI = async () => {;
     toast.warning('🤖 IA Pausada - As mensagens não serão processadas automaticamente', {
       duration: 3000,
       position: 'top-center'
-    });
+    })
     if (pedidoWizard) {
-      setPedidoWizard(null);
-      setWizardMessage('Agente de IA pausado.');
+      setPedidoWizard(null)
+      setWizardMessage('Agente de IA pausado.')
     }
   } else {
     toast.success('🤖 IA Retomada - Pronta para processar mensagens', {
       duration: 3000,
       position: 'top-center'
-    });
+    })
   }
   
   // Log para debug
-  console.log('IA Status:', newPausedState ? 'PAUSADA' : 'ATIVA');
+  console.log('IA Status:', newPausedState ? 'PAUSADA' : 'ATIVA')
 };
-const sendMessage = async () => {;
+const sendMessage = async () => {
     if (!messageText.trim() || !selectedChat || !integration || !effectiveCompanyId) return;
     
     // Mostrar typing indicator quando não é AI pausado e vai processar mensagem
     if (!isAIPaused) {
-      setIsAITyping(true);
+      setIsAITyping(true)
       
       if (pedidoWizard) {
         try {
-          await processPedidoWizard(messageText.trim());
-          setMessageText('');
+          await processPedidoWizard(messageText.trim())
+          setMessageText('')
         } finally {
-          setIsAITyping(false);
+          setIsAITyping(false)
         }
         return;
 
@@ -570,10 +570,10 @@ const sendMessage = async () => {;
           entrega: null,
           pagamento: null,
           resumo: '',
-        });
-        setWizardMessage('Vamos montar seu pedido! Informe o nome do produto e quantidade (ex: Pizza Margherita x 2). Quando terminar, digite "finalizar".' );
-        setMessageText('');
-        setIsAITyping(false);
+        })
+        setWizardMessage('Vamos montar seu pedido! Informe o nome do produto e quantidade (ex: Pizza Margherita x 2). Quando terminar, digite "finalizar".' )
+        setMessageText('')
+        setIsAITyping(false)
         return;
 
     }
@@ -592,21 +592,21 @@ const sendMessage = async () => {;
       messages: [...selectedChat.messages, newMessage],
       lastMessage: newMessage.content,
       timestamp: new Date()
-    });
+    })
 
     setChats(prev => prev.map(chat =>
       chat.id === selectedChat.id
         ? { ...chat, lastMessage: newMessage.content, timestamp: new Date(), messages: [...chat.messages, newMessage] }
         : chat
-    ));
+    ))
 
     const currentMessageText = newMessage.content;
-    setMessageText('');
+    setMessageText('')
 
     try {
       // Normalizar telefone para formato E.164 (Brasil) sem máscara
-      const toDigits = normalizePhone(selectedChat.phoneNumber);
-      const to = toDigits.startsWith('55') ? toDigits : `55${toDigits} catch (error) { console.error('Error:', error); }`;
+      const toDigits = normalizePhone(selectedChat.phoneNumber)
+      const to = toDigits.startsWith('55') ? toDigits : `55${toDigits} catch (error) { console.error('Error:', error) }`;
 
       const response = await fetch(`https://${integration.host}/rest/sendMessage/${integration.instance_key}/text`, {
 // method: 'POST',
@@ -621,11 +621,11 @@ const sendMessage = async () => {;
             preview_url: false,
             linkPreview: false
           }
-        });
-      });
+        })
+      })
 
       if (!response.ok) {
-        throw new Error('Falha ao enviar mensagem');
+        throw new Error('Falha ao enviar mensagem')
 
 
       const messageId = `${Date.now()}_${Math.random()}`;
@@ -640,10 +640,10 @@ const sendMessage = async () => {;
           is_from_me: true,
           status: 'sent',
           timestamp: new Date().toISOString()
-        });
+        })
 
       if (saveError) {
-        console.error('Erro ao salvar mensagem no banco:', saveError);
+        console.error('Erro ao salvar mensagem no banco:', saveError)
       } else {
         const { error: updateChatError  } = null as any;
             last_message: currentMessageText,
@@ -653,27 +653,27 @@ const sendMessage = async () => {;
           
           
         if (updateChatError) {
-          console.error('Erro ao atualizar chat:', updateChatError);
+          console.error('Erro ao atualizar chat:', updateChatError)
         }
-        toast.success('Mensagem enviada!');
+        toast.success('Mensagem enviada!')
 
     } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
-      toast.error('Erro ao enviar mensagem');
+      console.error('Erro ao enviar mensagem:', error)
+      toast.error('Erro ao enviar mensagem')
     } finally {
-      setIsAITyping(false);
+      setIsAITyping(false)
     }
   };
 
   // Efeito para scroll automático
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [selectedChat?.messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [selectedChat?.messages])
 
   // Sincroniza ref com chat selecionado para evitar re-render desnecessário em subscriptions
   useEffect(() => {
     selectedChatIdRef.current = selectedChat?.chatId || null;
-  }, [selectedChat?.chatId]);
+  }, [selectedChat?.chatId])
 
   // Real-time com hook otimizado
   const { 
@@ -695,14 +695,14 @@ const sendMessage = async () => {;
   } = useWhatsAppRealtime({
     companyId: effectiveCompanyId,
     onNewMessage: (newMessage) => {
-      console.log('📨 MENSAGEM RECEBIDA VIA REALTIME:', newMessage);
-      upsertChatLocally(newMessage);
+      console.log('📨 MENSAGEM RECEBIDA VIA REALTIME:', newMessage)
+      upsertChatLocally(newMessage)
       if (!newMessage.is_from_me && !isAIPaused) {
-        console.log('IA processaria mensagem:', newMessage.message_content);
+        console.log('IA processaria mensagem:', newMessage.message_content)
 
     },
     onChatUpdate: (payload) => {
-      console.log('📝 CHAT ATUALIZADO VIA REALTIME:', payload);
+      console.log('📝 CHAT ATUALIZADO VIA REALTIME:', payload)
       if (payload.eventType === 'UPDATE') {
         const updatedChat = payload.new;
         setChats(prevChats =>
@@ -711,10 +711,10 @@ const sendMessage = async () => {;
               ? { ...chat, unreadCount: updatedChat.unread_count || 0 }
               : chat
           )
-        );
+        )
 
     }
-  });
+  })
 
   // Notificações agora são globais - removidas daqui
 
@@ -722,35 +722,35 @@ const sendMessage = async () => {;
   useEffect(() => {
     if (!currentCompany?.id || !integration) return;
     if (!hasInitialized.current) {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
       fetchChats().finally(() => {
-        setLoading(false);
+        setLoading(false)
         hasInitialized.current = true;
         
         // Forçar reconexão real-time após inicialização
-        console.log('🔥 FORÇANDO RECONEXÃO REAL-TIME APÓS INICIALIZAÇÃO');
+        console.log('🔥 FORÇANDO RECONEXÃO REAL-TIME APÓS INICIALIZAÇÃO')
         setTimeout(() => {
-          forceReconnect();
-        }, 2000);
-      });
+          forceReconnect()
+        }, 2000)
+      })
     }
-  }, [currentCompany?.id, integration?.id, forceReconnect]);
+  }, [currentCompany?.id, integration?.id, forceReconnect])
 
   // Função para marcar chat como lido
-  const markChatAsRead = async (chatId: string) => {;
+  const markChatAsRead = async (chatId: string) => {
     if (!currentCompany?.id) return;
     
     try {
       // Atualizar no banco de dados
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
       
       if (error) {
-        console.error('Erro ao marcar chat como lido:', error);
+        console.error('Erro ao marcar chat como lido:', error)
         return;
 
       
@@ -761,48 +761,48 @@ const sendMessage = async () => {;
             ? { ...chat, unreadCount: 0 }
             : chat
         )
-      );
+      )
       
-      console.log('✅ Chat marcado como lido:', chatId);
+      console.log('✅ Chat marcado como lido:', chatId)
     } catch (error) {
-      console.error('Erro ao marcar chat como lido:', error);
+      console.error('Erro ao marcar chat como lido:', error)
     }
   };
 
   // Restaurar conversa selecionada (URL ou localStorage)
   useEffect(() => {
-    const urlChatId = searchParams.get('chatId');
-    const storedChatId = localStorage.getItem(SELECTED_CHAT_KEY);
+    const urlChatId = searchParams.get('chatId')
+    const storedChatId = localStorage.getItem(SELECTED_CHAT_KEY)
     const chatId = urlChatId || storedChatId;
     if (!selectedChat && chatId && chats.length > 0) {
-      const found = chats.find(c => c.chatId === chatId);
+      const found = chats.find(c => c.chatId === chatId)
       if (found) {
-        setSelectedChat(found);
+        setSelectedChat(found)
         // Marcar como lido se tem mensagens não lidas
         if (found.unreadCount > 0) {
-          markChatAsRead(chatId);
+          markChatAsRead(chatId)
         }
         if (!urlChatId) {
-          const sp = new URLSearchParams(searchParams);
-          sp.set('chatId', chatId);
-          setSearchParams(sp, { replace: true });
+          const sp = new URLSearchParams(searchParams)
+          sp.set('chatId', chatId)
+          setSearchParams(sp, { replace: true })
         }
       }
     }
-  }, [chats]);
+  }, [chats])
 
   // Persistir quando trocar a conversa
   useEffect(() => {
     if (selectedChat) {
-      localStorage.setItem(SELECTED_CHAT_KEY, selectedChat.chatId);
+      localStorage.setItem(SELECTED_CHAT_KEY, selectedChat.chatId)
     }
-  }, [selectedChat?.chatId]);
+  }, [selectedChat?.chatId])
 
   const filteredChats = chats.filter(chat =>
     chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     chat.phoneNumber.includes(searchTerm) ||
-    chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase());
-  );
+    chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   if (loading) {
     return (
@@ -812,7 +812,7 @@ const sendMessage = async () => {;
           <p className="text-gray-600">Carregando conversas...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -831,7 +831,7 @@ const sendMessage = async () => {;
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -843,15 +843,15 @@ const sendMessage = async () => {;
           chats={chats}
           selectedChat={selectedChat}
           onChatSelect={(chat) => {
-            setSelectedChat(chat);
-            localStorage.setItem(SELECTED_CHAT_KEY, chat.chatId);
-            const sp = new URLSearchParams(searchParams);
-            sp.set('chatId', chat.chatId);
-            setSearchParams(sp, { replace: true });
+            setSelectedChat(chat)
+            localStorage.setItem(SELECTED_CHAT_KEY, chat.chatId)
+            const sp = new URLSearchParams(searchParams)
+            sp.set('chatId', chat.chatId)
+            setSearchParams(sp, { replace: true })
             
             // Marcar como lido se tem mensagens não lidas
             if (chat.unreadCount > 0) {
-              markChatAsRead(chat.chatId);
+              markChatAsRead(chat.chatId)
             }
           }}
           searchTerm={searchTerm}
@@ -910,7 +910,7 @@ const sendMessage = async () => {;
                     toast.info('Teste Realtime', {
                       description: result,
                       duration: 5000
-                    });
+                    })
                   }}
                   className="px-3 py-1 bg-blue-500/80 hover:bg-blue-600/80 rounded text-sm transition-colors"
                   title="Teste rápido do sistema"
@@ -1102,7 +1102,7 @@ const sendMessage = async () => {;
       {/* Notificação removida - usando apenas a global */}
       </div>
     </div>
-  );
+  )
 }
 
 export default WhatsappChat;

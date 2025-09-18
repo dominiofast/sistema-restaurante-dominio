@@ -29,26 +29,26 @@ export const CashbackInput: React.FC<CashbackInputProps> = ({
     pendente,
     valorPendente,
     fetchSaldo
-  } = useCashback(companyId, customerPhone, totalPedido);
+  } = useCashback(companyId, customerPhone, totalPedido)
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL';
-    }).format(value);
+    }).format(value)
   };
 
-  const handleUsarTodoSaldo = () => {;
-    const valorAUsar = Math.min(saldoDisponivel, totalPedido);
+  const handleUsarTodoSaldo = () => {
+    const valorAUsar = Math.min(saldoDisponivel, totalPedido)
     if (valorAUsar <= 0) return;
 
-    marcarPendente(valorAUsar);
-    onCashbackApplied(valorAUsar);
+    marcarPendente(valorAUsar)
+    onCashbackApplied(valorAUsar)
   };
 
-  const handleRemoverCashback = () => {;
-    removerCashback();
-    onCashbackApplied(0);
+  const handleRemoverCashback = () => {
+    removerCashback()
+    onCashbackApplied(0)
   };
 
   if (saldoDisponivel <= 0) {
@@ -73,7 +73,7 @@ export const CashbackInput: React.FC<CashbackInputProps> = ({
                 id="usar-cashback"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    handleUsarTodoSaldo();
+                    handleUsarTodoSaldo()
                   }
                 }}
                 disabled={disabled || loading || saldoDisponivel <= 0}
@@ -128,5 +128,5 @@ export const CashbackInput: React.FC<CashbackInputProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

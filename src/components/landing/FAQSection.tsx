@@ -72,5 +72,5 @@ export const FAQSection = () => {
         </Accordion>
       </div>
     </section>;
-  );
+  )
 };

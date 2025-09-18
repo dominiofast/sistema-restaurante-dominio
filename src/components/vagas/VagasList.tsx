@@ -51,7 +51,7 @@ export const VagasList: React.FC<VagasListProps> = ({
           Nova Vaga
         </Button>
       </div>
-    );
+    )
 
 
   return (
@@ -66,5 +66,5 @@ export const VagasList: React.FC<VagasListProps> = ({
         />
       ))}
     </div>
-  );
+  )
 };

@@ -92,5 +92,5 @@ export const ClienteForm: React.FC<ClienteFormProps> = ({
         </form>
       </CardContent>
     </Card>
-  );
+  )
 };

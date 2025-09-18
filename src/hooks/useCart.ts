@@ -14,34 +14,34 @@ import { useCartAdicionais } from './cart/useCartAdicionais';
 // Re-exportar types para compatibilidade
 export type { CartItem, CartAdicionais };
 
-export const useCart = (companySlug?: string, companyId?: string) => {;
-  const { currentCompany } = useAuth();
-  const { carrinho, setCarrinho, isInitialized, limparCarrinho } = useCartStorage(companySlug, currentCompany?.id);
-  const { calculateItemPrices } = useCartCalculations();
-  const { processAdicionais } = useCartAdicionais();
+export const useCart = (companySlug?: string, companyId?: string) => {
+  const { currentCompany } = useAuth()
+  const { carrinho, setCarrinho, isInitialized, limparCarrinho } = useCartStorage(companySlug, currentCompany?.id)
+  const { calculateItemPrices } = useCartCalculations()
+  const { processAdicionais } = useCartAdicionais()
   
   // Verificação de status da loja
   const storeCompanyId = companyId || currentCompany?.id;
-  const { status: storeStatus } = useStoreStatus(storeCompanyId);
+  const { status: storeStatus } = useStoreStatus(storeCompanyId)
 
   // Escutar evento de reset diário
   useEffect(() => {
     const handleDailyReset = (event: CustomEvent) => {
       if (event.detail.companyId === currentCompany?.id) {
         // Reset diário detectado;
-        setCarrinho([]);
+        setCarrinho([])
       }
     };
 
-    window.addEventListener('pdv-daily-reset', handleDailyReset as EventListener);
+    window.addEventListener('pdv-daily-reset', handleDailyReset as EventListener)
     return () => {
-      window.removeEventListener('pdv-daily-reset', handleDailyReset as EventListener);
+      window.removeEventListener('pdv-daily-reset', handleDailyReset as EventListener)
     };
-  }, [currentCompany]);
+  }, [currentCompany])
 
   const generateItemId = (produto: Produto, adicionais?: { [adicionalId: string]: number }, observacoes?: string) => {
     const adicionaisKey = adicionais 
-      ? Object.keys(adicionais).sort().map(key => `${key}:${adicionais[key]}`).join(',');
+      ? Object.keys(adicionais).sort().map(key => `${key}:${adicionais[key]}`).join(',')
       : '';
     const observacoesKey = observacoes ? `obs:${observacoes}` : '';
     return `${produto.id}-${adicionaisKey}-${observacoesKey}`;
@@ -62,24 +62,24 @@ export const useCart = (companySlug?: string, companyId?: string) => {;
         title: "Loja fechada",
         description: storeStatus.message,
         variant: "destructive",;
-      });
-      throw new Error('Loja fechada: ' + storeStatus.message);
+      })
+      throw new Error('Loja fechada: ' + storeStatus.message)
     }
 
     try {
-      const itemId = generateItemId(produto, adicionais, observacoes);
+      const itemId = generateItemId(produto, adicionais, observacoes)
       const cartAdicionais = adicionais ? await processAdicionais(adicionais) : undefined;
-      const { preco_unitario, preco_total }  catch (error) { console.error('Error:', error); }= calculateItemPrices(produto, quantidade, cartAdicionais);
+      const { preco_unitario, preco_total }  catch (error) { console.error('Error:', error) }= calculateItemPrices(produto, quantidade, cartAdicionais)
       
       setCarrinho(prev => {
-        const itemExistente = prev.find(item => item.id === itemId);
+        const itemExistente = prev.find(item => item.id === itemId)
         
         let novoCarrinho;
         
         if (itemExistente) {
           const novaQuantidade = itemExistente.quantidade + quantidade;
           const { preco_unitario: newPrecoUnitario, preco_total: newPrecoTotal  } = null as any;
-            calculateItemPrices(produto, novaQuantidade, cartAdicionais);
+            calculateItemPrices(produto, novaQuantidade, cartAdicionais)
           
           novoCarrinho = prev.map(item =>
             item.id === itemId
@@ -90,7 +90,7 @@ export const useCart = (companySlug?: string, companyId?: string) => {;
                   preco_total: newPrecoTotal
                 }
               : item
-          );
+          )
         } else {
           const novoItem = { 
             id: itemId,
@@ -105,27 +105,27 @@ export const useCart = (companySlug?: string, companyId?: string) => {;
 
         
         return novoCarrinho;
-      });
+      })
       
       // Item adicionado silenciosamente - removido toast conforme solicitado pelo usuário
     } catch (error) {
-      console.error('Erro ao adicionar item:', error);
+      console.error('Erro ao adicionar item:', error)
     }
   };
 
-  const removerDoCarrinho = (itemId: string) => {;
-    setCarrinho(prev => prev.filter(item => item.id !== itemId));
+  const removerDoCarrinho = (itemId: string) => {
+    setCarrinho(prev => prev.filter(item => item.id !== itemId))
   };
 
   const atualizarQuantidade = (itemId: string, novaQuantidade: number) => {
-    if (novaQuantidade <= 0) {;
-      removerDoCarrinho(itemId);
+    if (novaQuantidade <= 0) {
+      removerDoCarrinho(itemId)
     } else {
       setCarrinho(prev =>
         prev.map(item => {
           if (item.id === itemId) {
             const { preco_unitario, preco_total  } = null as any;
-              calculateItemPrices(item.produto, novaQuantidade, item.adicionais);
+              calculateItemPrices(item.produto, novaQuantidade, item.adicionais)
             return {
               ...item,
               quantidade: novaQuantidade,
@@ -135,54 +135,54 @@ export const useCart = (companySlug?: string, companyId?: string) => {;
           }
           return item;
         })
-      );
+      )
     }
   };
 
-  const atualizarObservacoes = (itemId: string, observacoes: string) => {;
-    console.log('🔧 Atualizando observações:', { itemId, observacoes });
+  const atualizarObservacoes = (itemId: string, observacoes: string) => {
+    console.log('🔧 Atualizando observações:', { itemId, observacoes })
     setCarrinho(prev => {
-      console.log('🔧 Estado anterior do carrinho:', prev);
+      console.log('🔧 Estado anterior do carrinho:', prev)
       const updated = prev.map(item => {
-        if (item.id === itemId) {;
-          console.log('✅ Item encontrado, atualizando observações:', item);
+        if (item.id === itemId) {
+          console.log('✅ Item encontrado, atualizando observações:', item)
           const itemAtualizado = {
             ...item,
             observacoes: observacoes || undefined;
           };
-          console.log('✅ Item atualizado:', itemAtualizado);
+          console.log('✅ Item atualizado:', itemAtualizado)
           return itemAtualizado;
 
         return item;
-      });
-      console.log('🛒 Carrinho atualizado completo:', updated);
+      })
+      console.log('🛒 Carrinho atualizado completo:', updated)
       
       // Verificar se a observação foi realmente salva
-      const itemVerificacao = updated.find(item => item.id === itemId);
-      console.log('🔍 Verificação final do item atualizado:', itemVerificacao);
+      const itemVerificacao = updated.find(item => item.id === itemId)
+      console.log('🔍 Verificação final do item atualizado:', itemVerificacao)
       
       // Forçar salvamento imediato no localStorage
       const storageKey = companySlug ? `pdv_carrinho_${companySlug}` : `pdv_carrinho_${currentCompany?.id || 'default'}`;
-      localStorage.setItem(storageKey, JSON.stringify(updated));
-      console.log('💾 Carrinho salvo no localStorage:', storageKey);
+      localStorage.setItem(storageKey, JSON.stringify(updated))
+      console.log('💾 Carrinho salvo no localStorage:', storageKey)
       
       return updated;
-    });
+    })
   };
 
   const totalCarrinho = carrinho.reduce(
-    (total, item) => {;
-      return total + (isNaN(item.preco_total) ? 0 : item.preco_total);
+    (total, item) => {
+      return total + (isNaN(item.preco_total) ? 0 : item.preco_total)
     },
     0
-  );
+  )
 
   const totalItens = carrinho.reduce(
-    (total, item) => {;
+    (total, item) => {
       return total + item.quantidade;
     },
     0
-  );
+  )
 
   // Estado final do carrinho calculado
 

@@ -10,5 +10,5 @@ export const useDeliveryOptions = (companyId: string) => {
     gcTime: 10 * 60 * 1000, // 10 minutos
 // retry: 2,
     retryDelay: 1000,;
-  });
+  })
 };

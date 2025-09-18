@@ -38,21 +38,21 @@ export const ClienteTable: React.FC<ClienteTableProps> = ({
   onAddCashback,
   searchTerm
 }) => {
-  const { currentCompany } = useAuth();
-  const { data: customerCashback } = useCustomerCashback(currentCompany?.id);
+  const { currentCompany } = useAuth()
+  const { data: customerCashback } = useCustomerCashback(currentCompany?.id)
   const filteredClientes = clientes.filter(cliente =>
     cliente.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.telefone?.includes(searchTerm) ||
-    cliente.documento?.includes(searchTerm);
-  );
+    cliente.documento?.includes(searchTerm)
+  )
 
   console.log('📋 ClienteTable - Dados recebidos:', {
     clientesTotal: clientes.length,
     searchTerm,
     filteredTotal: filteredClientes.length,
     primeirosClientes: clientes.slice(0, 3).map(c => ({ nome: c.nome, status: c.status }))
-  });
+  })
 
   return (
     <Card className="bg-white shadow-lg border border-gray-200 rounded-xl">
@@ -76,7 +76,7 @@ export const ClienteTable: React.FC<ClienteTableProps> = ({
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
                 {filteredClientes.map((cliente) => {
-                  const cashback = customerCashback?.find(cb => cb.customer_phone === cliente.telefone);
+                  const cashback = customerCashback?.find(cb => cb.customer_phone === cliente.telefone)
                   
                   return (
                     <tr key={cliente.id} className="hover:bg-gray-50 transition">
@@ -137,7 +137,7 @@ export const ClienteTable: React.FC<ClienteTableProps> = ({
                       </div>
                     </td>
                   </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -145,5 +145,5 @@ export const ClienteTable: React.FC<ClienteTableProps> = ({
         )}
       </CardContent>
     </Card>
-  );
+  )
 };

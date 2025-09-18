@@ -20,30 +20,30 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
   onAddToCart,
   primaryColor
 }) => {
-  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({});
-  const [quantidade, setQuantidade] = useState(1);
-  const [observacoes, setObservacoes] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState<{ [categoriaId: string]: boolean }>({});
+  const [selectedAdicionais, setSelectedAdicionais] = useState<{ [adicionalId: string]: number }>({})
+  const [quantidade, setQuantidade] = useState(1)
+  const [observacoes, setObservacoes] = useState('')
+  const [expandedCategories, setExpandedCategories] = useState<{ [categoriaId: string]: boolean }>({})
   
-  const { categorias, loading, error } = useProductAdicionais(produto?.id);
+  const { categorias, loading, error } = useProductAdicionais(produto?.id)
 
   // Resetar estado quando modal abre/fecha
   useEffect(() => {
     if (isOpen) {
-      setSelectedAdicionais({});
-      setQuantidade(1);
-      setObservacoes('');
+      setSelectedAdicionais({})
+      setQuantidade(1)
+      setObservacoes('')
       
       // Expandir todas as categorias por padrão
       if (categorias.length > 0) {
         const expanded: { [categoriaId: string]: boolean } = {};
         categorias.forEach(categoria => {
           expanded[categoria.id] = true;
-        });
-        setExpandedCategories(expanded);
+        })
+        setExpandedCategories(expanded)
       }
     }
-  }, [isOpen, categorias]);
+  }, [isOpen, categorias])
 
   if (!isOpen || !produto) return null;
 
@@ -51,35 +51,35 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
     setExpandedCategories(prev => ({
       ...prev,
       [categoriaId]: !prev[categoriaId];
-    }));
+    }))
   };
 
-  const getTotalSelectedInCategory = (categoriaId: string) => {;
-    const categoria = categorias.find(cat => cat.id === categoriaId);
+  const getTotalSelectedInCategory = (categoriaId: string) => {
+    const categoria = categorias.find(cat => cat.id === categoriaId)
     if (!categoria) return 0;
     
     return categoria.adicionais.reduce((total: number, adicional: any) => {
-      return total + (selectedAdicionais[adicional.id] || 0);
-    }, 0);
+      return total + (selectedAdicionais[adicional.id] || 0)
+    }, 0)
   };
 
-  const scrollToNextRequiredCategory = (currentCategoriaId: string) => {;
-    const currentIndex = categorias.findIndex(cat => cat.id === currentCategoriaId);
+  const scrollToNextRequiredCategory = (currentCategoriaId: string) => {
+    const currentIndex = categorias.findIndex(cat => cat.id === currentCategoriaId)
     const nextRequiredCategory = categorias.find((cat, index) => 
       index > currentIndex && 
       cat.is_required && 
-      getTotalSelectedInCategory(cat.id) < (cat.min_selection || 1);
-    );
+      getTotalSelectedInCategory(cat.id) < (cat.min_selection || 1)
+    )
     
     if (nextRequiredCategory) {
-      const nextElement = document.querySelector(`[data-category-id="${nextRequiredCategory.id}"]`);
+      const nextElement = document.querySelector(`[data-category-id="${nextRequiredCategory.id}"]`)
       if (nextElement) {
-        nextElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        nextElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
     }
   };
 
-  const addAdicional = (adicionalId: string, categoria: any) => {;
+  const addAdicional = (adicionalId: string, categoria: any) => {
     const currentQuantity = selectedAdicionais[adicionalId] || 0;
     
     if (categoria.selection_type === 'single') {
@@ -89,37 +89,37 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
         if (adicional.id !== adicionalId) {
           delete newSelection[adicional.id];
         }
-      });
+      })
       newSelection[adicionalId] = currentQuantity > 0 ? 0 : 1;
-      setSelectedAdicionais(newSelection);
+      setSelectedAdicionais(newSelection)
       
       // Se é obrigatória e atingiu o máximo (1 para single), scroll para próxima
       if (categoria.is_required && currentQuantity === 0) {
-        setTimeout(() => scrollToNextRequiredCategory(categoria.id), 300);
+        setTimeout(() => scrollToNextRequiredCategory(categoria.id), 300)
       }
     } else {
       // Para múltipla ou quantidade
       const maxSelection = categoria.max_selection || 999;
-      const totalSelected = getTotalSelectedInCategory(categoria.id);
+      const totalSelected = getTotalSelectedInCategory(categoria.id)
       
       if (currentQuantity > 0) {
         // Remover
         setSelectedAdicionais(prev => ({
           ...prev,
           [adicionalId]: currentQuantity - 1
-        }));
+        }))
       } else if (totalSelected < maxSelection) {
         // Adicionar
         setSelectedAdicionais(prev => ({
           ...prev,
           [adicionalId]: 1
-        }));
+        }))
         
         // Verificar se atingiu o MÁXIMO da categoria obrigatória
         const newTotal = totalSelected + 1;
         const maxAllowed = categoria.max_selection || 999;
         if (categoria.is_required && newTotal >= maxAllowed) {
-          setTimeout(() => scrollToNextRequiredCategory(categoria.id), 300);
+          setTimeout(() => scrollToNextRequiredCategory(categoria.id), 300)
         }
       }
 
@@ -128,10 +128,10 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
   const calcularTotalAdicionais = () => {
     return Object.entries(selectedAdicionais).reduce((total, [adicionalId, quantidade]) => {
       const adicional = categorias
-        .flatMap(cat => cat.adicionais);
-        .find(add => add.id === adicionalId);
+        .flatMap(cat => cat.adicionais)
+        .find(add => add.id === adicionalId)
       return total + (adicional?.price || 0) * quantidade;
-    }, 0);
+    }, 0)
   };
 
   const calcularPrecoTotal = () => {
@@ -147,24 +147,24 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
     if (produto) {
       // Adicionar múltiplas vezes se quantidade > 1;
       for (let i = 0; i < quantidade; i++) {
-        onAddToCart(produto, selectedAdicionais, observacoes);
+        onAddToCart(produto, selectedAdicionais, observacoes)
       }
-      onClose();
+      onClose()
 
   };
 
   // Verificar se categorias obrigatórias foram preenchidas
-  const canAddToCart = () => {;
+  const canAddToCart = () => {
     if (!categorias || categorias.length === 0) return true;
     
     return categorias.every(categoria => {
       if (!categoria.is_required) return true;
       
-      const totalSelected = getTotalSelectedInCategory(categoria.id);
+      const totalSelected = getTotalSelectedInCategory(categoria.id)
       const minSelection = categoria.min_selection || 1;
       
       return totalSelected >= minSelection;
-    });
+    })
   };
 
   return (
@@ -323,7 +323,7 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
                               </div>
                             )}
                           </div>
-                        );
+                        )
                       })}
                     </div>
                   )}
@@ -396,5 +396,5 @@ export const AutoatendimentoProdutoModal: React.FC<AutoatendimentoProdutoModalPr
         </div>
       </div>
     </div>
-  );
+  )
 };

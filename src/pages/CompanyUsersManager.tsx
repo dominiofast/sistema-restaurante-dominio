@@ -25,48 +25,48 @@ interface CompanyUser {
   role?: string;
 }
 
-const CompanyUsersManager = () => {;
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompanyId, setSelectedCompanyId] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-  const [users, setUsers] = useState<CompanyUser[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingUsers, setLoadingUsers] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const { toast } = useToast();
+const CompanyUsersManager = () => {
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [selectedCompanyId, setSelectedCompanyId] = useState("")
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
+  const [users, setUsers] = useState<CompanyUser[]>([])
+  const [loading, setLoading] = useState(true)
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [creating, setCreating] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [name, setName] = useState("")
+  const { toast } = useToast()
 
   // Edição de usuário (somente Super Admin)
-  const [editingUserId, setEditingUserId] = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
-  const [editEmail, setEditEmail] = useState("");
-  const [editRole, setEditRole] = useState("user");
-  const [editPassword, setEditPassword] = useState("");
-  const [savingEdit, setSavingEdit] = useState(false);
+  const [editingUserId, setEditingUserId] = useState<string | null>(null)
+  const [editName, setEditName] = useState("")
+  const [editEmail, setEditEmail] = useState("")
+  const [editRole, setEditRole] = useState("user")
+  const [editPassword, setEditPassword] = useState("")
+  const [savingEdit, setSavingEdit] = useState(false)
 
-  const openEdit = (u: CompanyUser) => {;
-    setEditingUserId(u.id);
-    setEditName(u.name || "");
-    setEditEmail(u.email);
-    setEditRole((u as any).role || "user");
-    setEditPassword("");
+  const openEdit = (u: CompanyUser) => {
+    setEditingUserId(u.id)
+    setEditName(u.name || "")
+    setEditEmail(u.email)
+    setEditRole((u as any).role || "user")
+    setEditPassword("")
   };
 
-  const cancelEdit = () => {;
-    setEditingUserId(null);
-    setEditName("");
-    setEditEmail("");
-    setEditRole("user");
-    setEditPassword("");
+  const cancelEdit = () => {
+    setEditingUserId(null)
+    setEditName("")
+    setEditEmail("")
+    setEditRole("user")
+    setEditPassword("")
   };
 
-  const saveUserEdits = async () => {;
+  const saveUserEdits = async () => {
     if (!editingUserId) return;
     try {
-      setSavingEdit(true);
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      setSavingEdit(true)
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           user_id: editingUserId,
           company_id: selectedCompanyId,
@@ -77,100 +77,100 @@ const CompanyUsersManager = () => {;
             new_password: editPassword?.trim() || undefined,
           }
         }
-      });
+      })
 
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'Falha ao atualizar usuário');
+      if (!data?.success) throw new Error(data?.error || 'Falha ao atualizar usuário')
 
-      toast({ title: "Sucesso", description: "Usuário atualizado." });
-      cancelEdit();
+      toast({ title: "Sucesso", description: "Usuário atualizado." })
+      cancelEdit()
       if (selectedCompanyId) {
-        loadCompanyUsers(selectedCompanyId);
+        loadCompanyUsers(selectedCompanyId)
 
     } catch (e: any) {
-      console.error("Erro ao atualizar usuário:", e);
-      toast({ title: "Erro", description: e.message || "Falha ao atualizar usuário", variant: "destructive" });
+      console.error("Erro ao atualizar usuário:", e)
+      toast({ title: "Erro", description: e.message || "Falha ao atualizar usuário", variant: "destructive" })
     } finally {
-      setSavingEdit(false);
+      setSavingEdit(false)
 
   };
 
   useEffect(() => {
-    loadCompanies();
-  }, []);
+    loadCompanies()
+  }, [])
 
   useEffect(() => {
     if (selectedCompanyId) {
-      loadCompanyUsers(selectedCompanyId);
+      loadCompanyUsers(selectedCompanyId)
     } else {
-      setUsers([]);
-      setSelectedCompany(null);
+      setUsers([])
+      setSelectedCompany(null)
 
-  }, [selectedCompanyId]);
+  }, [selectedCompanyId])
 
   const loadCompanies = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       const companiesData = null as any; const companiesError = null as any;
 
-      setCompanies(companiesData || []);
+      setCompanies(companiesData || [])
     } catch (error) {
-      console.error("Erro ao carregar empresas:", error);
+      console.error("Erro ao carregar empresas:", error)
       toast({
         title: "Erro",
         description: "Erro ao carregar empresas",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const loadCompanyUsers = async (companyId: string) => {
-    try {;
-      setLoadingUsers(true);
+    try {
+      setLoadingUsers(true)
       
       // Encontrar empresa selecionada
-      const company = companies.find(c => c.id === companyId);
-      setSelectedCompany(company || null);
+      const company = companies.find(c => c.id === companyId)
+      setSelectedCompany(company || null)
 
       // Buscar usuários reais via Edge Function
       const usersResponse = null as any; const usersError = null as any;
 
       if (usersError) throw usersError;
-      if (!usersResponse.success) throw new Error(usersResponse.error);
+      if (!usersResponse.success) throw new Error(usersResponse.error)
 
-      setUsers(usersResponse.users || []);
+      setUsers(usersResponse.users || [])
     } catch (error) {
-      console.error("Erro ao carregar usuários:", error);
+      console.error("Erro ao carregar usuários:", error)
       toast({
         title: "Erro",
         description: "Erro ao carregar usuários da empresa",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoadingUsers(false);
+      setLoadingUsers(false)
 
   };
 
-  const createUser = async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const createUser = async (e: React.FormEvent) => {
+    e.preventDefault()
     
     if (!selectedCompanyId || !email || !password || !name) {
       toast({
         title: "Erro",
         description: "Preencha todos os campos",
         variant: "destructive",
-      });
+      })
       return;
 
 
     try {
-      setCreating(true);
+      setCreating(true)
 
       // Criar usuário via Edge Function diretamente
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           email,
           password,
@@ -178,66 +178,66 @@ const CompanyUsersManager = () => {;
           role: 'user',
           name
         }
-      });
+      })
 
       if (error) {
         throw error;
 
 
       if (!data?.success) {
-        throw new Error(data?.error || 'Erro ao criar usuário');
+        throw new Error(data?.error || 'Erro ao criar usuário')
 
 
       toast({
         title: "Sucesso",
         description: `Usuário ${name} criado com sucesso! Ele já pode fazer login.`,
-      });
+      })
 
       // Limpar formulário
-      setEmail("");
-      setPassword("");
-      setName("");
+      setEmail("")
+      setPassword("")
+      setName("")
       
       // Recarregar usuários da empresa
-      loadCompanyUsers(selectedCompanyId);
+      loadCompanyUsers(selectedCompanyId)
     } catch (error: any) {
-      console.error("Erro ao criar usuário:", error);
+      console.error("Erro ao criar usuário:", error)
       toast({
         title: "Erro",
         description: error.message || "Erro ao criar usuário",
         variant: "destructive",
-      });
+      })
     } finally {
-      setCreating(false);
+      setCreating(false)
 
   };
 
   const resetUserPassword = async (userEmail: string, userName: string) => {
-    try {;
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+    try {
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         redirectTo: `${window.location.origin}/reset-password`,
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Sucesso",
         description: `Email de reset enviado para ${userName} (${userEmail})`,
-      });
+      })
     } catch (error: any) {
-      console.error("Erro ao resetar senha:", error);
+      console.error("Erro ao resetar senha:", error)
       toast({
         title: "Erro",
         description: error.message || "Erro ao enviar email de reset",
         variant: "destructive",
-      });
+      })
 
   };
 
-  const handleBackToCompanies = () => {;
-    setSelectedCompanyId("");
-    setSelectedCompany(null);
-    setUsers([]);
+  const handleBackToCompanies = () => {
+    setSelectedCompanyId("")
+    setSelectedCompany(null)
+    setUsers([])
   };
 
   if (loading) {
@@ -245,7 +245,7 @@ const CompanyUsersManager = () => {;
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-    );
+    )
 
 
   return (
@@ -437,7 +437,7 @@ const CompanyUsersManager = () => {;
         </>
       )}
     </div>
-  );
+  )
 };
 
 export default CompanyUsersManager;

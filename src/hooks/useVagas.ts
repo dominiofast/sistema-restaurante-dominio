@@ -31,41 +31,41 @@ interface FormData {
   is_active: boolean;
 
 
-export const useVagas = (companyId: string | null) => {;
-  const [vagas, setVagas] = useState<Vaga[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [configId, setConfigId] = useState<string | null>(null);
+export const useVagas = (companyId: string | null) => {
+  const [vagas, setVagas] = useState<Vaga[]>([])
+  const [loading, setLoading] = useState(true)
+  const [configId, setConfigId] = useState<string | null>(null)
 
-  const fetchConfigAndVagas = useCallback(async () => {;
+  const fetchConfigAndVagas = useCallback(async () => {
     if (!companyId) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
 
       // Primeiro, buscar a configuração da empresa
       const configData = null as any; const configError = null as any;
           return;
         }
-         catch (error) { console.error('Error:', error); }throw configError;
+         catch (error) { console.error('Error:', error) }throw configError;
 
 
-      setConfigId(configData.id);
+      setConfigId(configData.id)
 
       // Buscar as vagas
       const vagasData = null as any; const vagasError = null as any;
 
-      setVagas(vagasData || []);
+      setVagas(vagasData || [])
     } catch (error: any) {
-      console.error('Erro ao carregar vagas:', error);
-      toast.error('Erro ao carregar vagas: ' + error.message);
+      console.error('Erro ao carregar vagas:', error)
+      toast.error('Erro ao carregar vagas: ' + error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [companyId]);
+  }, [companyId])
 
   const saveVaga = async (formData: FormData, editingVaga: Vaga | null) => {
-    if (!configId || !companyId) {;
-      toast.error('Configuração não encontrada');
+    if (!configId || !companyId) {
+      toast.error('Configuração não encontrada')
       return false;
 
 
@@ -81,9 +81,9 @@ export const useVagas = (companyId: string | null) => {;
         is_active: formData.is_active,
         config_id: configId,
         company_id: companyId;
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
-      console.log('Dados sendo enviados:', vagaData);
+      console.log('Dados sendo enviados:', vagaData)
 
       let error;
       if (editingVaga) {
@@ -99,40 +99,40 @@ export const useVagas = (companyId: string | null) => {;
 
       if (error) throw error;
 
-      toast.success(editingVaga ? 'Vaga atualizada com sucesso!' : 'Vaga criada com sucesso!');
-      fetchConfigAndVagas();
+      toast.success(editingVaga ? 'Vaga atualizada com sucesso!' : 'Vaga criada com sucesso!')
+      fetchConfigAndVagas()
       return true;
     } catch (error: any) {
-      console.error('Erro ao salvar vaga:', error);
-      toast.error('Erro ao salvar vaga: ' + error.message);
+      console.error('Erro ao salvar vaga:', error)
+      toast.error('Erro ao salvar vaga: ' + error.message)
       return false;
 
   };
 
   const deleteVaga = async (vaga: Vaga) => {
-    if (!confirm(`Tem certeza que deseja excluir a vaga "${vaga.title}"?`)) {;
+    if (!confirm(`Tem certeza que deseja excluir a vaga "${vaga.title}"?`)) {
       return;
 
 
     try {
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
         
 
       if (error) throw error;
 
-      toast.success('Vaga excluída com sucesso!');
-      fetchConfigAndVagas();
+      toast.success('Vaga excluída com sucesso!')
+      fetchConfigAndVagas()
     } catch (error: any) {
-      console.error('Erro ao excluir vaga:', error);
-      toast.error('Erro ao excluir vaga: ' + error.message);
+      console.error('Erro ao excluir vaga:', error)
+      toast.error('Erro ao excluir vaga: ' + error.message)
 
   };
 
   useEffect(() => {
-    fetchConfigAndVagas();
-  }, [fetchConfigAndVagas]);
+    fetchConfigAndVagas()
+  }, [fetchConfigAndVagas])
 
   return {
     vagas,

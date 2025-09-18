@@ -68,7 +68,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ id, children }) => {
     isDragging,
   } = useSortable({
     id,
-  });
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -92,7 +92,7 @@ const SortableRow: React.FC<SortableRowProps> = ({ id, children }) => {
       </TableCell>
       {children}
     </TableRow>
-  );
+  )
 };
 
 export const CardapioTable: React.FC<CardapioTableProps> = ({
@@ -114,8 +114,8 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
   onReorderProdutos,
   loading = false
 }) => {
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
-  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
+  const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -123,74 +123,74 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
         distance: 8,
       },
     }),
-    useSensor(KeyboardSensor);
-  );
+    useSensor(KeyboardSensor)
+  )
 
-  const toggleCategory = (categoriaId: string) => {;
-    const newExpanded = new Set(expandedCategories);
+  const toggleCategory = (categoriaId: string) => {
+    const newExpanded = new Set(expandedCategories)
     if (newExpanded.has(categoriaId)) {
       newExpanded
     } else {
-      newExpanded.add(categoriaId);
+      newExpanded.add(categoriaId)
     }
-    setExpandedCategories(newExpanded);
+    setExpandedCategories(newExpanded)
   };
 
-  const handleDragStart = (event: DragStartEvent) => {;
-    setActiveDragId(event.active.id as string);
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveDragId(event.active.id as string)
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {;
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveDragId(null);
+    setActiveDragId(null)
 
     if (!over) return;
 
     if (active.id !== over.id) {
-      const activeItem = findItemById(active.id as string);
-      const overItem = findItemById(over.id as string);
+      const activeItem = findItemById(active.id as string)
+      const overItem = findItemById(over.id as string)
 
       if (activeItem?.type === 'categoria' && overItem?.type === 'categoria') {
-        const oldIndex = categorias.findIndex(c => c.id === active.id);
-        const newIndex = categorias.findIndex(c => c.id === over.id);
-        onReorderCategorias(oldIndex, newIndex);
+        const oldIndex = categorias.findIndex(c => c.id === active.id)
+        const newIndex = categorias.findIndex(c => c.id === over.id)
+        onReorderCategorias(oldIndex, newIndex)
       } else if (activeItem?.type === 'produto' && overItem?.type === 'produto') {
         if (activeItem.categoriaId === overItem.categoriaId) {
-          const produtosDaCategoria = produtos.filter(p => p.categoria_id === activeItem.categoriaId);
-          const oldIndex = produtosDaCategoria.findIndex(p => p.id === active.id);
-          const newIndex = produtosDaCategoria.findIndex(p => p.id === over.id);
-          onReorderProdutos(oldIndex, newIndex, activeItem.categoriaId!);
+          const produtosDaCategoria = produtos.filter(p => p.categoria_id === activeItem.categoriaId)
+          const oldIndex = produtosDaCategoria.findIndex(p => p.id === active.id)
+          const newIndex = produtosDaCategoria.findIndex(p => p.id === over.id)
+          onReorderProdutos(oldIndex, newIndex, activeItem.categoriaId!)
         }
       }
     }
   };
 
-  const findItemById = (id: string) => {;
-    const categoria = categorias.find(c => c.id === id);
+  const findItemById = (id: string) => {
+    const categoria = categorias.find(c => c.id === id)
     if (categoria) return { type: 'categoria' as const, data: categoria };
 
-    const produto = produtos.find(p => p.id === id);
+    const produto = produtos.find(p => p.id === id)
     if (produto) return { type: 'produto' as const, data: produto, categoriaId: produto.categoria_id };
 
     return null;
   };
 
   const filteredCategorias = categorias.filter(categoria =>
-    categoria.name.toLowerCase().includes(searchTerm.toLowerCase());
-  );
+    categoria.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   const filteredProdutos = produtos.filter(produto =>
     produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    produto.description?.toLowerCase().includes(searchTerm.toLowerCase());
-  );
+    produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
-  const getCategoriaProdutos = (categoriaId: string) => {;
-    return filteredProdutos.filter(produto => produto.categoria_id === categoriaId);
+  const getCategoriaProdutos = (categoriaId: string) => {
+    return filteredProdutos.filter(produto => produto.categoria_id === categoriaId)
   };
 
-  const getCategoriaName = (categoriaId?: string) => {;
+  const getCategoriaName = (categoriaId?: string) => {
     if (!categoriaId) return 'Sem categoria';
-    const categoria = categorias.find(c => c.id === categoriaId);
+    const categoria = categorias.find(c => c.id === categoriaId)
     return categoria?.name || 'Categoria não encontrada';
   };
 
@@ -250,8 +250,8 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
                   strategy={verticalListSortingStrategy}
                 >
                   {filteredCategorias.map((categoria) => {
-                    const categoriaProducts = getCategoriaProdutos(categoria.id);
-                    const isExpanded = expandedCategories.has(categoria.id);
+                    const categoriaProducts = getCategoriaProdutos(categoria.id)
+                    const isExpanded = expandedCategories.has(categoria.id)
 
                     return (
                       <React.Fragment key={categoria.id}>
@@ -451,7 +451,7 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
                           </SortableRow>
                         ))}
                       </React.Fragment>
-                    );
+                    )
                   })}
                 </SortableContext>
               </TableBody>
@@ -470,5 +470,5 @@ export const CardapioTable: React.FC<CardapioTableProps> = ({
         </DndContext>
       </div>
     </div>
-  );
+  )
 };

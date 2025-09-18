@@ -14,13 +14,13 @@ interface CardapioJsonViewerProps {
 }
 
 export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyId }) => {
-  const { currentCompany } = useAuth();
-  const { toast } = useToast();
-  const [jsonData, setJsonData] = useState<any>(null);
-  const [textData, setTextData] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [uploadingToAI, setUploadingToAI] = useState(false);
-  const [viewMode, setViewMode] = useState<'json' | 'text'>('text');
+  const { currentCompany } = useAuth()
+  const { toast } = useToast()
+  const [jsonData, setJsonData] = useState<any>(null)
+  const [textData, setTextData] = useState<string>('')
+  const [loading, setLoading] = useState(false)
+  const [uploadingToAI, setUploadingToAI] = useState(false)
+  const [viewMode, setViewMode] = useState<'json' | 'text'>('text')
 
   const effectiveCompanyId = companyId || currentCompany?.id;
 
@@ -30,147 +30,147 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
     effectiveCompanyId,
     loading,
     uploadingToAI
-  });
+  })
 
-  const generateJson = async () => {;
-    console.log('🔄 generateJson - INÍCIO');
+  const generateJson = async () => {
+    console.log('🔄 generateJson - INÍCIO')
     
     if (!effectiveCompanyId) {
-      console.error('❌ Company ID não encontrado');
+      console.error('❌ Company ID não encontrado')
       toast({
         title: "Erro",
         description: "ID da empresa não encontrado",
         variant: "destructive"
-      });
+      })
       return;
     }
 
-    setLoading(true);
+    setLoading(true)
     
     try {
-      console.log('📋 Chamando CardapioJsonService.generateCardapioJson...');
-      const cardapioJson = await CardapioJsonService.generateCardapioJson(effectiveCompanyId);
-      console.log('📋 Resultado do service:', cardapioJson);
+      console.log('📋 Chamando CardapioJsonService.generateCardapioJson...')
+      const cardapioJson = await CardapioJsonService.generateCardapioJson(effectiveCompanyId)
+      console.log('📋 Resultado do service:', cardapioJson)
       
       if (!cardapioJson) {
         toast({
           title: "Erro",
           description: "Não foi possível gerar o JSON do cardápio",
           variant: "destructive"
-        } catch (error) { console.error('Error:', error); });
+        } catch (error) { console.error('Error:', error) })
         return;
       }
 
-      setJsonData(cardapioJson);
-      const textFormatted = CardapioJsonService.formatJsonToText(cardapioJson);
-      setTextData(textFormatted);
+      setJsonData(cardapioJson)
+      const textFormatted = CardapioJsonService.formatJsonToText(cardapioJson)
+      setTextData(textFormatted)
 
       toast({
         title: "Sucesso",
         description: `JSON gerado com ${cardapioJson.totalProdutos} produtos`
-      });
+      })
     } catch (error) {
-      console.error('❌ Erro ao gerar JSON:', error);
+      console.error('❌ Erro ao gerar JSON:', error)
       toast({
         title: "Erro",
         description: "Erro ao gerar JSON do cardápio",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const downloadJson = async () => {;
+  const downloadJson = async () => {
     if (!effectiveCompanyId) return;
 
     try {
-      const url = await CardapioJsonService.saveJsonToFile(effectiveCompanyId);
+      const url = await CardapioJsonService.saveJsonToFile(effectiveCompanyId)
       if (url) {
-        const link = document.createElement('a');
+        const link = document.createElement('a')
         link.href = url;
-        link.download = `cardapio-${effectiveCompanyId} catch (error) { console.error('Error:', error); }-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        link.download = `cardapio-${effectiveCompanyId} catch (error) { console.error('Error:', error) }-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
 
         toast({
           title: "Sucesso",
           description: "JSON baixado com sucesso"
-        });
+        })
       }
     } catch (error) {
       toast({
         title: "Erro",
         description: "Erro ao baixar JSON",
         variant: "destructive"
-      });
+      })
     }
   };
 
   const copyToClipboard = async () => {
     const content = viewMode === 'json' 
-      ? JSON.stringify(jsonData, null, 2);
+      ? JSON.stringify(jsonData, null, 2)
       : textData;
 
     try {
-      await navigator.clipboard.writeText(content);
+      await navigator.clipboard.writeText(content)
       toast({
         title: "Sucesso",
         description: "Conteúdo copiado para a área de transferência"
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
     } catch (error) {
       toast({
         title: "Erro",
         description: "Erro ao copiar conteúdo",
         variant: "destructive"
-      });
+      })
     }
   };
 
-  const updateAIAssistant = async () => {;
-    console.log('🤖 updateAIAssistant - INÍCIO');
+  const updateAIAssistant = async () => {
+    console.log('🤖 updateAIAssistant - INÍCIO')
     
     if (!effectiveCompanyId) {
-      console.error('❌ Company ID não encontrado para IA');
+      console.error('❌ Company ID não encontrado para IA')
       toast({
         title: "Erro",
         description: "ID da empresa não encontrado",
         variant: "destructive"
-      });
+      })
       return;
     }
 
-    setUploadingToAI(true);
+    setUploadingToAI(true)
     
     try {
-      console.log('📤 Chamando updateAICardapio...');
-      const aiService = new AICardapioService();
-      const success = await aiService.updateAICardapio(effectiveCompanyId);
-      console.log('📤 Resultado do updateAICardapio:', success);
+      console.log('📤 Chamando updateAICardapio...')
+      const aiService = new AICardapioService()
+      const success = await aiService.updateAICardapio(effectiveCompanyId)
+      console.log('📤 Resultado do updateAICardapio:', success)
 
       if (success) {
         toast({
           title: "Sucesso",
           description: "Cardápio enviado para IA com sucesso!"
-        } catch (error) { console.error('Error:', error); });
+        } catch (error) { console.error('Error:', error) })
       } else {
         toast({
           title: "Erro",
           description: "Erro ao enviar cardápio para IA",
           variant: "destructive"
-        });
+        })
       }
     } catch (error) {
-      console.error('❌ Erro ao atualizar IA:', error);
+      console.error('❌ Erro ao atualizar IA:', error)
       toast({
         title: "Erro",
         description: "Erro ao atualizar IA",
         variant: "destructive"
-      });
+      })
     } finally {
-      setUploadingToAI(false);
+      setUploadingToAI(false)
     }
   };
 
@@ -189,8 +189,8 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
         <div className="flex gap-2 flex-wrap">
           <Button 
             onClick={() => {
-              console.log('🎯 Botão Gerar JSON clicado');
-              generateJson();
+              console.log('🎯 Botão Gerar JSON clicado')
+              generateJson()
             }} 
             disabled={loading || !effectiveCompanyId}
             className="flex items-center gap-2"
@@ -201,8 +201,8 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
 
           <Button 
             onClick={() => {
-              console.log('🎯 Botão Enviar para IA clicado');
-              updateAIAssistant();
+              console.log('🎯 Botão Enviar para IA clicado')
+              updateAIAssistant()
             }} 
             disabled={uploadingToAI || !effectiveCompanyId}
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
@@ -279,5 +279,5 @@ export const CardapioJsonViewer: React.FC<CardapioJsonViewerProps> = ({ companyI
         )}
       </CardContent>
     </Card>
-  );
+  )
 };

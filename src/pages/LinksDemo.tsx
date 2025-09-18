@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const LinksDemo = () => {;
-  const navigate = useNavigate();
+const LinksDemo = () => {
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
@@ -32,7 +32,7 @@ const LinksDemo = () => {;
         <LinksCurtos />
       </div>
     </div>
-  );
+  )
 };
 
 export default LinksDemo;

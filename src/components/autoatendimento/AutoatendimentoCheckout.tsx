@@ -25,30 +25,30 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
   onComplete,
   primaryColor
 }) => {
-  const { carrinho, totalCarrinho, limparCarrinho } = useCart();
-  const { paymentOptions } = usePagamentoEntregaConfigPDV(companyId);
+  const { carrinho, totalCarrinho, limparCarrinho } = useCart()
+  const { paymentOptions } = usePagamentoEntregaConfigPDV(companyId)
   
   const [customerData, setCustomerData] = useState({
     name: '',
     phone: ''
-  });
+  })
   
-  const [selectedPayment, setSelectedPayment] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [showPixModal, setShowPixModal] = useState(false);
-  const [pixPaymentData, setPixPaymentData] = useState<any>(null);
+  const [selectedPayment, setSelectedPayment] = useState<string>('')
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [showPixModal, setShowPixModal] = useState(false)
+  const [pixPaymentData, setPixPaymentData] = useState<any>(null)
 
   const total = totalCarrinho;
 
-  const handleSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     
     if (!customerData.name || !customerData.phone || !selectedPayment) {
-      toast.error('Preencha todos os campos obrigatórios');
+      toast.error('Preencha todos os campos obrigatórios')
       return;
     }
 
-    setIsProcessing(true);
+    setIsProcessing(true)
     
     try {
       // Se for PIX, mostrar modal PIX
@@ -56,25 +56,25 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         const pixData = {
           companyId: companyId,
           amount: total,;
-          description: `Pedido Kiosk - ${customerData.name} catch (error) { console.error('Error:', error); }`,
+          description: `Pedido Kiosk - ${customerData.name} catch (error) { console.error('Error:', error) }`,
           customerName: customerData.name,
           customerPhone: customerData.phone,
           externalReference: `kiosk-${Date.now()}`
         };
         
-        setPixPaymentData(pixData);
-        setShowPixModal(true);
-        setIsProcessing(false);
+        setPixPaymentData(pixData)
+        setShowPixModal(true)
+        setIsProcessing(false)
         return;
 
 
       // Para outros métodos de pagamento, criar pedido diretamente
-      await createOrder();
+      await createOrder()
       
     } catch (error) {
-      console.error('Erro ao processar pedido:', error);
-      toast.error('Erro ao processar pedido');
-      setIsProcessing(false);
+      console.error('Erro ao processar pedido:', error)
+      toast.error('Erro ao processar pedido')
+      setIsProcessing(false)
     }
   };
 
@@ -86,7 +86,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         cliente: {
           nome: customerData.name,
           telefone: customerData.phone;
-        } catch (error) { console.error('Error:', error); },
+        } catch (error) { console.error('Error:', error) },
         itens: carrinho.map(item => ({
           produto_id: item.produto.id,
           nome: item.produto.name,
@@ -107,19 +107,19 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         observacoes: `Pedido realizado via Kiosk - ${new Date().toLocaleString()}`
       };
 
-      console.log('📝 Criando pedido via OrderGateway:', pedidoData);
+      console.log('📝 Criando pedido via OrderGateway:', pedidoData)
 
       // 🎯 ENDPOINT SEGURO COM SERVICE ROLE
-      const result = await createOrderViaGateway(pedidoData);
+      const result = await createOrderViaGateway(pedidoData)
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro ao criar pedido');
+        throw new Error(result.error || 'Erro ao criar pedido')
 
       
-      console.log('✅ Pedido criado com sucesso via OrderGateway:', result);
+      console.log('✅ Pedido criado com sucesso via OrderGateway:', result)
 
       // Limpar carrinho
-      limparCarrinho();
+      limparCarrinho()
 
       // Chamar callback de sucesso
       onComplete({
@@ -127,10 +127,10 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         customerData,
         total,
         paymentMethod: selectedPayment
-      });
+      })
 
     } catch (error) {
-      console.error('💥 Erro ao criar pedido:', error);
+      console.error('💥 Erro ao criar pedido:', error)
       throw error;
     }
   };
@@ -143,7 +143,7 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         cliente: {
           nome: customerData.name,
           telefone: customerData.phone;
-        } catch (error) { console.error('Error:', error); },
+        } catch (error) { console.error('Error:', error) },
         itens: carrinho.map(item => ({
           produto_id: item.produto.id,
           nome: item.produto.name,
@@ -165,16 +165,16 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
       };
 
       // 🎯 ENDPOINT SEGURO COM SERVICE ROLE
-      const result = await createOrderViaGateway(pedidoData);
+      const result = await createOrderViaGateway(pedidoData)
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro ao criar pedido PIX');
+        throw new Error(result.error || 'Erro ao criar pedido PIX')
 
       
-      console.log('✅ Pedido PIX criado com sucesso via OrderGateway:', result);
+      console.log('✅ Pedido PIX criado com sucesso via OrderGateway:', result)
 
       // Limpar carrinho
-      limparCarrinho();
+      limparCarrinho()
 
       // Chamar callback de sucesso
       onComplete({
@@ -183,11 +183,11 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         total,
         paymentMethod: 'pix',
         pixData
-      });
+      })
 
     } catch (error) {
-      console.error('💥 Erro ao criar pedido PIX:', error);
-      toast.error('Erro ao processar pagamento PIX');
+      console.error('💥 Erro ao criar pedido PIX:', error)
+      toast.error('Erro ao processar pagamento PIX')
     }
   };
 
@@ -365,8 +365,8 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
           <AutoatendimentoPixModal
             isOpen={showPixModal}
             onClose={() => {
-              setShowPixModal(false);
-              setIsProcessing(false);
+              setShowPixModal(false)
+              setIsProcessing(false)
             }}
             onSuccess={handlePixSuccess}
             paymentData={pixPaymentData}
@@ -375,5 +375,5 @@ export const AutoatendimentoCheckout: React.FC<AutoatendimentoCheckoutProps> = (
         )}
       </div>
     </div>
-  );
+  )
 };

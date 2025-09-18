@@ -38,7 +38,7 @@ const DocumentsSection: React.FC<DocumentsSectionProps> = ({
         primaryColor={primaryColor}
       />
     </div>
-  );
+  )
 };
 
 export default DocumentsSection;

@@ -25,7 +25,7 @@ export class CashbackService {
     subtotal: number, 
     orderId: number
   ): Promise<boolean> {
-    console.log('💰 [CASHBACK] Gerando cashback para pedido', orderId, 'subtotal:', subtotal);
+    console.log('💰 [CASHBACK] Gerando cashback para pedido', orderId, 'subtotal:', subtotal)
     
     try {
       // 1. Verificar se a empresa tem cashback ativo
@@ -33,29 +33,29 @@ export class CashbackService {
         return false;
       }
 
-       catch (error) { console.error('Error:', error); }if (!config) {
-        console.log('⚠️ [CASHBACK] Cashback não está ativo para esta empresa');
+       catch (error) { console.error('Error:', error) }if (!config) {
+        console.log('⚠️ [CASHBACK] Cashback não está ativo para esta empresa')
         return false;
       }
 
       // 2. Verificar valor mínimo de compra
       if (subtotal < config.valor_minimo_compra) {
-        console.log('⚠️ [CASHBACK] Valor do pedido abaixo do mínimo:', subtotal, 'vs', config.valor_minimo_compra);
+        console.log('⚠️ [CASHBACK] Valor do pedido abaixo do mínimo:', subtotal, 'vs', config.valor_minimo_compra)
         return false;
       }
 
       // 3. Calcular cashback baseado na configuração
-      const cashbackValue = this.calculateCashbackAmount(subtotal, config.percentual_cashback / 100);
+      const cashbackValue = this.calculateCashbackAmount(subtotal, config.percentual_cashback / 100)
       
       if (!this.isValidCashbackAmount(cashbackValue)) {
-        console.log('⚠️ [CASHBACK] Valor de cashback inválido:', cashbackValue);
+        console.log('⚠️ [CASHBACK] Valor de cashback inválido:', cashbackValue)
         return false;
       }
 
       // 4. Verificar se já existe cashback para este pedido
       const { data: existingTransaction  } = null as any;
       if (existingTransaction) {
-        console.log('⚠️ [CASHBACK] Cashback já foi gerado para este pedido:', orderId);
+        console.log('⚠️ [CASHBACK] Cashback já foi gerado para este pedido:', orderId)
         return true;
       }
 
@@ -71,10 +71,10 @@ export class CashbackService {
           tipo: 'credito',
           pedido_id: orderId,
           descricao: `Cashback ${config.percentual_cashback}% - Pedido #${orderId}`
-        });
+        })
 
       if (transactionError) {
-        console.error('❌ [CASHBACK] Erro ao registrar transação:', transactionError);
+        console.error('❌ [CASHBACK] Erro ao registrar transação:', transactionError)
         return false;
       }
 
@@ -82,11 +82,11 @@ export class CashbackService {
         valor: cashbackValue,
         percentual: config.percentual_cashback,
         pedido: orderId
-      });
+      })
 
       return true;
     } catch (error) {
-      console.error('❌ [CASHBACK] Erro na geração:', error);
+      console.error('❌ [CASHBACK] Erro na geração:', error)
       return false;
 
 
@@ -100,11 +100,11 @@ export class CashbackService {
     amount: number, 
     orderId: number
   ): Promise<boolean> {
-    console.log('💰 [CASHBACK] Debitando cashback de', amount, 'para o pedido', orderId);
+    console.log('💰 [CASHBACK] Debitando cashback de', amount, 'para o pedido', orderId)
     
     try {
       // 1. Verificar se já existe débito para este pedido
-      const { data: existingDebit }  catch (error) { console.error('Error:', error); }= 
+      const { data: existingDebit }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -113,13 +113,13 @@ export class CashbackService {
         
 
       if (existingDebit) {
-        console.log('⚠️ [CASHBACK] Débito já foi processado para este pedido:', orderId);
+        console.log('⚠️ [CASHBACK] Débito já foi processado para este pedido:', orderId)
         return true;
       }
 
       // 2. Verificar saldo suficiente
       if (!await this.hasSufficientBalance(companyId, customer.telefone, amount)) {
-        console.error('❌ [CASHBACK] Saldo insuficiente:', amount);
+        console.error('❌ [CASHBACK] Saldo insuficiente:', amount)
         return false;
       }
 
@@ -135,10 +135,10 @@ export class CashbackService {
           tipo: 'debito',
           pedido_id: orderId,
           descricao: `Desconto aplicado - Pedido #${orderId}`
-        });
+        })
 
       if (transactionError) {
-        console.error('❌ [CASHBACK] Erro ao registrar débito:', transactionError);
+        console.error('❌ [CASHBACK] Erro ao registrar débito:', transactionError)
         return false;
       }
 
@@ -146,11 +146,11 @@ export class CashbackService {
         valor: amount,
         pedido: orderId,
         observacao: 'Saldo será recalculado automaticamente pelo trigger'
-      });
+      })
 
       return true;
     } catch (error) {
-      console.error('❌ [CASHBACK] Erro no débito:', error);
+      console.error('❌ [CASHBACK] Erro no débito:', error)
       return false;
 
 
@@ -163,13 +163,13 @@ export class CashbackService {
     customerPhone: string
   ): Promise<CashbackBalance | null> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         p_company_id: companyId,
         p_customer_phone: customerPhone
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro ao buscar saldo de cashback:', error);
+        console.error('❌ Erro ao buscar saldo de cashback:', error)
         return null;
       }
 
@@ -187,7 +187,7 @@ export class CashbackService {
         customerName: (data as any)?.customerName || 'Cliente'
       };
     } catch (error) {
-      console.error('❌ Erro ao buscar saldo de cashback:', error);
+      console.error('❌ Erro ao buscar saldo de cashback:', error)
       return null;
 
 
@@ -201,7 +201,7 @@ export class CashbackService {
     limit: number = 10
   ): Promise<CashbackTransaction[]> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -210,7 +210,7 @@ export class CashbackService {
         
 
       if (error) {
-        console.error('❌ Erro ao buscar transações de cashback:', error);
+        console.error('❌ Erro ao buscar transações de cashback:', error)
         return [];
       }
 
@@ -224,7 +224,7 @@ export class CashbackService {
         description: transaction.descricao
       })) || [];
     } catch (error) {
-      console.error('❌ Erro ao buscar transações de cashback:', error);
+      console.error('❌ Erro ao buscar transações de cashback:', error)
       return [];
 
 
@@ -238,20 +238,20 @@ export class CashbackService {
     requiredAmount: number
   ): Promise<boolean> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         p_company_id: companyId,
         p_customer_phone: customerPhone,
         p_required_amount: requiredAmount
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro ao verificar saldo suficiente:', error);
+        console.error('❌ Erro ao verificar saldo suficiente:', error)
         return false;
       }
 
       return data === true;
     } catch (error) {
-      console.error('❌ Erro ao verificar saldo suficiente:', error);
+      console.error('❌ Erro ao verificar saldo suficiente:', error)
       return false;
 
 

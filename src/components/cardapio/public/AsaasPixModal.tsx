@@ -37,26 +37,26 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   externalReference,
   primaryColor = '#16a34a'
 }) => {
-  const [payment, setPayment] = useState<AsaasPayment | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [checking, setChecking] = useState(false);
-  const [timeLeft, setTimeLeft] = useState<number>(0);
-  const [error, setError] = useState<string | null>(null);
-  const [customerCpf, setCustomerCpf] = useState<string>('');
-  const [showCpfForm, setShowCpfForm] = useState<boolean>(true);
-  const { toast } = useToast();
+  const [payment, setPayment] = useState<AsaasPayment | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [checking, setChecking] = useState(false)
+  const [timeLeft, setTimeLeft] = useState<number>(0)
+  const [error, setError] = useState<string | null>(null)
+  const [customerCpf, setCustomerCpf] = useState<string>('')
+  const [showCpfForm, setShowCpfForm] = useState<boolean>(true)
+  const { toast } = useToast()
   
   // ANTI-DUPLICAÇÃO: Flag para evitar múltiplas execuções de onPaymentSuccess
-  const paymentSuccessTriggered = React.useRef(false);
+  const paymentSuccessTriggered = React.useRef(false)
 
   // Format currency
   const formatCurrency = (value: number) =>;
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 
   // Format time left
-  const formatTimeLeft = (seconds: number): string => {;
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+  const formatTimeLeft = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
     const remainingSeconds = seconds % 60;
     
     if (hours > 0) {
@@ -66,49 +66,49 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   };
 
   // Validate and format CPF
-  const formatCpf = (value: string): string => {;
-    const numbers = value.replace(/\D/g, '');
-    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  const formatCpf = (value: string): string => {
+    const numbers = value.replace(/\D/g, '')
+    return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
   };
 
-  const validateCpf = (cpf: string): boolean => {;
-    const numbers = cpf.replace(/\D/g, '');
+  const validateCpf = (cpf: string): boolean => {
+    const numbers = cpf.replace(/\D/g, '')
     if (numbers.length !== 11 || /^(\d)\1{10}$/.test(numbers)) return false;
     
     let sum = 0;
     for (let i = 0; i < 9; i++) {
-      sum += parseInt(numbers.charAt(i)) * (10 - i);
+      sum += parseInt(numbers.charAt(i)) * (10 - i)
     }
-    let remainder = 11 - (sum % 11);
+    let remainder = 11 - (sum % 11)
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(numbers.charAt(9))) return false;
     
     sum = 0;
     for (let i = 0; i < 10; i++) {
-      sum += parseInt(numbers.charAt(i)) * (11 - i);
+      sum += parseInt(numbers.charAt(i)) * (11 - i)
     }
-    remainder = 11 - (sum % 11);
+    remainder = 11 - (sum % 11)
     if (remainder === 10 || remainder === 11) remainder = 0;
-    return remainder === parseInt(numbers.charAt(10));
+    return remainder === parseInt(numbers.charAt(10))
   };
 
   // Calculate time left
-  const calculateTimeLeft = (expirationDate: string): number => {;
-    const now = new Date().getTime();
-    const expiry = new Date(expirationDate).getTime();
-    return Math.max(0, Math.floor((expiry - now) / 1000));
+  const calculateTimeLeft = (expirationDate: string): number => {
+    const now = new Date().getTime()
+    const expiry = new Date(expirationDate).getTime()
+    return Math.max(0, Math.floor((expiry - now) / 1000))
   };
 
   // Create PIX payment via Asaas
-  const createPixPayment = async () => {;
-    setLoading(true);
-    setError(null);
+  const createPixPayment = async () => {
+    setLoading(true)
+    setError(null)
 
     try {
 
 
       // Usar edge function em vez da função do banco
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           companyId,
           amount,
@@ -117,19 +117,19 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
           customerPhone,
           customerCpf: customerCpf.replace(/\D/g, '')
         }
-      });
+      })
 
 
 
       if (error) {
-        console.error('❌ Erro na função Asaas:', error);
-        throw new Error(error.message || 'Erro ao criar pagamento PIX');
+        console.error('❌ Erro na função Asaas:', error)
+        throw new Error(error.message || 'Erro ao criar pagamento PIX')
 
 
       const response = data as any;
       if (!response?.success || !response?.payment) {
-        console.error('❌ Resposta inválida:', data);
-        throw new Error(response?.error || 'Resposta inválida do servidor');
+        console.error('❌ Resposta inválida:', data)
+        throw new Error(response?.error || 'Resposta inválida do servidor')
 
 
       const asaasPayment = response.payment;
@@ -144,53 +144,53 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
         expires_at: asaasPayment.expires_at
       };
 
-      setPayment(pixPayment);
-      setTimeLeft(calculateTimeLeft(pixPayment.expires_at));
+      setPayment(pixPayment)
+      setTimeLeft(calculateTimeLeft(pixPayment.expires_at))
 
       // Start checking payment status
-      startPaymentCheck(asaasPayment.id);
+      startPaymentCheck(asaasPayment.id)
 
       toast({
         title: 'PIX gerado com sucesso!',
         description: 'Escaneie o QR Code ou copie o código',
-      });
+      })
 
     } catch (err: any) {
-      console.error('❌ Erro ao criar pagamento:', err);
-      setError(err.message);
+      console.error('❌ Erro ao criar pagamento:', err)
+      setError(err.message)
       toast({
         title: 'Erro ao gerar PIX',
         description: err.message,
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   // Check payment status with retry logic
   const checkPaymentStatus = async (paymentId: string, retryCount = 0) => {
-    try {;
-      setChecking(true);
+    try {
+      setChecking(true)
       
-      console.log(`🔍 Verificando status do pagamento Asaas (tentativa ${retryCount + 1} catch (error) { console.error('Error:', error); }):`, paymentId);
+      console.log(`🔍 Verificando status do pagamento Asaas (tentativa ${retryCount + 1} catch (error) { console.error('Error:', error) }):`, paymentId)
 
-      const { data, error } = await Promise.resolve();
+      const { data, error } = await Promise.resolve()
         body: {
           paymentId
         }
-      });
+      })
 
       if (error) {
-        console.error('❌ Erro ao verificar status:', error);
+        console.error('❌ Erro ao verificar status:', error)
         
         // Retry up to 3 times with exponential backoff
         if (retryCount < 3) {
           const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
-          console.log(`🔄 Tentando novamente em ${delay}ms...`);
+          console.log(`🔄 Tentando novamente em ${delay}ms...`)
           setTimeout(() => {
-            checkPaymentStatus(paymentId, retryCount + 1);
-          }, delay);
+            checkPaymentStatus(paymentId, retryCount + 1)
+          }, delay)
         }
         return false;
 
@@ -198,118 +198,118 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
       const response = data;
       if (response?.success && response?.payment) {
         const payment = response.payment;
-        console.log('📊 Status Asaas:', payment.status);
+        console.log('📊 Status Asaas:', payment.status)
 
         if (payment.status === 'CONFIRMED' || payment.status === 'RECEIVED') {
-          console.log('✅ Pagamento confirmado via Asaas!');
+          console.log('✅ Pagamento confirmado via Asaas!')
           
           toast({
             title: 'Pagamento confirmado!',
             description: 'Seu pedido foi aprovado com sucesso',
-          });
+          })
 
           // CRÍTICO: Evitar múltiplas chamadas de sucesso
           if (!paymentSuccessTriggered.current) {
             paymentSuccessTriggered.current = true;
-            console.log('✅ [ANTI-DUPLICATE] Pagamento aprovado - Chamando onPaymentSuccess pela primeira vez');
+            console.log('✅ [ANTI-DUPLICATE] Pagamento aprovado - Chamando onPaymentSuccess pela primeira vez')
             
             setTimeout(() => {
-              onPaymentSuccess();
-            }, 1500);
+              onPaymentSuccess()
+            }, 1500)
           } else {
-            console.warn('⚠️ [ANTI-DUPLICATE] onPaymentSuccess já foi chamado - Ignorando chamada duplicada');
+            console.warn('⚠️ [ANTI-DUPLICATE] onPaymentSuccess já foi chamado - Ignorando chamada duplicada')
           }
           
           return true; // Stop checking
         }
       }
     } catch (err) {
-      console.error('❌ Erro ao verificar pagamento:', err);
+      console.error('❌ Erro ao verificar pagamento:', err)
       
       // Retry on network errors
       if (retryCount < 2) {
         setTimeout(() => {
-          checkPaymentStatus(paymentId, retryCount + 1);
-        }, 2000);
+          checkPaymentStatus(paymentId, retryCount + 1)
+        }, 2000)
 
     } finally {
-      setChecking(false);
+      setChecking(false)
     }
     
     return false; // Continue checking
   };
 
   // Start payment checking with more aggressive polling
-  const startPaymentCheck = (paymentId: string) => {;
-    console.log('🔄 Iniciando verificação de pagamento:', paymentId);
+  const startPaymentCheck = (paymentId: string) => {
+    console.log('🔄 Iniciando verificação de pagamento:', paymentId)
     
     // Check immediately
-    checkPaymentStatus(paymentId);
+    checkPaymentStatus(paymentId)
     
     // Check every 3 seconds for the first 5 minutes (more frequent for fresh payments)
     const frequentInterval = setInterval(async () => {
       // ANTI-DUPLICAÇÃO: Parar verificação se já houve sucesso
-      if (paymentSuccessTriggered.current) {;
-        console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado');
-        clearInterval(frequentInterval);
-        clearInterval(normalInterval);
+      if (paymentSuccessTriggered.current) {
+        console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado')
+        clearInterval(frequentInterval)
+        clearInterval(normalInterval)
         return;
 
       
-      const shouldStop = await checkPaymentStatus(paymentId);
+      const shouldStop = await checkPaymentStatus(paymentId)
       if (shouldStop) {
-        clearInterval(frequentInterval);
-        clearInterval(normalInterval);
+        clearInterval(frequentInterval)
+        clearInterval(normalInterval)
 
-    }, 3000);
+    }, 3000)
 
     // After 5 minutes, switch to every 10 seconds
     const normalInterval = setInterval(async () => {
       // ANTI-DUPLICAÇÃO: Parar verificação se já houve sucesso
-      if (paymentSuccessTriggered.current) {;
-        console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado');
-        clearInterval(frequentInterval);
-        clearInterval(normalInterval);
+      if (paymentSuccessTriggered.current) {
+        console.log('🛑 [ANTI-DUPLICATE] Parando verificação: pagamento já processado')
+        clearInterval(frequentInterval)
+        clearInterval(normalInterval)
         return;
 
       
-      const shouldStop = await checkPaymentStatus(paymentId);
+      const shouldStop = await checkPaymentStatus(paymentId)
       if (shouldStop) {
-        clearInterval(frequentInterval);
-        clearInterval(normalInterval);
+        clearInterval(frequentInterval)
+        clearInterval(normalInterval)
 
-    }, 10000);
+    }, 10000)
 
     // Stop frequent checking after 5 minutes
     setTimeout(() => {
-      clearInterval(frequentInterval);
-      console.log('🔄 Mudando para verificação normal (10s)');
-    }, 5 * 60 * 1000);
+      clearInterval(frequentInterval)
+      console.log('🔄 Mudando para verificação normal (10s)')
+    }, 5 * 60 * 1000)
 
     // Stop all checking after 24 hours
     setTimeout(() => {
-      clearInterval(frequentInterval);
-      clearInterval(normalInterval);
-      console.log('⏰ Parando verificação automática após 24h');
-    }, 24 * 60 * 60 * 1000);
+      clearInterval(frequentInterval)
+      clearInterval(normalInterval)
+      console.log('⏰ Parando verificação automática após 24h')
+    }, 24 * 60 * 60 * 1000)
   };
 
   // Copy PIX code
-  const copyPixCode = async () => {;
+  const copyPixCode = async () => {
     if (!payment?.qr_code) return;
 
     try {
-      await navigator.clipboard.writeText(payment.qr_code);
+      await navigator.clipboard.writeText(payment.qr_code)
       toast({
         title: 'Código copiado!',
         description: 'Cole no seu app do banco para pagar',
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
     } catch (err) {
       toast({
         title: 'Erro ao copiar',
         description: 'Tente selecionar e copiar manualmente',
         variant: 'destructive',
-      });
+      })
     }
   };
 
@@ -317,24 +317,24 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
   useEffect(() => {
     if (!payment || timeLeft <= 0) return;
 
-    const interval = setInterval(() => {;
-      setTimeLeft(prev => Math.max(0, prev - 1));
-    }, 1000);
+    const interval = setInterval(() => {
+      setTimeLeft(prev => Math.max(0, prev - 1))
+    }, 1000)
 
-    return () => clearInterval(interval);
-  }, [payment, timeLeft]);
+    return () => clearInterval(interval)
+  }, [payment, timeLeft])
 
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
-      setShowCpfForm(true);
-      setCustomerCpf('');
-      setPayment(null);
-      setError(null);
+      setShowCpfForm(true)
+      setCustomerCpf('')
+      setPayment(null)
+      setError(null)
       // RESET: Limpar flag de sucesso ao abrir modal
       paymentSuccessTriggered.current = false;
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   if (!isOpen) return null;
 
@@ -386,9 +386,9 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
                     type="text"
                     value={customerCpf}
                     onChange={(e) => {
-                      const formatted = formatCpf(e.target.value);
+                      const formatted = formatCpf(e.target.value)
                       if (formatted.replace(/\D/g, '').length <= 11) {
-                        setCustomerCpf(formatted);
+                        setCustomerCpf(formatted)
                       }
                     }}
                     placeholder="000.000.000-00"
@@ -408,14 +408,14 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
                 <Button
                   onClick={() => {
                     if (validateCpf(customerCpf)) {
-                      setShowCpfForm(false);
-                      createPixPayment();
+                      setShowCpfForm(false)
+                      createPixPayment()
                     } else {
                       toast({
                         title: 'CPF inválido',
                         description: 'Por favor, digite um CPF válido',
                         variant: 'destructive',
-                      });
+                      })
                     }
                   }}
                   disabled={!validateCpf(customerCpf)}
@@ -629,5 +629,5 @@ export const AsaasPixModal: React.FC<AsaasPixModalProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

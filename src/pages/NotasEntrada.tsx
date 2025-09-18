@@ -29,19 +29,19 @@ interface NotaEntrada {
 
 
 const NotasEntradaPage: React.FC = () => {
-  const [notas, setNotas] = useState<NotaEntrada[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [dateFrom, setDateFrom] = useState<Date | undefined>(new Date());
-  const [dateTo, setDateTo] = useState<Date | undefined>(new Date());
+  const [notas, setNotas] = useState<NotaEntrada[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(new Date())
+  const [dateTo, setDateTo] = useState<Date | undefined>(new Date())
 
   useEffect(() => {
-    fetchNotas();
-  }, []);
+    fetchNotas()
+  }, [])
 
-  const fetchNotas = async () => {;
-    setLoading(true);
+  const fetchNotas = async () => {
+    setLoading(true)
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -57,12 +57,12 @@ const NotasEntradaPage: React.FC = () => {
         created_at: new Date(nota.created_at),;
       })) as NotaEntrada[];
 
-      setNotas(formattedData);
+      setNotas(formattedData)
     } catch (error: any) {
-      console.error('Erro ao buscar notas de entrada:', error);
-      toast.error('Falha ao buscar as notas de entrada.', { description: error.message });
+      console.error('Erro ao buscar notas de entrada:', error)
+      toast.error('Falha ao buscar as notas de entrada.', { description: error.message })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -78,7 +78,7 @@ const NotasEntradaPage: React.FC = () => {
         <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
       </PopoverContent>
     </Popover>;
-  );
+  )
 
   if (loading) {
     return (
@@ -86,7 +86,7 @@ const NotasEntradaPage: React.FC = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <p className="ml-4 text-gray-600">Carregando notas...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -190,7 +190,7 @@ const NotasEntradaPage: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default NotasEntradaPage;

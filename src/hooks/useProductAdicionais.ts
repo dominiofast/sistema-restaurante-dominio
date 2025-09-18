@@ -23,39 +23,39 @@ interface CategoriaComAdicionais extends CategoriaAdicional {
   adicionais: Adicional[];
 }
 
-export const useProductAdicionais = (produtoId: string | undefined) => {;
-  const [categorias, setCategorias] = useState<CategoriaComAdicionais[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const useProductAdicionais = (produtoId: string | undefined) => {
+  const [categorias, setCategorias] = useState<CategoriaComAdicionais[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchAdicionais() {
       if (!produtoId) {
-        setLoading(false);
+        setLoading(false)
         return;
       }
 
       try {
-        setLoading(true);
-        setError(null);
+        setLoading(true)
+        setError(null)
         
-        console.log('🔍 Buscando adicionais para produto via API Neon:', produtoId);
+        console.log('🔍 Buscando adicionais para produto via API Neon:', produtoId)
         
         // Buscar categorias de adicionais associadas ao produto via API
-        const response = await fetch(`/api/produto-categorias-adicionais?produto_id=${produtoId} catch (error) { console.error('Error:', error); }`);
-        const result = await response.json();
+        const response = await fetch(`/api/produto-categorias-adicionais?produto_id=${produtoId} catch (error) { console.error('Error:', error) }`)
+        const result = await response.json()
         
         if (!response.ok || !result.success) {
-          throw new Error(result.error || 'Erro ao carregar categorias do produto');
+          throw new Error(result.error || 'Erro ao carregar categorias do produto')
         }
 
         const produtoCategorias = result.data || [];
 
-        console.log('📋 Categorias encontradas via API:', produtoCategorias.length);
+        console.log('📋 Categorias encontradas via API:', produtoCategorias.length)
 
         if (produtoCategorias.length === 0) {
-          setCategorias([]);
-          setLoading(false);
+          setCategorias([])
+          setLoading(false)
           return;
         }
 
@@ -66,19 +66,19 @@ export const useProductAdicionais = (produtoId: string | undefined) => {;
           const categoria = produtoCategoria.categorias_adicionais;
           if (!categoria) continue;
 
-          console.log('🍕 Buscando adicionais para categoria via API:', categoria.name);
+          console.log('🍕 Buscando adicionais para categoria via API:', categoria.name)
 
-          const adicionaisResponse = await fetch(`/api/adicionais?categoria_adicional_id=${categoria.id}`);
-          const adicionaisResult = await adicionaisResponse.json();
+          const adicionaisResponse = await fetch(`/api/adicionais?categoria_adicional_id=${categoria.id}`)
+          const adicionaisResult = await adicionaisResponse.json()
 
           if (!adicionaisResponse.ok || !adicionaisResult.success) {
-            console.error('❌ Erro ao buscar adicionais via API:', adicionaisResult.error);
+            console.error('❌ Erro ao buscar adicionais via API:', adicionaisResult.error)
             continue;
           }
 
           const adicionais = adicionaisResult.data || [];
 
-          console.log('✅ Adicionais encontrados via API:', adicionais.length, 'para categoria:', categoria.name);
+          console.log('✅ Adicionais encontrados via API:', adicionais.length, 'para categoria:', categoria.name)
 
           categoriasComAdicionais.push({
             id: categoria.id,
@@ -96,22 +96,22 @@ export const useProductAdicionais = (produtoId: string | undefined) => {;
               image: adicional.image,
               is_available: adicional.is_available
             }))
-          });
+          })
         }
 
-        setCategorias(categoriasComAdicionais);
-        console.log('🎉 Total de categorias com adicionais via API:', categoriasComAdicionais.length);
+        setCategorias(categoriasComAdicionais)
+        console.log('🎉 Total de categorias com adicionais via API:', categoriasComAdicionais.length)
         
       } catch (error) {
-        console.error('💥 Erro geral ao carregar adicionais via API:', error);
-        setError(error instanceof Error ? error.message : 'Erro desconhecido ao carregar adicionais');
+        console.error('💥 Erro geral ao carregar adicionais via API:', error)
+        setError(error instanceof Error ? error.message : 'Erro desconhecido ao carregar adicionais')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
     
-    fetchAdicionais();
-  }, [produtoId]);
+    fetchAdicionais()
+  }, [produtoId])
 
   return {
     categorias,

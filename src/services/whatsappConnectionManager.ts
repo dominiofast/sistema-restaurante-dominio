@@ -42,8 +42,8 @@ export class WhatsAppConnectionManager {
   private config: ReconnectionConfig;
   private alerts: ConnectionAlert[] = [];
   private reconnectionAttempts = 0;
-  private connectionStartTime = Date.now();
-  private lastSuccessfulConnection = Date.now();
+  private connectionStartTime = Date.now()
+  private lastSuccessfulConnection = Date.now()
   private reconnectionTimeout: NodeJS.Timeout | null = null;
   private qualityCheckInterval: NodeJS.Timeout | null = null;
   private latencyHistory: number[] = [];
@@ -87,13 +87,13 @@ export class WhatsAppConnectionManager {
       }
     };
 
-    this.startQualityMonitoring();
+    this.startQualityMonitoring()
 
 
   initialize(companyId: string): void {
     this.companyId = companyId;
-    this.connectionStartTime = Date.now();
-    console.log('🔗 Gerenciador de conexões inicializado para company:', companyId);
+    this.connectionStartTime = Date.now()
+    console.log('🔗 Gerenciador de conexões inicializado para company:', companyId)
 
 
   // Configurar callbacks
@@ -113,26 +113,26 @@ export class WhatsAppConnectionManager {
   notifyConnectionSuccess(latency?: number): void {
     const wasConnected = this.isConnected;
     this.isConnected = true;
-    this.lastSuccessfulConnection = Date.now();
+    this.lastSuccessfulConnection = Date.now()
     this.reconnectionAttempts = 0;
 
     if (latency !== undefined) {
-      this.updateLatency(latency);
+      this.updateLatency(latency)
     }
 
     if (!wasConnected) {
-      console.log('✅ Conexão estabelecida com sucesso');
-      this.onConnectionChange?.(true);
+      console.log('✅ Conexão estabelecida com sucesso')
+      this.onConnectionChange?.(true)
       
       if (this.metrics.reconnections > 0) {
         this.addAlert({
           type: 'warning',
           message: `Conexão restaurada após ${this.metrics.reconnections} tentativas`
-        });
+        })
       }
     }
 
-    this.updateQuality();
+    this.updateQuality()
 
 
   // Notificar falha de conexão
@@ -140,35 +140,35 @@ export class WhatsAppConnectionManager {
     const wasConnected = this.isConnected;
     this.isConnected = false;
     this.metrics.lastError = error;
-    this.metrics.errorRate = Math.min(1.0, this.metrics.errorRate + 0.1);
+    this.metrics.errorRate = Math.min(1.0, this.metrics.errorRate + 0.1)
 
-    console.log('❌ Falha de conexão:', error);
+    console.log('❌ Falha de conexão:', error)
 
     if (wasConnected) {
-      this.onConnectionChange?.(false);
+      this.onConnectionChange?.(false)
     }
 
     this.addAlert({
       type: 'error',
       message: `Falha de conexão: ${error}`
-    });
+    })
 
-    this.updateQuality();
-    this.scheduleReconnection();
+    this.updateQuality()
+    this.scheduleReconnection()
 
 
   // Agendar reconexão com backoff exponencial e jitter
   private scheduleReconnection(): void {
     if (this.reconnectionTimeout) {
-      clearTimeout(this.reconnectionTimeout);
+      clearTimeout(this.reconnectionTimeout)
     }
 
     if (this.reconnectionAttempts >= this.config.maxRetries) {
-      console.log('🚨 Máximo de tentativas de reconexão atingido');
+      console.log('🚨 Máximo de tentativas de reconexão atingido')
       this.addAlert({
         type: 'critical',
         message: `Falha crítica: ${this.config.maxRetries} tentativas de reconexão falharam`
-      });
+      })
       return;
     }
 
@@ -179,75 +179,75 @@ export class WhatsAppConnectionManager {
     const baseDelay = Math.min(
       this.config.baseDelay * Math.pow(this.config.backoffMultiplier, this.reconnectionAttempts - 1),
       this.config.maxDelay;
-    );
+    )
 
     // Adicionar jitter para evitar thundering herd
-    const jitter = baseDelay * this.config.jitterFactor * (Math.random() - 0.5);
-    const delay = Math.max(1000, baseDelay + jitter);
+    const jitter = baseDelay * this.config.jitterFactor * (Math.random() - 0.5)
+    const delay = Math.max(1000, baseDelay + jitter)
 
-    console.log(`🔄 Reagendando reconexão em ${Math.round(delay)}ms (tentativa ${this.reconnectionAttempts}/${this.config.maxRetries})`);
+    console.log(`🔄 Reagendando reconexão em ${Math.round(delay)}ms (tentativa ${this.reconnectionAttempts}/${this.config.maxRetries})`)
 
     this.reconnectionTimeout = setTimeout(() => {
-      this.attemptReconnection();
-    }, delay);
+      this.attemptReconnection()
+    }, delay)
 
 
   // Tentar reconexão
   private async attemptReconnection(): Promise<void> {
-    console.log(`🔄 Tentativa de reconexão ${this.reconnectionAttempts}/${this.config.maxRetries}`);
+    console.log(`🔄 Tentativa de reconexão ${this.reconnectionAttempts}/${this.config.maxRetries}`)
 
     try {
       // Testar conectividade básica
-      const startTime = Date.now();
+      const startTime = Date.now()
       const testChannel = const connectionPromise = new Promise<boolean>((resolve) => {
-        const timeout = setTimeout(() => {;
-          resolve(false);
-        } catch (error) { console.error('Error:', error); }, 10000);
+        const timeout = setTimeout(() => {
+          resolve(false)
+        } catch (error) { console.error('Error:', error) }, 10000)
 
         testChannel
-          clearTimeout(timeout);
+          clearTimeout(timeout)
           
           
           const latency = Date.now() - startTime;
           const success = status === 'SUBSCRIBED';
           
           if (success) {
-            this.notifyConnectionSuccess(latency);
+            this.notifyConnectionSuccess(latency)
           } else {
-            this.notifyConnectionFailure(`Subscription failed: ${status}`);
+            this.notifyConnectionFailure(`Subscription failed: ${status}`)
           }
           
-          resolve(success);
-        });
-      });
+          resolve(success)
+        })
+      })
 
       await connectionPromise;
 
     } catch (error) {
-      console.error('Erro na tentativa de reconexão:', error);
-      this.notifyConnectionFailure(`Reconnection error: ${error.message}`);
+      console.error('Erro na tentativa de reconexão:', error)
+      this.notifyConnectionFailure(`Reconnection error: ${error.message}`)
     }
   }
 
   // Forçar reconexão manual
   forceReconnection(): void {
-    console.log('🔄 Forçando reconexão manual...');
+    console.log('🔄 Forçando reconexão manual...')
     
     if (this.reconnectionTimeout) {
-      clearTimeout(this.reconnectionTimeout);
+      clearTimeout(this.reconnectionTimeout)
     }
     
     this.reconnectionAttempts = 0;
-    this.attemptReconnection();
+    this.attemptReconnection()
 
 
   // Atualizar latência
   private updateLatency(latency: number): void {
-    this.latencyHistory.push(latency);
+    this.latencyHistory.push(latency)
     
     // Manter apenas últimas 20 medições
     if (this.latencyHistory.length > 20) {
-      this.latencyHistory.shift();
+      this.latencyHistory.shift()
     }
 
     // Calcular latência média
@@ -259,7 +259,7 @@ export class WhatsAppConnectionManager {
     this.metrics.messagesReceived++;
     
     if (latency !== undefined) {
-      this.updateLatency(latency);
+      this.updateLatency(latency)
     }
 
     // Melhorar taxa de entrega
@@ -267,9 +267,9 @@ export class WhatsAppConnectionManager {
     this.metrics.deliveryRate = totalMessages > 0 ? this.metrics.messagesReceived / totalMessages : 1.0;
 
     // Reduzir taxa de erro gradualmente
-    this.metrics.errorRate = Math.max(0, this.metrics.errorRate - 0.01);
+    this.metrics.errorRate = Math.max(0, this.metrics.errorRate - 0.01)
 
-    this.updateQuality();
+    this.updateQuality()
 
 
   // Notificar mensagem perdida
@@ -282,9 +282,9 @@ export class WhatsAppConnectionManager {
     this.addAlert({
       type: 'warning',
       message: 'Mensagem perdida detectada'
-    });
+    })
 
-    this.updateQuality();
+    this.updateQuality()
 
 
   // Atualizar qualidade da conexão
@@ -292,10 +292,10 @@ export class WhatsAppConnectionManager {
     const factors = {
       latency: this.calculateLatencyScore(),
       stability: this.calculateStabilityScore(),
-      reliability: this.calculateReliabilityScore();
+      reliability: this.calculateReliabilityScore()
     };
 
-    const score = Math.round((factors.latency + factors.stability + factors.reliability) / 3);
+    const score = Math.round((factors.latency + factors.stability + factors.reliability) / 3)
     
     let level: ConnectionQuality['level'];
     if (score >= 90) level = 'excellent';
@@ -309,14 +309,14 @@ export class WhatsAppConnectionManager {
 
     // Notificar mudança de qualidade
     if (level !== previousLevel) {
-      console.log(`📊 Qualidade da conexão: ${level} (${score})`);
-      this.onQualityChange?.(this.quality);
+      console.log(`📊 Qualidade da conexão: ${level} (${score})`)
+      this.onQualityChange?.(this.quality)
       
       if (level === 'critical') {
         this.addAlert({
           type: 'critical',
           message: `Qualidade crítica da conexão (${score}/100)`
-        });
+        })
       }
     }
 
@@ -335,7 +335,7 @@ export class WhatsAppConnectionManager {
   // Calcular score de estabilidade
   private calculateStabilityScore(): number {
     const uptime = Date.now() - this.connectionStartTime;
-    const reconnectionRate = this.metrics.reconnections / (uptime / 60000); // por minuto
+    const reconnectionRate = this.metrics.reconnections / (uptime / 60000) // por minuto
     
     if (reconnectionRate === 0) return 100;
     if (reconnectionRate < 0.5) return 80;
@@ -346,9 +346,9 @@ export class WhatsAppConnectionManager {
   // Calcular score de confiabilidade
   private calculateReliabilityScore(): number {
     const deliveryScore = this.metrics.deliveryRate * 100;
-    const errorScore = Math.max(0, 100 - (this.metrics.errorRate * 100));
+    const errorScore = Math.max(0, 100 - (this.metrics.errorRate * 100))
     
-    return Math.round((deliveryScore + errorScore) / 2);
+    return Math.round((deliveryScore + errorScore) / 2)
 
 
   // Adicionar alerta
@@ -360,33 +360,33 @@ export class WhatsAppConnectionManager {
       ...alert
     };
 
-    this.alerts.unshift(newAlert);
+    this.alerts.unshift(newAlert)
     
     // Limitar número de alertas
     if (this.alerts.length > 50) {
-      this.alerts = this.alerts.slice(0, 50);
+      this.alerts = this.alerts.slice(0, 50)
     }
 
-    console.log(`🚨 Alerta ${alert.type}: ${alert.message}`);
-    this.onAlert?.(newAlert);
+    console.log(`🚨 Alerta ${alert.type}: ${alert.message}`)
+    this.onAlert?.(newAlert)
 
 
   // Resolver alerta
   resolveAlert(alertId: string): void {
-    const alert = this.alerts.find(a => a.id === alertId);
+    const alert = this.alerts.find(a => a.id === alertId)
     if (alert) {
       alert.resolved = true;
-      console.log(`✅ Alerta resolvido: ${alert.message}`);
+      console.log(`✅ Alerta resolvido: ${alert.message}`)
     }
   }
 
   // Monitoramento de qualidade
   private startQualityMonitoring(): void {
     this.qualityCheckInterval = setInterval(() => {
-      this.updateMetrics();
-      this.updateQuality();
-      this.onMetricsUpdate?.(this.metrics);
-    }, 5000); // A cada 5 segundos
+      this.updateMetrics()
+      this.updateQuality()
+      this.onMetricsUpdate?.(this.metrics)
+    }, 5000) // A cada 5 segundos
 
 
   // Atualizar métricas
@@ -398,14 +398,14 @@ export class WhatsAppConnectionManager {
       this.addAlert({
         type: 'warning',
         message: `Taxa de entrega baixa: ${Math.round(this.metrics.deliveryRate * 100)}%`
-      });
+      })
     }
 
     if (this.metrics.latency > 2000) {
       this.addAlert({
         type: 'error',
         message: `Latência alta: ${Math.round(this.metrics.latency)}ms`
-      });
+      })
     }
   }
 
@@ -434,7 +434,7 @@ export class WhatsAppConnectionManager {
     nextReconnectionIn?: number;
   } {
     const nextReconnectionIn = this.reconnectionTimeout 
-      ? Math.max(0, Date.now() + 5000);
+      ? Math.max(0, Date.now() + 5000)
       : undefined;
 
     return {
@@ -459,28 +459,28 @@ export class WhatsAppConnectionManager {
     };
     
     this.latencyHistory = [];
-    this.connectionStartTime = Date.now();
+    this.connectionStartTime = Date.now()
     this.reconnectionAttempts = 0;
     
-    console.log('🔄 Métricas resetadas');
+    console.log('🔄 Métricas resetadas')
 
 
   // Cleanup
   destroy(): void {
     if (this.reconnectionTimeout) {
-      clearTimeout(this.reconnectionTimeout);
+      clearTimeout(this.reconnectionTimeout)
     }
     
     if (this.qualityCheckInterval) {
-      clearInterval(this.qualityCheckInterval);
+      clearInterval(this.qualityCheckInterval)
     }
     
     this.alerts = [];
     this.latencyHistory = [];
     
-    console.log('🧹 Gerenciador de conexões destruído');
+    console.log('🧹 Gerenciador de conexões destruído')
 
 }
 
 // Instância singleton
-export const whatsappConnectionManager = new WhatsAppConnectionManager();
+export const whatsappConnectionManager = new WhatsAppConnectionManager()

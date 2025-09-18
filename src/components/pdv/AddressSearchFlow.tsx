@@ -33,13 +33,13 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
   isFullscreen = false,
   onHeaderChange
 }) => {
-  const [currentStep, setCurrentStep] = useState<FlowStep>('search');
-  const [searchText, setSearchText] = useState('');
-  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
-  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null);
+  const [currentStep, setCurrentStep] = useState<FlowStep>('search')
+  const [searchText, setSearchText] = useState('')
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([])
+  const [selectedAddress, setSelectedAddress] = useState<CustomerAddress | null>(null)
 
-  const handleSearchComplete = (searchResults: AddressSuggestion[]) => {;
-    setSuggestions(searchResults);
+  const handleSearchComplete = (searchResults: AddressSuggestion[]) => {
+    setSuggestions(searchResults)
     // Não navegar para step de sugestões, mostrar inline
   };
 
@@ -56,32 +56,32 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
       longitude: suggestion.longitude;
     };
     
-    setSelectedAddress(address);
-    setCurrentStep('details');
-    updateHeader('details');
+    setSelectedAddress(address)
+    setCurrentStep('details')
+    updateHeader('details')
   };
 
-  const handleDetailsConfirm = (address: CustomerAddress) => {;
-    onConfirm(address);
-    handleClose();
+  const handleDetailsConfirm = (address: CustomerAddress) => {
+    onConfirm(address)
+    handleClose()
   };
 
   const handleBack = () => {
     switch (currentStep) {
       case 'suggestions':;
-        setCurrentStep('search');
-        setSuggestions([]);
-        updateHeader('search');
+        setCurrentStep('search')
+        setSuggestions([])
+        updateHeader('search')
         break;
       case 'details':
-        setCurrentStep('suggestions');
-        setSelectedAddress(null);
-        updateHeader('suggestions');
+        setCurrentStep('suggestions')
+        setSelectedAddress(null)
+        updateHeader('suggestions')
         break;
 
   };
 
-  const updateHeader = (step: FlowStep) => {;
+  const updateHeader = (step: FlowStep) => {
     if (!isFullscreen || !onHeaderChange) return;
     
     switch (step) {
@@ -89,31 +89,31 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
         onHeaderChange({
           title: 'Novo Endereço',
           showBackButton: false
-        });
+        })
         break;
       case 'suggestions':
         onHeaderChange({
           title: 'Selecionar Endereço',
           showBackButton: true,
           onBack: handleBack
-        });
+        })
         break;
       case 'details':
         onHeaderChange({
           title: 'Confirmar Endereço',
           showBackButton: true,
           onBack: handleBack
-        });
+        })
         break;
 
   };
 
-  const handleClose = () => {;
-    setCurrentStep('search');
-    setSearchText('');
-    setSuggestions([]);
-    setSelectedAddress(null);
-    onClose();
+  const handleClose = () => {
+    setCurrentStep('search')
+    setSearchText('')
+    setSuggestions([])
+    setSelectedAddress(null)
+    onClose()
   };
 
   if (!isOpen) return null;
@@ -121,9 +121,9 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
   // Inicializar header para modo fullscreen
   React.useEffect(() => {
     if (isFullscreen) {
-      updateHeader(currentStep);
+      updateHeader(currentStep)
 
-  }, [isFullscreen, currentStep]);
+  }, [isFullscreen, currentStep])
 
   // Renderização para modo fullscreen (sem container próprio)
   if (isFullscreen) {
@@ -167,7 +167,7 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
           />
         )}
       </>
-    );
+    )
 
 
   // Renderização para modo modal tradicional
@@ -210,5 +210,5 @@ export const AddressSearchFlow: React.FC<AddressSearchFlowProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

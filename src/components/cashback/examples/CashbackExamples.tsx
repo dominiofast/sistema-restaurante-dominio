@@ -117,5 +117,5 @@ export const CashbackExamples: React.FC<CashbackExamplesProps> = ({ companyId })
         </ul>
       </div>
     </div>
-  );
+  )
 };

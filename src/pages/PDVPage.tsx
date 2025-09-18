@@ -15,31 +15,31 @@ import { ObservacaoModalPDV } from '@/components/pdv/ObservacaoModalPDV';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
-const PDVEnhanced = () => {;
-  const { currentCompany, user } = useAuth();
-  const { selectedStore } = useStore();
-  const { categorias, produtos, loading, error } = useCardapioData(currentCompany?.id);
-  const { buscarPorTelefone, loading: loadingCliente } = useClientePublico();
-  const { config: agenteConfig } = useAgenteIAConfig(currentCompany?.id || '');
-  const { toast: toastHook } = useToast();
+const PDVEnhanced = () => {
+  const { currentCompany, user } = useAuth()
+  const { selectedStore } = useStore()
+  const { categorias, produtos, loading, error } = useCardapioData(currentCompany?.id)
+  const { buscarPorTelefone, loading: loadingCliente } = useClientePublico()
+  const { config: agenteConfig } = useAgenteIAConfig(currentCompany?.id || '')
+  const { toast: toastHook } = useToast()
   
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams()
   
-  const [categoriaAtiva, setCategoriaAtiva] = useState('');
+  const [categoriaAtiva, setCategoriaAtiva] = useState('')
   const [carrinho, setCarrinho] = useState(() => {
     // Restaurar carrinho do localStorage ao inicializar
     try {
-      const saved = localStorage.getItem('pdv_carrinho');
+      const saved = localStorage.getItem('pdv_carrinho')
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
-  });
-  const [busca, setBusca] = useState('');
+  })
+  const [busca, setBusca] = useState('')
   const [cliente, setCliente] = useState(() => {
     // Restaurar dados do cliente do localStorage ao inicializar
     try {
-      const saved = localStorage.getItem('pdv_cliente');
+      const saved = localStorage.getItem('pdv_cliente')
       return saved ? JSON.parse(saved) : {
         nome: '',
         telefone: '',
@@ -47,7 +47,7 @@ const PDVEnhanced = () => {;
         entrega: 'balcao',
         pagamento: 'dinheiro',
         taxaEntrega: 0
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
     } catch {
       return {
         nome: '',
@@ -58,78 +58,78 @@ const PDVEnhanced = () => {;
         taxaEntrega: 0
       };
     }
-  });
-  const [buscandoCliente, setBuscandoCliente] = useState(false);
-  const [clienteEncontrado, setClienteEncontrado] = useState(false);
-  const [entregaModalOpen, setEntregaModalOpen] = useState(false);
-  const [pagamentoModalOpen, setPagamentoModalOpen] = useState(false);
-  const [adicionaisModalOpen, setAdicionaisModalOpen] = useState(false);
-  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
-  const [observacaoModalOpen, setObservacaoModalOpen] = useState(false);
+  })
+  const [buscandoCliente, setBuscandoCliente] = useState(false)
+  const [clienteEncontrado, setClienteEncontrado] = useState(false)
+  const [entregaModalOpen, setEntregaModalOpen] = useState(false)
+  const [pagamentoModalOpen, setPagamentoModalOpen] = useState(false)
+  const [adicionaisModalOpen, setAdicionaisModalOpen] = useState(false)
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null)
+  const [observacaoModalOpen, setObservacaoModalOpen] = useState(false)
   const [observacoesPedido, setObservacoesPedido] = useState(() => {
     // Restaurar observações do localStorage ao inicializar
     try {
-      const saved = localStorage.getItem('pdv_observacoes');
+      const saved = localStorage.getItem('pdv_observacoes')
       return saved || '';
     } catch {
       return '';
     }
-  });
-  const [carregandoPedido, setCarregandoPedido] = useState(false);
+  })
+  const [carregandoPedido, setCarregandoPedido] = useState(false)
 
   // Persistir dados no localStorage quando mudarem
   useEffect(() => {
-    localStorage.setItem('pdv_carrinho', JSON.stringify(carrinho));
-  }, [carrinho]);
+    localStorage.setItem('pdv_carrinho', JSON.stringify(carrinho))
+  }, [carrinho])
 
   useEffect(() => {
-    localStorage.setItem('pdv_cliente', JSON.stringify(cliente));
-  }, [cliente]);
+    localStorage.setItem('pdv_cliente', JSON.stringify(cliente))
+  }, [cliente])
 
   useEffect(() => {
-    localStorage.setItem('pdv_observacoes', observacoesPedido);
-  }, [observacoesPedido]);
+    localStorage.setItem('pdv_observacoes', observacoesPedido)
+  }, [observacoesPedido])
 
   // Set primeira categoria como ativa quando as categorias carregarem
   useEffect(() => {
     if (categorias.length > 0 && !categoriaAtiva) {
-      setCategoriaAtiva(categorias[0].id);
-      console.log('📂 PDV - Categoria ativa definida:', categorias[0].name, categorias[0].id);
+      setCategoriaAtiva(categorias[0].id)
+      console.log('📂 PDV - Categoria ativa definida:', categorias[0].name, categorias[0].id)
     }
-  }, [categorias, categoriaAtiva]);
+  }, [categorias, categoriaAtiva])
 
   // Carregar pedido existente se pedido_id for fornecido na URL
   useEffect(() => {
-    const pedidoId = searchParams.get('pedido_id');
+    const pedidoId = searchParams.get('pedido_id')
     if (pedidoId && produtos.length > 0) {
-      carregarPedidoExistente(Number(pedidoId));
+      carregarPedidoExistente(Number(pedidoId))
     }
-  }, [searchParams, produtos]);
+  }, [searchParams, produtos])
 
-  const carregarPedidoExistente = async (pedidoId: number) => {;
-    setCarregandoPedido(true);
+  const carregarPedidoExistente = async (pedidoId: number) => {
+    setCarregandoPedido(true)
     try {
       // Carregar dados do pedido
-      const { data: pedido, error }  catch (error) { console.error('Error:', error); }= 
+      const { data: pedido, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
 
       if (error) {
-        console.error('Erro ao carregar pedido:', error);
-        alert('Erro ao carregar pedido para edição');
+        console.error('Erro ao carregar pedido:', error)
+        alert('Erro ao carregar pedido para edição')
         return;
       }
 
       // Carregar itens do pedido com adicionais
       const itens = null as any; const itensError = null as any;
-        alert('Erro ao carregar itens do pedido');
+        alert('Erro ao carregar itens do pedido')
         return;
       }
 
       if (pedido) {
-        console.log('Dados do pedido carregados:', { pedido, itens });
+        console.log('Dados do pedido carregados:', { pedido, itens })
 
         // Buscar taxa de entrega nos itens do pedido
         const taxaEntregaItem = itens?.find((item: any) => 
@@ -137,11 +137,11 @@ const PDVEnhanced = () => {;
             item.nome_produto.toLowerCase().includes('taxa de entrega') ||
             item.nome_produto.toLowerCase().includes('entrega') ||
             item.nome_produto.toLowerCase().includes('delivery')
-          );
-        );
+          )
+        )
         
         const taxaEntrega = taxaEntregaItem ? Number(taxaEntregaItem.valor_total) : 0;
-        console.log('Taxa de entrega encontrada:', taxaEntrega, taxaEntregaItem);
+        console.log('Taxa de entrega encontrada:', taxaEntrega, taxaEntregaItem)
 
         // Carregar dados do cliente
         setCliente({
@@ -151,10 +151,10 @@ const PDVEnhanced = () => {;
           entrega: pedido.tipo === 'retirada' ? 'balcao' : pedido.tipo || 'balcao',
           pagamento: pedido.pagamento || 'dinheiro',
           taxaEntrega: taxaEntrega
-        });
+        })
 
         // Carregar observações
-        setObservacoesPedido(pedido.observacoes || '');
+        setObservacoesPedido(pedido.observacoes || '')
 
         // Carregar itens do carrinho
         if (itens && itens.length > 0) {
@@ -164,14 +164,14 @@ const PDVEnhanced = () => {;
               const isTaxaEntrega = item.nome_produto && (
                 item.nome_produto.toLowerCase().includes('taxa de entrega') ||
                 item.nome_produto.toLowerCase().includes('entrega') ||
-                item.nome_produto.toLowerCase().includes('delivery');
-              );
+                item.nome_produto.toLowerCase().includes('delivery')
+              )
               return !isTaxaEntrega;
             })
             .map((item: any) => {
-              const produto = produtos.find(p => p.id === item.produto_id);
+              const produto = produtos.find(p => p.id === item.produto_id)
               if (!produto) {
-                console.warn('Produto não encontrado no cardápio:', item.produto_id);
+                console.warn('Produto não encontrado no cardápio:', item.produto_id)
                 return null;
               }
 
@@ -181,7 +181,7 @@ const PDVEnhanced = () => {;
                 name: adicional.nome_adicional || `Adicional ${adicional.id.slice(0, 8)}`,
                 price: Number(adicional.valor_unitario) || 0,
                 quantidade: adicional.quantidade || 1;
-              }));
+              }))
 
               return {
                 ...produto,
@@ -189,69 +189,69 @@ const PDVEnhanced = () => {;
                 adicionais: adicionais,
                 preco_unitario: Number(item.valor_unitario) || produto.price
               };
-            }).filter(Boolean);
+            }).filter(Boolean)
 
           // Itens carregados no carrinho
-          setCarrinho(carrinhoItems);
+          setCarrinho(carrinhoItems)
 
 
-        setClienteEncontrado(true);
-        console.log('Pedido carregado com sucesso para edição:', pedido);
+        setClienteEncontrado(true)
+        console.log('Pedido carregado com sucesso para edição:', pedido)
       }
     } catch (error) {
-      console.error('Erro inesperado ao carregar pedido:', error);
-      alert('Erro inesperado ao carregar pedido');
+      console.error('Erro inesperado ao carregar pedido:', error)
+      alert('Erro inesperado ao carregar pedido')
     } finally {
-      setCarregandoPedido(false);
+      setCarregandoPedido(false)
     }
   };
 
   // Função para buscar cliente por telefone
-  const buscarClientePorTelefone = async (telefone: string) => {;
+  const buscarClientePorTelefone = async (telefone: string) => {
     if (!telefone || telefone.length < 10) return; // Mínimo 10 dígitos
     
-    setBuscandoCliente(true);
+    setBuscandoCliente(true)
     try {
-      const clienteEncontrado = await buscarPorTelefone(telefone, currentCompany?.id);
+      const clienteEncontrado = await buscarPorTelefone(telefone, currentCompany?.id)
       if (clienteEncontrado) {
         setCliente(prev => ({
           ...prev,
           nome: clienteEncontrado.nome || '',
           endereco: clienteEncontrado.endereco || ''
-        } catch (error) { console.error('Error:', error); }));
-        setClienteEncontrado(true);
+        } catch (error) { console.error('Error:', error) }))
+        setClienteEncontrado(true)
       } else {
-        setClienteEncontrado(false);
+        setClienteEncontrado(false)
       }
     } catch (error) {
-      console.error('Erro ao buscar cliente:', error);
+      console.error('Erro ao buscar cliente:', error)
     } finally {
-      setBuscandoCliente(false);
+      setBuscandoCliente(false)
     }
   };
 
   // Efeito para buscar cliente quando telefone mudar
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (cliente.telefone) {;
-        buscarClientePorTelefone(cliente.telefone);
+      if (cliente.telefone) {
+        buscarClientePorTelefone(cliente.telefone)
       } else {
-        setClienteEncontrado(false);
+        setClienteEncontrado(false)
       }
-    }, 1000); // Aguarda 1 segundo após parar de digitar
+    }, 1000) // Aguarda 1 segundo após parar de digitar
 
-    return () => clearTimeout(timeoutId);
-  }, [cliente.telefone]);
+    return () => clearTimeout(timeoutId)
+  }, [cliente.telefone])
 
   // Categoria ativa efetiva (fallback para a primeira categoria carregada)
-  const effectiveCategoriaAtiva = categoriaAtiva || (categorias[0]?.id || '');
+  const effectiveCategoriaAtiva = categoriaAtiva || (categorias[0]?.id || '')
   
   const produtosFiltrados = produtos.filter(produto => {
     // Se ainda não temos categoria definida e não há categorias carregadas, mostrar todos;
     const categoriaMatch = effectiveCategoriaAtiva ? produto.categoria_id === effectiveCategoriaAtiva : true;
-    const searchMatch = produto.name.toLowerCase().includes(busca.toLowerCase());
+    const searchMatch = produto.name.toLowerCase().includes(busca.toLowerCase())
     return categoriaMatch && searchMatch;
-  });
+  })
 
   // Debug log para produtos e categorias
   useEffect(() => {
@@ -261,17 +261,17 @@ const PDVEnhanced = () => {;
       categoriaAtiva,
       produtosFiltrados: produtosFiltrados.length,
       categoriaNome: categorias.find(c => c.id === categoriaAtiva)?.name
-    });
-  }, [produtos, categorias, categoriaAtiva, produtosFiltrados]);
+    })
+  }, [produtos, categorias, categoriaAtiva, produtosFiltrados])
 
-  const abrirModalAdicionais = (produto) => {;
+  const abrirModalAdicionais = (produto) => {
     if (!produto.is_available) return;
     
-    setProdutoSelecionado(produto);
-    setAdicionaisModalOpen(true);
+    setProdutoSelecionado(produto)
+    setAdicionaisModalOpen(true)
   };
 
-  const adicionarAoCarrinho = (produto, quantidade, adicionais = {}) => {;
+  const adicionarAoCarrinho = (produto, quantidade, adicionais = {}) => {
     if (!produto.is_available) return;
     
     // Converter objeto de adicionais para array com dados completos
@@ -293,7 +293,7 @@ const PDVEnhanced = () => {;
           quantidade: typeof adicionalData === 'number' ? adicionalData : 1
         };
       }
-    });
+    })
     
     const itemCompleto = {
       ...produto,
@@ -309,30 +309,30 @@ const PDVEnhanced = () => {;
     setCarrinho(prev => {
       const itemExistente = prev.find(item => 
         item.id === produto.id && 
-        JSON.stringify(item.adicionais) === JSON.stringify(adicionais);
-      );
+        JSON.stringify(item.adicionais) === JSON.stringify(adicionais)
+      )
       
       if (itemExistente) {
         return prev.map(item =>
           item.id === produto.id && JSON.stringify(item.adicionais) === JSON.stringify(adicionaisArray)
             ? { ...item, quantidade: item.quantidade + quantidade }
             : item
-        );
+        )
       }
       
       return [...prev, itemCompleto];
-    });
+    })
   };
 
   const removerDoCarrinho = (item) => {
     setCarrinho(prev => prev.filter(cartItem => 
-      !(cartItem.id === item.id && JSON.stringify(cartItem.adicionais) === JSON.stringify(item.adicionais));
-    ));
+      !(cartItem.id === item.id && JSON.stringify(cartItem.adicionais) === JSON.stringify(item.adicionais))
+    ))
   };
 
   const atualizarQuantidade = (item, novaQuantidade) => {
-    if (novaQuantidade === 0) {;
-      removerDoCarrinho(item);
+    if (novaQuantidade === 0) {
+      removerDoCarrinho(item)
       return;
     }
     setCarrinho(prev =>
@@ -341,7 +341,7 @@ const PDVEnhanced = () => {;
           ? { ...cartItem, quantidade: novaQuantidade }
           : cartItem
       )
-    );
+    )
   };
 
   const total = carrinho.reduce((acc, item) => {
@@ -353,10 +353,10 @@ const PDVEnhanced = () => {;
       ? promotionalPriceNumber ;
       : priceNumber;
       
-    const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => {;
+    const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => {
       const adicionalPrice = Number(adicional.price) || 0;
-      return total + (adicionalPrice * adicional.quantidade);
-    }, 0);
+      return total + (adicionalPrice * adicional.quantidade)
+    }, 0)
     
     const itemTotal = (preco + precoAdicionais) * item.quantidade;
     console.log('🧮 PDV - Calculando item:', {
@@ -366,49 +366,49 @@ const PDVEnhanced = () => {;
       quantidade: item.quantidade,
       itemTotal,
       isNaN: isNaN(itemTotal)
-    });
+    })
     
-    return acc + (isNaN(itemTotal) ? 0 : itemTotal);
-  }, 0);
+    return acc + (isNaN(itemTotal) ? 0 : itemTotal)
+  }, 0)
 
-  const handleEntregaConfirm = (data: any) => {;
-    console.log('📦 PDV - Dados recebidos do modal de entrega:', data);
+  const handleEntregaConfirm = (data: any) => {
+    console.log('📦 PDV - Dados recebidos do modal de entrega:', data)
     if (data.tipo === 'delivery' && data.endereco) {
       const enderecoTexto = `${data.endereco.logradouro}, ${data.endereco.numero}${data.endereco.complemento ? ', ' + data.endereco.complemento : ''} - ${data.endereco.bairro}, ${data.endereco.cidade}`;
-      console.log('💰 PDV - Definindo taxa de entrega no cliente:', data.taxaEntrega || 0);
+      console.log('💰 PDV - Definindo taxa de entrega no cliente:', data.taxaEntrega || 0)
       setCliente(prev => ({ 
         ...prev, 
         entrega: data.tipo,
         endereco: enderecoTexto,
         taxaEntrega: data.taxaEntrega || 0
-      }));
+      }))
     } else {
       setCliente(prev => ({ 
         ...prev, 
         entrega: data.tipo || data,
         taxaEntrega: 0
-      }));
+      }))
     }
-    setEntregaModalOpen(false);
+    setEntregaModalOpen(false)
   };
 
-  const handlePagamentoConfirm = (formaPagamento: string, dados?: any) => {;
-    setCliente(prev => ({ ...prev, pagamento: formaPagamento }));
-    setPagamentoModalOpen(false);
-    console.log('Pagamento confirmado:', { formaPagamento, dados });
+  const handlePagamentoConfirm = (formaPagamento: string, dados?: any) => {
+    setCliente(prev => ({ ...prev, pagamento: formaPagamento }))
+    setPagamentoModalOpen(false)
+    console.log('Pagamento confirmado:', { formaPagamento, dados })
   };
 
   const salvarPedido = async () => {
     try {
-      if (!agenteConfig?.token_pedidos) {;
-        toast.error('Erro: Token de autenticação não configurado');
+      if (!agenteConfig?.token_pedidos) {
+        toast.error('Erro: Token de autenticação não configurado')
         return false;
       }
 
-       catch (error) { console.error('Error:', error); }// DEFENSIVE PROGRAMMING - Validação para super admins
+       catch (error) { console.error('Error:', error) }// DEFENSIVE PROGRAMMING - Validação para super admins
       if (!selectedStore && user?.role === 'super_admin') {
-        console.error('❌ Super admin tentando criar pedido sem empresa selecionada');
-        toast.error('Por favor, selecione uma empresa antes de criar o pedido');
+        console.error('❌ Super admin tentando criar pedido sem empresa selecionada')
+        toast.error('Por favor, selecione uma empresa antes de criar o pedido')
         return false;
       }
 
@@ -433,77 +433,77 @@ const PDVEnhanced = () => {;
             preco: adicional.price,
             quantidade: adicional.quantidade
           }))
-        }));
+        }))
       };
 
-      console.log('Enviando pedido:', pedidoData);
-      console.log('🏢 Empresa selecionada no PDV:', selectedStore);
-      console.log('🎯 Company ID sendo enviado:', pedidoData.company_id);
-      console.log('📱 Todos os dados da selectedStore:', JSON.stringify(selectedStore, null, 2));
+      console.log('Enviando pedido:', pedidoData)
+      console.log('🏢 Empresa selecionada no PDV:', selectedStore)
+      console.log('🎯 Company ID sendo enviado:', pedidoData.company_id)
+      console.log('📱 Todos os dados da selectedStore:', JSON.stringify(selectedStore, null, 2))
 
       // Solução profissional e escalável: Edge Function com transação atômica
-      const { data, error } = await Promise.resolve();
+      const { data, error } = await Promise.resolve()
         body: pedidoData
-      });
+      })
 
       if (error) {
-        console.error('Erro ao salvar pedido:', error);
-        toast.error('Erro ao salvar pedido: ' + (error.message || 'Erro desconhecido'));
+        console.error('Erro ao salvar pedido:', error)
+        toast.error('Erro ao salvar pedido: ' + (error.message || 'Erro desconhecido'))
         return false;
       }
 
-      console.log('Pedido salvo com sucesso:', data);
+      console.log('Pedido salvo com sucesso:', data)
       
       // Imprimir via PrintNode (edge function)
       try {
-        await Promise.resolve();
+        await Promise.resolve()
           body: {
             pedido_id: data.pedido_id,
             numero_pedido: data.numero_pedido,
             company_id: currentCompany?.id,
             origin: 'pdv',
-          } catch (error) { console.error('Error:', error); },
-        });
-        toast.success(`Pedido criado! Número: ${data.numero_pedido || data.pedido_id}`);
+          } catch (error) { console.error('Error:', error) },
+        })
+        toast.success(`Pedido criado! Número: ${data.numero_pedido || data.pedido_id}`)
       } catch (printErr) {
-        console.warn('Falha ao acionar impressão automática:', printErr);
-        toast.success(`Pedido criado! Número: ${data.numero_pedido || data.pedido_id}`);
+        console.warn('Falha ao acionar impressão automática:', printErr)
+        toast.success(`Pedido criado! Número: ${data.numero_pedido || data.pedido_id}`)
       }
       
       return true;
 
     } catch (error) {
-      console.error('Erro inesperado ao salvar pedido:', error);
-      toast.error('Erro inesperado ao salvar pedido');
+      console.error('Erro inesperado ao salvar pedido:', error)
+      toast.error('Erro inesperado ao salvar pedido')
       return false;
     }
   };
 
   const finalizarPedido = async () => {
-    if (carrinho.length === 0) {;
-      toast.error('Adicione itens ao carrinho!');
+    if (carrinho.length === 0) {
+      toast.error('Adicione itens ao carrinho!')
       return;
     }
 
     if (!cliente.nome || !cliente.telefone) {
-      toast.error('Por favor, preencha o nome e telefone do cliente');
+      toast.error('Por favor, preencha o nome e telefone do cliente')
       return;
     }
     
     // Finalizando pedido
     
-    const sucesso = await salvarPedido();
+    const sucesso = await salvarPedido()
     if (sucesso) {
       // Limpar formulário e localStorage apenas se salvou com sucesso
-      setCarrinho([]);
-      setCliente({ nome: '', telefone: '', endereco: '', entrega: 'balcao', pagamento: 'dinheiro', taxaEntrega: 0 });
-      setClienteEncontrado(false);
-      setObservacoesPedido('');
+      setCarrinho([])
+      setCliente({ nome: '', telefone: '', endereco: '', entrega: 'balcao', pagamento: 'dinheiro', taxaEntrega: 0 })
+      setClienteEncontrado(false)
+      setObservacoesPedido('')
       
       // Limpar dados salvos no localStorage
-      localStorage.removeItem('pdv_carrinho');
-      localStorage.removeItem('pdv_cliente');
-      localStorage.removeItem('pdv_observacoes');
+      localStorage.removeItem('pdv_carrinho')
+      localStorage.removeItem('pdv_cliente')
+      localStorage.removeItem('pdv_observacoes')
     }
   };
 
@@ -518,7 +518,7 @@ const PDVEnhanced = () => {;
           </p>
         </div>
       </div>
-    );
+    )
 
 
   if (error) {
@@ -529,7 +529,7 @@ const PDVEnhanced = () => {;
           <p className="text-gray-600">{error}</p>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -728,8 +728,8 @@ const PDVEnhanced = () => {;
                       <h4 className="text-sm font-medium text-gray-800 flex-1">{item.name}</h4>
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          removerDoCarrinho(item);
+                          e.stopPropagation()
+                          removerDoCarrinho(item)
                         }}
                         className="text-red-500 hover:text-red-700 ml-2"
                       >
@@ -753,8 +753,8 @@ const PDVEnhanced = () => {;
                       <div className="flex items-center gap-2">
                         <button
                           onClick={(e) => {
-                            e.stopPropagation();
-                            atualizarQuantidade(item, item.quantidade - 1);
+                            e.stopPropagation()
+                            atualizarQuantidade(item, item.quantidade - 1)
                           }}
                           className="bg-gray-200 hover:bg-gray-300 rounded w-6 h-6 flex items-center justify-center"
                         >
@@ -763,8 +763,8 @@ const PDVEnhanced = () => {;
                         <span className="w-8 text-center text-sm">{item.quantidade}</span>
                         <button
                           onClick={(e) => {
-                            e.stopPropagation();
-                            atualizarQuantidade(item, item.quantidade + 1);
+                            e.stopPropagation()
+                            atualizarQuantidade(item, item.quantidade + 1)
                           }}
                           className="bg-gray-200 hover:bg-gray-300 rounded w-6 h-6 flex items-center justify-center"
                         >
@@ -774,8 +774,8 @@ const PDVEnhanced = () => {;
                        <span className="text-sm font-bold text-gray-900">
                          R$ {(() => {
                            const precoBase = Number(item.is_promotional && item.promotional_price ? item.promotional_price : item.price) || 0;
-                           const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => total + ((Number(adicional.price) || 0) * adicional.quantidade), 0);
-                           return ((precoBase + precoAdicionais) * item.quantidade).toFixed(2);
+                           const precoAdicionais = (item.adicionais || []).reduce((total, adicional) => total + ((Number(adicional.price) || 0) * adicional.quantidade), 0)
+                           return ((precoBase + precoAdicionais) * item.quantidade).toFixed(2)
                          })()}
                        </span>
                     </div>
@@ -930,7 +930,7 @@ const PDVEnhanced = () => {;
         observacaoAtual={observacoesPedido}
       />
     </div>
-  );
+  )
 };
 
 export default PDVEnhanced;

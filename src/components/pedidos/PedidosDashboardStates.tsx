@@ -21,7 +21,7 @@ export const PedidosDashboardStates: React.FC<PedidosDashboardStatesProps> = ({
         <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
         <span className="ml-4 text-lg text-blue-700 font-semibold">Carregando pedidos...</span>
       </div>
-    );
+    )
   }
   
   if (error) {
@@ -46,7 +46,7 @@ export const PedidosDashboardStates: React.FC<PedidosDashboardStatesProps> = ({
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   if (!companyId) {
@@ -56,7 +56,7 @@ export const PedidosDashboardStates: React.FC<PedidosDashboardStatesProps> = ({
         <span className="text-lg text-yellow-700 font-semibold mb-2">Nenhuma empresa selecionada</span>
         <span className="text-gray-700">Selecione uma empresa para visualizar os pedidos</span>
       </div>
-    );
+    )
   }
 
   return null;

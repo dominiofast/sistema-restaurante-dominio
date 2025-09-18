@@ -104,5 +104,5 @@ export const CardapioHeader: React.FC<CardapioHeaderProps> = ({
         </div>
       </div>
     </header>
-  );
+  )
 };

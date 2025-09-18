@@ -130,70 +130,70 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
 };
 
 export const AcompanharPedido: React.FC = () => {
-  const { numero_pedido } = useParams<{ numero_pedido: string }>();
-  const navigate = useNavigate();
-  const [pedido, setPedido] = useState<PedidoData | null>(null);
-  const [itens, setItens] = useState<ItemPedido[]>([]);
-  const [adicionais, setAdicionais] = useState<{ [itemId: string]: AdicionalItem[] }>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [companySlug, setCompanySlug] = useState<string>('');
+  const { numero_pedido } = useParams<{ numero_pedido: string }>()
+  const navigate = useNavigate()
+  const [pedido, setPedido] = useState<PedidoData | null>(null)
+  const [itens, setItens] = useState<ItemPedido[]>([])
+  const [adicionais, setAdicionais] = useState<{ [itemId: string]: AdicionalItem[] }>({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [companySlug, setCompanySlug] = useState<string>('')
 
   useEffect(() => {
-    console.log('🚀 TESTE: useEffect executou, numero_pedido:', numero_pedido);
+    console.log('🚀 TESTE: useEffect executou, numero_pedido:', numero_pedido)
     if (!numero_pedido) return;
 
     const fetchPedido = async () => {
       try {
-        // Extrair company_slug da URL (formato: /company-slug/pedido/numero);
+        // Extrair company_slug da URL (formato: /company-slug/pedido/numero)
         const urlPath = window.location.pathname;
-        console.log('🔍 URL atual:', urlPath);
-        const pathSegments = urlPath.split('/').filter(segment => segment.length > 0);
-        console.log('🔍 Segmentos da URL:', pathSegments);
+        console.log('🔍 URL atual:', urlPath)
+        const pathSegments = urlPath.split('/').filter(segment => segment.length > 0)
+        console.log('🔍 Segmentos da URL:', pathSegments)
         const extractedCompanySlug = pathSegments[0]; // Primeiro segmento é o company slug
-        console.log('🔍 Company slug extraído:', extractedCompanySlug);
-        setCompanySlug(extractedCompanySlug); // Salvar para usar no botão "Voltar ao Cardápio"
-        console.log('🔍 Número do pedido:', numero_pedido);
+        console.log('🔍 Company slug extraído:', extractedCompanySlug)
+        setCompanySlug(extractedCompanySlug) // Salvar para usar no botão "Voltar ao Cardápio"
+        console.log('🔍 Número do pedido:', numero_pedido)
         
         // SOLUÇÃO REAL: Usar o valor extraído diretamente, não o state
         const companySlugToUse = extractedCompanySlug;
-        console.log('🔍 Buscando company_id para slug/domain:', companySlugToUse);
+        console.log('🔍 Buscando company_id para slug/domain:', companySlugToUse)
         
-        console.log('🔍 === DEBUG CONSULTA COMPLETA ===');
-        console.log('🔍 Company slug extraído:', companySlugToUse);
-        console.log('🔍 Company slug state:', companySlug);
-        console.log('🔍 Supabase client:', !!supabase);
+        console.log('🔍 === DEBUG CONSULTA COMPLETA ===')
+        console.log('🔍 Company slug extraído:', companySlugToUse)
+        console.log('🔍 Company slug state:', companySlug)
+        console.log('🔍 Supabase client:', !!supabase)
         
         // SOLUÇÃO DEFINITIVA: Usar APENAS a lógica que FUNCIONA
-        console.log('🔍 === EXECUTANDO QUERY QUE FUNCIONA ===');
+        console.log('🔍 === EXECUTANDO QUERY QUE FUNCIONA ===')
         const todasEmpresas = null as any; const erroTodas = null as any;
-        console.log('🔍 Erro ao buscar todas:', erroTodas);
+        console.log('🔍 Erro ao buscar todas:', erroTodas)
         
         // Filtrar manualmente como na query que FUNCIONA
         const empresaEncontrada = todasEmpresas?.find(empresa => 
           empresa.slug === companySlugToUse || empresa.domain === companySlugToUse;
-        );
+        )
         
-        console.log('🔍 Empresa filtrada:', empresaEncontrada);
+        console.log('🔍 Empresa filtrada:', empresaEncontrada)
         
         if (!empresaEncontrada) {
-          console.error('❌ Empresa não encontrada para slug/domain:', companySlug);
-          setError('Empresa não encontrada');
+          console.error('❌ Empresa não encontrada para slug/domain:', companySlug)
+          setError('Empresa não encontrada')
           return;
         }
         
-         catch (error) { console.error('Error:', error); }const companyId = empresaEncontrada.id;
-        console.log('✅ Empresa encontrada com sucesso! ID:', companyId);
+         catch (error) { console.error('Error:', error) }const companyId = empresaEncontrada.id;
+        console.log('✅ Empresa encontrada com sucesso! ID:', companyId)
         
         // Buscar pedido por numero_pedido + company_id
         let pedidoData = null;
         let pedidoError = null;
         
         // Primeiro tentar buscar por numero_pedido
-        const numeroInteiro = parseInt(numero_pedido);
-        console.log('🔍 Buscando pedido...', { numeroInteiro, companyId });
+        const numeroInteiro = parseInt(numero_pedido)
+        console.log('🔍 Buscando pedido...', { numeroInteiro, companyId })
         const dadosPorNumero = null as any; const erroPorNumero = null as any;
-        console.log('🔍 Erro detalhado:', erroPorNumero?.message, erroPorNumero?.details, erroPorNumero?.code);
+        console.log('🔍 Erro detalhado:', erroPorNumero?.message, erroPorNumero?.details, erroPorNumero?.code)
         
         if (dadosPorNumero) {
           pedidoData = dadosPorNumero;
@@ -204,11 +204,11 @@ export const AcompanharPedido: React.FC = () => {
         }
 
         if (pedidoError) {
-          setError('Pedido não encontrado');
+          setError('Pedido não encontrado')
           return;
         }
 
-        setPedido(pedidoData);
+        setPedido(pedidoData)
 
         // Buscar itens
         const itensData = null as any; const itensError = null as any;
@@ -223,18 +223,18 @@ export const AcompanharPedido: React.FC = () => {
             }
           }
           
-          setAdicionais(adicionaisMap);
+          setAdicionais(adicionaisMap)
         }
 
       } catch (err) {
-        setError('Erro ao carregar pedido');
-        console.error(err);
+        setError('Erro ao carregar pedido')
+        console.error(err)
       } finally {
-        setLoading(false);
+        setLoading(false)
 
     };
 
-    fetchPedido();
+    fetchPedido()
 
     // Configurar realtime para atualizações de status
     const channel = supabase
@@ -248,8 +248,8 @@ export const AcompanharPedido: React.FC = () => {
           filter: `numero_pedido=eq.${numero_pedido}`
         },
         (payload) => {
-          if (payload.new) {;
-            setPedido(payload.new as PedidoData);
+          if (payload.new) {
+            setPedido(payload.new as PedidoData)
           }
         }
       )
@@ -258,7 +258,7 @@ export const AcompanharPedido: React.FC = () => {
     return () => {
       
     };
-  }, [numero_pedido]);
+  }, [numero_pedido])
 
   if (loading) {
     return (
@@ -268,7 +268,7 @@ export const AcompanharPedido: React.FC = () => {
           <p className="text-muted-foreground">Carregando pedido...</p>
         </div>
       </div>
-    );
+    )
 
 
   if (error || !pedido) {
@@ -283,10 +283,10 @@ export const AcompanharPedido: React.FC = () => {
             </Button>
           </div>
         </div>
-    );
+    )
 
 
-  const statusInfo = getStatusInfo(pedido.status, pedido.tipo);
+  const statusInfo = getStatusInfo(pedido.status, pedido.tipo)
   const StatusIcon = statusInfo.icon;
 
   return (
@@ -454,5 +454,5 @@ export const AcompanharPedido: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };

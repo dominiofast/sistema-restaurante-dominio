@@ -17,91 +17,91 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   onUploadComplete,
   currentImageUrl 
 }) => {
-  const [uploading, setUploading] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false)
+  const [dragOver, setDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    await uploadFile(file);
+    await uploadFile(file)
   };
 
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {;
-    event.preventDefault();
-    setDragOver(false);
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setDragOver(false)
     
     const files = event.dataTransfer.files;
     if (files.length > 0) {
-      await uploadFile(files[0]);
+      await uploadFile(files[0])
     }
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {;
-    event.preventDefault();
-    setDragOver(true);
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setDragOver(true)
   };
 
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {;
-    event.preventDefault();
-    setDragOver(false);
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setDragOver(false)
   };
 
   const uploadFile = async (file: File) => {
     // Validar tipo de arquivo;
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      toast.error('Tipo de arquivo não suportado. Use PNG, JPG, WEBP ou GIF.');
+      toast.error('Tipo de arquivo não suportado. Use PNG, JPG, WEBP ou GIF.')
       return;
     }
 
     // Validar tamanho (5MB máximo)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      toast.error('Arquivo muito grande. Máximo 5MB.');
+      toast.error('Arquivo muito grande. Máximo 5MB.')
       return;
     }
 
-    setUploading(true);
+    setUploading(true)
     const fileName = `${filePath}/${Date.now()}-${file.name.replace(/\s/g, '_')}`;
 
     try {
-      console.log('🔄 Iniciando upload:', fileName);
+      console.log('🔄 Iniciando upload:', fileName)
 
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         .upload(fileName, file, {
           cacheControl: '3600',
           upsert: false,
-        });
+        })
 
       if (error) {
-        console.error('❌ Erro no upload:', error);
+        console.error('❌ Erro no upload:', error)
         throw error;
       }
 
-      console.log('✅ Upload concluído:', data);
+      console.log('✅ Upload concluído:', data)
 
       const { data: { publicUrl } } = 
         
-        .getPublicUrl(fileName);
+        .getPublicUrl(fileName)
       
-      console.log('🔗 URL pública:', publicUrl);
+      console.log('🔗 URL pública:', publicUrl)
       
-      onUploadComplete(publicUrl);
-      toast.success(`${label} enviado com sucesso!`);
+      onUploadComplete(publicUrl)
+      toast.success(`${label} enviado com sucesso!`)
 
     } catch (error: any) {
-      console.error('💥 Erro no upload:', error);
-      toast.error(`Erro ao enviar ${label.toLowerCase()}: ${error.message}`);
+      console.error('💥 Erro no upload:', error)
+      toast.error(`Erro ao enviar ${label.toLowerCase()}: ${error.message}`)
     } finally {
-      setUploading(false);
+      setUploading(false)
     }
   };
 
-  const handleRemove = () => {;
-    onUploadComplete('');
-    toast.success(`${label} removido`);
+  const handleRemove = () => {
+    onUploadComplete('')
+    toast.success(`${label} removido`)
   };
 
   return (
@@ -143,8 +143,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               />
               <button
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemove();
+                  e.stopPropagation()
+                  handleRemove()
                 }}
                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                 style={{ 
@@ -165,8 +165,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               </p>
               <button
                 onClick={(e) => {
-                  e.stopPropagation();
-                  fileInputRef.current?.click();
+                  e.stopPropagation()
+                  fileInputRef.current?.click()
                 }}
                 className="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
                 style={{ 
@@ -201,8 +201,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             <button
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 transition-colors"
               onClick={(e) => {
-                e.stopPropagation();
-                fileInputRef.current?.click();
+                e.stopPropagation()
+                fileInputRef.current?.click()
               }}
               style={{ 
                 display: 'inline-flex',
@@ -270,5 +270,5 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         Debug: {uploading ? 'Uploading' : 'Ready'} | {currentImageUrl ? 'Has image' : 'No image'}
       </div>
     </div>
-  );
+  )
 }; 

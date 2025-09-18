@@ -13,7 +13,7 @@ export interface VagasConfig {
 
 
 export const validateVagasConfig = (config: Partial<VagasConfig>): string | null => {
-  if (!config.page_title?.trim()) {;
+  if (!config.page_title?.trim()) {
     return 'Título da página é obrigatório';
   }
 
@@ -24,12 +24,12 @@ export const validateVagasConfig = (config: Partial<VagasConfig>): string | null
   return null;
 };
 
-export const generateSlugFromCompany = (currentCompany: any): string => {;
+export const generateSlugFromCompany = (currentCompany: any): string => {
   if (!currentCompany) return 'minha-empresa';
   
   // Primeiro tenta usar o slug existente da empresa
   if (currentCompany.slug) {
-    console.log('generateSlug: Usando slug da empresa:', currentCompany.slug);
+    console.log('generateSlug: Usando slug da empresa:', currentCompany.slug)
     return currentCompany.slug;
   }
   
@@ -37,7 +37,7 @@ export const generateSlugFromCompany = (currentCompany: any): string => {;
   const name = currentCompany.name || 'empresa';
   const storeCode = currentCompany.store_code || '';
   
-  console.log('generateSlug: Gerando novo slug:', { name, storeCode });
+  console.log('generateSlug: Gerando novo slug:', { name, storeCode })
   
   const baseSlug = name.toLowerCase()
     .normalize('NFD')
@@ -45,13 +45,13 @@ export const generateSlugFromCompany = (currentCompany: any): string => {;
     .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove caracteres especiais
     .replace(/\s+/g, '-') // Substitui espaços por hífens
     .replace(/-+/g, '-') // Remove hífens duplicados;
-    .replace(/^-|-$/g, ''); // Remove hífens do início e fim
+    .replace(/^-|-$/g, '') // Remove hífens do início e fim
   
   const fullSlug = storeCode ? `${baseSlug}-${storeCode}` : baseSlug;
   
   return fullSlug || 'minha-empresa';
 };
 
-export const sanitizeSlug = (slug: string): string => {;
-  return slug.toLowerCase().replace(/[^a-z0-9-]/g, '');
+export const sanitizeSlug = (slug: string): string => {
+  return slug.toLowerCase().replace(/[^a-z0-9-]/g, '')
 };

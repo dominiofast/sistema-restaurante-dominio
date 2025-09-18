@@ -12,51 +12,51 @@ export interface TipoFiscal {
 }
 
 export function useTiposFiscais() {
-  const { currentCompany } = useAuth();
-  const [tiposFiscais, setTiposFiscais] = useState<TipoFiscal[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [tiposFiscais, setTiposFiscais] = useState<TipoFiscal[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Memoizar a função com useCallback para evitar re-renders infinitos
   const buscarTiposFiscais = useCallback(async () => {
     // Se não há empresa, não fazer nada
-    if (!currentCompany?.id) {;
-      setTiposFiscais([]);
-      setLoading(false);
-      setError(null);
+    if (!currentCompany?.id) {
+      setTiposFiscais([])
+      setLoading(false)
+      setError(null)
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
-      const response = await fetch(`/api/tipos-fiscais?company_id=${currentCompany.id} catch (error) { console.error('Error:', error); }`, {
+      const response = await fetch(`/api/tipos-fiscais?company_id=${currentCompany.id} catch (error) { console.error('Error:', error) }`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-      });
+      })
 
       if (!response.ok) {
-        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+        throw new Error(`Erro na API: ${response.status} ${response.statusText}`)
       }
 
-      const result = await response.json();
+      const result = await response.json()
       if (!result.success) {
-        throw new Error(result.error || 'Erro desconhecido na API');
+        throw new Error(result.error || 'Erro desconhecido na API')
       }
 
-      setTiposFiscais(result.data || []);
+      setTiposFiscais(result.data || [])
     } catch (err: any) {
-      console.warn('Erro ao buscar tipos fiscais:', err);
-      setError(err.message);
-      setTiposFiscais([]);
+      console.warn('Erro ao buscar tipos fiscais:', err)
+      setError(err.message)
+      setTiposFiscais([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [currentCompany?.id]); // Dependência estável
+  }, [currentCompany?.id]) // Dependência estável
 
   const criarTipoFiscal = useCallback(async (dados: { nome: string; descricao?: string; ativo?: boolean }) => {
-    if (!currentCompany?.id) throw new Error('Empresa não selecionada');
+    if (!currentCompany?.id) throw new Error('Empresa não selecionada')
 
     const response = await fetch('/api/tipos-fiscais', {
       method: 'POST',
@@ -64,67 +64,67 @@ export function useTiposFiscais() {
       body: JSON.stringify({
         ...dados,
         company_id: currentCompany.id
-      });
-    });
+      })
+    })
 
     if (!response.ok) {
-      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`)
     }
 
-    const result = await response.json();
+    const result = await response.json()
     if (!result.success) {
-      throw new Error(result.error || 'Erro desconhecido na API');
+      throw new Error(result.error || 'Erro desconhecido na API')
     }
 
-    setTiposFiscais(prev => [...prev, result.data]);
+    setTiposFiscais(prev => [...prev, result.data])
     return result.data;
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   const atualizarTipoFiscal = useCallback(async (id: string, dados: Partial<TipoFiscal>) => {
     const response = await fetch('/api/tipos-fiscais', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, ...dados });
-    });
+      body: JSON.stringify({ id, ...dados })
+    })
 
     if (!response.ok) {
-      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`)
     }
 
-    const result = await response.json();
+    const result = await response.json()
     if (!result.success) {
-      throw new Error(result.error || 'Erro desconhecido na API');
+      throw new Error(result.error || 'Erro desconhecido na API')
     }
 
     setTiposFiscais(prev => 
       prev.map(tipo => tipo.id === id ? { ...tipo, ...result.data } : tipo)
-    );
+    )
     
     return result.data;
-  }, []);
+  }, [])
 
   const deletarTipoFiscal = useCallback(async (id: string) => {
     const response = await fetch(`/api/tipos-fiscais?id=${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' };
-    });
+    })
 
     if (!response.ok) {
-      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`)
     }
 
-    const result = await response.json();
+    const result = await response.json()
     if (!result.success) {
-      throw new Error(result.error || 'Erro desconhecido na API');
+      throw new Error(result.error || 'Erro desconhecido na API')
     }
 
-    setTiposFiscais(prev => prev.filter(tipo => tipo.id !== id));
-  }, []);
+    setTiposFiscais(prev => prev.filter(tipo => tipo.id !== id))
+  }, [])
 
   // useEffect com dependência estável
   useEffect(() => {
-    buscarTiposFiscais();
-  }, [buscarTiposFiscais]);
+    buscarTiposFiscais()
+  }, [buscarTiposFiscais])
 
   return {
     tiposFiscais,

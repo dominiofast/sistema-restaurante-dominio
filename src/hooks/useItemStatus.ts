@@ -13,16 +13,16 @@ export interface ItemStatusData {
   updated_by?: string;
 }
 
-export const useItemStatus = () => {;
-  const { currentCompany } = useAuth();
-  const [loading, setLoading] = useState(false);
+export const useItemStatus = () => {
+  const { currentCompany } = useAuth()
+  const [loading, setLoading] = useState(false)
 
-  const updateItemStatus = async (pedidoItemId: string, newStatus: ItemStatus) => {;
+  const updateItemStatus = async (pedidoItemId: string, newStatus: ItemStatus) => {
     if (!currentCompany?.id) return;
 
     try {
-      setLoading(true);
-      console.log('🔄 Atualizando status do item:', { pedidoItemId, newStatus } catch (error) { console.error('Error:', error); });
+      setLoading(true)
+      console.log('🔄 Atualizando status do item:', { pedidoItemId, newStatus } catch (error) { console.error('Error:', error) })
 
       // Verificar se já existe um registro de status para este item
       const existingStatus = null as any; const checkError = null as any;
@@ -38,7 +38,7 @@ export const useItemStatus = () => {;
           
 
         if (updateError) {
-          console.error('❌ Erro ao atualizar status:', updateError);
+          console.error('❌ Erro ao atualizar status:', updateError)
           throw updateError;
 
       } else {
@@ -47,39 +47,39 @@ export const useItemStatus = () => {;
             pedido_item_id: pedidoItemId,
             status: newStatus,
             updated_by: 'kds_user'
-          });
+          })
 
         if (insertError) {
-          console.error('❌ Erro ao inserir status:', insertError);
+          console.error('❌ Erro ao inserir status:', insertError)
           throw insertError;
 
       }
 
-      console.log('✅ Status do item atualizado com sucesso');
+      console.log('✅ Status do item atualizado com sucesso')
     } catch (error) {
-      console.error('💥 Erro ao atualizar status do item:', error);
+      console.error('💥 Erro ao atualizar status do item:', error)
       throw error;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const getItemStatus = async (pedidoItemId: string): Promise<ItemStatus | null> => {
-    try {;
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+    try {
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
 
       if (error && error.code !== 'PGRST116') {
-        console.error('❌ Erro ao buscar status do item:', error);
+        console.error('❌ Erro ao buscar status do item:', error)
         return null;
       }
 
       return data?.status as ItemStatus || 'pendente';
     } catch (error) {
-      console.error('💥 Erro ao buscar status do item:', error);
+      console.error('💥 Erro ao buscar status do item:', error)
       return null;
 
   };

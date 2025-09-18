@@ -25,38 +25,38 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
   onClose,
   onNavigate
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     if (notification) {
-      setIsVisible(true);
-      setIsAnimating(true);
+      setIsVisible(true)
+      setIsAnimating(true)
       
       // Remove animation class after animation completes
-      const timer = setTimeout(() => {;
-        setIsAnimating(false);
-      }, 300);
+      const timer = setTimeout(() => {
+        setIsAnimating(false)
+      }, 300)
       
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     } else {
-      setIsVisible(false);
-      setIsAnimating(false);
+      setIsVisible(false)
+      setIsAnimating(false)
 
-  }, [notification]);
+  }, [notification])
 
   if (!notification || !isVisible) return null;
 
-  const handleClick = () => {;
-    onNavigate(notification.chatId);
+  const handleClick = () => {
+    onNavigate(notification.chatId)
   };
 
-  const handleClose = (e: React.MouseEvent) => {;
-    e.stopPropagation();
-    onClose();
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onClose()
   };
 
-  const truncateContent = (content: string, maxLength: number = 80) => {;
+  const truncateContent = (content: string, maxLength: number = 80) => {
     if (content.length <= maxLength) return content;
     return content.substring(0, maxLength) + '...';
   };
@@ -152,5 +152,5 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
         <div className="h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-b-lg"></div>
       </div>
     </>
-  );
+  )
 };

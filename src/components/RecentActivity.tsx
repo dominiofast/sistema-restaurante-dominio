@@ -5,9 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Package } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
-export const RecentActivity = () => {;
-  const { currentCompany, getCompanyData } = useAuth();
-  const companyData = getCompanyData();
+export const RecentActivity = () => {
+  const { currentCompany, getCompanyData } = useAuth()
+  const companyData = getCompanyData()
 
   if (!currentCompany || !companyData) {
     return (
@@ -29,7 +29,7 @@ export const RecentActivity = () => {;
           </div>
         </CardContent>
       </Card>
-    );
+    )
 
 
   const getIcon = (type: string) => {
@@ -88,5 +88,5 @@ export const RecentActivity = () => {;
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };

@@ -29,17 +29,17 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
   primaryColor,
   isFullscreen = false
 }) => {
-  const { toast } = useToast();
-  const { currentCompany } = useAuth();
-  const { validateAddress } = useAddressValidator(currentCompany?.id);
-  const [formData, setFormData] = useState<CustomerAddress>(address);
-  const [isValidating, setIsValidating] = useState(false);
+  const { toast } = useToast()
+  const { currentCompany } = useAuth()
+  const { validateAddress } = useAddressValidator(currentCompany?.id)
+  const [formData, setFormData] = useState<CustomerAddress>(address)
+  const [isValidating, setIsValidating] = useState(false)
 
   const handleInputChange = (field: keyof CustomerAddress, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value;
-    }));
+    }))
   };
 
   const handleConfirm = async () => {
@@ -48,37 +48,37 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
         title: "Campos obrigatórios",
         description: "Por favor, preencha o número e bairro",
         variant: "destructive";
-      });
+      })
       return;
     }
 
-    setIsValidating(true);
+    setIsValidating(true)
 
     try {
       // Validar se o endereço está dentro da área de atendimento
-      const validation = await validateAddress(formData);
+      const validation = await validateAddress(formData)
       
       if (!validation.isValid) {
         toast({
           title: "Endereço fora da área de atendimento",
           description: validation.message || "Este endereço não está dentro da nossa área de entrega.",
           variant: "destructive"
-        } catch (error) { console.error('Error:', error); });
-        setIsValidating(false);
+        } catch (error) { console.error('Error:', error) })
+        setIsValidating(false)
         return;
       }
 
-      console.log('✅ Endereço validado - Taxa:', validation.fee);
-      onConfirm({ ...formData, deliveryFee: validation.fee });
+      console.log('✅ Endereço validado - Taxa:', validation.fee)
+      onConfirm({ ...formData, deliveryFee: validation.fee })
     } catch (error) {
-      console.error('❌ Erro na validação:', error);
+      console.error('❌ Erro na validação:', error)
       toast({
         title: "Erro na validação",
         description: "Não foi possível validar o endereço. Tente novamente.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setIsValidating(false);
+      setIsValidating(false)
     }
   };
 
@@ -200,7 +200,7 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
           </Button>
         </div>
       </div>
-    );
+    )
 
 
   // Layout para modal tradicional
@@ -317,5 +317,5 @@ export const AddressDetailsStep: React.FC<AddressDetailsStepProps> = ({
         </div>
       </div>
     </>
-  );
+  )
 };

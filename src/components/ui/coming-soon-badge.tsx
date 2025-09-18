@@ -35,5 +35,5 @@ export const ComingSoonBadge: React.FC<ComingSoonBadgeProps> = ({
     >
       BREVE
     </span>
-  );
+  )
 };

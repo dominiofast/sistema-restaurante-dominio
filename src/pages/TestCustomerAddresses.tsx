@@ -6,9 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export default function TestCustomerAddresses() {
-  const { currentCompany } = useAuth();
-  const [telefone, setTelefone] = useState('');
-  const [cliente, setCliente] = useState<any>(null);
+  const { currentCompany } = useAuth()
+  const [telefone, setTelefone] = useState('')
+  const [cliente, setCliente] = useState<any>(null)
   
   const { 
     addresses, 
@@ -17,7 +17,7 @@ export default function TestCustomerAddresses() {
   } = useCustomerAddressManager({
     customerPhone: telefone,
     companyId: currentCompany?.id
-  });
+  })
 
   const handleBuscarCliente = () => {
     if (telefone) {
@@ -26,16 +26,16 @@ export default function TestCustomerAddresses() {
         id: 1,
         nome: 'Cliente Teste',
         telefone: telefone;
-      });
+      })
     }
   };
 
-  const handleNovoEndereco = () => {;
-    console.log('Implementar modal para novo endereço');
+  const handleNovoEndereco = () => {
+    console.log('Implementar modal para novo endereço')
   };
 
-  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {;
-    console.log('Novo pedido:', tipo, enderecoId);
+  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {
+    console.log('Novo pedido:', tipo, enderecoId)
   };
 
   return (
@@ -94,4 +94,4 @@ export default function TestCustomerAddresses() {
         </ul>
       </div>
     </div>
-  );
+  )

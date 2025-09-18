@@ -13,23 +13,23 @@ const AppRouter: React.FC = () => {
   // Verificar se há usuário autenticado (apenas em contextos que têm AuthProvider)
   let user = null;
   try {
-    const auth = useAuth();
+    const auth = useAuth()
     user = auth?.user;
   } catch {
     // Ignorar erro se não houver AuthProvider (páginas de landing)
     user = null;
   }
   
-  console.log('🔄 AppRouter - hostname:', hostname);
-  console.log('🔄 AppRouter - path:', path);
-  console.log('🔐 AppRouter - usuário logado:', !!user, user?.email || 'não logado');
+  console.log('🔄 AppRouter - hostname:', hostname)
+  console.log('🔄 AppRouter - path:', path)
+  console.log('🔐 AppRouter - usuário logado:', !!user, user?.email || 'não logado')
 
   // Em ambiente de desenvolvimento e Replit preview
   if (hostname === 'localhost' || hostname.includes('127.0.0.1') || hostname.includes('replit.dev')) {
     // 🚀 FORÇAR DOMINIOPIZZAS PARA PUBLICROUTES
-    console.log('🔍 FORÇANDO TESTE - dominiopizzas detectado!', path);
+    console.log('🔍 FORÇANDO TESTE - dominiopizzas detectado!', path)
     if (path === '/dominiopizzas') {
-      console.log('🎯 FORÇANDO PUBLICROUTES PARA DOMINIOPIZZAS');
+      console.log('🎯 FORÇANDO PUBLICROUTES PARA DOMINIOPIZZAS')
       return <PublicRoutes />;
     }
     
@@ -39,7 +39,7 @@ const AppRouter: React.FC = () => {
     }
     // Verificar se é uma rota de autoatendimento
     if (path.startsWith('/autoatendimento/')) {
-      console.log('🎯 Direcionando autoatendimento para PublicRoutes');
+      console.log('🎯 Direcionando autoatendimento para PublicRoutes')
       return <PublicRoutes />;
     }
     // Verificar se é uma rota do sistema administrativo primeiro
@@ -51,22 +51,22 @@ const AppRouter: React.FC = () => {
         path.startsWith('/cashback') || path.startsWith('/agente-ia') || path.startsWith('/config') ||
         path.startsWith('/teste-') || path.startsWith('/ferramentas') || path.startsWith('/tools') ||
         path.startsWith('/demo-navigation') || path.startsWith('/reset-password') || path.startsWith('/auth/') || path === '/auth' || path === '/sync-test') {
-      console.log('🎯 Direcionando para AccountRoutes');
+      console.log('🎯 Direcionando para AccountRoutes')
       return <AccountRoutes />;
     }
     // CARDÁPIO PÚBLICO - RESTO
     if (path.includes('/cardapio/') || /^\/\d+$/.test(path) || 
         /^\/[a-zA-Z0-9-]+/.test(path) || 
         path.includes('/acompanhar-pedido/') || path.includes('/pedido/')) {
-      console.log('🎯 DIRECIONANDO PARA PUBLICROUTES - OUTROS');
+      console.log('🎯 DIRECIONANDO PARA PUBLICROUTES - OUTROS')
       return <PublicRoutes />;
     }
     // Verificar se há usuário logado antes do fallback
     if (user) {
-      console.log('🎯 Usuário logado detectado, direcionando para AccountRoutes');
+      console.log('🎯 Usuário logado detectado, direcionando para AccountRoutes')
       return <AccountRoutes />;
     } else {
-      console.log('🎯 Usuário NÃO logado, direcionando para MainRoutes (landing)');
+      console.log('🎯 Usuário NÃO logado, direcionando para MainRoutes (landing)')
       return <MainRoutes />;
     }
   }
@@ -93,7 +93,7 @@ const AppRouter: React.FC = () => {
   if (hostname === 'conta.dominio.tech') {
     // Verificar se é uma rota de autoatendimento
     if (path.startsWith('/autoatendimento/')) {
-      console.log('🎯 Direcionando autoatendimento para PublicRoutes');
+      console.log('🎯 Direcionando autoatendimento para PublicRoutes')
       return <PublicRoutes />;
     }
     return <AccountRoutes />;

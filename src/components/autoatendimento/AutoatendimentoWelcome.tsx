@@ -55,8 +55,8 @@ export const AutoatendimentoWelcome: React.FC<AutoatendimentoWelcomeProps> = ({
           {/* Botão principal - otimizado para tablets */}
           <Button
             onClick={() => {
-              console.log('🖱️ AutoatendimentoWelcome - Botão Fazer Pedido clicado');
-              onStart();
+              console.log('🖱️ AutoatendimentoWelcome - Botão Fazer Pedido clicado')
+              onStart()
             }}
             className="h-16 md:h-20 lg:h-24 px-8 md:px-12 lg:px-16 text-lg md:text-xl lg:text-2xl font-semibold rounded-2xl md:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full max-w-md mx-auto"
             style={{ 
@@ -104,5 +104,5 @@ export const AutoatendimentoWelcome: React.FC<AutoatendimentoWelcomeProps> = ({
         </p>
       </div>
     </div>
-  );
+  )
 };

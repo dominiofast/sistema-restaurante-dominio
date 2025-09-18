@@ -65,7 +65,7 @@ export const FeaturesSection = () => {
               <button 
                 className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 style={{ backgroundColor: '#224276' }}
-                onMouseEnter={(e) => {;
+                onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = '#1A3556';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                   e.currentTarget.style.boxShadow = '0 8px 20px rgba(34, 66, 118, 0.2)';
@@ -161,5 +161,5 @@ export const FeaturesSection = () => {
         </div>
       </div>
     </section>
-  );
+  )
 };

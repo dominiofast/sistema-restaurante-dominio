@@ -7,19 +7,19 @@ interface MetaTagsData {
 export const updateMetaTags = ({ company_name, company_description, company_slug }: MetaTagsData) => {
   const updateMeta = (name: string, content: string) => {
     let meta = document.querySelector(`meta[name="${name}"]`) || ;
-               document.querySelector(`meta[property="${name}"]`);
+               document.querySelector(`meta[property="${name}"]`)
     
     if (meta) {
-      meta.setAttribute('content', content);
+      meta.setAttribute('content', content)
     } else {
-      meta = document.createElement('meta');
+      meta = document.createElement('meta')
       if (name.startsWith('og:')) {
-        meta.setAttribute('property', name);
+        meta.setAttribute('property', name)
       } else {
-        meta.setAttribute('name', name);
+        meta.setAttribute('name', name)
       }
-      meta.setAttribute('content', content);
-      document.head.appendChild(meta);
+      meta.setAttribute('content', content)
+      document.head.appendChild(meta)
 
   };
 
@@ -34,12 +34,12 @@ export const updateMetaTags = ({ company_name, company_description, company_slug
   const url = window.location.href;
   
   // Atualizar meta tags
-  updateMeta('title', title);
-  updateMeta('og:title', title);
-  updateMeta('og:description', description);
-  updateMeta('og:url', url);
-  updateMeta('og:type', 'website');
-  updateMeta('description', description);
+  updateMeta('title', title)
+  updateMeta('og:title', title)
+  updateMeta('og:description', description)
+  updateMeta('og:url', url)
+  updateMeta('og:type', 'website')
+  updateMeta('description', description)
   
-  console.log('✅ Meta tags atualizadas para:', { title, description, url });
+  console.log('✅ Meta tags atualizadas para:', { title, description, url })
 };

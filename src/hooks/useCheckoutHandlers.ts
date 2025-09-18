@@ -58,7 +58,7 @@ interface CheckoutHandlers {
  *   setStep,
  *   setCliente,
  *   // ... outras dependências
- * });
+ * })
  * ```
  */
 export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): CheckoutHandlers => {
@@ -81,45 +81,45 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     limparCarrinho;
   } = deps;
 
-  const handleCheckout = useCallback(() => {;
-    setCartOpen(false);
+  const handleCheckout = useCallback(() => {
+    setCartOpen(false)
     
     // Se tem dados salvos, usar diretamente e ir direto para checkout
     if (temDadosSalvos && clientePersistente) {
-      setCliente(clientePersistente);
-      setEndereco(''); // Será selecionado no CheckoutModal
-      setStep('checkout');
+      setCliente(clientePersistente)
+      setEndereco('') // Será selecionado no CheckoutModal
+      setStep('checkout')
     } else {
-      setStep('identificacao');
+      setStep('identificacao')
     }
-  }, [temDadosSalvos, clientePersistente, setCartOpen, setCliente, setEndereco, setStep]);
+  }, [temDadosSalvos, clientePersistente, setCartOpen, setCliente, setEndereco, setStep])
 
-  const handleIdentificacaoComplete = useCallback((nome: string, telefone: string) => {;
+  const handleIdentificacaoComplete = useCallback((nome: string, telefone: string) => {
     const dadosCliente = { nome, telefone };
-    setCliente(dadosCliente);
-    salvarCliente(dadosCliente);
-    console.log('💾 Dados do cliente salvos para futuros pedidos:', dadosCliente);
-    setStep('checkout');
-  }, [setCliente, salvarCliente, setStep]);
+    setCliente(dadosCliente)
+    salvarCliente(dadosCliente)
+    console.log('💾 Dados do cliente salvos para futuros pedidos:', dadosCliente)
+    setStep('checkout')
+  }, [setCliente, salvarCliente, setStep])
 
-  const handleTrocarConta = useCallback(() => {;
-    setCliente(null);
-    setStep('identificacao');
-  }, [setCliente, setStep]);
+  const handleTrocarConta = useCallback(() => {
+    setCliente(null)
+    setStep('identificacao')
+  }, [setCliente, setStep])
 
   const handleCheckoutComplete = useCallback((deliveryData: { tipo: 'delivery' | 'pickup'; endereco?: any; taxaEntrega?: number }) => {
-    setDeliveryInfo(deliveryData);
-    setStep('payment');
+    setDeliveryInfo(deliveryData)
+    setStep('payment')
     
     // Não navegar de volta para o cardápio - manter no fluxo de checkout
     // A navegação só deve acontecer quando o usuário cancelar ou finalizar o pedido
-  }, [setDeliveryInfo, setStep]);
+  }, [setDeliveryInfo, setStep])
 
-  const handlePaymentComplete = useCallback(async (paymentMethod: string) => {;
-    console.log('💳 Método de pagamento selecionado:', paymentMethod);
+  const handlePaymentComplete = useCallback(async (paymentMethod: string) => {
+    console.log('💳 Método de pagamento selecionado:', paymentMethod)
     
     if (!cliente || !company || !deliveryInfo) {
-      console.error('❌ Dados obrigatórios faltando');
+      console.error('❌ Dados obrigatórios faltando')
       return;
     }
 
@@ -127,7 +127,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
       // Parse do cashback se aplicado
       let cashbackAplicado = 0;
       try {
-        const parsedPayment = JSON.parse(paymentMethod);
+        const parsedPayment = JSON.parse(paymentMethod)
         cashbackAplicado = parsedPayment.cashbackApplied || 0;
       } catch {
         // Se não conseguir fazer parse, usar como string simples
@@ -145,11 +145,11 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
 
       const onCashbackUpdate = () => {
         // Este callback será chamado após o pedido ser criado para recarregar o saldo;
-        console.log('🔄 Callback para atualizar cashback executado');
+        console.log('🔄 Callback para atualizar cashback executado')
       };
 
       // 🚀 NOVA SOLUÇÃO: OrderGateway com endpoint seguro
-      console.log('📦 Criando pedido via OrderGateway seguro:', orderData);
+      console.log('📦 Criando pedido via OrderGateway seguro:', orderData)
       
       const pedidoData = {
         companyId: company.id,
@@ -171,17 +171,17 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
         observacoes: null;
       };
       
-      const result = await createOrderViaGateway(pedidoData);
+      const result = await createOrderViaGateway(pedidoData)
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro ao criar pedido');
+        throw new Error(result.error || 'Erro ao criar pedido')
       }
       
-      console.log('✅ Pedido criado com sucesso via OrderGateway:', result);
+      console.log('✅ Pedido criado com sucesso via OrderGateway:', result)
       
       // Executar callback para atualizar cashback se necessário
       if (onCashbackUpdate) {
-        onCashbackUpdate();
+        onCashbackUpdate()
       }
 
       // Redirecionar para página de acompanhamento
@@ -190,15 +190,15 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
       window.location.href = `/${company_slug}/pedido/${numeroPedido}`;
       
       // Limpar carrinho e resetar estado
-      limparCarrinho();
-      setCliente(null);
-      setEndereco('');
-      setStep('cart');
-      setCartOpen(false);
+      limparCarrinho()
+      setCliente(null)
+      setEndereco('')
+      setStep('cart')
+      setCartOpen(false)
 
     } catch (error) {
-      console.error('❌ Erro ao finalizar pedido:', error);
-      alert('❌ Erro ao criar pedido. Tente novamente.');
+      console.error('❌ Erro ao finalizar pedido:', error)
+      alert('❌ Erro ao criar pedido. Tente novamente.')
     }
   }, [
     cliente,
@@ -213,7 +213,7 @@ export const useCheckoutHandlers = (deps: CheckoutHandlersDependencies): Checkou
     setEndereco,
     setStep,
     setCartOpen
-  ]);
+  ])
 
   return {
     handleCheckout,

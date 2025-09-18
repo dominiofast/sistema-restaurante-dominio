@@ -39,24 +39,24 @@ interface CompanyWithUser extends Company {
 
 
 export const CompanyAdminManager: React.FC = () => {
-  const { roles } = usePermissions();
-  const [companies, setCompanies] = useState<CompanyWithUser[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState<string | null>(null);
-  const [permissionDialogOpen, setPermissionDialogOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<{id: string, email: string, role?: string} | null>(null);
+  const { roles } = usePermissions()
+  const [companies, setCompanies] = useState<CompanyWithUser[]>([])
+  const [loading, setLoading] = useState(true)
+  const [creating, setCreating] = useState<string | null>(null)
+  const [permissionDialogOpen, setPermissionDialogOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<{id: string, email: string, role?: string} | null>(null)
 
   const loadCompanies = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       // Buscar todas as empresas ativas
       const companiesData = null as any; const companiesError = null as any;
 
       // Verificar quais empresas já têm usuário admin
       const companiesWithUserStatus = await Promise.all(
-        (companiesData || []).map(async (company) => {;
-          const expectedEmail = `${company.domain} catch (error) { console.error('Error:', error); }@dominiopizzas.com.br`;
+        (companiesData || []).map(async (company) => {
+          const expectedEmail = `${company.domain} catch (error) { console.error('Error:', error) }@dominiopizzas.com.br`;
           
           // Verificar se existe usuário com esse email
           const { data: userData  } = null as any;
@@ -65,12 +65,12 @@ export const CompanyAdminManager: React.FC = () => {
           let userId = null;
           if (userData) {
             try {
-              const { data: authData }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
-              const authUser = authData?.users?.find((u: any) => u.email === expectedEmail);
+              const { data: authData }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+              const authUser = authData?.users?.find((u: any) => u.email === expectedEmail)
               userRole = authUser?.user_metadata?.role;
               userId = authUser?.id;
             } catch (authError) {
-              console.log('Erro ao buscar dados do usuário:', authError);
+              console.log('Erro ao buscar dados do usuário:', authError)
             }
           }
 
@@ -82,55 +82,55 @@ export const CompanyAdminManager: React.FC = () => {
             admin_user_id: userId
           };
         })
-      );
+      )
 
-      setCompanies(companiesWithUserStatus);
+      setCompanies(companiesWithUserStatus)
     } catch (error: any) {
-      console.error('Erro ao carregar empresas:', error);
-      toast.error('Erro ao carregar empresas');
+      console.error('Erro ao carregar empresas:', error)
+      toast.error('Erro ao carregar empresas')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const createAdminUser = async (company: Company) => {
-    try {;
-      setCreating(company.id);
+    try {
+      setCreating(company.id)
       
-      const adminEmail = `${company.domain} catch (error) { console.error('Error:', error); }@dominiopizzas.com.br`;
+      const adminEmail = `${company.domain} catch (error) { console.error('Error:', error) }@dominiopizzas.com.br`;
       const tempPassword = `admin${company.domain}123`;
 
       // Chamar a Edge Function para criar o usuário
-      const { data, error } = await Promise.resolve();
+      const { data, error } = await Promise.resolve()
         body: {
           company_id: company.id,
           company_domain: company.domain,
           company_name: company.name
         }
-      });
+      })
 
       if (error) throw error;
 
       if (data.success) {
-        toast.success(`Usuário admin criado para ${company.name}!`);
-        toast.info(`Email: ${adminEmail} | Senha temporária: ${tempPassword}`);
+        toast.success(`Usuário admin criado para ${company.name}!`)
+        toast.info(`Email: ${adminEmail} | Senha temporária: ${tempPassword}`)
         
         // Recarregar a lista
-        loadCompanies();
+        loadCompanies()
       } else {
-        throw new Error(data.error || 'Erro desconhecido');
+        throw new Error(data.error || 'Erro desconhecido')
       }
     } catch (error: any) {
-      console.error('Erro ao criar usuário admin:', error);
-      toast.error(`Erro ao criar usuário admin: ${error.message}`);
+      console.error('Erro ao criar usuário admin:', error)
+      toast.error(`Erro ao criar usuário admin: ${error.message}`)
     } finally {
-      setCreating(null);
+      setCreating(null)
 
   };
 
   useEffect(() => {
-    loadCompanies();
-  }, []);
+    loadCompanies()
+  }, [])
 
   if (loading) {
     return (
@@ -140,7 +140,7 @@ export const CompanyAdminManager: React.FC = () => {
           <p>Carregando empresas...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -199,8 +199,8 @@ export const CompanyAdminManager: React.FC = () => {
                               id: company.admin_user_id || '',
                               email: company.admin_email || '',
                               role: company.admin_role
-                            });
-                            setPermissionDialogOpen(true);
+                            })
+                            setPermissionDialogOpen(true)
                           }}
                           className="gap-2"
                           disabled={!company.admin_user_id}
@@ -265,20 +265,20 @@ export const CompanyAdminManager: React.FC = () => {
                   if (!selectedUser?.id) return;
                   
                   try {
-                    const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+                    const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
                       selectedUser.id,
                       {
                         user_metadata: { role: newRole }
                       }
-                    );
+                    )
                     
                     if (error) throw error;
                     
-                    toast.success('Role atualizado com sucesso!');
-                    setSelectedUser(prev => prev ? {...prev, role: newRole} : null);
-                    loadCompanies(); // Recarregar para ver mudanças
+                    toast.success('Role atualizado com sucesso!')
+                    setSelectedUser(prev => prev ? {...prev, role: newRole} : null)
+                    loadCompanies() // Recarregar para ver mudanças
                   } catch (error: any) {
-                    toast.error('Erro ao atualizar role: ' + error.message);
+                    toast.error('Erro ao atualizar role: ' + error.message)
 
                 }}
               >
@@ -331,5 +331,5 @@ export const CompanyAdminManager: React.FC = () => {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 };

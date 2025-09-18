@@ -49,12 +49,12 @@ export const useResponsiveLogo = (
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1024,
     height: typeof window !== 'undefined' ? window.innerHeight : 768
-  });
+  })
 
   const [containerSize, setContainerSize] = useState({
     width: baseSize,
     height: baseSize
-  });
+  })
 
   // Update window size on resize
   useEffect(() => {
@@ -62,44 +62,44 @@ export const useResponsiveLogo = (
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight;
-      });
+      })
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Update container size when container ref changes
   useEffect(() => {
     if (containerRef?.current) {
-      const updateContainerSize = () => {;
-        const rect = containerRef.current!.getBoundingClientRect();
+      const updateContainerSize = () => {
+        const rect = containerRef.current!.getBoundingClientRect()
         setContainerSize({
           width: rect.width,
           height: rect.height
-        });
+        })
       };
 
-      updateContainerSize();
+      updateContainerSize()
 
-      const resizeObserver = new ResizeObserver(updateContainerSize);
-      resizeObserver.observe(containerRef.current);
+      const resizeObserver = new ResizeObserver(updateContainerSize)
+      resizeObserver.observe(containerRef.current)
 
-      return () => resizeObserver.disconnect();
+      return () => resizeObserver.disconnect()
 
-  }, [containerRef]);
+  }, [containerRef])
 
   // Determine current breakpoint
-  const currentBreakpoint = useMemo(() => {;
+  const currentBreakpoint = useMemo(() => {
     if (windowSize.width <= breakpoints.mobile) return 'mobile';
     if (windowSize.width <= breakpoints.tablet) return 'tablet';
     return 'desktop';
-  }, [windowSize.width, breakpoints]);
+  }, [windowSize.width, breakpoints])
 
   // Calculate responsive sizes
-  const responsiveSizes = useMemo((): ResponsiveLogoSizes => {;
-    const mobileSize = Math.min(baseSize * 0.75, 48);
-    const tabletSize = Math.min(baseSize * 0.9, 56);
+  const responsiveSizes = useMemo((): ResponsiveLogoSizes => {
+    const mobileSize = Math.min(baseSize * 0.75, 48)
+    const tabletSize = Math.min(baseSize * 0.9, 56)
     const desktopSize = baseSize;
 
     return {
@@ -122,19 +122,19 @@ export const useResponsiveLogo = (
         maxHeight: '100%'
 
     };
-  }, [baseSize, logoAspectRatio]);
+  }, [baseSize, logoAspectRatio])
 
   // Calculate current size based on breakpoint and container
-  const currentSize = useMemo(() => {;
+  const currentSize = useMemo(() => {
     let calculatedSize = baseSize;
 
     // Adjust based on breakpoint
     switch (currentBreakpoint) {
       case 'mobile':
-        calculatedSize = Math.min(baseSize * 0.75, 48);
+        calculatedSize = Math.min(baseSize * 0.75, 48)
         break;
       case 'tablet':
-        calculatedSize = Math.min(baseSize * 0.9, 56);
+        calculatedSize = Math.min(baseSize * 0.9, 56)
         break;
       case 'desktop':
         calculatedSize = baseSize;
@@ -144,11 +144,11 @@ export const useResponsiveLogo = (
     // Adjust based on container size if available
     if (containerRef?.current) {
       const maxSize = Math.min(containerSize.width, containerSize.height) * 0.8;
-      calculatedSize = Math.min(calculatedSize, maxSize);
+      calculatedSize = Math.min(calculatedSize, maxSize)
 
 
-    return Math.max(calculatedSize, 24); // Minimum size of 24px
-  }, [baseSize, currentBreakpoint, containerSize, containerRef]);
+    return Math.max(calculatedSize, 24) // Minimum size of 24px
+  }, [baseSize, currentBreakpoint, containerSize, containerRef])
 
   // Display configuration
   const displayConfig = useMemo((): LogoDisplayConfig => ({
@@ -158,12 +158,12 @@ export const useResponsiveLogo = (
     objectFit: 'contain',
     containerAspectRatio: logoAspectRatio !== 1 ? `${logoAspectRatio} / 1` : '1 / 1',
     borderRadius: currentBreakpoint === 'mobile' ? '0.375rem' : '0.5rem';
-  }), [logoAspectRatio, currentBreakpoint]);
+  }), [logoAspectRatio, currentBreakpoint])
 
   // Determine if flexible sizing should be used
-  const useFlexibleSizing = useMemo(() => {;
+  const useFlexibleSizing = useMemo(() => {
     return containerRef?.current !== undefined || logoAspectRatio !== 1;
-  }, [containerRef, logoAspectRatio]);
+  }, [containerRef, logoAspectRatio])
 
   return {
     currentSize,
@@ -177,19 +177,19 @@ export const useResponsiveLogo = (
 /**
  * Hook for caching calculated logo dimensions
  */
-export const useLogoDimensionCache = () => {;
-  const [cache, setCache] = useState<Map<string, { width: number; height: number }>>(new Map());
+export const useLogoDimensionCache = () => {
+  const [cache, setCache] = useState<Map<string, { width: number; height: number }>>(new Map())
 
-  const getCachedDimensions = (logoUrl: string) => {;
-    return cache.get(logoUrl);
+  const getCachedDimensions = (logoUrl: string) => {
+    return cache.get(logoUrl)
   };
 
   const setCachedDimensions = (logoUrl: string, dimensions: { width: number; height: number }) => {
-    setCache(prev => new Map(prev).set(logoUrl, dimensions));
+    setCache(prev => new Map(prev).set(logoUrl, dimensions))
   };
 
-  const clearCache = () => {;
-    setCache(new Map());
+  const clearCache = () => {
+    setCache(new Map())
   };
 
   return {
@@ -241,20 +241,20 @@ export const getResponsiveClasses = (
     desktop: 'logo-desktop';
   };
 
-  return `${baseClasses} ${breakpointClasses[currentBreakpoint]}`.trim();
+  return `${baseClasses} ${breakpointClasses[currentBreakpoint]}`.trim()
 };
 
 /**
  * Utility function to detect logo aspect ratio from image
  */
 export const detectLogoAspectRatio = (logoUrl: string): Promise<number> => {
-  return new Promise((resolve, reject) => {;
-    const img = new Image();
+  return new Promise((resolve, reject) => {
+    const img = new Image()
     img.onload = () => {
       const aspectRatio = img.naturalWidth / img.naturalHeight;
-      resolve(aspectRatio);
+      resolve(aspectRatio)
     };
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = () => reject(new Error('Failed to load image'))
     img.src = logoUrl;
-  });
+  })
 };

@@ -56,17 +56,17 @@ const CNAES_COMUNS = [
 ];
 
 export function ConfiguracaoFiscalCompleta() {
-  const { fiscalConfig, loading, saveFiscalConfig, validarConfiguracao } = useCompanyFiscalConfig();
-  const [formData, setFormData] = useState<Partial<CompanyFiscalConfig>>({});
-  const [validation, setValidation] = useState({ valid: false, errors: [] });
+  const { fiscalConfig, loading, saveFiscalConfig, validarConfiguracao } = useCompanyFiscalConfig()
+  const [formData, setFormData] = useState<Partial<CompanyFiscalConfig>>({})
+  const [validation, setValidation] = useState({ valid: false, errors: [] })
 
   useEffect(() => {
     if (fiscalConfig) {
-      console.log('Setting form data from fiscalConfig:', fiscalConfig);
-      setFormData(fiscalConfig);
+      console.log('Setting form data from fiscalConfig:', fiscalConfig)
+      setFormData(fiscalConfig)
     } else {
       // Inicializar com valores padrão quando não há configuração
-      console.log('Initializing with default values');
+      console.log('Initializing with default values')
       setFormData({
         cnpj: '',
         inscricao_estadual: '',
@@ -88,37 +88,37 @@ export function ConfiguracaoFiscalCompleta() {
         focus_nfe_token: '',
         focus_nfe_ambiente: 'homologacao',
         email_xmls: ''
-      });
+      })
 
-  }, [fiscalConfig]);
+  }, [fiscalConfig])
 
   useEffect(() => {
     if (formData && Object.keys(formData).length > 0) {
-      const result = validarConfiguracao();
-      setValidation(result);
+      const result = validarConfiguracao()
+      setValidation(result)
 
-  }, [formData, validarConfiguracao]);
+  }, [formData, validarConfiguracao])
 
-  const handleInputChange = (field: keyof CompanyFiscalConfig, value: any) => {;
-    console.log(`Changing field ${field} to:`, value);
+  const handleInputChange = (field: keyof CompanyFiscalConfig, value: any) => {
+    console.log(`Changing field ${field} to:`, value)
     setFormData(prev => ({
       ...prev,
       [field]: value
-    }));
+    }))
   };
 
   const handleSave = async () => {
-    try {;
-      console.log('Attempting to save formData:', formData);
-      const success = await saveFiscalConfig(formData);
+    try {
+      console.log('Attempting to save formData:', formData)
+      const success = await saveFiscalConfig(formData)
       if (success) {
-        toast.success('Configuração fiscal salva com sucesso!');
-      }  catch (error) { console.error('Error:', error); }else {
-        throw new Error('Erro ao salvar configuração');
+        toast.success('Configuração fiscal salva com sucesso!')
+      }  catch (error) { console.error('Error:', error) }else {
+        throw new Error('Erro ao salvar configuração')
       }
     } catch (error) {
-      console.error('Error saving fiscal config:', error);
-      toast.error('Erro ao salvar configuração fiscal');
+      console.error('Error saving fiscal config:', error)
+      toast.error('Erro ao salvar configuração fiscal')
 
   };
 
@@ -127,7 +127,7 @@ export function ConfiguracaoFiscalCompleta() {
       <div className="flex items-center justify-center p-8">
         <p>Carregando configuração fiscal...</p>
       </div>
-    );
+    )
 
 
   return (
@@ -487,5 +487,5 @@ export function ConfiguracaoFiscalCompleta() {
         </Button>
       </div>
     </div>
-  );
+  )
 

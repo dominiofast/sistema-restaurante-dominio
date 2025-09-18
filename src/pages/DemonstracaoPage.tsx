@@ -18,10 +18,10 @@ interface DemoForm {
   desafios: string[];
 }
 
-const DemonstracaoPage = () => {;
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const DemonstracaoPage = () => {
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [formData, setFormData] = useState<DemoForm>({
     nome: '',
     telefone: '',
@@ -29,35 +29,35 @@ const DemonstracaoPage = () => {;
     tipoEstabelecimento: '',
     tipoOperacao: '',
     desafios: []
-  });
+  })
 
   const handleDesafioChange = (desafio: string, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
       desafios: checked 
         ? [...prev.desafios, desafio]
-        : prev.desafios.filter(d => d !== desafio);
-    }));
+        : prev.desafios.filter(d => d !== desafio)
+    }))
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           ...formData,
           timestamp: new Date().toISOString()
         }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Solicitação enviada!",
         description: "Nossa equipe entrará em contato em breve para agendar sua demonstração.",
-      });
+      })
 
       // Reset form
       setFormData({
@@ -67,17 +67,17 @@ const DemonstracaoPage = () => {;
         tipoEstabelecimento: '',
         tipoOperacao: '',
         desafios: []
-      });
+      })
 
     } catch (error) {
-      console.error('Erro ao enviar solicitação:', error);
+      console.error('Erro ao enviar solicitação:', error)
       toast({
         title: "Erro ao enviar",
         description: "Tente novamente ou entre em contato conosco.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -255,7 +255,7 @@ const DemonstracaoPage = () => {;
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default DemonstracaoPage;

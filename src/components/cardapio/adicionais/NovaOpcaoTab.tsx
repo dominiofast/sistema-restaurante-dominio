@@ -15,13 +15,13 @@ async function apiRequest(url: string, options: RequestInit = {}) {
       'Content-Type': 'application/json',
       ...options.headers,
     },;
-  });
+  })
   
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw new Error(`API Error: ${response.statusText}`)
   }
   
-  return response.json();
+  return response.json()
 
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
@@ -45,39 +45,39 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
   categoriasAdicionais,
   onRefresh
 }) => {
-  const { toast } = useToast();
-  const { fetchAdicionais } = useCardapio();
-  const [loading, setLoading] = useState(false);
-  const [adicionaisCriados, setAdicionaisCriados] = useState<Adicional[]>([]);
+  const { toast } = useToast()
+  const { fetchAdicionais } = useCardapio()
+  const [loading, setLoading] = useState(false)
+  const [adicionaisCriados, setAdicionaisCriados] = useState<Adicional[]>([])
   const [novoAdicional, setNovoAdicional] = useState({
     name: '',
     description: '',
     price: 0,
     categoria_adicional_id: '',
     is_available: true
-  });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  })
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  const handleImageUpload = (file: File) => {;
-    setImageFile(file);
-    const reader = new FileReader();
+  const handleImageUpload = (file: File) => {
+    setImageFile(file)
+    const reader = new FileReader()
     reader.onload = (e) => {
-      setImagePreview(e.target?.result as string);
+      setImagePreview(e.target?.result as string)
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file)
   };
 
-  const clearImage = () => {;
-    setImageFile(null);
-    setImagePreview(null);
+  const clearImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
   };
 
-  const handleCreateAdicional = async () => {;
+  const handleCreateAdicional = async () => {
     if (!novoAdicional.name || !novoAdicional.categoria_adicional_id) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
       
       let imageUrl = null;
       
@@ -88,26 +88,26 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         imageUrl = null;
       }
 
-       catch (error) { console.error('Error:', error); }const data = await apiRequest('/api/adicionais', {
+       catch (error) { console.error('Error:', error) }const data = await apiRequest('/api/adicionais', {
         method: 'POST',
-        body: JSON.stringify({ ...novoAdicional, image: imageUrl });
-      });
+        body: JSON.stringify({ ...novoAdicional, image: imageUrl })
+      })
 
       // Adicionar o novo adicional à lista local
       if (data && data.length > 0) {
-        setAdicionaisCriados(prev => [...prev, data[0]]);
+        setAdicionaisCriados(prev => [...prev, data[0]])
       }
 
       // Atualizar o estado global dos adicionais
-      await fetchAdicionais();
+      await fetchAdicionais()
       
       // Atualizar também o componente pai (AdicionaisModal) 
-      onRefresh?.();
+      onRefresh?.()
 
       toast({
         title: "Sucesso",
         description: "Adicional criado com sucesso!",
-      });
+      })
 
       // Manter o grupo selecionado e limpar apenas os outros campos
       setNovoAdicional(prev => ({
@@ -116,21 +116,21 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         price: 0,
         categoria_adicional_id: prev.categoria_adicional_id,
         is_available: true
-      }));
-      clearImage();
+      }))
+      clearImage()
     } catch (error) {
-      console.error('Erro ao criar adicional:', error);
+      console.error('Erro ao criar adicional:', error)
       toast({
         title: "Erro",
         description: "Erro ao criar adicional",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const getCategoriaNome = (categoriaId: string) => {;
+  const getCategoriaNome = (categoriaId: string) => {
     return categoriasAdicionais.find(cat => cat.id === categoriaId)?.name || 'Categoria';
   };
 
@@ -264,7 +264,7 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      handleImageUpload(file);
+                      handleImageUpload(file)
                     }
                   }}
                 />
@@ -308,5 +308,5 @@ export const NovaOpcaoTab: React.FC<NovaOpcaoTabProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

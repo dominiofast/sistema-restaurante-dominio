@@ -72,9 +72,9 @@ export const CompanyList: React.FC<CompanyListProps> = ({
                 </Badge>
               </div>
             </button>
-          );
+          )
         })
       )}
     </div>
-  );
+  )
 };

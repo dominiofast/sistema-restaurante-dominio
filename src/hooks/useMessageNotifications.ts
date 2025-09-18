@@ -14,70 +14,70 @@ interface UseMessageNotificationsProps {
   companyId?: string;
 }
 
-export const useMessageNotifications = ({ companyId }: UseMessageNotificationsProps) => {;
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+export const useMessageNotifications = ({ companyId }: UseMessageNotificationsProps) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null)
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     enabled: true,
     sound: 'whatsapp',
     showToast: true,
     onlyWhenHidden: true
-  });
-  const [isPageVisible, setIsPageVisible] = useState(true);
-  const [permission, setPermission] = useState<NotificationPermission>('default');
+  })
+  const [isPageVisible, setIsPageVisible] = useState(true)
+  const [permission, setPermission] = useState<NotificationPermission>('default')
 
   // Carregar preferências do localStorage
   useEffect(() => {
-    const stored = localStorage.getItem(`notification_prefs_${companyId}`);
+    const stored = localStorage.getItem(`notification_prefs_${companyId}`)
     if (stored) {
       try {
-        setPreferences(JSON.parse(stored));
+        setPreferences(JSON.parse(stored))
       } catch (error) {
-        console.warn('Erro ao carregar preferências de notificação:', error);
+        console.warn('Erro ao carregar preferências de notificação:', error)
       }
     }
-  }, [companyId]);
+  }, [companyId])
 
   // Salvar preferências
-  const savePreferences = useCallback((newPrefs: Partial<NotificationPreferences>) => {;
+  const savePreferences = useCallback((newPrefs: Partial<NotificationPreferences>) => {
     const updated = { ...preferences, ...newPrefs };
-    setPreferences(updated);
+    setPreferences(updated)
     if (companyId) {
-      localStorage.setItem(`notification_prefs_${companyId}`, JSON.stringify(updated));
+      localStorage.setItem(`notification_prefs_${companyId}`, JSON.stringify(updated))
     }
-  }, [preferences, companyId]);
+  }, [preferences, companyId])
 
   // Monitorar visibilidade da página
   useEffect(() => {
-    const handleVisibilityChange = () => {;
-      setIsPageVisible(!document.hidden);
+    const handleVisibilityChange = () => {
+      setIsPageVisible(!document.hidden)
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [])
 
   // Verificar permissão de notificações
   useEffect(() => {
     if ('Notification' in window) {
-      setPermission(Notification.permission);
+      setPermission(Notification.permission)
     }
-  }, []);
+  }, [])
 
   // Solicitar permissão para notificações
   const requestPermission = useCallback(async () => {
-    if ('Notification' in window) {;
-      const result = await Notification.requestPermission();
-      setPermission(result);
+    if ('Notification' in window) {
+      const result = await Notification.requestPermission()
+      setPermission(result)
       return result;
     }
     return 'denied';
-  }, []);
+  }, [])
 
   // Criar elemento de áudio para sons personalizados
-  const createAudioElement = useCallback((sound: NotificationSound) => {;
+  const createAudioElement = useCallback((sound: NotificationSound) => {
     if (sound === 'none') return null;
 
-    const audio = new Audio();
+    const audio = new Audio()
     audio.preload = 'auto';
     audio.volume = 0.7;
 
@@ -95,26 +95,26 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
     }
 
     return audio;
-  }, []);
+  }, [])
 
   // Reproduzir som de notificação
-  const playNotificationSound = useCallback((sound: NotificationSound) => {;
+  const playNotificationSound = useCallback((sound: NotificationSound) => {
     if (sound === 'none') return;
 
     try {
-      const audio = createAudioElement(sound);
+      const audio = createAudioElement(sound)
       if (audio) {
         audio.play().catch(error => {
-          console.warn('Erro ao reproduzir som de notificação:', error);
-        } catch (error) { console.error('Error:', error); });
+          console.warn('Erro ao reproduzir som de notificação:', error)
+        } catch (error) { console.error('Error:', error) })
       }
     } catch (error) {
-      console.warn('Erro ao criar áudio de notificação:', error);
+      console.warn('Erro ao criar áudio de notificação:', error)
     }
-  }, [createAudioElement]);
+  }, [createAudioElement])
 
   // Mostrar notificação do sistema
-  const showSystemNotification = useCallback((title: string, body: string, icon?: string) => {;
+  const showSystemNotification = useCallback((title: string, body: string, icon?: string) => {
     if (permission !== 'granted') return;
 
     try {
@@ -125,29 +125,29 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
         tag: 'whatsapp-message', // Evita múltiplas notificações
 // requireInteraction: false,
         silent: preferences.sound === 'none';
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
 
       // Auto-fechar após 5 segundos
       setTimeout(() => {
-        notification.close();
-      }, 5000);
+        notification.close()
+      }, 5000)
 
       // Focar na janela quando clicado
       notification.onclick = () => {
-        window.focus();
-        notification.close();
+        window.focus()
+        notification.close()
       };
 
     } catch (error) {
-      console.warn('Erro ao mostrar notificação do sistema:', error);
+      console.warn('Erro ao mostrar notificação do sistema:', error)
     }
-  }, [permission, preferences.sound]);
+  }, [permission, preferences.sound])
 
   // Notificação principal
   const notify = useCallback((
     senderName: string,
     message: string,
-    options?: {;
+    options?: {
       avatar?: string;
       chatId?: string;
       priority?: 'low' | 'normal' | 'high';
@@ -170,25 +170,25 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
           label: 'Ver',
           onClick: () => {
             // Aqui você pode implementar navegação para o chat
-            console.log('Navegando para chat:', options.chatId);
+            console.log('Navegando para chat:', options.chatId)
           }
         } : undefined
-      });
+      })
     }
 
     // Som de notificação
     if (preferences.sound !== 'none') {
-      playNotificationSound(preferences.sound);
+      playNotificationSound(preferences.sound)
     }
 
     // Notificação do sistema (apenas se página não está visível)
     if (!isPageVisible && permission === 'granted') {
-      showSystemNotification(title, body, options?.avatar);
+      showSystemNotification(title, body, options?.avatar)
     }
 
     // Vibração (apenas em dispositivos móveis)
     if ('vibrate' in navigator && !isPageVisible) {
-      navigator.vibrate([200, 100, 200]);
+      navigator.vibrate([200, 100, 200])
     }
 
   }, [
@@ -197,7 +197,7 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
     permission, 
     playNotificationSound, 
     showSystemNotification
-  ]);
+  ])
 
   // Notificação rápida para mensagens importantes
   const notifyImportant = useCallback((
@@ -217,35 +217,35 @@ export const useMessageNotifications = ({ companyId }: UseMessageNotificationsPr
         label: 'Ver Agora',
         onClick: () => console.log('Navegando para chat urgente:', options.chatId)
       } : undefined
-    });
+    })
 
     // Som sempre toca para mensagens importantes
-    playNotificationSound('whatsapp');
+    playNotificationSound('whatsapp')
 
     // Notificação do sistema sempre
     if (permission === 'granted') {
-      showSystemNotification(title, body, options?.avatar);
+      showSystemNotification(title, body, options?.avatar)
     }
 
     // Vibração mais intensa
     if ('vibrate' in navigator) {
-      navigator.vibrate([500, 200, 500, 200, 500]);
+      navigator.vibrate([500, 200, 500, 200, 500])
     }
 
-  }, [permission, playNotificationSound, showSystemNotification]);
+  }, [permission, playNotificationSound, showSystemNotification])
 
   // Silenciar temporariamente
-  const muteTemporarily = useCallback((minutes: number = 15) => {;
+  const muteTemporarily = useCallback((minutes: number = 15) => {
     const originalEnabled = preferences.enabled;
-    savePreferences({ enabled: false });
+    savePreferences({ enabled: false })
 
     setTimeout(() => {
-      savePreferences({ enabled: originalEnabled });
-      toast.success('Notificações reativadas', { duration: 2000 });
-    }, minutes * 60 * 1000);
+      savePreferences({ enabled: originalEnabled })
+      toast.success('Notificações reativadas', { duration: 2000 })
+    }, minutes * 60 * 1000)
 
-    toast.info(`Notificações silenciadas por ${minutes} minutos`);
-  }, [preferences.enabled, savePreferences]);
+    toast.info(`Notificações silenciadas por ${minutes} minutos`)
+  }, [preferences.enabled, savePreferences])
 
   return {
     preferences,

@@ -50,15 +50,15 @@ interface AIAgentConfig {
 
 export class AIConfigService {
   private globalConfig: AIGlobalConfig | null = null;
-  private configCache: Map<string, AIAgentConfig> = new Map();
-  private paymentCache: Map<string, any> = new Map();
+  private configCache: Map<string, AIAgentConfig> = new Map()
+  private paymentCache: Map<string, any> = new Map()
 
   /**
    * Carrega a configuração global de IA
    */
   async loadGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -66,14 +66,14 @@ export class AIConfigService {
         
 
       if (error || !data) {
-        console.error('Configuração global de IA não encontrada ou inativa:', error);
+        console.error('Configuração global de IA não encontrada ou inativa:', error)
         return null;
       }
 
       this.globalConfig = data as AIGlobalConfig;
       return data as AIGlobalConfig;
     } catch (error) {
-      console.error('Erro ao carregar configuração global:', error);
+      console.error('Erro ao carregar configuração global:', error)
       return null;
 
 
@@ -83,7 +83,7 @@ export class AIConfigService {
    */
   async loadLatestGlobalConfig(): Promise<AIGlobalConfig | null> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -91,13 +91,13 @@ export class AIConfigService {
         
 
       if (error || !data) {
-        console.error('Nenhuma configuração global encontrada:', error);
+        console.error('Nenhuma configuração global encontrada:', error)
         return null;
       }
 
       return data as AIGlobalConfig;
     } catch (error) {
-      console.error('Erro ao carregar configuração global mais recente:', error);
+      console.error('Erro ao carregar configuração global mais recente:', error)
       return null;
 
 
@@ -109,32 +109,32 @@ export class AIConfigService {
     try {
       // ⚠️ CACHE REMOVIDO TEMPORARIAMENTE para evitar confusão entre empresas
       // Sempre buscar dados frescos do banco
-      console.log(`🔍 Carregando configuração fresca para empresa: ${companyId} catch (error) { console.error('Error:', error); }`);
+      console.log(`🔍 Carregando configuração fresca para empresa: ${companyId} catch (error) { console.error('Error:', error) }`)
 
       // Tentar carregar da tabela nova primeiro
       const newConfigData = null as any; const newError = null as any;
         return newConfigData;
       }
 
-      console.log('⚠️ Tabela nova não encontrada, tentando tabela antiga...');
+      console.log('⚠️ Tabela nova não encontrada, tentando tabela antiga...')
 
       // Tentar carregar da tabela antiga como fallback
       const oldConfigData = null as any; const oldError = null as any;
         return null;
       }
 
-      console.log('✅ Configuração carregada da tabela antiga:', oldConfigData);
+      console.log('✅ Configuração carregada da tabela antiga:', oldConfigData)
 
       // Converte da estrutura antiga para a nova
-      const convertedConfig = this.convertOldConfigToNew(oldConfigData);
+      const convertedConfig = this.convertOldConfigToNew(oldConfigData)
       
       // Salva no cache por 5 minutos
-      this.configCache.set(companyId, convertedConfig);
+      this.configCache.set(companyId, convertedConfig)
       setTimeout(() => this.configCache
       return convertedConfig;
 
     } catch (error) {
-      console.error('Erro ao carregar configuração do agente:', error);
+      console.error('Erro ao carregar configuração do agente:', error)
       return null;
 
 
@@ -171,23 +171,23 @@ export class AIConfigService {
       if (this.paymentCache.has(companyId)) {
         return this.paymentCache.get(companyId)!;
       }
-       catch (error) { console.error('Error:', error); }const { data, error  } = null as any;
+       catch (error) { console.error('Error:', error) }const { data, error  } = null as any;
       if (error || !data) {
-        console.error('Configuração de pagamento não encontrada:', error);
+        console.error('Configuração de pagamento não encontrada:', error)
         return null;
       }
-      this.paymentCache.set(companyId, data);
+      this.paymentCache.set(companyId, data)
       setTimeout(() => this.paymentCache
       return data;
     } catch (error) {
-      console.error('Erro ao carregar configuração de pagamento:', error);
+      console.error('Erro ao carregar configuração de pagamento:', error)
       return null;
 
 
 
   clearCache(): void {
-    this.configCache.clear();
-    this.paymentCache.clear();
+    this.configCache.clear()
+    this.paymentCache.clear()
     this.globalConfig = null;
 
 
@@ -199,8 +199,8 @@ export class AIConfigService {
 
 }
 
-export const aiConfigService = new AIConfigService();
+export const aiConfigService = new AIConfigService()
 
 // Limpar cache na inicialização para evitar confusão entre empresas
-aiConfigService.clearCache();
-console.log('🧹 Cache do AI Config Service limpo na inicialização');
+aiConfigService.clearCache()
+console.log('🧹 Cache do AI Config Service limpo na inicialização')

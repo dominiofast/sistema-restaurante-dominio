@@ -25,5 +25,5 @@ export function DadosFiscaisHeader({ onCreateNew }: DadosFiscaisHeaderProps) {
         Novo Tipo Fiscal
       </Button>
     </div>
-  );
+  )
 }

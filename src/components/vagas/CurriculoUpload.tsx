@@ -17,9 +17,9 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
   currentFile,
   disabled = false
 }) => {
-  const [uploading, setUploading] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<string | null>(currentFile || null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false)
+  const [uploadedFile, setUploadedFile] = useState<string | null>(currentFile || null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const validateFile = (file: File): string | null => {
     // Verificar tipo de arquivo
@@ -41,52 +41,52 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     return null;
   };
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const validationError = validateFile(file);
+    const validationError = validateFile(file)
     if (validationError) {
-      toast.error(validationError);
+      toast.error(validationError)
       return;
     }
 
-    await uploadFile(file);
+    await uploadFile(file)
   };
 
   const uploadFile = async (file: File) => {
-    try {;
-      setUploading(true);
+    try {
+      setUploading(true)
 
-      console.log('Processando arquivo:', file.name);
-      console.log('Tamanho do arquivo:', file.size, 'bytes');
-      console.log('Tipo do arquivo:', file.type);
+      console.log('Processando arquivo:', file.name)
+      console.log('Tamanho do arquivo:', file.size, 'bytes')
+      console.log('Tipo do arquivo:', file.type)
 
       // Converter arquivo para Base64
-      const reader = new FileReader();
+      const reader = new FileReader()
       
       const base64Promise = new Promise<string>((resolve, reject) => {
-        reader.onload = () => {;
+        reader.onload = () => {
           const result = reader.result as string;
-          resolve(result);
-        } catch (error) { console.error('Error:', error); };
-        reader.onerror = () => reject(reader.error);
-      });
+          resolve(result)
+        } catch (error) { console.error('Error:', error) };
+        reader.onerror = () => reject(reader.error)
+      })
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
       const base64Data = await base64Promise;
 
-      console.log('Arquivo convertido para Base64');
+      console.log('Arquivo convertido para Base64')
 
       // Criar URL de dados para o arquivo
       const fileUrl = base64Data;
       
-      setUploadedFile(file.name);
-      onUploadSuccess(fileUrl, file.name);
+      setUploadedFile(file.name)
+      onUploadSuccess(fileUrl, file.name)
       
-      toast.success('Currículo processado com sucesso!');
+      toast.success('Currículo processado com sucesso!')
     } catch (error: any) {
-      console.error('Erro ao processar arquivo:', error);
+      console.error('Erro ao processar arquivo:', error)
       
       let errorMessage = 'Erro ao processar currículo';
       if (error.message.includes('size')) {
@@ -97,22 +97,22 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
         errorMessage = error.message;
       }
       
-      toast.error(errorMessage);
+      toast.error(errorMessage)
     } finally {
-      setUploading(false);
+      setUploading(false)
     }
   };
 
-  const removeFile = () => {;
-    setUploadedFile(null);
-    onUploadSuccess('', '');
+  const removeFile = () => {
+    setUploadedFile(null)
+    onUploadSuccess('', '')
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
   const getFileIcon = () => {
-    if (uploading) {;
+    if (uploading) {
       return <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>;
     }
     if (uploadedFile) {
@@ -121,7 +121,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
     return <Upload className="h-5 w-5 text-gray-400" />;
   };
 
-  const getStatusColor = () => {;
+  const getStatusColor = () => {
     if (uploading) return 'border-blue-300 bg-blue-50';
     if (uploadedFile) return 'border-green-300 bg-green-50';
     return 'border-gray-300 hover:border-blue-400';
@@ -195,7 +195,7 @@ const CurriculoUpload: React.FC<CurriculoUploadProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default CurriculoUpload; 

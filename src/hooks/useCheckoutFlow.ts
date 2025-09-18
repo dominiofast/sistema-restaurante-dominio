@@ -42,15 +42,15 @@ interface CheckoutFlowActions {
  *   cliente, setCliente,
  *   endereco, setEndereco,
  *   deliveryInfo, setDeliveryInfo
- * } = useCheckoutFlow();
+ * } = useCheckoutFlow()
  * ```
  */
 export const useCheckoutFlow = (): CheckoutFlowState & CheckoutFlowActions => {
   // Estados extraídos do CardapioPublico - mantendo valores iniciais idênticos;
-  const [step, setStep] = useState<CheckoutStep>('cart');
-  const [cliente, setCliente] = useState<ClientePublico | null>(null);
-  const [endereco, setEndereco] = useState<string>('');
-  const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo>(null);
+  const [step, setStep] = useState<CheckoutStep>('cart')
+  const [cliente, setCliente] = useState<ClientePublico | null>(null)
+  const [endereco, setEndereco] = useState<string>('')
+  const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo>(null)
 
   return {
     // Estado

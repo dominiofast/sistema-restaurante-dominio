@@ -22,16 +22,16 @@ export const AutoatendimentoCarrinho: React.FC<AutoatendimentoCarrinhoProps> = (
     limparCarrinho, 
     totalCarrinho,
     atualizarQuantidade 
-  } = useCart();
+  } = useCart()
 
   const total = totalCarrinho;
-  const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+  const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0)
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
-    if (newQuantity <= 0) {;
-      removerDoCarrinho(itemId);
+    if (newQuantity <= 0) {
+      removerDoCarrinho(itemId)
     } else {
-      atualizarQuantidade(itemId, newQuantity);
+      atualizarQuantidade(itemId, newQuantity)
     }
   };
 
@@ -58,7 +58,7 @@ export const AutoatendimentoCarrinho: React.FC<AutoatendimentoCarrinhoProps> = (
           </div>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -224,5 +224,5 @@ export const AutoatendimentoCarrinho: React.FC<AutoatendimentoCarrinhoProps> = (
         </div>
       </div>
     </div>
-  );
+  )
 };

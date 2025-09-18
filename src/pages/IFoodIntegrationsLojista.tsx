@@ -27,22 +27,22 @@ interface IntegrationData {
   message: string;
 
 
-const IFoodIntegrationsLojista = () => {;
-  const { currentCompany } = useAuth();
-  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [requestingToken, setRequestingToken] = useState(false);
-  const [integrationData, setIntegrationData] = useState<IntegrationData | null>(null);
+const IFoodIntegrationsLojista = () => {
+  const { currentCompany } = useAuth()
+  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([])
+  const [loading, setLoading] = useState(true)
+  const [requestingToken, setRequestingToken] = useState(false)
+  const [integrationData, setIntegrationData] = useState<IntegrationData | null>(null)
 
   useEffect(() => {
     if (currentCompany?.id) {
-      fetchIntegrations();
+      fetchIntegrations()
     }
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
-  const fetchIntegrations = async () => {;
-    console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
+  const fetchIntegrations = async () => {
+    console.log('⚠️ fetchIntegrations desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
   } = 
         
         
@@ -52,40 +52,40 @@ const IFoodIntegrationsLojista = () => {;
         
 
       if (error) throw error;
-      setIntegrations(data || []);
+      setIntegrations(data || [])
     } catch (error) {
-      console.error('Erro ao carregar integrações:', error);
-      toast.error('Erro ao carregar integrações');
+      console.error('Erro ao carregar integrações:', error)
+      toast.error('Erro ao carregar integrações')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const handleRequestToken = async () => {;
+  const handleRequestToken = async () => {
     if (!currentCompany?.id) return;
 
     try {
-      setRequestingToken(true);
+      setRequestingToken(true)
       
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { environment: 'sandbox' } // Por padrão usar sandbox
-      });
+      })
 
       if (error) throw error;
 
       if (data.success) {
-        setIntegrationData(data);
-        toast.success(data.message);
+        setIntegrationData(data)
+        toast.success(data.message)
         // Recarregar integrações após sucesso
-        fetchIntegrations();
+        fetchIntegrations()
       } else {
-        toast.error(data.error || 'Erro ao configurar integração');
+        toast.error(data.error || 'Erro ao configurar integração')
       }
     } catch (error) {
-      console.error('Erro ao configurar integração:', error);
-      toast.error('Erro ao configurar integração iFood');
+      console.error('Erro ao configurar integração:', error)
+      toast.error('Erro ao configurar integração iFood')
     } finally {
-      setRequestingToken(false);
+      setRequestingToken(false)
     }
   };
 
@@ -94,7 +94,7 @@ const IFoodIntegrationsLojista = () => {;
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
 
 
   return (
@@ -378,7 +378,7 @@ const IFoodIntegrationsLojista = () => {;
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default IFoodIntegrationsLojista;

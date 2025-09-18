@@ -13,9 +13,9 @@ export const CashbackSection: React.FC<CashbackSectionProps> = ({
   variant = 'full',
   className = ''
 }) => {
-  const { slug } = useParams();
-  const { company } = useCompanyData(slug || '');
-  const { data: cashbackConfig } = useCashbackConfig(company?.id);
+  const { slug } = useParams()
+  const { company } = useCompanyData(slug || '')
+  const { data: cashbackConfig } = useCashbackConfig(company?.id)
 
   if (!company || !cashbackConfig || !cashbackConfig.is_active) {
     return null;
@@ -28,5 +28,5 @@ export const CashbackSection: React.FC<CashbackSectionProps> = ({
       variant={variant}
       className={className}
     />
-  );
+  )
 };

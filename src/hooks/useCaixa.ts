@@ -33,16 +33,16 @@ export interface CaixaLancamento {
 
 
 export function useCaixa() {
-  const { currentCompany, user } = useAuth();
-  const { toast } = useToast();
-  const [caixaAtual, setCaixaAtual] = useState<Caixa | null>(null);
-  const [lancamentos, setLancamentos] = useState<CaixaLancamento[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { currentCompany, user } = useAuth()
+  const { toast } = useToast()
+  const [caixaAtual, setCaixaAtual] = useState<Caixa | null>(null)
+  const [lancamentos, setLancamentos] = useState<CaixaLancamento[]>([])
+  const [loading, setLoading] = useState(false)
 
   // Buscar caixa atual (aberto)
-  const buscarCaixaAtual = useCallback(async () => {;
-    console.log('⚠️ buscarCaixaAtual desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
+  const buscarCaixaAtual = useCallback(async () => {
+    console.log('⚠️ buscarCaixaAtual desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
   } = 
         
         
@@ -53,29 +53,29 @@ export function useCaixa() {
         
 
       if (error) {
-        console.error('Erro ao buscar caixa atual:', error);
+        console.error('Erro ao buscar caixa atual:', error)
         return;
       }
 
-      setCaixaAtual(data as Caixa);
+      setCaixaAtual(data as Caixa)
       
       // Se há caixa aberto, buscar os lançamentos
       if (data) {
-        await buscarLancamentos(data.id);
+        await buscarLancamentos(data.id)
       }
     } catch (error) {
-      console.error('Erro ao buscar caixa atual:', error);
+      console.error('Erro ao buscar caixa atual:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   // Buscar lançamentos do caixa
-  const buscarLancamentos = useCallback(async (caixaId: string) => {;
+  const buscarLancamentos = useCallback(async (caixaId: string) => {
     if (!currentCompany?.id) return;
 
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -83,36 +83,36 @@ export function useCaixa() {
         
 
       if (error) {
-        console.error('Erro ao buscar lançamentos:', error);
+        console.error('Erro ao buscar lançamentos:', error)
         return;
       }
 
-      setLancamentos((data || []) as CaixaLancamento[]);
+      setLancamentos((data || []) as CaixaLancamento[])
     } catch (error) {
-      console.error('Erro ao buscar lançamentos:', error);
+      console.error('Erro ao buscar lançamentos:', error)
 
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   // Abrir caixa
-  const abrirCaixa = useCallback(async (valorAbertura: number) => {;
-    console.log('🔄 Tentando abrir caixa...', { valorAbertura, currentCompany: currentCompany?.id, user: user?.name });
+  const abrirCaixa = useCallback(async (valorAbertura: number) => {
+    console.log('🔄 Tentando abrir caixa...', { valorAbertura, currentCompany: currentCompany?.id, user: user?.name })
     
     if (!currentCompany?.id || !user?.name) {
-      console.error('❌ Erro: Empresa ou usuário não identificado', { currentCompany, user });
-      toast({ title: "Erro", description: "Empresa ou usuário não identificado", variant: "destructive" });
+      console.error('❌ Erro: Empresa ou usuário não identificado', { currentCompany, user })
+      toast({ title: "Erro", description: "Empresa ou usuário não identificado", variant: "destructive" })
       return false;
 
 
     if (valorAbertura <= 0) {
-      toast({ title: "Erro", description: "Valor de abertura deve ser maior que zero", variant: "destructive" });
+      toast({ title: "Erro", description: "Valor de abertura deve ser maior que zero", variant: "destructive" })
       return false;
 
 
     try {
-      setLoading(true);
+      setLoading(true)
       
       // Verificar se já existe caixa aberto
-      const { data: caixaExistente }  catch (error) { console.error('Error:', error); }= 
+      const { data: caixaExistente }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -120,7 +120,7 @@ export function useCaixa() {
         
 
       if (caixaExistente) {
-        toast({ title: "Aviso", description: "Já existe um caixa aberto", variant: "destructive" });
+        toast({ title: "Aviso", description: "Já existe um caixa aberto", variant: "destructive" })
         return false;
       }
 
@@ -134,39 +134,39 @@ export function useCaixa() {
         
 
       if (error) {
-        console.error('Erro ao abrir caixa:', error);
-        toast({ title: "Erro", description: "Erro ao abrir caixa", variant: "destructive" });
+        console.error('Erro ao abrir caixa:', error)
+        toast({ title: "Erro", description: "Erro ao abrir caixa", variant: "destructive" })
         return false;
       }
 
-      setCaixaAtual(data as Caixa);
-      setLancamentos([]);
-      toast({ title: "Sucesso", description: "Caixa aberto com sucesso!" });
+      setCaixaAtual(data as Caixa)
+      setLancamentos([])
+      toast({ title: "Sucesso", description: "Caixa aberto com sucesso!" })
       return true;
     } catch (error) {
-      console.error('Erro ao abrir caixa:', error);
-      toast({ title: "Erro", description: "Erro ao abrir caixa", variant: "destructive" });
+      console.error('Erro ao abrir caixa:', error)
+      toast({ title: "Erro", description: "Erro ao abrir caixa", variant: "destructive" })
       return false;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [currentCompany?.id, user?.name, toast]);
+  }, [currentCompany?.id, user?.name, toast])
 
   // Fechar caixa
   const fecharCaixa = useCallback(async (observacoes?: string) => {
-    if (!caixaAtual || !user?.name) {;
-      toast({ title: "Erro", description: "Nenhum caixa aberto ou usuário não identificado", variant: "destructive" });
+    if (!caixaAtual || !user?.name) {
+      toast({ title: "Erro", description: "Nenhum caixa aberto ou usuário não identificado", variant: "destructive" })
       return false;
 
 
     try {
-      setLoading(true);
+      setLoading(true)
 
       // Calcular valor de fechamento
       const valorFechamento = caixaAtual.valor_abertura + ;
-        lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0);
+        lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0)
 
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
           status: 'fechado',
@@ -178,38 +178,38 @@ export function useCaixa() {
         
 
       if (error) {
-        console.error('Erro ao fechar caixa:', error);
-        toast({ title: "Erro", description: "Erro ao fechar caixa", variant: "destructive" });
+        console.error('Erro ao fechar caixa:', error)
+        toast({ title: "Erro", description: "Erro ao fechar caixa", variant: "destructive" })
         return false;
       }
 
-      setCaixaAtual(null);
-      setLancamentos([]);
-      toast({ title: "Sucesso", description: "Caixa fechado com sucesso!" });
+      setCaixaAtual(null)
+      setLancamentos([])
+      toast({ title: "Sucesso", description: "Caixa fechado com sucesso!" })
       return true;
     } catch (error) {
-      console.error('Erro ao fechar caixa:', error);
-      toast({ title: "Erro", description: "Erro ao fechar caixa", variant: "destructive" });
+      console.error('Erro ao fechar caixa:', error)
+      toast({ title: "Erro", description: "Erro ao fechar caixa", variant: "destructive" })
       return false;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [caixaAtual, user?.name, lancamentos, toast]);
+  }, [caixaAtual, user?.name, lancamentos, toast])
 
   // Adicionar lançamento
-  const adicionarLancamento = useCallback(async (lancamento: Omit<CaixaLancamento, 'id' | 'caixa_id' | 'company_id'>) => {;
-    console.log('💰 Adicionando lançamento...', { lancamento, caixaAtual: caixaAtual?.id, company: currentCompany?.id });
+  const adicionarLancamento = useCallback(async (lancamento: Omit<CaixaLancamento, 'id' | 'caixa_id' | 'company_id'>) => {
+    console.log('💰 Adicionando lançamento...', { lancamento, caixaAtual: caixaAtual?.id, company: currentCompany?.id })
     
     if (!caixaAtual || !currentCompany?.id) {
-      console.error('❌ Caixa ou empresa não encontrada:', { caixaAtual, currentCompany });
-      toast({ title: "Erro", description: "Nenhum caixa aberto", variant: "destructive" });
+      console.error('❌ Caixa ou empresa não encontrada:', { caixaAtual, currentCompany })
+      toast({ title: "Erro", description: "Nenhum caixa aberto", variant: "destructive" })
       return false;
 
 
     try {
-      setLoading(true);
+      setLoading(true)
 
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
           ...lancamento,
@@ -221,35 +221,35 @@ export function useCaixa() {
         
 
       if (error) {
-        console.error('Erro ao adicionar lançamento:', error);
-        toast({ title: "Erro", description: "Erro ao adicionar lançamento", variant: "destructive" });
+        console.error('Erro ao adicionar lançamento:', error)
+        toast({ title: "Erro", description: "Erro ao adicionar lançamento", variant: "destructive" })
         return false;
       }
 
-      setLancamentos(prev => [data as CaixaLancamento, ...prev]);
-      toast({ title: "Sucesso", description: "Lançamento adicionado com sucesso!" });
+      setLancamentos(prev => [data as CaixaLancamento, ...prev])
+      toast({ title: "Sucesso", description: "Lançamento adicionado com sucesso!" })
       return true;
     } catch (error) {
-      console.error('Erro ao adicionar lançamento:', error);
-      toast({ title: "Erro", description: "Erro ao adicionar lançamento", variant: "destructive" });
+      console.error('Erro ao adicionar lançamento:', error)
+      toast({ title: "Erro", description: "Erro ao adicionar lançamento", variant: "destructive" })
       return false;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [caixaAtual, currentCompany?.id, user?.name, toast]);
+  }, [caixaAtual, currentCompany?.id, user?.name, toast])
 
   // Calcular valores
   const saldoAtual = caixaAtual ? ;
     caixaAtual.valor_abertura + lancamentos.reduce((acc, l) => acc + (l.tipo === 'entrada' ? l.valor : -l.valor), 0) : 0;
   
-  const totalEntradas = lancamentos.filter(l => l.tipo === 'entrada').reduce((acc, l) => acc + l.valor, 0);
-  const totalSaidas = lancamentos.filter(l => l.tipo === 'saida').reduce((acc, l) => acc + l.valor, 0);
+  const totalEntradas = lancamentos.filter(l => l.tipo === 'entrada').reduce((acc, l) => acc + l.valor, 0)
+  const totalSaidas = lancamentos.filter(l => l.tipo === 'saida').reduce((acc, l) => acc + l.valor, 0)
 
   useEffect(() => {
     if (currentCompany?.id) {
-      buscarCaixaAtual();
+      buscarCaixaAtual()
 
-  }, [currentCompany?.id]); // Removido buscarCaixaAtual das dependências para evitar loop
+  }, [currentCompany?.id]) // Removido buscarCaixaAtual das dependências para evitar loop
 
   return {
     caixaAtual,

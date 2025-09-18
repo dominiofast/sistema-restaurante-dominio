@@ -55,5 +55,5 @@ export const CategoryNavigation: React.FC<CategoryNavigationProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

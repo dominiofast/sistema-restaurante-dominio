@@ -15,5 +15,5 @@ export const ConfiguracaoStatus = () => {
       
       <StatusManagement />
     </div>;
-  );
+  )
 };

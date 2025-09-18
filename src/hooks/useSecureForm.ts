@@ -18,35 +18,35 @@ export const useSecureForm = ({
   onSubmit,
   rateLimitKey,
   maxSubmissions = 5
-}: UseSecureFormProps) => {;
-  const { toast } = useToast();
-  const [values, setValues] = useState<Record<string, string>>({});
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+}: UseSecureFormProps) => {
+  const { toast } = useToast()
+  const [values, setValues] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const validateField = useCallback((name: string, value: string) => {;
-    const fieldConfig = fields.find(f => f.name === name);
+  const validateField = useCallback((name: string, value: string) => {
+    const fieldConfig = fields.find(f => f.name === name)
     if (!fieldConfig) return { isValid: true, sanitizedValue: value, errors: [] };
 
-    return validateInput(value, fieldConfig);
-  }, [fields]);
+    return validateInput(value, fieldConfig)
+  }, [fields])
 
-  const handleChange = useCallback((name: string, value: string) => {;
-    const validation = validateField(name, value);
+  const handleChange = useCallback((name: string, value: string) => {
+    const validation = validateField(name, value)
     
     setValues(prev => ({
       ...prev,
       [name]: validation.sanitizedValue
-    }));
+    }))
 
     setErrors(prev => ({
       ...prev,
       [name]: validation.errors
-    }));
-  }, [validateField]);
+    }))
+  }, [validateField])
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
     
     // Rate limiting
     if (rateLimitKey && !checkRateLimit(rateLimitKey, maxSubmissions)) {
@@ -54,21 +54,21 @@ export const useSecureForm = ({
         title: "Muitas tentativas",
         description: "Aguarde um momento antes de tentar novamente.",
         variant: "destructive",
-      });
+      })
       return;
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     try {
       // Validar todos os campos
-      const validationResults: Record<string, any> = {} catch (error) { console.error('Error:', error); };
+      const validationResults: Record<string, any> = {} catch (error) { console.error('Error:', error) };
       const newErrors: Record<string, string[]> = {};
       let hasErrors = false;
 
       for (const field of fields) {
         const value = values[field.name] || '';
-        const validation = validateField(field.name, value);
+        const validation = validateField(field.name, value)
         
         validationResults[field.name] = validation.sanitizedValue;
         newErrors[field.name] = validation.errors;
@@ -78,43 +78,43 @@ export const useSecureForm = ({
         }
       }
 
-      setErrors(newErrors);
+      setErrors(newErrors)
 
       if (hasErrors) {
         toast({
           title: "Erro de validação",
           description: "Corrija os erros nos campos marcados.",
           variant: "destructive",
-        });
+        })
         return;
       }
 
       // Submeter com dados sanitizados
-      await onSubmit(validationResults);
+      await onSubmit(validationResults)
       
       // Limpar formulário em caso de sucesso
-      setValues({});
-      setErrors({});
+      setValues({})
+      setErrors({})
 
     } catch (error) {
-      console.error('Erro no envio do formulário:', error);
+      console.error('Erro no envio do formulário:', error)
       toast({
         title: "Erro",
         description: "Ocorreu um erro ao enviar o formulário.",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  }, [values, fields, validateField, onSubmit, rateLimitKey, maxSubmissions, toast]);
+  }, [values, fields, validateField, onSubmit, rateLimitKey, maxSubmissions, toast])
 
-  const getFieldError = useCallback((name: string) => {;
+  const getFieldError = useCallback((name: string) => {
     return errors[name]?.[0] || '';
-  }, [errors]);
+  }, [errors])
 
-  const isFieldInvalid = useCallback((name: string) => {;
-    return !!(errors[name] && errors[name].length > 0);
-  }, [errors]);
+  const isFieldInvalid = useCallback((name: string) => {
+    return !!(errors[name] && errors[name].length > 0)
+  }, [errors])
 
   return {
     values,

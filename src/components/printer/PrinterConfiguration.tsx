@@ -25,61 +25,61 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
     testPrinter,
     checkDominioStatus,
     getDominioPrinters
-  } = usePrinter();
+  } = usePrinter()
 
-  const [printerType, setPrinterType] = useState<PrinterType>('network');
-  const [networkIp, setNetworkIp] = useState('');
-  const [networkPort, setNetworkPort] = useState('9100');
-  const [printerName, setPrinterName] = useState('');
-  const [dominioPrinterName, setDominioPrinterName] = useState('');
-  const [isDominioConnected, setIsDominioConnected] = useState(false);
+  const [printerType, setPrinterType] = useState<PrinterType>('network')
+  const [networkIp, setNetworkIp] = useState('')
+  const [networkPort, setNetworkPort] = useState('9100')
+  const [printerName, setPrinterName] = useState('')
+  const [dominioPrinterName, setDominioPrinterName] = useState('')
+  const [isDominioConnected, setIsDominioConnected] = useState(false)
 
   // Carregar configuração existente
   useEffect(() => {
-    const loadConfig = async () => {;
-      const config = await getPrinterConfig(companyId);
+    const loadConfig = async () => {
+      const config = await getPrinterConfig(companyId)
       if (config) {
-        setPrinterType(config.type);
-        setNetworkIp(config.ip || '');
-        setNetworkPort(config.port?.toString() || '9100');
-        setPrinterName(config.name || '');
-        setDominioPrinterName(config.dominioPrinterName || '');
+        setPrinterType(config.type)
+        setNetworkIp(config.ip || '')
+        setNetworkPort(config.port?.toString() || '9100')
+        setPrinterName(config.name || '')
+        setDominioPrinterName(config.dominioPrinterName || '')
       }
     };
-    loadConfig();
-  }, [companyId, getPrinterConfig]);
+    loadConfig()
+  }, [companyId, getPrinterConfig])
 
   // Verificar status do Dominio Printer apenas uma vez
   useEffect(() => {
-    const checkStatus = async () => {;
-      console.log('🔍 [PrinterConfiguration] Verificando status do Dominio Printer...');
+    const checkStatus = async () => {
+      console.log('🔍 [PrinterConfiguration] Verificando status do Dominio Printer...')
       try {
-        const status = await checkDominioStatus();
-        console.log('📊 [PrinterConfiguration] Status retornado:', status);
-        setIsDominioConnected(status);
+        const status = await checkDominioStatus()
+        console.log('📊 [PrinterConfiguration] Status retornado:', status)
+        setIsDominioConnected(status)
         if (status) {
-          console.log('✅ [PrinterConfiguration] Dominio Printer conectado, buscando impressoras...');
-          const printers = await getDominioPrinters();
-          console.log('🖨️ [PrinterConfiguration] Impressoras encontradas:', printers);
-        }  catch (error) { console.error('Error:', error); }else {
-          console.log('❌ [PrinterConfiguration] Dominio Printer não conectado');
+          console.log('✅ [PrinterConfiguration] Dominio Printer conectado, buscando impressoras...')
+          const printers = await getDominioPrinters()
+          console.log('🖨️ [PrinterConfiguration] Impressoras encontradas:', printers)
+        }  catch (error) { console.error('Error:', error) }else {
+          console.log('❌ [PrinterConfiguration] Dominio Printer não conectado')
         }
       } catch (error) {
-        console.error('💥 [PrinterConfiguration] Erro ao verificar Dominio Printer:', error);
-        setIsDominioConnected(false);
+        console.error('💥 [PrinterConfiguration] Erro ao verificar Dominio Printer:', error)
+        setIsDominioConnected(false)
       }
     };
-    checkStatus();
-  }, []); // Removidas as dependências que causavam o loop infinito
+    checkStatus()
+  }, []) // Removidas as dependências que causavam o loop infinito
 
   const handleSave = async () => {
-    if (printerType === 'network' && (!networkIp || !printerName)) {;
-      toast.error('Preencha IP e nome da impressora');
+    if (printerType === 'network' && (!networkIp || !printerName)) {
+      toast.error('Preencha IP e nome da impressora')
       return;
 
     
     if (printerType === 'dominio' && !dominioPrinterName) {
-      toast.error('Selecione uma impressora do Dominio Printer');
+      toast.error('Selecione uma impressora do Dominio Printer')
       return;
 
 
@@ -90,14 +90,14 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
         port: parseInt(networkPort),
         name: printerName,
         dominioPrinterName: dominioPrinterName
-      } catch (error) { console.error('Error:', error); }, companyId);
+      } catch (error) { console.error('Error:', error) }, companyId)
     } catch (error) {
-      console.error('Erro ao salvar:', error);
+      console.error('Erro ao salvar:', error)
 
   };
 
-  const handleTest = async () => {;
-    await testPrinter(companyId);
+  const handleTest = async () => {
+    await testPrinter(companyId)
   };
 
   return (
@@ -148,21 +148,21 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
                   size="sm"
                   className="whitespace-nowrap"
                   onClick={async () => {
-                    console.log('🔄 [Manual] Testando conexão...');
+                    console.log('🔄 [Manual] Testando conexão...')
                     try {
-                      const status = await checkDominioStatus();
-                      console.log('🔄 [Manual] Status retornado:', status);
-                      setIsDominioConnected(status);
+                      const status = await checkDominioStatus()
+                      console.log('🔄 [Manual] Status retornado:', status)
+                      setIsDominioConnected(status)
                       if (status) {
-                        const printers = await getDominioPrinters();
-                        console.log('🔄 [Manual] Impressoras:', printers);
-                        toast.success(`${printers.length}  catch (error) { console.error('Error:', error); }impressoras encontradas`);
+                        const printers = await getDominioPrinters()
+                        console.log('🔄 [Manual] Impressoras:', printers)
+                        toast.success(`${printers.length}  catch (error) { console.error('Error:', error) }impressoras encontradas`)
                       } else {
-                        toast.error('Não foi possível conectar ao Dominio Printer');
+                        toast.error('Não foi possível conectar ao Dominio Printer')
                       }
                     } catch (error) {
-                      console.error('🔄 [Manual] Erro:', error);
-                      toast.error('Erro na verificação');
+                      console.error('🔄 [Manual] Erro:', error)
+                      toast.error('Erro na verificação')
 
                   }}
                 >
@@ -289,5 +289,5 @@ export const PrinterConfiguration: React.FC<PrinterConfigurationProps> = ({ comp
         )}
       </CardContent>
     </Card>
-  );
+  )
 };

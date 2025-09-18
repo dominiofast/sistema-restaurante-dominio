@@ -13,31 +13,31 @@ interface CaixaModalProps {
 }
 
 export function CaixaModal({ open, onOpenChange }: CaixaModalProps) {
-  const { caixaAtual, loading, abrirCaixa, fecharCaixa, saldoAtual } = useCaixa();
-  const [valorAbertura, setValorAbertura] = useState('');
-  const [observacoes, setObservacoes] = useState('');
+  const { caixaAtual, loading, abrirCaixa, fecharCaixa, saldoAtual } = useCaixa()
+  const [valorAbertura, setValorAbertura] = useState('')
+  const [observacoes, setObservacoes] = useState('')
 
   const temCaixaAberto = caixaAtual && caixaAtual.status === 'aberto';
 
-  const handleAbrirCaixa = async () => {;
+  const handleAbrirCaixa = async () => {
     const valor = parseFloat(valorAbertura.replace(',', '.')) || 0;
-    await abrirCaixa(valor);
-    setValorAbertura('');
-    setObservacoes('');
-    onOpenChange(false);
+    await abrirCaixa(valor)
+    setValorAbertura('')
+    setObservacoes('')
+    onOpenChange(false)
   };
 
-  const handleFecharCaixa = async () => {;
-    await fecharCaixa(observacoes);
-    setObservacoes('');
-    onOpenChange(false);
+  const handleFecharCaixa = async () => {
+    await fecharCaixa(observacoes)
+    setObservacoes('')
+    onOpenChange(false)
   };
 
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL';
-    });
+    })
   };
 
   return (
@@ -135,5 +135,5 @@ export function CaixaModal({ open, onOpenChange }: CaixaModalProps) {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

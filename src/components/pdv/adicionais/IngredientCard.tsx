@@ -16,22 +16,22 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({
   onClick,
   onQuantityChange
 }) => {
-  const handleDecrease = (e: React.MouseEvent) => {;
-    e.stopPropagation();
+  const handleDecrease = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (onQuantityChange && selectedQuantity > 0) {
-      onQuantityChange(adicional.id, categoria, selectedQuantity - 1);
+      onQuantityChange(adicional.id, categoria, selectedQuantity - 1)
     }
   };
 
-  const handleIncrease = (e: React.MouseEvent) => {;
-    e.stopPropagation();
+  const handleIncrease = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (onQuantityChange) {
-      onQuantityChange(adicional.id, categoria, selectedQuantity + 1);
+      onQuantityChange(adicional.id, categoria, selectedQuantity + 1)
     }
   };
 
   const isQuantitySelection = categoria.selection_type === 'quantity' || ;
-                             (categoria.selection_type === 'multiple' && categoria.max_selection > 1);
+                             (categoria.selection_type === 'multiple' && categoria.max_selection > 1)
 
   return (
     <div
@@ -77,5 +77,5 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

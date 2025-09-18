@@ -5,8 +5,8 @@ import VagasIndexPage from '../components/vagas/VagasIndexPage';
 import PublicVagasPage from '../components/vagas/PublicVagasPage';
 import VagaPublica from '../components/vagas/VagaPublica';
 
-const VagasRoutes = () => {;
-  console.log('VagasRoutes loaded');
+const VagasRoutes = () => {
+  console.log('VagasRoutes loaded')
   
   return (
     <Routes>
@@ -14,7 +14,7 @@ const VagasRoutes = () => {;
       <Route path="/:slug" element={<PublicVagasPage />} />
       <Route path="/:slug/vaga/:vagaId" element={<VagaPublica />} />
     </Routes>
-  );
+  )
 };
 
 export default VagasRoutes;

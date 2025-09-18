@@ -8,12 +8,12 @@ import { useToast } from "@/hooks/use-toast";
 // SUPABASE REMOVIDO
 import { useAuth } from "@/contexts/AuthContext";
 
-const ImportCardapioSupabase = () => {;
-  const [jsonData, setJsonData] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [importResult, setImportResult] = useState<any>(null);
-  const { toast } = useToast();
-  const { currentCompany } = useAuth();
+const ImportCardapioSupabase = () => {
+  const [jsonData, setJsonData] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [importResult, setImportResult] = useState<any>(null)
+  const { toast } = useToast()
+  const { currentCompany } = useAuth()
 
   const handleImport = async () => {
     if (!jsonData.trim()) {
@@ -21,7 +21,7 @@ const ImportCardapioSupabase = () => {;
         title: "Erro",
         description: "Por favor, cole os dados JSON para importação",
         variant: "destructive",;
-      });
+      })
       return;
     }
 
@@ -30,22 +30,22 @@ const ImportCardapioSupabase = () => {;
         title: "Erro",
         description: "Nenhuma empresa selecionada. Por favor, selecione uma empresa primeiro.",
         variant: "destructive",
-      });
+      })
       return;
     }
 
-    setIsLoading(true);
-    setImportResult(null);
+    setIsLoading(true)
+    setImportResult(null)
 
     try {
-      const data = JSON.parse(jsonData);
+      const data = JSON.parse(jsonData)
       let stats = {
         categorias_criadas: 0,
         categorias_atualizadas: 0,
         adicionais_criados: 0,
         adicionais_atualizados: 0,
         errors: [] as string[]
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
       const categoriaIdMap: Record<string, string> = {};
 
@@ -54,7 +54,7 @@ const ImportCardapioSupabase = () => {;
         for (const categoria of data.categorias) {
           try {
             // Verificar se já existe
-            const { data: existing }  catch (error) { console.error('Error:', error); }= 
+            const { data: existing }  catch (error) { console.error('Error:', error) }= 
               
               
               
@@ -95,7 +95,7 @@ const ImportCardapioSupabase = () => {;
               stats.categorias_criadas++;
 
           } catch (error: any) {
-            stats.errors.push(`Erro na categoria ${categoria.name}: ${error.message}`);
+            stats.errors.push(`Erro na categoria ${categoria.name}: ${error.message}`)
 
 
 
@@ -106,7 +106,7 @@ const ImportCardapioSupabase = () => {;
         if (!categoriaIdMap[cat.name]) {
           categoriaIdMap[cat.name] = cat.id;
 
-      });
+      })
 
       // 3. Importar adicionais
       if (data.adicionais && Array.isArray(data.adicionais)) {
@@ -118,8 +118,8 @@ const ImportCardapioSupabase = () => {;
               categoriaId = categoriaIdMap[adicional.categoria_name];
 
 
-             catch (error) { console.error('Error:', error); }if (!categoriaId) {
-              throw new Error(`Categoria não encontrada: ${adicional.categoria_name}`);
+             catch (error) { console.error('Error:', error) }if (!categoriaId) {
+              throw new Error(`Categoria não encontrada: ${adicional.categoria_name}`)
 
 
             // Verificar se já existe
@@ -144,32 +144,32 @@ const ImportCardapioSupabase = () => {;
                   description: adicional.description,
                   price: adicional.price || 0,
                   is_available: adicional.is_available !== false
-                });
+                })
 
               if (error) throw error;
               stats.adicionais_criados++;
 
           } catch (error: any) {
-            stats.errors.push(`Erro no adicional ${adicional.name}: ${error.message}`);
+            stats.errors.push(`Erro no adicional ${adicional.name}: ${error.message}`)
 
 
 
 
-      setImportResult({ stats, categoriaIdMap });
+      setImportResult({ stats, categoriaIdMap })
       toast({
         title: "Importação concluída!",
         description: `${stats.categorias_criadas} categorias criadas, ${stats.adicionais_criados} adicionais criados`,
-      });
+      })
 
     } catch (error: any) {
-      console.error('Erro na importação:', error);
+      console.error('Erro na importação:', error)
       toast({
         title: "Erro na importação",
         description: error.message.includes('JSON') ? 'JSON inválido' : error.message,
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 
@@ -370,7 +370,7 @@ const ImportCardapioSupabase = () => {;
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default ImportCardapioSupabase;

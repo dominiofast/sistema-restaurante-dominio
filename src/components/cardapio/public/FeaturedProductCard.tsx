@@ -2,11 +2,11 @@ import React from 'react';
 import { Produto } from '@/types/cardapio';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {;
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+const applyOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
@@ -34,7 +34,7 @@ const DiscountBadge: React.FC<DiscountBadgeProps> = ({ discountPercentage, prima
     >
       -{discountPercentage}%
     </span>
-  );
+  )
 };
 
 export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
@@ -52,7 +52,7 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
     produto.promotional_price > 0;
 
   const discountPercentage = hasDiscount 
-    ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100);
+    ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100)
     : 0;
 
   const renderPrice = () => {
@@ -76,7 +76,7 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
             {priceValue}
           </span>
         </div>
-      );
+      )
     }
 
     if (produto.price === 0) {
@@ -91,7 +91,7 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
           {priceValue}
         </span>
       </div>
-    );
+    )
   };
 
   return (
@@ -151,5 +151,5 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

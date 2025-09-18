@@ -52,7 +52,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
 }) => {
   const getStatusColor = () => {
     if (isConnected) {
-      switch (quality) {;
+      switch (quality) {
         case 'excellent': return 'text-green-600';
         case 'good': return 'text-blue-600';
         case 'poor': return 'text-yellow-600';
@@ -62,13 +62,13 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
     return isReconnecting ? 'text-yellow-600' : 'text-red-600';
   };
 
-  const getStatusIcon = () => {;
+  const getStatusIcon = () => {
     if (isConnected) return <Wifi className="h-3 w-3" />;
     if (isReconnecting) return <RefreshCw className="h-3 w-3 animate-spin" />;
     return <WifiOff className="h-3 w-3" />;
   };
 
-  const getStatusText = () => {;
+  const getStatusText = () => {
     if (isConnected) return `Online (${latency}ms)`;
     if (isReconnecting) return `Reconectando... (${retryCount}/5)`;
     return 'Desconectado';
@@ -91,7 +91,7 @@ export const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
         </button>
       )}
     </div>
-  );
+  )
 };
 
 // Componente avançado com métricas detalhadas
@@ -110,29 +110,29 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   forceFallbackMode,
   onRunDiagnostic
 }) => {
-  const [metrics, setMetrics] = useState<any>(null);
-  const [qualityData, setQualityData] = useState<any>(null);
-  const [alerts, setAlerts] = useState<any[]>([]);
-  const [fallbackState, setFallbackState] = useState<any>(null);
-  const [showDetails, setShowDetails] = useState(false);
-  const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false);
+  const [metrics, setMetrics] = useState<any>(null)
+  const [qualityData, setQualityData] = useState<any>(null)
+  const [alerts, setAlerts] = useState<any[]>([])
+  const [fallbackState, setFallbackState] = useState<any>(null)
+  const [showDetails, setShowDetails] = useState(false)
+  const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false)
 
   // Atualizar dados periodicamente
   useEffect(() => {
-    const updateData = () => {;
-      if (getConnectionMetrics) setMetrics(getConnectionMetrics());
-      if (getConnectionQuality) setQualityData(getConnectionQuality());
-      if (getConnectionAlerts) setAlerts(getConnectionAlerts(true)); // Apenas não resolvidos
-      if (getFallbackState) setFallbackState(getFallbackState());
+    const updateData = () => {
+      if (getConnectionMetrics) setMetrics(getConnectionMetrics())
+      if (getConnectionQuality) setQualityData(getConnectionQuality())
+      if (getConnectionAlerts) setAlerts(getConnectionAlerts(true)) // Apenas não resolvidos
+      if (getFallbackState) setFallbackState(getFallbackState())
     };
 
-    updateData();
-    const interval = setInterval(updateData, 2000);
-    return () => clearInterval(interval);
-  }, [getConnectionMetrics, getConnectionQuality, getConnectionAlerts, getFallbackState]);
+    updateData()
+    const interval = setInterval(updateData, 2000)
+    return () => clearInterval(interval)
+  }, [getConnectionMetrics, getConnectionQuality, getConnectionAlerts, getFallbackState])
 
   const getQualityColor = (level: string) => {
-    switch (level) {;
+    switch (level) {
       case 'excellent': return 'text-green-600 bg-green-50 border-green-200';
       case 'good': return 'text-blue-600 bg-blue-50 border-blue-200';
       case 'poor': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
@@ -142,7 +142,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
   };
 
   const getQualityIcon = (level: string) => {
-    switch (level) {;
+    switch (level) {
       case 'excellent': return <CheckCircle className="h-4 w-4" />;
       case 'good': return <Wifi className="h-4 w-4" />;
       case 'poor': return <AlertTriangle className="h-4 w-4" />;
@@ -151,14 +151,14 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
     }
   };
 
-  const runDiagnostic = async () => {;
+  const runDiagnostic = async () => {
     if (!onRunDiagnostic) return;
     
-    setIsRunningDiagnostic(true);
+    setIsRunningDiagnostic(true)
     try {
-      await onRunDiagnostic();
+      await onRunDiagnostic()
     } finally {
-      setIsRunningDiagnostic(false);
+      setIsRunningDiagnostic(false)
     }
   };
 
@@ -387,7 +387,7 @@ export const AdvancedConnectionStatus: React.FC<ConnectionStatusProps> = ({
         )}
       </CardContent>
     </Card>
-  );
+  )
 };
 
 // Componente para banner de status mais visível
@@ -448,7 +448,7 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
     };
   };
 
-  const config = getStatusConfig();
+  const config = getStatusConfig()
 
   return (
     <div className={`px-4 py-2 flex items-center justify-between text-sm ${config.bg} border-b`}>
@@ -467,5 +467,5 @@ export const ConnectionBanner: React.FC<ConnectionStatusProps & {
         </button>
       )}
     </div>
-  );
+  )
 };

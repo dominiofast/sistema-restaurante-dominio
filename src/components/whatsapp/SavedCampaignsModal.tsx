@@ -25,19 +25,19 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
   onClose,
   onLoadCampaign
 }) => {
-  const { currentCompany } = useAuth();
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
   // Carregar campanhas salvas
   useEffect(() => {
-    const fetchCampaigns = async () => {;
+    const fetchCampaigns = async () => {
       if (!currentCompany?.id) return;
 
       try {
-        setLoading(true);
-        const { data, error }  catch (error) { console.error('Error:', error); }= 
+        setLoading(true)
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -45,39 +45,39 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
 
         if (error) throw error;
         
-        setCampaigns(data || []);
+        setCampaigns(data || [])
       } catch (error) {
-        console.error('Erro ao carregar campanhas:', error);
-        toast.error('Erro ao carregar campanhas salvas');
+        console.error('Erro ao carregar campanhas:', error)
+        toast.error('Erro ao carregar campanhas salvas')
       } finally {
-        setLoading(false);
+        setLoading(false)
 
     };
 
-    fetchCampaigns();
-  }, [currentCompany?.id]);
+    fetchCampaigns()
+  }, [currentCompany?.id])
 
   const handleDeleteCampaign = async (campaignId: string) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {;
+    if (!window.confirm('Tem certeza que deseja excluir esta campanha?')) {
       return;
 
 
     try {
-      setDeleting(campaignId);
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      setDeleting(campaignId)
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
         
 
       if (error) throw error;
 
-      setCampaigns(campaigns.filter(c => c.id !== campaignId));
-      toast.success('Campanha excluída com sucesso');
+      setCampaigns(campaigns.filter(c => c.id !== campaignId))
+      toast.success('Campanha excluída com sucesso')
     } catch (error) {
-      console.error('Erro ao excluir campanha:', error);
-      toast.error('Erro ao excluir campanha');
+      console.error('Erro ao excluir campanha:', error)
+      toast.error('Erro ao excluir campanha')
     } finally {
-      setDeleting(null);
+      setDeleting(null)
 
   };
 
@@ -94,12 +94,12 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
       selectedContacts: [];
     };
     
-    onLoadCampaign(campaignData);
-    onClose();
-    toast.success('Campanha carregada para edição');
+    onLoadCampaign(campaignData)
+    onClose()
+    toast.success('Campanha carregada para edição')
   };
 
-  const getStatusColor = (status: string, isActive: boolean) => {;
+  const getStatusColor = (status: string, isActive: boolean) => {
     if (!isActive) return 'bg-gray-100 text-gray-600';
     
     switch (status) {
@@ -116,7 +116,7 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
 
   };
 
-  const getStatusText = (status: string, isActive: boolean) => {;
+  const getStatusText = (status: string, isActive: boolean) => {
     if (!isActive) return 'Inativa';
     
     switch (status) {
@@ -273,5 +273,5 @@ export const SavedCampaignsModal: React.FC<SavedCampaignsModalProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

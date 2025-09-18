@@ -21,14 +21,14 @@ export const CampainhaStatus: React.FC<CampainhaStatusProps> = ({
   onTest,
   onStop
 }) => {
-  const getStatusColor = () => {;
+  const getStatusColor = () => {
     if (tocando) return 'text-red-500';
     if (audioEnabled && notificationsEnabled) return 'text-green-500';
     if (audioEnabled || notificationsEnabled) return 'text-yellow-500';
     return 'text-gray-500';
   };
 
-  const getStatusText = () => {;
+  const getStatusText = () => {
     if (tocando) return 'Campainha Tocando';
     if (!userInteracted) return 'Clique em qualquer lugar para ativar';
     if (audioEnabled && notificationsEnabled) return 'Sistema Completo Ativo';
@@ -130,5 +130,5 @@ export const CampainhaStatus: React.FC<CampainhaStatusProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

@@ -39,5 +39,5 @@ export const FusoHorarioSelector: React.FC<FusoHorarioSelectorProps> = ({
         </SelectContent>
       </Select>
     </div>
-  );
+  )
 };

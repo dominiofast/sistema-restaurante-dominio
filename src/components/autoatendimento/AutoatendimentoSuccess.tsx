@@ -96,5 +96,5 @@ export const AutoatendimentoSuccess: React.FC<AutoatendimentoSuccessProps> = ({
         </p>
       </div>
     </div>
-  );
+  )
 };

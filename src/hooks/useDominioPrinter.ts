@@ -41,11 +41,11 @@ interface Receipt {
   table?: string;
 }
 
-export const useDominioPrinter = () => {;
-  const [isConnected, setIsConnected] = useState(false);
-  const [isPrinting, setIsPrinting] = useState(false);
-  const [printers, setPrinters] = useState<string[]>([]);
-  const [paperWidth, setPaperWidth] = useState(48); // Largura padrão em caracteres
+export const useDominioPrinter = () => {
+  const [isConnected, setIsConnected] = useState(false)
+  const [isPrinting, setIsPrinting] = useState(false)
+  const [printers, setPrinters] = useState<string[]>([])
+  const [paperWidth, setPaperWidth] = useState(48) // Largura padrão em caracteres
   
   const baseUrl = 'http://localhost:3001/api';
   
@@ -53,14 +53,14 @@ export const useDominioPrinter = () => {;
   useEffect(() => {
     const loadPrinterConfig = async () => {
       try {
-        // Buscar company_id atual (assumindo que está no contexto ou localStorage);
-        const currentCompanyStr = localStorage.getItem('currentCompany');
+        // Buscar company_id atual (assumindo que está no contexto ou localStorage)
+        const currentCompanyStr = localStorage.getItem('currentCompany')
         if (!currentCompanyStr) return;
         
-        const currentCompany = JSON.parse(currentCompanyStr);
+        const currentCompany = JSON.parse(currentCompanyStr)
         const companyId = currentCompany.id;
         
-        const { data, error }  catch (error) { console.error('Error:', error); }= 
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -68,36 +68,36 @@ export const useDominioPrinter = () => {;
           
 
         if (error) {
-          console.warn('Erro ao carregar configuração de impressora:', error);
+          console.warn('Erro ao carregar configuração de impressora:', error)
           return;
         }
 
         if (data && data.largura_papel) {
-          setPaperWidth(data.largura_papel);
-          console.log('📏 Largura carregada do banco (useDominioPrinter):', data.largura_papel);
+          setPaperWidth(data.largura_papel)
+          console.log('📏 Largura carregada do banco (useDominioPrinter):', data.largura_papel)
         }
       } catch (error) {
-        console.error('Erro ao carregar configuração:', error);
+        console.error('Erro ao carregar configuração:', error)
 
     };
 
-    loadPrinterConfig();
-  }, []);
+    loadPrinterConfig()
+  }, [])
   
   // Função para atualizar largura do papel (agora salva no banco)
-  const updatePaperWidth = async (width: number) => {;
-    setPaperWidth(width);
+  const updatePaperWidth = async (width: number) => {
+    setPaperWidth(width)
     
     try {
       // Buscar company_id atual
-      const currentCompanyStr = localStorage.getItem('currentCompany');
+      const currentCompanyStr = localStorage.getItem('currentCompany')
       if (!currentCompanyStr) return;
       
-      const currentCompany = JSON.parse(currentCompanyStr);
+      const currentCompany = JSON.parse(currentCompanyStr)
       const companyId = currentCompany.id;
       
       // Verificar se já existe configuração
-      const { data: existingConfig }  catch (error) { console.error('Error:', error); }= 
+      const { data: existingConfig }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -119,76 +119,76 @@ export const useDominioPrinter = () => {;
             largura_papel: width,
             is_active: true,
             is_default: true
-          });
+          })
 
       
-      console.log('📏 Largura salva no banco:', width);
+      console.log('📏 Largura salva no banco:', width)
     } catch (error) {
-      console.error('Erro ao salvar configuração:', error);
+      console.error('Erro ao salvar configuração:', error)
 
   };
 
   // Verificar status da API (v2.0.1 usa /api/status)
-  const checkStatus = async (): Promise<boolean> => {;
-    console.log('🔍 [useDominioPrinter] Verificando em:', baseUrl + '/status');
+  const checkStatus = async (): Promise<boolean> => {
+    console.log('🔍 [useDominioPrinter] Verificando em:', baseUrl + '/status')
     try {
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/status`, {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/status`, {
         method: 'GET',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      })
       
-      console.log('📡 Response status:', response.status);
+      console.log('📡 Response status:', response.status)
       
       if (!response.ok) {
-        console.log('❌ Response não ok:', response.statusText);
-        setIsConnected(false);
+        console.log('❌ Response não ok:', response.statusText)
+        setIsConnected(false)
         return false;
 
       
-      const result = await response.json();
-      console.log('📊 Resultado da API:', result);
+      const result = await response.json()
+      console.log('📊 Resultado da API:', result)
       
       // API v2.0.1 retorna {status: 'online'} em vez de {success: true}
       if (result.status === 'online' || result.success) {
-        console.log('✅ Dominio Printer conectado com sucesso');
-        setIsConnected(true);
+        console.log('✅ Dominio Printer conectado com sucesso')
+        setIsConnected(true)
         return true;
 
       
-      console.log('❌ API retornou status diferente de online:', result.status);
-      setIsConnected(false);
+      console.log('❌ API retornou status diferente de online:', result.status)
+      setIsConnected(false)
       return false;
     } catch (error) {
-      console.error('💥 Erro ao conectar com Dominio Printer:', error);
-      setIsConnected(false);
+      console.error('💥 Erro ao conectar com Dominio Printer:', error)
+      setIsConnected(false)
       return false;
 
   };
 
   // Listar impressoras disponíveis (v2.0.1 usa /api/printers)
-  const getPrinters = async (): Promise<string[]> => {;
-    console.log('🖨️ Buscando impressoras disponíveis...');
+  const getPrinters = async (): Promise<string[]> => {
+    console.log('🖨️ Buscando impressoras disponíveis...')
     try {
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/printers`, {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/printers`, {
         method: 'GET',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      })
       
-      console.log('📡 Response status para printers:', response.status);
+      console.log('📡 Response status para printers:', response.status)
       
       if (!response.ok) {
-        console.error('❌ Erro na resposta de impressoras:', response.statusText);
+        console.error('❌ Erro na resposta de impressoras:', response.statusText)
         return [];
 
       
-      const result = await response.json();
-      console.log('🔍 Resultado das impressoras:', result);
+      const result = await response.json()
+      console.log('🔍 Resultado das impressoras:', result)
       
       // Verificar diferentes estruturas de resposta da API v2.0.1
       let printersArray = [];
@@ -203,31 +203,31 @@ export const useDominioPrinter = () => {;
       
       // GARANTIR que são sempre strings, não objetos
       const printerNames = printersArray.map(printer => {
-        if (typeof printer === 'string') {;
+        if (typeof printer === 'string') {
           return printer;
         } else if (typeof printer === 'object' && printer.name) {
           return printer.name;
         } else {
-          console.warn('🚨 Printer inválido:', printer);
-          return String(printer);
+          console.warn('🚨 Printer inválido:', printer)
+          return String(printer)
         }
-      });
+      })
       
-      console.log(`✅ ${printerNames.length} impressoras encontradas:`, printerNames);
-      setPrinters(printerNames);
+      console.log(`✅ ${printerNames.length} impressoras encontradas:`, printerNames)
+      setPrinters(printerNames)
       return printerNames;
     } catch (error) {
-      console.error('💥 Erro ao obter impressoras:', error);
+      console.error('💥 Erro ao obter impressoras:', error)
       return [];
 
   };
 
   // Verificar status de uma impressora específica (v2.0.1 usa /api/)
   const getPrinterStatus = async (printerName: string): Promise<DominioPrinter | null> => {
-    try {;
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/printer/status?name=${encodeURIComponent(printerName)}`);
+    try {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/printer/status?name=${encodeURIComponent(printerName)}`)
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (result.success) {
         return {
@@ -238,13 +238,13 @@ export const useDominioPrinter = () => {;
 
       return null;
     } catch (error) {
-      console.error('Erro ao verificar status da impressora:', error);
+      console.error('Erro ao verificar status da impressora:', error)
       return null;
 
   };
 
   // Função para gerar comandos ESC/POS formatados
-  const generateESCPOSCommands = (content: string): string => {;
+  const generateESCPOSCommands = (content: string): string => {
     let commands = '';
     
     // Inicializar impressora
@@ -277,14 +277,14 @@ export const useDominioPrinter = () => {;
 
   // Teste de impressão (v2.0.1 - usando endpoint /print)
   const testPrint = async (printerName: string, text?: string): Promise<boolean> => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Texto padrão se não fornecido
-      const defaultText = `Impressora: ${printerName} catch (error) { console.error('Error:', error); }\nData/Hora: ${new Date().toLocaleString('pt-BR')}\nStatus: ✅ FUNCIONANDO!\n\nEste é um teste de impressão\ndo sistema Dominio Printer\npara verificar se a impressora\nestá respondendo corretamente.`;
+      const defaultText = `Impressora: ${printerName} catch (error) { console.error('Error:', error) }\nData/Hora: ${new Date().toLocaleString('pt-BR')}\nStatus: ✅ FUNCIONANDO!\n\nEste é um teste de impressão\ndo sistema Dominio Printer\npara verificar se a impressora\nestá respondendo corretamente.`;
       
       // Gerar comandos ESC/POS formatados
-      const formattedText = generateESCPOSCommands(text || defaultText);
+      const formattedText = generateESCPOSCommands(text || defaultText)
       
       // Estrutura correta para o endpoint /api/printer/test com rawMode v2.2.1
       const printData = {
@@ -293,44 +293,44 @@ export const useDominioPrinter = () => {;
         rawMode: true  // v2.2.1 - Impressão sem alterações, controle total pelo app;
       };
       
-      console.log('🧪 Enviando teste para:', baseUrl + '/test-print/caixa');
-      console.log('📋 Dados do teste:', printData);
+      console.log('🧪 Enviando teste para:', baseUrl + '/test-print/caixa')
+      console.log('📋 Dados do teste:', printData)
       
       const response = await fetch(`${baseUrl}/test-print/caixa`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(printData);
-      });
+        body: JSON.stringify(printData)
+      })
       
-      console.log('📨 Response status:', response.status);
-      const result = await response.json();
-      console.log('📨 Response data:', result);
+      console.log('📨 Response status:', response.status)
+      const result = await response.json()
+      console.log('📨 Response data:', result)
       
       if (result.success) {
-        toast.success('Teste de impressão enviado!');
+        toast.success('Teste de impressão enviado!')
         return true;
       } else {
-        toast.error(`Erro no teste: ${result.error || 'Falha na comunicação'}`);
+        toast.error(`Erro no teste: ${result.error || 'Falha na comunicação'}`)
         return false;
 
     } catch (error) {
-      console.error('💥 Erro no teste:', error);
-      toast.error('Erro ao conectar com Dominio Printer');
+      console.error('💥 Erro no teste:', error)
+      toast.error('Erro ao conectar com Dominio Printer')
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 
   // Impressão de texto simples
   const printText = async (printerName: string, text: string, options: PrintOptions = {}): Promise<boolean> => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Estrutura conforme documentação: /api/printer/print
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/printer/print`, {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/printer/print`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -344,27 +344,27 @@ export const useDominioPrinter = () => {;
             cut: options.cut ?? true
           }
         })
-      });
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (result.success) {
-        toast.success('Impressão realizada com sucesso!');
+        toast.success('Impressão realizada com sucesso!')
         return true;
       } else {
-        toast.error(`Erro na impressão: ${result.error}`);
+        toast.error(`Erro na impressão: ${result.error}`)
         return false;
 
     } catch (error) {
-      toast.error('Erro ao conectar com Dominio Printer');
+      toast.error('Erro ao conectar com Dominio Printer')
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 
   // Função para gerar ESC/POS de recibo
-  const generateReceiptESCPOS = (receiptData: any): string => {;
+  const generateReceiptESCPOS = (receiptData: any): string => {
     let commands = '';
     
     // Reset e configuração inicial
@@ -411,7 +411,7 @@ export const useDominioPrinter = () => {;
         const spaces = paperWidth - precoStr.length;
         commands += ' '.repeat(Math.max(0, spaces)) + precoStr + '\n';
         commands += '\n';
-      });
+      })
 
     
     // Total
@@ -438,13 +438,13 @@ export const useDominioPrinter = () => {;
 
   // Impressão de recibo (v2.0.1 usa endpoint /test)
   const printReceipt = async (printerName: string, receipt: Receipt): Promise<boolean> => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Gerar recibo formatado com ESC/POS
-      const formattedReceipt = generateReceiptESCPOS(receipt);
+      const formattedReceipt = generateReceiptESCPOS(receipt)
       
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/printer/test`, {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/printer/test`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -454,27 +454,27 @@ export const useDominioPrinter = () => {;
           text: formattedReceipt,
           rawMode: true  // v2.2.1 - Impressão sem alterações
         })
-      });
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (result.success) {
-        toast.success('Cupom impresso com sucesso!');
+        toast.success('Cupom impresso com sucesso!')
         return true;
       } else {
-        toast.error(`Erro na impressão do cupom: ${result.error}`);
+        toast.error(`Erro na impressão do cupom: ${result.error}`)
         return false;
 
     } catch (error) {
-      toast.error('Erro ao conectar com Dominio Printer');
+      toast.error('Erro ao conectar com Dominio Printer')
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 
   // Função para gerar comanda da cozinha formatada com ESC/POS
-  const generateKitchenOrderESCPOS = (order: KitchenOrder): string => {;
+  const generateKitchenOrderESCPOS = (order: KitchenOrder): string => {
     let commands = '';
     
     // Inicializar impressora
@@ -517,7 +517,7 @@ export const useDominioPrinter = () => {;
 
       
       commands += '\n';
-    });
+    })
     
     // Observações gerais
     if (order.observations) {
@@ -541,14 +541,14 @@ export const useDominioPrinter = () => {;
 
   // Impressão para cozinha
   const printKitchenOrder = async (printerName: string, order: KitchenOrder): Promise<boolean> => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Gerar comanda formatada com ESC/POS
-      const formattedOrder = generateKitchenOrderESCPOS(order);
+      const formattedOrder = generateKitchenOrderESCPOS(order)
       
       // Estrutura conforme documentação: /api/printer/kitchen
-      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error); }/printer/kitchen`, {
+      const response = await fetch(`${baseUrl} catch (error) { console.error('Error:', error) }/printer/kitchen`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -558,22 +558,22 @@ export const useDominioPrinter = () => {;
           text: formattedOrder,
           rawMode: true  // v2.2.1 - Impressão sem alterações
         })
-      });
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (result.success) {
-        toast.success('Comanda enviada para cozinha!');
+        toast.success('Comanda enviada para cozinha!')
         return true;
       } else {
-        toast.error(`Erro na impressão da comanda: ${result.error}`);
+        toast.error(`Erro na impressão da comanda: ${result.error}`)
         return false;
 
     } catch (error) {
-      toast.error('Erro ao conectar com Dominio Printer');
+      toast.error('Erro ao conectar com Dominio Printer')
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 

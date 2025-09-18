@@ -101,7 +101,7 @@ export const SEOStructuredData: React.FC<SEOStructuredDataProps> = ({ type = 'ho
         __html: JSON.stringify(getStructuredData(), null, 2)
       }}
     />
-  );
+  )
 };
 
 export default SEOStructuredData;

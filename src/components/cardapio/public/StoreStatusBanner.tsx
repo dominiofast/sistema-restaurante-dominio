@@ -32,7 +32,7 @@ export const StoreStatusBanner: React.FC<StoreStatusBannerProps> = ({
         <Clock size={16} style={{ color: primaryColor }} />
         <span className="text-sm font-medium">{status.message}</span>
       </div>
-    );
+    )
   }
 
   return (
@@ -43,5 +43,5 @@ export const StoreStatusBanner: React.FC<StoreStatusBannerProps> = ({
       <AlertCircle size={16} className="text-red-500" />
       <span className="text-sm font-medium">🔒 {status.message}</span>
     </div>
-  );
+  )
 };

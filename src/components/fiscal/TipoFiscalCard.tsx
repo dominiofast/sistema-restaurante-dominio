@@ -106,4 +106,4 @@ export function TipoFiscalCard({ tipo, onConfigure, onEdit, onDelete }: TipoFisc
         </div>
       </CardContent>
     </Card>
-  );
+  )

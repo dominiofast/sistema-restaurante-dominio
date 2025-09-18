@@ -25,9 +25,9 @@ interface AddCashbackModalProps {
 }
 
 const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange, selectedCliente }) => {
-  const { currentCompany } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const { currentCompany } = useAuth()
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
   
   const [formData, setFormData] = useState({
     customer_name: '',
@@ -35,11 +35,11 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
     tipo: 'credito' as 'credito' | 'debito',
     valor: '',
     descricao: ''
-  });
+  })
   
-  const [loading, setLoading] = useState(false);
-  const [searchingCustomer, setSearchingCustomer] = useState(false);
-  const [currentBalance, setCurrentBalance] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false)
+  const [searchingCustomer, setSearchingCustomer] = useState(false)
+  const [currentBalance, setCurrentBalance] = useState<number | null>(null)
 
   // Pre-preencher com cliente selecionado
   useEffect(() => {
@@ -48,23 +48,23 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         ...prev,
         customer_name: selectedCliente.nome,
         customer_phone: selectedCliente.telefone || ''
-      }));
+      }))
       // Buscar saldo atual se o telefone estiver preenchido
       if (selectedCliente.telefone) {
-        searchCustomerByPhone(selectedCliente.telefone);
+        searchCustomerByPhone(selectedCliente.telefone)
       }
     }
-  }, [selectedCliente, open]);
+  }, [selectedCliente, open])
 
-  const handleSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     
     if (!currentCompany?.id) {
       toast({
         title: "Erro",
         description: "Empresa não encontrada",
         variant: "destructive"
-      });
+      })
       return;
     }
 
@@ -73,25 +73,25 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         title: "Erro",
         description: "Preencha todos os campos obrigatórios",
         variant: "destructive"
-      });
+      })
       return;
     }
 
-    const valor = parseFloat(formData.valor);
+    const valor = parseFloat(formData.valor)
     if (isNaN(valor) || valor <= 0) {
       toast({
         title: "Erro",
         description: "Valor deve ser um número positivo",
         variant: "destructive"
-      });
+      })
       return;
     }
 
-    setLoading(true);
+    setLoading(true)
     
     try {
       // Verificar se cliente já existe
-      const { data: existingCustomer }  catch (error) { console.error('Error:', error); }= 
+      const { data: existingCustomer }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -107,7 +107,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
           newSaldoDisponivel = existingCustomer.saldo_disponivel + valor;
           newSaldoTotal = existingCustomer.saldo_total_acumulado + valor;
         } else {
-          newSaldoDisponivel = Math.max(0, existingCustomer.saldo_disponivel - valor);
+          newSaldoDisponivel = Math.max(0, existingCustomer.saldo_disponivel - valor)
           newSaldoTotal = existingCustomer.saldo_total_acumulado; // Total acumulado não diminui com débito
         }
 
@@ -128,8 +128,8 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
             title: "Erro",
             description: "Não é possível debitar de um cliente que não possui cashback",
             variant: "destructive"
-          });
-          setLoading(false);
+          })
+          setLoading(false)
           return;
         }
 
@@ -142,7 +142,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
             customer_name: formData.customer_name || null,
             saldo_disponivel: newSaldoDisponivel,
             saldo_total_acumulado: newSaldoTotal
-          });
+          })
 
         if (insertError) throw insertError;
       }
@@ -155,18 +155,18 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
           tipo: formData.tipo,
           valor: valor,
           descricao: formData.descricao || `${formData.tipo === 'credito' ? 'Crédito' : 'Débito'} manual`
-        });
+        })
 
       if (transactionError) throw transactionError;
 
       toast({
         title: "Sucesso",
         description: `Cashback ${formData.tipo === 'credito' ? 'creditado' : 'debitado'} com sucesso!`
-      });
+      })
 
       // Atualizar cache
-      queryClient.invalidateQueries({ queryKey: ["customer-cashback"] });
-      queryClient.invalidateQueries({ queryKey: ["cashback-transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["customer-cashback"] })
+      queryClient.invalidateQueries({ queryKey: ["cashback-transactions"] })
 
       // Resetar formulário e fechar modal
       setFormData({
@@ -175,43 +175,43 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         tipo: 'credito',
         valor: '',
         descricao: ''
-      });
-      onOpenChange(false);
+      })
+      onOpenChange(false)
 
     } catch (error) {
-      console.error('Erro ao processar cashback:', error);
+      console.error('Erro ao processar cashback:', error)
       toast({
         title: "Erro",
         description: "Erro ao processar cashback. Tente novamente.",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const formatCurrency = (value: string) => {;
-    const numericValue = value.replace(/\D/g, '');
+  const formatCurrency = (value: string) => {
+    const numericValue = value.replace(/\D/g, '')
     const formatted = (parseFloat(numericValue) / 100).toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2;
-    });
+    })
     return formatted;
   };
 
-  const handleValueChange = (value: string) => {;
-    const numericValue = value.replace(/\D/g, '');
-    const formattedValue = (parseFloat(numericValue || '0') / 100).toFixed(2);
-    setFormData(prev => ({ ...prev, valor: formattedValue }));
+  const handleValueChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '')
+    const formattedValue = (parseFloat(numericValue || '0') / 100).toFixed(2)
+    setFormData(prev => ({ ...prev, valor: formattedValue }))
   };
 
-  const searchCustomerByPhone = async (phone: string) => {;
+  const searchCustomerByPhone = async (phone: string) => {
     if (!phone || !currentCompany?.id) return;
 
-    setSearchingCustomer(true);
+    setSearchingCustomer(true)
     try {
       // Primeiro buscar na tabela de cashback
-      const { data: cashbackCustomer }  catch (error) { console.error('Error:', error); }= 
+      const { data: cashbackCustomer }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -222,8 +222,8 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         setFormData(prev => ({ 
           ...prev, 
           customer_name: cashbackCustomer.customer_name || ''
-        }));
-        setCurrentBalance(cashbackCustomer.saldo_disponivel || 0);
+        }))
+        setCurrentBalance(cashbackCustomer.saldo_disponivel || 0)
         return;
       }
 
@@ -233,17 +233,17 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         setFormData(prev => ({ 
           ...prev, 
           customer_name: cliente.nome || ''
-        }));
+        }))
         // Não tem cashback ainda, saldo é 0
-        setCurrentBalance(0);
+        setCurrentBalance(0)
       } else {
         // Cliente não encontrado, resetar saldo
-        setCurrentBalance(null);
+        setCurrentBalance(null)
       }
     } catch (error) {
-      console.error('Erro ao buscar cliente:', error);
+      console.error('Erro ao buscar cliente:', error)
     } finally {
-      setSearchingCustomer(false);
+      setSearchingCustomer(false)
     }
   };
 
@@ -356,7 +356,7 @@ const AddCashbackModal: React.FC<AddCashbackModalProps> = ({ open, onOpenChange,
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default AddCashbackModal;

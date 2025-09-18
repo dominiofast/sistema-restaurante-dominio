@@ -27,14 +27,14 @@ export class CardapioService {
    */
   static async getCardapioForAI(companyId: string): Promise<CardapioData | null> {
     try {
-      console.log('🍽️ Buscando cardápio para IA - Company:', companyId);
+      console.log('🍽️ Buscando cardápio para IA - Company:', companyId)
 
       // Buscar categorias ativas
       const categorias = null as any; const categoriasError = null as any;
         return null;
       }
 
-       catch (error) { console.error('Error:', error); }// Buscar produtos disponíveis
+       catch (error) { console.error('Error:', error) }// Buscar produtos disponíveis
       const produtos = null as any; const produtosError = null as any;
         return null;
       }
@@ -64,11 +64,11 @@ export class CardapioService {
       console.log('✅ Cardápio carregado para IA:', {
         categorias: cardapioData.categorias.length,
         totalProdutos: cardapioData.categorias.reduce((acc, cat) => acc + cat.produtos.length, 0)
-      });
+      })
 
       return cardapioData;
     } catch (error) {
-      console.error('❌ Erro ao buscar cardápio para IA:', error);
+      console.error('❌ Erro ao buscar cardápio para IA:', error)
       return null;
 
 
@@ -114,8 +114,8 @@ export class CardapioService {
         }
         
         cardapioText += '\n\n';
-      });
-    });
+      })
+    })
 
     return cardapioText;
 
@@ -125,12 +125,12 @@ export class CardapioService {
    */
   static async getCardapioJsonForAI(companyId: string): Promise<any | null> {
     try {
-      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId);
+      const cardapioJson = await CardapioJsonService.generateCardapioJson(companyId)
       if (!cardapioJson) return null;
 
-      return CardapioJsonService.formatJsonToText(cardapioJson);
+      return CardapioJsonService.formatJsonToText(cardapioJson)
     } catch (error) {
-      console.error('❌ Erro ao gerar JSON estruturado:', error);
+      console.error('❌ Erro ao gerar JSON estruturado:', error)
       return null;
 
 

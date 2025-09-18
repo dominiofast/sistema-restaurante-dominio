@@ -22,52 +22,52 @@ export interface NFCeLog {
 
 
 export function useNFCeLogs(companyId: string | undefined) {
-  const [nfceLogs, setNfceLogs] = useState<Record<number, NFCeLog>>({});
-  const [loading, setLoading] = useState(false);
+  const [nfceLogs, setNfceLogs] = useState<Record<number, NFCeLog>>({})
+  const [loading, setLoading] = useState(false)
 
   // Buscar logs existentes para a empresa
-  const fetchNFCeLogs = async () => {;
+  const fetchNFCeLogs = async () => {
     if (!companyId) return;
 
-    console.log('🔍 Buscando logs NFCe para company:', companyId);
-    setLoading(true);
+    console.log('🔍 Buscando logs NFCe para company:', companyId)
+    setLoading(true)
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
 
       if (error) {
-        console.error('❌ Erro ao buscar logs NFCe:', error);
+        console.error('❌ Erro ao buscar logs NFCe:', error)
         return;
       }
 
-      console.log('📊 Logs NFCe encontrados:', data?.length || 0);
+      console.log('📊 Logs NFCe encontrados:', data?.length || 0)
 
       // Organizar logs por pedido_id
       const logsMap = data.reduce((acc, log) => {
-        if (log.pedido_id) {;
+        if (log.pedido_id) {
           acc[log.pedido_id] = log;
         }
         return acc;
-      }, {} as Record<number, NFCeLog>);
+      }, {} as Record<number, NFCeLog>)
 
-      setNfceLogs(logsMap);
+      setNfceLogs(logsMap)
     } catch (error) {
-      console.error('❌ Erro ao buscar logs NFCe:', error);
+      console.error('❌ Erro ao buscar logs NFCe:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   // Verificar se um pedido já tem NFCe gerada
-  const hasNFCe = (pedidoId: number): boolean => {;
+  const hasNFCe = (pedidoId: number): boolean => {
     return !!nfceLogs[pedidoId];
   };
 
   // Obter dados da NFCe de um pedido
-  const getNFCeData = (pedidoId: number): NFCeLog | null => {;
+  const getNFCeData = (pedidoId: number): NFCeLog | null => {
     return nfceLogs[pedidoId] || null;
   };
 
@@ -77,13 +77,13 @@ export function useNFCeLogs(companyId: string | undefined) {
     nfceData: any,
     responseData: any
   ): Promise<boolean> => {
-    if (!companyId) {;
-      console.error('❌ Company ID não encontrado para salvar log NFCe');
+    if (!companyId) {
+      console.error('❌ Company ID não encontrado para salvar log NFCe')
       return false;
 
 
-    console.log('💾 Iniciando salvamento do log NFCe:', { pedidoId, companyId });
-    console.log('📊 Dados NFCe para salvar:', nfceData);
+    console.log('💾 Iniciando salvamento do log NFCe:', { pedidoId, companyId })
+    console.log('📊 Dados NFCe para salvar:', nfceData)
 
     try {
       const logData = {
@@ -98,9 +98,9 @@ export function useNFCeLogs(companyId: string | undefined) {
         protocolo_autorizacao: nfceData.protocolo_autorizacao,
         data_autorizacao: nfceData.data_autorizacao,
         response_data: responseData;
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
-      console.log('📋 Dados preparados para insert:', logData);
+      console.log('📋 Dados preparados para insert:', logData)
 
       const { data, error  } = null as any;
       if (error) {
@@ -110,17 +110,17 @@ export function useNFCeLogs(companyId: string | undefined) {
           details: error.details,
           hint: error.hint,
           code: error.code
-        });
+        })
         return false;
       }
 
-      console.log('✅ Log NFCe salvo com sucesso:', data);
+      console.log('✅ Log NFCe salvo com sucesso:', data)
 
       // Atualizar estado local
       setNfceLogs(prev => ({
         ...prev,
         [pedidoId]: data
-      }));
+      }))
 
       return true;
     } catch (error: any) {
@@ -128,15 +128,15 @@ export function useNFCeLogs(companyId: string | undefined) {
         error,
         message: error.message,
         stack: error.stack
-      });
+      })
       return false;
 
   };
 
   // Carregar logs ao inicializar
   useEffect(() => {
-    fetchNFCeLogs();
-  }, [companyId]);
+    fetchNFCeLogs()
+  }, [companyId])
 
   return {
     nfceLogs,

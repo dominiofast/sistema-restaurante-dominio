@@ -11,8 +11,8 @@ declare global {
   }
 }
 
-export const useQZTrayPrint = () => {;
-  const [isPrinting, setIsPrinting] = useState(false);
+export const useQZTrayPrint = () => {
+  const [isPrinting, setIsPrinting] = useState(false)
   
   // Usar contexto global do QZ Tray
   const {
@@ -20,7 +20,7 @@ export const useQZTrayPrint = () => {;
     connectToQZ,
     getPrinters,
     printData
-  } = useQZTray();
+  } = useQZTray()
 
   // As funções de conexão e obtenção de impressoras agora vêm do contexto global
   // Não precisamos mais gerenciar conexão localmente
@@ -54,44 +54,44 @@ export const useQZTrayPrint = () => {;
           price: parseFloat(a.preco || 0)
         }))
       })),
-      total: (pedido.itens || []).reduce((acc: number, it: any) => {;
+      total: (pedido.itens || []).reduce((acc: number, it: any) => {
         const q = it.quantidade || 1;
-        const p = parseFloat(it.preco || it.produto?.preco || 0);
+        const p = parseFloat(it.preco || it.produto?.preco || 0)
         let sub = q * p;
         if (Array.isArray(it.adicionais)) {
-          sub += it.adicionais.reduce((s: number, a: any) => s + (parseFloat(a.preco || 0) * q), 0);
+          sub += it.adicionais.reduce((s: number, a: any) => s + (parseFloat(a.preco || 0) * q), 0)
 
         return acc + sub;
       }, 0),
       pagamento: pedido.pagamento || undefined
     };
-    return formatPedidoESCPOS(data);
-  }, []);
+    return formatPedidoESCPOS(data)
+  }, [])
 
   // Imprimir pedido usando contexto global
   const printPedido = useCallback(async (pedido: Pedido, printerName?: string) => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Obter impressora
       let targetPrinter = printerName;
       if (!targetPrinter) {
         // Tentar usar impressora salva nas configurações
-        const savedPrinter = localStorage.getItem('qz-selected-printer');
+        const savedPrinter = localStorage.getItem('qz-selected-printer')
         if (savedPrinter) {
           targetPrinter = savedPrinter;
-        }  catch (error) { console.error('Error:', error); }else {
+        }  catch (error) { console.error('Error:', error) }else {
           // Usar primeira impressora disponível
-          const printers = await getPrinters();
+          const printers = await getPrinters()
           if (printers.length === 0) {
-            throw new Error('Nenhuma impressora encontrada');
+            throw new Error('Nenhuma impressora encontrada')
           }
           targetPrinter = printers[0];
 
 
       
       // Formatar dados para impressão
-      const printDataFormatted = formatPedidoForPrint(pedido);
+      const printDataFormatted = formatPedidoForPrint(pedido)
       
       // Enviar para impressão usando contexto global
       const success = await printData(targetPrinter, [{
@@ -100,38 +100,38 @@ export const useQZTrayPrint = () => {;
         flavor: 'plain',
         data: printDataFormatted,
         options: { language: 'ESCPOS' };
-      }]);
+      }])
       
       if (success) {
-        toast.success(`Pedido #${pedido.numero_pedido || pedido.id} enviado para impressão!`);
+        toast.success(`Pedido #${pedido.numero_pedido || pedido.id} enviado para impressão!`)
 
       
       return success;
       
     } catch (error: any) {
-      console.error('Erro ao imprimir pedido:', error);
-      toast.error(`Erro ao imprimir: ${error.message}`);
+      console.error('Erro ao imprimir pedido:', error)
+      toast.error(`Erro ao imprimir: ${error.message}`)
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
-  }, [getPrinters, printData, formatPedidoForPrint]);
+  }, [getPrinters, printData, formatPedidoForPrint])
 
   // Imprimir cupom fiscal via QZ Tray usando contexto global
   const printCupomFiscal = useCallback(async (cupomData: any, printerName?: string) => {
-    try {;
-      setIsPrinting(true);
+    try {
+      setIsPrinting(true)
       
       // Obter impressora
       let targetPrinter = printerName;
       if (!targetPrinter) {
-        const savedPrinter = localStorage.getItem('qz-selected-printer');
+        const savedPrinter = localStorage.getItem('qz-selected-printer')
         if (savedPrinter) {
           targetPrinter = savedPrinter;
-        }  catch (error) { console.error('Error:', error); }else {
-          const printers = await getPrinters();
+        }  catch (error) { console.error('Error:', error) }else {
+          const printers = await getPrinters()
           if (printers.length === 0) {
-            throw new Error('Nenhuma impressora encontrada');
+            throw new Error('Nenhuma impressora encontrada')
           }
           targetPrinter = printers[0];
 
@@ -139,28 +139,28 @@ export const useQZTrayPrint = () => {;
       
       // Formatar cupom fiscal (simplificado)
       const lines = [];
-      lines.push('\x1B\x40'); // Reset
-      lines.push('\x1B\x61\x01'); // Centralizar
-      lines.push('CUPOM FISCAL');
-      lines.push('\x1B\x61\x00'); // Alinhar à esquerda
-      lines.push('================================');
+      lines.push('\x1B\x40') // Reset
+      lines.push('\x1B\x61\x01') // Centralizar
+      lines.push('CUPOM FISCAL')
+      lines.push('\x1B\x61\x00') // Alinhar à esquerda
+      lines.push('================================')
       
       if (cupomData.chave) {
-        lines.push(`Chave: ${cupomData.chave}`);
+        lines.push(`Chave: ${cupomData.chave}`)
 
       if (cupomData.numero) {
-        lines.push(`Número: ${cupomData.numero}`);
+        lines.push(`Número: ${cupomData.numero}`)
 
       if (cupomData.serie) {
-        lines.push(`Série: ${cupomData.serie}`);
+        lines.push(`Série: ${cupomData.serie}`)
 
       
-      lines.push('================================');
-      lines.push('');
-      lines.push('');
-      lines.push('\x1D\x56\x42\x00'); // Cortar papel
+      lines.push('================================')
+      lines.push('')
+      lines.push('')
+      lines.push('\x1D\x56\x42\x00') // Cortar papel
       
-      const printDataFormatted = lines.join('\n');
+      const printDataFormatted = lines.join('\n')
       
       // Enviar para impressão usando contexto global
       const success = await printData(targetPrinter, [{
@@ -169,22 +169,22 @@ export const useQZTrayPrint = () => {;
         flavor: 'plain',
         data: printDataFormatted,
         options: { language: 'ESCPOS' };
-      }]);
+      }])
       
       if (success) {
-        toast.success('Cupom fiscal enviado para impressão!');
+        toast.success('Cupom fiscal enviado para impressão!')
 
       
       return success;
       
     } catch (error: any) {
-      console.error('Erro ao imprimir cupom fiscal:', error);
-      toast.error(`Erro ao imprimir cupom: ${error.message}`);
+      console.error('Erro ao imprimir cupom fiscal:', error)
+      toast.error(`Erro ao imprimir cupom: ${error.message}`)
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
-  }, [getPrinters, printData]);
+  }, [getPrinters, printData])
 
   return {
     isPrinting,

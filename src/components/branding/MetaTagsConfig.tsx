@@ -11,25 +11,25 @@ import { useAuth } from '@/contexts/AuthContext';
 import { DynamicMetaTagsService } from '@/services/dynamicMetaTagsService';
 
 const MetaTagsConfig: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const { toast } = useToast();
+  const { currentCompany } = useAuth()
+  const { toast } = useToast()
   
-  const [metaTitle, setMetaTitle] = useState('');
-  const [metaDescription, setMetaDescription] = useState('');
-  const [metaImage, setMetaImage] = useState('');
-  const [companySlug, setCompanySlug] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [metaTitle, setMetaTitle] = useState('')
+  const [metaDescription, setMetaDescription] = useState('')
+  const [metaImage, setMetaImage] = useState('')
+  const [companySlug, setCompanySlug] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     if (currentCompany) {
       // Valores padrão baseados na empresa atual
-      setMetaTitle(`${currentCompany.name}`);
-      setMetaDescription(`Faça seu pedido online na ${currentCompany.name}. Delivery rápido e seguro!`);
-      setMetaImage(currentCompany.logo || '');
-      setCompanySlug(generateSlugFromName(currentCompany.name));
+      setMetaTitle(`${currentCompany.name}`)
+      setMetaDescription(`Faça seu pedido online na ${currentCompany.name}. Delivery rápido e seguro!`)
+      setMetaImage(currentCompany.logo || '')
+      setCompanySlug(generateSlugFromName(currentCompany.name))
     }
-  }, [currentCompany]);
+  }, [currentCompany])
 
   const generateSlugFromName = (name: string): string => {
     return name
@@ -39,25 +39,25 @@ const MetaTagsConfig: React.FC = () => {
       .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
       .replace(/\s+/g, '-') // Substitui espaços por hífens
       .replace(/-+/g, '-') // Remove hífens duplos
-      .trim();
-      .replace(/^-+|-+$/g, ''); // Remove hífens do início e fim
+      .trim()
+      .replace(/^-+|-+$/g, '') // Remove hífens do início e fim
   };
 
-  const getCurrentUrl = () => {;
+  const getCurrentUrl = () => {
     return `https://pedido.dominio.tech/${companySlug}`;
   };
 
-  const copyToClipboard = (text: string) => {;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
     toast({
       title: 'Link copiado!',
       description: 'URL foi copiada para a área de transferência',
-    });
-    setTimeout(() => setCopied(false), 2000);
+    })
+    setTimeout(() => setCopied(false), 2000)
   };
 
-  const handlePreview = () => {;
+  const handlePreview = () => {
     if (!currentCompany) return;
     
     const metaTags = {
@@ -72,39 +72,39 @@ const MetaTagsConfig: React.FC = () => {
       ...metaTags,
       type: 'website',
       url: getCurrentUrl()
-    });
+    })
 
     toast({
       title: 'Preview aplicado!',
       description: 'Veja o console do navegador para conferir as meta tags',
-    });
+    })
 
-    console.log('Preview das Meta Tags:', metaTags);
+    console.log('Preview das Meta Tags:', metaTags)
   };
 
-  const handleSave = async () => {;
+  const handleSave = async () => {
     if (!currentCompany) return;
     
-    setLoading(true);
+    setLoading(true)
     
     try {
       // Aqui você implementaria a lógica para salvar as configurações
       // Por enquanto, apenas simula o salvamento
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000))
       
       toast({
         title: 'Configurações salvas!',
         description: 'Suas meta tags foram atualizadas com sucesso',
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
       
     } catch (error) {
       toast({
         title: 'Erro ao salvar',
         description: 'Ocorreu um erro ao salvar as configurações',
         variant: 'destructive',
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -117,7 +117,7 @@ const MetaTagsConfig: React.FC = () => {
           </p>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -292,7 +292,7 @@ const MetaTagsConfig: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default MetaTagsConfig; 

@@ -22,7 +22,7 @@ const VagasFooter: React.FC<VagasFooterProps> = ({ companyName, primaryColor = '
         />
       </div>
     </footer>
-  );
+  )
 };
 
 export default VagasFooter;

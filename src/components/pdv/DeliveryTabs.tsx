@@ -14,5 +14,5 @@ export const DeliveryTabs: React.FC = () => {
         [ C ] Consumir no local
       </button>
     </div>
-  );
+  )
 };

@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Pedido } from '@/types/pedidos';
 
-export const usePedidosRealtimeRobust = () => {;
-  const { currentCompany } = useAuth();
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const usePedidosRealtimeRobust = () => {
+  const { currentCompany } = useAuth()
+  const [pedidos, setPedidos] = useState<Pedido[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const companyId = currentCompany?.id;
 
@@ -25,47 +25,47 @@ export const usePedidosRealtimeRobust = () => {;
     console.log('🔍 usePedidosRealtimeRobust: useEffect triggered', { 
       companyId, 
       currentCompany: currentCompany?.name 
-    });
+    })
     
     if (!companyId) {
-      console.log('❌ usePedidosRealtimeRobust: No company ID, clearing pedidos');
-      setPedidos([]);
-      setLoading(false);
+      console.log('❌ usePedidosRealtimeRobust: No company ID, clearing pedidos')
+      setPedidos([])
+      setLoading(false)
       return;
     }
 
-    console.log('🔍 DEBUG: Company ID exists, proceeding with fetch', { companyId });
+    console.log('🔍 DEBUG: Company ID exists, proceeding with fetch', { companyId })
 
-    const fetchPedidos = async () => {;
-      console.log('🔄 usePedidosRealtimeRobust: Fetching pedidos for company:', companyId);
+    const fetchPedidos = async () => {
+      console.log('🔄 usePedidosRealtimeRobust: Fetching pedidos for company:', companyId)
       
       // Só mostra loading se não temos dados ainda ou se é a primeira vez carregando para esta empresa
       const shouldShowLoading = pedidos.length === 0;
       if (shouldShowLoading) {
-        setLoading(true);
+        setLoading(true)
       }
-      setError(null);
+      setError(null)
       
       try {
         // Usar nova API REST do PostgreSQL
-        const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error); }`);
-        const result = await response.json();
+        const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error) }`)
+        const result = await response.json()
         
         if (!result.success) {
-          throw new Error(result.error || 'Erro ao buscar pedidos');
+          throw new Error(result.error || 'Erro ao buscar pedidos')
         }
         
         const data = result.data || [];
-        console.log('✅ usePedidosRealtimeRobust: Pedidos fetched successfully:', data.length);
+        console.log('✅ usePedidosRealtimeRobust: Pedidos fetched successfully:', data.length)
         
         // Transformar os dados para garantir compatibilidade
-        const transformedPedidos = data.map((pedido: any) => {;
+        const transformedPedidos = data.map((pedido: any) => {
           const statusOriginal = pedido.status || 'analise';
-          const statusMapeado = mapPDVStatus(statusOriginal);
+          const statusMapeado = mapPDVStatus(statusOriginal)
           
           // Log de debug para verificar mapeamento
           if (statusOriginal !== statusMapeado) {
-            console.log('🔄 Status mapeado:', { id: pedido.id, original: statusOriginal, mapeado: statusMapeado });
+            console.log('🔄 Status mapeado:', { id: pedido.id, original: statusOriginal, mapeado: statusMapeado })
           }
           
           return {
@@ -88,40 +88,40 @@ export const usePedidosRealtimeRobust = () => {;
           };
         }) as Pedido[];
 
-        console.log('🔄 usePedidosRealtimeRobust: Transformed pedidos:', transformedPedidos.length);
-        setPedidos(transformedPedidos);
+        console.log('🔄 usePedidosRealtimeRobust: Transformed pedidos:', transformedPedidos.length)
+        setPedidos(transformedPedidos)
         
       } catch (err: any) {
-        console.error('💥 usePedidosRealtimeRobust: Catch error:', err);
-        setError(err.message || 'Erro ao carregar pedidos.');
-        setPedidos([]);
+        console.error('💥 usePedidosRealtimeRobust: Catch error:', err)
+        setError(err.message || 'Erro ao carregar pedidos.')
+        setPedidos([])
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     };
 
     // Busca inicial dos pedidos
-    fetchPedidos();
+    fetchPedidos()
 
     // Para agora, sem real-time (pode ser adicionado depois)
-    console.log('ℹ️ Real-time desabilitado, usando polling a cada 30s');
+    console.log('ℹ️ Real-time desabilitado, usando polling a cada 30s')
     
     // Polling a cada 30 segundos para updates
-    const interval = setInterval(() => {;
-      fetchPedidos();
-    }, 30000);
+    const interval = setInterval(() => {
+      fetchPedidos()
+    }, 30000)
 
     return () => {
-      console.log('🧹 usePedidosRealtimeRobust: Cleanup - clearing polling');
-      clearInterval(interval);
+      console.log('🧹 usePedidosRealtimeRobust: Cleanup - clearing polling')
+      clearInterval(interval)
     };
-  }, [companyId]);
+  }, [companyId])
 
-  const updatePedidoStatus = useCallback(async (pedidoId: number, newStatus: string) => {;
+  const updatePedidoStatus = useCallback(async (pedidoId: number, newStatus: string) => {
     if (!companyId) return;
     
     try {
-      console.log('🔄 usePedidosRealtimeRobust: Iniciando atualização de status:', { pedidoId, newStatus } catch (error) { console.error('Error:', error); });
+      console.log('🔄 usePedidosRealtimeRobust: Iniciando atualização de status:', { pedidoId, newStatus } catch (error) { console.error('Error:', error) })
       
       // Atualização otimista - atualiza o estado local imediatamente
       setPedidos(prev => prev.map(p => {
@@ -130,11 +130,11 @@ export const usePedidosRealtimeRobust = () => {;
             id: p.id, 
             statusAnterior: p.status, 
             novoStatus: newStatus 
-          });
+          })
           return { ...p, status: newStatus, updated_at: new Date().toISOString() };
         }
         return p;
-      }));
+      }))
       
       // Fazer a atualização no banco de dados via nova API
       const response = await fetch(`/api/pedidos/${pedidoId}/status`, {
@@ -142,61 +142,61 @@ export const usePedidosRealtimeRobust = () => {;
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status: newStatus });
-      });
+        body: JSON.stringify({ status: newStatus })
+      })
       
-      const result = await response.json();
+      const result = await response.json()
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro ao atualizar status');
+        throw new Error(result.error || 'Erro ao atualizar status')
       }
       
-      console.log('✅ usePedidosRealtimeRobust: Status atualizado no banco de dados:', result.data);
+      console.log('✅ usePedidosRealtimeRobust: Status atualizado no banco de dados:', result.data)
       
     } catch (error: any) {
-      console.error('❌ usePedidosRealtimeRobust: Erro ao atualizar status:', error);
+      console.error('❌ usePedidosRealtimeRobust: Erro ao atualizar status:', error)
       
       // Reverter a atualização otimista em caso de erro
       setPedidos(prev => prev.map(p => {
         if (p.id === pedidoId) {
           // Tentar encontrar o status anterior ou usar 'analise' como fallback
-          const originalPedido = prev.find(old => old.id === pedidoId);
+          const originalPedido = prev.find(old => old.id === pedidoId)
           const revertStatus = originalPedido ? originalPedido.status : 'analise';
           console.log('🔄 usePedidosRealtimeRobust: Revertendo status por erro:', { 
             id: p.id, 
             statusRevertido: revertStatus 
-          });
+          })
           return { ...p, status: revertStatus };
         }
         return p;
-      }));
+      }))
       
       throw error;
     }
-  }, [companyId]);
+  }, [companyId])
 
-  const reloadPedidos = useCallback(async () => {;
+  const reloadPedidos = useCallback(async () => {
     if (!companyId) return;
     
-    console.log('🔄 usePedidosRealtimeRobust: Reload manual solicitado');
-    setLoading(true);
-    setError(null);
+    console.log('🔄 usePedidosRealtimeRobust: Reload manual solicitado')
+    setLoading(true)
+    setError(null)
     
     try {
-      const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error); }`);
-      const result = await response.json();
+      const response = await fetch(`/api/pedidos?company_id=${companyId} catch (error) { console.error('Error:', error) }`)
+      const result = await response.json()
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro ao recarregar pedidos');
+        throw new Error(result.error || 'Erro ao recarregar pedidos')
       }
       
       const data = result.data || [];
-      console.log('✅ usePedidosRealtimeRobust: Pedidos recarregados:', data.length);
+      console.log('✅ usePedidosRealtimeRobust: Pedidos recarregados:', data.length)
       
       // Transformar os dados
-      const transformedPedidos = data.map((pedido: any) => {;
+      const transformedPedidos = data.map((pedido: any) => {
         const statusOriginal = pedido.status || 'analise';
-        const statusMapeado = mapPDVStatus(statusOriginal);
+        const statusMapeado = mapPDVStatus(statusOriginal)
         
         return {
           id: pedido.id,
@@ -225,22 +225,22 @@ export const usePedidosRealtimeRobust = () => {;
                 nome: adicional.nome_adicional,
                 quantidade: adicional.quantidade,
                 valor: adicional.valor_unitario
-              });
+              })
               return acc;
             }, {})
           }))
         };
       }) as Pedido[];
 
-      setPedidos(transformedPedidos);
+      setPedidos(transformedPedidos)
       
     } catch (error: any) {
-      console.error('❌ usePedidosRealtimeRobust: Erro no reload:', error);
-      setError(error.message || 'Erro ao recarregar pedidos.');
+      console.error('❌ usePedidosRealtimeRobust: Erro no reload:', error)
+      setError(error.message || 'Erro ao recarregar pedidos.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [companyId]);
+  }, [companyId])
 
   return {
     pedidos,

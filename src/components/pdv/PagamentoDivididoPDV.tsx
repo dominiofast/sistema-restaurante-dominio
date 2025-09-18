@@ -8,5 +8,5 @@ export const PagamentoDivididoPDV: React.FC = () => {
         Pagamento dividido em desenvolvimento.
       </p>
     </div>
-  );
+  )
 };

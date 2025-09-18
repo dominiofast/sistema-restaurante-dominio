@@ -28,7 +28,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   textColor,
   customerPhone
 }) => {
-  const { slug } = useParams();
+  const { slug } = useParams()
   
   return (
     <header className="bg-white shadow-sm border-b">
@@ -77,5 +77,5 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         )}
       </div>
     </header>
-  );
+  )
 };

@@ -7,9 +7,9 @@ import { CompanyCard } from "@/components/companies/CompanyCard";
 import { CompanyTable } from "@/components/companies/CompanyTable";
 
 export default function Empresas() {
-  const { user, currentCompany } = useAuth();
-  const { companies, isLoading } = useCompanies();
-  const { data: companyDetails } = useCompanyDetails();
+  const { user, currentCompany } = useAuth()
+  const { companies, isLoading } = useCompanies()
+  const { data: companyDetails } = useCompanyDetails()
 
   // Só permite acesso para super_admin
   if (user?.role !== 'super_admin') {
@@ -20,7 +20,7 @@ export default function Empresas() {
           <p className="text-gray-600">Apenas super administradores podem acessar esta página.</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -78,5 +78,5 @@ export default function Empresas() {
         </div>
       </div>
     </div>
-  );
+  )
 

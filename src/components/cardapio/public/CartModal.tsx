@@ -56,15 +56,15 @@ export const CartModal: React.FC<CartModalProps> = ({
   onAdicionarAoCarrinho,
   primaryColor
 }) => {
-  const { currentCompany } = useAuth();
+  const { currentCompany } = useAuth()
   
   // Carrinho atualizado
   useEffect(() => {
     // Log de debug removido
-  }, [carrinho]);
+  }, [carrinho])
   
-  const limparCarrinho = () => {;
-    carrinho.forEach(item => onRemover(item.id));
+  const limparCarrinho = () => {
+    carrinho.forEach(item => onRemover(item.id))
   };
 
   // Buscar bebidas reais do cardápio
@@ -74,11 +74,11 @@ export const CartModal: React.FC<CartModalProps> = ({
       if (!currentCompany?.id) return [];
       
       const { data: categorias  } = null as any;
-        .ilike('name', '%bebida%');
+        .ilike('name', '%bebida%')
       
       if (!categorias?.length) return [];
       
-      const categoriaIds = categorias.map(cat => cat.id);
+      const categoriaIds = categorias.map(cat => cat.id)
       
       const { data, error  } = null as any;
         .in('categoria_id', categoriaIds)
@@ -88,7 +88,7 @@ export const CartModal: React.FC<CartModalProps> = ({
       return data || [];
     },
     enabled: !!currentCompany?.id
-  });
+  })
 
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col animate-slide-in-right">
@@ -138,8 +138,8 @@ export const CartModal: React.FC<CartModalProps> = ({
               
               {/* Itens do Carrinho */}
               {carrinho.map((item) => {
-                console.log('🛒 Item do carrinho:', item); // Debug
-                console.log('🛒 Observações do item:', item.observacoes); // Debug
+                console.log('🛒 Item do carrinho:', item) // Debug
+                console.log('🛒 Observações do item:', item.observacoes) // Debug
                 return (
                 <div key={item.id} className="bg-white rounded-lg border border-gray-100 mb-3">
                   {/* Layout principal do item */}
@@ -230,7 +230,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                               <div className="space-y-2">
                                 {/* Agrupar por categoria (prioriza categoryName do carrinho; fallback para prefixo no nome) */}
                                 {(() => {
-                                  const adicionaisList = Object.values(item.adicionais || {});
+                                  const adicionaisList = Object.values(item.adicionais || {})
                                   const groups: Record<string, { name: string; quantity: number; price: number }[]> = {};
                                   adicionaisList.forEach((a) => {
                                     const raw = a.name || '';
@@ -238,18 +238,18 @@ export const CartModal: React.FC<CartModalProps> = ({
                                     let category = catFromData;
                                     let name = raw;
                                     if (!category) {
-                                      const parts = raw.split(/\s*[-:]\s*/);
+                                      const parts = raw.split(/\s*[-:]\s*/)
                                       if (parts.length > 1) {
                                         category = parts[0];
-                                        name = parts.slice(1).join(' - ');
+                                        name = parts.slice(1).join(' - ')
                                       } else {
                                         category = 'Outros';
                                       }
                                     }
                                     if (!groups[category]) groups[category] = [];
-                                    groups[category].push({ name, quantity: a.quantity, price: a.price });
-                                  });
-                                  const categories = Object.keys(groups);
+                                    groups[category].push({ name, quantity: a.quantity, price: a.price })
+                                  })
+                                  const categories = Object.keys(groups)
                                   return categories.map((cat) => (
                                     <div key={cat}>
                                       <div className="text-blue-700 font-semibold mb-1">{cat}</div>
@@ -271,7 +271,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                                           ))}
                                       </div>
                                     </div>
-                                  ));
+                                  ))
                                 })()}
                               </div>
                             </div>
@@ -281,7 +281,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                     </div>
                   </div>
                 </div>
-                );
+                )
               })}
 
               {/* Resumo do pedido */}
@@ -369,5 +369,5 @@ export const CartModal: React.FC<CartModalProps> = ({
           </div>
         )}
     </div>
-  );
+  )
 };

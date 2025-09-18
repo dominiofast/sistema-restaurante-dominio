@@ -64,5 +64,5 @@ export const LoyaltyProgramBanner: React.FC<LoyaltyProgramBannerProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { usePlans } from '@/hooks/usePlans';
 import { PlanCard } from './PlanCard';
 
-export const PricingSection = () => {;
-  const [billingType, setBillingType] = useState<'monthly' | 'yearly'>('monthly');
-  const { data: plans = [], isLoading } = usePlans();
+export const PricingSection = () => {
+  const [billingType, setBillingType] = useState<'monthly' | 'yearly'>('monthly')
+  const { data: plans = [], isLoading } = usePlans()
 
-  const toggleBilling = (type: 'monthly' | 'yearly') => {;
-    setBillingType(type);
+  const toggleBilling = (type: 'monthly' | 'yearly') => {
+    setBillingType(type)
   };
 
   if (isLoading) {
@@ -22,7 +22,7 @@ export const PricingSection = () => {;
           </div>
         </div>
       </section>
-    );
+    )
 
 
   return (
@@ -74,5 +74,5 @@ export const PricingSection = () => {;
         </div>
       </div>
     </section>
-  );
+  )
 };

@@ -10,64 +10,64 @@ interface ProductPricingInfo {
 type PricingMap = { [productId: string]: ProductPricingInfo };
 
 // Cache global para evitar recarregamentos desnecessários
-const pricingCache = new Map<string, { data: PricingMap; timestamp: number }>();
+const pricingCache = new Map<string, { data: PricingMap; timestamp: number }>()
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
 const STORAGE_KEY = 'cardapio_pricing_cache';
 
 // Função para carregar cache do localStorage
 const loadCacheFromStorage = () => {
-  try {;
-    const stored = localStorage.getItem(STORAGE_KEY);
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      const parsed = JSON.parse(stored);
+      const parsed = JSON.parse(stored)
       Object.entries(parsed).forEach(([key, value]: [string, any]) => {
         if (Date.now() - value.timestamp < CACHE_DURATION) {
-          pricingCache.set(key, value);
+          pricingCache.set(key, value)
         }
-       catch (error) { console.error('Error:', error); }});
+       catch (error) { console.error('Error:', error) }})
     }
   } catch (error) {
-    console.warn('Erro ao carregar cache de preços:', error);
+    console.warn('Erro ao carregar cache de preços:', error)
 
 };
 
 // Função para salvar cache no localStorage
 const saveCacheToStorage = () => {
-  try {;
-    const cacheObj: any = {} catch (error) { console.error('Error:', error); };
+  try {
+    const cacheObj: any = {} catch (error) { console.error('Error:', error) };
     pricingCache.forEach((value, key) => {
       if (Date.now() - value.timestamp < CACHE_DURATION) {
         cacheObj[key] = value;
       }
-    });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj));
+    })
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheObj))
   } catch (error) {
-    console.warn('Erro ao salvar cache de preços:', error);
+    console.warn('Erro ao salvar cache de preços:', error)
 
 };
 
 // Carregar cache na inicialização
-loadCacheFromStorage();
+loadCacheFromStorage()
 
 /**
  * Hook para calcular preços de múltiplos produtos em lote (mais eficiente)
  * Agora com cache para evitar recarregamentos ao trocar de aba
  */
-export const useBulkProductPricing = (produtos: Produto[]) => {;
-  const [pricingMap, setPricingMap] = useState<PricingMap>({});
-  const [loading, setLoading] = useState(true);
-  const lastProductsRef = useRef<string>('');
+export const useBulkProductPricing = (produtos: Produto[]) => {
+  const [pricingMap, setPricingMap] = useState<PricingMap>({})
+  const [loading, setLoading] = useState(true)
+  const lastProductsRef = useRef<string>('')
 
   // Memoizar a chave dos produtos para evitar recálculos desnecessários
-  const produtosKey = useMemo(() => {;
+  const produtosKey = useMemo(() => {
     if (!produtos || produtos.length === 0) return '';
-    return produtos.map(p => p.id).sort().join(',');
-  }, [produtos]);
+    return produtos.map(p => p.id).sort().join(',')
+  }, [produtos])
 
   useEffect(() => {
     if (!produtos || produtos.length === 0) {
-      setPricingMap({});
-      setLoading(false);
+      setPricingMap({})
+      setLoading(false)
       return;
     }
 
@@ -77,24 +77,24 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
     }
 
     // Verificar cache primeiro
-    const cached = pricingCache.get(produtosKey);
+    const cached = pricingCache.get(produtosKey)
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      setPricingMap(cached.data);
-      setLoading(false);
+      setPricingMap(cached.data)
+      setLoading(false)
       lastProductsRef.current = produtosKey;
       return;
     }
 
     const calculateBulkPricing = async () => {
-      try {;
-        setLoading(true);
-        const produtoIds = produtos.map(p => p.id);
+      try {
+        setLoading(true)
+        const produtoIds = produtos.map(p => p.id)
 
         // Buscar todas as categorias obrigatórias de uma vez
         const produtoCategorias = null as any; const produtoError = null as any;
 
         if (produtoError) {
-          console.error('Erro ao buscar categorias em lote:', produtoError);
+          console.error('Erro ao buscar categorias em lote:', produtoError)
           // Fallback: criar mapa com preços base
           const fallbackMap = produtos.reduce((acc, produto) => {
             const basePrice = produto.is_promotional && produto.promotional_price 
@@ -103,19 +103,19 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
             acc[produto.id] = {
               minimumPrice: basePrice,
               hasRequired: false
-            } catch (error) { console.error('Error:', error); };
+            } catch (error) { console.error('Error:', error) };
             return acc;
-          }, {} as PricingMap);
+          }, {} as PricingMap)
           
-          setPricingMap(fallbackMap);
-          setLoading(false);
+          setPricingMap(fallbackMap)
+          setLoading(false)
           return;
         }
 
         // Agrupar por produto
-        const produtoCategoriasMap = produtoCategorias?.reduce((acc, pc) => {;
+        const produtoCategoriasMap = produtoCategorias?.reduce((acc, pc) => {
           if (!acc[pc.produto_id]) acc[pc.produto_id] = [];
-          acc[pc.produto_id].push(pc);
+          acc[pc.produto_id].push(pc)
           return acc;
         }, {} as { [produtoId: string]: any[] }) || {};
 
@@ -137,7 +137,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
 
           adicionaisMap = adicionais?.reduce((acc, adicional) => {
             if (!acc[adicional.categoria_adicional_id]) acc[adicional.categoria_adicional_id] = [];
-            acc[adicional.categoria_adicional_id].push(adicional);
+            acc[adicional.categoria_adicional_id].push(adicional)
             return acc;
           }, {} as { [categoriaId: string]: any[] }) || {};
         }
@@ -153,7 +153,7 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
           const categoriasProduto = produtoCategoriasMap[produto.id] || [];
           const categoriasObrigatoriasProduto = categoriasProduto.filter(pc => 
             pc.is_required || pc.categorias_adicionais?.is_required;
-          );
+          )
 
           if (categoriasObrigatoriasProduto.length === 0) {
             newPricingMap[produto.id] = {
@@ -184,8 +184,8 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
               precoMinimo += menorPreco * minSelection;
             } else if (categoria.selection_type === 'multiple') {
               // Multiple: N itens diferentes
-              const menoresPrecos = adicionaisCategoria.slice(0, minSelection);
-              const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0);
+              const menoresPrecos = adicionaisCategoria.slice(0, minSelection)
+              const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0)
               precoMinimo += somaMinimos;
 
           }
@@ -200,15 +200,15 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
         pricingCache.set(produtosKey, {
           data: newPricingMap,
           timestamp: Date.now()
-        });
+        })
         
         // Salvar no localStorage para persistir entre sessões
-        saveCacheToStorage();
+        saveCacheToStorage()
 
-        setPricingMap(newPricingMap);
+        setPricingMap(newPricingMap)
         lastProductsRef.current = produtosKey;
       } catch (error) {
-        console.error('Erro ao calcular pricing em lote:', error);
+        console.error('Erro ao calcular pricing em lote:', error)
         // Fallback em caso de erro
         const fallbackMap = produtos.reduce((acc, produto) => {
           const basePrice = produto.is_promotional && produto.promotional_price 
@@ -219,22 +219,22 @@ export const useBulkProductPricing = (produtos: Produto[]) => {;
             hasRequired: false
           };
           return acc;
-        }, {} as PricingMap);
+        }, {} as PricingMap)
         
-        setPricingMap(fallbackMap);
+        setPricingMap(fallbackMap)
         lastProductsRef.current = produtosKey;
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     };
 
-    calculateBulkPricing();
-  }, [produtosKey]); // Mudança: usar produtosKey ao invés de produtos
+    calculateBulkPricing()
+  }, [produtosKey]) // Mudança: usar produtosKey ao invés de produtos
 
   // Função para limpar cache (útil para debugging ou quando necessário)
-  const clearCache = () => {;
-    pricingCache.clear();
-    localStorage.removeItem(STORAGE_KEY);
+  const clearCache = () => {
+    pricingCache.clear()
+    localStorage.removeItem(STORAGE_KEY)
   };
 
   return { pricingMap, loading, clearCache };

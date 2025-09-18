@@ -45,7 +45,7 @@ interface AssistantForm {
 // Função para processar prompt - substitui todas as variáveis disponíveis
 const processPromptTemplate = (template: string, vars: Record<string, any>): string => {
   // Para templates do builder, retornar o template original sem processamento
-  if (template === 'PROMPT_SERÁ_RENDERIZADO_PELO_BUILDER') {;
+  if (template === 'PROMPT_SERÁ_RENDERIZADO_PELO_BUILDER') {
     return template;
   }
   
@@ -55,9 +55,9 @@ const processPromptTemplate = (template: string, vars: Record<string, any>): str
     Object.entries(vars).forEach(([key, value]) => {
       const placeholder = `{{${key}}}`;
       if (typeof value === 'string' && !value.startsWith('{{')) {
-        processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value);
+        processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value)
       }
-    });
+    })
   }
   
   // Mapear variáveis com nomes diferentes
@@ -77,41 +77,41 @@ const processPromptTemplate = (template: string, vars: Record<string, any>): str
   Object.entries(varMapping).forEach(([key, value]) => {
     if (value && typeof value === 'string' && !value.startsWith('{{')) {
       const placeholder = `{{${key}}}`;
-      processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value);
+      processedTemplate = processedTemplate.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value)
     }
-  });
+  })
   
   return processedTemplate;
 };
 
 export default function AdminAgents() {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [testing, setTesting] = useState(false);
-  const [testResponse, setTestResponse] = useState('');
-  const [history, setHistory] = useState<PromptHistory[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
+  const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [testing, setTesting] = useState(false)
+  const [testResponse, setTestResponse] = useState('')
+  const [history, setHistory] = useState<PromptHistory[]>([])
+  const [showHistory, setShowHistory] = useState(false)
   const [assistantForm, setAssistantForm] = useState<AssistantForm>({
     bot_name: "RangoBot",
     assistant_id: "",
     cardapio_url: "",
     produtos_path: "",
     config_path: ""
-  });
-  const [vars, setVars] = useState<Record<string, any>>({});
+  })
+  const [vars, setVars] = useState<Record<string, any>>({})
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       template: '',
       vars: '{}'
     }
-  });
+  })
 
-  const template = watch('template');
+  const template = watch('template')
 
   // Apenas Super Admin pode acessar
   if (user && user.role !== 'super_admin') {
@@ -126,23 +126,23 @@ export default function AdminAgents() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   useEffect(() => {
     if (slug) {
-      loadData();
+      loadData()
     }
-  }, [slug]);
+  }, [slug])
 
-  const loadData = async () => {;
+  const loadData = async () => {
     if (!slug) return;
 
     try {
-      setLoading(true);
+      setLoading(true)
 
       // Carregar dados da empresa
-      const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+      const { data: companyData }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -153,16 +153,16 @@ export default function AdminAgents() {
           title: "Empresa não encontrada",
           description: "A empresa especificada não existe.",
           variant: "destructive"
-        });
+        })
         return;
       }
 
       // Carregar prompt atual
       const { data: promptData  } = null as any;
       if (promptData) {
-        setValue('template', promptData.template);
-        setValue('vars', JSON.stringify(promptData.vars, null, 2));
-        setVars((promptData.vars as Record<string, any>) || {});
+        setValue('template', promptData.template)
+        setValue('vars', JSON.stringify(promptData.vars, null, 2))
+        setVars((promptData.vars as Record<string, any>) || {})
       }
 
       // Carregar configurações do assistant
@@ -174,28 +174,28 @@ export default function AdminAgents() {
           cardapio_url: assistantData.cardapio_url || `https://pedido.dominio.tech/${companyData.slug}`,
           produtos_path: assistantData.produtos_path || `${companyData.id}/produtos.json`,
           config_path: assistantData.config_path || `${companyData.id}/config.json`
-        });
+        })
       }
 
       // Carregar histórico
-      loadHistory();
+      loadHistory()
 
     } catch (error: any) {
       toast({
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const loadHistory = async () => {;
+  const loadHistory = async () => {
     if (!slug) return;
 
     try {
-      const { data }  catch (error) { console.error('Error:', error); }= 
+      const { data }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -208,19 +208,19 @@ export default function AdminAgents() {
         vars: item.vars as any || {},
         version: item.version || 1,
         created_at: item.updated_at || new Date().toISOString()
-      })) || []);
+      })) || [])
     } catch (error) {
-      console.error('Erro ao carregar histórico:', error);
+      console.error('Erro ao carregar histórico:', error)
     }
   };
 
-  const onSubmit = async (data: any) => {;
+  const onSubmit = async (data: any) => {
     if (!slug) return;
 
     try {
-      setSaving(true);
+      setSaving(true)
 
-      const varsObj = JSON.parse(data.vars || '{} catch (error) { console.error('Error:', error); }');
+      const varsObj = JSON.parse(data.vars || '{} catch (error) { console.error('Error:', error) }')
 
       // Salvar prompt usando upsert com onConflict
       const { error  } = null as any;
@@ -230,52 +230,52 @@ export default function AdminAgents() {
           version: (history[0]?.version || 0) + 1
         }, {
           onConflict: 'agent_slug'
-        });
+        })
 
       if (error) throw error;
 
       // Chamar edge function para sincronizar
-      const { error: pushError } = await Promise.resolve();
+      const { error: pushError } = await Promise.resolve()
         body: { agent_slug: slug }
-      });
+      })
 
       if (pushError) {
-        console.warn('Aviso: Edge Config pode não ter sido atualizado:', pushError);
+        console.warn('Aviso: Edge Config pode não ter sido atualizado:', pushError)
       }
 
       toast({
         title: "Prompt salvo com sucesso!",
         description: "O template foi atualizado e sincronizado."
-      });
+      })
 
       // Recarregar histórico
-      loadHistory();
+      loadHistory()
 
     } catch (error: any) {
       toast({
         title: "Erro ao salvar prompt",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
-  const saveAssistantConfig = async () => {;
+  const saveAssistantConfig = async () => {
     if (!slug) return;
 
     try {
-      setSaving(true);
+      setSaving(true)
 
       // Buscar company_id
-      const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+      const { data: companyData }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
 
-      if (!companyData) throw new Error('Empresa não encontrada');
+      if (!companyData) throw new Error('Empresa não encontrada')
 
       // Salvar configurações do assistant
       const { error  } = null as any;
@@ -286,115 +286,115 @@ export default function AdminAgents() {
           produtos_path: assistantForm.produtos_path,
           config_path: assistantForm.config_path,
           use_direct_mode: true
-        });
+        })
 
       if (error) throw error;
 
       toast({
         title: "Configurações salvas!",
         description: "As configurações do assistant foram atualizadas."
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro ao salvar configurações",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
-  const testPrompt = async () => {;
+  const testPrompt = async () => {
     if (!slug) return;
 
-    setTesting(true);
-    setTestResponse("");
+    setTesting(true)
+    setTestResponse("")
 
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           slug_empresa: slug,
           user_message: 'teste de prompt',
           historico: [],
           customer_phone: '5511999999999'
         }
-      });
+      })
 
       if (error) throw error;
 
-      setTestResponse(data?.resposta || 'Sem resposta');
+      setTestResponse(data?.resposta || 'Sem resposta')
 
       toast({
         title: "Teste executado",
         description: "Verifique a resposta abaixo"
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro no teste",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
-  const revertToVersion = async (historyItem: PromptHistory) => {;
-    setValue('template', historyItem.template);
-    setValue('vars', JSON.stringify(historyItem.vars, null, 2));
-    setVars(historyItem.vars || {});
+  const revertToVersion = async (historyItem: PromptHistory) => {
+    setValue('template', historyItem.template)
+    setValue('vars', JSON.stringify(historyItem.vars, null, 2))
+    setVars(historyItem.vars || {})
     
     toast({
       title: "Versão carregada",
       description: `Template da versão ${historyItem.version} carregado. Clique em Salvar para aplicar.`
-    });
+    })
   };
 
-  const addVar = () => {;
+  const addVar = () => {
     const newKey = `var_${Object.keys(vars).length + 1}`;
-    setVars(prev => ({ ...prev, [newKey]: '' }));
+    setVars(prev => ({ ...prev, [newKey]: '' }))
   };
 
-  const updateVar = (key: string, value: string) => {;
-    setVars(prev => ({ ...prev, [key]: value }));
-    setValue('vars', JSON.stringify({ ...vars, [key]: value }, null, 2));
+  const updateVar = (key: string, value: string) => {
+    setVars(prev => ({ ...prev, [key]: value }))
+    setValue('vars', JSON.stringify({ ...vars, [key]: value }, null, 2))
   };
 
-  const removeVar = (key: string) => {;
+  const removeVar = (key: string) => {
     const newVars = { ...vars };
     delete newVars[key];
-    setVars(newVars);
-    setValue('vars', JSON.stringify(newVars, null, 2));
+    setVars(newVars)
+    setValue('vars', JSON.stringify(newVars, null, 2))
   };
 
-  const uploadJson = async (type: 'produtos' | 'config', file: File) => {;
+  const uploadJson = async (type: 'produtos' | 'config', file: File) => {
     if (!slug) return;
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', type);
-      formData.append('company_slug', slug);
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('type', type)
+      formData.append('company_slug', slug)
 
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
-        .upload(`${slug}/${type}.json`, file);
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+        .upload(`${slug}/${type}.json`, file)
 
       if (error) throw error;
 
       toast({
         title: "Arquivo enviado!",
         description: `${type}.json foi enviado com sucesso.`
-      });
+      })
 
     } catch (error: any) {
       toast({
         title: "Erro ao enviar arquivo",
         description: error.message,
         variant: "destructive"
-      });
+      })
     }
   };
 
@@ -405,7 +405,7 @@ export default function AdminAgents() {
           <div className="text-lg">Carregando...</div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -640,4 +640,4 @@ export default function AdminAgents() {
         </div>
       </div>
     </div>
-  );
+  )

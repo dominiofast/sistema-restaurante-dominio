@@ -23,70 +23,70 @@ import GestorCardapio from "@/pages/GestorCardapio";
 import EstabelecimentoConfig from "@/pages/EstabelecimentoConfig";
 import CardapioDigitalConfig from "@/pages/CardapioDigitalConfig";
 // Páginas que são lazy loaded
-const LoginPage = lazy(() => import("@/pages/LoginPage"));
-const SignupPage = lazy(() => import("@/pages/SignupPage"));
-const ResetPassword = lazy(() => import("@/pages/ResetPassword").then(m => ({ default: m.ResetPassword })));
-const LandingPage = lazy(() => import("@/pages/LandingPage"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
+const LoginPage = lazy(() => import("@/pages/LoginPage"))
+const SignupPage = lazy(() => import("@/pages/SignupPage"))
+const ResetPassword = lazy(() => import("@/pages/ResetPassword").then(m => ({ default: m.ResetPassword })))
+const LandingPage = lazy(() => import("@/pages/LandingPage"))
+const NotFound = lazy(() => import("@/pages/NotFound"))
 // Removed thermal printing config
-const FacebookPixelConfig = lazy(() => import("@/pages/FacebookPixelConfig").then(m => ({ default: m.FacebookPixelConfig })));
-const SuperAdminIFoodImportConfig = lazy(() => import("@/pages/SuperAdminIFoodImportConfig"));
-const SuperAdminIFoodGlobalConfig = lazy(() => import("@/pages/SuperAdminIFoodGlobalConfig"));
-const SuperAdminIFoodIntegrations = lazy(() => import("@/pages/SuperAdminIFoodIntegrations"));
-const IFoodIntegrationsLojista = lazy(() => import("@/pages/IFoodIntegrationsLojista"));
+const FacebookPixelConfig = lazy(() => import("@/pages/FacebookPixelConfig").then(m => ({ default: m.FacebookPixelConfig })))
+const SuperAdminIFoodImportConfig = lazy(() => import("@/pages/SuperAdminIFoodImportConfig"))
+const SuperAdminIFoodGlobalConfig = lazy(() => import("@/pages/SuperAdminIFoodGlobalConfig"))
+const SuperAdminIFoodIntegrations = lazy(() => import("@/pages/SuperAdminIFoodIntegrations"))
+const IFoodIntegrationsLojista = lazy(() => import("@/pages/IFoodIntegrationsLojista"))
 // Páginas públicas não devem ser importadas aqui para evitar duplicação
-const Unauthorized = lazy(() => import("@/pages/Unauthorized"));
-const NotasEntradaPage = lazy(() => import("@/pages/NotasEntrada"));
-const PaginaVagasConfig = lazy(() => import("@/pages/PaginaVagasConfig"));
-const VagasDisponiveis = lazy(() => import("@/pages/VagasDisponiveis"));
-const InscricoesVagas = lazy(() => import("@/pages/InscricoesVagas"));
-const MercadoriasIngredientes = lazy(() => import("@/pages/MercadoriasIngredientes"));
-const ReceitasFichasTecnicas = lazy(() => import("@/pages/ReceitasFichasTecnicas"));
-const CompanyAdminManager = lazy(() => import("@/components/admin/CompanyAdminManager").then(m => ({ default: m.CompanyAdminManager })));
-const CompanyUsersManager = lazy(() => import("@/pages/CompanyUsersManager"));
-const SuperAdminDashboard = lazy(() => import("@/pages/SuperAdminDashboard"));
-const ConfiguracaoFiscalCompleta = lazy(() => import("@/components/fiscal/ConfiguracaoFiscalCompleta").then(m => ({ default: m.ConfiguracaoFiscalCompleta })));
-const DadosFiscais = lazy(() => import("@/pages/DadosFiscais"));
-const DadosFiscaisConfig = lazy(() => import("@/pages/DadosFiscaisConfig"));
-const TesteFocusNFePage = lazy(() => import("@/pages/TesteFocusNFe"));
-const AcceptInvitation = lazy(() => import("@/pages/AcceptInvitation"));
-const TestIntegration = lazy(() => import("@/pages/TestIntegration"));
-const AdminAgents = lazy(() => import("@/pages/AdminAgents"));
-const PromptsManagement = lazy(() => import("@/pages/PromptsManagement"));
-const WhatsAppAIIntegration = lazy(() => import("@/pages/WhatsAppAIIntegration"));
-const ImportCardapioSupabase = lazy(() => import("@/pages/ImportCardapioSupabase"));
-const CampanhaWhatsApp = lazy(() => import("@/pages/marketing/CampanhaWhatsApp"));
-const CampanhasSalvas = lazy(() => import("@/pages/marketing/CampanhasSalvas"));
+const Unauthorized = lazy(() => import("@/pages/Unauthorized"))
+const NotasEntradaPage = lazy(() => import("@/pages/NotasEntrada"))
+const PaginaVagasConfig = lazy(() => import("@/pages/PaginaVagasConfig"))
+const VagasDisponiveis = lazy(() => import("@/pages/VagasDisponiveis"))
+const InscricoesVagas = lazy(() => import("@/pages/InscricoesVagas"))
+const MercadoriasIngredientes = lazy(() => import("@/pages/MercadoriasIngredientes"))
+const ReceitasFichasTecnicas = lazy(() => import("@/pages/ReceitasFichasTecnicas"))
+const CompanyAdminManager = lazy(() => import("@/components/admin/CompanyAdminManager").then(m => ({ default: m.CompanyAdminManager })))
+const CompanyUsersManager = lazy(() => import("@/pages/CompanyUsersManager"))
+const SuperAdminDashboard = lazy(() => import("@/pages/SuperAdminDashboard"))
+const ConfiguracaoFiscalCompleta = lazy(() => import("@/components/fiscal/ConfiguracaoFiscalCompleta").then(m => ({ default: m.ConfiguracaoFiscalCompleta })))
+const DadosFiscais = lazy(() => import("@/pages/DadosFiscais"))
+const DadosFiscaisConfig = lazy(() => import("@/pages/DadosFiscaisConfig"))
+const TesteFocusNFePage = lazy(() => import("@/pages/TesteFocusNFe"))
+const AcceptInvitation = lazy(() => import("@/pages/AcceptInvitation"))
+const TestIntegration = lazy(() => import("@/pages/TestIntegration"))
+const AdminAgents = lazy(() => import("@/pages/AdminAgents"))
+const PromptsManagement = lazy(() => import("@/pages/PromptsManagement"))
+const WhatsAppAIIntegration = lazy(() => import("@/pages/WhatsAppAIIntegration"))
+const ImportCardapioSupabase = lazy(() => import("@/pages/ImportCardapioSupabase"))
+const CampanhaWhatsApp = lazy(() => import("@/pages/marketing/CampanhaWhatsApp"))
+const CampanhasSalvas = lazy(() => import("@/pages/marketing/CampanhasSalvas"))
 
-const ImpressaoQZTrayConfig = lazy(() => import("@/pages/ImpressaoQZTrayConfig"));
-const HorariosFuncionamentoSimples = lazy(() => import("@/pages/HorariosFuncionamentoSimples"));
-const PrintNodeIntegrationPage = lazy(() => import("@/pages/PrintNodeIntegrationPage"));
-const TesteAgentePedidos = lazy(() => import("@/pages/TesteAgentePedidos"));
+const ImpressaoQZTrayConfig = lazy(() => import("@/pages/ImpressaoQZTrayConfig"))
+const HorariosFuncionamentoSimples = lazy(() => import("@/pages/HorariosFuncionamentoSimples"))
+const PrintNodeIntegrationPage = lazy(() => import("@/pages/PrintNodeIntegrationPage"))
+const TesteAgentePedidos = lazy(() => import("@/pages/TesteAgentePedidos"))
 
-const FerramentasIndex = lazy(() => import('@/pages/FerramentasIndex'));
-const Cashback = lazy(() => import('@/pages/Cashback'));
+const FerramentasIndex = lazy(() => import('@/pages/FerramentasIndex'))
+const Cashback = lazy(() => import('@/pages/Cashback'))
 
-const DemoNavigationPage = lazy(() => import('@/pages/DemoNavigationPage'));
-const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
-const ProgramasPage = lazy(() => import('@/pages/ProgramasPage'));
-const ConfiguracaoStatus = lazy(() => import('@/pages/ConfiguracaoStatus').then(m => ({ default: m.ConfiguracaoStatus })));
-const IntegracoesConfig = lazy(() => import('@/pages/IntegracoesConfig'));
-const IntegracaoFacebook = lazy(() => import("@/pages/IntegracaoFacebook"));
+const DemoNavigationPage = lazy(() => import('@/pages/DemoNavigationPage'))
+const UserManagement = lazy(() => import('@/pages/admin/UserManagement'))
+const ProgramasPage = lazy(() => import('@/pages/ProgramasPage'))
+const ConfiguracaoStatus = lazy(() => import('@/pages/ConfiguracaoStatus').then(m => ({ default: m.ConfiguracaoStatus })))
+const IntegracoesConfig = lazy(() => import('@/pages/IntegracoesConfig'))
+const IntegracaoFacebook = lazy(() => import("@/pages/IntegracaoFacebook"))
 // LinksDemo removido - está em PublicRoutes
-const TestCustomerAddresses = lazy(() => import("@/pages/TestCustomerAddresses"));
+const TestCustomerAddresses = lazy(() => import("@/pages/TestCustomerAddresses"))
 
 
 const ProtectedAppLayout = () => (
   <ProtectedRoute>
     <AppLayout />
-  </ProtectedRoute>;
-);
+  </ProtectedRoute>
+)
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>;
-);
+  </div>
+)
 
 const AccountRoutes = () => {
   return (
@@ -193,7 +193,7 @@ const AccountRoutes = () => {
       <Route path="*" element={<NotFound />} />
     </Routes>
     </Suspense>;
-  );
+  )
 };
 
 export default AccountRoutes;

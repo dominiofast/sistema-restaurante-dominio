@@ -13,9 +13,9 @@ import VagasConfigPreview from '@/components/vagas/VagasConfigPreview';
 import { VagasConfig, validateVagasConfig, generateSlugFromCompany } from '@/components/vagas/VagasConfigValidation';
 
 const PaginaVagasConfig: React.FC = () => {
-  const { user, companyId, currentCompany, isLoading: isAuthLoading } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const { user, companyId, currentCompany, isLoading: isAuthLoading } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [config, setConfig] = useState<Partial<VagasConfig>>({
     is_active: false,
     page_title: '',
@@ -25,8 +25,8 @@ const PaginaVagasConfig: React.FC = () => {
     slug: '',
     title_color: '#FFFFFF',
     welcome_message: ''
-  });
-  const [error, setError] = useState<string | null>(null);
+  })
+  const [error, setError] = useState<string | null>(null)
 
   console.log('PaginaVagasConfig: Renderizando com:', { 
     user: user?.email, 
@@ -38,49 +38,49 @@ const PaginaVagasConfig: React.FC = () => {
       slug: currentCompany.slug,
       store_code: currentCompany.store_code
     } : null
-  });
+  })
 
   useEffect(() => {
     // Só continua se a autenticação estiver concluída
     if (isAuthLoading) {
-      setLoading(true);
+      setLoading(true)
       return;
 
 
     // Se a autenticação terminou e não há empresa selecionada (caso do Super Admin)
     if (!companyId) {
-      setLoading(false);
+      setLoading(false)
       return;
 
 
-    const fetchConfig = async () => {;
-    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
+    const fetchConfig = async () => {
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
   } = 
           
           
           
           
 
-        console.log('PaginaVagasConfig: Resultado da busca:', { data, error });
+        console.log('PaginaVagasConfig: Resultado da busca:', { data, error })
 
         if (error && error.code !== 'PGRST116') {
-          console.error('PaginaVagasConfig: Erro ao buscar config:', error);
+          console.error('PaginaVagasConfig: Erro ao buscar config:', error)
           throw error;
         }
 
         if (data) {
-          console.log('PaginaVagasConfig: Configuração encontrada:', data);
+          console.log('PaginaVagasConfig: Configuração encontrada:', data)
           setConfig({
             ...data,
             title_color: data.title_color || '#FFFFFF',
             welcome_message: data.welcome_message || ''
-          });
+          })
         } else if (currentCompany) {
           // Nova configuração - usar o slug da empresa ou gerar um
-          const slug = generateSlugFromCompany(currentCompany);
+          const slug = generateSlugFromCompany(currentCompany)
           
-          console.log('PaginaVagasConfig: Criando nova configuração com slug:', slug);
+          console.log('PaginaVagasConfig: Criando nova configuração com slug:', slug)
           
           setConfig({
             is_active: false,
@@ -91,64 +91,64 @@ const PaginaVagasConfig: React.FC = () => {
             slug: slug,
             title_color: '#FFFFFF',
             welcome_message: ''
-          });
+          })
         }
       } catch (error: any) {
-        console.error('PaginaVagasConfig: Erro no fetchConfig:', error);
-        setError(error.message || 'Erro ao carregar configuração');
-        toast.error('Erro ao carregar configuração da página de vagas.');
+        console.error('PaginaVagasConfig: Erro no fetchConfig:', error)
+        setError(error.message || 'Erro ao carregar configuração')
+        toast.error('Erro ao carregar configuração da página de vagas.')
       } finally {
-        setLoading(false);
+        setLoading(false)
 
     };
 
     if (companyId) {
-      fetchConfig();
+      fetchConfig()
 
-  }, [companyId, isAuthLoading, currentCompany]);
+  }, [companyId, isAuthLoading, currentCompany])
 
   // Efeito adicional para garantir que temos um slug quando currentCompany é carregado
   useEffect(() => {
     if (currentCompany && !config.slug && !loading) {
-      const generatedSlug = generateSlugFromCompany(currentCompany);
-      console.log('Atualizando slug automaticamente:', generatedSlug);
+      const generatedSlug = generateSlugFromCompany(currentCompany)
+      console.log('Atualizando slug automaticamente:', generatedSlug)
       setConfig(prev => ({
         ...prev,
         slug: generatedSlug
-      }));
+      }))
 
-  }, [currentCompany, loading]);
+  }, [currentCompany, loading])
 
   const handleSave = async () => {
-    if (!companyId) {;
-      toast.error('Erro: ID da empresa não encontrado');
+    if (!companyId) {
+      toast.error('Erro: ID da empresa não encontrado')
       return;
 
     
     if (!currentCompany) {
-      toast.error('Erro: Empresa não encontrada');
+      toast.error('Erro: Empresa não encontrada')
       return;
 
 
     // Validação
-    const validationError = validateVagasConfig(config);
+    const validationError = validateVagasConfig(config)
     if (validationError) {
-      toast.error(validationError);
+      toast.error(validationError)
       return;
 
     
-    console.log('PaginaVagasConfig: Salvando configuração:', config);
-    setSaving(true);
+    console.log('PaginaVagasConfig: Salvando configuração:', config)
+    setSaving(true)
     
     try {
       // Garantir que o slug seja válido
-      const slugToSave = config.slug?.trim().toLowerCase().replace(/[^a-z0-9-]/g, '') || generateSlugFromCompany(currentCompany);
+      const slugToSave = config.slug?.trim().toLowerCase().replace(/[^a-z0-9-]/g, '') || generateSlugFromCompany(currentCompany)
       
       // Preparar dados para salvar
       const dataToSave = {
         company_id: companyId,
         is_active: config.is_active || false,;
-        page_title: config.page_title?.trim() || `Carreiras na ${currentCompany.name} catch (error) { console.error('Error:', error); }`,
+        page_title: config.page_title?.trim() || `Carreiras na ${currentCompany.name} catch (error) { console.error('Error:', error) }`,
         logo_url: config.logo_url || '',
         banner_url: config.banner_url || '',
         primary_color: config.primary_color || '#1B365D',
@@ -157,7 +157,7 @@ const PaginaVagasConfig: React.FC = () => {
         welcome_message: config.welcome_message || ''
       };
 
-      console.log('Dados a serem salvos:', dataToSave);
+      console.log('Dados a serem salvos:', dataToSave)
 
       const { data, error  } = null as any;
           onConflict: 'company_id',
@@ -167,13 +167,13 @@ const PaginaVagasConfig: React.FC = () => {
         
 
       if (error) {
-        console.error('Erro ao salvar:', error);
-        toast.error(`Erro ao salvar configuração: ${error.message}`);
+        console.error('Erro ao salvar:', error)
+        toast.error(`Erro ao salvar configuração: ${error.message}`)
         return;
 
 
-      console.log('PaginaVagasConfig: Configuração salva com sucesso:', data);
-      toast.success('Configuração salva com sucesso!');
+      console.log('PaginaVagasConfig: Configuração salva com sucesso:', data)
+      toast.success('Configuração salva com sucesso!')
       
       // Atualizar o estado local com os dados salvos
       if (data) {
@@ -181,19 +181,19 @@ const PaginaVagasConfig: React.FC = () => {
           ...data,
           title_color: data.title_color || '#FFFFFF',
           welcome_message: data.welcome_message || ''
-        });
+        })
 
 
     } catch (error: any) {
-      console.error('PaginaVagasConfig: Erro no handleSave:', error);
-      toast.error(`Erro ao salvar configuração: ${error.message}`);
+      console.error('PaginaVagasConfig: Erro no handleSave:', error)
+      toast.error(`Erro ao salvar configuração: ${error.message}`)
     } finally {
-      setSaving(false);
+      setSaving(false)
 
   };
 
   // Usar o slug da configuração, da empresa atual ou gerar um novo
-  const displaySlug = config.slug || generateSlugFromCompany(currentCompany);
+  const displaySlug = config.slug || generateSlugFromCompany(currentCompany)
   const publicUrl = displaySlug ? `https://vagas.dominio.tech/${displaySlug}` : 'https://vagas.dominio.tech/';
 
   console.log('PaginaVagasConfig: Estado atual:', { 
@@ -209,20 +209,20 @@ const PaginaVagasConfig: React.FC = () => {
     configSlug: config.slug,
     displaySlug,
     publicUrl
-  });
+  })
 
   if (isAuthLoading) {
-    console.log('PaginaVagasConfig: Renderizando loading auth...');
+    console.log('PaginaVagasConfig: Renderizando loading auth...')
     return (
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-2"></div>
         Carregando...
       </div>
-    );
+    )
 
 
   if (user?.role === 'super_admin' && !companyId) {
-    console.log('PaginaVagasConfig: Super admin sem empresa selecionada');
+    console.log('PaginaVagasConfig: Super admin sem empresa selecionada')
     return (
       <div className="container mx-auto p-6">
         <Alert>
@@ -233,11 +233,11 @@ const PaginaVagasConfig: React.FC = () => {
           </AlertDescription>
         </Alert>
       </div>
-    );
+    )
 
 
   if (error) {
-    console.log('PaginaVagasConfig: Renderizando erro:', error);
+    console.log('PaginaVagasConfig: Renderizando erro:', error)
     return (
       <div className="container mx-auto p-6">
         <Alert variant="destructive">
@@ -248,20 +248,20 @@ const PaginaVagasConfig: React.FC = () => {
           </AlertDescription>
         </Alert>
       </div>
-    );
+    )
 
 
   if (loading) {
-    console.log('PaginaVagasConfig: Renderizando loading...');
+    console.log('PaginaVagasConfig: Renderizando loading...')
     return (
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-2"></div>
         Carregando configuração...
       </div>
-    );
+    )
 
 
-  console.log('PaginaVagasConfig: Renderizando página completa');
+  console.log('PaginaVagasConfig: Renderizando página completa')
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -291,7 +291,7 @@ const PaginaVagasConfig: React.FC = () => {
         </Button>
       </div>
     </div>
-  );
+  )
 };
 
 export default PaginaVagasConfig;

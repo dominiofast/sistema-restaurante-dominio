@@ -30,25 +30,25 @@ export interface CloudinaryUploadResult {
 import { cloudinary } from '@/config/appConfig';
 
 // Service para upload de arquivos no Cloudinary
-export const uploadToCloudinary = async (file: File): Promise<string> => {;
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
+export const uploadToCloudinary = async (file: File): Promise<string> => {
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', cloudinary.UPLOAD_PRESET)
   
   try {
     const response = await fetch(cloudinary.UPLOAD_URL, {
       method: 'POST',
       body: formData,;
-    } catch (error) { console.error('Error:', error); });
+    } catch (error) { console.error('Error:', error) })
     
     if (!response.ok) {
-      throw new Error('Upload failed');
+      throw new Error('Upload failed')
     }
     
-    const data = await response.json();
+    const data = await response.json()
     return data.secure_url;
   } catch (error) {
-    console.error('Cloudinary upload error:', error);
+    console.error('Cloudinary upload error:', error)
     throw error;
 
 };
@@ -65,60 +65,60 @@ export const cloudinaryService = {
         size: file.size,
         type: file.type
       };
-    });
+    })
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', cloudinary.UPLOAD_PRESET);
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', cloudinary.UPLOAD_PRESET)
     
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest()
       
       xhr.upload.addEventListener('progress', (event) => {
         if (event.lengthComputable && onProgress) {
-          const percentage = Math.round((event.loaded * 100) / event.total);
+          const percentage = Math.round((event.loaded * 100) / event.total)
           onProgress({
             percentage,
             loaded: event.loaded,
             total: event.total
-          });
+          })
         }
-      });
+      })
       
       xhr.addEventListener('load', () => {
         console.log('🌩️ [Cloudinary] Resposta recebida:', {
           status: xhr.status,
           statusText: xhr.statusText,
           response: xhr.responseText
-        });
+        })
 
         if (xhr.status === 200) {
           try {
-            const result = JSON.parse(xhr.responseText);
-            console.log('✅ [Cloudinary] Upload bem-sucedido:', result);
-            resolve(result);
+            const result = JSON.parse(xhr.responseText)
+            console.log('✅ [Cloudinary] Upload bem-sucedido:', result)
+            resolve(result)
           } catch (error) {
-            console.error('❌ [Cloudinary] Erro ao parsear resposta:', error);
-            reject(new Error('Invalid response format'));
+            console.error('❌ [Cloudinary] Erro ao parsear resposta:', error)
+            reject(new Error('Invalid response format'))
           }
         } else {
           console.error('❌ [Cloudinary] Erro HTTP:', {
             status: xhr.status,
             statusText: xhr.statusText,
             response: xhr.responseText
-          });
-          reject(new Error(`Upload failed with status: ${xhr.status} - ${xhr.responseText}`));
+          })
+          reject(new Error(`Upload failed with status: ${xhr.status} - ${xhr.responseText}`))
         }
-      });
+      })
       
       xhr.addEventListener('error', (error) => {
-        console.error('❌ [Cloudinary] Erro de rede:', error);
-        reject(new Error('Network error during upload'));
-      });
+        console.error('❌ [Cloudinary] Erro de rede:', error)
+        reject(new Error('Network error during upload'))
+      })
       
-      xhr.open('POST', cloudinary.UPLOAD_URL);
-      xhr.send(formData);
-    });
+      xhr.open('POST', cloudinary.UPLOAD_URL)
+      xhr.send(formData)
+    })
   },
 
   convertToFileData: (result: CloudinaryUploadResult, originalFile: File): FileData => {
@@ -135,25 +135,25 @@ export const cloudinaryService = {
 
   downloadFile: async (url: string, filename: string): Promise<boolean> => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url)
       if (!response.ok) {
-        throw new Error('Download failed');
+        throw new Error('Download failed')
       }
       
-       catch (error) { console.error('Error:', error); }const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
+       catch (error) { console.error('Error:', error) }const blob = await response.blob()
+      const downloadUrl = window.URL.createObjectURL(blob)
       
-      const link = document.createElement('a');
+      const link = document.createElement('a')
       link.href = downloadUrl;
       link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       
-      window.URL.revokeObjectURL(downloadUrl);
+      window.URL.revokeObjectURL(downloadUrl)
       return true;
     } catch (error) {
-      console.error('Download error:', error);
+      console.error('Download error:', error)
       return false;
     }
   }

@@ -24,12 +24,12 @@ export const ENV = {
 } as const;
 
 // Helper para verificar se deve mostrar logs
-export const shouldLog = (level: 'debug' | 'info' | 'warn' | 'error' = 'info') => {;
+export const shouldLog = (level: 'debug' | 'info' | 'warn' | 'error' = 'info') => {
   if (!ENV.isDevelopment) return false;
   
   const levels = ['debug', 'info', 'warn', 'error'];
-  const currentLevelIndex = levels.indexOf(ENV.logLevel);
-  const requestedLevelIndex = levels.indexOf(level);
+  const currentLevelIndex = levels.indexOf(ENV.logLevel)
+  const requestedLevelIndex = levels.indexOf(level)
   
   return requestedLevelIndex >= currentLevelIndex;
 };

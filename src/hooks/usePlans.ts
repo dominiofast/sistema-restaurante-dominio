@@ -128,5 +128,5 @@ export const usePlans = () => {
       // Return mock data for now until database types are synced;
       return mockPlansData;
     },
-  });
+  })
 };

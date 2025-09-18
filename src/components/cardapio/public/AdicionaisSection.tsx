@@ -34,7 +34,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
   onAdicionaisChange,
   primaryColor
 }) => {
-  const handleAdicionalChange = (adicionalId: string, categoria: CategoriaAdicional, quantidade: number) => {;
+  const handleAdicionalChange = (adicionalId: string, categoria: CategoriaAdicional, quantidade: number) => {
     const newSelected = { ...selectedAdicionais };
     
     if (categoria.selection_type === 'single') {
@@ -43,7 +43,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
         if (adicional.id !== adicionalId) {
           delete newSelected[adicional.id];
         }
-      });
+      })
       
       if (quantidade > 0) {
         newSelected[adicionalId] = 1;
@@ -52,7 +52,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
       }
     } else if (categoria.selection_type === 'quantity') {
       // Para seleção por quantidade, verificar limite máximo
-      const currentTotal = getTotalSelectedInCategory(categoria.id);
+      const currentTotal = getTotalSelectedInCategory(categoria.id)
       const currentItemQty = selectedAdicionais[adicionalId] || 0;
       const newTotal = currentTotal - currentItemQty + quantidade;
       
@@ -75,19 +75,19 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
       }
     }
     
-    onAdicionaisChange(newSelected);
+    onAdicionaisChange(newSelected)
   };
 
-  const getTotalSelectedInCategory = (categoriaId: string) => {;
-    const categoria = categorias.find(c => c.id === categoriaId);
+  const getTotalSelectedInCategory = (categoriaId: string) => {
+    const categoria = categorias.find(c => c.id === categoriaId)
     if (!categoria) return 0;
     
     return categoria.adicionais.reduce((total, adicional) => {
-      return total + (selectedAdicionais[adicional.id] || 0);
-    }, 0);
+      return total + (selectedAdicionais[adicional.id] || 0)
+    }, 0)
   };
 
-  const isRadioSelected = (adicionalId: string, categoria: CategoriaAdicional) => {;
+  const isRadioSelected = (adicionalId: string, categoria: CategoriaAdicional) => {
     return categoria.selection_type === 'single' && selectedAdicionais[adicionalId] && selectedAdicionais[adicionalId] > 0;
   };
 
@@ -157,7 +157,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
                       name={`categoria-${categoria.id}`}
                       checked={isRadioSelected(adicional.id, categoria)}
                       onChange={(e) => {
-                        handleAdicionalChange(adicional.id, categoria, e.target.checked ? 1 : 0);
+                        handleAdicionalChange(adicional.id, categoria, e.target.checked ? 1 : 0)
                       }}
                       className="w-4 h-4 text-blue-600"
                     />
@@ -166,7 +166,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
                       type="checkbox"
                       checked={!!selectedAdicionais[adicional.id] && selectedAdicionais[adicional.id] > 0}
                       onChange={(e) => {
-                        handleAdicionalChange(adicional.id, categoria, e.target.checked ? 1 : 0);
+                        handleAdicionalChange(adicional.id, categoria, e.target.checked ? 1 : 0)
                       }}
                       className="w-4 h-4 text-blue-600"
                     />
@@ -175,7 +175,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
                       <button
                         onClick={() => {
                           const currentQty = selectedAdicionais[adicional.id] || 0;
-                          handleAdicionalChange(adicional.id, categoria, Math.max(0, currentQty - 1));
+                          handleAdicionalChange(adicional.id, categoria, Math.max(0, currentQty - 1))
                         }}
                         disabled={!selectedAdicionais[adicional.id] || selectedAdicionais[adicional.id] === 0}
                         className="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
@@ -188,7 +188,7 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
                       <button
                         onClick={() => {
                           const currentQty = selectedAdicionais[adicional.id] || 0;
-                          handleAdicionalChange(adicional.id, categoria, currentQty + 1);
+                          handleAdicionalChange(adicional.id, categoria, currentQty + 1)
                         }}
                         disabled={categoria.max_selection && getTotalSelectedInCategory(categoria.id) >= categoria.max_selection}
                         className="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
@@ -204,5 +204,5 @@ export const AdicionaisSection: React.FC<AdicionaisSectionProps> = ({
         </div>
       ))}
     </div>
-  );
+  )
 };

@@ -79,10 +79,10 @@ const statusConfigs = STATUS_CONFIG.map(config => ({
   ...config,
   bgColor: `bg-gradient-to-r ${config.gradient}`,
   textColor: 'text-white';
-}));
+}))
 
-const onViewDetails = (inscricao: Inscricao) => {;
-  console.log('Ver detalhes:', inscricao);
+const onViewDetails = (inscricao: Inscricao) => {
+  console.log('Ver detalhes:', inscricao)
 };
 
 export const InscricoesKanbanBoard: React.FC<InscricoesKanbanBoardProps> = ({
@@ -135,5 +135,5 @@ export const InscricoesKanbanBoard: React.FC<InscricoesKanbanBoardProps> = ({
         ))}
       </div>
     </DndContext>
-  );
+  )
 };

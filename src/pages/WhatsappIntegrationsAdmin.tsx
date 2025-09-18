@@ -8,44 +8,44 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageSquare } from 'lucide-react';
 
 export const WhatsappIntegrationsAdmin: React.FC = () => {
-  const { companies, integrations, saveIntegration, refreshIntegrations } = useWhatsappIntegrations();
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
-  const [form, setForm] = useState<Partial<WhatsappIntegration>>({});
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { companies, integrations, saveIntegration, refreshIntegrations } = useWhatsappIntegrations()
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<WhatsappIntegration>>({})
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   
   const getDraftStorageKey = (companyId: string) => `whatsapp_integration_draft_${companyId}`;
 
   const handleSelectCompany = (company: Company) => {
-    setSelectedCompanyId(company.id);
+    setSelectedCompanyId(company.id)
     const ints = integrations[company.id];
     const defaultWebhook = 'https://dominio.tech/api/webhook';
-    const defaultPurpose: 'primary' | 'marketing' = ints?.primary ? 'primary' : (ints?.marketing ? 'marketing' : 'primary');
+    const defaultPurpose: 'primary' | 'marketing' = ints?.primary ? 'primary' : (ints?.marketing ? 'marketing' : 'primary')
 
     try {
-      const draftKey = getDraftStorageKey(company.id);
+      const draftKey = getDraftStorageKey(company.id)
       const draftString = typeof window !== 'undefined' ? window.localStorage.getItem(draftKey) : null;
       if (draftString) {
         const draft = JSON.parse(draftString) as Partial<WhatsappIntegration>;
-        setForm({ ...draft, company_id: company.id, purpose: (draft.purpose as any) || defaultPurpose } catch (error) { console.error('Error:', error); });
+        setForm({ ...draft, company_id: company.id, purpose: (draft.purpose as any) || defaultPurpose } catch (error) { console.error('Error:', error) })
       } else if (ints?.[defaultPurpose]) {
-        setForm({ ...(ints[defaultPurpose] as WhatsappIntegration) });
+        setForm({ ...(ints[defaultPurpose] as WhatsappIntegration) })
       } else {
-        setForm({ company_id: company.id, webhook: defaultWebhook, purpose: defaultPurpose } as Partial<WhatsappIntegration>);
+        setForm({ company_id: company.id, webhook: defaultWebhook, purpose: defaultPurpose } as Partial<WhatsappIntegration>)
       }
     } catch {
       if (ints?.[defaultPurpose]) {
-        setForm({ ...(ints[defaultPurpose] as WhatsappIntegration) });
+        setForm({ ...(ints[defaultPurpose] as WhatsappIntegration) })
       } else {
-        setForm({ company_id: company.id, webhook: defaultWebhook, purpose: defaultPurpose } as Partial<WhatsappIntegration>);
+        setForm({ company_id: company.id, webhook: defaultWebhook, purpose: defaultPurpose } as Partial<WhatsappIntegration>)
       }
     }
-    setError(null);
-    setSuccess(null);
+    setError(null)
+    setSuccess(null)
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     if (name === 'purpose') {
@@ -53,12 +53,12 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
         const ints = integrations[selectedCompanyId];
         const existing = ints && (ints as any)[value as 'primary' | 'marketing'];
         if (existing) {
-          setForm({ ...(existing as WhatsappIntegration) });
+          setForm({ ...(existing as WhatsappIntegration) })
         } else {
-          setForm({ company_id: selectedCompanyId, webhook: 'https://dominio.tech/api/webhook', purpose: value as any });
+          setForm({ company_id: selectedCompanyId, webhook: 'https://dominio.tech/api/webhook', purpose: value as any })
         }
       } else {
-        setForm(prev => ({ ...prev, purpose: value as any }));
+        setForm(prev => ({ ...prev, purpose: value as any }))
       }
     } else {
       const nextForm: Partial<WhatsappIntegration> = {
@@ -66,10 +66,10 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
         [name]: value,
         company_id: selectedCompanyId || form.company_id,
       };
-      setForm(nextForm);
+      setForm(nextForm)
       if (selectedCompanyId && typeof window !== 'undefined') {
         try {
-          window.localStorage.setItem(getDraftStorageKey(selectedCompanyId), JSON.stringify(nextForm));
+          window.localStorage.setItem(getDraftStorageKey(selectedCompanyId), JSON.stringify(nextForm))
         } catch {
           // ignore
         }
@@ -79,31 +79,31 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
 
   const handleSave = async () => {
     // Garante que o webhook esteja preenchido com o domínio correto
-    if (!form.webhook) {;
+    if (!form.webhook) {
       form.webhook = 'https://dominio.tech/api/webhook';
 
     if (!selectedCompanyId) return;
     
-    setSaving(true);
-    setError(null);
-    setSuccess(null);
+    setSaving(true)
+    setError(null)
+    setSuccess(null)
     
     try {
-      const message = await saveIntegration(form, selectedCompanyId);
-      setSuccess(message);
-      await refreshIntegrations();
+      const message = await saveIntegration(form, selectedCompanyId)
+      setSuccess(message)
+      await refreshIntegrations()
       // Limpa rascunho salvo ao confirmar persistência no backend
       try {
         if (typeof window !== 'undefined') {
-          window.localStorage.removeItem(getDraftStorageKey(selectedCompanyId));
+          window.localStorage.removeItem(getDraftStorageKey(selectedCompanyId))
         }
        } catch {
         // ignore
       }
     } catch (err: any) {
-      setError('Erro ao salvar integração: ' + err.message);
+      setError('Erro ao salvar integração: ' + err.message)
 
-    setSaving(false);
+    setSaving(false)
   };
 
   return (
@@ -161,7 +161,7 @@ export const WhatsappIntegrationsAdmin: React.FC = () => {
         </Card>
       </div>
     </div>
-  );
+  )
 };
 
 export default WhatsappIntegrationsAdmin;

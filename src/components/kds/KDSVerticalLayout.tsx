@@ -18,27 +18,27 @@ export const KDSVerticalLayout: React.FC<KDSVerticalLayoutProps> = ({
 }) => {
   // Dividir pedidos em colunas se necessário
   const dividePedidos = () => {
-    if (columns === 1) {;
+    if (columns === 1) {
       return [pedidos];
     }
     
-    const meio = Math.ceil(pedidos.length / 2);
+    const meio = Math.ceil(pedidos.length / 2)
     return [
       pedidos.slice(0, meio),
       pedidos.slice(meio)
     ];
   };
 
-  const colunasPedidos = dividePedidos();
+  const colunasPedidos = dividePedidos()
 
-  const getNextActionLabel = (status: string) => {;
+  const getNextActionLabel = (status: string) => {
     if (status === 'analise') return 'Iniciar Produção';
     if (status === 'producao') return 'Finalizar';
     if (status === 'pronto') return 'Pronto';
     return 'Avançar';
   };
 
-  const canGoBack = (status: string) => {;
+  const canGoBack = (status: string) => {
     return status !== 'analise';
   };
 
@@ -50,7 +50,7 @@ export const KDSVerticalLayout: React.FC<KDSVerticalLayoutProps> = ({
           <p className="text-lg">Nenhum pedido no momento</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -102,5 +102,5 @@ export const KDSVerticalLayout: React.FC<KDSVerticalLayoutProps> = ({
         ))}
       </div>
     </div>
-  );
+  )
 };

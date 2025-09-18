@@ -32,7 +32,7 @@ interface KDSConfigPanelProps {
 
 
 export const KDSConfigPanel: React.FC<KDSConfigPanelProps> = ({ isOpen, onClose }) => {
-  const { config, toggleStatus, setLayout } = useKDSConfig();
+  const { config, toggleStatus, setLayout } = useKDSConfig()
 
   if (!isOpen) return null;
 
@@ -83,7 +83,7 @@ export const KDSConfigPanel: React.FC<KDSConfigPanelProps> = ({ isOpen, onClose 
                     </div>
                   )}
                 </button>
-              );
+              )
             })}
           </div>
         </div>
@@ -132,5 +132,5 @@ export const KDSConfigPanel: React.FC<KDSConfigPanelProps> = ({ isOpen, onClose 
         </div>
       </div>
     </div>
-  );
+  )
 };

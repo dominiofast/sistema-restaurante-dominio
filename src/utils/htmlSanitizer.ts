@@ -21,14 +21,14 @@ const sanitizerConfig = {
  * @returns HTML sanitizado ou string vazia se inválido
  */
 export const sanitizeHtml = (html: string): string => {
-  if (!html || typeof html !== 'string') {;
+  if (!html || typeof html !== 'string') {
     return '';
   }
   
   try {
-    return DOMPurify.sanitize(html, sanitizerConfig);
+    return DOMPurify.sanitize(html, sanitizerConfig)
   } catch (error) {
-    console.error('Erro ao sanitizar HTML:', error);
+    console.error('Erro ao sanitizar HTML:', error)
     return '';
   }
 };
@@ -39,11 +39,11 @@ export const sanitizeHtml = (html: string): string => {
  * @returns true se o conteúdo foi modificado durante sanitização
  */
 export const isHtmlSafe = (html: string): boolean => {
-  if (!html || typeof html !== 'string') {;
+  if (!html || typeof html !== 'string') {
     return true;
   }
   
-  const sanitized = sanitizeHtml(html);
+  const sanitized = sanitizeHtml(html)
   return sanitized === html;
 };
 
@@ -53,14 +53,14 @@ export const isHtmlSafe = (html: string): boolean => {
  * @returns Texto limpo sem HTML
  */
 export const stripHtml = (html: string): string => {
-  if (!html || typeof html !== 'string') {;
+  if (!html || typeof html !== 'string') {
     return '';
   }
   
   try {
-    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] } catch (error) { console.error('Error:', error); });
+    return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] } catch (error) { console.error('Error:', error) })
   } catch (error) {
-    console.error('Erro ao remover HTML:', error);
+    console.error('Erro ao remover HTML:', error)
     return '';
   }
 };

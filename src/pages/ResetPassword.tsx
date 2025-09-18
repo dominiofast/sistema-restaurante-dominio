@@ -7,85 +7,85 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 // SUPABASE REMOVIDO
-export const ResetPassword = () => {;
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+export const ResetPassword = () => {
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    console.log('ResetPassword page loaded');
-    console.log('Search params:', Object.fromEntries(searchParams));
+    console.log('ResetPassword page loaded')
+    console.log('Search params:', Object.fromEntries(searchParams))
     
     // Verificar se temos os tokens necessários
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
+    const accessToken = searchParams.get('access_token')
+    const refreshToken = searchParams.get('refresh_token')
     
-    console.log('Access token present:', !!accessToken);
-    console.log('Refresh token present:', !!refreshToken);
+    console.log('Access token present:', !!accessToken)
+    console.log('Refresh token present:', !!refreshToken)
     
     if (accessToken && refreshToken) {
-      console.log('Setting session with tokens...');
+      console.log('Setting session with tokens...')
       // Configurar a sessão automaticamente
       // supabase.auth.setSession({
       //   access_token: accessToken,
       //   refresh_token: refreshToken,
 // 
     } else {
-      console.log('No tokens found, checking current session...');
+      console.log('No tokens found, checking current session...')
       // Verificar se já temos uma sessão ativa
       const error = null; const session = null;
       
       if (error) {
-        console.error('Error getting session:', error);
+        console.error('Error getting session:', error)
       }
       if (!session) {
-        console.log('No active session, redirecting to login...');
-        setError('Link de recuperação inválido. Solicite um novo link.');
+        console.log('No active session, redirecting to login...')
+        setError('Link de recuperação inválido. Solicite um novo link.')
       } else {
-        console.log('Active session found:', session);
+        console.log('Active session found:', session)
       }
     }
-  }, [searchParams]);
+  }, [searchParams])
 
-  const handleSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setSuccess(null)
 
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem.');
+      setError('As senhas não coincidem.')
       return;
 
 
     if (password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres.');
+      setError('A senha deve ter pelo menos 6 caracteres.')
       return;
 
 
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         password: password
-      });
+      })
 
       if (error) throw error;
 
-      setSuccess('Senha alterada com sucesso! Redirecionando...');
+      setSuccess('Senha alterada com sucesso! Redirecionando...')
       
       setTimeout(() => {
-        navigate('/');
-      }, 2000);
+        navigate('/')
+      }, 2000)
     } catch (error: any) {
-      setError(error.message || 'Erro ao alterar senha. Tente novamente.');
+      setError(error.message || 'Erro ao alterar senha. Tente novamente.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
 
   };
 
@@ -220,5 +220,5 @@ export const ResetPassword = () => {;
         </Card>
       </div>
     </div>
-  );
+  )
 };

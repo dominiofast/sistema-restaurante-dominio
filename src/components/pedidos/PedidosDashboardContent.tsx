@@ -77,5 +77,5 @@ export const PedidosDashboardContent: React.FC<PedidosDashboardContentProps> = (
         />
       )}
     </div>
-  );
+  )
 };

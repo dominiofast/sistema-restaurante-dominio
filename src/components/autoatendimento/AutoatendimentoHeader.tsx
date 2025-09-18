@@ -17,8 +17,8 @@ export const AutoatendimentoHeader: React.FC<AutoatendimentoHeaderProps> = ({
   onReset,
   primaryColor
 }) => {
-  const formatTime = (seconds: number) => {;
-    const minutes = Math.floor(seconds / 60);
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
     const secs = seconds % 60;
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
@@ -79,5 +79,5 @@ export const AutoatendimentoHeader: React.FC<AutoatendimentoHeaderProps> = ({
         </div>
       </div>
     </header>
-  );
+  )
 };

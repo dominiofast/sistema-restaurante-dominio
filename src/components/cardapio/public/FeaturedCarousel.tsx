@@ -3,16 +3,16 @@ import { Produto } from '@/types/cardapio';
 import { FeaturedProductCard } from './FeaturedProductCard';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {;
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+const applyOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
 // Função para otimizar URLs de imagem do Supabase
-const getOptimizedImageUrl = (url: string | undefined, width: number = 340): string => {;
+const getOptimizedImageUrl = (url: string | undefined, width: number = 340): string => {
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
@@ -61,7 +61,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
               produto.promotional_price > 0;
 
             const discountPercentage = hasDiscount 
-              ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100);
+              ? Math.round(((produto.price - produto.promotional_price!) / produto.price) * 100)
               : 0;
 
             return (
@@ -123,10 +123,10 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
                   </h3>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       </div>
     </section>
-  );
+  )
 };

@@ -9,8 +9,8 @@ export const PagamentoDinheiroPDV: React.FC<PagamentoDinheiroPDVProps> = ({
   onConfirm, 
   total 
 }) => {
-  const [valorRecebido, setValorRecebido] = useState(total.toString());
-  const [observacoes, setObservacoes] = useState('');
+  const [valorRecebido, setValorRecebido] = useState(total.toString())
+  const [observacoes, setObservacoes] = useState('')
 
   const troco = parseFloat(valorRecebido || '0') - total;
 
@@ -20,7 +20,7 @@ export const PagamentoDinheiroPDV: React.FC<PagamentoDinheiroPDVProps> = ({
       valorRecebido: parseFloat(valorRecebido),
       troco: troco > 0 ? troco : 0,
       observacoes;
-    });
+    })
   };
 
   return (
@@ -95,5 +95,5 @@ export const PagamentoDinheiroPDV: React.FC<PagamentoDinheiroPDVProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

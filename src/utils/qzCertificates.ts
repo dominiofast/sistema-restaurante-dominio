@@ -35,27 +35,27 @@ export const configureCertificates = async (): Promise<void> => {
     // Configurar certificado público
     qz.security.setCertificatePromise(function(resolve: (cert: string) => void) {
       // Para desenvolvimento, pode usar certificado vazio ou auto-assinado;
-      resolve(PUBLIC_CERTIFICATE);
-    } catch (error) { console.error('Error:', error); });
+      resolve(PUBLIC_CERTIFICATE)
+    } catch (error) { console.error('Error:', error) })
 
     // Configurar chave privada para assinatura
     qz.security.setSignaturePromise(function(toSign: string, resolve: (signature: string) => void) {
       // Para desenvolvimento local, usar assinatura simples
       // IMPORTANTE: Em produção, implementar assinatura digital real
       try {
-        const signature = btoa(toSign); // Base64 simples para desenvolvimento
-        resolve(signature);
+        const signature = btoa(toSign) // Base64 simples para desenvolvimento
+        resolve(signature)
       } catch (error) {
-        console.error('Erro na assinatura:', error);
-        resolve(''); // Fallback para desenvolvimento
+        console.error('Erro na assinatura:', error)
+        resolve('') // Fallback para desenvolvimento
       }
-    });
+    })
 
-    console.log('✅ Certificados QZ Tray configurados com sucesso');
+    console.log('✅ Certificados QZ Tray configurados com sucesso')
   } catch (error) {
-    console.error('❌ Erro ao configurar certificados QZ Tray:', error);
+    console.error('❌ Erro ao configurar certificados QZ Tray:', error)
     // Não fazer throw para não bloquear a conexão em desenvolvimento
-    console.warn('⚠️ Continuando sem certificados para desenvolvimento local');
+    console.warn('⚠️ Continuando sem certificados para desenvolvimento local')
 
 };
 
@@ -65,18 +65,18 @@ export const configureCertificates = async (): Promise<void> => {
 export const verifyCertificates = async (): Promise<boolean> => {
   try {
     // Tenta conectar com os certificados configurados;
-    await qz.websocket.connect();
-    const isActive = await qz.websocket.isActive();
+    await qz.websocket.connect()
+    const isActive = await qz.websocket.isActive()
     
     if (isActive) {
-      console.log('✅ Certificados verificados - conexão estabelecida');
+      console.log('✅ Certificados verificados - conexão estabelecida')
       return true;
-    }  catch (error) { console.error('Error:', error); }else {
-      console.warn('⚠️ Conexão não ativa - verifique os certificados');
+    }  catch (error) { console.error('Error:', error) }else {
+      console.warn('⚠️ Conexão não ativa - verifique os certificados')
       return false;
     }
   } catch (error) {
-    console.error('❌ Erro na verificação dos certificados:', error);
+    console.error('❌ Erro na verificação dos certificados:', error)
     return false;
 
 };

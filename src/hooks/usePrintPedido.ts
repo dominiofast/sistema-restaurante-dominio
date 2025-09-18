@@ -6,23 +6,23 @@ import { useNFCeLogs } from './useNFCeLogs';
 // SUPABASE REMOVIDO
 // Remove acentos para evitar problemas de codificação na impressora ESC/POS
 const stripAccents = (input: string) => {
-  try {;
+  try {
     return input ? input.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : input;
   } catch {
     return input;
   }
 };
 
-export const usePrintPedido = (companyId: string) => {;
-  const [isPrinting, setIsPrinting] = useState(false);
-  const [paperWidth, setPaperWidth] = useState(42); // Padrão mais seguro (58mm)
-  const { getNFCeData } = useNFCeLogs(companyId);
+export const usePrintPedido = (companyId: string) => {
+  const [isPrinting, setIsPrinting] = useState(false)
+  const [paperWidth, setPaperWidth] = useState(42) // Padrão mais seguro (58mm)
+  const { getNFCeData } = useNFCeLogs(companyId)
   
   // Carregar configuração de largura do banco de dados
   useEffect(() => {
     const loadPrinterConfig = async () => {
-      try {;
-        const { data, error }  catch (error) { console.error('Error:', error); }= 
+      try {
+        const { data, error }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -30,33 +30,33 @@ export const usePrintPedido = (companyId: string) => {;
           
 
         if (error) {
-          console.warn('Erro ao carregar configuração de impressora:', error);
+          console.warn('Erro ao carregar configuração de impressora:', error)
           return;
         }
 
         if (data && data.largura_papel) {
-          setPaperWidth(data.largura_papel);
-          console.log('📏 Largura carregada do banco:', data.largura_papel);
-          console.log('🔍 DEBUG - Estado paperWidth após setPaperWidth:', data.largura_papel);
+          setPaperWidth(data.largura_papel)
+          console.log('📏 Largura carregada do banco:', data.largura_papel)
+          console.log('🔍 DEBUG - Estado paperWidth após setPaperWidth:', data.largura_papel)
         } else {
-          console.log('🔴 DEBUG - Nenhuma configuração encontrada no banco, usando padrão:', paperWidth);
-          console.log('🔍 DEBUG - Dados retornados do banco:', data);
+          console.log('🔴 DEBUG - Nenhuma configuração encontrada no banco, usando padrão:', paperWidth)
+          console.log('🔍 DEBUG - Dados retornados do banco:', data)
         }
       } catch (error) {
-        console.error('Erro ao carregar configuração:', error);
+        console.error('Erro ao carregar configuração:', error)
 
     };
 
     if (companyId) {
-      loadPrinterConfig();
+      loadPrinterConfig()
 
-  }, [companyId]);
+  }, [companyId])
 
   // Função para gerar cupom fiscal formatado com ESC/POS (mesmo template base)
   const generateCupomFiscalESCPOS = (cupomData: any): string => {
     // DEBUG: Verificar largura dentro da função de formatação;
-    console.log('🔍 DEBUG - generateCupomFiscalESCPOS chamada com paperWidth:', paperWidth);
-    console.log('🔍 DEBUG - Separador que será usado:', '='.repeat(paperWidth));
+    console.log('🔍 DEBUG - generateCupomFiscalESCPOS chamada com paperWidth:', paperWidth)
+    console.log('🔍 DEBUG - Separador que será usado:', '='.repeat(paperWidth))
     
     let commands = '';
     
@@ -79,11 +79,11 @@ export const usePrintPedido = (companyId: string) => {;
     commands += '\n';
     
     // Separador exatamente na largura do papel
-    const separator = '='.repeat(paperWidth).slice(0, paperWidth);
-console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
+    const separator = '='.repeat(paperWidth).slice(0, paperWidth)
+console.log('🔍 DEBUG - Tamanho real do separador:', separator.length)
     commands += separator + '\n';
     commands += '\x1B\x61\x01'; // Center
-    const titulo = cupomData.title || (cupomData.tipo === 'PEDIDO' ? 'PEDIDO' : 'CUPOM FISCAL - NFCe');
+    const titulo = cupomData.title || (cupomData.tipo === 'PEDIDO' ? 'PEDIDO' : 'CUPOM FISCAL - NFCe')
     commands += `${titulo}\n`;
     commands += '\x1B\x61\x00'; // Left align
     commands += separator + '\n';
@@ -108,7 +108,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
     let total = 0;
     if (cupomData.items && cupomData.items.length > 0) {
       cupomData.items.forEach((item: any) => {
-        const subtotal = item.subtotal || (item.quantity * item.price);
+        const subtotal = item.subtotal || (item.quantity * item.price)
         total += subtotal;
         
         
@@ -120,22 +120,22 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         if (item.adicionais && item.adicionais.length > 0) {
           item.adicionais.forEach((adicional: any) => {
             commands += `  + ${adicional.quantity}x ${adicional.name}\n`;
-          });
+          })
         }
         
         // Preço alinhado à direita usando largura configurada
         const precoStr = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-    const buildLine = (l: string, r: string) => {;
+    const buildLine = (l: string, r: string) => {
       const right = r || '';
-      const maxLeft = Math.max(0, paperWidth - right.length);
+      const maxLeft = Math.max(0, paperWidth - right.length)
       const base = l || '';
       const leftTrunc = base.length > maxLeft ? base.slice(0, Math.max(0, maxLeft - 3)) + '...' : base;
-      const spaces = Math.max(0, paperWidth - (leftTrunc.length + right.length));
+      const spaces = Math.max(0, paperWidth - (leftTrunc.length + right.length))
       return leftTrunc + ' '.repeat(spaces) + right;
     };
     commands += buildLine(`${item.quantity}x ${item.name}`, precoStr) + '\n';
         commands += '\n';
-      });
+      })
 
     
     // Subtotal, cashback, taxa de entrega e total
@@ -145,20 +145,20 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
     if (cupomData.cashback || cupomData.taxaEntrega) {
       // Subtotal
       const subtotalStr = `Subtotal: R$ ${total.toFixed(2).replace('.', ',')}`;
-      const subtotalSpaces = Math.max(0, paperWidth - subtotalStr.length);
+      const subtotalSpaces = Math.max(0, paperWidth - subtotalStr.length)
       commands += ' '.repeat(subtotalSpaces) + subtotalStr + '\n';
       
       // Taxa de entrega se houver
       if (cupomData.taxaEntrega && cupomData.taxaEntrega > 0) {
         const taxaStr = `Taxa de Entrega: R$ ${cupomData.taxaEntrega.toFixed(2).replace('.', ',')}`;
-        const taxaSpaces = Math.max(0, paperWidth - taxaStr.length);
+        const taxaSpaces = Math.max(0, paperWidth - taxaStr.length)
         commands += ' '.repeat(taxaSpaces) + taxaStr + '\n';
 
       
       // Cashback se houver
       if (cupomData.cashback && cupomData.cashback > 0) {
         const cashbackStr = `Desconto Cashback: - R$ ${cupomData.cashback.toFixed(2).replace('.', ',')}`;
-        const cashbackSpaces = Math.max(0, paperWidth - cashbackStr.length);
+        const cashbackSpaces = Math.max(0, paperWidth - cashbackStr.length)
         commands += ' '.repeat(cashbackSpaces) + cashbackStr + '\n';
 
       
@@ -168,7 +168,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
     // Total final em destaque
     commands += '\x1B\x45\x01'; // Bold on
     const totalStr = `TOTAL: R$ ${(cupomData.total || total).toFixed(2).replace('.', ',')}`;
-    const totalSpaces = Math.max(0, paperWidth - totalStr.length);
+    const totalSpaces = Math.max(0, paperWidth - totalStr.length)
     commands += ' '.repeat(totalSpaces) + totalStr + '\n';
     commands += '\x1B\x45\x00'; // Bold off
     
@@ -211,19 +211,19 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
   };
 
   const printCupomFiscal = async (pedido: Pedido) => {
-    try {;
-      setIsPrinting(true);
-      console.log('🧾 Iniciando impressão do cupom fiscal:', pedido.id);
+    try {
+      setIsPrinting(true)
+      console.log('🧾 Iniciando impressão do cupom fiscal:', pedido.id)
 
       // Buscar dados da NFCe do pedido
-      const nfceData = getNFCeData(pedido.id);
+      const nfceData = getNFCeData(pedido.id)
 
       if (!nfceData) {
-        toast.error('Nenhum cupom fiscal encontrado para este pedido');
+        toast.error('Nenhum cupom fiscal encontrado para este pedido')
         return false;
 
 
-       catch (error) { console.error('Error:', error); }// Buscar informações da empresa
+       catch (error) { console.error('Error:', error) }// Buscar informações da empresa
       const companyInfo = null as any; const companyError = null as any;
 
 
@@ -231,8 +231,8 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
       const itens = null as any; const itensError = null as any;
       
       if (itensError) {
-        console.error('Erro ao buscar itens do pedido:', itensError);
-        toast.error('Erro ao buscar itens do pedido');
+        console.error('Erro ao buscar itens do pedido:', itensError)
+        toast.error('Erro ao buscar itens do pedido')
         return false;
 
 
@@ -242,15 +242,15 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         item.nome_produto !== 'Taxa de Entrega';
       ) || [];
       
-      const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback');
-      const taxaEntregaItem = itens?.find(item => item.nome_produto === 'Taxa de Entrega');
+      const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback')
+      const taxaEntregaItem = itens?.find(item => item.nome_produto === 'Taxa de Entrega')
       
       // Log dos valores especiais
       if (cashbackItem) {
-        console.log('💰 Cashback encontrado:', cashbackItem.valor_unitario);
+        console.log('💰 Cashback encontrado:', cashbackItem.valor_unitario)
 
       if (taxaEntregaItem) {
-        console.log('🚚 Taxa de entrega encontrada:', taxaEntregaItem.valor_unitario);
+        console.log('🚚 Taxa de entrega encontrada:', taxaEntregaItem.valor_unitario)
 
 
       // Montar dados para impressão do cupom fiscal
@@ -297,7 +297,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         };
       };
 
-      console.log('🧾 Dados do cupom fiscal preparados:', printData);
+      console.log('🧾 Dados do cupom fiscal preparados:', printData)
 
       // Buscar configurações da impressora
       const printerConfig = null as any; const printerError = null as any;
@@ -327,8 +327,8 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           const valorBaseItem = item.quantidade * item.valor_unitario;
           
           // Calcular total dos adicionais
-          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {;
-            return acc + (adicional.quantidade * adicional.valor_unitario);
+          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {
+            return acc + (adicional.quantidade * adicional.valor_unitario)
           }, 0) || 0;
           
           // Subtotal correto = valor base + adicionais
@@ -366,32 +366,32 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         }
       };
 
-      console.log('🧾 Dados do cupom fiscal para Dominio Printer:', dominioPrintData);
+      console.log('🧾 Dados do cupom fiscal para Dominio Printer:', dominioPrintData)
 
       // DEBUG: Verificar valor da largura antes da formatação
-      console.log('🔍 DEBUG - Largura atual no momento da impressão:', paperWidth);
-      console.log('🔍 DEBUG - Tipo da largura:', typeof paperWidth);
-      console.log('🔍 DEBUG - Valor é válido?', paperWidth > 0);
+      console.log('🔍 DEBUG - Largura atual no momento da impressão:', paperWidth)
+      console.log('🔍 DEBUG - Tipo da largura:', typeof paperWidth)
+      console.log('🔍 DEBUG - Valor é válido?', paperWidth > 0)
       
       // Gerar cupom fiscal formatado com ESC/POS usando largura configurada
-      const formattedCupom = generateCupomFiscalESCPOS(dominioPrintData);
+      const formattedCupom = generateCupomFiscalESCPOS(dominioPrintData)
       
       // DEBUG: Verificar se a formatação foi aplicada
-      console.log('🔍 DEBUG - Cupom formatado (primeiras 200 chars):', formattedCupom.substring(0, 200));
-      console.log('🔍 DEBUG - Procurar por separadores no cupom:', formattedCupom.includes('='.repeat(paperWidth)));
+      console.log('🔍 DEBUG - Cupom formatado (primeiras 200 chars):', formattedCupom.substring(0, 200))
+      console.log('🔍 DEBUG - Procurar por separadores no cupom:', formattedCupom.includes('='.repeat(paperWidth)))
       
       // DEBUG: Teste forçado com larguras diferentes
-      const testSeparator32 = '='.repeat(32);
-      const testSeparator80 = '='.repeat(80);
-      console.log('🔍 DEBUG - Cupom contém separador 32 chars?', formattedCupom.includes(testSeparator32));
-      console.log('🔍 DEBUG - Cupom contém separador 80 chars?', formattedCupom.includes(testSeparator80));
-      console.log('🔍 DEBUG - Cupom contém separador atual (' + paperWidth + ' chars)?', formattedCupom.includes('='.repeat(paperWidth)));
+      const testSeparator32 = '='.repeat(32)
+      const testSeparator80 = '='.repeat(80)
+      console.log('🔍 DEBUG - Cupom contém separador 32 chars?', formattedCupom.includes(testSeparator32))
+      console.log('🔍 DEBUG - Cupom contém separador 80 chars?', formattedCupom.includes(testSeparator80))
+      console.log('🔍 DEBUG - Cupom contém separador atual (' + paperWidth + ' chars)?', formattedCupom.includes('='.repeat(paperWidth)))
       
       // Buscar nome da impressora configurada
       const printerName = printerConfig?.dominio_printer_name || 'MP-4200 TH';
       
-      console.log('🖨️ Enviando cupom fiscal formatado para impressora:', printerName);
-      console.log('📏 Largura configurada:', paperWidth, 'caracteres');
+      console.log('🖨️ Enviando cupom fiscal formatado para impressora:', printerName)
+      console.log('📏 Largura configurada:', paperWidth, 'caracteres')
 
       // Enviar para API do Dominio Printer v2.2.1 com rawMode
       const response = await fetch('http://localhost:3001/api/printer/test', {
@@ -403,98 +403,98 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           printerName: printerName,
           text: formattedCupom,
           rawMode: true  // v2.2.1 - Impressão sem alterações, controle total pelo app
-        });
-      });
+        })
+      })
 
-      const result = await response.json();
+      const result = await response.json()
       
       if (result.success) {
-        toast.success('Cupom fiscal impresso com sucesso!');
+        toast.success('Cupom fiscal impresso com sucesso!')
         return true;
       } else {
-        throw new Error(result.error || 'Erro ao imprimir cupom fiscal');
+        throw new Error(result.error || 'Erro ao imprimir cupom fiscal')
 
 
     } catch (error: any) {
-      console.error('💥 Erro ao imprimir cupom fiscal:', error);
-      toast.error(`Erro ao imprimir cupom fiscal: ${error.message}`);
+      console.error('💥 Erro ao imprimir cupom fiscal:', error)
+      toast.error(`Erro ao imprimir cupom fiscal: ${error.message}`)
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 
-  const printPedido = async (pedido: Pedido) => {;
-    console.log('🚀 INÍCIO - printPedido chamado');
-    console.log('📋 Pedido recebido:', pedido);
-    console.log('🏢 Company ID usado:', pedido.company_id);
+  const printPedido = async (pedido: Pedido) => {
+    console.log('🚀 INÍCIO - printPedido chamado')
+    console.log('📋 Pedido recebido:', pedido)
+    console.log('🏢 Company ID usado:', pedido.company_id)
     
     try {
-      setIsPrinting(true);
-      console.log('🖨️ Iniciando impressão do pedido:', pedido.id);
+      setIsPrinting(true)
+      console.log('🖨️ Iniciando impressão do pedido:', pedido.id)
 
       // Buscar informações da empresa
-      console.log('🏢 Buscando informações da empresa...');
+      console.log('🏢 Buscando informações da empresa...')
       const companyInfo = null as any; const companyError = null as any;
       if (companyError) {
-        console.error('❌ Erro ao buscar informações da empresa:', companyError);
-        console.log('🔍 Tentando buscar sem filtro para debug...');
+        console.error('❌ Erro ao buscar informações da empresa:', companyError)
+        console.log('🔍 Tentando buscar sem filtro para debug...')
         
         // Debug: verificar se a empresa existe
-        const { data: allCompanies }  catch (error) { console.error('Error:', error); }= 
+        const { data: allCompanies }  catch (error) { console.error('Error:', error) }= 
           
           
           
-        console.log('🏢 Empresas encontradas no banco:', allCompanies);
+        console.log('🏢 Empresas encontradas no banco:', allCompanies)
 
 
       // Buscar configurações da impressora
-      console.log('🖨️ Buscando configurações da impressora...');
+      console.log('🖨️ Buscando configurações da impressora...')
       const printerConfig = null as any; const printerError = null as any;
       
       if (printerError) {
-        console.error('❌ Erro ao buscar configurações da impressora:', printerError);
-        console.log('🔍 Debug: tentando buscar todas as configurações...');
+        console.error('❌ Erro ao buscar configurações da impressora:', printerError)
+        console.log('🔍 Debug: tentando buscar todas as configurações...')
         
         // Debug: verificar se existem configurações
         const { data: allSettings  } = null as any;
-        console.log('🖨️ Configurações encontradas no banco:', allSettings);
+        console.log('🖨️ Configurações encontradas no banco:', allSettings)
         
-        toast.error('Erro ao buscar configurações da impressora. Configure a impressora primeiro.');
+        toast.error('Erro ao buscar configurações da impressora. Configure a impressora primeiro.')
         return false;
 
       
       // Verificar se há configuração válida
       if (!printerConfig) {
-        console.error('❌ Nenhuma configuração de impressora encontrada');
-        toast.error('Nenhuma configuração de impressora encontrada. Configure a impressora em Configurações > Impressora.');
+        console.error('❌ Nenhuma configuração de impressora encontrada')
+        toast.error('Nenhuma configuração de impressora encontrada. Configure a impressora em Configurações > Impressora.')
         return false;
 
       
       if (!printerConfig?.printnode_default_printer_id) {
-        console.error('❌ PrintNode sem impressora padrão definida');
-        toast.error('Defina uma impressora padrão na integração PrintNode.');
+        console.error('❌ PrintNode sem impressora padrão definida')
+        toast.error('Defina uma impressora padrão na integração PrintNode.')
         return false;
 
 
       // Mesmo com a flag desabilitada, se houver impressora padrão vamos prosseguir
       if (printerConfig.printnode_enabled === false) {
-        console.warn('⚠️ PrintNode marcado como desabilitado, mas há impressora padrão. Prosseguindo com impressão.');
+        console.warn('⚠️ PrintNode marcado como desabilitado, mas há impressora padrão. Prosseguindo com impressão.')
 
 
       // Buscar dados completos da empresa
       const { data: empresaInfo  } = null as any;
       // Buscar endereço da empresa
       const { data: empresaEndereco  } = null as any;
-      console.log('🏢 Dados da empresa:', empresaInfo);
-      console.log('📍 Endereço da empresa:', empresaEndereco);
+      console.log('🏢 Dados da empresa:', empresaInfo)
+      console.log('📍 Endereço da empresa:', empresaEndereco)
 
       // Buscar itens do pedido com adicionais
       const itens = null as any; const itensError = null as any;
       
       if (itensError) {
-        console.error('Erro ao buscar itens do pedido:', itensError);
-        toast.error('Erro ao buscar itens do pedido');
+        console.error('Erro ao buscar itens do pedido:', itensError)
+        toast.error('Erro ao buscar itens do pedido')
         return false;
 
 
@@ -504,8 +504,8 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         item.nome_produto !== 'Taxa de Entrega';
       ) || [];
       
-      const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback');
-      const taxaEntregaItem = itens?.find(item => item.nome_produto === 'Taxa de Entrega');
+      const cashbackItem = itens?.find(item => item.nome_produto === 'Desconto Cashback')
+      const taxaEntregaItem = itens?.find(item => item.nome_produto === 'Taxa de Entrega')
       
       // Valores de cashback e taxa de entrega (converter negativo para positivo para cashback)
       const cashbackValue = cashbackItem ? Math.abs(cashbackItem.valor_unitario) : 0;
@@ -530,8 +530,8 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
           const valorBaseItem = item.quantidade * item.valor_unitario;
           
           // Calcular total dos adicionais
-          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {;
-            return acc + (adicional.quantidade * adicional.valor_unitario);
+          const valorAdicionais = item.pedido_item_adicionais?.reduce((acc, adicional) => {
+            return acc + (adicional.quantidade * adicional.valor_unitario)
           }, 0) || 0;
           
           // Subtotal correto = valor base + adicionais
@@ -555,7 +555,7 @@ console.log('🔍 DEBUG - Tamanho real do separador:', separator.length);
         pagamento: pedido.pagamento || 'Não informado'
       };
 
-      console.log('📦 Dados preparados para API Dominio Printer:', printData);
+      console.log('📦 Dados preparados para API Dominio Printer:', printData)
 
 
       // Formatar texto do pedido para impressão
@@ -582,7 +582,7 @@ ${printData.cliente?.endereco ? `End: ${printData.cliente.endereco}` : ''}
 ----------------------------------------
 ITENS:
 ----------------------------------------
-${printData.items.map(item => {;
+${printData.items.map(item => {
   let itemText = `${item.quantity}x ${item.name} - R$ ${item.price.toFixed(2)}`;
   if (item.observacoes) {
     itemText += `\n   Obs: ${item.observacoes}`;
@@ -591,7 +591,7 @@ ${printData.items.map(item => {;
     itemText += '\n   Adicionais:';
     item.adicionais.forEach(adicional => {
       itemText += `\n   + ${adicional.quantity}x ${adicional.name} - R$ ${adicional.price.toFixed(2)}`;
-    });
+    })
   }
   itemText += `\n   Subtotal: R$ ${item.subtotal.toFixed(2)}\n`;
   return itemText;
@@ -605,12 +605,12 @@ Obrigado pela preferencia!
 ========================================
 
 \x1B\x6D
-      `.trim();
+      `.trim()
 
       
 // DEBUG: Verificar valor da largura antes da formatação
-console.log('🔍 DEBUG - Largura atual no momento da impressão (printPedido):', paperWidth);
-console.log('🔍 DEBUG - Tipo da largura:', typeof paperWidth);
+console.log('🔍 DEBUG - Largura atual no momento da impressão (printPedido):', paperWidth)
+console.log('🔍 DEBUG - Tipo da largura:', typeof paperWidth)
       
 // Usar nossa formatação ESC/POS com largura configurada
 const dadosParaFormatacao = {
@@ -639,7 +639,7 @@ const dadosParaFormatacao = {
       price: ad.valor_unitario,;
     })) || [];
     const subtotalBase = item.quantidade * item.valor_unitario;
-    const subtotalAdicionais = adicionais.reduce((acc: number, a: any) => acc + (a.quantity * a.price), 0);
+    const subtotalAdicionais = adicionais.reduce((acc: number, a: any) => acc + (a.quantity * a.price), 0)
     return {
       name: item.nome_produto,
       quantity: item.quantidade,
@@ -659,21 +659,21 @@ const dadosParaFormatacao = {
       const pedidoFormatadoESCPOS = formatPedidoESCPOS(dadosParaFormatacao as PedidoTemplateData, paperWidth, {
         removeAccents: true,
         highlightOrder: true,;
-      });
+      })
       
-      console.log('🔍 DEBUG - Pedido formatado com ESC/POS (primeiras 200 chars):', pedidoFormatadoESCPOS.substring(0, 200));
-      console.log('🔍 DEBUG - Contém separador de', paperWidth, 'chars?', pedidoFormatadoESCPOS.includes('='.repeat(paperWidth)));
+      console.log('🔍 DEBUG - Pedido formatado com ESC/POS (primeiras 200 chars):', pedidoFormatadoESCPOS.substring(0, 200))
+      console.log('🔍 DEBUG - Contém separador de', paperWidth, 'chars?', pedidoFormatadoESCPOS.includes('='.repeat(paperWidth)))
       
       // Impressão direta via printnode-proxy (consistente com templates locais)
       const pnSettings = null as any; const pnSettingsErr = null as any;
 
 
-      const utf8 = new TextEncoder().encode(pedidoFormatadoESCPOS);
+      const utf8 = new TextEncoder().encode(pedidoFormatadoESCPOS)
       let binary = '';
-      utf8.forEach((b) => (binary += String.fromCharCode(b)));
-      const contentBase64 = btoa(binary);
+      utf8.forEach((b) => (binary += String.fromCharCode(b)))
+      const contentBase64 = btoa(binary)
 
-      const { error: pnErr } = await Promise.resolve();
+      const { error: pnErr } = await Promise.resolve()
         body: {
           action: 'print',
           printerId: Number(pnSettings.printnode_default_printer_id),
@@ -684,18 +684,18 @@ const dadosParaFormatacao = {
           childAccountId: pnSettings.printnode_child_account_id || undefined,
           childAccountEmail: pnSettings.printnode_child_email || undefined,
         },
-      });
+      })
       if (pnErr) throw pnErr;
 
-      toast.success('Pedido impresso via PrintNode!');
+      toast.success('Pedido impresso via PrintNode!')
       return true;
 
     } catch (error: any) {
-      console.error('❌ Erro durante a impressão:', error);
-      toast.error('Erro de conexão com a impressora. Verifique a integração PrintNode.');
+      console.error('❌ Erro durante a impressão:', error)
+      toast.error('Erro de conexão com a impressora. Verifique a integração PrintNode.')
       return false;
     } finally {
-      setIsPrinting(false);
+      setIsPrinting(false)
 
   };
 

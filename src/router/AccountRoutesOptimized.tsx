@@ -15,7 +15,7 @@ const ProtectedAppLayout = () => (
   <ProtectedRoute>
     <AppLayout />
   </ProtectedRoute>;
-);
+)
 
 const AccountRoutes = () => {
   return (
@@ -35,7 +35,7 @@ const AccountRoutes = () => {
       {/* Rota não encontrada */}
       <Route path="*" element={<NotFound />} />
     </Routes>;
-  );
+  )
 };
 
 export default AccountRoutes;

@@ -15,51 +15,51 @@ interface SecurityValidationHook {
 }
 
 export const useSecurityValidation = (): SecurityValidationHook => {
-  const validateEmail = useCallback((email: string): ValidationResult => {;
+  const validateEmail = useCallback((email: string): ValidationResult => {
     const errors: string[] = [];
     
     if (!email) {
-      errors.push('Email é obrigatório');
+      errors.push('Email é obrigatório')
     } else if (!isValidEmail(email)) {
-      errors.push('Email inválido');
+      errors.push('Email inválido')
     }
     
     return {
       isValid: errors.length === 0,
       errors
     };
-  }, []);
+  }, [])
 
-  const validatePassword = useCallback((password: string): ValidationResult => {;
+  const validatePassword = useCallback((password: string): ValidationResult => {
     const errors: string[] = [];
     
     if (!password) {
-      errors.push('Senha é obrigatória');
+      errors.push('Senha é obrigatória')
       return { isValid: false, errors };
     }
     
-    const result = isStrongPassword(password);
+    const result = isStrongPassword(password)
     return {
       isValid: result.valid,
       errors: result.errors
     };
-  }, []);
+  }, [])
 
   const checkRateLimit = useCallback((
     key: string, 
     maxAttempts: number = 5
-  ): boolean => {;
-    return frontendRateLimit.isAllowed(key, maxAttempts);
-  }, []);
+  ): boolean => {
+    return frontendRateLimit.isAllowed(key, maxAttempts)
+  }, [])
 
-  const resetRateLimit = useCallback((key: string): void => {;
-    frontendRateLimit.reset(key);
-  }, []);
+  const resetRateLimit = useCallback((key: string): void => {
+    frontendRateLimit.reset(key)
+  }, [])
 
   const sanitizeInput = useCallback((input: string): string => {
     return input
       .replace(/[<>'"&]/g, (char) => {
-        const entities: Record<string, string> = {;
+        const entities: Record<string, string> = {
           '<': '&lt;',
           '>': '&gt;',
           '"': '&quot;',
@@ -67,8 +67,8 @@ export const useSecurityValidation = (): SecurityValidationHook => {
           '&': '&amp;'
         };
         return entities[char] || char;
-      });
-  }, []);
+      })
+  }, [])
 
   return {
     validateEmail,

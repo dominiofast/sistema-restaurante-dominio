@@ -17,87 +17,87 @@ const brandPrimaryDark = '#15803d';
 const neutralText = '#222';
 
 const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onCancel, companyId, dadosIniciais }) => {
-  const [telefone, setTelefone] = useState(dadosIniciais?.telefone || '');
-  const [nome, setNome] = useState(dadosIniciais?.nome || '');
-  const [loading, setLoading] = useState(false);
-  const [clienteEncontrado, setClienteEncontrado] = useState(false);
-  const [mostrarFormulario, setMostrarFormulario] = useState(true);
+  const [telefone, setTelefone] = useState(dadosIniciais?.telefone || '')
+  const [nome, setNome] = useState(dadosIniciais?.nome || '')
+  const [loading, setLoading] = useState(false)
+  const [clienteEncontrado, setClienteEncontrado] = useState(false)
+  const [mostrarFormulario, setMostrarFormulario] = useState(true)
 
-  const { buscarPorTelefone, cadastrarCliente } = useClientePublico();
+  const { buscarPorTelefone, cadastrarCliente } = useClientePublico()
 
   const podeAvancar = telefone.length >= 10 && nome.length > 3;
 
-  const handleBuscarCliente = async () => {;
-    const telefoneNumeros = telefone.replace(/\D/g, '');
+  const handleBuscarCliente = async () => {
+    const telefoneNumeros = telefone.replace(/\D/g, '')
     if (telefoneNumeros.length < 10) return;
 
-    setLoading(true);
+    setLoading(true)
     try {
-      console.log('🔍 Buscando cliente com telefone:', telefoneNumeros, 'na empresa:', companyId);
-      const cliente = await buscarPorTelefone(telefoneNumeros, companyId);
+      console.log('🔍 Buscando cliente com telefone:', telefoneNumeros, 'na empresa:', companyId)
+      const cliente = await buscarPorTelefone(telefoneNumeros, companyId)
       
       if (cliente) {
-        console.log('✅ Cliente encontrado:', cliente);
-        setNome(cliente.nome);
-        setClienteEncontrado(true);
-        setMostrarFormulario(false);
-      }  catch (error) { console.error('Error:', error); }else {
-        console.log('❌ Cliente não encontrado, mostrar formulário');
-        setClienteEncontrado(false);
-        setMostrarFormulario(true);
+        console.log('✅ Cliente encontrado:', cliente)
+        setNome(cliente.nome)
+        setClienteEncontrado(true)
+        setMostrarFormulario(false)
+      }  catch (error) { console.error('Error:', error) }else {
+        console.log('❌ Cliente não encontrado, mostrar formulário')
+        setClienteEncontrado(false)
+        setMostrarFormulario(true)
       }
     } catch (error) {
-      console.error('❌ Erro ao buscar cliente:', error);
-      setClienteEncontrado(false);
-      setMostrarFormulario(true);
+      console.error('❌ Erro ao buscar cliente:', error)
+      setClienteEncontrado(false)
+      setMostrarFormulario(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const handleFinalizar = async () => {;
-    setLoading(true);
+  const handleFinalizar = async () => {
+    setLoading(true)
     try {
-      const telefoneNumeros = telefone.replace(/\D/g, '');
+      const telefoneNumeros = telefone.replace(/\D/g, '')
       
       if (!clienteEncontrado && nome) {
-        console.log('📝 Cadastrando novo cliente', { nome, telefone: telefoneNumeros, companyId } catch (error) { console.error('Error:', error); });
-        const novoCliente = await cadastrarCliente(nome, telefoneNumeros, companyId);
+        console.log('📝 Cadastrando novo cliente', { nome, telefone: telefoneNumeros, companyId } catch (error) { console.error('Error:', error) })
+        const novoCliente = await cadastrarCliente(nome, telefoneNumeros, companyId)
         if (!novoCliente) {
-          console.error('❌ Falha ao cadastrar cliente');
+          console.error('❌ Falha ao cadastrar cliente')
           return;
         }
-        console.log('✅ Cliente cadastrado com sucesso:', novoCliente);
+        console.log('✅ Cliente cadastrado com sucesso:', novoCliente)
       }
       
-      console.log('✅ Finalizando identificação com:', { nome, telefone: telefoneNumeros });
-      onComplete(nome, telefoneNumeros);
+      console.log('✅ Finalizando identificação com:', { nome, telefone: telefoneNumeros })
+      onComplete(nome, telefoneNumeros)
     } catch (error) {
-      console.error('❌ Erro ao processar cliente:', error);
+      console.error('❌ Erro ao processar cliente:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const formatarTelefone = (valor: string) => {;
-    const numeros = valor.replace(/\D/g, '');
+  const formatarTelefone = (valor: string) => {
+    const numeros = valor.replace(/\D/g, '')
     if (numeros.length <= 10) {
-      return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+      return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
     } else {
-      return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
 
   };
 
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valor = e.target.value;
-    const telefoneFormatado = formatarTelefone(valor);
-    setTelefone(telefoneFormatado);
+    const telefoneFormatado = formatarTelefone(valor)
+    setTelefone(telefoneFormatado)
     
     // Reset states quando telefone mudar
     if (clienteEncontrado) {
-      setClienteEncontrado(false);
-      setMostrarFormulario(true);
-      setNome('');
+      setClienteEncontrado(false)
+      setMostrarFormulario(true)
+      setNome('')
 
   };
 
@@ -143,8 +143,8 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setMostrarFormulario(true);
-                    setClienteEncontrado(false);
+                    setMostrarFormulario(true)
+                    setClienteEncontrado(false)
                   }}
                   className="mt-2"
                 >
@@ -191,7 +191,7 @@ const IdentificacaoModal: React.FC<IdentificacaoModalProps> = ({ onComplete, onC
         </Card>
       </div>
     </div>
-  );
+  )
 };
 
 export default IdentificacaoModal;

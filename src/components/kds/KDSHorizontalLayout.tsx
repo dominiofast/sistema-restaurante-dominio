@@ -22,7 +22,7 @@ export const KDSHorizontalLayout: React.FC<KDSHorizontalLayoutProps> = ({
   rows,
   isFullscreen = false
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0)
   
   // Calcular quantos pedidos cabem por página baseado no número de fileiras
   const getItemsPerPage = () => {
@@ -33,49 +33,49 @@ export const KDSHorizontalLayout: React.FC<KDSHorizontalLayoutProps> = ({
     return columnsPerRow * rows;
   };
 
-  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage())
 
   // Atualizar itens por página quando a tela redimensionar
   useEffect(() => {
-    const handleResize = () => {;
-      setItemsPerPage(getItemsPerPage());
+    const handleResize = () => {
+      setItemsPerPage(getItemsPerPage())
       // Resetar para primeira página se necessário
-      const newTotalPages = Math.ceil(pedidos.length / getItemsPerPage());
+      const newTotalPages = Math.ceil(pedidos.length / getItemsPerPage())
       if (currentPage >= newTotalPages && newTotalPages > 0) {
-        setCurrentPage(0);
+        setCurrentPage(0)
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [rows, pedidos.length, currentPage]);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [rows, pedidos.length, currentPage])
 
   // Resetar página quando pedidos mudarem drasticamente
   useEffect(() => {
-    const totalPages = Math.ceil(pedidos.length / itemsPerPage);
+    const totalPages = Math.ceil(pedidos.length / itemsPerPage)
     if (currentPage >= totalPages && totalPages > 0) {
-      setCurrentPage(0);
+      setCurrentPage(0)
     }
-  }, [pedidos.length, itemsPerPage]);
+  }, [pedidos.length, itemsPerPage])
 
-  const totalPages = Math.ceil(pedidos.length / itemsPerPage);
+  const totalPages = Math.ceil(pedidos.length / itemsPerPage)
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPedidos = pedidos.slice(startIndex, endIndex);
+  const currentPedidos = pedidos.slice(startIndex, endIndex)
 
   const nextPage = () => {
-    if (currentPage < totalPages - 1) {;
-      setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1)
     }
   };
 
   const prevPage = () => {
-    if (currentPage > 0) {;
-      setCurrentPage(currentPage - 1);
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1)
     }
   };
 
-  const getGridClasses = () => {;
+  const getGridClasses = () => {
     const baseClasses = 'grid gap-4';
     const rowClasses = rows === 1 ? 'grid-rows-1' : 'grid-rows-2';
     const colClasses = 'grid-cols-3 md:grid-cols-4 xl:grid-cols-6';
@@ -90,7 +90,7 @@ export const KDSHorizontalLayout: React.FC<KDSHorizontalLayoutProps> = ({
           <p className="text-sm">Aguardando novos pedidos...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -167,5 +167,5 @@ export const KDSHorizontalLayout: React.FC<KDSHorizontalLayoutProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

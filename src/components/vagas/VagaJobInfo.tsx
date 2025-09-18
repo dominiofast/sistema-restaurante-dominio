@@ -14,7 +14,7 @@ const VagaJobInfo: React.FC<VagaJobInfoProps> = ({ vaga, config }) => {
       day: '2-digit',
       month: 'long',
       year: 'numeric';
-    });
+    })
   };
 
   return (
@@ -78,7 +78,7 @@ const VagaJobInfo: React.FC<VagaJobInfoProps> = ({ vaga, config }) => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default VagaJobInfo;

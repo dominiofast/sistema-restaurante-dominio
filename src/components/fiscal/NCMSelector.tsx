@@ -103,7 +103,7 @@ const ncmCodes = [
   { code: '0706.90.00', description: 'Outras raízes comestíveis, frescas ou refrigeradas' },
   
   // Condimentos e temperos
-  { code: '0904.11.00', description: 'Pimenta (do gênero Piper); pimentos do gênero Capsicum ou do gênero Pimenta, secos, triturados ou em pó' },
+  { code: '0904.11.00', description: 'Pimenta (do gênero Piper) pimentos do gênero Capsicum ou do gênero Pimenta, secos, triturados ou em pó' },
   { code: '0904.12.00', description: 'Pimentas doces ou pimentões, secos, triturados ou em pó' },
   { code: '0904.20.00', description: 'Frutos dos gêneros Capsicum ou Pimenta, secos, triturados ou em pó' },
   { code: '0905.10.00', description: 'Baunilha não triturada nem em pó' },
@@ -166,16 +166,16 @@ interface NCMSelectorProps {
 }
 
 export function NCMSelector({ value, onValueChange, placeholder = "Buscar código NCM..." }: NCMSelectorProps) {
-  const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [open, setOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
   const filteredCodes = ncmCodes.filter(
     (ncm) =>
       ncm.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ncm.description.toLowerCase().includes(searchTerm.toLowerCase());
-  );
+      ncm.description.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
-  const selectedNCM = ncmCodes.find((ncm) => ncm.code === value);
+  const selectedNCM = ncmCodes.find((ncm) => ncm.code === value)
 
   return (
     <div className="space-y-2">
@@ -219,8 +219,8 @@ export function NCMSelector({ value, onValueChange, placeholder = "Buscar códig
                     key={ncm.code}
                     value={ncm.code}
                     onSelect={(currentValue) => {
-                      onValueChange(currentValue === value ? "" : currentValue);
-                      setOpen(false);
+                      onValueChange(currentValue === value ? "" : currentValue)
+                      setOpen(false)
                     }}
                     className="flex items-center gap-2 py-2"
                   >
@@ -247,5 +247,5 @@ export function NCMSelector({ value, onValueChange, placeholder = "Buscar códig
         </div>
       )}
     </div>
-  );
+  )
 }

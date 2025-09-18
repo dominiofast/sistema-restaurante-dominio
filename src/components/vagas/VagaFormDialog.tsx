@@ -168,5 +168,5 @@ export const VagaFormDialog: React.FC<VagaFormDialogProps> = ({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

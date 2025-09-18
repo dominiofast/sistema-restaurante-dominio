@@ -49,5 +49,5 @@ export const DisponibilidadeOptions: React.FC<DisponibilidadeOptionsProps> = ({
         </label>
       ))}
     </div>
-  );
+  )
 };

@@ -21,21 +21,21 @@ export interface BrandingConfig {
   banner_url?: string;
 
 
-export const useBrandingConfigCloudinary = () => {;
-  const { currentCompany } = useAuth();
-  const [config, setConfig] = useState<BrandingConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { uploadFile: cloudinaryUpload, uploading } = useCloudinaryUpload();
+export const useBrandingConfigCloudinary = () => {
+  const { currentCompany } = useAuth()
+  const [config, setConfig] = useState<BrandingConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const { uploadFile: cloudinaryUpload, uploading } = useCloudinaryUpload()
 
   const loadConfig = async () => {
-    if (!currentCompany?.id) {;
+    if (!currentCompany?.id) {
       return;
     }
 
     try {
-      console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id);
+      console.log('🔍 Carregando configuração de branding para empresa:', currentCompany.id)
       
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
           *
@@ -48,14 +48,14 @@ export const useBrandingConfigCloudinary = () => {;
         
 
       if (error) {
-        console.error('❌ Erro ao carregar configuração:', error);
-        toast.error('Erro ao carregar configuração de branding');
+        console.error('❌ Erro ao carregar configuração:', error)
+        toast.error('Erro ao carregar configuração de branding')
         return;
       }
 
       if (data) {
-        console.log('✅ Configuração carregada:', data);
-        setConfig(data);
+        console.log('✅ Configuração carregada:', data)
+        setConfig(data)
       } else {
         // Configuração padrão
         const defaultConfig: BrandingConfig = {
@@ -69,60 +69,60 @@ export const useBrandingConfigCloudinary = () => {;
           background_color: '#FFFFFF',
           header_style: 'modern'
         };
-        setConfig(defaultConfig);
+        setConfig(defaultConfig)
       }
     } catch (error) {
-      console.error('💥 Erro ao carregar configuração:', error);
-      toast.error('Erro ao carregar configuração de branding');
+      console.error('💥 Erro ao carregar configuração:', error)
+      toast.error('Erro ao carregar configuração de branding')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
-    loadConfig();
-  }, [currentCompany?.id]);
+    loadConfig()
+  }, [currentCompany?.id])
 
   const uploadFile = async (file: File, type: 'logo' | 'banner'): Promise<string | null> => {
-    if (!currentCompany?.id) {;
-      toast.error('Empresa não selecionada');
+    if (!currentCompany?.id) {
+      toast.error('Empresa não selecionada')
       return null;
     }
 
     try {
-      console.log('🔄 Iniciando upload do arquivo via Cloudinary:', file.name);
+      console.log('🔄 Iniciando upload do arquivo via Cloudinary:', file.name)
       
       // Upload para Cloudinary
-      const url = await cloudinaryUpload(file, `cardapio/branding/${currentCompany.id} catch (error) { console.error('Error:', error); }/${type}`);
+      const url = await cloudinaryUpload(file, `cardapio/branding/${currentCompany.id} catch (error) { console.error('Error:', error) }/${type}`)
       
       if (url) {
-        console.log('✅ Upload concluído:', url);
+        console.log('✅ Upload concluído:', url)
         return url;
       } else {
-        throw new Error('Falha no upload para Cloudinary');
+        throw new Error('Falha no upload para Cloudinary')
       }
 
     } catch (error) {
-      console.error('💥 Erro no upload:', error);
-      toast.error('Erro ao fazer upload do arquivo');
+      console.error('💥 Erro no upload:', error)
+      toast.error('Erro ao fazer upload do arquivo')
       return null;
     }
   };
 
   const saveConfig = async (newConfig: BrandingConfig) => {
-    if (!currentCompany?.id) {;
-      toast.error('Empresa não selecionada');
+    if (!currentCompany?.id) {
+      toast.error('Empresa não selecionada')
       return false;
     }
 
     try {
-      console.log('💾 Salvando configuração de branding:', newConfig);
+      console.log('💾 Salvando configuração de branding:', newConfig)
 
       const configData = {
         ...newConfig,
         company_id: currentCompany.id,
-        updated_at: new Date().toISOString();
-      } catch (error) { console.error('Error:', error); };
+        updated_at: new Date().toISOString()
+      } catch (error) { console.error('Error:', error) };
 
       // Verificar se já existe uma configuração
       const { data: existingConfig  } = null as any;
@@ -148,19 +148,19 @@ export const useBrandingConfigCloudinary = () => {;
       }
 
       if (result.error) {
-        console.error('❌ Erro ao salvar configuração:', result.error);
-        toast.error('Erro ao salvar configuração de branding');
+        console.error('❌ Erro ao salvar configuração:', result.error)
+        toast.error('Erro ao salvar configuração de branding')
         return false;
       }
 
-      console.log('✅ Configuração salva:', result.data);
-      setConfig(result.data);
-      toast.success('Configuração salva com sucesso!');
+      console.log('✅ Configuração salva:', result.data)
+      setConfig(result.data)
+      toast.success('Configuração salva com sucesso!')
       return true;
 
     } catch (error) {
-      console.error('💥 Erro ao salvar configuração:', error);
-      toast.error('Erro ao salvar configuração de branding');
+      console.error('💥 Erro ao salvar configuração:', error)
+      toast.error('Erro ao salvar configuração de branding')
       return false;
     }
   };

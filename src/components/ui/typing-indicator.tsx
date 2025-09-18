@@ -61,7 +61,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
         />
       </div>
     </div>
-  );
+  )
 };
 
 interface TypingMessageProps {
@@ -90,5 +90,5 @@ export const TypingMessage: React.FC<TypingMessageProps> = ({
         <span className="text-xs text-muted-foreground mt-1">digitando...</span>
       </div>
     </div>
-  );
+  )
 };

@@ -2,7 +2,7 @@
  * Utilitário para otimizar URLs de imagens do Supabase
  */
 
-export const getOptimizedImageUrl = (url: string | null | undefined, options?: {;
+export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
   width?: number;
   height?: number;
   quality?: number;
@@ -12,20 +12,20 @@ export const getOptimizedImageUrl = (url: string | null | undefined, options?: {
   
   // Se for uma URL do Supabase, adicionar parâmetros de transformação
   if (url.includes('
-    const urlObj = new URL(url);
+    const urlObj = new URL(url)
     
     // Adicionar transformações de imagem do Supabase
     if (options?.width) {
-      urlObj.searchParams.set('width', options.width.toString());
+      urlObj.searchParams.set('width', options.width.toString())
     }
     if (options?.height) {
-      urlObj.searchParams.set('height', options.height.toString());
+      urlObj.searchParams.set('height', options.height.toString())
     }
     if (options?.quality) {
-      urlObj.searchParams.set('quality', options.quality.toString());
+      urlObj.searchParams.set('quality', options.quality.toString())
     }
     
-    return urlObj.toString();
+    return urlObj.toString()
 
   
   return url;
@@ -38,19 +38,19 @@ export const lazyLoadImage = (imgElement: HTMLImageElement) => {
   if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {;
+        if (entry.isIntersecting) {
           const img = entry.target as HTMLImageElement;
           const src = img.dataset.src;
           if (src) {
             img.src = src;
-            img.removeAttribute('data-src');
-            observer.unobserve(img);
+            img.removeAttribute('data-src')
+            observer.unobserve(img)
           }
         }
-      });
-    });
+      })
+    })
     
-    imageObserver.observe(imgElement);
+    imageObserver.observe(imgElement)
 
 };
 
@@ -58,11 +58,11 @@ export const lazyLoadImage = (imgElement: HTMLImageElement) => {
  * Preload de imagens críticas
  */
 export const preloadCriticalImages = (urls: string[]) => {
-  urls.forEach(url => {;
-    const link = document.createElement('link');
+  urls.forEach(url => {
+    const link = document.createElement('link')
     link.rel = 'preload';
     link.as = 'image';
     link.href = url;
-    document.head.appendChild(link);
-  });
+    document.head.appendChild(link)
+  })
 };

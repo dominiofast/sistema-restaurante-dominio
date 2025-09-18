@@ -15,14 +15,14 @@ export const CashbackInline: React.FC<CashbackInlineProps> = ({
   primaryColor = '#3B82F6',
   className = '' 
 }) => {
-  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId);
+  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId)
 
   // Se não há configuração ou não está ativo, não renderiza
   if (!cashbackConfig || !cashbackConfig.is_active || isLoading || productPrice <= 0) {
     return null;
   }
 
-  const percentual = Number(cashbackConfig.percentual_cashback);
+  const percentual = Number(cashbackConfig.percentual_cashback)
   const cashbackValue = (productPrice * percentual) / 100;
 
   return (
@@ -34,5 +34,5 @@ export const CashbackInline: React.FC<CashbackInlineProps> = ({
         Ganhe R$ {cashbackValue.toFixed(2).replace('.', ',')} de volta
       </span>
     </div>
-  );
+  )
 };

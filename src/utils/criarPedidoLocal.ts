@@ -48,7 +48,7 @@ export async function criarPedidoLocal(pedidoData: PedidoData): Promise<CriarPed
 
   try {
     // 1. Buscar empresa
-    const { data: company, error: companyError }  catch (error) { console.error('Error:', error); }= 
+    const { data: company, error: companyError }  catch (error) { console.error('Error:', error) }= 
       
       
       

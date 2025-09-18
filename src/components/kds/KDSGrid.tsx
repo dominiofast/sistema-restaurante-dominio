@@ -21,21 +21,21 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
   onPaginaChange
 }) => {
   // Cálculos responsivos para paginação
-  const balcoesPorLinha = Math.max(1, Math.floor(larguraTela / 280));
+  const balcoesPorLinha = Math.max(1, Math.floor(larguraTela / 280))
   const balcoesPorPagina = visualizacao === 2 ? balcoesPorLinha * 2 : balcoesPorLinha;
   
   // Pedidos da página atual
   const pedidosPaginaAtual = pedidos.slice(
     paginaAtual * balcoesPorPagina,
     (paginaAtual + 1) * balcoesPorPagina;
-  );
+  )
 
   // Para modo 2 fileiras: distribuir entre linha 1 e linha 2
-  const primeiraLinha = pedidosPaginaAtual.slice(0, balcoesPorLinha);
-  const segundaLinha = pedidosPaginaAtual.slice(balcoesPorLinha);
+  const primeiraLinha = pedidosPaginaAtual.slice(0, balcoesPorLinha)
+  const segundaLinha = pedidosPaginaAtual.slice(balcoesPorLinha)
 
   // Cálculos para paginação
-  const totalPaginas = Math.ceil(pedidos.length / balcoesPorPagina);
+  const totalPaginas = Math.ceil(pedidos.length / balcoesPorPagina)
   const temMaisPaginas = totalPaginas > 1;
 
   if (visualizacao === 2) {
@@ -117,7 +117,7 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
           </div>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -179,5 +179,5 @@ export const KDSGrid: React.FC<KDSGridProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

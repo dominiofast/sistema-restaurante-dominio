@@ -60,25 +60,25 @@ class DeliveryMethodsMonitor {
    */
   recordEvent(event: DeliveryMethodsEvent): void {
     // Add to events log
-    this.events.push(event);
+    this.events.push(event)
     
     // Keep only recent events
     if (this.events.length > this.maxEvents) {
-      this.events = this.events.slice(-this.maxEvents);
+      this.events = this.events.slice(-this.maxEvents)
     }
 
     // Update metrics
-    this.updateMetrics(event);
+    this.updateMetrics(event)
 
     // Log event for debugging
-    this.logEvent(event);
+    this.logEvent(event)
 
 
   /**
    * Update metrics based on event
    */
   private updateMetrics(event: DeliveryMethodsEvent): void {
-    this.metrics.lastUpdated = new Date();
+    this.metrics.lastUpdated = new Date()
 
     switch (event.type) {
       case 'request':
@@ -95,7 +95,7 @@ class DeliveryMethodsMonitor {
 
       case 'error':
         this.metrics.failedRequests++;
-        this.metrics.companiesWithIssues.add(event.companyId);
+        this.metrics.companiesWithIssues.add(event.companyId)
         
         if (event.error?.category) {
           this.metrics.errorsByCategory[event.error.category] = 
@@ -105,7 +105,7 @@ class DeliveryMethodsMonitor {
 
       case 'fallback':
         this.metrics.fallbackUsage++;
-        this.metrics.companiesWithIssues.add(event.companyId);
+        this.metrics.companiesWithIssues.add(event.companyId)
         break;
 
       case 'auto-created':
@@ -133,21 +133,21 @@ class DeliveryMethodsMonitor {
 
     switch (event.type) {
       case 'error':
-        console.error('📊 [DeliveryMetrics] Error event:', logData);
+        console.error('📊 [DeliveryMetrics] Error event:', logData)
         break;
       case 'fallback':
-        console.warn('📊 [DeliveryMetrics] Fallback event:', logData);
+        console.warn('📊 [DeliveryMetrics] Fallback event:', logData)
         break;
       case 'auto-created':
-        console.info('📊 [DeliveryMetrics] Auto-created event:', logData);
+        console.info('📊 [DeliveryMetrics] Auto-created event:', logData)
         break;
       case 'performance':
         if (event.duration && event.duration > 5000) {
-          console.warn('📊 [DeliveryMetrics] Slow performance:', logData);
+          console.warn('📊 [DeliveryMetrics] Slow performance:', logData)
         }
         break;
       default:
-        console.debug('📊 [DeliveryMetrics] Event:', logData);
+        console.debug('📊 [DeliveryMetrics] Event:', logData)
     }
   }
 
@@ -165,7 +165,7 @@ class DeliveryMethodsMonitor {
    * Get recent events
    */
   getRecentEvents(limit: number = 50): DeliveryMethodsEvent[] {
-    return this.events.slice(-limit);
+    return this.events.slice(-limit)
 
 
   /**
@@ -174,7 +174,7 @@ class DeliveryMethodsMonitor {
   getCompanyEvents(companyId: string, limit: number = 20): DeliveryMethodsEvent[] {
     return this.events
       .filter(event => event.companyId === companyId)
-      .slice(-limit);
+      .slice(-limit)
 
 
   /**
@@ -187,8 +187,8 @@ class DeliveryMethodsMonitor {
     recentErrors: DeliveryMethodsEvent[];
   } {
     const recentErrors = this.events
-      .filter(event => event.type === 'error');
-      .slice(-10);
+      .filter(event => event.type === 'error')
+      .slice(-10)
 
     return {
       totalErrors: this.metrics.failedRequests,
@@ -255,40 +255,40 @@ class DeliveryMethodsMonitor {
     const recommendations: string[] = [];
     let status: 'healthy' | 'warning' | 'critical' = 'healthy';
 
-    const performance = this.getPerformanceSummary();
+    const performance = this.getPerformanceSummary()
 
     // Check success rate
     if (performance.successRate < 90) {
       status = 'critical';
-      issues.push(`Low success rate: ${performance.successRate}%`);
-      recommendations.push('Investigate database connectivity and query performance');
+      issues.push(`Low success rate: ${performance.successRate}%`)
+      recommendations.push('Investigate database connectivity and query performance')
     } else if (performance.successRate < 95) {
       status = 'warning';
-      issues.push(`Moderate success rate: ${performance.successRate}%`);
+      issues.push(`Moderate success rate: ${performance.successRate}%`)
     }
 
     // Check fallback usage
     if (performance.fallbackRate > 20) {
       status = 'critical';
-      issues.push(`High fallback usage: ${performance.fallbackRate}%`);
-      recommendations.push('Check database configuration and create missing delivery_methods records');
+      issues.push(`High fallback usage: ${performance.fallbackRate}%`)
+      recommendations.push('Check database configuration and create missing delivery_methods records')
     } else if (performance.fallbackRate > 10) {
       if (status === 'healthy') status = 'warning';
-      issues.push(`Moderate fallback usage: ${performance.fallbackRate}%`);
+      issues.push(`Moderate fallback usage: ${performance.fallbackRate}%`)
     }
 
     // Check response time
     if (performance.averageResponseTime > 3000) {
       if (status === 'healthy') status = 'warning';
-      issues.push(`Slow response time: ${performance.averageResponseTime}ms`);
-      recommendations.push('Optimize database queries and consider caching');
+      issues.push(`Slow response time: ${performance.averageResponseTime}ms`)
+      recommendations.push('Optimize database queries and consider caching')
     }
 
     // Check companies with issues
     if (this.metrics.companiesWithIssues.size > 5) {
       if (status === 'healthy') status = 'warning';
-      issues.push(`${this.metrics.companiesWithIssues.size} companies experiencing issues`);
-      recommendations.push('Run batch repair operation for affected companies');
+      issues.push(`${this.metrics.companiesWithIssues.size} companies experiencing issues`)
+      recommendations.push('Run batch repair operation for affected companies')
     }
 
     return {
@@ -303,7 +303,7 @@ class DeliveryMethodsMonitor {
 /**
  * Global monitor instance
  */
-const deliveryMethodsMonitor = new DeliveryMethodsMonitor();
+const deliveryMethodsMonitor = new DeliveryMethodsMonitor()
 
 /**
  * Helper functions for recording events
@@ -313,8 +313,8 @@ export const recordDeliveryMethodsRequest = (companyId: string, companyName?: st
     type: 'request',
     companyId,
     companyName,
-    timestamp: new Date();
-  });
+    timestamp: new Date()
+  })
 };
 
 export const recordDeliveryMethodsSuccess = (
@@ -330,7 +330,7 @@ export const recordDeliveryMethodsSuccess = (
     timestamp: new Date(),
     duration,
     config;
-  });
+  })
 };
 
 export const recordDeliveryMethodsError = (
@@ -350,7 +350,7 @@ export const recordDeliveryMethodsError = (
       category,
       severity
     };
-  });
+  })
 };
 
 export const recordDeliveryMethodsFallback = (
@@ -366,7 +366,7 @@ export const recordDeliveryMethodsFallback = (
     timestamp: new Date(),
     config,
     metadata: { reason };
-  });
+  })
 };
 
 export const recordDeliveryMethodsAutoCreated = (
@@ -380,26 +380,26 @@ export const recordDeliveryMethodsAutoCreated = (
     companyName,
     timestamp: new Date(),
     config;
-  });
+  })
 };
 
 /**
  * Get monitoring data
  */
-export const getDeliveryMethodsMetrics = (): DeliveryMethodsMetrics => {;
-  return deliveryMethodsMonitor.getMetrics();
+export const getDeliveryMethodsMetrics = (): DeliveryMethodsMetrics => {
+  return deliveryMethodsMonitor.getMetrics()
 };
 
-export const getDeliveryMethodsHealthReport = () => {;
-  return deliveryMethodsMonitor.generateHealthReport();
+export const getDeliveryMethodsHealthReport = () => {
+  return deliveryMethodsMonitor.generateHealthReport()
 };
 
-export const getDeliveryMethodsEvents = (limit?: number) => {;
-  return deliveryMethodsMonitor.getRecentEvents(limit);
+export const getDeliveryMethodsEvents = (limit?: number) => {
+  return deliveryMethodsMonitor.getRecentEvents(limit)
 };
 
-export const getCompanyDeliveryMethodsEvents = (companyId: string, limit?: number) => {;
-  return deliveryMethodsMonitor.getCompanyEvents(companyId, limit);
+export const getCompanyDeliveryMethodsEvents = (companyId: string, limit?: number) => {
+  return deliveryMethodsMonitor.getCompanyEvents(companyId, limit)
 };
 
 /**
@@ -411,7 +411,7 @@ export const debugDeliveryMethods = {
   getErrorSummary: () => deliveryMethodsMonitor.getErrorSummary(),
   getPerformanceSummary: () => deliveryMethodsMonitor.getPerformanceSummary(),
   getHealthReport: () => deliveryMethodsMonitor.generateHealthReport(),
-  reset: () => deliveryMethodsMonitor.reset();
+  reset: () => deliveryMethodsMonitor.reset()
 };
 
 // Make debug utilities available globally in development

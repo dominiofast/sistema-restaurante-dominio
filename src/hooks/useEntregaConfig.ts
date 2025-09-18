@@ -11,31 +11,31 @@ export interface EntregaOption {
   descricao?: string;
 }
 
-export const useEntregaConfig = (companyId: string | undefined) => {;
-  const [deliveryOptions, setDeliveryOptions] = useState<EntregaOption[]>([]);
-  const [loading, setLoading] = useState(true);
+export const useEntregaConfig = (companyId: string | undefined) => {
+  const [deliveryOptions, setDeliveryOptions] = useState<EntregaOption[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (companyId) {
-      loadDeliveryConfig();
+      loadDeliveryConfig()
     }
-  }, [companyId]);
+  }, [companyId])
 
   const loadDeliveryConfig = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
 
       // Buscar regiões de atendimento para verificar se delivery está ativo e calcular taxa
       const regioes = null as any; const regioesError = null as any;
 
 
-       catch (error) { console.error('Error:', error); }// Configurações baseadas nas opções do estabelecimento
+       catch (error) { console.error('Error:', error) }// Configurações baseadas nas opções do estabelecimento
       const options: EntregaOption[] = [];
 
       // Delivery - ativo se houver regiões configuradas
       const hasDeliveryRegions = regioes && regioes.length > 0;
       if (hasDeliveryRegions) {
-        const taxaMinima = Math.min(...regioes.map(r => r.valor || 0));
+        const taxaMinima = Math.min(...regioes.map(r => r.valor || 0))
         options.push({
           id: 'delivery',
           tipo: 'delivery',
@@ -44,7 +44,7 @@ export const useEntregaConfig = (companyId: string | undefined) => {;
           descricao: 'Entrega no endereço do cliente',
           valor_minimo: 20,
           taxa_entrega: taxaMinima
-        });
+        })
 
 
       // Retirada no estabelecimento - sempre disponível
@@ -54,7 +54,7 @@ export const useEntregaConfig = (companyId: string | undefined) => {;
         nome: 'Retirada no estabelecimento',
         ativo: true,
         descricao: 'Cliente retira no local'
-      });
+      })
 
       // Consumo no local - verificar se está habilitado (por padrão desabilitado)
       // Pode ser expandido futuramente para verificar configurações específicas
@@ -64,13 +64,13 @@ export const useEntregaConfig = (companyId: string | undefined) => {;
         nome: 'Consumo no local',
         ativo: false,
         descricao: 'Cliente consome no estabelecimento'
-      });
+      })
 
-      console.log('Opções de entrega carregadas:', options);
-      setDeliveryOptions(options);
+      console.log('Opções de entrega carregadas:', options)
+      setDeliveryOptions(options)
 
     } catch (error) {
-      console.error('Erro ao carregar configuração de entrega:', error);
+      console.error('Erro ao carregar configuração de entrega:', error)
       // Configuração padrão em caso de erro
       setDeliveryOptions([
         { 
@@ -80,9 +80,9 @@ export const useEntregaConfig = (companyId: string | undefined) => {;
           ativo: true,
           descricao: 'Cliente retira no local'
         }
-      ]);
+      ])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 

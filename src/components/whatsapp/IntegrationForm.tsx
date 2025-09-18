@@ -128,5 +128,5 @@ export const IntegrationForm: React.FC<IntegrationFormProps> = ({
         {saving ? 'Salvando...' : (form.id ? 'Atualizar' : 'Salvar')}
       </Button>
     </div>
-  );
+  )
 };

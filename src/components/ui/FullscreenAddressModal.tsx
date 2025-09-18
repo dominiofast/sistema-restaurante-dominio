@@ -21,14 +21,14 @@ export const FullscreenAddressModal: React.FC<FullscreenAddressModalProps> = ({
   customerPhone,
   primaryColor = '#f97316'
 }) => {
-  const { animationState, headerConfig, setHeaderConfig, isVisible } = useFullscreenModal(isOpen);
+  const { animationState, headerConfig, setHeaderConfig, isVisible } = useFullscreenModal(isOpen)
 
   // Escutar evento customizado de fechar modal (ESC key)
   useEffect(() => {
-    const handleCloseEvent = () => onClose();
-    document.addEventListener('fullscreen-modal-close', handleCloseEvent);
-    return () => document.removeEventListener('fullscreen-modal-close', handleCloseEvent);
-  }, [onClose]);
+    const handleCloseEvent = () => onClose()
+    document.addEventListener('fullscreen-modal-close', handleCloseEvent)
+    return () => document.removeEventListener('fullscreen-modal-close', handleCloseEvent)
+  }, [onClose])
 
   // Prevenir scroll do body quando modal está aberto
   useEffect(() => {
@@ -38,7 +38,7 @@ export const FullscreenAddressModal: React.FC<FullscreenAddressModalProps> = ({
         document.body.style.overflow = 'unset';
       };
     }
-  }, [isVisible]);
+  }, [isVisible])
 
   if (!isVisible) return null;
 
@@ -102,5 +102,5 @@ export const FullscreenAddressModal: React.FC<FullscreenAddressModalProps> = ({
         </div>
       </div>
     </>
-  );
+  )
 };

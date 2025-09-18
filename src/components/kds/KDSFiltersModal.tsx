@@ -35,7 +35,7 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
       case 'pronto':
         return '✅ PRONTO';
       default:
-        return status.toUpperCase();
+        return status.toUpperCase()
     }
   };
 
@@ -50,7 +50,7 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
       case 'mesa':
         return '🍽️ MESA';
       default:
-        return tipo.toUpperCase();
+        return tipo.toUpperCase()
     }
   };
 
@@ -106,5 +106,5 @@ export const KDSFiltersModal: React.FC<KDSFiltersModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

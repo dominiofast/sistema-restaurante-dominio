@@ -119,32 +119,32 @@ export const useLogoBreakpoints = (
 
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1024
-  );
+  )
 
-  const [supportsContainerQueries, setSupportsContainerQueries] = useState(false);
+  const [supportsContainerQueries, setSupportsContainerQueries] = useState(false)
 
   // Check for container query support
   useEffect(() => {
     if (typeof window !== 'undefined' && enableContainerQueries) {
-      const testElement = document.createElement('div');
+      const testElement = document.createElement('div')
       testElement.style.containerType = 'inline-size';
       const supported = testElement.style.containerType === 'inline-size';
-      setSupportsContainerQueries(supported);
+      setSupportsContainerQueries(supported)
     }
-  }, [enableContainerQueries]);
+  }, [enableContainerQueries])
 
   // Update window width on resize
   useEffect(() => {
-    const handleResize = () => {;
-      setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Use custom breakpoints or defaults, with context-specific sizes
-  const breakpoints = useMemo((): LogoBreakpointConfig[] => {;
+  const breakpoints = useMemo((): LogoBreakpointConfig[] => {
     const sourceBreakpoints = customBreakpoints || DEFAULT_LOGO_BREAKPOINTS;
     const contextSizes = CONTEXT_LOGO_SIZES[context];
 
@@ -161,24 +161,24 @@ export const useLogoBreakpoints = (
 
       // Apply scaling factor if baseSize is different from default
       const scaleFactor = baseSize / 64;
-      const finalSize = Math.round(contextSize * scaleFactor);
+      const finalSize = Math.round(contextSize * scaleFactor)
 
       return {
         ...bp,
         logoSize: finalSize,
         containerPadding: Math.round(bp.containerPadding * scaleFactor)
       } as LogoBreakpointConfig;
-    });
-  }, [customBreakpoints, baseSize, context]);
+    })
+  }, [customBreakpoints, baseSize, context])
 
   // Find current breakpoint based on window width
   const currentBreakpoint = useMemo(() => {
-    return breakpoints.find(bp => {;
+    return breakpoints.find(bp => {
       const matchesMin = windowWidth >= bp.minWidth;
       const matchesMax = !bp.maxWidth || windowWidth <= bp.maxWidth;
       return matchesMin && matchesMax;
     }) || breakpoints[breakpoints.length - 1];
-  }, [breakpoints, windowWidth]);
+  }, [breakpoints, windowWidth])
 
   // Generate CSS classes for current breakpoint
   const breakpointClasses = useMemo(() => {
@@ -190,11 +190,11 @@ export const useLogoBreakpoints = (
     ];
 
     if (supportsContainerQueries) {
-      classes.push('logo-container-queries');
+      classes.push('logo-container-queries')
     }
 
-    return classes.join(' ');
-  }, [currentBreakpoint, supportsContainerQueries, context]);
+    return classes.join(' ')
+  }, [currentBreakpoint, supportsContainerQueries, context])
 
   // Generate inline styles for current breakpoint
   const breakpointStyles = useMemo((): React.CSSProperties => ({
@@ -202,7 +202,7 @@ export const useLogoBreakpoints = (
     padding: `${currentBreakpoint.containerPadding}px`,
     borderRadius: currentBreakpoint.borderRadius,
     containerType: supportsContainerQueries ? 'inline-size' : undefined;
-  } as React.CSSProperties), [currentBreakpoint, supportsContainerQueries]);
+  } as React.CSSProperties), [currentBreakpoint, supportsContainerQueries])
 
   return {
     currentBreakpoint,
@@ -218,7 +218,7 @@ export const useLogoBreakpoints = (
  */
 export const useDynamicLogoSize = (
   containerRef: React.RefObject<HTMLElement>,
-  options: {;
+  options: {
     minSize?: number;
     maxSize?: number;
     aspectRatio?: number;
@@ -235,25 +235,25 @@ export const useDynamicLogoSize = (
   const [containerDimensions, setContainerDimensions] = useState({
     width: 0,
     height: 0
-  });
+  })
 
-  const [calculatedSize, setCalculatedSize] = useState(minSize);
+  const [calculatedSize, setCalculatedSize] = useState(minSize)
 
   // Observe container size changes
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const resizeObserver = new ResizeObserver(entries => {;
+    const resizeObserver = new ResizeObserver(entries => {
       const entry = entries[0];
       if (entry) {
         const { width, height } = entry.contentRect;
-        setContainerDimensions({ width, height });
+        setContainerDimensions({ width, height })
       }
-    });
+    })
 
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, [containerRef]);
+    resizeObserver.observe(containerRef.current)
+    return () => resizeObserver.disconnect()
+  }, [containerRef])
 
   // Calculate optimal size based on container dimensions
   useEffect(() => {
@@ -265,13 +265,13 @@ export const useDynamicLogoSize = (
     const availableHeight = containerDimensions.height - padding * 2;
 
     // Calculate size that fits within container while maintaining aspect ratio
-    let optimalSize = Math.min(availableWidth, availableHeight / aspectRatio);
+    let optimalSize = Math.min(availableWidth, availableHeight / aspectRatio)
     
     // Apply min/max constraints
-    optimalSize = Math.max(minSize, Math.min(maxSize, optimalSize));
+    optimalSize = Math.max(minSize, Math.min(maxSize, optimalSize))
     
-    setCalculatedSize(Math.round(optimalSize));
-  }, [containerDimensions, aspectRatio, padding, minSize, maxSize]);
+    setCalculatedSize(Math.round(optimalSize))
+  }, [containerDimensions, aspectRatio, padding, minSize, maxSize])
 
   return {
     calculatedSize,
@@ -287,10 +287,10 @@ export const generateContainerQueryCSS = (
   breakpoints: LogoBreakpointConfig[]
 ): string => {
   return breakpoints
-    .map(bp => {;
+    .map(bp => {
       const minWidth = bp.minWidth > 0 ? `(min-width: ${bp.minWidth}px)` : '';
       const maxWidth = bp.maxWidth ? `(max-width: ${bp.maxWidth}px)` : '';
-      const query = [minWidth, maxWidth].filter(Boolean).join(' and ');
+      const query = [minWidth, maxWidth].filter(Boolean).join(' and ')
 
       return `
         @container ${query} {
@@ -303,5 +303,5 @@ export const generateContainerQueryCSS = (
         }
       `;
     })
-    .join('\n');
+    .join('\n')
 };

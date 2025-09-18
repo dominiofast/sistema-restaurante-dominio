@@ -31,7 +31,7 @@ export async function autoCreateDeliveryMethods(
   companySlug?: string
 ): Promise<AutoConfigResult> {
   try {
-    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug } catch (error) { console.error('Error:', error); });
+    console.log('🔧 [AutoConfig] Iniciando auto-configuração para:', { companyId, companyName, companySlug } catch (error) { console.error('Error:', error) })
 
     // Verificar se já existe registro (double-check)
     const existing = null as any; const checkError = null as any;
@@ -46,16 +46,16 @@ export async function autoCreateDeliveryMethods(
 
 
     // Obter configuração baseada nas regras de negócio
-    const config = getAutoCreationConfig(companyName, companySlug);
+    const config = getAutoCreationConfig(companyName, companySlug)
     
-    console.log('📝 [AutoConfig] Criando registro com configuração:', config);
+    console.log('📝 [AutoConfig] Criando registro com configuração:', config)
 
     // Criar o registro
     const newRecord = null as any; const insertError = null as any;
       
       // Verificar se é erro de duplicata (race condition)
       if (insertError.code === '23505') {
-        console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente');
+        console.log('🔄 [AutoConfig] Registro criado por outro processo, buscando existente')
         
         // Tentar buscar o registro que foi criado
         const raceData = null as any; const raceError = null as any;
@@ -68,7 +68,7 @@ export async function autoCreateDeliveryMethods(
       };
 
 
-    console.log('✅ [AutoConfig] Registro criado com sucesso:', newRecord);
+    console.log('✅ [AutoConfig] Registro criado com sucesso:', newRecord)
 
     const resultConfig = {
       ...newRecord,
@@ -76,7 +76,7 @@ export async function autoCreateDeliveryMethods(
     };
 
     // Record auto-creation event
-    recordDeliveryMethodsAutoCreated(companyId, companyName, resultConfig);
+    recordDeliveryMethodsAutoCreated(companyId, companyName, resultConfig)
 
     return {
       success: true,
@@ -85,7 +85,7 @@ export async function autoCreateDeliveryMethods(
     };
 
   } catch (error) {
-    console.error('❌ [AutoConfig] Erro inesperado:', error);
+    console.error('❌ [AutoConfig] Erro inesperado:', error)
     return {
       success: false,
       error: `Erro inesperado: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
@@ -116,25 +116,25 @@ export async function ensureDeliveryMethodsExist(
 
     // Se não existe, auto-criar
     if (fetchError?.code === 'PGRST116') {
-      console.log('📝 [EnsureConfig] Configuração não encontrada, auto-criando...');
+      console.log('📝 [EnsureConfig] Configuração não encontrada, auto-criando...')
       
-      const result = await autoCreateDeliveryMethods(companyId, companyName, companySlug);
+      const result = await autoCreateDeliveryMethods(companyId, companyName, companySlug)
       
       if (result.success && result.data) {
         return result.data;
 
       
       // Se falhou ao criar, lançar erro para tentar recovery
-      throw new Error(`Auto-creation failed: ${result.error}`);
+      throw new Error(`Auto-creation failed: ${result.error}`)
 
 
     // Outros erros
-    throw fetchError || new Error('Unknown fetch error');
+    throw fetchError || new Error('Unknown fetch error')
   };
 
-  const fallback = (): DeliveryMethodsConfig => {;
-    console.warn('⚠️ [EnsureConfig] Usando configuração de fallback');
-    const fallbackConfig = getAutoCreationConfig(companyName, companySlug);
+  const fallback = (): DeliveryMethodsConfig => {
+    console.warn('⚠️ [EnsureConfig] Usando configuração de fallback')
+    const fallbackConfig = getAutoCreationConfig(companyName, companySlug)
     return {
       ...fallbackConfig,
       source: 'fallback'
@@ -152,7 +152,7 @@ export async function ensureDeliveryMethodsExist(
         maxDelay: 3000
 
     };
-  );
+  )
 
   if (recoveryResult.success && recoveryResult.data) {
     return recoveryResult.data;
@@ -166,11 +166,11 @@ export async function ensureDeliveryMethodsExist(
       companySlug,
       attempts: recoveryResult.attempts,
       recoveryMethod: recoveryResult.recoveryMethod
-    });
+    })
 
 
   // Fallback final garantido
-  return fallback();
+  return fallback()
 }
 
 /**
@@ -187,11 +187,11 @@ export async function batchCreateDeliveryMethods(
 
   for (const company of companies) {
     try {
-      const result = await autoCreateDeliveryMethods(company.id, company.name, company.slug);
+      const result = await autoCreateDeliveryMethods(company.id, company.name, company.slug)
       results.push({
         companyId: company.id,
         result
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
     } catch (error) {
       results.push({
         companyId: company.id,
@@ -199,7 +199,7 @@ export async function batchCreateDeliveryMethods(
           success: false,
           error: error instanceof Error ? error.message : 'Erro desconhecido'
         }
-      });
+      })
 
 
 
@@ -226,7 +226,7 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
       query = query
 
 
-     catch (error) { console.error('Error:', error); }const allConfigs = null as any; const fetchError = null as any;
+     catch (error) { console.error('Error:', error) }const allConfigs = null as any; const fetchError = null as any;
 
     if (fetchError) {
       throw fetchError;
@@ -236,7 +236,7 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
       !config.delivery && !config.pickup && !config.eat_in;
     ) || [];
 
-    console.log(`🔧 [Repair] Encontradas ${toRepair.length} configurações para reparar`);
+    console.log(`🔧 [Repair] Encontradas ${toRepair.length} configurações para reparar`)
 
     let repaired = 0;
     const errors: Array<{ companyId: string; error: string }> = [];
@@ -244,7 +244,7 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
     for (const config of toRepair) {
       try {
         // Habilitar pickup como padrão para configurações inválidas
-        const { error: updateError }  catch (error) { console.error('Error:', error); }= 
+        const { error: updateError }  catch (error) { console.error('Error:', error) }= 
           
           
             pickup: true,
@@ -256,23 +256,23 @@ export async function repairDeliveryMethods(companyId?: string): Promise<{
           errors.push({
             companyId: config.company_id,
             error: updateError.message
-          });
+          })
         } else {
           repaired++;
-          console.log(`✅ [Repair] Reparada configuração para empresa: ${config.company_id}`);
+          console.log(`✅ [Repair] Reparada configuração para empresa: ${config.company_id}`)
         }
       } catch (error) {
         errors.push({
           companyId: config.company_id,
           error: error instanceof Error ? error.message : 'Erro desconhecido'
-        });
+        })
 
 
 
     return { repaired, errors };
 
   } catch (error) {
-    console.error('❌ [Repair] Erro no processo de reparo:', error);
+    console.error('❌ [Repair] Erro no processo de reparo:', error)
     return {
       repaired: 0,
       errors: [{

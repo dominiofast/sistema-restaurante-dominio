@@ -9,10 +9,10 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
   onConfirm, 
   total 
 }) => {
-  const [tipoCartao, setTipoCartao] = useState<'credito'|'debito'>('debito');
-  const [bandeira, setBandeira] = useState('');
-  const [parcelas, setParcelas] = useState(1);
-  const [observacoes, setObservacoes] = useState('');
+  const [tipoCartao, setTipoCartao] = useState<'credito'|'debito'>('debito')
+  const [bandeira, setBandeira] = useState('')
+  const [parcelas, setParcelas] = useState(1)
+  const [observacoes, setObservacoes] = useState('')
 
   const handleConfirm = () => {
     onConfirm({
@@ -21,7 +21,7 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
       bandeira,
       parcelas,
       observacoes;
-    });
+    })
   };
 
   const bandeiras = [
@@ -140,5 +140,5 @@ export const PagamentoCartaoPDV: React.FC<PagamentoCartaoPDVProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

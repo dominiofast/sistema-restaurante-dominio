@@ -61,14 +61,14 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
     codigo_produto: '',
     observacoes: '',
     is_active: true
-  });
-  const [loading, setSaving] = useState(false);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  })
+  const [loading, setSaving] = useState(false)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
   useEffect(() => {
     if (mercadoria) {
-      setFormData(mercadoria);
+      setFormData(mercadoria)
     } else {
       setFormData({
         nome: '',
@@ -82,9 +82,9 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         codigo_produto: '',
         observacoes: '',
         is_active: true
-      });
+      })
 
-  }, [mercadoria, isOpen]);
+  }, [mercadoria, isOpen])
 
   const handleSave = async () => {
     if (!formData.nome.trim()) {
@@ -92,7 +92,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         title: 'Erro',
         description: 'Nome da mercadoria é obrigatório',
         variant: 'destructive';
-      });
+      })
       return;
 
 
@@ -101,7 +101,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         title: 'Erro',
         description: 'Usuário não autenticado',
         variant: 'destructive'
-      });
+      })
       return;
 
 
@@ -112,18 +112,18 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         title: 'Erro',
         description: 'Selecione uma empresa primeiro',
         variant: 'destructive'
-      });
+      })
       return;
 
 
-    setSaving(true);
+    setSaving(true)
 
     try {
       const dataToSave = {
         ...formData,
         company_id: companyId,
         updated_by: user.id,;
-        ...(mercadoria ? {}  catch (error) { console.error('Error:', error); }: { created_by: user.id })
+        ...(mercadoria ? {}  catch (error) { console.error('Error:', error) }: { created_by: user.id })
       };
 
       if (mercadoria?.id) {
@@ -138,7 +138,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         toast({
           title: 'Sucesso',
           description: 'Mercadoria atualizada com sucesso!'
-        });
+        })
       } else {
         // Criar nova mercadoria
         const { error } = await (supabase as any)
@@ -150,20 +150,20 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         toast({
           title: 'Sucesso',
           description: 'Mercadoria criada com sucesso!'
-        });
+        })
 
 
-      onSave();
-      onClose();
+      onSave()
+      onClose()
     } catch (error: any) {
-      console.error('Erro ao salvar mercadoria:', error);
+      console.error('Erro ao salvar mercadoria:', error)
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao salvar mercadoria',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
 
   };
 
@@ -343,7 +343,7 @@ const MercadoriaModal: React.FC<MercadoriaModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default MercadoriaModal; 

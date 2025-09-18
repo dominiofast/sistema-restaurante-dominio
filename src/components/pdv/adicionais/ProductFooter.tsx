@@ -86,5 +86,5 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

@@ -59,7 +59,7 @@ const VagaJobDetails: React.FC<VagaJobDetailsProps> = ({ vaga, config }) => {
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default VagaJobDetails;

@@ -24,7 +24,7 @@ const indicatorSizeClasses = {
 };
 
 // Generate consistent colors based on name
-const getAvatarColor = (name: string) => {;
+const getAvatarColor = (name: string) => {
   if (!name) return 'from-slate-400 to-slate-500';
   
   const colors = [
@@ -42,21 +42,21 @@ const getAvatarColor = (name: string) => {;
   
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
   }
   
   return colors[Math.abs(hash) % colors.length];
 };
 
 // Get initials from name
-const getInitials = (name: string) => {;
+const getInitials = (name: string) => {
   if (!name) return '?';
   
-  const words = name.trim().split(' ').filter(word => word.length > 0);
+  const words = name.trim().split(' ').filter(word => word.length > 0)
   if (words.length === 0) return '?';
-  if (words.length === 1) return words[0].charAt(0).toUpperCase();
+  if (words.length === 1) return words[0].charAt(0).toUpperCase()
   
-  return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+  return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase()
 };
 
 export const ContactAvatar: React.FC<ContactAvatarProps> = ({
@@ -66,8 +66,8 @@ export const ContactAvatar: React.FC<ContactAvatarProps> = ({
   showOnlineIndicator = false,
   className = ''
 }) => {
-  const initials = getInitials(name);
-  const gradientColor = getAvatarColor(name);
+  const initials = getInitials(name)
+  const gradientColor = getAvatarColor(name)
 
   return (
     <div className={`relative flex-shrink-0 ${className}`}>
@@ -102,5 +102,5 @@ export const ContactAvatar: React.FC<ContactAvatarProps> = ({
         `} />
       )}
     </div>
-  );
+  )
 };

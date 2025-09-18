@@ -82,5 +82,5 @@ export const CategoriaCard: React.FC<CategoriaCardProps> = ({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };

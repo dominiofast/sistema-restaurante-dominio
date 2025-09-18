@@ -39,10 +39,10 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
   companyId, 
   onBrandingUpdate 
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [logoFile, setLogoFile] = useState<MediaFile | null>(null);
-  const [bannerFile, setBannerFile] = useState<MediaFile | null>(null);
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [logoFile, setLogoFile] = useState<MediaFile | null>(null)
+  const [bannerFile, setBannerFile] = useState<MediaFile | null>(null)
   
   const [config, setConfig] = useState<BrandingConfig>({
     company_id: companyId,
@@ -55,42 +55,42 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
     background_color: '#FFFFFF',
     header_style: 'modern',
     is_active: true
-  });
+  })
 
   // Carregar configuração existente
   useEffect(() => {
-    loadBrandingConfig();
-  }, [companyId]);
+    loadBrandingConfig()
+  }, [companyId])
 
   const loadBrandingConfig = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       const brandingData = null as any; const brandingError = null as any;
       }
 
-       catch (error) { console.error('Error:', error); }if (brandingData) {
-        setConfig(brandingData);
+       catch (error) { console.error('Error:', error) }if (brandingData) {
+        setConfig(brandingData)
         if (brandingData.logo) {
-          setLogoFile(brandingData.logo);
+          setLogoFile(brandingData.logo)
         }
         if (brandingData.banner) {
-          setBannerFile(brandingData.banner);
+          setBannerFile(brandingData.banner)
         }
       }
     } catch (error: any) {
-      console.error('Erro ao carregar branding:', error);
-      toast.error('Erro ao carregar configurações de marca');
+      console.error('Erro ao carregar branding:', error)
+      toast.error('Erro ao carregar configurações de marca')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const uploadFile = async (file: File, fileType: 'logo' | 'banner'): Promise<MediaFile | null> => {
     try {
       // Upload do arquivo para o Supabase Storage;
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${companyId} catch (error) { console.error('Error:', error); }/${fileType}-${Date.now()}.${fileExt}`;
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${companyId} catch (error) { console.error('Error:', error) }/${fileType}-${Date.now()}.${fileExt}`;
       
       const uploadData = null as any; const uploadError = null as any;
 
@@ -99,40 +99,40 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
       // Obter URL pública
       const { data: { publicUrl } } = 
         
-        .getPublicUrl(fileName);
+        .getPublicUrl(fileName)
 
       // Salvar referência no banco
       const mediaData = null as any; const mediaError = null as any;
 
       return mediaData;
     } catch (error: any) {
-      console.error('Erro ao fazer upload:', error);
-      toast.error(`Erro ao fazer upload do ${fileType}`);
+      console.error('Erro ao fazer upload:', error)
+      toast.error(`Erro ao fazer upload do ${fileType}`)
       return null;
 
   };
 
-  const handleFileUpload = async (file: File, type: 'logo' | 'banner') => {;
-    const mediaFile = await uploadFile(file, type);
+  const handleFileUpload = async (file: File, type: 'logo' | 'banner') => {
+    const mediaFile = await uploadFile(file, type)
     if (mediaFile) {
       if (type === 'logo') {
-        setLogoFile(mediaFile);
-        setConfig(prev => ({ ...prev, logo_file_id: mediaFile.id }));
+        setLogoFile(mediaFile)
+        setConfig(prev => ({ ...prev, logo_file_id: mediaFile.id }))
       } else {
-        setBannerFile(mediaFile);
-        setConfig(prev => ({ ...prev, banner_file_id: mediaFile.id }));
+        setBannerFile(mediaFile)
+        setConfig(prev => ({ ...prev, banner_file_id: mediaFile.id }))
       }
-      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} carregado com sucesso!`);
+      toast.success(`${type === 'logo' ? 'Logo' : 'Banner'} carregado com sucesso!`)
 
   };
 
   const saveBrandingConfig = async () => {
-    try {;
-      setSaving(true);
+    try {
+      setSaving(true)
 
       if (config.id) {
         // Atualizar configuração existente
-        const { error }  catch (error) { console.error('Error:', error); }= 
+        const { error }  catch (error) { console.error('Error:', error) }= 
           
           
           
@@ -142,16 +142,16 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
         // Criar nova configuração
         const { data, error  } = null as any;
         if (error) throw error;
-        setConfig(data);
+        setConfig(data)
       }
 
-      toast.success('Configurações de marca salvas com sucesso!');
-      onBrandingUpdate?.();
+      toast.success('Configurações de marca salvas com sucesso!')
+      onBrandingUpdate?.()
     } catch (error: any) {
-      console.error('Erro ao salvar branding:', error);
-      toast.error('Erro ao salvar configurações');
+      console.error('Erro ao salvar branding:', error)
+      toast.error('Erro ao salvar configurações')
     } finally {
-      setSaving(false);
+      setSaving(false)
 
   };
 
@@ -162,7 +162,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
           <Loader2 className="h-8 w-8 animate-spin" />
         </CardContent>
       </Card>
-    );
+    )
 
 
   return (
@@ -218,7 +218,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, 'logo');
+                  if (file) handleFileUpload(file, 'logo')
                 }}
               />
             </div>
@@ -276,7 +276,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) handleFileUpload(file, 'banner');
+                  if (file) handleFileUpload(file, 'banner')
                 }}
               />
             </div>
@@ -409,5 +409,5 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({
         )}
       </Button>
     </div>
-  );
+  )
 };

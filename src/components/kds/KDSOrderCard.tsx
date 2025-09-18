@@ -22,8 +22,8 @@ export const KDSOrderCard: React.FC<KDSOrderCardProps> = ({
   onAdvance,
   altura
 }) => {
-  const formatarTempo = (segundos: number) => {;
-    const mins = Math.floor(segundos / 60);
+  const formatarTempo = (segundos: number) => {
+    const mins = Math.floor(segundos / 60)
     return `0:${mins.toString().padStart(2, '0')}`;
   };
 
@@ -86,5 +86,5 @@ export const KDSOrderCard: React.FC<KDSOrderCardProps> = ({
         ))}
       </CardContent>
     </Card>
-  );
+  )
 };

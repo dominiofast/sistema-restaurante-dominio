@@ -20,16 +20,16 @@ interface User {
 }
 
 const UserManagement: React.FC = () => {
-  const { roles, hasPermission } = usePermissions();
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { roles, hasPermission } = usePermissions()
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
 
   const loadUsers = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       // Buscar usuários (apenas super admins podem ver todos)
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
       if (error) throw error;
       
       setUsers(data.users.map(user => ({
@@ -38,12 +38,12 @@ const UserManagement: React.FC = () => {
         role: user.raw_user_meta_data?.role || user.user_metadata?.role,
         created_at: user.created_at,
         user_metadata: user.user_metadata
-      })));
+      })))
     } catch (error) {
-      console.error('Erro ao carregar usuários:', error);
-      toast.error('Erro ao carregar usuários');
+      console.error('Erro ao carregar usuários:', error)
+      toast.error('Erro ao carregar usuários')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -78,8 +78,8 @@ const UserManagement: React.FC = () => {
   };
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    loadUsers()
+  }, [])
 
   return (
     <div className="container mx-auto p-6">
@@ -191,7 +191,7 @@ const UserManagement: React.FC = () => {
         </Card>
       </SuperAdminOnly>
     </div>
-  );
+  )
 };
 
 export default UserManagement;

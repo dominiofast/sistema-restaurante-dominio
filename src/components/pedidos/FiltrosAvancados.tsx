@@ -16,15 +16,15 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
   const [dateRange, setDateRange] = useState({
     start: '',
     end: ''
-  });
+  })
   
   const [priceRange, setPriceRange] = useState({
     min: '',
     max: ''
-  });
+  })
   
-  const [paymentMethod, setPaymentMethod] = useState('all');
-  const [orderStatus, setOrderStatus] = useState('all');
+  const [paymentMethod, setPaymentMethod] = useState('all')
+  const [orderStatus, setOrderStatus] = useState('all')
 
   const handleApply = () => {
     onApplyFilters({
@@ -32,15 +32,15 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
       priceRange,
       paymentMethod,
       orderStatus;
-    });
-    onClose();
+    })
+    onClose()
   };
 
-  const handleReset = () => {;
-    setDateRange({ start: '', end: '' });
-    setPriceRange({ min: '', max: '' });
-    setPaymentMethod('all');
-    setOrderStatus('all');
+  const handleReset = () => {
+    setDateRange({ start: '', end: '' })
+    setPriceRange({ min: '', max: '' })
+    setPaymentMethod('all')
+    setOrderStatus('all')
   };
 
   return (
@@ -197,4 +197,4 @@ export default function FiltrosAvancados({ onApplyFilters, onClose }: FiltrosAva
         </div>
       </div>
     </div>
-  );
+  )

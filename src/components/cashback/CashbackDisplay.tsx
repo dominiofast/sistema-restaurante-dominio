@@ -20,7 +20,7 @@ export const CashbackDisplay: React.FC<CashbackDisplayProps> = ({
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL';
-    }).format(value);
+    }).format(value)
   };
 
   if (!showBalance && !showPercentage) return null;
@@ -48,5 +48,5 @@ export const CashbackDisplay: React.FC<CashbackDisplayProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

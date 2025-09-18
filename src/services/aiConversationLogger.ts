@@ -25,7 +25,7 @@ export class AIConversationLogger {
           message_content: userMessage,
           tokens_used: 0,
           response_time_ms: 0
-        } catch (error) { console.error('Error:', error); });
+        } catch (error) { console.error('Error:', error) })
 
       // Salva resposta da IA
       
@@ -38,9 +38,9 @@ export class AIConversationLogger {
           message_content: aiResponse,
           tokens_used: tokensUsed,
           response_time_ms: responseTime
-        });
+        })
     } catch (error) {
-      console.error('Erro ao salvar log da conversa:', error);
+      console.error('Erro ao salvar log da conversa:', error)
 
 
 

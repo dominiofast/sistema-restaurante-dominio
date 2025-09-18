@@ -26,7 +26,7 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
       return basePrice;
     }
 
-     catch (error) { console.error('Error:', error); }let precoMinimo = basePrice;
+     catch (error) { console.error('Error:', error) }let precoMinimo = basePrice;
 
     // Para cada categoria obrigatória, adicionar o menor preço disponível
     for (const produtoCategoria of produtoCategorias) {
@@ -45,34 +45,34 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
       // Calcular quantidade mínima necessária
       const minSelection = produtoCategoria.min_selection || categoria.min_selection || 1;
       
-      console.log(`📊 Categoria: ${categoria.name}, Tipo: ${categoria.selection_type}, Min Selection: ${minSelection}`);
+      console.log(`📊 Categoria: ${categoria.name}, Tipo: ${categoria.selection_type}, Min Selection: ${minSelection}`)
       
       // Para todas as categorias, calcular baseado na quantidade mínima
       if (categoria.selection_type === 'single') {
         // Single: 1 item obrigatório (ignora min_selection pois só pode escolher 1)
         const menorPreco = adicionais[0].price;
         precoMinimo += menorPreco;
-        console.log(`  → Single: ${menorPreco} (1x ${menorPreco})`);
+        console.log(`  → Single: ${menorPreco} (1x ${menorPreco})`)
       } 
       else if (categoria.selection_type === 'quantity') {
         // Quantity: quantidade específica do mesmo item
         const menorPreco = adicionais[0].price;
         precoMinimo += menorPreco * minSelection;
-        console.log(`  → Quantity: ${menorPreco * minSelection} (${minSelection}x ${menorPreco})`);
+        console.log(`  → Quantity: ${menorPreco * minSelection} (${minSelection}x ${menorPreco})`)
 
       else if (categoria.selection_type === 'multiple') {
         // Multiple: N itens diferentes (pegar os N mais baratos)
-        const menoresPrecos = adicionais.slice(0, minSelection);
-        const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0);
+        const menoresPrecos = adicionais.slice(0, minSelection)
+        const somaMinimos = menoresPrecos.reduce((sum, adicional) => sum + adicional.price, 0)
         precoMinimo += somaMinimos;
-        console.log(`  → Multiple: ${somaMinimos} (${minSelection} itens diferentes)`);
+        console.log(`  → Multiple: ${somaMinimos} (${minSelection} itens diferentes)`)
 
     }
 
-    console.log(`💰 Preço final calculado: R$ ${precoMinimo.toFixed(2)} (base: R$ ${basePrice.toFixed(2)})`);
+    console.log(`💰 Preço final calculado: R$ ${precoMinimo.toFixed(2)} (base: R$ ${basePrice.toFixed(2)})`)
     return precoMinimo;
   } catch (error) {
-    console.error('Erro ao calcular preço mínimo:', error);
+    console.error('Erro ao calcular preço mínimo:', error)
     return basePrice;
 
 };
@@ -81,8 +81,8 @@ export const calculateMinimumPrice = async (produtoId: string, basePrice: number
  * Verifica se um produto tem adicionais obrigatórios
  */
 export const hasRequiredAdicionais = async (produtoId: string): Promise<boolean> => {
-  try {;
-    const { data: produtoCategorias, error }  catch (error) { console.error('Error:', error); }= 
+  try {
+    const { data: produtoCategorias, error }  catch (error) { console.error('Error:', error) }= 
       
       
         is_required,
@@ -99,9 +99,9 @@ export const hasRequiredAdicionais = async (produtoId: string): Promise<boolean>
     // Verificar se existe pelo menos uma categoria obrigatória
     return produtoCategorias.some(pc => 
       pc.is_required || pc.categorias_adicionais?.is_required
-    );
+    )
   } catch (error) {
-    console.error('Erro ao verificar adicionais obrigatórios:', error);
+    console.error('Erro ao verificar adicionais obrigatórios:', error)
     return false;
 
 };
@@ -115,7 +115,7 @@ export const formatPriceDisplay = (
   hasRequired: boolean,
   isPromotional: boolean = false,
   promotionalPrice?: number
-): string => {;
+): string => {
   const effectivePrice = isPromotional && promotionalPrice ? promotionalPrice : basePrice;
   
   if (hasRequired && minimumPrice > effectivePrice) {

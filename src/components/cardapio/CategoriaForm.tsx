@@ -35,7 +35,7 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
   onSubmit,
   loading = false,
 }) => {
-  const { tiposFiscais, loading: loadingTipos, error: errorTipos } = useTiposFiscais();
+  const { tiposFiscais, loading: loadingTipos, error: errorTipos } = useTiposFiscais()
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FormData>({
     defaultValues: {
       name: categoria?.name || '',
@@ -45,7 +45,7 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
       tipo_fiscal_id: categoria?.tipo_fiscal_id || '',
     },
     mode: 'onChange',
-  });
+  })
 
   React.useEffect(() => {
     if (categoria) {
@@ -55,7 +55,7 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
         image: categoria.image || '',
         is_active: categoria.is_active,
         tipo_fiscal_id: categoria.tipo_fiscal_id || '',
-      });
+      })
     } else {
       reset({
         name: '',
@@ -63,17 +63,17 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
         image: '',
         is_active: true,
         tipo_fiscal_id: '',
-      });
+      })
 
-  }, [categoria, reset]);
+  }, [categoria, reset])
 
-  const handleFormSubmit = async (data: FormData) => {;
-    console.log('🔍 CategoriaForm: Dados do formulário:', data);
-    console.log('🔍 CategoriaForm: Erros do formulário:', errors);
+  const handleFormSubmit = async (data: FormData) => {
+    console.log('🔍 CategoriaForm: Dados do formulário:', data)
+    console.log('🔍 CategoriaForm: Erros do formulário:', errors)
     
     // Validar se há erros
     if (Object.keys(errors).length > 0) {
-      console.error('❌ CategoriaForm: Formulário tem erros:', errors);
+      console.error('❌ CategoriaForm: Formulário tem erros:', errors)
       return;
 
     
@@ -83,19 +83,19 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
       tipo_fiscal_id: data.tipo_fiscal_id === '' ? null : data.tipo_fiscal_id,;
     };
     
-    console.log('🔍 CategoriaForm: Dados limpos:', cleanedData);
+    console.log('🔍 CategoriaForm: Dados limpos:', cleanedData)
     
     try {
-      await onSubmit(cleanedData);
-      onClose();
+      await onSubmit(cleanedData)
+      onClose()
     } catch (error) {
-      console.error('❌ CategoriaForm: Erro ao salvar:', error);
+      console.error('❌ CategoriaForm: Erro ao salvar:', error)
       throw error;
 
   };
 
-  const isActive = watch('is_active');
-  const imageValue = watch('image');
+  const isActive = watch('is_active')
+  const imageValue = watch('image')
 
   // Debug: Log quando o formulário é renderizado
   React.useEffect(() => {
@@ -105,8 +105,8 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
       loading,
       errors: Object.keys(errors),
       tiposFiscais: tiposFiscais?.length || 0
-    });
-  }, [isOpen, categoria, loading, errors, tiposFiscais]);
+    })
+  }, [isOpen, categoria, loading, errors, tiposFiscais])
 
   // Formulário sempre renderiza, sem loading bloqueante
 
@@ -235,5 +235,5 @@ export const CategoriaForm: React.FC<CategoriaFormProps> = ({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

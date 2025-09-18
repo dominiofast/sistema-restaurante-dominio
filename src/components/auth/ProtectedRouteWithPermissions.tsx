@@ -24,7 +24,7 @@ export const ProtectedRouteWithPermissions: React.FC<ProtectedRouteWithPermissio
     storeId,
     redirectTo: '/unauthorized',
     showToast: true
-  });
+  })
 
   if (loading) {
     return (
@@ -34,7 +34,7 @@ export const ProtectedRouteWithPermissions: React.FC<ProtectedRouteWithPermissio
           <span>Verificando permissões...</span>
         </div>
       </div>
-    );
+    )
   }
 
   if (!isAuthorized) {

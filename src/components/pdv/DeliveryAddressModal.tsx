@@ -28,5 +28,5 @@ export const DeliveryAddressModal: React.FC<DeliveryAddressModalProps> = ({
       customerPhone={customerPhone}
       primaryColor={primaryColor}
     />
-  );
+  )
 };

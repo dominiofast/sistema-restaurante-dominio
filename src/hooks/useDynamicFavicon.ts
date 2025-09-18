@@ -17,9 +17,9 @@ export const useDynamicFavicon = ({
   companyName,
   defaultFaviconUrl = '/favicon.ico',
   size = 32
-}: UseDynamicFaviconOptions = {}) => {;
-  const originalFaviconRef = useRef<string | null>(null);
-  const currentFaviconRef = useRef<string | null>(null);
+}: UseDynamicFaviconOptions = {}) => {
+  const originalFaviconRef = useRef<string | null>(null)
+  const currentFaviconRef = useRef<string | null>(null)
 
   // Store original favicon on first load
   useEffect(() => {
@@ -27,38 +27,38 @@ export const useDynamicFavicon = ({
       const existingFavicon = document.querySelector('link[rel*="icon"]') as HTMLLinkElement;
       originalFaviconRef.current = existingFavicon?.href || defaultFaviconUrl;
     }
-  }, [defaultFaviconUrl]);
+  }, [defaultFaviconUrl])
 
   // Update favicon when logoUrl changes
   useEffect(() => {
     const updateFavicon = async () => {
-      try {;
+      try {
         let faviconUrl = originalFaviconRef.current || defaultFaviconUrl;
 
         // Try to use company logo as favicon
         if (logoUrl && isValidImageUrl(logoUrl)) {
           try {
             // Preload the image to ensure it's valid
-            await preloadImage(logoUrl, 3000);
+            await preloadImage(logoUrl, 3000)
             faviconUrl = logoUrl;
           } catch (error) {
-            console.warn('Failed to load company logo for favicon:', error);
+            console.warn('Failed to load company logo for favicon:', error)
             // Fall back to default
           }
         }
 
         // Only update if different from current
         if (faviconUrl !== currentFaviconRef.current) {
-          setFavicon(faviconUrl);
+          setFavicon(faviconUrl)
           currentFaviconRef.current = faviconUrl;
         }
       } catch (error) {
-        console.error('Error updating favicon:', error);
+        console.error('Error updating favicon:', error)
 
     };
 
-    updateFavicon();
-  }, [logoUrl, defaultFaviconUrl]);
+    updateFavicon()
+  }, [logoUrl, defaultFaviconUrl])
 
   // Update document title with company name
   useEffect(() => {
@@ -77,16 +77,16 @@ export const useDynamicFavicon = ({
         }
       };
     }
-  }, [companyName]);
+  }, [companyName])
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (originalFaviconRef.current && currentFaviconRef.current !== originalFaviconRef.current) {
-        setFavicon(originalFaviconRef.current);
+        setFavicon(originalFaviconRef.current)
 
     };
-  }, []);
+  }, [])
 
   return {
     /** Current favicon URL */
@@ -95,13 +95,13 @@ export const useDynamicFavicon = ({
     originalFavicon: originalFaviconRef.current,
     /** Manually update favicon */
     updateFavicon: (url: string) => {
-      setFavicon(url);
+      setFavicon(url)
       currentFaviconRef.current = url;
     },
     /** Reset to original favicon */
     resetFavicon: () => {
       if (originalFaviconRef.current) {
-        setFavicon(originalFaviconRef.current);
+        setFavicon(originalFaviconRef.current)
         currentFaviconRef.current = originalFaviconRef.current;
 
     }
@@ -113,32 +113,32 @@ export const useDynamicFavicon = ({
  */
 const setFavicon = (url: string) => {
   // Remove existing favicon links;
-  const existingLinks = document.querySelectorAll('link[rel*="icon"]');
-  existingLinks.forEach(link => link.remove());
+  const existingLinks = document.querySelectorAll('link[rel*="icon"]')
+  existingLinks.forEach(link => link.remove())
 
   // Create new favicon link
-  const link = document.createElement('link');
+  const link = document.createElement('link')
   link.rel = 'icon';
   link.type = 'image/x-icon';
   link.href = url;
 
   // Add to document head
-  document.head.appendChild(link);
+  document.head.appendChild(link)
 
   // Also create apple-touch-icon for mobile devices
-  const appleLink = document.createElement('link');
+  const appleLink = document.createElement('link')
   appleLink.rel = 'apple-touch-icon';
   appleLink.href = url;
-  document.head.appendChild(appleLink);
+  document.head.appendChild(appleLink)
 
   // Create different sizes for better compatibility
   const sizes = [16, 32, 48, 64];
   sizes.forEach(size => {
-    const sizedLink = document.createElement('link');
+    const sizedLink = document.createElement('link')
     sizedLink.rel = 'icon';
     sizedLink.type = 'image/png';
-    sizedLink.setAttribute('sizes', `${size}x${size}`);
+    sizedLink.setAttribute('sizes', `${size}x${size}`)
     sizedLink.href = url;
-    document.head.appendChild(sizedLink);
-  });
+    document.head.appendChild(sizedLink)
+  })
 };

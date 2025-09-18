@@ -24,10 +24,10 @@ interface Company {
 }
 
 export const DeliveryMethodsManager: React.FC = () => {
-  const queryClient = useQueryClient();
-  const [selectedCompany, setSelectedCompany] = useState<string>('');
-  const [localConfig, setLocalConfig] = useState<DeliveryMethod | null>(null);
-  const [hasChanges, setHasChanges] = useState(false);
+  const queryClient = useQueryClient()
+  const [selectedCompany, setSelectedCompany] = useState<string>('')
+  const [localConfig, setLocalConfig] = useState<DeliveryMethod | null>(null)
+  const [hasChanges, setHasChanges] = useState(false)
 
   // Buscar todas as empresas
   const { data: companies = [], isLoading: loadingCompanies } = useQuery({
@@ -37,7 +37,7 @@ export const DeliveryMethodsManager: React.FC = () => {
       if (error) throw error;
       return data as Company[];
     }
-  });
+  })
 
   // Buscar configurações da empresa selecionada
   const { data: deliveryConfig, isLoading: loadingConfig, refetch } = useQuery({
@@ -62,22 +62,22 @@ export const DeliveryMethodsManager: React.FC = () => {
       return data as DeliveryMethod;
     },
     enabled: !!selectedCompany
-  });
+  })
 
   // Atualizar estado local quando carregar configurações
   useEffect(() => {
     if (deliveryConfig) {
-      setLocalConfig(deliveryConfig);
-      setHasChanges(false);
+      setLocalConfig(deliveryConfig)
+      setHasChanges(false)
     }
-  }, [deliveryConfig]);
+  }, [deliveryConfig])
 
   // Mutation para salvar configurações
   const saveMutation = useMutation({
     mutationFn: async (config: DeliveryMethod) => {
       // Validar que pelo menos uma opção está ativa
-      if (!config.delivery && !config.pickup && !config.eat_in) {;
-        throw new Error('Pelo menos uma opção de entrega deve estar habilitada');
+      if (!config.delivery && !config.pickup && !config.eat_in) {
+        throw new Error('Pelo menos uma opção de entrega deve estar habilitada')
 
 
       // Tentar atualizar primeiro
@@ -90,51 +90,51 @@ export const DeliveryMethodsManager: React.FC = () => {
       return updateData;
     },
     onSuccess: () => {
-      toast.success('Configurações salvas com sucesso!');
-      setHasChanges(false);
+      toast.success('Configurações salvas com sucesso!')
+      setHasChanges(false)
       
       // Invalidar caches relevantes
-      queryClient.invalidateQueries({ queryKey: ['admin-delivery-methods', selectedCompany] });
-      queryClient.invalidateQueries({ queryKey: ['delivery-methods', selectedCompany] });
-      queryClient.invalidateQueries({ queryKey: ['delivery-options'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-delivery-methods', selectedCompany] })
+      queryClient.invalidateQueries({ queryKey: ['delivery-methods', selectedCompany] })
+      queryClient.invalidateQueries({ queryKey: ['delivery-options'] })
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Erro ao salvar configurações');
+      toast.error(error.message || 'Erro ao salvar configurações')
     }
-  });
+  })
 
   // Handler para mudanças nas configurações
-  const handleConfigChange = (field: keyof DeliveryMethod, value: boolean) => {;
+  const handleConfigChange = (field: keyof DeliveryMethod, value: boolean) => {
     if (!localConfig) return;
     
     const newConfig = { ...localConfig, [field]: value };
     
     // Validar que pelo menos uma opção permanece ativa
     if (!newConfig.delivery && !newConfig.pickup && !newConfig.eat_in) {
-      toast.error('Pelo menos uma opção deve permanecer ativa');
+      toast.error('Pelo menos uma opção deve permanecer ativa')
       return;
     }
     
-    setLocalConfig(newConfig);
-    setHasChanges(true);
+    setLocalConfig(newConfig)
+    setHasChanges(true)
   };
 
   // Salvar configurações
-  const handleSave = () => {;
+  const handleSave = () => {
     if (!localConfig) return;
-    saveMutation.mutate(localConfig);
+    saveMutation.mutate(localConfig)
   };
 
   // Resetar para configurações salvas
   const handleReset = () => {
-    if (deliveryConfig) {;
-      setLocalConfig(deliveryConfig);
-      setHasChanges(false);
+    if (deliveryConfig) {
+      setLocalConfig(deliveryConfig)
+      setHasChanges(false)
     }
   };
 
   // Aplicar template de configuração
-  const applyTemplate = (template: 'delivery-only' | 'pickup-only' | 'both' | 'eat-in') => {;
+  const applyTemplate = (template: 'delivery-only' | 'pickup-only' | 'both' | 'eat-in') => {
     if (!localConfig) return;
     
     let newConfig = { ...localConfig };
@@ -154,8 +154,8 @@ export const DeliveryMethodsManager: React.FC = () => {
         break;
     }
     
-    setLocalConfig(newConfig);
-    setHasChanges(true);
+    setLocalConfig(newConfig)
+    setHasChanges(true)
   };
 
   return (
@@ -371,5 +371,5 @@ export const DeliveryMethodsManager: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };

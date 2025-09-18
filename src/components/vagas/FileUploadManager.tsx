@@ -34,112 +34,112 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
   maxFiles = 5,
   disabled = false
 }) => {
-  const [files, setFiles] = useState<FileData[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
-  const [error, setError] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<FileData[]>([])
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({})
+  const [error, setError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = async (selectedFiles: FileList) => {
-    if (files.length + selectedFiles.length > maxFiles) {;
-      toast.error(`Máximo de ${maxFiles} arquivos permitidos`);
+    if (files.length + selectedFiles.length > maxFiles) {
+      toast.error(`Máximo de ${maxFiles} arquivos permitidos`)
       return;
     }
 
-    setError(null);
-    setUploading(true);
+    setError(null)
+    setUploading(true)
 
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       const fileKey = `${file.name}_${Date.now()}`;
 
       try {
-        console.log('📤 [Upload Manager] Iniciando upload:', file.name);
+        console.log('📤 [Upload Manager] Iniciando upload:', file.name)
 
         const result = await cloudinaryService.uploadFile(file, (progress) => {
           setUploadProgress(prev => ({
             ...prev,
             [fileKey]: progress.percentage;
-          } catch (error) { console.error('Error:', error); }));
-        });
+          } catch (error) { console.error('Error:', error) }))
+        })
 
-        const fileData = cloudinaryService.convertToFileData(result, file);
+        const fileData = cloudinaryService.convertToFileData(result, file)
         
         setFiles(prev => {
           const newFiles = [...prev, fileData];
-          onFilesChange?.(newFiles);
+          onFilesChange?.(newFiles)
           return newFiles;
-        });
+        })
 
         // Limpar progresso
         setUploadProgress(prev => {
           const newProgress = { ...prev };
           delete newProgress[fileKey];
           return newProgress;
-        });
+        })
 
-        toast.success(`${file.name} enviado com sucesso! 🎉`);
+        toast.success(`${file.name} enviado com sucesso! 🎉`)
 
       } catch (error: any) {
-        console.error('❌ [Upload Manager] Erro no upload:', error);
-        setError(`Erro ao enviar ${file.name}: ${error.message}`);
-        toast.error(`Erro ao enviar ${file.name}`);
+        console.error('❌ [Upload Manager] Erro no upload:', error)
+        setError(`Erro ao enviar ${file.name}: ${error.message}`)
+        toast.error(`Erro ao enviar ${file.name}`)
         
         // Limpar progresso em caso de erro
         setUploadProgress(prev => {
           const newProgress = { ...prev };
           delete newProgress[fileKey];
           return newProgress;
-        });
+        })
 
     }
 
-    setUploading(false);
+    setUploading(false)
   };
 
-  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
-      handleFileSelect(selectedFiles);
+      handleFileSelect(selectedFiles)
     }
   };
 
-  const handleDrop = (event: React.DragEvent) => {;
-    event.preventDefault();
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault()
     const droppedFiles = event.dataTransfer.files;
     if (droppedFiles.length > 0) {
-      handleFileSelect(droppedFiles);
+      handleFileSelect(droppedFiles)
     }
   };
 
-  const handleDragOver = (event: React.DragEvent) => {;
-    event.preventDefault();
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault()
   };
 
   const handleDownload = async (fileData: FileData) => {
-    try {;
-      const success = await cloudinaryService.downloadFile(fileData.cloudinaryUrl, fileData.originalName);
+    try {
+      const success = await cloudinaryService.downloadFile(fileData.cloudinaryUrl, fileData.originalName)
       if (success) {
-        toast.success(`Download de ${fileData.originalName}  catch (error) { console.error('Error:', error); }iniciado! 📥`);
+        toast.success(`Download de ${fileData.originalName}  catch (error) { console.error('Error:', error) }iniciado! 📥`)
       } else {
-        toast.error('Erro no download. Tente novamente.');
+        toast.error('Erro no download. Tente novamente.')
 
     } catch (error) {
-      console.error('Erro no download:', error);
-      toast.error('Erro no download');
+      console.error('Erro no download:', error)
+      toast.error('Erro no download')
     }
   };
 
   const handleRemoveFile = (fileId: string) => {
-    setFiles(prev => {;
-      const newFiles = prev.filter(file => file.id !== fileId);
-      onFilesChange?.(newFiles);
+    setFiles(prev => {
+      const newFiles = prev.filter(file => file.id !== fileId)
+      onFilesChange?.(newFiles)
       return newFiles;
-    });
-    toast.success('Arquivo removido');
+    })
+    toast.success('Arquivo removido')
   };
 
-  const getFileIcon = (format: string) => {;
+  const getFileIcon = (format: string) => {
     const imageFormats = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     const documentFormats = ['pdf', 'doc', 'docx'];
     
@@ -152,11 +152,11 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
     }
   };
 
-  const formatFileSize = (bytes: number): string => {;
+  const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
@@ -188,8 +188,8 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
               variant="outline"
               disabled={disabled || uploading}
               onClick={(e) => {
-                e.stopPropagation();
-                fileInputRef.current?.click();
+                e.stopPropagation()
+                fileInputRef.current?.click()
               }}
             >
               <Upload className="mr-2 h-4 w-4" />
@@ -287,7 +287,7 @@ export const FileUploadManager: React.FC<FileUploadManagerProps> = ({
         </Card>
       )}
     </div>
-  );
+  )
 };
 
 export default FileUploadManager;

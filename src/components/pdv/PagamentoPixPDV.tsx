@@ -9,15 +9,15 @@ export const PagamentoPixPDV: React.FC<PagamentoPixPDVProps> = ({
   onConfirm, 
   total 
 }) => {
-  const [chavePix, setChavePix] = useState('');
-  const [observacoes, setObservacoes] = useState('');
+  const [chavePix, setChavePix] = useState('')
+  const [observacoes, setObservacoes] = useState('')
 
   const handleConfirm = () => {
     onConfirm({
       tipo: 'pix',
       chavePix,
       observacoes;
-    });
+    })
   };
 
   return (
@@ -104,5 +104,5 @@ export const PagamentoPixPDV: React.FC<PagamentoPixPDVProps> = ({
         </button>
       </div>
     </div>
-  );
+  )
 };

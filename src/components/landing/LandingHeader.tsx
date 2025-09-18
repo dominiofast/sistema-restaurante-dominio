@@ -13,7 +13,7 @@ export const LandingHeader = ({ mobileMenuOpen, setMobileMenuOpen }: LandingHead
     window.scrollTo({
       top: 0,
       behavior: 'smooth';
-    });
+    })
   };
 
   return (
@@ -123,7 +123,7 @@ export const LandingHeader = ({ mobileMenuOpen, setMobileMenuOpen }: LandingHead
               <Button 
                 className="w-full bg-[hsl(var(--dominio-blue-cyan))] text-[hsl(var(--dominio-blue-primary))] hover:bg-[hsl(var(--dominio-blue-cyan))]/90 font-semibold" 
                 onClick={() => {
-                  setMobileMenuOpen(false);
+                  setMobileMenuOpen(false)
                   window.location.href = '/cadastro';
                 }}
               >
@@ -135,5 +135,5 @@ export const LandingHeader = ({ mobileMenuOpen, setMobileMenuOpen }: LandingHead
         </div>
       )}
     </>
-  );
+  )
 };

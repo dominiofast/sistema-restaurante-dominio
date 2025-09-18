@@ -17,37 +17,37 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   isClickable = false,
   onStatusChange
 }) => {
-  const { updateItemStatus, getItemStatus, loading } = useItemStatus();
-  const [currentStatus, setCurrentStatus] = useState<ItemStatus>('pendente');
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { updateItemStatus, getItemStatus, loading } = useItemStatus()
+  const [currentStatus, setCurrentStatus] = useState<ItemStatus>('pendente')
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // Buscar status atual do item ao montar o componente
   useEffect(() => {
     if (itemId && isClickable) {
-      loadItemStatus();
+      loadItemStatus()
     }
-  }, [itemId, isClickable]);
+  }, [itemId, isClickable])
 
-  const loadItemStatus = async () => {;
+  const loadItemStatus = async () => {
     if (!itemId) return;
     
     try {
-      const status = await getItemStatus(itemId);
-      setCurrentStatus(status || 'pendente');
+      const status = await getItemStatus(itemId)
+      setCurrentStatus(status || 'pendente')
     } catch (error) {
-      console.error('Erro ao carregar status do item:', error);
+      console.error('Erro ao carregar status do item:', error)
     }
   };
 
-  const handleStatusUpdate = async (newStatus: ItemStatus) => {;
+  const handleStatusUpdate = async (newStatus: ItemStatus) => {
     if (!itemId || !isClickable) return;
 
     try {
-      await updateItemStatus(itemId, newStatus);
-      setCurrentStatus(newStatus);
-      onStatusChange?.(itemId, newStatus);
+      await updateItemStatus(itemId, newStatus)
+      setCurrentStatus(newStatus)
+      onStatusChange?.(itemId, newStatus)
     } catch (error) {
-      console.error('Erro ao atualizar status:', error);
+      console.error('Erro ao atualizar status:', error)
     }
   };
 
@@ -116,7 +116,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       let categoria = adicional.categoria || 'Outros';
       
       // Remove apenas emojis comuns, mantendo o nome original
-      categoria = categoria.replace(/📁|📂|🗂️|🍕|🧀|🥩|🍅/g, '').trim();
+      categoria = categoria.replace(/📁|📂|🗂️|🍕|🧀|🥩|🍅/g, '').trim()
       
       // REMOVIDO: Normalização automática que sobrescrevia nomes reais
       // Agora preserva o nome original da categoria criada no gestor
@@ -124,9 +124,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       if (!acc[categoria]) {
         acc[categoria] = [];
       }
-      acc[categoria].push(adicional);
+      acc[categoria].push(adicional)
       return acc;
-    }, {} as Record<string, Array<{nome: string; qtd?: number; valor: number; categoria?: string}>>);
+    }, {} as Record<string, Array<{nome: string; qtd?: number; valor: number; categoria?: string}>>)
 
     return grouped;
   };
@@ -193,8 +193,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               <Button
                 key={status}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleStatusUpdate(status as ItemStatus);
+                  e.stopPropagation()
+                  handleStatusUpdate(status as ItemStatus)
                 }}
                 disabled={loading || currentStatus === status}
                 size="sm"
@@ -214,10 +214,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         <div className="mt-2">
           <Button
             onClick={(e) => {
-              e.stopPropagation();
-              const nextStatus = getNextStatus(currentStatus);
+              e.stopPropagation()
+              const nextStatus = getNextStatus(currentStatus)
               if (nextStatus) {
-                handleStatusUpdate(nextStatus);
+                handleStatusUpdate(nextStatus)
               }
             }}
             disabled={loading}
@@ -229,5 +229,5 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

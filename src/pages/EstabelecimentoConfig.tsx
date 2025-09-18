@@ -47,23 +47,23 @@ import { AsaasConfig } from '../components/settings/AsaasConfig';
 import { usePagamentoEntregaConfig } from '../hooks/usePagamentoEntregaConfig';
 import { useCompanyAddress } from '../hooks/useCompanyAddress';
 
-const EstabelecimentoConfig = () => {;
-  const [searchParams, setSearchParams] = useSearchParams();
+const EstabelecimentoConfig = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
   
   // Estado para controlar se já inicializou (evita flash de carregamento)
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false)
   
   const [activeSection, setActiveSection] = useState(() => {
     // Primeiro, verificar URL params, depois localStorage, senão usar 'informacoes'
-    const urlSection = searchParams.get('section');
-    const savedSection = localStorage.getItem('estabelecimento-active-section');
+    const urlSection = searchParams.get('section')
+    const savedSection = localStorage.getItem('estabelecimento-active-section')
     return urlSection || savedSection || 'informacoes';
-  });
+  })
   
-  const { currentCompany } = useAuth();
+  const { currentCompany } = useAuth()
   
   // Mover todos os hooks para o nível superior do componente
-  const { companyInfo, loading, error, saveCompanyInfo } = useCompanyInfo();
+  const { companyInfo, loading, error, saveCompanyInfo } = useCompanyInfo()
   const [formData, setFormData] = useState({
     cnpj_cpf: '',
     razao_social: '',
@@ -71,29 +71,29 @@ const EstabelecimentoConfig = () => {;
     segmento: '',
     instagram: '',
     contato: '',
-  });
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
+  })
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
   
   // Hooks para Regiões de Atendimento - apenas se necessário
   const shouldLoadRegioes = activeSection === 'regioes-atendimento';
-  const { regioes, loading: regioesLoading, error: regioesError, adicionarRegiao, atualizarRegiao, toggleStatus, excluirRegiao, atualizarCentroRegioes } = useRegioesAtendimento(shouldLoadRegioes ? currentCompany?.id : undefined);
-  const [tab, setTab] = useState<'bairros'|'raio'>('raio');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [regiaoEmEdicao, setRegiaoEmEdicao] = useState<Partial<RegiaoAtendimento> | null>(null);
-  const [estados, setEstados] = useState<{ sigla: string, nome: string }[]>([]);
-  const [cidades, setCidades] = useState<{ nome: string, codigo_ibge: string }[]>([]);
-  const [selectedEstado, setSelectedEstado] = useState('');
-  const [selectedCidade, setSelectedCidade] = useState('');
-  const [loadingCidades, setLoadingCidades] = useState(false);
+  const { regioes, loading: regioesLoading, error: regioesError, adicionarRegiao, atualizarRegiao, toggleStatus, excluirRegiao, atualizarCentroRegioes } = useRegioesAtendimento(shouldLoadRegioes ? currentCompany?.id : undefined)
+  const [tab, setTab] = useState<'bairros'|'raio'>('raio')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [regiaoEmEdicao, setRegiaoEmEdicao] = useState<Partial<RegiaoAtendimento> | null>(null)
+  const [estados, setEstados] = useState<{ sigla: string, nome: string }[]>([])
+  const [cidades, setCidades] = useState<{ nome: string, codigo_ibge: string }[]>([])
+  const [selectedEstado, setSelectedEstado] = useState('')
+  const [selectedCidade, setSelectedCidade] = useState('')
+  const [loadingCidades, setLoadingCidades] = useState(false)
   
   // Hooks para Pagamento na Entrega - apenas se necessário
   const shouldLoadPagamento = activeSection === 'pagamento-entrega';
-  const { config: pagamentoConfig, loading: pagamentoLoading, error: pagamentoError, saveConfig, setConfig } = usePagamentoEntregaConfig(shouldLoadPagamento ? currentCompany?.id : undefined);
-  const [saving, setSaving] = useState(false);
+  const { config: pagamentoConfig, loading: pagamentoLoading, error: pagamentoError, saveConfig, setConfig } = usePagamentoEntregaConfig(shouldLoadPagamento ? currentCompany?.id : undefined)
+  const [saving, setSaving] = useState(false)
   
   // Hook para Endereço do Estabelecimento
-  const { address: companyAddress } = useCompanyAddress();
+  const { address: companyAddress } = useCompanyAddress()
 
   const menuItems = [
     { id: 'informacoes', label: 'Informações', icon: Building2 },
@@ -118,74 +118,74 @@ const EstabelecimentoConfig = () => {;
         segmento: companyInfo.segmento || '',
         instagram: companyInfo.instagram || '',
         contato: companyInfo.contato || '',
-      });
+      })
     }
-  }, [companyInfo]);
+  }, [companyInfo])
   
   // useEffects para Regiões de Atendimento
   useEffect(() => {
     // useEffect para inicialização única
-    setIsInitialized(true);
-  }, []);
+    setIsInitialized(true)
+  }, [])
 
   // useEffects para Regiões de Atendimento - apenas quando necessário
   useEffect(() => {
     if (!shouldLoadRegioes) return;
     
     const fetchEstados = async () => {
-      try {;
-        const data = await getEstados();
-        setEstados(data);
+      try {
+        const data = await getEstados()
+        setEstados(data)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     };
-    fetchEstados();
-  }, [shouldLoadRegioes]);
+    fetchEstados()
+  }, [shouldLoadRegioes])
 
   // useEffect para persistir seção ativa na URL e localStorage - otimizado
   useEffect(() => {
     if (!isInitialized) return; // Evita execução no primeiro render
     
     // Salvar no localStorage apenas se mudou
-    const savedSection = localStorage.getItem('estabelecimento-active-section');
+    const savedSection = localStorage.getItem('estabelecimento-active-section')
     if (savedSection !== activeSection) {
-      localStorage.setItem('estabelecimento-active-section', activeSection);
+      localStorage.setItem('estabelecimento-active-section', activeSection)
     }
     
     // Atualizar URL apenas se mudou
-    const currentUrlSection = searchParams.get('section');
+    const currentUrlSection = searchParams.get('section')
     if (currentUrlSection !== activeSection) {
-      setSearchParams({ section: activeSection }, { replace: true });
+      setSearchParams({ section: activeSection }, { replace: true })
     }
-  }, [activeSection, setSearchParams, isInitialized, searchParams]);
+  }, [activeSection, setSearchParams, isInitialized, searchParams])
 
   // useEffect para sincronizar com mudanças na URL (botão voltar/avançar do navegador)
   useEffect(() => {
-    const urlSection = searchParams.get('section');
+    const urlSection = searchParams.get('section')
     if (urlSection && urlSection !== activeSection) {
-      setActiveSection(urlSection);
+      setActiveSection(urlSection)
     }
-  }, [searchParams]);
+  }, [searchParams])
 
   useEffect(() => {
     const fetchCidades = async () => {
-      if (selectedEstado) {;
-        setLoadingCidades(true);
-        setSelectedCidade('');
-        setCidades([]);
+      if (selectedEstado) {
+        setLoadingCidades(true)
+        setSelectedCidade('')
+        setCidades([])
         try {
-          const data = await getCidadesPorEstado(selectedEstado);
-          setCidades(data);
+          const data = await getCidadesPorEstado(selectedEstado)
+          setCidades(data)
         } catch (error) {
-          console.error(error);
+          console.error(error)
         } finally {
-          setLoadingCidades(false);
+          setLoadingCidades(false)
         }
       }
     };
-    fetchCidades();
-  }, [selectedEstado]);
+    fetchCidades()
+  }, [selectedEstado])
 
   // Corrigir coordenadas das regiões de raio quando o endereço do estabelecimento estiver disponível
   useEffect(() => {
@@ -194,14 +194,14 @@ const EstabelecimentoConfig = () => {;
         r.tipo === 'raio' && 
         r.centro_lat !== companyAddress.latitude && 
         r.centro_lng !== companyAddress.longitude;
-      );
+      )
       
       if (regioesRaioComCoordenadaIncorreta.length > 0) {
-        console.log('🔧 Corrigindo coordenadas de', regioesRaioComCoordenadaIncorreta.length, 'regiões de raio');
-        atualizarCentroRegioes({ lat: companyAddress.latitude, lng: companyAddress.longitude });
+        console.log('🔧 Corrigindo coordenadas de', regioesRaioComCoordenadaIncorreta.length, 'regiões de raio')
+        atualizarCentroRegioes({ lat: companyAddress.latitude, lng: companyAddress.longitude })
       }
     }
-  }, [companyAddress, regioes]);
+  }, [companyAddress, regioes])
 
   // Componente para Informações básicas
   const renderInformacoes = () => {
@@ -210,21 +210,21 @@ const EstabelecimentoConfig = () => {;
       setFormData(prev => ({
         ...prev,
         [field]: value;
-      }));
+      }))
     };
 
-    const handleSave = async () => {;
-      setIsSaving(true);
-      setSaveSuccess(false);
+    const handleSave = async () => {
+      setIsSaving(true)
+      setSaveSuccess(false)
       
-      const success = await saveCompanyInfo(formData);
+      const success = await saveCompanyInfo(formData)
       
       if (success) {
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
+        setSaveSuccess(true)
+        setTimeout(() => setSaveSuccess(false), 3000)
       }
       
-      setIsSaving(false);
+      setIsSaving(false)
     };
 
     if (loading) {
@@ -233,7 +233,7 @@ const EstabelecimentoConfig = () => {;
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <span className="ml-2">Carregando informações...</span>
         </div>
-      );
+      )
     }
 
     return (
@@ -372,7 +372,7 @@ const EstabelecimentoConfig = () => {;
           </div>
         </div>
       </div>
-    );
+    )
   };
 
   const renderEndereco = () => {
@@ -387,7 +387,7 @@ const EstabelecimentoConfig = () => {;
           <EnderecoStep />
         </div>
       </div>;
-    );
+    )
   };
 
   const renderHorarios = () => {
@@ -402,7 +402,7 @@ const EstabelecimentoConfig = () => {;
           <HorarioStepNovo />
         </div>
       </div>;
-    );
+    )
   };
 
   const renderPrazoEntrega = () => {
@@ -444,7 +444,7 @@ const EstabelecimentoConfig = () => {;
           </div>
         </div>
       </div>;
-    );
+    )
   };
 
   const renderFormasEntrega = () => {
@@ -459,7 +459,7 @@ const EstabelecimentoConfig = () => {;
           <FormasEntregaConfig />
         </div>
       </div>;
-    );
+    )
   };
 
   const renderTaxaMinima = () => {
@@ -477,7 +477,7 @@ const EstabelecimentoConfig = () => {;
           </div>
         </div>
       </div>;
-    );
+    )
   };
 
   const renderRegioesAtendimento = () => {
@@ -487,42 +487,42 @@ const EstabelecimentoConfig = () => {;
       : { lat: -11.4387, lng: -61.4472 };
 
 
-    const handleOpenModal = (regiao: Partial<RegiaoAtendimento> | null = null) => {;
-      setRegiaoEmEdicao(regiao);
-      setIsModalOpen(true);
+    const handleOpenModal = (regiao: Partial<RegiaoAtendimento> | null = null) => {
+      setRegiaoEmEdicao(regiao)
+      setIsModalOpen(true)
     }
 
-    const handleCloseModal = () => {;
-      setIsModalOpen(false);
-      setRegiaoEmEdicao(null);
+    const handleCloseModal = () => {
+      setIsModalOpen(false)
+      setRegiaoEmEdicao(null)
     }
 
-    const handleSaveRegiao = async () => {;
+    const handleSaveRegiao = async () => {
       if (!regiaoEmEdicao) return;
 
       const isBairro = regiaoEmEdicao.tipo === 'bairro';
 
       if (isBairro && (!regiaoEmEdicao.bairro || regiaoEmEdicao.bairro.trim() === '' || regiaoEmEdicao.valor === undefined)) {
-        alert("Nome do Bairro e Valor da Taxa são obrigatórios.");
+        alert("Nome do Bairro e Valor da Taxa são obrigatórios.")
         return;
       }
 
       if (!isBairro && (regiaoEmEdicao.raio_km === undefined || regiaoEmEdicao.valor === undefined)) {
-        alert("Raio (Km) e Valor da Taxa são obrigatórios.");
+        alert("Raio (Km) e Valor da Taxa são obrigatórios.")
         return;
       }
 
       try {
         if (regiaoEmEdicao.id) {
           // ATUALIZAR
-          const updates: Partial<RegiaoAtendimento> = { valor: Number(regiaoEmEdicao.valor) } catch (error) { console.error('Error:', error); };
+          const updates: Partial<RegiaoAtendimento> = { valor: Number(regiaoEmEdicao.valor) } catch (error) { console.error('Error:', error) };
           if (isBairro) {
             updates.bairro = regiaoEmEdicao.bairro;
             updates.cidade = regiaoEmEdicao.cidade;
           } else {
-            updates.raio_km = Number(regiaoEmEdicao.raio_km);
+            updates.raio_km = Number(regiaoEmEdicao.raio_km)
           }
-          await atualizarRegiao(regiaoEmEdicao.id, updates);
+          await atualizarRegiao(regiaoEmEdicao.id, updates)
         } else {
           // ADICIONAR
           const novaRegiao: Omit<RegiaoAtendimento, 'id' | 'created_at'> = {
@@ -539,28 +539,28 @@ const EstabelecimentoConfig = () => {;
               raio_km: Number(regiaoEmEdicao.raio_km),
             })
           };
-          await adicionarRegiao(novaRegiao);
+          await adicionarRegiao(novaRegiao)
         }
-        handleCloseModal();
+        handleCloseModal()
       } catch (err) {
-        console.error("Erro ao salvar região", err);
+        console.error("Erro ao salvar região", err)
       }
     };
 
     const handleToggleStatus = async (id: string) => {
-      try {;
-        await toggleStatus(id);
+      try {
+        await toggleStatus(id)
       } catch (err) {
-        console.error('Erro ao alterar status:', err);
+        console.error('Erro ao alterar status:', err)
       }
     };
 
     const handleExcluirRegiao = async (id: string) => {
       if (window.confirm("Tem certeza que deseja excluir esta região?")) {
-        try {;
-          await excluirRegiao(id);
+        try {
+          await excluirRegiao(id)
         } catch (err) {
-          console.error('Erro ao excluir região:', err);
+          console.error('Erro ao excluir região:', err)
         }
       }
     };
@@ -571,7 +571,7 @@ const EstabelecimentoConfig = () => {;
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <span className="ml-2">Carregando regiões...</span>
         </div>
-      );
+      )
     }
 
     return (
@@ -723,7 +723,7 @@ const EstabelecimentoConfig = () => {;
           </DialogContent>
         </Dialog>
       </div>
-    );
+    )
   };
 
   const renderPagamentoOnline = () => {
@@ -741,7 +741,7 @@ const EstabelecimentoConfig = () => {;
             </div>
           </div>
         </div>;
-      );
+      )
     }
 
     return (
@@ -755,7 +755,7 @@ const EstabelecimentoConfig = () => {;
           <AsaasConfig companyId={currentCompany.id} />
         </div>
       </div>
-    );
+    )
   };
 
   const renderPagamentoEntrega = () => {
@@ -766,7 +766,7 @@ const EstabelecimentoConfig = () => {;
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <span className="ml-2">Carregando configurações...</span>
         </div>;
-      );
+      )
     }
 
     if (pagamentoError) {
@@ -774,20 +774,20 @@ const EstabelecimentoConfig = () => {;
         <div className="bg-red-50 border border-red-200 rounded p-4">
           <p className="text-red-600">{pagamentoError}</p>
         </div>
-      );
+      )
     }
 
-    const handleConfigChange = (newConfig: typeof pagamentoConfig) => {;
-      setConfig(newConfig);
+    const handleConfigChange = (newConfig: typeof pagamentoConfig) => {
+      setConfig(newConfig)
     };
 
-    const handleSaveConfig = async (newConfig: typeof pagamentoConfig) => {;
-      setSaving(true);
+    const handleSaveConfig = async (newConfig: typeof pagamentoConfig) => {
+      setSaving(true)
       try {
-        const success = await saveConfig(newConfig);
+        const success = await saveConfig(newConfig)
         return success;
       } finally {
-        setSaving(false);
+        setSaving(false)
       }
     };
 
@@ -807,7 +807,7 @@ const EstabelecimentoConfig = () => {;
           />
         </div>
       </div>
-    );
+    )
   };
 
   const renderOperacaoSalao = () => {
@@ -825,31 +825,31 @@ const EstabelecimentoConfig = () => {;
           </div>
         </div>
       </div>;
-    );
+    )
   };
 
   const renderContent = () => {
     switch (activeSection) {
       case 'informacoes':;
-        return renderInformacoes();
+        return renderInformacoes()
       case 'endereco':
-        return renderEndereco();
+        return renderEndereco()
       case 'horarios':
-        return renderHorarios();
+        return renderHorarios()
       case 'prazo-entrega':
-        return renderPrazoEntrega();
+        return renderPrazoEntrega()
       case 'formas-entrega':
-        return renderFormasEntrega();
+        return renderFormasEntrega()
       case 'taxa-minima':
-        return renderTaxaMinima();
+        return renderTaxaMinima()
       case 'regioes-atendimento':
-        return renderRegioesAtendimento();
+        return renderRegioesAtendimento()
       case 'pagamento-online':
-        return renderPagamentoOnline();
+        return renderPagamentoOnline()
       case 'pagamento-entrega':
-        return renderPagamentoEntrega();
+        return renderPagamentoEntrega()
       case 'operacao-salao':
-        return renderOperacaoSalao();
+        return renderOperacaoSalao()
       default:
         return (
           <div className="space-y-8">
@@ -864,7 +864,7 @@ const EstabelecimentoConfig = () => {;
               </div>
             </div>
           </div>
-        );
+        )
     }
   };
 
@@ -885,7 +885,7 @@ const EstabelecimentoConfig = () => {;
           </div>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -920,7 +920,7 @@ const EstabelecimentoConfig = () => {;
                     </div>
                   </button>
                 </li>
-              );
+              )
             })}
           </ul>
         </nav>
@@ -933,7 +933,7 @@ const EstabelecimentoConfig = () => {;
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default EstabelecimentoConfig;

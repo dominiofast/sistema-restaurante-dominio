@@ -50,5 +50,5 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({ stats }) => {
         </Card>
       ))}
     </div>
-  );
+  )
 };

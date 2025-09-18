@@ -28,7 +28,7 @@ export const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
   duration = 2,
   className = ''
 }) => {
-  const { prefersReducedMotion, shouldUseGPUAcceleration } = useLoadingOptimizations();
+  const { prefersReducedMotion, shouldUseGPUAcceleration } = useLoadingOptimizations()
   
   const radius = sizeMap[size];
   const stroke = strokeWidth || strokeWidthMap[size];
@@ -96,5 +96,5 @@ export const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
         />
       </svg>
     </div>
-  );
+  )
 };

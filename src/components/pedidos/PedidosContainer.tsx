@@ -50,7 +50,7 @@ export const PedidosContainer: React.FC<PedidosContainerProps> = ({
           <p className="text-gray-500">Não há pedidos para esta empresa ainda.</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -65,5 +65,5 @@ export const PedidosContainer: React.FC<PedidosContainerProps> = ({
         campainhaInfo={campainhaInfo}
       />
     </div>
-  );
+  )
 };

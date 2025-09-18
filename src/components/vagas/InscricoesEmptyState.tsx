@@ -12,5 +12,5 @@ export const InscricoesEmptyState: React.FC = () => {
         As inscrições aparecerão aqui quando candidatos se inscreverem nas vagas
       </p>
     </div>
-  );
+  )
 };

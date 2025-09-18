@@ -46,5 +46,5 @@ export const DebugInfo: React.FC<DebugInfoProps> = ({
       <div>• Produtos finais (após busca): {produtosFinal.length}</div>
       <div>• Termo de busca: "{searchTerm}"</div>
     </div>
-  );
+  )
 };

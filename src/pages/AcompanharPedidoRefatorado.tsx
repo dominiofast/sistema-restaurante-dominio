@@ -98,11 +98,11 @@ const getStatusInfo = (status: string, tipoPedido?: string) => {
 };
 
 export const AcompanharPedidoRefatorado: React.FC = () => {
-  const { numero_pedido } = useParams<{ numero_pedido: string }>();
-  const navigate = useNavigate();
+  const { numero_pedido } = useParams<{ numero_pedido: string }>()
+  const navigate = useNavigate()
   
   // Usar o hook customizado para isolar toda a lógica
-  const { pedido, itens, adicionais, loading, error, companySlug } = useOrderTracker(numero_pedido || '');
+  const { pedido, itens, adicionais, loading, error, companySlug } = useOrderTracker(numero_pedido || '')
 
   // Loading state
   if (loading) {
@@ -114,7 +114,7 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           <p className="text-gray-600">Buscando informações do pedido</p>
         </div>
       </div>
-    );
+    )
 
 
   // Error state
@@ -131,7 +131,7 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           </Button>
         </div>
       </div>
-    );
+    )
 
 
   // No pedido found
@@ -148,10 +148,10 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
           </Button>
         </div>
       </div>
-    );
+    )
 
 
-  const statusInfo = getStatusInfo(pedido.status, pedido.tipo);
+  const statusInfo = getStatusInfo(pedido.status, pedido.tipo)
   const StatusIcon = statusInfo.icon;
 
   return (
@@ -281,5 +281,5 @@ export const AcompanharPedidoRefatorado: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };

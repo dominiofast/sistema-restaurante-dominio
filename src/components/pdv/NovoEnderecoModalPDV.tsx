@@ -20,7 +20,7 @@ export const NovoEnderecoModalPDV: React.FC<NovoEnderecoModalPDVProps> = ({
   customerPhone,
   editingAddress
 }) => {
-  const [activeTab, setActiveTab] = useState('delivery');
+  const [activeTab, setActiveTab] = useState('delivery')
   const {
     address,
     setAddress,
@@ -28,41 +28,41 @@ export const NovoEnderecoModalPDV: React.FC<NovoEnderecoModalPDVProps> = ({
     taxaEntrega,
     handleCepChange,
     handleSave
-  } = useAddressForm(editingAddress, isOpen, customerName, customerPhone);
+  } = useAddressForm(editingAddress, isOpen, customerName, customerPhone)
 
-  const handleSalvar = async () => {;
-    console.log('=== INICIANDO PROCESSO DE SALVAMENTO DE ENDEREÇO ===');
-    console.log('handleSalvar do modal chamado');
-    console.log('Endereço no modal:', address);
-    console.log('Customer name:', customerName);
-    console.log('Customer phone:', customerPhone);
+  const handleSalvar = async () => {
+    console.log('=== INICIANDO PROCESSO DE SALVAMENTO DE ENDEREÇO ===')
+    console.log('handleSalvar do modal chamado')
+    console.log('Endereço no modal:', address)
+    console.log('Customer name:', customerName)
+    console.log('Customer phone:', customerPhone)
     
     try {
-      console.log('=== CHAMANDO handleSave ===');
-      const savedAddress = await handleSave();
-      console.log('=== SUCESSO: Endereço salvo ===', savedAddress);
+      console.log('=== CHAMANDO handleSave ===')
+      const savedAddress = await handleSave()
+      console.log('=== SUCESSO: Endereço salvo ===', savedAddress)
       
-      console.log('Chamando onConfirm...');
-      onConfirm(savedAddress);
+      console.log('Chamando onConfirm...')
+      onConfirm(savedAddress)
       
-      console.log('Fechando modal...');
-      onClose();
+      console.log('Fechando modal...')
+      onClose()
     } catch (error) {
-      console.error('=== ERRO NO SALVAMENTO DE ENDEREÇO ===');
-      console.error('Tipo do erro:', typeof error);
-      console.error('Erro completo:', error);
-      console.error('Erro message:', error instanceof Error ? error.message : String(error));
-      console.error('Erro stack:', error instanceof Error ? error.stack : 'Não há stack');
+      console.error('=== ERRO NO SALVAMENTO DE ENDEREÇO ===')
+      console.error('Tipo do erro:', typeof error)
+      console.error('Erro completo:', error)
+      console.error('Erro message:', error instanceof Error ? error.message : String(error))
+      console.error('Erro stack:', error instanceof Error ? error.stack : 'Não há stack')
       
       const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar endereço. Tente novamente.';
-      alert(errorMessage);
+      alert(errorMessage)
 
   };
 
-  const handleAdicionarFormaEntrega = () => {;
-    console.log('handleAdicionarFormaEntrega chamado');
+  const handleAdicionarFormaEntrega = () => {
+    console.log('handleAdicionarFormaEntrega chamado')
     // Por enquanto, vamos fazer a mesma ação do salvar
-    handleSalvar();
+    handleSalvar()
   };
 
   if (!isOpen) return null;
@@ -253,5 +253,5 @@ export const NovoEnderecoModalPDV: React.FC<NovoEnderecoModalPDVProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

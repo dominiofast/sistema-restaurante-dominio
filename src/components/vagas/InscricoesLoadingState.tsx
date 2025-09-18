@@ -9,5 +9,5 @@ export const InscricoesLoadingState: React.FC = () => {
         <p className="text-gray-600">Carregando inscrições...</p>
       </div>
     </div>
-  );
+  )
 };

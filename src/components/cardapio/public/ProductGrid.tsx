@@ -6,11 +6,11 @@ import { useBulkProductPricing } from '@/hooks/useBulkProductPricing';
 // Função para aplicar opacidade nas cores
 const applyOpacity = (color: string, opacity: number) => {
   // Remove # se existir;
-  const hex = color.replace('#', '');
+  const hex = color.replace('#', '')
   // Converte para RGB
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   // Retorna em formato rgba
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
@@ -36,13 +36,13 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 }) => {
   // Coleta todos os produtos para calcular pricing em lote
   // Memoização mais estável para evitar recriações desnecessárias
-  const todosProdutos = useMemo(() => {;
-    const produtos = Object.values(produtosPorCategoria).flat();
+  const todosProdutos = useMemo(() => {
+    const produtos = Object.values(produtosPorCategoria).flat()
     // Ordenar por ID para garantir consistência
-    return produtos.sort((a, b) => a.id.localeCompare(b.id));
-  }, [produtosPorCategoria]);
+    return produtos.sort((a, b) => a.id.localeCompare(b.id))
+  }, [produtosPorCategoria])
 
-  const { pricingMap, loading: pricingLoading } = useBulkProductPricing(todosProdutos);
+  const { pricingMap, loading: pricingLoading } = useBulkProductPricing(todosProdutos)
   
   return (
     <div className="mt-4 sm:mt-6 space-y-6 sm:space-y-8">
@@ -87,12 +87,12 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                     {/* Linha divisória abaixo de TODOS os produtos no mobile */}
                     <div className="border-b md:hidden" style={{ borderColor: applyOpacity(textColor, 0.1) }}></div>
                   </div>
-                );
+                )
               })}
             </div>
           </section>
-        );
+        )
       })}
     </div>
-  );
+  )
 };

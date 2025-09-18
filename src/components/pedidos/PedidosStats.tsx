@@ -52,8 +52,8 @@ export const PedidosStats: React.FC<PedidosStatsProps> = ({ pedidosPorStatus }) 
               <Icon className={`h-8 w-8 ${stat.color}`} />
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 };

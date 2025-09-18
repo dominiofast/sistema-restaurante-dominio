@@ -10,24 +10,24 @@ interface StatusConfig {
   enabled: boolean;
 }
 
-export const StatusManagement = () => {;
-  const [statusConfigs, setStatusConfigs] = useState<StatusConfig[]>([]);
-  const { toast } = useToast();
+export const StatusManagement = () => {
+  const [statusConfigs, setStatusConfigs] = useState<StatusConfig[]>([])
+  const { toast } = useToast()
 
   useEffect(() => {
     // Carregar configurações salvas do localStorage ou usar padrões
-    const savedConfigs = localStorage.getItem('statusConfigs');
+    const savedConfigs = localStorage.getItem('statusConfigs')
     if (savedConfigs) {
-      setStatusConfigs(JSON.parse(savedConfigs));
+      setStatusConfigs(JSON.parse(savedConfigs))
     } else {
       // Usar configurações padrão dos STATUS
       setStatusConfigs(STATUS.map(status => ({
         key: status.key,
         label: status.label,
         enabled: status.enabled ?? true
-      })));
+      })))
     }
-  }, []);
+  }, [])
 
   const handleToggleStatus = (statusKey: string) => {
     setStatusConfigs(prev => 
@@ -35,23 +35,23 @@ export const StatusManagement = () => {;
         config.key === statusKey 
           ? { ...config, enabled: !config.enabled }
           : config
-      );
-    );
+      )
+    )
   };
 
-  const handleSaveConfigs = () => {;
-    localStorage.setItem('statusConfigs', JSON.stringify(statusConfigs));
+  const handleSaveConfigs = () => {
+    localStorage.setItem('statusConfigs', JSON.stringify(statusConfigs))
     toast({
       title: "Configurações salvas",
       description: "As configurações de status foram salvas com sucesso.",
-    });
+    })
     
     // Recarregar a página para aplicar as mudanças
-    window.location.reload();
+    window.location.reload()
   };
 
-  const getStatusConfig = (statusKey: string) => {;
-    return STATUS.find(s => s.key === statusKey);
+  const getStatusConfig = (statusKey: string) => {
+    return STATUS.find(s => s.key === statusKey)
   };
 
   return (
@@ -63,7 +63,7 @@ export const StatusManagement = () => {;
 
       <div className="space-y-4">
         {statusConfigs.map(config => {
-          const statusInfo = getStatusConfig(config.key);
+          const statusInfo = getStatusConfig(config.key)
           const Icon = statusInfo?.icon;
           
           return (
@@ -99,7 +99,7 @@ export const StatusManagement = () => {;
                 />
               </div>
             </div>
-          );
+          )
         })}
       </div>
 
@@ -114,12 +114,12 @@ export const StatusManagement = () => {;
               key: status.key,
               label: status.label,
               enabled: status.enabled ?? true
-            })));
+            })))
           }}
         >
           Restaurar Padrões
         </Button>
       </div>
     </div>
-  );
+  )
 };

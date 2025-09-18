@@ -12,7 +12,7 @@ export const useCartCalculations = () => {
       : priceNumber;
     
     const precoAdicionais = adicionais 
-      ? Object.values(adicionais).reduce((sum, adicional) => {;
+      ? Object.values(adicionais).reduce((sum, adicional) => {
           const adicionalPriceNumber = Number(adicional.price) || 0;
           const adicionalPrice = adicionalPriceNumber * adicional.quantity;
           return sum + adicionalPrice;

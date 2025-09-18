@@ -10,23 +10,23 @@ import { DeliveryAddressModal } from '@/components/pdv/DeliveryAddressModal';
 import { ClienteEncontrado } from '@/components/pedidos/ClienteEncontrado';
 
 export const ClientePedidoPage: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { clienteId } = useParams();
-  const { currentCompany } = useAuth();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { clienteId } = useParams()
+  const { currentCompany } = useAuth()
   
   const { cliente, telefone } = location.state || {};
-  const { saveAddress } = useCustomerAddresses();
+  const { saveAddress } = useCustomerAddresses()
   const { addresses, handleDeleteAddress, refreshAddresses } = useCustomerAddressManager({
     customerPhone: telefone,
     companyId: currentCompany?.id
-  });
-  const [showNovoEnderecoModal, setShowNovoEnderecoModal] = useState(false);
+  })
+  const [showNovoEnderecoModal, setShowNovoEnderecoModal] = useState(false)
 
   // O useCustomerAddressManager já carrega os endereços automaticamente
 
-  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {;
-    console.log('Abrindo PDV para novo pedido:', { tipo, enderecoId, cliente });
+  const handleNovoPedido = (tipo: 'delivery' | 'balcao', enderecoId?: string) => {
+    console.log('Abrindo PDV para novo pedido:', { tipo, enderecoId, cliente })
     navigate('/pdv', {
       state: {
         cliente,
@@ -34,12 +34,12 @@ export const ClientePedidoPage: React.FC = () => {
         tipoEntrega: tipo,
         enderecoId: enderecoId
       }
-    });
+    })
   };
 
-  const handleNovoEndereco = () => {;
-    console.log('Abrindo modal para novo endereço:', cliente);
-    setShowNovoEnderecoModal(true);
+  const handleNovoEndereco = () => {
+    console.log('Abrindo modal para novo endereço:', cliente)
+    setShowNovoEnderecoModal(true)
   };
 
   const handleConfirmarNovoEndereco = async (enderecoData: any) => {
@@ -49,23 +49,23 @@ export const ClientePedidoPage: React.FC = () => {
         customer_name: cliente.nome,
         customer_phone: telefone,
         company_id: 'current_company_id' // Este será preenchido pelo hook;
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
       
-      await saveAddress(novoEndereco);
-      setShowNovoEnderecoModal(false);
+      await saveAddress(novoEndereco)
+      setShowNovoEnderecoModal(false)
       
       // Recarregar endereços
-      refreshAddresses();
+      refreshAddresses()
       
-      console.log('Endereço salvo com sucesso:', novoEndereco);
+      console.log('Endereço salvo com sucesso:', novoEndereco)
     } catch (error) {
-      console.error('Erro ao salvar endereço:', error);
-      alert('Erro ao salvar endereço. Tente novamente.');
+      console.error('Erro ao salvar endereço:', error)
+      alert('Erro ao salvar endereço. Tente novamente.')
 
   };
 
-  const handleVoltar = () => {;
-    navigate('/pedidos');
+  const handleVoltar = () => {
+    navigate('/pedidos')
   };
 
   if (!cliente) {
@@ -81,7 +81,7 @@ export const ClientePedidoPage: React.FC = () => {
           </button>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -163,7 +163,7 @@ export const ClientePedidoPage: React.FC = () => {
         customerPhone={telefone}
       />
     </div>
-  );
+  )
 };
 
 export default ClientePedidoPage;

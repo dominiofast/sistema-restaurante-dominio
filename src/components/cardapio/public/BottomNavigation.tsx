@@ -21,17 +21,17 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
   // Força re-render quando totalItens muda
   useEffect(() => {
     // totalItens atualizado
-  }, [totalItens]);
+  }, [totalItens])
   
   // Simular página ativa (poderia vir via props/rota)
-  const [active, setActive] = React.useState<'home'|'pedidos'|'promos'|'carrinho'>('home');
+  const [active, setActive] = React.useState<'home'|'pedidos'|'promos'|'carrinho'>('home')
 
   // Função para aplicar opacidade nas cores
-  const applyOpacity = (color: string, opacity: number) => {;
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+  const applyOpacity = (color: string, opacity: number) => {
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   };
 
@@ -101,5 +101,5 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
         </button>
       </div>
     </nav>
-  );
+  )
 };

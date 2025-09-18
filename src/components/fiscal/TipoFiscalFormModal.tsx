@@ -29,9 +29,9 @@ export function TipoFiscalFormModal({
   editingTipo, 
   onSubmit 
 }: TipoFiscalFormModalProps) {
-  const handleSubmit = async (data: any) => {;
-    await onSubmit(data);
-    onOpenChange(false);
+  const handleSubmit = async (data: any) => {
+    await onSubmit(data)
+    onOpenChange(false)
   };
 
   return (
@@ -54,4 +54,4 @@ export function TipoFiscalFormModal({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )

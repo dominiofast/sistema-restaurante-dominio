@@ -38,16 +38,16 @@ interface PromptData {
 
 
 export default function PromptsManagement() {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [prompts, setPrompts] = useState<Record<string, PromptData>>({});
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [globalTemplate, setGlobalTemplate] = useState<any>(null);
-  const [showGlobalModal, setShowGlobalModal] = useState(false);
-  const [applyingTemplate, setApplyingTemplate] = useState(false);
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const { user } = useAuth()
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [prompts, setPrompts] = useState<Record<string, PromptData>>({})
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [globalTemplate, setGlobalTemplate] = useState<any>(null)
+  const [showGlobalModal, setShowGlobalModal] = useState(false)
+  const [applyingTemplate, setApplyingTemplate] = useState(false)
 
   // Apenas Super Admin pode acessar
   if (user && user.role !== 'super_admin') {
@@ -62,29 +62,29 @@ export default function PromptsManagement() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
 
 
   useEffect(() => {
-    loadData();
-  }, []);
+    loadData()
+  }, [])
 
   const loadData = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       // Carregar empresas
       const companiesData = null as any; const companiesError = null as any;
-      setCompanies(companiesData || []);
+      setCompanies(companiesData || [])
 
       // Carregar prompts de todas as empresas
       const promptsData = null as any; const promptsError = null as any;
       
-      const promptsMap: Record<string, PromptData> = {} catch (error) { console.error('Error:', error); };
+      const promptsMap: Record<string, PromptData> = {} catch (error) { console.error('Error:', error) };
       (promptsData || []).forEach(prompt => {
         promptsMap[prompt.agent_slug] = prompt;
-      });
-      setPrompts(promptsMap);
+      })
+      setPrompts(promptsMap)
 
       // Carregar template global
       const globalData = null as any; const globalError = null as any;
@@ -95,18 +95,18 @@ export default function PromptsManagement() {
         title: "Erro ao carregar dados",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.slug.toLowerCase().includes(searchTerm.toLowerCase());
-  );
+    company.slug.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
-  const getPromptStatus = (companySlug: string) => {;
+  const getPromptStatus = (companySlug: string) => {
     const prompt = prompts[companySlug];
     if (!prompt) return 'missing';
     if (prompt.template.length < 100) return 'incomplete';
@@ -127,8 +127,8 @@ export default function PromptsManagement() {
   };
 
   const updateGlobalTemplate = async (newTemplate: string) => {
-    try {;
-      const { error }  catch (error) { console.error('Error:', error); }= 
+    try {
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
           template: newTemplate,
@@ -142,74 +142,74 @@ export default function PromptsManagement() {
       toast({
         title: "Template global atualizado",
         description: "O template foi salvo com sucesso!",
-      });
+      })
 
-      setGlobalTemplate(prev => ({ ...prev, template: newTemplate }));
-      setShowGlobalModal(false);
+      setGlobalTemplate(prev => ({ ...prev, template: newTemplate }))
+      setShowGlobalModal(false)
     } catch (error: any) {
       toast({
         title: "Erro ao atualizar template",
         description: error.message,
         variant: "destructive"
-      });
+      })
 
   };
 
   const applyGlobalTemplate = async () => {
-    try {;
-      setApplyingTemplate(true);
+    try {
+      setApplyingTemplate(true)
       
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: { companiesToUpdate: 'all' }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: "Template aplicado com sucesso!",
         description: `${data.summary?.successful || 0} empresas atualizadas com horários reais`,
-      });
+      })
 
       // Recarregar dados
-      await loadData();
+      await loadData()
     } catch (error: any) {
       toast({
         title: "Erro ao aplicar template",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setApplyingTemplate(false);
+      setApplyingTemplate(false)
 
   };
 
   const fixHorariosReais = async () => {
-    try {;
-      setApplyingTemplate(true);
+    try {
+      setApplyingTemplate(true)
       
       toast({
         title: "🚨 CORREÇÃO URGENTE INICIADA",
         description: "Aplicando horários reais aos prompts...",
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
 
-      const { data, error } = await Promise.resolve();
+      const { data, error } = await Promise.resolve()
       if (error) throw error;
 
       toast({
         title: "✅ CORREÇÃO CONCLUÍDA!",
         description: `${data.summary?.successful || 0} empresas corrigidas com horários reais`,
-      });
+      })
 
       // Recarregar dados
-      await loadData();
+      await loadData()
     } catch (error: any) {
       toast({
         title: "❌ Erro na correção",
         description: error.message,
         variant: "destructive"
-      });
+      })
     } finally {
-      setApplyingTemplate(false);
+      setApplyingTemplate(false)
 
   };
 
@@ -220,7 +220,7 @@ export default function PromptsManagement() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit';
-    });
+    })
   };
 
   if (loading) {
@@ -230,7 +230,7 @@ export default function PromptsManagement() {
           <div className="text-lg">Carregando...</div>
         </div>
       </div>
-    );
+    )
 
 
   return (
@@ -350,7 +350,7 @@ export default function PromptsManagement() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredCompanies.map((company) => {
           const prompt = prompts[company.slug];
-          const status = getPromptStatus(company.slug);
+          const status = getPromptStatus(company.slug)
           
           return (
             <Card key={company.id} className="hover:shadow-lg transition-shadow">
@@ -408,7 +408,7 @@ export default function PromptsManagement() {
                         toast({
                           title: "Preview do Prompt",
                           description: `Template de ${company.name} (${prompt.template.length} chars)`,
-                        });
+                        })
                       }}
                     >
                       <Eye className="h-4 w-4" />
@@ -417,7 +417,7 @@ export default function PromptsManagement() {
                 </div>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </div>
 
@@ -488,5 +488,5 @@ export default function PromptsManagement() {
         </div>
       )}
     </div>
-  );
+  )
 

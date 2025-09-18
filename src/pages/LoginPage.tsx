@@ -3,8 +3,8 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { LoginForm } from '../components/LoginForm';
 import { Navigate } from 'react-router-dom';
 
-const LoginPageContent = () => {;
-  const { user, isLoading } = useAuth();
+const LoginPageContent = () => {
+  const { user, isLoading } = useAuth()
 
   // Loading simples sem animações
   if (isLoading) {
@@ -14,7 +14,7 @@ const LoginPageContent = () => {;
           <div className="text-lg text-gray-600">Carregando...</div>
         </div>
       </div>
-    );
+    )
   }
 
   if (user) {
@@ -35,7 +35,7 @@ const LoginPage = () => {
     <AuthProvider>
       <LoginPageContent />
     </AuthProvider>;
-  );
+  )
 };
 
 export default LoginPage;

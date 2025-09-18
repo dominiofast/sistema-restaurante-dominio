@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 // SUPABASE REMOVIDO
 import { ClientSelector } from '@/components/whatsapp/ClientSelector';
 
-const CampanhaWhatsApp = () => {;
-  const { currentCompany } = useAuth();
-  const { loading, sending, sendCampaign, sendTestMessage, getClientes, scheduleCampaign } = useWhatsappCampaign();
+const CampanhaWhatsApp = () => {
+  const { currentCompany } = useAuth()
+  const { loading, sending, sendCampaign, sendTestMessage, getClientes, scheduleCampaign } = useWhatsappCampaign()
   
   const [campaignData, setCampaignData] = useState({
     name: '',
@@ -20,64 +20,64 @@ const CampanhaWhatsApp = () => {;
     sendNow: true,
     messageLimit: null, // Novo: limite de mensagens
     selectedContacts: [] // Novo: contatos específicos selecionados
-  });
+  })
 
-  const [previewMode, setPreviewMode] = useState('mobile');
-  const [messageLength, setMessageLength] = useState(0);
-  const [attachedImage, setAttachedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [clientesCount, setClientesCount] = useState(0);
-  const [testPhone, setTestPhone] = useState('');
-  const [showTestModal, setShowTestModal] = useState(false);
+  const [previewMode, setPreviewMode] = useState('mobile')
+  const [messageLength, setMessageLength] = useState(0)
+  const [attachedImage, setAttachedImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [clientesCount, setClientesCount] = useState(0)
+  const [testPhone, setTestPhone] = useState('')
+  const [showTestModal, setShowTestModal] = useState(false)
   
   // Novos estados para busca de contatos
-  const [searchTerm, setSearchTerm] = useState('');
-  const [availableClients, setAvailableClients] = useState([]);
-  const [showClientSelector, setShowClientSelector] = useState(false);
-  const [loadingClients, setLoadingClients] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [availableClients, setAvailableClients] = useState([])
+  const [showClientSelector, setShowClientSelector] = useState(false)
+  const [loadingClients, setLoadingClients] = useState(false)
   
   // Novo estado removido (não precisa mais do modal)
-  const [showSavedCampaigns, setShowSavedCampaigns] = useState(false);
+  const [showSavedCampaigns, setShowSavedCampaigns] = useState(false)
 
   // Carregar dados da campanha se vier do sessionStorage
   useEffect(() => {
-    const loadCampaignData = sessionStorage.getItem('loadCampaignData');
+    const loadCampaignData = sessionStorage.getItem('loadCampaignData')
     if (loadCampaignData) {
       try {
-        const data = JSON.parse(loadCampaignData);
-        setCampaignData(data);
-        sessionStorage.removeItem('loadCampaignData'); // Limpar após carregar
-        toast.success('Campanha carregada para edição');
+        const data = JSON.parse(loadCampaignData)
+        setCampaignData(data)
+        sessionStorage.removeItem('loadCampaignData') // Limpar após carregar
+        toast.success('Campanha carregada para edição')
       } catch (error) {
-        console.error('Erro ao carregar dados da campanha:', error);
+        console.error('Erro ao carregar dados da campanha:', error)
       }
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     // SEO básico da página
     document.title = 'Campanha WhatsApp Marketing | Domínio Tech';
     const desc = 'Envie campanhas de WhatsApp Marketing para seus clientes.';
-    let meta = document.querySelector('meta[name="description"]');
+    let meta = document.querySelector('meta[name="description"]')
     if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'description')
+      document.head.appendChild(meta)
     }
-    meta.setAttribute('content', desc);
+    meta.setAttribute('content', desc)
 
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
     }
-    canonical.setAttribute('href', window.location.href);
-  }, []);
+    canonical.setAttribute('href', window.location.href)
+  }, [])
 
   useEffect(() => {
-    setMessageLength(campaignData.message.length);
-  }, [campaignData.message]);
+    setMessageLength(campaignData.message.length)
+  }, [campaignData.message])
 
   // Buscar contagem de clientes quando o público-alvo mudar
   useEffect(() => {
@@ -87,92 +87,92 @@ const CampanhaWhatsApp = () => {;
           if (campaignData.audience === 'contatos-especificos') {
             // Para contatos específicos, contar apenas os selecionados
             const effectiveCount = campaignData.messageLimit 
-              ? Math.min(campaignData.selectedContacts.length, campaignData.messageLimit);
+              ? Math.min(campaignData.selectedContacts.length, campaignData.messageLimit)
               : campaignData.selectedContacts.length;
-            setClientesCount(effectiveCount);
-          }  catch (error) { console.error('Error:', error); }else {
-            const clientes = await getClientes(campaignData.audience);
+            setClientesCount(effectiveCount)
+          }  catch (error) { console.error('Error:', error) }else {
+            const clientes = await getClientes(campaignData.audience)
             const effectiveCount = campaignData.messageLimit 
-              ? Math.min(clientes.length, campaignData.messageLimit);
+              ? Math.min(clientes.length, campaignData.messageLimit)
               : clientes.length;
-            setClientesCount(effectiveCount);
+            setClientesCount(effectiveCount)
 
         } catch (error) {
-          console.error('Erro ao buscar clientes:', error);
-          setClientesCount(0);
+          console.error('Erro ao buscar clientes:', error)
+          setClientesCount(0)
 
       }
     };
 
-    fetchClientesCount();
-  }, [campaignData.audience, campaignData.selectedContacts, campaignData.messageLimit, currentCompany?.id, getClientes]);
+    fetchClientesCount()
+  }, [campaignData.audience, campaignData.selectedContacts, campaignData.messageLimit, currentCompany?.id, getClientes])
 
   const handleInputChange = (field, value) => {
     setCampaignData(prev => ({
       ...prev,
       [field]: value;
-    }));
+    }))
   };
 
-  const handleImageUpload = (event) => {;
+  const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       // Validar tipo de arquivo
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!validTypes.includes(file.type)) {
-        alert('Tipo de arquivo não suportado. Use: JPG, PNG, GIF ou WebP');
+        alert('Tipo de arquivo não suportado. Use: JPG, PNG, GIF ou WebP')
         return;
       }
       
       // Validar tamanho (máximo 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Arquivo muito grande. Tamanho máximo: 5MB');
+        alert('Arquivo muito grande. Tamanho máximo: 5MB')
         return;
       }
       
-      setAttachedImage(file);
+      setAttachedImage(file)
       
       // Criar preview
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (e) => {
-        setImagePreview(e.target.result);
+        setImagePreview(e.target.result)
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
     }
   };
 
-  const removeImage = () => {;
-    setAttachedImage(null);
-    setImagePreview(null);
+  const removeImage = () => {
+    setAttachedImage(null)
+    setImagePreview(null)
   };
 
   const formatMessage = (text) => {
     // Simula formatação básica do WhatsApp
     return text
       .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
-      .replace(/_([^_]+)_/g, '<em>$1</em>');
-      .replace(/~([^~]+)~/g, '<del>$1</del>');
+      .replace(/_([^_]+)_/g, '<em>$1</em>')
+      .replace(/~([^~]+)~/g, '<del>$1</del>')
   };
 
   // Função para enviar campanha
   const handleSendCampaign = async () => {
-    if (!campaignData.name.trim()) {;
-      toast.error('Por favor, insira um nome para a campanha');
+    if (!campaignData.name.trim()) {
+      toast.error('Por favor, insira um nome para a campanha')
       return;
     }
 
     if (!campaignData.message.trim()) {
-      toast.error('Por favor, insira uma mensagem');
+      toast.error('Por favor, insira uma mensagem')
       return;
     }
 
     if (!campaignData.sendNow && (!campaignData.scheduledDate || !campaignData.scheduledTime)) {
-      toast.error('Por favor, defina data e horário para agendamento');
+      toast.error('Por favor, defina data e horário para agendamento')
       return;
     }
 
     if (clientesCount === 0) {
-      toast.error('Nenhum cliente encontrado para envio');
+      toast.error('Nenhum cliente encontrado para envio')
       return;
     }
 
@@ -186,7 +186,7 @@ const CampanhaWhatsApp = () => {;
       imageFile: attachedImage;
     };
 
-    const result = await sendCampaign(campaignPayload);
+    const result = await sendCampaign(campaignPayload)
     
     if (result.success) {
       // Limpar formulário após envio bem-sucedido
@@ -200,21 +200,21 @@ const CampanhaWhatsApp = () => {;
         sendNow: true,
         messageLimit: null,
         selectedContacts: []
-      });
-      setAttachedImage(null);
-      setImagePreview(null);
+      })
+      setAttachedImage(null)
+      setImagePreview(null)
     }
   };
 
   // Função para enviar mensagem de teste
   const handleSendTest = async () => {
-    if (!testPhone.trim()) {;
-      toast.error('Por favor, insira um número de telefone para teste');
+    if (!testPhone.trim()) {
+      toast.error('Por favor, insira um número de telefone para teste')
       return;
     }
 
     if (!campaignData.message.trim()) {
-      toast.error('Por favor, insira uma mensagem para testar');
+      toast.error('Por favor, insira uma mensagem para testar')
       return;
     }
 
@@ -223,27 +223,27 @@ const CampanhaWhatsApp = () => {;
       imageFile: attachedImage;
     };
 
-    const success = await sendTestMessage(campaignPayload, testPhone);
+    const success = await sendTestMessage(campaignPayload, testPhone)
     
     if (success) {
-      setShowTestModal(false);
-      setTestPhone('');
+      setShowTestModal(false)
+      setTestPhone('')
     }
   };
 
   // Função para salvar rascunho
   const handleSaveDraft = async () => {
-    if (!campaignData.name.trim()) {;
-      toast.error('Por favor, insira um nome para a campanha');
+    if (!campaignData.name.trim()) {
+      toast.error('Por favor, insira um nome para a campanha')
       return;
     }
 
     if (!campaignData.message.trim()) {
-      toast.error('Por favor, insira uma mensagem');
+      toast.error('Por favor, insira uma mensagem')
       return;
     }
 
-    console.log('Salvando rascunho...', campaignData);
+    console.log('Salvando rascunho...', campaignData)
 
     const campaignPayload = {
       ...campaignData,
@@ -253,13 +253,13 @@ const CampanhaWhatsApp = () => {;
 // scheduledTime: '';
     };
 
-    const success = await scheduleCampaign(campaignPayload);
+    const success = await scheduleCampaign(campaignPayload)
     
     if (success) {
-      toast.success('Campanha salva como rascunho!');
+      toast.success('Campanha salva como rascunho!')
       // Não limpar o formulário para permitir continuar editando
     } else {
-      toast.error('Erro ao salvar rascunho');
+      toast.error('Erro ao salvar rascunho')
     }
   };
 
@@ -267,7 +267,7 @@ const CampanhaWhatsApp = () => {;
     return new Date().toLocaleTimeString('pt-BR', { 
       hour: '2-digit', 
       minute: '2-digit' ;
-    });
+    })
   };
 
   const WhatsAppPreview = () => (
@@ -341,7 +341,7 @@ const CampanhaWhatsApp = () => {;
         </div>
       </div>
     </div>;
-  );
+  )
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -833,8 +833,8 @@ _texto_ = itálico
                 </h3>
                 <button
                   onClick={() => {
-                    setShowTestModal(false);
-                    setTestPhone('');
+                    setShowTestModal(false)
+                    setTestPhone('')
                   }}
                   className="text-gray-400 hover:text-gray-600"
                 >
@@ -877,8 +877,8 @@ _texto_ = itálico
               <div className="flex space-x-3 mt-6">
                 <button
                   onClick={() => {
-                    setShowTestModal(false);
-                    setTestPhone('');
+                    setShowTestModal(false)
+                    setTestPhone('')
                   }}
                   className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                 >
@@ -911,7 +911,7 @@ _texto_ = itálico
         />
       )}
     </div>
-  );
+  )
 };
 
 export default CampanhaWhatsApp;

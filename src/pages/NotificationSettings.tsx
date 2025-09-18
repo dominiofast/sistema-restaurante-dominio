@@ -86,7 +86,7 @@ export const NotificationSettings: React.FC = () => {
       </Card>
 
     </div>
-  );
+  )
 };
 
 export default NotificationSettings;

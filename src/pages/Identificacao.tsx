@@ -8,12 +8,12 @@ const coral = '#FF6B57'; // Coral
 const preto = '#222'; // Preto
 
 const Identificacao: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
   const { produto } = location.state || {};
 
-  const [telefone, setTelefone] = useState('');
-  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('')
+  const [nome, setNome] = useState('')
 
   const podeAvancar = telefone.length >= 10 && nome.length > 3;
 
@@ -58,7 +58,7 @@ const Identificacao: React.FC = () => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default Identificacao;

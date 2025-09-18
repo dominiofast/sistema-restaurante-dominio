@@ -14,20 +14,20 @@ import { useAuth } from "@/contexts/AuthContext";
 import AddCashbackModal from "@/components/cashback/AddCashbackModal";
 
 const Cashback: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null);
-  const [showAddCashbackModal, setShowAddCashbackModal] = useState(false);
+  const { currentCompany } = useAuth()
+  const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null)
+  const [showAddCashbackModal, setShowAddCashbackModal] = useState(false)
 
-  const { data: config, isLoading: configLoading } = useCashbackConfig(currentCompany?.id);
-  const { data: customers, isLoading: customersLoading } = useCustomerCashback(currentCompany?.id);
-  const { data: transactions, isLoading: transactionsLoading } = useCashbackTransactions(currentCompany?.id, selectedCustomer || undefined);
-  const saveCashbackConfig = useSaveCashbackConfig();
+  const { data: config, isLoading: configLoading } = useCashbackConfig(currentCompany?.id)
+  const { data: customers, isLoading: customersLoading } = useCustomerCashback(currentCompany?.id)
+  const { data: transactions, isLoading: transactionsLoading } = useCashbackTransactions(currentCompany?.id, selectedCustomer || undefined)
+  const saveCashbackConfig = useSaveCashbackConfig()
 
   const [formData, setFormData] = useState({
     percentual_cashback: config?.percentual_cashback || 0,
     valor_minimo_compra: config?.valor_minimo_compra || 0,
     is_active: config?.is_active ?? true,
-  });
+  })
 
   React.useEffect(() => {
     if (config) {
@@ -35,27 +35,27 @@ const Cashback: React.FC = () => {
         percentual_cashback: config.percentual_cashback,
         valor_minimo_compra: config.valor_minimo_compra,
         is_active: config.is_active,
-      });
+      })
     }
-  }, [config]);
+  }, [config])
 
   const handleSaveConfig = () => {
-    if (!currentCompany?.id) {;
-      console.error('Company ID não encontrado');
+    if (!currentCompany?.id) {
+      console.error('Company ID não encontrado')
       return;
     }
 
     saveCashbackConfig.mutate({
       ...formData,
       company_id: currentCompany.id,
-    });
+    })
   };
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL';
-    }).format(value);
+    }).format(value)
   };
 
   return (
@@ -287,7 +287,7 @@ const Cashback: React.FC = () => {
         onOpenChange={setShowAddCashbackModal}
       />
     </div>
-  );
+  )
 };
 
 export default Cashback;

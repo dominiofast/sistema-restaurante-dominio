@@ -13,7 +13,7 @@ export const WhatsAppNotificationSettings: React.FC = () => {
     setEnabled, 
     browserNotificationPermission, 
     requestNotificationPermission 
-  } = useGlobalWhatsAppNotification();
+  } = useGlobalWhatsAppNotification()
 
   const getPermissionIcon = () => {
     switch (browserNotificationPermission) {
@@ -37,8 +37,8 @@ export const WhatsAppNotificationSettings: React.FC = () => {
     }
   };
 
-  const handleRequestPermission = async () => {;
-    await requestNotificationPermission();
+  const handleRequestPermission = async () => {
+    await requestNotificationPermission()
   };
 
   return (
@@ -148,5 +148,5 @@ export const WhatsAppNotificationSettings: React.FC = () => {
         )}
       </CardContent>
     </Card>
-  );
+  )
 };

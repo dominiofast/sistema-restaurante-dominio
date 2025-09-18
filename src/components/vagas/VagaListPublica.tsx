@@ -74,7 +74,7 @@ const VagaListPublica: React.FC<VagaListPublicaProps> = ({ vagas, config, slug }
         )}
       </section>
     </div>
-  );
+  )
 };
 
 export default VagaListPublica;

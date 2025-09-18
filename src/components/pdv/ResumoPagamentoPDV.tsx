@@ -42,5 +42,5 @@ export const ResumoPagamentoPDV: React.FC<ResumoPagamentoPDVProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };

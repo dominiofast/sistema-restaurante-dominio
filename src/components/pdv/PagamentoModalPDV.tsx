@@ -18,26 +18,26 @@ export const PagamentoModalPDV: React.FC<PagamentoModalPDVProps> = ({
   subtotal,
   total
 }) => {
-  const [formaPagamento, setFormaPagamento] = useState('dinheiro');
-  const [valorRecebido, setValorRecebido] = useState(total.toString());
-  const [loading, setLoading] = useState(false);
+  const [formaPagamento, setFormaPagamento] = useState('dinheiro')
+  const [valorRecebido, setValorRecebido] = useState(total.toString())
+  const [loading, setLoading] = useState(false)
 
   if (!isOpen) return null;
 
-  const handleConfirm = async () => {;
-    setLoading(true);
+  const handleConfirm = async () => {
+    setLoading(true)
     try {
       await onConfirm({
         tipo: formaPagamento,
         valor: total,
         valorRecebido: parseFloat(valorRecebido),
         troco: parseFloat(valorRecebido) - total
-      } catch (error) { console.error('Error:', error); });
-      onClose();
+      } catch (error) { console.error('Error:', error) })
+      onClose()
     } catch (error) {
-      console.error('Erro ao confirmar pagamento:', error);
+      console.error('Erro ao confirmar pagamento:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -115,5 +115,5 @@ export const PagamentoModalPDV: React.FC<PagamentoModalPDVProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

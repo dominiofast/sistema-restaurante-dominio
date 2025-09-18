@@ -9,7 +9,7 @@ interface PreviewDadosPadraoProps {
 }
 
 const PreviewDadosPadrao: React.FC<PreviewDadosPadraoProps> = ({ tipo }) => {
-  const stats = FichasTecnicasDefaultService.getDadosEstatisticas();
+  const stats = FichasTecnicasDefaultService.getDadosEstatisticas()
   const dados = tipo === 'mercadorias' ? stats.mercadorias : stats.receitas;
 
   // Dados de exemplo para preview
@@ -137,7 +137,7 @@ const PreviewDadosPadrao: React.FC<PreviewDadosPadraoProps> = ({ tipo }) => {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default PreviewDadosPadrao; 

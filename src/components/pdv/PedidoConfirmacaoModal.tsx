@@ -22,20 +22,20 @@ export const PedidoConfirmacaoModal: React.FC<PedidoConfirmacaoModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const handleFechar = () => {;
-    onClose();
+  const handleFechar = () => {
+    onClose()
   };
 
   const handleConfirmar = () => {
-    if (onNovaVenda) {;
-      onNovaVenda();
+    if (onNovaVenda) {
+      onNovaVenda()
     }
-    onClose();
+    onClose()
   };
 
   const handleImprimir = () => {
-    if (onImprimirVenda) {;
-      onImprimirVenda();
+    if (onImprimirVenda) {
+      onImprimirVenda()
     }
   };
 
@@ -106,5 +106,5 @@ export const PedidoConfirmacaoModal: React.FC<PedidoConfirmacaoModalProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

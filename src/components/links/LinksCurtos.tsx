@@ -15,14 +15,14 @@ interface ShortLink {
   is_active: boolean;
 }
 
-const LinksCurtos = () => {;
-  const [links, setLinks] = useState<ShortLink[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+const LinksCurtos = () => {
+  const [links, setLinks] = useState<ShortLink[]>([])
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
   const loadLinks = async () => {
-    try {;
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+    try {
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
           id,
@@ -45,35 +45,35 @@ const LinksCurtos = () => {;
         company_name: link.companies?.name || "Empresa não encontrada";
       })) || [];
 
-      setLinks(formattedLinks);
+      setLinks(formattedLinks)
     } catch (error) {
-      console.error("Erro ao carregar links:", error);
+      console.error("Erro ao carregar links:", error)
       toast({
         title: "Erro",
         description: "Falha ao carregar os links curtos",
         variant: "destructive"
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   useEffect(() => {
-    loadLinks();
-  }, []);
+    loadLinks()
+  }, [])
 
-  const copyToClipboard = (shortId: string) => {;
+  const copyToClipboard = (shortId: string) => {
     const url = `https://pedido.dominio.tech/c/${shortId}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url)
     toast({
       title: "Link copiado!",
       description: "O link foi copiado para a área de transferência"
-    });
+    })
   };
 
-  const openLink = (shortId: string) => {;
+  const openLink = (shortId: string) => {
     const url = `https://pedido.dominio.tech/c/${shortId}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank')
   };
 
   if (loading) {
@@ -86,7 +86,7 @@ const LinksCurtos = () => {;
           </CardTitle>
         </CardHeader>
       </Card>
-    );
+    )
 
 
   return (
@@ -203,7 +203,7 @@ const LinksCurtos = () => {;
         </CardContent>
       </Card>
     </div>
-  );
+  )
 };
 
 export default LinksCurtos;

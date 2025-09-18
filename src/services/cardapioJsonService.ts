@@ -35,45 +35,45 @@ export class CardapioJsonService {
    */
   static async generateCardapioJson(companyId: string): Promise<CardapioJson | null> {
     try {
-      console.log('📋 Gerando JSON estruturado do cardápio - Company:', companyId);
+      console.log('📋 Gerando JSON estruturado do cardápio - Company:', companyId)
 
       // Buscar categorias ativas
-      console.log('🔍 Buscando categorias...');
+      console.log('🔍 Buscando categorias...')
       const categorias = null as any; const categoriasError = null as any;
         return null;
       }
 
-       catch (error) { console.error('Error:', error); }console.log('✅ Categorias encontradas:', categorias?.length || 0);
+       catch (error) { console.error('Error:', error) }console.log('✅ Categorias encontradas:', categorias?.length || 0)
 
       // Buscar produtos disponíveis
-      console.log('🔍 Buscando produtos...');
+      console.log('🔍 Buscando produtos...')
       const produtos = null as any; const produtosError = null as any;
         return null;
       }
 
-      console.log('✅ Produtos encontrados:', produtos?.length || 0);
+      console.log('✅ Produtos encontrados:', produtos?.length || 0)
 
       // Buscar relações produto-categoria adicional
-      console.log('🔍 Buscando categorias adicionais...');
+      console.log('🔍 Buscando categorias adicionais...')
       const produtoCategorias = null as any; const produtoCategoriasError = null as any;
         // Não retornar null aqui, apenas continuar sem categorias adicionais
       }
 
-      console.log('✅ Categorias adicionais encontradas:', produtoCategorias?.length || 0);
+      console.log('✅ Categorias adicionais encontradas:', produtoCategorias?.length || 0)
 
       // Buscar adicionais ativos
-      console.log('🔍 Buscando adicionais...');
+      console.log('🔍 Buscando adicionais...')
       const adicionais = null as any; const adicionaisError = null as any;
         // Não retornar null aqui, apenas continuar sem adicionais
       }
 
-      console.log('✅ Adicionais encontrados:', adicionais?.length || 0);
+      console.log('✅ Adicionais encontrados:', adicionais?.length || 0)
 
       // Processar produtos com suas categorias e adicionais
-      console.log('🔧 Processando produtos...');
+      console.log('🔧 Processando produtos...')
       const produtosJson: ProdutoJson[] = produtos?.map(produto => {
         // Encontrar categoria do produto
-        const categoria = categorias?.find(c => c.id === produto.categoria_id);
+        const categoria = categorias?.find(c => c.id === produto.categoria_id)
         
         // Obter preço (promocional se disponível)
         const precoFinal = produto.is_promotional && produto.promotional_price 
@@ -120,12 +120,12 @@ export class CardapioJsonService {
               };
 
               if (grupo.obrigatorio) {
-                opcoesObrigatorias.push(grupo);
+                opcoesObrigatorias.push(grupo)
               } else {
-                opcoesOpcionais.push(grupo);
+                opcoesOpcionais.push(grupo)
 
 
-          });
+          })
 
           if (opcoesObrigatorias.length > 0) {
             produtoJson.opcoesObrigatorias = opcoesObrigatorias;
@@ -148,12 +148,12 @@ export class CardapioJsonService {
       console.log('✅ JSON estruturado gerado com sucesso:', {
         totalProdutos: result.totalProdutos,
         produtosComOpcionais: produtosJson.filter(p => p.opcoesOpcionais || p.opcoesObrigatorias).length
-      });
+      })
 
       return result;
 
     } catch (error) {
-      console.error('❌ ERRO GERAL no generateCardapioJson:', error);
+      console.error('❌ ERRO GERAL no generateCardapioJson:', error)
       return null;
 
 
@@ -186,7 +186,7 @@ export class CardapioJsonService {
       }
 
       texto += '\n\n';
-    });
+    })
 
     return texto;
 
@@ -196,16 +196,16 @@ export class CardapioJsonService {
    */
   static async saveJsonToFile(companyId: string): Promise<string | null> {
     try {
-      const cardapioJson = await this.generateCardapioJson(companyId);
+      const cardapioJson = await this.generateCardapioJson(companyId)
       if (!cardapioJson) return null;
 
-      const jsonString = JSON.stringify(cardapioJson, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' } catch (error) { console.error('Error:', error); });
-      const url = URL.createObjectURL(blob);
+      const jsonString = JSON.stringify(cardapioJson, null, 2)
+      const blob = new Blob([jsonString], { type: 'application/json' } catch (error) { console.error('Error:', error) })
+      const url = URL.createObjectURL(blob)
       
       return url;
     } catch (error) {
-      console.error('❌ Erro ao salvar JSON:', error);
+      console.error('❌ Erro ao salvar JSON:', error)
       return null;
 
 

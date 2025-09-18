@@ -227,7 +227,7 @@ export class FichasTecnicasDefaultService {
   // Verificar se já existem mercadorias para a empresa
   static async verificarMercadoriasExistentes(companyId: string): Promise<number> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+      const { data, error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
         
         
         
@@ -235,7 +235,7 @@ export class FichasTecnicasDefaultService {
       if (error) throw error;
       return data?.length || 0;
     } catch (error) {
-      console.error('Erro ao verificar mercadorias existentes:', error);
+      console.error('Erro ao verificar mercadorias existentes:', error)
       return 0;
 
 
@@ -243,7 +243,7 @@ export class FichasTecnicasDefaultService {
   // Verificar se já existem receitas para a empresa
   static async verificarReceitasExistentes(companyId: string): Promise<number> {
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+      const { data, error }  catch (error) { console.error('Error:', error) }= await (supabase as any)
         
         
         
@@ -251,7 +251,7 @@ export class FichasTecnicasDefaultService {
       if (error) throw error;
       return data?.length || 0;
     } catch (error) {
-      console.error('Erro ao verificar receitas existentes:', error);
+      console.error('Erro ao verificar receitas existentes:', error)
       return 0;
 
 
@@ -260,12 +260,12 @@ export class FichasTecnicasDefaultService {
   static async carregarMercadoriasPadrao(companyId: string, userId: string): Promise<{ sucesso: boolean; mensagem: string; quantidade?: number }> {
     try {
       // Verificar se já existem mercadorias
-      const existentes = await this.verificarMercadoriasExistentes(companyId);
+      const existentes = await this.verificarMercadoriasExistentes(companyId)
       
       if (existentes > 0) {
         return {
           sucesso: false,
-          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error); }mercadorias cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
+          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error) }mercadorias cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
         };
       }
 
@@ -275,21 +275,21 @@ export class FichasTecnicasDefaultService {
         company_id: companyId,
         created_by: userId,
         updated_by: userId;
-      }));
+      }))
 
       // Inserir em lotes de 10 para evitar problemas de performance
       const batchSize = 10;
       let totalInseridas = 0;
 
       for (let i = 0; i < mercadorias.length; i += batchSize) {
-        const lote = mercadorias.slice(i, i + batchSize);
+        const lote = mercadorias.slice(i, i + batchSize)
         
         const { error } = await (supabase as any)
           
           
 
         if (error) {
-          console.error(`Erro no lote ${i / batchSize + 1}:`, error);
+          console.error(`Erro no lote ${i / batchSize + 1}:`, error)
           throw error;
         }
         
@@ -303,7 +303,7 @@ export class FichasTecnicasDefaultService {
       };
 
     } catch (error: any) {
-      console.error('Erro ao carregar mercadorias padrão:', error);
+      console.error('Erro ao carregar mercadorias padrão:', error)
       return {
         sucesso: false,
         mensagem: `Erro ao carregar mercadorias: ${error.message || 'Erro desconhecido'}`
@@ -315,12 +315,12 @@ export class FichasTecnicasDefaultService {
   static async carregarReceitasPadrao(companyId: string, userId: string): Promise<{ sucesso: boolean; mensagem: string; quantidade?: number }> {
     try {
       // Verificar se já existem receitas
-      const existentes = await this.verificarReceitasExistentes(companyId);
+      const existentes = await this.verificarReceitasExistentes(companyId)
       
       if (existentes > 0) {
         return {
           sucesso: false,
-          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error); }receitas cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
+          mensagem: `Já existem ${existentes}  catch (error) { console.error('Error:', error) }receitas cadastradas. Para evitar duplicação, limpe os dados antes de carregar os padrões.`
         };
       }
 
@@ -330,7 +330,7 @@ export class FichasTecnicasDefaultService {
         company_id: companyId,
         created_by: userId,
         updated_by: userId;
-      }));
+      }))
 
       // Inserir todas as receitas
       const { error } = await (supabase as any)
@@ -338,7 +338,7 @@ export class FichasTecnicasDefaultService {
         
 
       if (error) {
-        console.error('Erro ao inserir receitas:', error);
+        console.error('Erro ao inserir receitas:', error)
         throw error;
       }
 
@@ -349,7 +349,7 @@ export class FichasTecnicasDefaultService {
       };
 
     } catch (error: any) {
-      console.error('Erro ao carregar receitas padrão:', error);
+      console.error('Erro ao carregar receitas padrão:', error)
       return {
         sucesso: false,
         mensagem: `Erro ao carregar receitas: ${error.message || 'Erro desconhecido'}`

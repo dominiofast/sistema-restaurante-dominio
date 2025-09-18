@@ -21,7 +21,7 @@ const VagasConfigHeader: React.FC<VagasConfigHeaderProps> = ({ publicUrl }) => {
         </Button>
       </a>
     </div>
-  );
+  )
 };
 
 export default VagasConfigHeader;

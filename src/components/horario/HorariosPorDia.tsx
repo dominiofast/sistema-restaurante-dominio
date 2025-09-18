@@ -73,5 +73,5 @@ export const HorariosPorDia: React.FC<HorariosPorDiaProps> = ({
         </div>
       ))}
     </>
-  );
+  )
 };

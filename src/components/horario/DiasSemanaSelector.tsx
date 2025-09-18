@@ -42,5 +42,5 @@ export const DiasSemanaSelector: React.FC<DiasSemanaProps> = ({
         ))}
       </div>
     </div>
-  );
+  )
 };

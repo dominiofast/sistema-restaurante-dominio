@@ -9,52 +9,52 @@ import VagaListPublica from '@/components/vagas/VagaListPublica';
 import VagaDetailsPage from '@/components/vagas/VagaDetailsPage';
 
 const VagaPublica: React.FC = () => {
-  const { slug, vagaId } = useParams<{ slug: string; vagaId?: string }>();
-  const [vaga, setVaga] = useState<any | null>(null);
-  const [vagas, setVagas] = useState<any[]>([]);
-  const [config, setConfig] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [inscricaoEnviada, setInscricaoEnviada] = useState(false);
+  const { slug, vagaId } = useParams<{ slug: string; vagaId?: string }>()
+  const [vaga, setVaga] = useState<any | null>(null)
+  const [vagas, setVagas] = useState<any[]>([])
+  const [config, setConfig] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [inscricaoEnviada, setInscricaoEnviada] = useState(false)
 
   useEffect(() => {
     if (slug && vagaId) {
-      fetchVagaData();
+      fetchVagaData()
     } else if (slug && !vagaId) {
-      fetchVagasList();
+      fetchVagasList()
     }
-  }, [slug, vagaId]);
+  }, [slug, vagaId])
 
   const fetchVagaData = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       const vagaData = null as any; const vagaError = null as any;
       
       const configData = null as any; const configError = null as any;
-      }  catch (error) { console.error('Error:', error); }else {
-        setConfig({ ...configData, company_name: vagaData.company.name });
+      }  catch (error) { console.error('Error:', error) }else {
+        setConfig({ ...configData, company_name: vagaData.company.name })
       }
-      setVaga(vagaData);
+      setVaga(vagaData)
     } catch (error: any) {
-      toast.error('Vaga não encontrada ou não está mais disponível');
+      toast.error('Vaga não encontrada ou não está mais disponível')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
   const fetchVagasList = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       const companyData = null as any; const companyError = null as any;
       
       const vagasData = null as any; const vagasError = null as any;
-      setVagas(vagasData || []);
+      setVagas(vagasData || [])
       
       const configData = null as any; const configError = null as any;
     } catch (error: any) {
-      toast.error('Erro ao carregar vagas públicas');
+      toast.error('Erro ao carregar vagas públicas')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -69,13 +69,13 @@ const VagaPublica: React.FC = () => {
     return types[type] || type;
   };
 
-  const handleInscricaoSuccess = () => {;
-    setInscricaoEnviada(true);
-    setShowForm(false);
+  const handleInscricaoSuccess = () => {
+    setInscricaoEnviada(true)
+    setShowForm(false)
   };
 
-  const handleCloseForm = () => {;
-    setShowForm(false);
+  const handleCloseForm = () => {
+    setShowForm(false)
   };
 
   if (loading) {
@@ -95,7 +95,7 @@ const VagaPublica: React.FC = () => {
           <p className="text-gray-600">Esta vaga pode ter sido removida ou não está mais disponível.</p>
         </div>
       </div>
-    );
+    )
 
 
   if (inscricaoEnviada) {
@@ -105,7 +105,7 @@ const VagaPublica: React.FC = () => {
         nomeEmpresa={config?.company_name || 'nossa empresa'}
         corPrimaria={config?.primary_color || '#1B365D'}
       />
-    );
+    )
 
 
   return (
@@ -119,7 +119,7 @@ const VagaPublica: React.FC = () => {
       onInscricaoEnviada={handleInscricaoSuccess}
       getTypeLabel={getTypeLabel}
     />
-  );
+  )
 };
 
 export default VagaPublica;

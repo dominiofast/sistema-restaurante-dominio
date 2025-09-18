@@ -37,7 +37,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default HeroSection;

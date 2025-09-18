@@ -21,23 +21,23 @@ interface PrintConfigFormProps {
 }
 
 export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps) {
-  const [localConfig, setLocalConfig] = useState<PrintConfig>(config);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { currentCompany } = useAuth();
+  const [localConfig, setLocalConfig] = useState<PrintConfig>(config)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const { currentCompany } = useAuth()
 
-  const handleChange = (field: keyof PrintConfig, value: any) => {;
+  const handleChange = (field: keyof PrintConfig, value: any) => {
     const newConfig = { ...localConfig, [field]: value };
-    setLocalConfig(newConfig);
-    onConfigChange(newConfig);
+    setLocalConfig(newConfig)
+    onConfigChange(newConfig)
   };
 
-  const loadSavedConfig = async () => {;
+  const loadSavedConfig = async () => {
     if (!currentCompany?.id) return;
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -45,7 +45,7 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
         
 
       if (error) {
-        console.error('Erro ao carregar configuração:', error);
+        console.error('Erro ao carregar configuração:', error)
         return;
       }
 
@@ -54,30 +54,30 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
         const savedConfig = {
           width: data.largura_papel || 48,
           removeAccents: data.texto_header?.includes('removeAccents:true') || true,
-          marginLeft: parseInt(data.texto_footer?.match(/marginLeft:(\d+)/)?.[1] || '0');
+          marginLeft: parseInt(data.texto_footer?.match(/marginLeft:(\d+)/)?.[1] || '0')
         };
-        setLocalConfig(savedConfig);
-        onConfigChange(savedConfig);
+        setLocalConfig(savedConfig)
+        onConfigChange(savedConfig)
       }
     } catch (error) {
-      console.error('Erro ao carregar configuração:', error);
+      console.error('Erro ao carregar configuração:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
 
   };
 
   const saveConfig = async () => {
-    if (!currentCompany?.id) {;
-      toast.error('Empresa não encontrada');
+    if (!currentCompany?.id) {
+      toast.error('Empresa não encontrada')
       return;
 
 
-    setIsSaving(true);
+    setIsSaving(true)
     try {
       // Verificar se o usuário está autenticado
-      const { data: { user } catch (error) { console.error('Error:', error); }, error: authError } = await Promise.resolve();
+      const { data: { user } catch (error) { console.error('Error:', error) }, error: authError } = await Promise.resolve()
       if (authError || !user) {
-        toast.error('Usuário não autenticado');
+        toast.error('Usuário não autenticado')
         return;
       }
 
@@ -111,28 +111,28 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
             is_active: true,
             is_default: true,
             impressao_automatica: false
-          });
+          })
         error = insertError;
       }
 
       if (error) {
-        console.error('Erro ao salvar configuração:', error);
-        toast.error(`Erro ao salvar configuração: ${error.message}`);
+        console.error('Erro ao salvar configuração:', error)
+        toast.error(`Erro ao salvar configuração: ${error.message}`)
         return;
       }
 
-      toast.success('Configuração de formatação salva com sucesso!');
+      toast.success('Configuração de formatação salva com sucesso!')
     } catch (error) {
-      console.error('Erro ao salvar configuração:', error);
-      toast.error('Erro ao salvar configuração');
+      console.error('Erro ao salvar configuração:', error)
+      toast.error('Erro ao salvar configuração')
     } finally {
-      setIsSaving(false);
+      setIsSaving(false)
 
   };
 
   useEffect(() => {
-    loadSavedConfig();
-  }, [currentCompany?.id]);
+    loadSavedConfig()
+  }, [currentCompany?.id])
 
   const presets = [
     { name: 'Cupom Fiscal (48)', width: 48, removeAccents: true, marginLeft: 0 },
@@ -235,5 +235,5 @@ export function PrintConfigForm({ config, onConfigChange }: PrintConfigFormProps
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

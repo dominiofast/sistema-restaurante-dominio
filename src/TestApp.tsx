@@ -7,5 +7,5 @@ export default function TestApp() {
       <p>Se você está vendo esta mensagem, o React está rodando corretamente.</p>
       <p>Hora: {new Date().toLocaleTimeString()}</p>
     </div>
-  );
+  )
 } 

@@ -28,25 +28,25 @@ export const CompanyBranding: React.FC<CompanyBrandingProps> = ({
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({;
-          title: `${company?.name}  catch (error) { console.error('Error:', error); }- Cardápio Digital`,
+        await navigator.share({
+          title: `${company?.name}  catch (error) { console.error('Error:', error) }- Cardápio Digital`,
           text: `Confira o cardápio digital da ${company?.name}`,
           url: window.location.href,
-        });
+        })
       } catch (error) {
         // Fallback para cópia do link
-        copyToClipboard();
+        copyToClipboard()
       }
     } else {
-      copyToClipboard();
+      copyToClipboard()
 
   };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       // Você pode adicionar um toast aqui;
-      console.log('Link copiado para a área de transferência');
-    });
+      console.log('Link copiado para a área de transferência')
+    })
   };
 
   return (
@@ -136,5 +136,5 @@ export const CompanyBranding: React.FC<CompanyBrandingProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

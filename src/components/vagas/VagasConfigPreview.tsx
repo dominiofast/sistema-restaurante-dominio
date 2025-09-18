@@ -37,7 +37,7 @@ const VagasConfigPreview: React.FC<VagasConfigPreviewProps> = ({ config }) => {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default VagasConfigPreview;

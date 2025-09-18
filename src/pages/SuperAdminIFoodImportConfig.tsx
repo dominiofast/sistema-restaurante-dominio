@@ -7,37 +7,37 @@ import { useToast } from '@/hooks/use-toast';
 const SETTING_KEY = 'scrapingbee_api_key';
 
 const SuperAdminIFoodImportConfig: React.FC = () => {
-  const [apiKey, setApiKey] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const [apiKey, setApiKey] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
-    const fetchApiKey = async () => {;
-      setIsLoading(true);
+    const fetchApiKey = async () => {
+      setIsLoading(true)
       const { data, error  } = null as any;
       if (data && data.value) {
-        setApiKey(data.value);
+        setApiKey(data.value)
       }
-      setIsLoading(false);
+      setIsLoading(false)
     };
-    fetchApiKey();
-  }, []);
+    fetchApiKey()
+  }, [])
 
-  const handleSave = async () => {;
-    setIsLoading(true);
+  const handleSave = async () => {
+    setIsLoading(true)
     const { error  } = null as any;
-    setIsLoading(false);
+    setIsLoading(false)
     if (error) {
       toast({
         title: 'Erro ao salvar',
         description: 'Não foi possível salvar a chave de API.',
         variant: 'destructive',
-      });
+      })
     } else {
       toast({
         title: 'Sucesso!',
         description: 'Chave de API do ScrapingBee salva com sucesso.',
-      });
+      })
 
   };
 
@@ -61,7 +61,7 @@ const SuperAdminIFoodImportConfig: React.FC = () => {
         </Button>
       </div>
     </div>
-  );
+  )
 };
 
 export default SuperAdminIFoodImportConfig; 

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const NoCompanySelected: React.FC = () => {
-  const { user, companies, reloadCompanies } = useAuth();
+  const { user, companies, reloadCompanies } = useAuth()
 
   return (
     <div className="flex items-center justify-center min-h-[400px] p-6">
@@ -49,5 +49,5 @@ export const NoCompanySelected: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }; 

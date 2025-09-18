@@ -16,7 +16,7 @@ export const CLOUDINARY_CONFIG = {
   API_SECRET: import.meta.env.VITE_CLOUDINARY_API_SECRET || '',
   
   // URLs e endpoints
-  get UPLOAD_URL() {;
+  get UPLOAD_URL() {
     return `https://api.cloudinary.com/v1_1/${this.CLOUD_NAME}/auto/upload`;
   },
   
@@ -76,26 +76,26 @@ export const APP_CONFIG = {
 // =================================
 // VALIDAÇÃO DE CONFIGURAÇÕES
 // =================================
-export const validateConfig = () => {;
+export const validateConfig = () => {
   const errors: string[] = [];
   
   // Validar Cloudinary
   if (!CLOUDINARY_CONFIG.CLOUD_NAME) {
-    errors.push('VITE_CLOUDINARY_CLOUD_NAME não configurado');
+    errors.push('VITE_CLOUDINARY_CLOUD_NAME não configurado')
   }
   
   if (!CLOUDINARY_CONFIG.UPLOAD_PRESET) {
-    errors.push('VITE_CLOUDINARY_UPLOAD_PRESET não configurado');
+    errors.push('VITE_CLOUDINARY_UPLOAD_PRESET não configurado')
   }
   
   // Validar banco de dados
   if (!DATABASE_CONFIG.NEON_URL) {
-    errors.push('DATABASE_URL não configurado');
+    errors.push('DATABASE_URL não configurado')
   }
   
   if (errors.length > 0) {
-    console.error('❌ Erros de configuração:', errors);
-    throw new Error(`Configuração inválida: ${errors.join(', ')}`);
+    console.error('❌ Erros de configuração:', errors)
+    throw new Error(`Configuração inválida: ${errors.join(', ')}`)
   }
   
   return true;
@@ -117,7 +117,7 @@ export const logConfig = () => {
         neonConfigured: !!DATABASE_CONFIG.NEON_URL,
         supabaseConfigured: !!DATABASE_CONFIG.SUPABASE_URL
       };
-    });
+    })
   }
 };
 
@@ -132,5 +132,5 @@ export {
 
 // Inicializar logs em desenvolvimento
 if (import.meta.env.DEV) {
-  logConfig();
+  logConfig()
 }

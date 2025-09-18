@@ -57,10 +57,10 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
 }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: status.key,
-  });
+  })
 
   const Icon = status.icon;
-  const pedidoIds = pedidos.map(pedido => String(pedido.id));
+  const pedidoIds = pedidos.map(pedido => String(pedido.id))
 
   return (
     <div
@@ -96,8 +96,8 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
                         : 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200'
                     }`}
                     onClick={e => { 
-                      e.stopPropagation(); 
-                      setIntervaloHorasEntregue(horas as 1 | 6 | 24); 
+                      e.stopPropagation() 
+                      setIntervaloHorasEntregue(horas as 1 | 6 | 24) 
                     }}
                   >
                     {horas === 1 ? '1h' : `${horas}h`}
@@ -142,7 +142,7 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
         </SortableContext>
       </div>
     </div>
-  );
+  )
 };
 
 export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
@@ -154,8 +154,8 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
   onSelectPedido,
   campainhaInfo
 }) => {
-  const [statusConfigsKey, setStatusConfigsKey] = useState(0);
-  const [activePedido, setActivePedido] = useState<Pedido | null>(null);
+  const [statusConfigsKey, setStatusConfigsKey] = useState(0)
+  const [activePedido, setActivePedido] = useState<Pedido | null>(null)
 
   // Configurar sensores para touch e mouse com melhor tolerância
   const sensors = useSensors(
@@ -164,67 +164,67 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
         distance: 5, // Reduzido para melhor responsividade
       },
     }),
-    useSensor(KeyboardSensor);
-  );
+    useSensor(KeyboardSensor)
+  )
   
   // Filtrar status habilitados usando configurações salvas no localStorage
-  const statusHabilitados = useMemo(() => {;
-    const savedConfigs = localStorage.getItem('statusConfigs');
+  const statusHabilitados = useMemo(() => {
+    const savedConfigs = localStorage.getItem('statusConfigs')
     if (savedConfigs) {
-      const configs = JSON.parse(savedConfigs);
+      const configs = JSON.parse(savedConfigs)
       return STATUS.filter(status => {
-        const config = configs.find((c: any) => c.key === status.key);
+        const config = configs.find((c: any) => c.key === status.key)
         return config ? config.enabled : status.enabled;
-      });
+      })
     }
-    return STATUS.filter(status => status.enabled);
-  }, [statusConfigsKey]);
+    return STATUS.filter(status => status.enabled)
+  }, [statusConfigsKey])
 
   // Listener para mudanças no localStorage
   useEffect(() => {
-    const handleStorageChange = () => setStatusConfigsKey(prev => prev + 1);
-    window.addEventListener('storage', handleStorageChange);
+    const handleStorageChange = () => setStatusConfigsKey(prev => prev + 1)
+    window.addEventListener('storage', handleStorageChange)
     
     // Listener para mudanças na mesma aba
     const originalSetItem = localStorage.setItem;
     localStorage.setItem = function(key, value) {
-      originalSetItem.apply(this, [key, value]);
+      originalSetItem.apply(this, [key, value])
       if (key === 'statusConfigs') {
-        handleStorageChange();
+        handleStorageChange()
       }
     };
     
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('storage', handleStorageChange)
       localStorage.setItem = originalSetItem;
     };
-  }, []);
+  }, [])
 
-  const handleDragStart = (event: DragStartEvent) => {;
+  const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    const pedidoId = Number(active.id);
+    const pedidoId = Number(active.id)
     
-    console.log('🟡 Drag Start:', { pedidoId });
+    console.log('🟡 Drag Start:', { pedidoId })
     
     // Encontrar o pedido ativo
     const pedido = Object.values(pedidosPorStatus)
-      .flat();
-      .find(p => p.id === pedidoId);
+      .flat()
+      .find(p => p.id === pedidoId)
       
-    setActivePedido(pedido || null);
+    setActivePedido(pedido || null)
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {;
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     
     console.log('🔴 Drag End:', { 
       activeId: active.id, 
       overId: over?.id,
       hasOver: !!over 
-    });
+    })
     
-    setActivePedido(null);
-    onDragEnd(event);
+    setActivePedido(null)
+    onDragEnd(event)
   };
 
   return (
@@ -286,5 +286,5 @@ export const PedidosKanbanBoard: React.FC<PedidosKanbanBoardProps> = ({
         ) : null}
       </DragOverlay>
     </DndContext>
-  );
+  )
 };

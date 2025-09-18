@@ -18,13 +18,13 @@ async function apiRequest(url: string, options: RequestInit = {}) {
       'Content-Type': 'application/json',
       ...options.headers,
     },;
-  });
+  })
   
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw new Error(`API Error: ${response.statusText}`)
   }
   
-  return response.json();
+  return response.json()
 
 
 interface NovoGrupoTabProps {
@@ -38,20 +38,20 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
   produto,
   onRefresh
 }) => {
-  const { toast } = useToast();
-  const { fetchCategoriasAdicionais } = useCardapio();
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast()
+  const { fetchCategoriasAdicionais } = useCardapio()
+  const [loading, setLoading] = useState(false)
   const [novaCategoriaAdicional, setNovaCategoriaAdicional] = useState({
     name: '',
     description: '',
     is_required: false,
     min_selection: 0,
     max_selection: 1
-  });
+  })
 
   const associarCategoriaAoProduto = async (categoriaId: string) => {
-    try {;
-      console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id } catch (error) { console.error('Error:', error); });
+    try {
+      console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id } catch (error) { console.error('Error:', error) })
       
       const { error } = await supabase
         .from('produto_categorias_adicionais')
@@ -62,45 +62,45 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
           min_selection: 0,
           max_selection: 1
         })
-      });
+      })
       
-      console.log('✅ Associação categoria-produto criada com sucesso');
-      onRefresh();
+      console.log('✅ Associação categoria-produto criada com sucesso')
+      onRefresh()
     } catch (error) {
-      console.error('💥 Erro geral ao associar categoria ao produto:', error);
+      console.error('💥 Erro geral ao associar categoria ao produto:', error)
       throw error;
 
   };
 
-  const handleCreateCategoriaAdicional = async () => {;
-    console.log('🚀 Iniciando criação de grupo de adicionais...');
-    console.log('📋 Dados do formulário:', novaCategoriaAdicional);
-    console.log('🏢 Empresa atual:', currentCompany);
-    console.log('🍕 Produto:', produto);
+  const handleCreateCategoriaAdicional = async () => {
+    console.log('🚀 Iniciando criação de grupo de adicionais...')
+    console.log('📋 Dados do formulário:', novaCategoriaAdicional)
+    console.log('🏢 Empresa atual:', currentCompany)
+    console.log('🍕 Produto:', produto)
 
     if (!novaCategoriaAdicional.name) {
-      console.log('❌ Nome do grupo não foi preenchido');
+      console.log('❌ Nome do grupo não foi preenchido')
       toast({
         title: "Erro",
         description: "O nome do grupo é obrigatório!",
         variant: "destructive",
-      });
+      })
       return;
 
 
     if (!currentCompany?.id) {
-      console.log('❌ Empresa não selecionada');
+      console.log('❌ Empresa não selecionada')
       toast({
         title: "Erro", 
         description: "Nenhuma empresa selecionada!",
         variant: "destructive",
-      });
+      })
       return;
 
 
     try {
-      setLoading(true);
-      console.log('📤 Enviando dados para a API PostgreSQL...');
+      setLoading(true)
+      console.log('📤 Enviando dados para a API PostgreSQL...')
       
       // Inferir selection_type automaticamente baseado em min/max
       const selection_type = novaCategoriaAdicional.max_selection === 1 ? 'single' : ;
@@ -110,39 +110,39 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
         ...novaCategoriaAdicional,
         selection_type,
         company_id: currentCompany.id;
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
       
-      console.log('📊 Dados finais para inserção:', dadosParaInserir);
+      console.log('📊 Dados finais para inserção:', dadosParaInserir)
 
       const { data, error } = await supabase
         .from('categorias_adicionais')
         .insert([dadosParaInserir])
         .select()
-        .single();
+        .single()
 
       if (error) {
-        console.error('❌ Erro do Supabase ao criar categoria:', error);
+        console.error('❌ Erro do Supabase ao criar categoria:', error)
         console.error('📋 Detalhes do erro:', {
           code: error.code,
           message: error.message,
           details: error.details,
           hint: error.hint
-        });
+        })
         
         toast({
           title: "Erro ao criar grupo",
           description: error.message || "Erro desconhecido ao criar grupo de adicionais",
           variant: "destructive",
-        });
+        })
         return;
 
 
-      console.log('✅ Categoria criada com sucesso!', data);
+      console.log('✅ Categoria criada com sucesso!', data)
       
       toast({
         title: "Sucesso",
         description: `Grupo "${data.name || novaCategoriaAdicional.name}" criado com sucesso!`,
-      });
+      })
 
       // Limpar formulário
       setNovaCategoriaAdicional({
@@ -151,30 +151,30 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
         is_required: false,
         min_selection: 0,
         max_selection: 1
-      });
+      })
 
-      console.log('🔗 Iniciando associação com produto...');
-      await associarCategoriaAoProduto(data.id || data.categoria_id);
+      console.log('🔗 Iniciando associação com produto...')
+      await associarCategoriaAoProduto(data.id || data.categoria_id)
       
       // Atualizar o estado global das categorias de adicionais
-      await fetchCategoriasAdicionais();
+      await fetchCategoriasAdicionais()
       
       // Atualizar também o componente pai (AdicionaisModal) 
-      onRefresh();
+      onRefresh()
       
-      console.log('🎉 Processo completo finalizado com sucesso!');
+      console.log('🎉 Processo completo finalizado com sucesso!')
       
     } catch (error) {
-      console.error('💥 Erro geral na criação do grupo:', error);
+      console.error('💥 Erro geral na criação do grupo:', error)
       
       toast({
         title: "Erro",
         description: "Erro inesperado ao criar grupo de adicionais",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
-      console.log('🏁 Processo finalizado, loading = false');
+      setLoading(false)
+      console.log('🏁 Processo finalizado, loading = false')
 
   };
 
@@ -248,5 +248,5 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
         {loading ? 'Criando...' : 'Criar Grupo'}
       </Button>
     </div>
-  );
+  )
 };

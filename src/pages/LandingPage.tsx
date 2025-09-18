@@ -10,16 +10,16 @@ import { LandingFooter } from '@/components/landing/LandingFooter';
 
 import SEOHead from '@/components/SEOHead';
 
-const LandingPage = () => {;
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [billing, setBilling] = useState('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const LandingPage = () => {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [billing, setBilling] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
 
-  const handleTrialSubmit = (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleTrialSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
     // Redireciona para a página de cadastro
     window.location.href = '/cadastro';
   };
@@ -54,7 +54,7 @@ const LandingPage = () => {;
       
 
     </div>
-  );
+  )
 };
 
 export default LandingPage;

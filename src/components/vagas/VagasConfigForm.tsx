@@ -24,14 +24,14 @@ const VagasConfigForm: React.FC<VagasConfigFormProps> = ({
   companyId,
   publicUrl
 }) => {
-  const handleGenerateSlug = () => {;
-    const newSlug = generateSlugFromCompany(currentCompany);
+  const handleGenerateSlug = () => {
+    const newSlug = generateSlugFromCompany(currentCompany)
     console.log('Debug - Gerando slug:', {
       currentCompany,
       generatedSlug: newSlug
-    });
-    setConfig({ ...config, slug: newSlug });
-    toast.info(`Slug gerado: ${newSlug}`);
+    })
+    setConfig({ ...config, slug: newSlug })
+    toast.info(`Slug gerado: ${newSlug}`)
   };
 
   return (
@@ -153,7 +153,7 @@ const VagasConfigForm: React.FC<VagasConfigFormProps> = ({
         </div>
       </CardContent>
     </Card>
-  );
+  )
 };
 
 export default VagasConfigForm;

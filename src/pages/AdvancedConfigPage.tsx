@@ -81,19 +81,19 @@ const configInicial: Partial<ConfigAgenteIA> = {
 // COMPONENTE PRINCIPAL
 // ---------------------------------------------------------------------------
 const AdvancedConfigPage: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const [tab, setTab] = useState('config');
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [config, setConfig] = useState<Partial<ConfigAgenteIA>>(configInicial);
-  const [testMessage, setTestMessage] = useState('Qual a promoção de hoje?');
-  const [testResponse, setTestResponse] = useState<string>('');
+  const { currentCompany } = useAuth()
+  const [tab, setTab] = useState('config')
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [config, setConfig] = useState<Partial<ConfigAgenteIA>>(configInicial)
+  const [testMessage, setTestMessage] = useState('Qual a promoção de hoje?')
+  const [testResponse, setTestResponse] = useState<string>('')
   const [statusConexao, setStatusConexao] = useState<StatusConexao>({
     openai: false,
     whatsapp: false,
     supabase: true
-  });
-  const { toast } = useToast();
+  })
+  const { toast } = useToast()
 
   const companyId = currentCompany?.id;
 
@@ -101,72 +101,72 @@ const AdvancedConfigPage: React.FC = () => {
   const verificarConexoes = async () => {
     try {
       // Testar conexão Supabase;
-      const { error: supabaseError }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
-      setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }));
+      const { error: supabaseError }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
+      setStatusConexao(prev => ({ ...prev, supabase: !supabaseError }))
 
       // Testar OpenAI via edge function
       try {
         const testData = null as any; const testError = null as any;
-        console.log('Teste OpenAI:', { testData, testError } catch (error) { console.error('Error:', error); });
-        setStatusConexao(prev => ({ ...prev, openai: testData?.resposta && !testError }));
+        console.log('Teste OpenAI:', { testData, testError } catch (error) { console.error('Error:', error) })
+        setStatusConexao(prev => ({ ...prev, openai: testData?.resposta && !testError }))
       } catch (error) {
-        console.error('Erro teste OpenAI:', error);
-        setStatusConexao(prev => ({ ...prev, openai: false }));
+        console.error('Erro teste OpenAI:', error)
+        setStatusConexao(prev => ({ ...prev, openai: false }))
       }
 
       // Verificar integração WhatsApp
-      const { data: whatsappData } = await Promise.resolve();
+      const { data: whatsappData } = await Promise.resolve()
       const hasWhatsapp = whatsappData && whatsappData.length > 0;
-      const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook');
+      const webhookCorreto = whatsappData?.[0]?.webhook?.includes('whatsapp-webhook')
       setStatusConexao(prev => ({ 
         ...prev, 
         whatsapp: hasWhatsapp && webhookCorreto 
-      }));
+      }))
     } catch (error) {
-      console.error('Erro ao verificar conexões:', error);
+      console.error('Erro ao verificar conexões:', error)
 
   };
 
   // Carregar dados iniciais
-  const carregarDados = async () => {;
-    setLoading(true);
+  const carregarDados = async () => {
+    setLoading(true)
     try {
       // Buscar configuração do agente
       const configData = null as any; const configError = null as any;
       }
 
-       catch (error) { console.error('Error:', error); }if (configData) {
+       catch (error) { console.error('Error:', error) }if (configData) {
         setConfig({
           ...configData,
           sales_phrases: typeof configData.sales_phrases === 'string' 
             ? configData.sales_phrases 
             : ''
-        });
+        })
       }
     } catch (error: any) {
       toast({ 
         title: 'Erro ao carregar dados', 
         description: error.message, 
         variant: 'destructive' 
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   useEffect(() => {
-    carregarDados();
-    verificarConexoes();
-  }, []);
+    carregarDados()
+    verificarConexoes()
+  }, [])
 
-  const salvarConfig = async () => {;
-    setSaving(true);
+  const salvarConfig = async () => {
+    setSaving(true)
     try {
       if (!config.agent_name) {
-        throw new Error('Nome do assistente é obrigatório');
+        throw new Error('Nome do assistente é obrigatório')
       }
 
-       catch (error) { console.error('Error:', error); }const configParaSalvar = {
+       catch (error) { console.error('Error:', error) }const configParaSalvar = {
         ...config,
         company_id: config.company_id || 'default-company';
       };
@@ -188,48 +188,48 @@ const AdvancedConfigPage: React.FC = () => {
       if (resultado.error) throw resultado.error;
 
       if (!config.id && resultado.data) {
-        setConfig(prev => ({ ...prev, id: resultado.data.id }));
+        setConfig(prev => ({ ...prev, id: resultado.data.id }))
       }
 
-      toast({ title: 'Configuração salva com sucesso!' });
+      toast({ title: 'Configuração salva com sucesso!' })
     } catch (error: any) {
       toast({ 
         title: 'Erro ao salvar', 
         description: error.message, 
         variant: 'destructive' 
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
 
   };
 
-  const testarAgente = async () => {;
+  const testarAgente = async () => {
     if (!testMessage.trim()) return;
     
-    setTestResponse('Processando...');
+    setTestResponse('Processando...')
     try {
       // Buscar o slug da empresa atual
       const company = null as any; const companyError = null as any;
       }
 
-       catch (error) { console.error('Error:', error); }const { data, error } = await Promise.resolve();
+       catch (error) { console.error('Error:', error) }const { data, error } = await Promise.resolve()
         body: {
           slug_empresa: company.slug,
           user_message: testMessage,
           historico: []
         }
-      });
+      })
 
       if (error) throw error;
-      setTestResponse(data?.resposta || 'Resposta não recebida');
+      setTestResponse(data?.resposta || 'Resposta não recebida')
     } catch (error: any) {
-      setTestResponse(`Erro: ${error.message}`);
+      setTestResponse(`Erro: ${error.message}`)
 
   };
 
   const gerarPromptPreview = () => {
     const frases = typeof config.sales_phrases === 'string' 
-      ? config.sales_phrases.split('\n').filter(f => f.trim());
+      ? config.sales_phrases.split('\n').filter(f => f.trim())
       : [];
 
     return `Você é ${config.agent_name || 'Assistente'} da empresa.
@@ -649,7 +649,7 @@ CONFIGURAÇÕES:
         </Alert>
       )}
     </div>
-  );
+  )
 };
 
 export default AdvancedConfigPage;

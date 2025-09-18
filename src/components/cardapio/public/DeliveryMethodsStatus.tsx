@@ -45,7 +45,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
           )}
         </span>
       </div>
-    );
+    )
 
 
   // Error state
@@ -81,7 +81,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
           </div>
         </div>
       </div>
-    );
+    )
 
 
   // Success states with different sources
@@ -103,7 +103,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
               </div>
             </div>
           </div>
-        );
+        )
 
       case 'auto-created':
         return (
@@ -120,7 +120,7 @@ export const DeliveryMethodsStatus: React.FC<DeliveryMethodsStatusProps> = ({
               </div>
             </div>
           </div>
-        );
+        )
 
       case 'database':
         // No message for normal database load - this is the expected behavior
@@ -168,7 +168,7 @@ export const NoDeliveryOptionsMessage: React.FC<{
         )}
       </div>
     </div>
-  );
+  )
 };
 
 /**
@@ -180,9 +180,9 @@ export const DeliveryOptionsSummary: React.FC<{
 }> = ({ deliveryMethods, companyName }) => {
   const options = [];
   
-  if (deliveryMethods.delivery) options.push('📦 Entrega');
-  if (deliveryMethods.pickup) options.push('🏪 Retirada');
-  if (deliveryMethods.eat_in) options.push('🍽️ Consumo no local');
+  if (deliveryMethods.delivery) options.push('📦 Entrega')
+  if (deliveryMethods.pickup) options.push('🏪 Retirada')
+  if (deliveryMethods.eat_in) options.push('🍽️ Consumo no local')
 
   if (options.length === 0) {
     return null;
@@ -202,5 +202,5 @@ export const DeliveryOptionsSummary: React.FC<{
         </div>
       </div>
     </div>
-  );
+  )
 };

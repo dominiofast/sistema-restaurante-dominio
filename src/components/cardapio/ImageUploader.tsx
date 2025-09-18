@@ -32,83 +32,83 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   multiple = false,
   onMultipleImagesChange
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [dragOver, setDragOver] = useState(false);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [dragOver, setDragOver] = useState(false)
+  const [previewUrls, setPreviewUrls] = useState<string[]>([])
   
-  const { uploading, error, progress, uploadFile, uploadMultipleFiles } = useCloudinaryUpload();
+  const { uploading, error, progress, uploadFile, uploadMultipleFiles } = useCloudinaryUpload()
 
   const validateFile = (file: File): boolean => {
     // Validar tipo de arquivo
-    if (!acceptedFormats.includes(file.type)) {;
-      toast.error(`Tipo de arquivo não suportado. Use: ${acceptedFormats.map(f => f.split('/')[1].toUpperCase()).join(', ')}`);
+    if (!acceptedFormats.includes(file.type)) {
+      toast.error(`Tipo de arquivo não suportado. Use: ${acceptedFormats.map(f => f.split('/')[1].toUpperCase()).join(', ')}`)
       return false;
     }
 
     // Validar tamanho
     const maxSizeBytes = maxSize * 1024 * 1024;
     if (file.size > maxSizeBytes) {
-      toast.error(`Arquivo muito grande. Máximo ${maxSize}MB.`);
+      toast.error(`Arquivo muito grande. Máximo ${maxSize}MB.`)
       return false;
     }
 
     return true;
   };
 
-  const handleFileSelect = async (files: FileList | null) => {;
+  const handleFileSelect = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
     const fileArray = Array
     
     // Validar todos os arquivos;
-    const validFiles = fileArray.filter(validateFile);
+    const validFiles = fileArray.filter(validateFile)
     if (validFiles.length === 0) return;
 
     if (multiple) {
       // Upload múltiplo
-      const urls = await uploadMultipleFiles(validFiles, folder);
+      const urls = await uploadMultipleFiles(validFiles, folder)
       if (urls.length > 0) {
-        onMultipleImagesChange?.(urls);
-        setPreviewUrls(urls);
+        onMultipleImagesChange?.(urls)
+        setPreviewUrls(urls)
       }
     } else {
       // Upload único
       const file = validFiles[0];
-      const url = await uploadFile(file, folder);
+      const url = await uploadFile(file, folder)
       if (url) {
-        onImageChange(url);
+        onImageChange(url)
       }
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {;
-    e.preventDefault();
-    setDragOver(true);
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setDragOver(true)
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {;
-    e.preventDefault();
-    setDragOver(false);
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    setDragOver(false)
   };
 
-  const handleDrop = (e: React.DragEvent) => {;
-    e.preventDefault();
-    setDragOver(false);
-    handleFileSelect(e.dataTransfer.files);
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setDragOver(false)
+    handleFileSelect(e.dataTransfer.files)
   };
 
-  const handleRemove = () => {;
-    onImageChange('');
-    onRemove?.();
+  const handleRemove = () => {
+    onImageChange('')
+    onRemove?.()
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const handleRemoveMultiple = (index: number) => {;
-    const newUrls = previewUrls.filter((_, i) => i !== index);
-    setPreviewUrls(newUrls);
-    onMultipleImagesChange?.(newUrls);
+  const handleRemoveMultiple = (index: number) => {
+    const newUrls = previewUrls.filter((_, i) => i !== index)
+    setPreviewUrls(newUrls)
+    onMultipleImagesChange?.(newUrls)
   };
 
   return (
@@ -169,8 +169,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  fileInputRef.current?.click();
+                  e.stopPropagation()
+                  fileInputRef.current?.click()
                 }}
               >
                 <ImageIcon className="h-4 w-4 mr-2" />
@@ -181,8 +181,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemove();
+                  e.stopPropagation()
+                  handleRemove()
                 }}
               >
                 <X className="h-4 w-4 mr-2" />
@@ -244,5 +244,5 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <p className="text-sm text-red-600">{error}</p>
       )}
     </div>
-  );
+  )
 };

@@ -17,24 +17,24 @@ interface PdfViewerProps {
 
 
 export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className = '' }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showInfo, setShowInfo] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [showInfo, setShowInfo] = useState(false)
 
   const handleDirectView = () => {
     try {
-      const newWindow = window.open(url, '_blank');
+      const newWindow = window.open(url, '_blank')
       if (!newWindow) {
-        setError('Pop-up bloqueado. Tente habilitar pop-ups ou use o download.');
+        setError('Pop-up bloqueado. Tente habilitar pop-ups ou use o download.')
       }
      } catch (err) {
-      setError('Erro ao abrir o arquivo. Tente o download.');
+      setError('Erro ao abrir o arquivo. Tente o download.')
     }
   };
 
   const handleDownload = async () => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
       // Método 1: Fetch + Blob (mais compatível)
@@ -44,69 +44,69 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
         headers: {
           'Accept': 'application/pdf,*/*'
         };
-       catch (error) { console.error('Error:', error); }});
+       catch (error) { console.error('Error:', error) }})
 
       if (!response.ok) {
-        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        throw new Error(`Erro ${response.status}: ${response.statusText}`)
       }
 
-      const blob = await response.blob();
+      const blob = await response.blob()
       
       // Verificar se é um PDF válido
       if (blob.size === 0) {
-        throw new Error('Arquivo vazio');
+        throw new Error('Arquivo vazio')
       }
 
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
       link.href = downloadUrl;
       link.download = fileName;
       link.style.display = 'none';
       
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       
       // Limpar URL do objeto após um tempo
-      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 1000);
+      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 1000)
       
     } catch (err: any) {
-      console.error('Erro no download via fetch:', err);
+      console.error('Erro no download via fetch:', err)
       
       // Método 2: Download direto (fallback)
       try {
-        const link = document.createElement('a');
+        const link = document.createElement('a')
         link.href = url;
         link.download = fileName;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
         
       } catch (directErr) {
-        setError(`Erro no download: ${err.message}. Tente clicar com o botão direito no link e "Salvar como".`);
+        setError(`Erro no download: ${err.message}. Tente clicar com o botão direito no link e "Salvar como".`)
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
 
-  const handleRetry = () => {;
-    setError(null);
-    setIsLoading(false);
+  const handleRetry = () => {
+    setError(null)
+    setIsLoading(false)
   };
 
   const getFileInfo = () => {
     try {
-      const urlObj = new URL(url);
+      const urlObj = new URL(url)
       return {
         domain: urlObj.hostname,
         isCloudinary: urlObj.hostname.includes('cloudinary'),
         fileName: fileName,
         extension: fileName.split('.').pop()?.toLowerCase()
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
     } catch {
       return {
         domain: 'Desconhecido',
@@ -117,7 +117,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
     }
   };
 
-  const fileInfo = getFileInfo();
+  const fileInfo = getFileInfo()
 
   return (
     <div className={`space-y-3 ${className}`}>
@@ -234,5 +234,5 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ url, fileName, className =
         </p>
       </div>
     </div>
-  );
+  )
 }; 

@@ -8,62 +8,62 @@ export interface GoogleMapsConfig {
   updated_at?: string;
 }
 
-export const useGoogleMapsConfig = () => {;
-  const [config, setConfig] = useState<GoogleMapsConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const useGoogleMapsConfig = () => {
+  const [config, setConfig] = useState<GoogleMapsConfig | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const fetchConfig = async () => {;
-    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
-  } = await Promise.resolve();
+  const fetchConfig = async () => {
+    console.log('⚠️ fetchConfig desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
+  } = await Promise.resolve()
       if (error) {
-        console.error('Erro ao buscar configuração do Google Maps:', error);
-        setError('Erro ao carregar configuração do Google Maps');
-        setConfig(null);
+        console.error('Erro ao buscar configuração do Google Maps:', error)
+        setError('Erro ao carregar configuração do Google Maps')
+        setConfig(null)
         return;
       }
 
       if (!data?.apiKey) {
-        console.warn('Google Maps API key not configured');
-        setError('Chave da API do Google Maps não configurada');
-        setConfig(null);
+        console.warn('Google Maps API key not configured')
+        setError('Chave da API do Google Maps não configurada')
+        setConfig(null)
         return;
       }
       
       setConfig({
         api_key: data.apiKey
-      });
+      })
     } catch (err: any) {
-      console.error('Erro ao buscar configuração do Google Maps:', err);
-      setError(err.message);
+      console.error('Erro ao buscar configuração do Google Maps:', err)
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const saveConfig = async (configData: Partial<GoogleMapsConfig>) => {
-    try {;
-      setLoading(true);
-      setError(null);
+    try {
+      setLoading(true)
+      setError(null)
       
       // Save logic here
-      setConfig(prev => ({ ...prev, ...configData } catch (error) { console.error('Error:', error); }));
+      setConfig(prev => ({ ...prev, ...configData } catch (error) { console.error('Error:', error) }))
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message)
       throw err;
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const refetch = async () => {;
-    await fetchConfig();
+  const refetch = async () => {
+    await fetchConfig()
   };
 
   useEffect(() => {
-    fetchConfig();
-  }, []);
+    fetchConfig()
+  }, [])
 
   return {
     config,

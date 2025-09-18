@@ -39,7 +39,7 @@ export const checkQZInstallation = async (): Promise<DiagnosticResult> => {
           'Execute: npm install qz-tray',
           'Verifique a importação: import * as qz from "qz-tray"'
         ];
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
 
     return {
@@ -61,15 +61,15 @@ export const checkQZInstallation = async (): Promise<DiagnosticResult> => {
  * Verifica se o QZ Tray está rodando
  */
 export const checkQZRunning = async (): Promise<DiagnosticResult> => {
-  try {;
-    const isActive = await qz.websocket.isActive();
+  try {
+    const isActive = await qz.websocket.isActive()
     
     if (isActive) {
       return {
         status: 'success',
         message: 'QZ Tray está rodando e ativo',
         details: ['Conexão WebSocket estabelecida']
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
     } else {
       return {
         status: 'warning',
@@ -101,8 +101,8 @@ export const checkQZRunning = async (): Promise<DiagnosticResult> => {
  * Verifica a versão do QZ Tray
  */
 export const checkQZVersion = async (): Promise<DiagnosticResult> => {
-  try {;
-    const isActive = await qz.websocket.isActive();
+  try {
+    const isActive = await qz.websocket.isActive()
     
     if (!isActive) {
       return {
@@ -110,11 +110,11 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
         message: 'Não é possível verificar a versão',
         details: ['QZ Tray não está conectado'],
         solution: ['Conecte ao QZ Tray primeiro']
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
 
-    const version = await qz.websocket.getVersion();
-    const versionNumber = parseFloat(version);
+    const version = await qz.websocket.getVersion()
+    const versionNumber = parseFloat(version)
     
     if (versionNumber >= 2.2) {
       return {
@@ -149,16 +149,16 @@ export const checkQZVersion = async (): Promise<DiagnosticResult> => {
 export const checkCertificates = async (): Promise<DiagnosticResult> => {
   try {
     // Tentar conectar para verificar certificados;
-    const isActive = await qz.websocket.isActive();
+    const isActive = await qz.websocket.isActive()
     
     if (!isActive) {
       try {
-        await qz.websocket.connect();
+        await qz.websocket.connect()
         return {
           status: 'success',
           message: 'Certificados configurados corretamente',
           details: ['Conexão estabelecida sem problemas de certificado']
-        } catch (error) { console.error('Error:', error); };
+        } catch (error) { console.error('Error:', error) };
       } catch (connectError: any) {
         if (connectError.message?.includes('certificate') || connectError.message?.includes('SSL')) {
           return {
@@ -197,15 +197,15 @@ export const checkCertificates = async (): Promise<DiagnosticResult> => {
  * Verifica a conexão geral
  */
 export const checkConnection = async (): Promise<DiagnosticResult> => {
-  try {;
-    const isActive = await qz.websocket.isActive();
+  try {
+    const isActive = await qz.websocket.isActive()
     
     if (!isActive) {
-      await qz.websocket.connect();
+      await qz.websocket.connect()
 
     
-     catch (error) { console.error('Error:', error); }const finalActive = await qz.websocket.isActive();
-    const version = await qz.websocket.getVersion();
+     catch (error) { console.error('Error:', error) }const finalActive = await qz.websocket.isActive()
+    const version = await qz.websocket.getVersion()
     
     if (finalActive) {
       return {
@@ -244,8 +244,8 @@ export const checkConnection = async (): Promise<DiagnosticResult> => {
  * Verifica as impressoras disponíveis
  */
 export const checkPrinters = async (): Promise<DiagnosticResult> => {
-  try {;
-    const isActive = await qz.websocket.isActive();
+  try {
+    const isActive = await qz.websocket.isActive()
     
     if (!isActive) {
       return {
@@ -253,11 +253,11 @@ export const checkPrinters = async (): Promise<DiagnosticResult> => {
         message: 'Não é possível verificar impressoras',
         details: ['QZ Tray não está conectado'],
         solution: ['Conecte ao QZ Tray primeiro']
-      } catch (error) { console.error('Error:', error); };
+      } catch (error) { console.error('Error:', error) };
 
 
-    const printers = await qz.printers.find();
-    const defaultPrinter = await qz.printers.getDefault();
+    const printers = await qz.printers.find()
+    const defaultPrinter = await qz.printers.getDefault()
     
     if (printers.length === 0) {
       return {
@@ -294,8 +294,8 @@ export const checkPrinters = async (): Promise<DiagnosticResult> => {
 /**
  * Executa diagnóstico completo do sistema
  */
-export const runFullDiagnostic = async (): Promise<SystemDiagnostic> => {;
-  console.log('🔍 Iniciando diagnóstico completo do QZ Tray...');
+export const runFullDiagnostic = async (): Promise<SystemDiagnostic> => {
+  console.log('🔍 Iniciando diagnóstico completo do QZ Tray...')
   
   const results: SystemDiagnostic = {
     qzInstalled: await checkQZInstallation(),
@@ -306,7 +306,7 @@ export const runFullDiagnostic = async (): Promise<SystemDiagnostic> => {;
     printers: await checkPrinters()
   };
   
-  console.log('✅ Diagnóstico completo finalizado');
+  console.log('✅ Diagnóstico completo finalizado')
   return results;
 };
 
@@ -324,27 +324,27 @@ export const generateDiagnosticReport = (diagnostic: SystemDiagnostic): string =
   
   Object.entries(diagnostic).forEach(([key, result]) => {
     const icon = result.status === 'success' ? '✅' : result.status === 'warning' ? '⚠️' : '❌';
-    const title = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    const title = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
     
-    lines.push(`${icon} ${title}: ${result.message}`);
+    lines.push(`${icon} ${title}: ${result.message}`)
     
     if (result.details) {
       result.details.forEach(detail => {
-        lines.push(`   • ${detail}`);
-      });
+        lines.push(`   • ${detail}`)
+      })
 
     
     if (result.solution) {
-      lines.push('   💡 Soluções:');
+      lines.push('   💡 Soluções:')
       result.solution.forEach(solution => {
-        lines.push(`   → ${solution}`);
-      });
+        lines.push(`   → ${solution}`)
+      })
 
     
-    lines.push('');
-  });
+    lines.push('')
+  })
   
-  return lines.join('\n');
+  return lines.join('\n')
 };
 
 export default {

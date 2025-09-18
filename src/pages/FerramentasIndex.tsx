@@ -49,11 +49,11 @@ const FerramentasIndex: React.FC = () => {
     };
   ];
 
-  const abrirFerramenta = (url: string) => {;
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const abrirFerramenta = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer')
   };
 
-  const irParaFerramenta = (url: string) => {;
+  const irParaFerramenta = (url: string) => {
     window.location.href = url;
   };
 
@@ -210,7 +210,7 @@ const FerramentasIndex: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default FerramentasIndex; 

@@ -43,5 +43,5 @@ export const ProBadge: React.FC<ProBadgeProps> = ({
             <Crown className={iconSizes[size]} />
             PRÓ
         </span>
-    );
+    )
 };

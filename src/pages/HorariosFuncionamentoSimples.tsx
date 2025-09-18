@@ -21,15 +21,15 @@ interface HorarioFuncionamento {
 }
 
 export default function HorariosFuncionamentoSimples() {
-  const { user, companyId } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [salvando, setSalvando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { user, companyId } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [salvando, setSalvando] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   
-  const [tipoDisponibilidade, setTipoDisponibilidade] = useState<'sempre' | 'especificos' | 'fechado' | 'agendados'>('especificos');
-  const [fusoHorario, setFusoHorario] = useState('America/Sao_Paulo');
-  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([]);
-  const [horarioId, setHorarioId] = useState<string | null>(null);
+  const [tipoDisponibilidade, setTipoDisponibilidade] = useState<'sempre' | 'especificos' | 'fechado' | 'agendados'>('especificos')
+  const [fusoHorario, setFusoHorario] = useState('America/Sao_Paulo')
+  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([])
+  const [horarioId, setHorarioId] = useState<string | null>(null)
 
   const diasSemana = [
     { id: 0, nome: 'Domingo', abrev: 'Dom' },
@@ -49,21 +49,21 @@ export default function HorariosFuncionamentoSimples() {
   ];
 
   const fetchHorarios = async () => {
-    if (!companyId) {;
-      setError('Empresa não identificada');
-      setLoading(false);
+    if (!companyId) {
+      setError('Empresa não identificada')
+      setLoading(false)
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       // Buscar configuração de horário
       const horarioData = null as any; const horarioError = null as any;
 
 
-       catch (error) { console.error('Error:', error); }if (!horarioData) {
+       catch (error) { console.error('Error:', error) }if (!horarioData) {
         // Criar configuração padrão se não existir
         const novoHorario = {
           company_id: companyId,
@@ -73,28 +73,28 @@ export default function HorariosFuncionamentoSimples() {
 
         const createdHorario = null as any; const createError = null as any;
 
-        setHorarioId(createdHorario.id);
-        setTipoDisponibilidade(createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
-        setFusoHorario(createdHorario.fuso_horario);
-        setHorariosDias([]);
-        setLoading(false);
+        setHorarioId(createdHorario.id)
+        setTipoDisponibilidade(createdHorario.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados')
+        setFusoHorario(createdHorario.fuso_horario)
+        setHorariosDias([])
+        setLoading(false)
         return;
 
 
-      setHorarioId(horarioData.id);
-      setTipoDisponibilidade(horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados');
-      setFusoHorario(horarioData.fuso_horario);
+      setHorarioId(horarioData.id)
+      setTipoDisponibilidade(horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'fechado' | 'agendados')
+      setFusoHorario(horarioData.fuso_horario)
 
       // Buscar horários dos dias
       const horariosData = null as any; const horariosError = null as any;
 
-      setHorariosDias(horariosData || []);
+      setHorariosDias(horariosData || [])
 
     } catch (err) {
-      console.error('Erro ao buscar horários:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('Erro ao buscar horários:', err)
+      setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -105,26 +105,26 @@ export default function HorariosFuncionamentoSimples() {
       horario_fim: '18:00',
       ativo: true;
     };
-    setHorariosDias([...horariosDias, novoHorario]);
+    setHorariosDias([...horariosDias, novoHorario])
   };
 
-  const removerHorario = (index: number) => {;
-    setHorariosDias(horariosDias.filter((_, i) => i !== index));
+  const removerHorario = (index: number) => {
+    setHorariosDias(horariosDias.filter((_, i) => i !== index))
   };
 
-  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {;
+  const atualizarHorario = (index: number, campo: keyof HorarioDia, valor: any) => {
     const novosHorarios = [...horariosDias];
     novosHorarios[index] = { ...novosHorarios[index], [campo]: valor };
-    setHorariosDias(novosHorarios);
+    setHorariosDias(novosHorarios)
   };
 
-  const handleSalvar = async () => {;
+  const handleSalvar = async () => {
     if (!companyId || !horarioId) return;
 
-    setSalvando(true);
+    setSalvando(true)
     try {
       // Atualizar configuração principal
-      const { error: updateError }  catch (error) { console.error('Error:', error); }= 
+      const { error: updateError }  catch (error) { console.error('Error:', error) }= 
         
         
           tipo_disponibilidade: tipoDisponibilidade,
@@ -149,30 +149,30 @@ export default function HorariosFuncionamentoSimples() {
           horario_inicio: h.horario_inicio,
           horario_fim: h.horario_fim,
           ativo: h.ativo;
-        }));
+        }))
 
         const { error: insertError  } = null as any;
         if (insertError) throw insertError;
 
 
-      toast.success('Horários salvos com sucesso!');
-      await fetchHorarios(); // Recarregar dados
+      toast.success('Horários salvos com sucesso!')
+      await fetchHorarios() // Recarregar dados
       
     } catch (err) {
-      console.error('Erro ao salvar horários:', err);
-      toast.error('Erro ao salvar horários');
+      console.error('Erro ao salvar horários:', err)
+      toast.error('Erro ao salvar horários')
     } finally {
-      setSalvando(false);
+      setSalvando(false)
     }
   };
 
-  const getHorariosPorDia = (diaSemana: number) => {;
-    return horariosDias.filter(h => h.dia_semana === diaSemana);
+  const getHorariosPorDia = (diaSemana: number) => {
+    return horariosDias.filter(h => h.dia_semana === diaSemana)
   };
 
   useEffect(() => {
-    fetchHorarios();
-  }, [companyId]);
+    fetchHorarios()
+  }, [companyId])
 
   if (loading) {
     return (
@@ -182,7 +182,7 @@ export default function HorariosFuncionamentoSimples() {
           <p>Carregando horários...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -254,7 +254,7 @@ export default function HorariosFuncionamentoSimples() {
             
             <div className="space-y-6">
               {diasSemana.map(dia => {
-                const horariosHoje = getHorariosPorDia(dia.id);
+                const horariosHoje = getHorariosPorDia(dia.id)
                 
                 return (
                   <div key={dia.id} className="border rounded-lg p-4">
@@ -280,7 +280,7 @@ export default function HorariosFuncionamentoSimples() {
                             h.dia_semana === dia.id && 
                             h.horario_inicio === horario.horario_inicio &&
                             h.horario_fim === horario.horario_fim;
-                          );
+                          )
                           
                           return (
                             <div key={index} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
@@ -327,12 +327,12 @@ export default function HorariosFuncionamentoSimples() {
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </div>
-                          );
+                          )
                         })}
                       </div>
                     )}
                   </div>
-                );
+                )
               })}
             </div>
           </div>
@@ -351,5 +351,5 @@ export default function HorariosFuncionamentoSimples() {
         </div>
       </div>
     </div>
-  );
+  )
 }

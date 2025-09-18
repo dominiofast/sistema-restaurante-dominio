@@ -19,7 +19,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   selectedCardBrand,
   onCardBrandChange
 }) => {
-  const { paymentOptions, askCardBrand, loading } = usePagamentoEntregaConfigPDV(companyId);
+  const { paymentOptions, askCardBrand, loading } = usePagamentoEntregaConfigPDV(companyId)
 
   if (loading) {
     return (
@@ -27,7 +27,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         <Loader2 className="h-4 w-4 animate-spin" />
         <span className="ml-2 text-sm text-gray-600">Carregando formas de pagamento...</span>
       </div>
-    );
+    )
   }
 
   if (paymentOptions.length === 0) {
@@ -35,11 +35,11 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       <div className="text-sm text-gray-500 p-2">
         Nenhuma forma de pagamento configurada
       </div>
-    );
+    )
   }
 
-  const getCardBrands = () => {;
-    const cartaoOption = paymentOptions.find(option => option.value === 'cartao');
+  const getCardBrands = () => {
+    const cartaoOption = paymentOptions.find(option => option.value === 'cartao')
     return cartaoOption?.brands || [];
   };
 
@@ -85,5 +85,5 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };

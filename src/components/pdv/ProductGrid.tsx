@@ -110,5 +110,5 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
         </>
       )}
     </div>
-  );
+  )
 };

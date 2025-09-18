@@ -37,39 +37,39 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
   onClearFilters
 }) => {
   // Validação de data - garantir que "de" não seja posterior a "até"
-  const handleCadastroDateFromChange = (value: string) => {;
+  const handleCadastroDateFromChange = (value: string) => {
     const newFilters = { ...filters, cadastroDateFrom: value };
     // Se a data "até" já está preenchida e é anterior à nova data "de", limpar "até"
     if (filters.cadastroDateTo && value && value > filters.cadastroDateTo) {
       newFilters.cadastroDateTo = '';
     }
-    onFiltersChange(newFilters);
+    onFiltersChange(newFilters)
   };
 
   const handleCadastroDateToChange = (value: string) => {
     // Se a data "de" está preenchida e é posterior à nova data "até", não permitir
-    if (filters.cadastroDateFrom && value && value < filters.cadastroDateFrom) {;
+    if (filters.cadastroDateFrom && value && value < filters.cadastroDateFrom) {
       return;
     }
-    onFiltersChange({ ...filters, cadastroDateTo: value });
+    onFiltersChange({ ...filters, cadastroDateTo: value })
   };
 
   // Validação para data de nascimento
-  const handleNascimentoDateFromChange = (value: string) => {;
+  const handleNascimentoDateFromChange = (value: string) => {
     const newFilters = { ...filters, nascimentoDateFrom: value };
     // Se a data "até" já está preenchida e é anterior à nova data "de", limpar "até"
     if (filters.nascimentoDateTo && value && value > filters.nascimentoDateTo) {
       newFilters.nascimentoDateTo = '';
     }
-    onFiltersChange(newFilters);
+    onFiltersChange(newFilters)
   };
 
   const handleNascimentoDateToChange = (value: string) => {
     // Se a data "de" está preenchida e é posterior à nova data "até", não permitir
-    if (filters.nascimentoDateFrom && value && value < filters.nascimentoDateFrom) {;
+    if (filters.nascimentoDateFrom && value && value < filters.nascimentoDateFrom) {
       return;
     }
-    onFiltersChange({ ...filters, nascimentoDateTo: value });
+    onFiltersChange({ ...filters, nascimentoDateTo: value })
   };
   return (
     <div className="bg-gray-50 p-4 rounded-lg mb-6">
@@ -205,5 +205,5 @@ export const ClienteFilters: React.FC<ClienteFiltersProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

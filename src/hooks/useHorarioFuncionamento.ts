@@ -20,17 +20,17 @@ export interface HorarioDia {
   created_at: string;
 }
 
-const useHorario = (companyId?: string) => {;
-  const [horario, setHorario] = useState<HorarioFuncionamento | null>(null);
-  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const useHorario = (companyId?: string) => {
+  const [horario, setHorario] = useState<HorarioFuncionamento | null>(null)
+  const [horariosDias, setHorariosDias] = useState<HorarioDia[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const fetchHorario = useCallback(async () => {;
+  const fetchHorario = useCallback(async () => {
     if (!companyId) return;
 
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
       const horarioData = null as any; const horarioError = null as any;
@@ -39,8 +39,8 @@ const useHorario = (companyId?: string) => {;
         const horarioTyped: HorarioFuncionamento = {
           ...horarioData,
           tipo_disponibilidade: horarioData.tipo_disponibilidade as 'sempre' | 'especificos' | 'agendados' | 'fechado'
-        } catch (error) { console.error('Error:', error); };
-        setHorario(horarioTyped);
+        } catch (error) { console.error('Error:', error) };
+        setHorario(horarioTyped)
 
         const horariosDiasData = null as any; const horariosDiasError = null as any;
         
@@ -52,32 +52,32 @@ const useHorario = (companyId?: string) => {;
           horario_fim: dia.horario_fim,
           ativo: dia.ativo,
           created_at: dia.created_at
-        }));
-        setHorariosDias(diasTyped);
+        }))
+        setHorariosDias(diasTyped)
 
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
-  }, [companyId]);
+  }, [companyId])
 
-  const refetch = useCallback(async () => {;
-    await fetchHorario();
-  }, [fetchHorario]);
+  const refetch = useCallback(async () => {
+    await fetchHorario()
+  }, [fetchHorario])
 
   useEffect(() => {
-    fetchHorario();
-  }, [fetchHorario, companyId]);
+    fetchHorario()
+  }, [fetchHorario, companyId])
 
   return { horario, horariosDias, loading, error, refetch };
 };
 
-export const useHorarioFuncionamento = (companyId?: string) => {;
-  const { horario, horariosDias, loading, error, refetch } = useHorario(companyId);
+export const useHorarioFuncionamento = (companyId?: string) => {
+  const { horario, horariosDias, loading, error, refetch } = useHorario(companyId)
 
-  const salvarHorarios = async (fuso: string, tipo: string, horarios: Record<number, {inicio: string, fim: string}[]>) => {;
-    if (!companyId) throw new Error('Company ID é obrigatório');
+  const salvarHorarios = async (fuso: string, tipo: string, horarios: Record<number, {inicio: string, fim: string}[]>) => {
+    if (!companyId) throw new Error('Company ID é obrigatório')
     
     try {
       const horarioData = null as any; const horarioError = null as any;
@@ -100,15 +100,15 @@ export const useHorarioFuncionamento = (companyId?: string) => {;
               horario_inicio: h.inicio,
               horario_fim: h.fim,
               ativo: true;
-            } catch (error) { console.error('Error:', error); }))
-        );
+            } catch (error) { console.error('Error:', error) }))
+        )
 
       if (horariosToInsert.length > 0) {
         const { error: diasError  } = null as any;
         if (diasError) throw diasError;
 
 
-      await refetch();
+      await refetch()
     } catch (err: any) {
       throw err;
 

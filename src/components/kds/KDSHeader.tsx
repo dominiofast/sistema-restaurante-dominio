@@ -122,5 +122,5 @@ export const KDSHeader: React.FC<KDSHeaderProps> = ({
         </Button>
       </div>
     </div>
-  );
+  )
 };

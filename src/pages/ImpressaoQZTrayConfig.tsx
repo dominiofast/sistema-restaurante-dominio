@@ -62,7 +62,7 @@ interface LogEntry {
   message: string;
 }
 
- catch (error) { console.error('Error:', error); }// Declaração global do QZ
+ catch (error) { console.error('Error:', error) }// Declaração global do QZ
 declare global {
   interface Window {
     qz: any;
@@ -71,30 +71,30 @@ declare global {
 
 const ImpressaoQZTrayConfig = () => {
   // SEO
-  useEffect(() => {;
+  useEffect(() => {
     document.title = 'Conexão QZ Tray | Impressão térmica';
     const desc = 'Conecte, teste e configure impressoras térmicas via QZ Tray.';
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement('meta'); meta.setAttribute('name','description'); document.head.appendChild(meta); }
-    meta.setAttribute('content', desc);
+    if (!meta) { meta = document.createElement('meta') meta.setAttribute('name','description') document.head.appendChild(meta) }
+    meta.setAttribute('content', desc)
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!link) { link = document.createElement('link'); link.setAttribute('rel','canonical'); document.head.appendChild(link); }
-    link.setAttribute('href', window.location.origin + '/settings/qz-tray');
-  }, []);
+    if (!link) { link = document.createElement('link') link.setAttribute('rel','canonical') document.head.appendChild(link) }
+    link.setAttribute('href', window.location.origin + '/settings/qz-tray')
+  }, [])
   // Estados de conexão
-  const [isConnected, setIsConnected] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [qzVersion, setQzVersion] = useState<string>('');
+  const [isConnected, setIsConnected] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [qzVersion, setQzVersion] = useState<string>('')
   
   // Estados de impressoras
-  const [impressoras, setImpressoras] = useState<Impressora[]>([]);
-  const [impressoraSelecionada, setImpressoraSelecionada] = useState<string>('');
+  const [impressoras, setImpressoras] = useState<Impressora[]>([])
+  const [impressoraSelecionada, setImpressoraSelecionada] = useState<string>('')
   
   // Estados de configuração
-  const [impressaoAutomatica, setImpressaoAutomatica] = useState(false);
-  const [larguraPapel, setLarguraPapel] = useState(48);
-  const [textoHeader, setTextoHeader] = useState('PEDIDO DE DELIVERY');
-  const [textoFooter, setTextoFooter] = useState('Obrigado pela preferência!');
+  const [impressaoAutomatica, setImpressaoAutomatica] = useState(false)
+  const [larguraPapel, setLarguraPapel] = useState(48)
+  const [textoHeader, setTextoHeader] = useState('PEDIDO DE DELIVERY')
+  const [textoFooter, setTextoFooter] = useState('Obrigado pela preferência!')
   
   // Estados de teste
   const [pedidoTeste, setPedidoTeste] = useState<PedidoTeste>({
@@ -120,50 +120,50 @@ const ImpressaoQZTrayConfig = () => {
       address: 'Rua das Flores, 123 - São Paulo/SP',
       phone: '(11) 99999-9999'
 
-  });
+  })
   
   // Estados de log
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [logs, setLogs] = useState<LogEntry[]>([])
 
   // Carregar configurações salvas
   useEffect(() => {
-    loadConfigurations();
+    loadConfigurations()
     
     // Aguardar um pouco para o script carregar
-    const timer = setTimeout(() => {;
-      console.log('🚀 Iniciando verificação do QZ Tray...');
-      console.log('🔍 Verificando se o script QZ foi carregado...');
-      console.log('window:', typeof window);
-      console.log('document.scripts length:', document.scripts.length);
+    const timer = setTimeout(() => {
+      console.log('🚀 Iniciando verificação do QZ Tray...')
+      console.log('🔍 Verificando se o script QZ foi carregado...')
+      console.log('window:', typeof window)
+      console.log('document.scripts length:', document.scripts.length)
       
       // Listar todos os scripts carregados
       for (let i = 0; i < document.scripts.length; i++) {
         const script = document.scripts[i];
         if (script.src.includes('qz-tray')) {
-          console.log('✅ Script QZ encontrado:', script.src);
+          console.log('✅ Script QZ encontrado:', script.src)
         }
       }
       
       // Tentar forçar a criação do objeto QZ se necessário
       if (typeof window.qz === 'undefined') {
-        console.log('🔄 Tentando recarregar script QZ...');
+        console.log('🔄 Tentando recarregar script QZ...')
         // Tentar aguardar mais um pouco
         setTimeout(() => {
-          checkQZTray();
-        }, 3000);
+          checkQZTray()
+        }, 3000)
       } else {
-        checkQZTray();
+        checkQZTray()
       }
-    }, 2000); // Aumentei para 2 segundos
+    }, 2000) // Aumentei para 2 segundos
     
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer)
+  }, [])
 
   // Calcular total automaticamente
   useEffect(() => {
-    const total = pedidoTeste.items.reduce((acc, item) => acc + (item.quantity * item.price), 0);
-    setPedidoTeste(prev => ({ ...prev, total }));
-  }, [pedidoTeste.items]);
+    const total = pedidoTeste.items.reduce((acc, item) => acc + (item.quantity * item.price), 0)
+    setPedidoTeste(prev => ({ ...prev, total }))
+  }, [pedidoTeste.items])
 
   // Funções auxiliares
   const addLog = (type: 'success' | 'error' | 'info' | 'debug', message: string) => {
@@ -172,83 +172,83 @@ const ImpressaoQZTrayConfig = () => {
       type,
       message;
     };
-    setLogs(prev => [newLog, ...prev.slice(0, 49)]);
+    setLogs(prev => [newLog, ...prev.slice(0, 49)])
   };
 
   const loadConfigurations = () => {
-    try {;
-      const savedImpressora = localStorage.getItem('qz_tray_impressora');
-      const savedAutomatica = localStorage.getItem('qz_tray_automatica');
-      const savedLargura = localStorage.getItem('qz_tray_largura');
-      const savedHeader = localStorage.getItem('qz_tray_header');
-      const savedFooter = localStorage.getItem('qz_tray_footer');
+    try {
+      const savedImpressora = localStorage.getItem('qz_tray_impressora')
+      const savedAutomatica = localStorage.getItem('qz_tray_automatica')
+      const savedLargura = localStorage.getItem('qz_tray_largura')
+      const savedHeader = localStorage.getItem('qz_tray_header')
+      const savedFooter = localStorage.getItem('qz_tray_footer')
       
-      if (savedImpressora) setImpressoraSelecionada(savedImpressora);
-      if (savedAutomatica) setImpressaoAutomatica(savedAutomatica === 'true');
-      if (savedLargura) setLarguraPapel(parseInt(savedLargura));
-      if (savedHeader) setTextoHeader(savedHeader);
-      if (savedFooter) setTextoFooter(savedFooter);
+      if (savedImpressora) setImpressoraSelecionada(savedImpressora)
+      if (savedAutomatica) setImpressaoAutomatica(savedAutomatica === 'true')
+      if (savedLargura) setLarguraPapel(parseInt(savedLargura))
+      if (savedHeader) setTextoHeader(savedHeader)
+      if (savedFooter) setTextoFooter(savedFooter)
       
-      addLog('info', 'Configurações carregadas do localStorage');
+      addLog('info', 'Configurações carregadas do localStorage')
     } catch (error) {
-      addLog('error', 'Erro ao carregar configurações');
+      addLog('error', 'Erro ao carregar configurações')
 
   };
 
   const saveConfigurations = () => {
-    try {;
-      localStorage.setItem('qz_tray_impressora', impressoraSelecionada);
-      localStorage.setItem('qz_tray_automatica', impressaoAutomatica.toString());
-      localStorage.setItem('qz_tray_largura', larguraPapel.toString());
-      localStorage.setItem('qz_tray_header', textoHeader);
-      localStorage.setItem('qz_tray_footer', textoFooter);
+    try {
+      localStorage.setItem('qz_tray_impressora', impressoraSelecionada)
+      localStorage.setItem('qz_tray_automatica', impressaoAutomatica.toString())
+      localStorage.setItem('qz_tray_largura', larguraPapel.toString())
+      localStorage.setItem('qz_tray_header', textoHeader)
+      localStorage.setItem('qz_tray_footer', textoFooter)
       
-      toast.success('Configurações salvas com sucesso!');
-      addLog('success', 'Configurações salvas');
+      toast.success('Configurações salvas com sucesso!')
+      addLog('success', 'Configurações salvas')
     } catch (error) {
-      toast.error('Erro ao salvar configurações');
-      addLog('error', 'Erro ao salvar configurações');
+      toast.error('Erro ao salvar configurações')
+      addLog('error', 'Erro ao salvar configurações')
 
   };
 
   // Funções do QZ Tray
-  const checkQZTray = async () => {;
-    console.log('🔍 Verificando QZ Tray...');
+  const checkQZTray = async () => {
+    console.log('🔍 Verificando QZ Tray...')
     
     // Aguardar carregamento do script
     let attempts = 0;
     const maxAttempts = 10;
     
     while (typeof window.qz === 'undefined' && attempts < maxAttempts) {
-      console.log(`🔄 Tentativa ${attempts + 1}: Aguardando carregamento do QZ...`);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log(`🔄 Tentativa ${attempts + 1}: Aguardando carregamento do QZ...`)
+      await new Promise(resolve => setTimeout(resolve, 500))
       attempts++;
 
     
     if (typeof window.qz === 'undefined') {
-      addLog('error', 'QZ Tray não carregou. Verifique se o QZ Tray está instalado e rodando.');
-      toast.error('QZ Tray não carregou. Verifique se está instalado e rodando.');
+      addLog('error', 'QZ Tray não carregou. Verifique se o QZ Tray está instalado e rodando.')
+      toast.error('QZ Tray não carregou. Verifique se está instalado e rodando.')
       return;
 
 
-    console.log('✅ Objeto QZ encontrado:', window.qz);
-    console.log('🔗 Versão QZ:', window.qz.version);
+    console.log('✅ Objeto QZ encontrado:', window.qz)
+    console.log('🔗 Versão QZ:', window.qz.version)
     
-    setLoading(true);
-    addLog('info', 'Conectando ao QZ Tray...');
+    setLoading(true)
+    addLog('info', 'Conectando ao QZ Tray...')
     
     try {
       // Verificar se WebSocket já está ativo
       if (!window.qz.websocket.isActive()) {
-        console.log('🔗 Conectando WebSocket...');
-        addLog('info', 'Estabelecendo conexão WebSocket...');
+        console.log('🔗 Conectando WebSocket...')
+        addLog('info', 'Estabelecendo conexão WebSocket...')
         try {
           // Configuração de desenvolvimento: certificados e assinatura simples
-          window.qz.security.setCertificatePromise(() => Promise.resolve(''));
-          window.qz.security.setSignaturePromise((toSign: string) => Promise.resolve(btoa(toSign)));
-          addLog('info', 'Segurança QZ configurada (dev)');
+          window.qz.security.setCertificatePromise(() => Promise.resolve(''))
+          window.qz.security.setSignaturePromise((toSign: string) => Promise.resolve(btoa(toSign)))
+          addLog('info', 'Segurança QZ configurada (dev)')
         } catch (e) {
-          addLog('debug', 'Falha ao configurar segurança QZ: ' + e);
+          addLog('debug', 'Falha ao configurar segurança QZ: ' + e)
         }
         // Forçar modo seguro em páginas HTTPS e inseguro em HTTP
         const usingSecure = window.location.protocol === 'https:';
@@ -260,90 +260,90 @@ const ImpressaoQZTrayConfig = () => {
             insecure: [8181, 8281, 8381, 8481]
           };
         } as any;
-        await window.qz.websocket.connect(options);
+        await window.qz.websocket.connect(options)
       }
-      console.log('✅ WebSocket conectado!');
+      console.log('✅ WebSocket conectado!')
       const version = window.qz.version;
       
-      setQzVersion(version);
-      setIsConnected(true);
-      addLog('success', `Conectado ao QZ Tray versão ${version}`);
-      toast.success(`Conectado ao QZ Tray v${version}`);
+      setQzVersion(version)
+      setIsConnected(true)
+      addLog('success', `Conectado ao QZ Tray versão ${version}`)
+      toast.success(`Conectado ao QZ Tray v${version}`)
       
       // Carregar impressoras automaticamente
-      await carregarImpressoras();
+      await carregarImpressoras()
     } catch (error: any) {
-      console.error('❌ Erro ao conectar:', error);
-      setIsConnected(false);
-      const errMsg = String(error?.message || error);
-      addLog('error', `Erro ao conectar: ${errMsg}`);
+      console.error('❌ Erro ao conectar:', error)
+      setIsConnected(false)
+      const errMsg = String(error?.message || error)
+      addLog('error', `Erro ao conectar: ${errMsg}`)
       // Dica específica para certificado/mixed content
       if (/SECURITY|CERT|certificate|Mixed|insecure WebSocket|SSL/i.test(errMsg)) {
-        addLog('info', 'Dica: Abra https://localhost:8182 e aceite o certificado do QZ Tray.');
-        toast.error('Falha de segurança/certificado. Abra https://localhost:8182 e aceite o certificado.');
+        addLog('info', 'Dica: Abra https://localhost:8182 e aceite o certificado do QZ Tray.')
+        toast.error('Falha de segurança/certificado. Abra https://localhost:8182 e aceite o certificado.')
       } else {
-        toast.error(`Falha na conexão: ${errMsg}`);
+        toast.error(`Falha na conexão: ${errMsg}`)
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const carregarImpressoras = async () => {
-    if (!window.qz?.websocket?.isActive()) {;
-      addLog('error', 'QZ Tray não está conectado');
+    if (!window.qz?.websocket?.isActive()) {
+      addLog('error', 'QZ Tray não está conectado')
       return;
 
 
-    setLoading(true);
+    setLoading(true)
     try {
       // Reafirmar segurança em dev antes de listar (evita erros de assinatura)
       try {
-        window.qz.security.setCertificatePromise(() => Promise.resolve(''));
-        window.qz.security.setSignaturePromise((toSign: string) => Promise.resolve(btoa(toSign)));
+        window.qz.security.setCertificatePromise(() => Promise.resolve(''))
+        window.qz.security.setSignaturePromise((toSign: string) => Promise.resolve(btoa(toSign)))
       } catch {}
 
       // Timeout de 10s para evitar travas
-      const withTimeout = <T,>(p: Promise<T>, ms = 10000) => new Promise<T>((resolve, reject) => {;
-        const id = setTimeout(() => reject(new Error('Timeout ao buscar impressoras')), ms);
-        p.then((v) => { clearTimeout(id); resolve(v); }).catch((e) => { clearTimeout(id); reject(e); });
-      });
+      const withTimeout = <T,>(p: Promise<T>, ms = 10000) => new Promise<T>((resolve, reject) => {
+        const id = setTimeout(() => reject(new Error('Timeout ao buscar impressoras')), ms)
+        p.then((v) => { clearTimeout(id) resolve(v) }).catch((e) => { clearTimeout(id) reject(e) })
+      })
 
-      const printers: string[] = await withTimeout(window.qz.printers.find());
+      const printers: string[] = await withTimeout(window.qz.printers.find())
 
       // Fallback: tentar impressora padrão se lista vier vazia
       if (printers.length === 0) {
         let def: string | null = null;
-        try { def = await window.qz.printers.getDefault(); } catch {}
+        try { def = await window.qz.printers.getDefault() } catch {}
         if (def) {
-          setImpressoras([{ name: def }]);
-          toast.success('Usando impressora padrão do sistema');
-          addLog('success', `Impressora padrão detectada: ${def}`);
+          setImpressoras([{ name: def }])
+          toast.success('Usando impressora padrão do sistema')
+          addLog('success', `Impressora padrão detectada: ${def}`)
           return;
         }
       }
 
-      setImpressoras(printers.map((name: string) => ({ name })));
+      setImpressoras(printers.map((name: string) => ({ name })))
       if (printers.length === 0) {
-        toast.warning('Nenhuma impressora encontrada');
-        addLog('info', 'Lista de impressoras vazia');
+        toast.warning('Nenhuma impressora encontrada')
+        addLog('info', 'Lista de impressoras vazia')
       } else {
-        toast.success(`${printers.length} impressoras encontradas`);
-        addLog('success', `${printers.length} impressoras carregadas`);
+        toast.success(`${printers.length} impressoras encontradas`)
+        addLog('success', `${printers.length} impressoras carregadas`)
       }
     } catch (error: any) {
-      const errMsg = String(error?.message || error);
-      toast.error(`Erro ao carregar impressoras: ${errMsg}`);
-      addLog('error', `Erro ao carregar impressoras: ${errMsg}`);
+      const errMsg = String(error?.message || error)
+      toast.error(`Erro ao carregar impressoras: ${errMsg}`)
+      addLog('error', `Erro ao carregar impressoras: ${errMsg}`)
       if (/sign|certificate|trust|permission|SECURITY/i.test(errMsg)) {
-        addLog('info', 'Dica: abra https://localhost:8182 e aceite o certificado do QZ Tray.');
+        addLog('info', 'Dica: abra https://localhost:8182 e aceite o certificado do QZ Tray.')
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
-  const gerarComandosESCPOS = (pedido: PedidoTeste): string => {;
+  const gerarComandosESCPOS = (pedido: PedidoTeste): string => {
     let commands = '';
     
     // Inicializar impressora
@@ -382,7 +382,7 @@ const ImpressaoQZTrayConfig = () => {
       const spaces = larguraPapel - priceStr.length;
       commands += ' '.repeat(Math.max(0, spaces)) + priceStr + '\n';
       commands += '\n';
-    });
+    })
     
     // Total
     commands += '-'.repeat(larguraPapel) + '\n';
@@ -426,47 +426,47 @@ const ImpressaoQZTrayConfig = () => {
     return commands;
   };
 
-  const testarImpressora = async (impressoraNome?: string) => {;
+  const testarImpressora = async (impressoraNome?: string) => {
     const printer = impressoraNome || impressoraSelecionada;
     if (!printer) {
-      toast.error('Selecione uma impressora primeiro');
-      addLog('error', 'Nenhuma impressora selecionada para teste');
+      toast.error('Selecione uma impressora primeiro')
+      addLog('error', 'Nenhuma impressora selecionada para teste')
       return;
 
 
     // Verificar conexão com QZ Tray
     if (!window.qz) {
-      toast.error('QZ Tray não está carregado');
-      addLog('error', 'Objeto QZ não encontrado - QZ Tray não carregado');
+      toast.error('QZ Tray não está carregado')
+      addLog('error', 'Objeto QZ não encontrado - QZ Tray não carregado')
       return;
 
 
     if (!window.qz.websocket?.isActive()) {
-      toast.error('QZ Tray não está conectado');
-      addLog('error', 'WebSocket do QZ Tray não está ativo');
+      toast.error('QZ Tray não está conectado')
+      addLog('error', 'WebSocket do QZ Tray não está ativo')
       
       // Tentar conectar automaticamente
       try {
-        addLog('info', 'Tentando conectar automaticamente...');
-        await window.qz.websocket.connect();
-        addLog('success', 'Conexão estabelecida automaticamente');
+        addLog('info', 'Tentando conectar automaticamente...')
+        await window.qz.websocket.connect()
+        addLog('success', 'Conexão estabelecida automaticamente')
       } catch (connectError) {
-        addLog('error', `Falha na conexão automática: ${connectError}`);
+        addLog('error', `Falha na conexão automática: ${connectError}`)
         return;
       }
     }
 
-    setLoading(true);
-    addLog('info', `Iniciando teste de impressão na impressora: ${printer}`);
+    setLoading(true)
+    addLog('info', `Iniciando teste de impressão na impressora: ${printer}`)
     
     try {
       // Verificar se a impressora existe na lista
-      const availablePrinters = await window.qz.printers.find();
+      const availablePrinters = await window.qz.printers.find()
       if (!availablePrinters.includes(printer)) {
-        throw new Error(`Impressora '${printer} catch (error) { console.error('Error:', error); }' não encontrada. Impressoras disponíveis: ${availablePrinters.join(', ')}`);
+        throw new Error(`Impressora '${printer} catch (error) { console.error('Error:', error) }' não encontrada. Impressoras disponíveis: ${availablePrinters.join(', ')}`)
       }
       
-      addLog('info', 'Impressora encontrada, gerando comandos de teste...');
+      addLog('info', 'Impressora encontrada, gerando comandos de teste...')
       
       // Comandos de teste mais robustos
       const testCommands = '\x1B\x40' +                    // ESC @ - Reset printer
@@ -491,24 +491,24 @@ const ImpressaoQZTrayConfig = () => {
         '\n\n\n' +;
         '\x1D\x56\x41\x10';            // GS V A 16 - Partial cut
 
-      addLog('info', 'Criando configuração de impressão...');
-      const config = window.qz.configs.create(printer);
+      addLog('info', 'Criando configuração de impressão...')
+      const config = window.qz.configs.create(printer)
       
-      addLog('info', 'Preparando dados para impressão...');
+      addLog('info', 'Preparando dados para impressão...')
       const data = [{ 
         type: 'raw', 
         format: 'plain', 
         data: testCommands ;
       }];
       
-      addLog('info', 'Enviando comando de impressão...');
-      await window.qz.print(config, data);
+      addLog('info', 'Enviando comando de impressão...')
+      await window.qz.print(config, data)
       
-      toast.success('✅ Teste de impressão enviado com sucesso!');
-      addLog('success', `Teste enviado para impressora '${printer}' - Verifique se o papel foi impresso`);
+      toast.success('✅ Teste de impressão enviado com sucesso!')
+      addLog('success', `Teste enviado para impressora '${printer}' - Verifique se o papel foi impresso`)
       
     } catch (error: any) {
-      console.error('Erro no teste de impressão:', error);
+      console.error('Erro no teste de impressão:', error)
       
       let errorMessage = 'Erro desconhecido no teste de impressão';
       
@@ -524,95 +524,95 @@ const ImpressaoQZTrayConfig = () => {
         errorMessage = `Erro na impressão: ${error.message || error}`;
       }
       
-      toast.error(errorMessage);
-      addLog('error', `Falha no teste: ${errorMessage}`);
-      addLog('debug', `Detalhes do erro: ${JSON.stringify(error, null, 2)}`);
+      toast.error(errorMessage)
+      addLog('error', `Falha no teste: ${errorMessage}`)
+      addLog('debug', `Detalhes do erro: ${JSON.stringify(error, null, 2)}`)
       
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const enviarPedidoTeste = async () => {
-    if (!impressoraSelecionada) {;
-      toast.error('Selecione uma impressora primeiro');
+    if (!impressoraSelecionada) {
+      toast.error('Selecione uma impressora primeiro')
       return;
 
 
     if (!window.qz?.websocket?.isActive()) {
-      toast.error('QZ Tray não está conectado');
+      toast.error('QZ Tray não está conectado')
       return;
 
 
-    setLoading(true);
+    setLoading(true)
     try {
-      const commands = gerarComandosESCPOS(pedidoTeste);
+      const commands = gerarComandosESCPOS(pedidoTeste)
       
-      const config = window.qz.configs.create(impressoraSelecionada);
-      const data = [{ type: 'raw', format: 'plain', data: commands } catch (error) { console.error('Error:', error); }];
+      const config = window.qz.configs.create(impressoraSelecionada)
+      const data = [{ type: 'raw', format: 'plain', data: commands } catch (error) { console.error('Error:', error) }];
       
-      await window.qz.print(config, data);
+      await window.qz.print(config, data)
       
-      toast.success('Pedido de teste enviado para impressão!');
-      addLog('success', `Pedido ${pedidoTeste.number} enviado para impressão`);
+      toast.success('Pedido de teste enviado para impressão!')
+      addLog('success', `Pedido ${pedidoTeste.number} enviado para impressão`)
     } catch (error) {
-      toast.error('Erro ao enviar pedido');
-      addLog('error', `Erro ao enviar pedido: ${error}`);
+      toast.error('Erro ao enviar pedido')
+      addLog('error', `Erro ao enviar pedido: ${error}`)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   const testeRapido = async () => {
-    if (!impressoraSelecionada) {;
-      toast.error('Selecione uma impressora primeiro');
+    if (!impressoraSelecionada) {
+      toast.error('Selecione uma impressora primeiro')
       return;
 
-    await testarImpressora(impressoraSelecionada);
+    await testarImpressora(impressoraSelecionada)
   };
 
-  const limparLogs = () => {;
-    setLogs([]);
-    addLog('info', 'Logs limpos');
+  const limparLogs = () => {
+    setLogs([])
+    addLog('info', 'Logs limpos')
   };
 
-  const testarConexaoLocal = async () => {;
-    console.log('🌐 Testando conexão local com QZ Tray...');
-    addLog('info', 'Testando conexão local (HTTP 8181 e HTTPS 8182)...');
+  const testarConexaoLocal = async () => {
+    console.log('🌐 Testando conexão local com QZ Tray...')
+    addLog('info', 'Testando conexão local (HTTP 8181 e HTTPS 8182)...')
     const tests = [
       { url: 'http://localhost:8181', label: 'HTTP 8181' },
       { url: 'https://localhost:8182', label: 'HTTPS 8182' };
     ];
     for (const t of tests) {
       try {
-        await fetch(t.url, { method: 'GET', mode: 'no-cors' } catch (error) { console.error('Error:', error); });
-        addLog('success', `QZ Tray encontrado em ${t.label}`);
-        toast.success(`QZ Tray detectado em ${t.label}!`);
+        await fetch(t.url, { method: 'GET', mode: 'no-cors' } catch (error) { console.error('Error:', error) })
+        addLog('success', `QZ Tray encontrado em ${t.label}`)
+        toast.success(`QZ Tray detectado em ${t.label}!`)
         return;
       } catch (err) {
-        console.warn(`Falha em ${t.label}`, err);
+        console.warn(`Falha em ${t.label}`, err)
       }
     }
-    addLog('error', 'QZ Tray não respondendo nas portas padrão (8181/8182)');
-    toast.error('QZ Tray não encontrado nas portas 8181/8182. Certifique-se de que está rodando.');
+    addLog('error', 'QZ Tray não respondendo nas portas padrão (8181/8182)')
+    toast.error('QZ Tray não encontrado nas portas 8181/8182. Certifique-se de que está rodando.')
   };
 
-  const abrirCertificadoHTTPS = () => {;
-    addLog('info', 'Abrindo página de certificado HTTPS (8182)...');
-    window.open('https://localhost:8182', '_blank', 'noopener,noreferrer');
+  const abrirCertificadoHTTPS = () => {
+    addLog('info', 'Abrindo página de certificado HTTPS (8182)...')
+    window.open('https://localhost:8182', '_blank', 'noopener,noreferrer')
   };
 
-  const forcarReconexaoQZ = async () => {;
-    console.log('🔄 Forçando reconexão com QZ Tray...');
-    addLog('info', 'Tentando forçar reconexão...');
+  const forcarReconexaoQZ = async () => {
+    console.log('🔄 Forçando reconexão com QZ Tray...')
+    addLog('info', 'Tentando forçar reconexão...')
     // Remover script antigo
-    const oldScript = document.querySelector('script[src*="qz-tray"]');
+    const oldScript = document.querySelector('script[src*="qz-tray"]')
     if (oldScript) {
-      oldScript.remove();
-      console.log('🗑️ Script antigo removido');
+      oldScript.remove()
+      console.log('🗑️ Script antigo removido')
 
     // Adicionar novo script
-    const script = document.createElement('script');
+    const script = document.createElement('script')
     // Lista de CDNs para tentar
     const cdnUrls = [
       'https://unpkg.com/qz-tray@2.2.5',
@@ -623,18 +623,18 @@ const ImpressaoQZTrayConfig = () => {
     script.src = cdnUrls[0]; // Usar o primeiro CDN
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-      console.log('✅ Script QZ recarregado');
+      console.log('✅ Script QZ recarregado')
       setTimeout(() => {
-        console.log('🔄 Tentando conectar após recarga...');
-        checkQZTray();
-      }, 2000);
+        console.log('🔄 Tentando conectar após recarga...')
+        checkQZTray()
+      }, 2000)
     };
     script.onerror = () => {
-      console.error('❌ Erro ao recarregar script QZ');
-      addLog('error', 'Erro ao recarregar script QZ');
+      console.error('❌ Erro ao recarregar script QZ')
+      addLog('error', 'Erro ao recarregar script QZ')
     };
-    document.head.appendChild(script);
-    addLog('info', 'Script QZ recarregado, aguardando conexão...');
+    document.head.appendChild(script)
+    addLog('info', 'Script QZ recarregado, aguardando conexão...')
   };
 
   return (
@@ -676,8 +676,8 @@ const ImpressaoQZTrayConfig = () => {
             <div className="flex justify-center">
               <Button 
                 onClick={() => {
-                  console.log('🔘 Botão Conectar clicado!');
-                  checkQZTray();
+                  console.log('🔘 Botão Conectar clicado!')
+                  checkQZTray()
                 }} 
                 disabled={loading}
                 size="lg"
@@ -1008,7 +1008,7 @@ const ImpressaoQZTrayConfig = () => {
       </Card>
 
     </div>
-  );
+  )
 };
 
 export default ImpressaoQZTrayConfig;

@@ -73,17 +73,17 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
     preco_venda_sugerido: 0,
     margem_lucro: 0,
     is_active: true
-  });
+  })
 
-  const [ingredientes, setIngredientes] = useState<Ingrediente[]>([]);
-  const [mercadorias, setMercadorias] = useState<any[]>([]);
-  const [loading, setSaving] = useState(false);
-  const { toast } = useToast();
-  const { user, currentCompany } = useAuth();
+  const [ingredientes, setIngredientes] = useState<Ingrediente[]>([])
+  const [mercadorias, setMercadorias] = useState<any[]>([])
+  const [loading, setSaving] = useState(false)
+  const { toast } = useToast()
+  const { user, currentCompany } = useAuth()
 
   useEffect(() => {
     if (receita) {
-      setFormData(receita);
+      setFormData(receita)
     } else {
       setFormData({
         nome: '',
@@ -98,27 +98,27 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         preco_venda_sugerido: 0,
         margem_lucro: 0,
         is_active: true
-      });
+      })
 
     
     // Carregar mercadorias disponíveis
     if (isOpen) {
-      fetchMercadorias();
+      fetchMercadorias()
 
-  }, [receita, isOpen]);
+  }, [receita, isOpen])
 
   const fetchMercadorias = async () => {
-    try {;
-      const { data }  catch (error) { console.error('Error:', error); }= await (supabase as any)
+    try {
+      const { data }  catch (error) { console.error('Error:', error) }= await (supabase as any)
         
         
         
         
         
       
-      setMercadorias(data || []);
+      setMercadorias(data || [])
     } catch (error) {
-      console.error('Erro ao carregar mercadorias:', error);
+      console.error('Erro ao carregar mercadorias:', error)
 
   };
 
@@ -132,7 +132,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
       quantidade: 0,
       custo_total: 0;
     };
-    setIngredientes([...ingredientes, novoIngrediente]);
+    setIngredientes([...ingredientes, novoIngrediente])
   };
 
   const adicionarTitulo = () => {
@@ -141,45 +141,45 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
       tipo: 'titulo',
       nome: '';
     };
-    setIngredientes([...ingredientes, novoTitulo]);
+    setIngredientes([...ingredientes, novoTitulo])
   };
 
-  const removerIngrediente = (id: string) => {;
-    setIngredientes(ingredientes.filter(ing => ing.id !== id));
-    recalcularCustoTotal();
+  const removerIngrediente = (id: string) => {
+    setIngredientes(ingredientes.filter(ing => ing.id !== id))
+    recalcularCustoTotal()
   };
 
   const atualizarIngrediente = (id: string, campo: string, valor: any) => {
     setIngredientes(prev => prev.map(ing => {
-      if (ing.id === id) {;
+      if (ing.id === id) {
         const atualizado = { ...ing, [campo]: valor };
         
         // Recalcular custo total do ingrediente
         if (campo === 'quantidade' || campo === 'custo_item') {
-          atualizado.custo_total = (atualizado.quantidade || 0) * (atualizado.custo_item || 0);
+          atualizado.custo_total = (atualizado.quantidade || 0) * (atualizado.custo_item || 0)
         }
         
         return atualizado;
       }
       return ing;
-    }));
+    }))
     
     // Recalcular custo total da receita
-    setTimeout(recalcularCustoTotal, 100);
+    setTimeout(recalcularCustoTotal, 100)
   };
 
   const recalcularCustoTotal = () => {
     const custoTotal = ingredientes
-      .filter(ing => ing.tipo === 'ingrediente');
-      .reduce((sum, ing) => sum + (ing.custo_total || 0), 0);
+      .filter(ing => ing.tipo === 'ingrediente')
+      .reduce((sum, ing) => sum + (ing.custo_total || 0), 0)
     
-    setFormData(prev => ({ ...prev, custo_total: custoTotal }));
+    setFormData(prev => ({ ...prev, custo_total: custoTotal }))
   };
 
   const calcularMargem = () => {
-    if (formData.custo_total && formData.preco_venda_sugerido && formData.custo_total > 0) {;
-      const margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100);
-      setFormData({ ...formData, margem_lucro: margem });
+    if (formData.custo_total && formData.preco_venda_sugerido && formData.custo_total > 0) {
+      const margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100)
+      setFormData({ ...formData, margem_lucro: margem })
 
   };
 
@@ -189,7 +189,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         title: 'Erro',
         description: 'Nome da receita é obrigatório',
         variant: 'destructive';
-      });
+      })
       return;
 
 
@@ -198,7 +198,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         title: 'Erro',
         description: 'Usuário não autenticado',
         variant: 'destructive'
-      });
+      })
       return;
 
 
@@ -208,24 +208,24 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         title: 'Erro',
         description: 'Selecione uma empresa primeiro',
         variant: 'destructive'
-      });
+      })
       return;
 
 
-    setSaving(true);
+    setSaving(true)
 
     try {
       let margem = 0;
       if (formData.custo_total && formData.preco_venda_sugerido && formData.custo_total > 0) {
-        margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100);
+        margem = ((formData.preco_venda_sugerido - formData.custo_total) / formData.custo_total * 100)
       }
 
-       catch (error) { console.error('Error:', error); }const dataToSave = {
+       catch (error) { console.error('Error:', error) }const dataToSave = {
         ...formData,
         company_id: companyId,
         margem_lucro: margem,
         updated_by: user.id,
-        ...(receita ? {} : { created_by: user.id });
+        ...(receita ? {} : { created_by: user.id })
       };
 
       if (receita?.id) {
@@ -239,7 +239,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         toast({
           title: 'Sucesso',
           description: 'Receita atualizada com sucesso!'
-        });
+        })
       } else {
         const { error } = await (supabase as any)
           
@@ -250,20 +250,20 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         toast({
           title: 'Sucesso',
           description: 'Receita criada com sucesso!'
-        });
+        })
       }
 
-      onSave();
-      onClose();
+      onSave()
+      onClose()
     } catch (error: any) {
-      console.error('Erro ao salvar receita:', error);
+      console.error('Erro ao salvar receita:', error)
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao salvar receita',
         variant: 'destructive'
-      });
+      })
     } finally {
-      setSaving(false);
+      setSaving(false)
 
   };
 
@@ -271,7 +271,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL';
-    }).format(value);
+    }).format(value)
   };
 
   return (
@@ -467,11 +467,11 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
                             <Select
                               value={ingrediente.nome}
                               onValueChange={(value) => {
-                                const mercadoria = mercadorias.find(m => m.nome === value);
-                                atualizarIngrediente(ingrediente.id, 'nome', value);
+                                const mercadoria = mercadorias.find(m => m.nome === value)
+                                atualizarIngrediente(ingrediente.id, 'nome', value)
                                 if (mercadoria) {
-                                  atualizarIngrediente(ingrediente.id, 'custo_item', mercadoria.preco_unitario);
-                                  atualizarIngrediente(ingrediente.id, 'medida', mercadoria.unidade_medida);
+                                  atualizarIngrediente(ingrediente.id, 'custo_item', mercadoria.preco_unitario)
+                                  atualizarIngrediente(ingrediente.id, 'medida', mercadoria.unidade_medida)
                                 }
                               }}
                             >
@@ -615,7 +615,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
                 value={formData.custo_total || ''}
                 onChange={(e) => {
                   const newCusto = parseFloat(e.target.value) || 0;
-                  setFormData({ ...formData, custo_total: newCusto });
+                  setFormData({ ...formData, custo_total: newCusto })
                 }}
                 onBlur={calcularMargem}
                 placeholder="0,00"
@@ -634,7 +634,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
                 value={formData.preco_venda_sugerido || ''}
                 onChange={(e) => {
                   const newPreco = parseFloat(e.target.value) || 0;
-                  setFormData({ ...formData, preco_venda_sugerido: newPreco });
+                  setFormData({ ...formData, preco_venda_sugerido: newPreco })
                 }}
                 onBlur={calcularMargem}
                 placeholder="0,00"
@@ -703,7 +703,7 @@ const ReceitaModal: React.FC<ReceitaModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default ReceitaModal; 

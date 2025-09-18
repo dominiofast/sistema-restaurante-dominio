@@ -14,13 +14,13 @@ async function apiRequest(url: string, options: RequestInit = {}) {
       'Content-Type': 'application/json',
       ...options.headers,
     },;
-  });
+  })
   
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw new Error(`API Error: ${response.statusText}`)
   }
   
-  return response.json();
+  return response.json()
 
 import { GruposAssociadosTab } from './adicionais/GruposAssociadosTab';
 import { NovoGrupoTab } from './adicionais/NovoGrupoTab';
@@ -38,28 +38,28 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
   isOpen,
   onClose
 }) => {
-  const { currentCompany } = useAuth();
-  const { categoriasAdicionais, adicionais, produtos, fetchCategoriasAdicionais, fetchAdicionais } = useCardapio();
-  const [produtoCategoriasAdicionais, setProdutoCategoriasAdicionais] = useState<ProdutoCategoriaAdicional[]>([]);
+  const { currentCompany } = useAuth()
+  const { categoriasAdicionais, adicionais, produtos, fetchCategoriasAdicionais, fetchAdicionais } = useCardapio()
+  const [produtoCategoriasAdicionais, setProdutoCategoriasAdicionais] = useState<ProdutoCategoriaAdicional[]>([])
 
   useEffect(() => {
     if (isOpen && produto.id) {
-      fetchProdutoCategoriasAdicionais();
+      fetchProdutoCategoriasAdicionais()
     }
-  }, [isOpen, produto.id]);
+  }, [isOpen, produto.id])
 
   const fetchProdutoCategoriasAdicionais = async () => {
-    try {;
-      const data = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produto.id} catch (error) { console.error('Error:', error); }`);
-      setProdutoCategoriasAdicionais(data || []);
+    try {
+      const data = await apiRequest(`/api/produto-categorias-adicionais?produto_id=${produto.id} catch (error) { console.error('Error:', error) }`)
+      setProdutoCategoriasAdicionais(data || [])
       
       // Também atualizar os dados globais para garantir sincronização
       await Promise.all([
         fetchCategoriasAdicionais(),
         fetchAdicionais()
-      ]);
+      ])
     } catch (error) {
-      console.error('Erro ao buscar categorias de adicionais do produto:', error);
+      console.error('Erro ao buscar categorias de adicionais do produto:', error)
     }
   };
 
@@ -129,5 +129,5 @@ export const AdicionaisModal: React.FC<AdicionaisModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

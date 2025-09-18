@@ -32,5 +32,5 @@ export const StatusLoja: React.FC<StatusLojaProps> = ({ status, message, nextCha
         </span>
       )}
     </div>
-  );
+  )
 };

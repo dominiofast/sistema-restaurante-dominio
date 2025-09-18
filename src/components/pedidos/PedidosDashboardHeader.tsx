@@ -25,39 +25,39 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
   tipoSelecionado,
   setTipoSelecionado
 }) => {
-  const navigate = useNavigate();
-  const { currentCompany } = useAuth();
-  const { buscarPorTelefone, loading: loadingCliente } = useClientePublico();
-  const { fetchAddressesByPhone } = useCustomerAddresses();
-  const [buscaCliente, setBuscaCliente] = useState('');
+  const navigate = useNavigate()
+  const { currentCompany } = useAuth()
+  const { buscarPorTelefone, loading: loadingCliente } = useClientePublico()
+  const { fetchAddressesByPhone } = useCustomerAddresses()
+  const [buscaCliente, setBuscaCliente] = useState('')
 
   const handleBuscaCliente = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && buscaCliente.trim()) {;
-      const somenteNumeros = buscaCliente.replace(/\D/g, '');
+    if (e.key === 'Enter' && buscaCliente.trim()) {
+      const somenteNumeros = buscaCliente.replace(/\D/g, '')
       
       if (somenteNumeros.length >= 10) {
         try {
-          const cliente = await buscarPorTelefone(somenteNumeros, currentCompany?.id);
+          const cliente = await buscarPorTelefone(somenteNumeros, currentCompany?.id)
           
           if (cliente) {
-            await fetchAddressesByPhone(somenteNumeros, currentCompany?.id);
-            navigate(`/pedidos/cliente/${cliente.id} catch (error) { console.error('Error:', error); }`, { 
+            await fetchAddressesByPhone(somenteNumeros, currentCompany?.id)
+            navigate(`/pedidos/cliente/${cliente.id} catch (error) { console.error('Error:', error) }`, { 
               state: { cliente, telefone: somenteNumeros } 
-            });
+            })
           } else {
-            alert('Cliente não encontrado com este telefone');
+            alert('Cliente não encontrado com este telefone')
           }
         } catch (error) {
-          alert('Erro ao buscar cliente');
+          alert('Erro ao buscar cliente')
 
       } else {
-        alert('Por favor, digite um telefone válido com pelo menos 10 dígitos');
+        alert('Por favor, digite um telefone válido com pelo menos 10 dígitos')
 
 
   };
 
-  const handleVendaBalcao = () => {;
-    navigate('/pdv');
+  const handleVendaBalcao = () => {
+    navigate('/pdv')
   };
 
   return (
@@ -85,7 +85,7 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
                   <Icon size={16} />
                   <span className="hidden sm:inline">{tipo.label}</span>
                 </button>
-              );
+              )
             })}
           </div>
         </div>
@@ -128,5 +128,5 @@ export const PedidosDashboardHeader: React.FC<PedidosDashboardHeaderProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

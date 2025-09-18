@@ -39,5 +39,5 @@ export const PedidosBoard: React.FC<PedidosBoardProps> = ({
         campainhaInfo={campainhaInfo}
       />
     </div>
-  );
+  )
 };

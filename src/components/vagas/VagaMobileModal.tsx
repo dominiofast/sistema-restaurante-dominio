@@ -49,7 +49,7 @@ const VagaMobileModal: React.FC<VagaMobileModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };
 
 export default VagaMobileModal;

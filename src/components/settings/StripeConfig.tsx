@@ -25,8 +25,8 @@ interface StripeConfigProps {
 
 
 export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
-  const { config, loading, error, saveConfig, testCredentials } = useStripeConfig(companyId);
-  const { toast } = useToast();
+  const { config, loading, error, saveConfig, testCredentials } = useStripeConfig(companyId)
+  const { toast } = useToast()
   
   const [formData, setFormData] = useState<StripeConfigData>({
     publishable_key: '',
@@ -36,10 +36,10 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
     is_active: false,
     test_mode: true,
     webhook_endpoint_secret: '',
-  });
+  })
   
-  const [saving, setSaving] = useState(false);
-  const [testing, setTesting] = useState(false);
+  const [saving, setSaving] = useState(false)
+  const [testing, setTesting] = useState(false)
 
   // Atualizar formData quando config for carregado
   useEffect(() => {
@@ -52,23 +52,23 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         is_active: config.is_active || false,
         test_mode: config.test_mode !== false,
         webhook_endpoint_secret: config.webhook_endpoint_secret || '',
-      });
+      })
     }
-  }, [config]);
+  }, [config])
 
   const handleInputChange = (field: keyof StripeConfigData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
       [field]: value;
-    }));
+    }))
   };
 
-  const handleSave = async () => {;
-    setSaving(true);
+  const handleSave = async () => {
+    setSaving(true)
     try {
-      await saveConfig(formData);
+      await saveConfig(formData)
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
@@ -78,15 +78,15 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         title: 'Dados incompletos',
         description: 'Preencha as chaves para testar as credenciais',
         variant: 'destructive',;
-      });
+      })
       return;
     }
 
-    setTesting(true);
+    setTesting(true)
     try {
-      await testCredentials(formData.publishable_key, formData.secret_key);
+      await testCredentials(formData.publishable_key, formData.secret_key)
     } finally {
-      setTesting(false);
+      setTesting(false)
     }
   };
 
@@ -96,7 +96,7 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-2">Carregando configurações do Stripe...</span>
       </div>
-    );
+    )
 
 
   if (error) {
@@ -107,7 +107,7 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
           Erro ao carregar configurações: {error}
         </AlertDescription>
       </Alert>
-    );
+    )
 
 
   return (
@@ -324,5 +324,5 @@ export const StripeConfig: React.FC<StripeConfigProps> = ({ companyId }) => {
         </Button>
       </div>
     </div>
-  );
+  )
 };

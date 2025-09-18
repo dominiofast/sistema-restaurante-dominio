@@ -26,37 +26,37 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   companyId,
   taxaEntrega = 0
 }) => {
-  const [showPagamentoModal, setShowPagamentoModal] = useState(false);
-  const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
-  const [pedidoId, setPedidoId] = useState<string | null>(null);
-  const [processandoPedido, setProcessandoPedido] = useState(false);
-  const [telefoneCliente, setTelefoneCliente] = useState('');
-  const [nomeCliente, setNomeCliente] = useState('');
-  const [clienteEncontrado, setClienteEncontrado] = useState<any>(null);
-  const [showEnderecoModal, setShowEnderecoModal] = useState(false);
+  const [showPagamentoModal, setShowPagamentoModal] = useState(false)
+  const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false)
+  const [pedidoId, setPedidoId] = useState<string | null>(null)
+  const [processandoPedido, setProcessandoPedido] = useState(false)
+  const [telefoneCliente, setTelefoneCliente] = useState('')
+  const [nomeCliente, setNomeCliente] = useState('')
+  const [clienteEncontrado, setClienteEncontrado] = useState<any>(null)
+  const [showEnderecoModal, setShowEnderecoModal] = useState(false)
 
   // Event listener para o botão flutuante
   React.useEffect(() => {
     const handleFinalizarPedidoEvent = () => {
-      if (carrinho.length > 0) {;
-        setShowPagamentoModal(true);
+      if (carrinho.length > 0) {
+        setShowPagamentoModal(true)
       }
     };
 
-    window.addEventListener('finalizarPedido', handleFinalizarPedidoEvent);
+    window.addEventListener('finalizarPedido', handleFinalizarPedidoEvent)
     
     return () => {
-      window.removeEventListener('finalizarPedido', handleFinalizarPedidoEvent);
+      window.removeEventListener('finalizarPedido', handleFinalizarPedidoEvent)
     };
-  }, [carrinho.length]); // Dependência para recalcular quando o carrinho mudar
+  }, [carrinho.length]) // Dependência para recalcular quando o carrinho mudar
 
   // Função para buscar cliente pelo telefone
-  const buscarClientePorTelefone = async (telefone: string) => {;
+  const buscarClientePorTelefone = async (telefone: string) => {
     if (!telefone || telefone.length < 10 || !companyId) return;
     
     try {
       // Buscar na tabela clientes
-      const { data: cliente, error }  catch (error) { console.error('Error:', error); }= 
+      const { data: cliente, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -64,52 +64,52 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         
 
       if (error) {
-        console.error('Erro ao buscar cliente:', error);
+        console.error('Erro ao buscar cliente:', error)
         return;
       }
 
       if (cliente) {
-        setClienteEncontrado(cliente);
-        setNomeCliente(cliente.nome);
-        console.log('Cliente encontrado:', cliente);
+        setClienteEncontrado(cliente)
+        setNomeCliente(cliente.nome)
+        console.log('Cliente encontrado:', cliente)
       } else {
-        setClienteEncontrado(null);
+        setClienteEncontrado(null)
       }
     } catch (error) {
-      console.error('Erro ao buscar cliente:', error);
+      console.error('Erro ao buscar cliente:', error)
 
   };
 
   // Função para buscar endereços do cliente
-  const buscarEnderecosCliente = async () => {;
+  const buscarEnderecosCliente = async () => {
     if (!telefoneCliente || !companyId) return [];
     
     try {
-      const { data: enderecos, error }  catch (error) { console.error('Error:', error); }= 
+      const { data: enderecos, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
         
 
       if (error) {
-        console.error('Erro ao buscar endereços:', error);
+        console.error('Erro ao buscar endereços:', error)
         return [];
       }
 
       return enderecos || [];
     } catch (error) {
-      console.error('Erro ao buscar endereços:', error);
+      console.error('Erro ao buscar endereços:', error)
       return [];
 
   };
 
   // Handler para mudança no telefone
-  const handleTelefoneChange = (value: string) => {;
-    setTelefoneCliente(value);
+  const handleTelefoneChange = (value: string) => {
+    setTelefoneCliente(value)
     
     // Sempre limpar cliente e endereços quando trocar telefone
-    setNomeCliente('');
-    setClienteEncontrado(null);
+    setNomeCliente('')
+    setClienteEncontrado(null)
     
     // Se limpar o telefone, apenas retornar
     if (!value) {
@@ -118,42 +118,42 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 
     // Buscar cliente automaticamente quando o telefone tiver pelo menos 10 caracteres
     if (value.length >= 10) {
-      buscarClientePorTelefone(value);
+      buscarClientePorTelefone(value)
 
   };
 
   // Handler para o botão Entrega
   const handleEntregaClick = async () => {
-    if (!telefoneCliente) {;
-      alert('Digite o telefone do cliente primeiro');
+    if (!telefoneCliente) {
+      alert('Digite o telefone do cliente primeiro')
       return;
 
 
-    const enderecos = await buscarEnderecosCliente();
+    const enderecos = await buscarEnderecosCliente()
     
     if (enderecos.length === 0) {
-      alert('Nenhum endereço encontrado para este cliente. Cadastre um novo endereço.');
+      alert('Nenhum endereço encontrado para este cliente. Cadastre um novo endereço.')
       // Aqui poderia abrir um modal para cadastrar novo endereço
       return;
 
 
     // Aqui você pode mostrar os endereços em um modal ou dropdown
-    console.log('Endereços encontrados:', enderecos);
-    setShowEnderecoModal(true);
+    console.log('Endereços encontrados:', enderecos)
+    setShowEnderecoModal(true)
   };
 
-  const handleFinalizarPedido = () => {;
+  const handleFinalizarPedido = () => {
     if (carrinho.length === 0) return;
-    setShowPagamentoModal(true);
+    setShowPagamentoModal(true)
   };
 
   const handleConfirmarPagamento = async (pagamento: any) => {
-    if (!companyId) {;
-      alert('Erro: Empresa não identificada');
+    if (!companyId) {
+      alert('Erro: Empresa não identificada')
       return;
 
 
-    setProcessandoPedido(true);
+    setProcessandoPedido(true)
     
     try {
       console.log('🎯 Criando pedido PDV', {
@@ -161,7 +161,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         totalCarrinho,
         itensCount: carrinho.length,
         pagamento
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
 
       // Criar o pedido na tabela pedidos com status 'analise'
       const pedido = null as any; const pedidoError = null as any;
@@ -174,7 +174,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         status: pedido.status,
         origem: pedido.origem,
         total: pedido.total
-      });
+      })
 
       // Criar os itens do pedido
       const itensParaInserir = carrinho.map(item => ({
@@ -187,15 +187,15 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           : item.produto.price,
         valor_total: item.preco_total,
         observacoes: null;
-      }));
+      }))
 
-      console.log('📦 Inserindo itens do pedido:', itensParaInserir.length);
+      console.log('📦 Inserindo itens do pedido:', itensParaInserir.length)
 
       const itensInseridos = null as any; const itensError = null as any;
         throw itensError;
       }
 
-      console.log('✅ Itens inseridos com sucesso:', itensInseridos?.length);
+      console.log('✅ Itens inseridos com sucesso:', itensInseridos?.length)
 
       // Criar adicionais dos itens se existirem
       for (let i = 0; i < carrinho.length; i++) {
@@ -224,42 +224,42 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
                 valor_total: adicionalData.price * adicionalData.quantity;
               };
             })
-          );
+          )
 
-          console.log('🧩 Inserindo adicionais para item:', itemInserido.id);
+          console.log('🧩 Inserindo adicionais para item:', itemInserido.id)
 
           const { error: adicionaisError  } = null as any;
           if (adicionaisError) {
-            console.error('❌ Erro ao inserir adicionais:', adicionaisError);
+            console.error('❌ Erro ao inserir adicionais:', adicionaisError)
           } else {
-            console.log('✅ Adicionais inseridos com sucesso');
+            console.log('✅ Adicionais inseridos com sucesso')
           }
         }
       }
 
-      setPedidoId(pedido.id.toString());
-      setShowPagamentoModal(false);
-      setShowConfirmacaoModal(true);
+      setPedidoId(pedido.id.toString())
+      setShowPagamentoModal(false)
+      setShowConfirmacaoModal(true)
       
-      console.log('🎉 Pedido finalizado com sucesso! ID:', pedido.id);
+      console.log('🎉 Pedido finalizado com sucesso! ID:', pedido.id)
       
     } catch (error) {
-      console.error('💥 Erro ao finalizar pedido:', error);
-      alert('Erro ao finalizar pedido. Tente novamente.');
+      console.error('💥 Erro ao finalizar pedido:', error)
+      alert('Erro ao finalizar pedido. Tente novamente.')
     } finally {
-      setProcessandoPedido(false);
+      setProcessandoPedido(false)
 
   };
 
   const handleNovaVenda = () => {
-    // Limpar carrinho (precisará ser implementado no hook useCart);
-    carrinho.forEach(item => onRemoverItem(item.id));
-    setPedidoId(null);
+    // Limpar carrinho (precisará ser implementado no hook useCart)
+    carrinho.forEach(item => onRemoverItem(item.id))
+    setPedidoId(null)
   };
 
   const handleImprimirVenda = () => {
     // Implementar impressão quando necessário;
-    console.log('Imprimir venda:', pedidoId);
+    console.log('Imprimir venda:', pedidoId)
   };
 
   return (
@@ -480,5 +480,5 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         onNovaVenda={handleNovaVenda}
       />
     </>
-  );
+  )
 };

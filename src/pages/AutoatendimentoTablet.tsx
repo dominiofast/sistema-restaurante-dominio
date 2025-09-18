@@ -16,16 +16,16 @@ import '@/styles/tablet-optimizations.css';
 type AutoatendimentoStep = 'welcome' | 'cardapio' | 'carrinho' | 'checkout' | 'success';
 
 const AutoatendimentoTablet: React.FC = () => {
-  const navigate = useNavigate();
-  const { company_slug } = useParams();
-  const [currentStep, setCurrentStep] = useState<AutoatendimentoStep>('welcome');
+  const navigate = useNavigate()
+  const { company_slug } = useParams()
+  const [currentStep, setCurrentStep] = useState<AutoatendimentoStep>('welcome')
 
-  console.log('🖥️ AutoatendimentoTablet - Parâmetros da URL:', { company_slug });
+  console.log('🖥️ AutoatendimentoTablet - Parâmetros da URL:', { company_slug })
 
   // Hooks para dados
-  const { branding, loading: brandingLoading, error: brandingError } = usePublicBrandingNew(company_slug);
+  const { branding, loading: brandingLoading, error: brandingError } = usePublicBrandingNew(company_slug)
   const effectiveCompanyId = branding?.company_id;
-  const { categorias, produtos, loading: dataLoading, error: dataError } = useCardapioData(effectiveCompanyId);
+  const { categorias, produtos, loading: dataLoading, error: dataError } = useCardapioData(effectiveCompanyId)
   
   // Hook para sessão de autoatendimento
   const {
@@ -35,49 +35,49 @@ const AutoatendimentoTablet: React.FC = () => {
     updateSession,
     completeSession,
     timeLeft
-  } = useAutoatendimentoSession(effectiveCompanyId);
+  } = useAutoatendimentoSession(effectiveCompanyId)
 
   // Efeito para timeout automático
   useEffect(() => {
     if (timeLeft === 0 && currentStep !== 'welcome') {
-      setCurrentStep('welcome');
+      setCurrentStep('welcome')
     }
-  }, [timeLeft, currentStep]);
+  }, [timeLeft, currentStep])
 
   // Função para iniciar sessão
-  const handleStartSession = async () => {;
-    console.log('🚀 AutoatendimentoTablet - handleStartSession chamado');
-    console.log('🏢 AutoatendimentoTablet - effectiveCompanyId:', effectiveCompanyId);
+  const handleStartSession = async () => {
+    console.log('🚀 AutoatendimentoTablet - handleStartSession chamado')
+    console.log('🏢 AutoatendimentoTablet - effectiveCompanyId:', effectiveCompanyId)
     
     try {
-      const sessionId = await createSession();
-      console.log('📝 AutoatendimentoTablet - Sessão criada:', sessionId);
+      const sessionId = await createSession()
+      console.log('📝 AutoatendimentoTablet - Sessão criada:', sessionId)
       
       if (sessionId) {
-        console.log('✅ AutoatendimentoTablet - Mudando para step cardapio');
-        setCurrentStep('cardapio');
-      }  catch (error) { console.error('Error:', error); }else {
-        console.log('❌ AutoatendimentoTablet - Falha ao criar sessão');
+        console.log('✅ AutoatendimentoTablet - Mudando para step cardapio')
+        setCurrentStep('cardapio')
+      }  catch (error) { console.error('Error:', error) }else {
+        console.log('❌ AutoatendimentoTablet - Falha ao criar sessão')
       }
     } catch (error) {
-      console.error('💥 AutoatendimentoTablet - Erro ao criar sessão:', error);
+      console.error('💥 AutoatendimentoTablet - Erro ao criar sessão:', error)
     }
   };
 
   // Função para navegar entre etapas
-  const handleStepChange = (step: AutoatendimentoStep) => {;
-    setCurrentStep(step);
+  const handleStepChange = (step: AutoatendimentoStep) => {
+    setCurrentStep(step)
   };
 
   // Função para finalizar pedido
-  const handleCompleteOrder = async (orderData: any) => {;
-    const success = await completeSession(orderData);
+  const handleCompleteOrder = async (orderData: any) => {
+    const success = await completeSession(orderData)
     if (success) {
-      setCurrentStep('success');
+      setCurrentStep('success')
       // Auto-reset após 10 segundos
       setTimeout(() => {
-        setCurrentStep('welcome');
-      }, 10000);
+        setCurrentStep('welcome')
+      }, 10000)
     }
   };
 
@@ -90,7 +90,7 @@ const AutoatendimentoTablet: React.FC = () => {
           <div className="text-xl font-medium text-muted-foreground tablet-text">Carregando sistema de autoatendimento...</div>
         </div>
       </div>
-    );
+    )
   }
 
   if (brandingError || dataError || !effectiveCompanyId) {
@@ -103,7 +103,7 @@ const AutoatendimentoTablet: React.FC = () => {
           </AlertDescription>
         </Alert>
       </div>
-    );
+    )
   }
 
   // Configurações de branding
@@ -212,7 +212,7 @@ const AutoatendimentoTablet: React.FC = () => {
 
         .tablet-optimized button:active,
         .tablet-optimized [role="button"]:active {
-          transform: scale(0.98);
+          transform: scale(0.98)
           transition: transform 0.1s ease;
         }
 
@@ -259,7 +259,7 @@ const AutoatendimentoTablet: React.FC = () => {
         }
       `}</style>
     </div>
-  );
+  )
 };
 
 export default AutoatendimentoTablet;

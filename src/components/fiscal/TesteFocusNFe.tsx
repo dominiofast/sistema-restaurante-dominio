@@ -8,36 +8,36 @@ import { focusNFeService } from '@/services/focusNFeService';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export const TesteFocusNFe: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [resultado, setResultado] = useState<any>(null);
-  const [erro, setErro] = useState<string | null>(null);
+  const { currentCompany } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [resultado, setResultado] = useState<any>(null)
+  const [erro, setErro] = useState<string | null>(null)
 
   const testarNFCe = async () => {
-    if (!currentCompany?.id) {;
-      setErro('Nenhuma empresa selecionada');
+    if (!currentCompany?.id) {
+      setErro('Nenhuma empresa selecionada')
       return;
     }
 
-    setLoading(true);
-    setErro(null);
-    setResultado(null);
+    setLoading(true)
+    setErro(null)
+    setResultado(null)
 
     try {
       // Primeiro teste: chamar função de teste simples
-      console.log('Testando função básica...');
-      const testResponse = await Promise.resolve();
+      console.log('Testando função básica...')
+      const testResponse = await Promise.resolve()
         body: {
           test: true,
           company_id: currentCompany.id,
           timestamp: Date.now()
         };
-       catch (error) { console.error('Error:', error); }});
+       catch (error) { console.error('Error:', error) }})
 
-      console.log('Resposta do teste:', testResponse);
+      console.log('Resposta do teste:', testResponse)
 
       if (testResponse.error) {
-        setErro('Erro no teste básico: ' + testResponse.error.message);
+        setErro('Erro no teste básico: ' + testResponse.error.message)
         return;
 
 
@@ -72,21 +72,21 @@ export const TesteFocusNFe: React.FC = () => {
         ];
       };
 
-      console.log('Testando NFCe com dados:', dadosTeste);
+      console.log('Testando NFCe com dados:', dadosTeste)
       
-      const result = await focusNFeService.gerarNFCe(currentCompany.id, dadosTeste);
-      console.log('Resultado:', result);
+      const result = await focusNFeService.gerarNFCe(currentCompany.id, dadosTeste)
+      console.log('Resultado:', result)
       
       if (result.success) {
-        setResultado(result);
+        setResultado(result)
       } else {
-        setErro(result.error || 'Erro desconhecido');
+        setErro(result.error || 'Erro desconhecido')
 
     } catch (error: any) {
-      console.error('Erro no teste:', error);
-      setErro(error.message || 'Erro ao testar NFCe');
+      console.error('Erro no teste:', error)
+      setErro(error.message || 'Erro ao testar NFCe')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -151,5 +151,5 @@ export const TesteFocusNFe: React.FC = () => {
         )}
       </CardContent>
     </Card>
-  );
+  )
 };

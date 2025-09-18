@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Settings, Truck } from 'lucide-react';
 
-const IntegracoesConfig = () => {;
-  const [activeSection, setActiveSection] = useState('ifood');
+const IntegracoesConfig = () => {
+  const [activeSection, setActiveSection] = useState('ifood')
 
   const menuItems = [
     { id: 'ifood', label: 'Integração iFood', icon: Truck },;
@@ -23,15 +23,15 @@ const IntegracoesConfig = () => {;
           </div>
         </div>
       </div>;
-    );
+    )
   };
 
   const renderContent = () => {
     switch (activeSection) {
       case 'ifood':;
-        return renderIFoodIntegration();
+        return renderIFoodIntegration()
       default:
-        return renderIFoodIntegration();
+        return renderIFoodIntegration()
     }
   };
 
@@ -69,7 +69,7 @@ const IntegracoesConfig = () => {;
         {renderContent()}
       </div>
     </div>
-  );
+  )
 };
 
 export default IntegracoesConfig;

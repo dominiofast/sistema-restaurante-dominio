@@ -18,37 +18,37 @@ export interface PublicBrandingData {
   is_active?: boolean;
 
 
-export const usePublicBrandingNew = (companyIdentifier?: string) => {;
-  const [branding, setBranding] = useState<PublicBrandingData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const usePublicBrandingNew = (companyIdentifier?: string) => {
+  const [branding, setBranding] = useState<PublicBrandingData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!companyIdentifier) {
-      setLoading(false);
+      setLoading(false)
       return;
     }
 
     const fetchPublicBranding = async () => {
-      try {;
-        setLoading(true);
-        setError(null);
+      try {
+        setLoading(true)
+        setError(null)
 
-        console.log('🎨 usePublicBrandingNew - Buscando branding público via API Neon para:', companyIdentifier);
+        console.log('🎨 usePublicBrandingNew - Buscando branding público via API Neon para:', companyIdentifier)
 
         // Buscar empresa via API /api/companies
-        const companyResponse = await fetch('/api/companies');
-        const companyResult = await companyResponse.json();
+        const companyResponse = await fetch('/api/companies')
+        const companyResult = await companyResponse.json()
         
         if (!companyResponse.ok || !companyResult.success) {
-          throw new Error(companyResult.error || 'Erro ao carregar empresas');
+          throw new Error(companyResult.error || 'Erro ao carregar empresas')
         }
 
-         catch (error) { console.error('Error:', error); }// Procurar empresa por identificador
+         catch (error) { console.error('Error:', error) }// Procurar empresa por identificador
         const company = companyResult.data?.find((comp: any) => {
           if (!isNaN(Number(companyIdentifier))) {
             // É número - usar store_code;
-            return comp.store_code === Number(companyIdentifier);
+            return comp.store_code === Number(companyIdentifier)
           } else if (companyIdentifier.length === 36 && companyIdentifier.includes('-')) {
             // É UUID - usar ID
             return comp.id === companyIdentifier;
@@ -56,24 +56,24 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {;
             // É slug ou domain
             return comp.slug === companyIdentifier || comp.domain === companyIdentifier;
           }
-        });
+        })
 
         if (!company) {
-          console.error('❌ usePublicBrandingNew - Empresa não encontrada para identificador:', companyIdentifier);
-          throw new Error('Empresa não encontrada ou inativa');
+          console.error('❌ usePublicBrandingNew - Empresa não encontrada para identificador:', companyIdentifier)
+          throw new Error('Empresa não encontrada ou inativa')
         }
 
-        console.log('✅ usePublicBrandingNew - Empresa encontrada via API:', company);
+        console.log('✅ usePublicBrandingNew - Empresa encontrada via API:', company)
 
         // Por enquanto, usar configuração básica do branding (sem busca adicional)
         // TODO: Criar API para buscar dados de branding quando necessário
-        console.log('🎨 usePublicBrandingNew - Usando configuração básica de branding (mock)');
+        console.log('🎨 usePublicBrandingNew - Usando configuração básica de branding (mock)')
         
         const brandingData = null; // Mock - sem dados de branding avançado por enquanto
         const logoUrl = company.logo; // Usar logo da empresa
         const bannerUrl = undefined; // Sem banner por enquanto
         
-        console.log('🖼️ URLs extraídas:', { logoUrl, bannerUrl });
+        console.log('🖼️ URLs extraídas:', { logoUrl, bannerUrl })
 
         // Montar objeto final de branding
         const finalBranding: PublicBrandingData = {
@@ -98,14 +98,14 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {;
           banner_url: finalBranding.banner_url,
           show_logo: finalBranding.show_logo,
           show_banner: finalBranding.show_banner
-        });
+        })
 
-        console.log('✅ Branding final montado:', finalBranding);
-        setBranding(finalBranding);
+        console.log('✅ Branding final montado:', finalBranding)
+        setBranding(finalBranding)
 
       } catch (err: any) {
-        console.error('❌ Erro ao buscar branding público:', err);
-        setError(err.message);
+        console.error('❌ Erro ao buscar branding público:', err)
+        setError(err.message)
         
         // Mesmo com erro, fornecer configuração básica se soubermos a empresa
         setBranding({
@@ -120,14 +120,14 @@ export const usePublicBrandingNew = (companyIdentifier?: string) => {;
           background_color: '#FFFFFF',
           header_style: 'modern',
           is_active: true,
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
 
     };
 
-    fetchPublicBranding();
-  }, [companyIdentifier]);
+    fetchPublicBranding()
+  }, [companyIdentifier])
 
   return { 
     branding, 

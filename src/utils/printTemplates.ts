@@ -54,23 +54,23 @@ export function formatPedidoESCPOS(
 ): string {
   const { removeAccents = true, highlightOrder = true } = options;
   // Usar exatamente a largura configurada para evitar quebras
-  const sep = '='.repeat(paperWidth);
-  const thin = '-'.repeat(paperWidth);
+  const sep = '='.repeat(paperWidth)
+  const thin = '-'.repeat(paperWidth)
 
-  const truncateText = (text: string, maxLen: number) => {;
+  const truncateText = (text: string, maxLen: number) => {
     if (maxLen <= 0) return '';
     if (!text) return '';
     if (text.length <= maxLen) return text;
-    if (maxLen <= 3) return text.slice(0, maxLen);
+    if (maxLen <= 3) return text.slice(0, maxLen)
     return text.slice(0, maxLen - 3) + '...';
   };
 
-  const lineLeftRight = (left: string, right: string) => {;
+  const lineLeftRight = (left: string, right: string) => {
     const max = paperWidth;
     const cleanRight = right || '';
-    const maxLeft = Math.max(0, max - cleanRight.length); // permitir 0 espaço quando encaixa perfeito
-    const leftTrunc = truncateText(left || '', maxLeft);
-    const spaces = Math.max(0, max - (leftTrunc.length + cleanRight.length));
+    const maxLeft = Math.max(0, max - cleanRight.length) // permitir 0 espaço quando encaixa perfeito
+    const leftTrunc = truncateText(left || '', maxLeft)
+    const spaces = Math.max(0, max - (leftTrunc.length + cleanRight.length))
     return leftTrunc + ' '.repeat(spaces) + cleanRight;
   };
 
@@ -91,7 +91,7 @@ export function formatPedidoESCPOS(
   commands += '\n';
 
   // Título e destaque do número do pedido
-  commands += sep.slice(0, paperWidth);
+  commands += sep.slice(0, paperWidth)
   commands += '\x1B\x61\x01';
   if (highlightOrder && (data.tipo === 'PEDIDO' || (data.title || '').toUpperCase().includes('PEDIDO'))) {
     commands += 'PEDIDO\n';
@@ -102,7 +102,7 @@ export function formatPedidoESCPOS(
     commands += (data.title || 'PEDIDO') + '\n';
   }
   commands += '\x1B\x61\x00';
-  commands += sep.slice(0, paperWidth);
+  commands += sep.slice(0, paperWidth)
 
   // Info do pedido
   commands += `Pedido: ${data.numeroPedido}\n`;
@@ -115,13 +115,13 @@ export function formatPedidoESCPOS(
   commands += '\n';
 
   // Itens
-  commands += sep.slice(0, paperWidth);
+  commands += sep.slice(0, paperWidth)
   commands += 'ITENS:\n';
-  commands += thin.slice(0, paperWidth);
+  commands += thin.slice(0, paperWidth)
 
   let total = 0;
   for (const item of data.items || []) {
-    const base = item.subtotal ?? ((item.quantity || 0) * (item.price || 0));
+    const base = item.subtotal ?? ((item.quantity || 0) * (item.price || 0))
     total += base;
     const left = `${item.quantity}x ${item.name}`;
     const right = `R$ ${base.toFixed(2).replace('.', ',')}`;
@@ -130,14 +130,14 @@ export function formatPedidoESCPOS(
     if (item.adicionais?.length) {
       for (const add of item.adicionais) {
         commands += `  + ${add.quantity}x ${add.name}\n`;
-        total += (add.quantity || 0) * (add.price || 0);
+        total += (add.quantity || 0) * (add.price || 0)
       }
     }
     commands += '\n';
   }
 
   // Subtotal, cashback, taxa de entrega e total
-  commands += sep.slice(0, paperWidth);
+  commands += sep.slice(0, paperWidth)
   
   // Se houver cashback ou taxa de entrega, mostrar subtotal primeiro
   if (data.cashback || data.taxaEntrega) {
@@ -193,7 +193,7 @@ export function formatPedidoESCPOS(
   if (!removeAccents) return commands;
   // Remover acentos para maior compatibilidade ESC/POS
   try {
-    return commands.normalize('NFD').replace(/\p{Diacritic} catch (error) { console.error('Error:', error); }+/gu, '');
+    return commands.normalize('NFD').replace(/\p{Diacritic} catch (error) { console.error('Error:', error) }+/gu, '')
   } catch {
     return commands;
   }

@@ -137,7 +137,7 @@ const VagaDetailsPage: React.FC<VagaDetailsPageProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default VagaDetailsPage;

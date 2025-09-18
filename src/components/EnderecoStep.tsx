@@ -7,15 +7,15 @@ import { useGoogleMapsConfig } from '../hooks/useGoogleMapsConfig';
 import GoogleMapRaio from './GoogleMapRaio';
 
 export default function EnderecoStep() {
-  const auth = useAuth();
+  const auth = useAuth()
   const companyId = auth?.currentCompany?.id;
-  const { address, loading, saveAddress, fetchAddressByCep, error } = useCompanyAddress();
-  const { apiKey } = useGoogleMapsConfig();
-  const [alerta, setAlerta] = useState(true);
-  const [salvo, setSalvo] = useState(false);
-  const [buscandoCep, setBuscandoCep] = useState(false);
-  const [buscandoEndereco, setBuscandoEndereco] = useState(false);
-  const [coordenadas, setCoordenadas] = useState<{ lat: number; lng: number } | null>(null);
+  const { address, loading, saveAddress, fetchAddressByCep, error } = useCompanyAddress()
+  const { apiKey } = useGoogleMapsConfig()
+  const [alerta, setAlerta] = useState(true)
+  const [salvo, setSalvo] = useState(false)
+  const [buscandoCep, setBuscandoCep] = useState(false)
+  const [buscandoEndereco, setBuscandoEndereco] = useState(false)
+  const [coordenadas, setCoordenadas] = useState<{ lat: number; lng: number } | null>(null)
   const [form, setForm] = useState({
     cep: '',
     logradouro: '',
@@ -29,11 +29,11 @@ export default function EnderecoStep() {
     informarLatLng: 'false',
     latitude: '',
     longitude: ''
-  });
+  })
 
   useEffect(() => {
     if (address) {
-      console.log('Preenchendo formulário com dados do endereço:', address);
+      console.log('Preenchendo formulário com dados do endereço:', address)
       setForm({
         cep: address.cep || '',
         logradouro: address.logradouro || '',
@@ -47,30 +47,30 @@ export default function EnderecoStep() {
         informarLatLng: address.manual_coordinates ? 'true' : 'false',
         latitude: address.latitude ? address.latitude.toString() : '',
         longitude: address.longitude ? address.longitude.toString() : ''
-      });
+      })
       
       // Atualizar coordenadas para o mapa
       if (address.latitude && address.longitude) {
-        setCoordenadas({ lat: address.latitude, lng: address.longitude });
+        setCoordenadas({ lat: address.latitude, lng: address.longitude })
 
 
-  }, [address]);
+  }, [address])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }))
   };
 
-  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {;
+  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const cep = e.target.value;
-    setForm(prev => ({ ...prev, cep }));
+    setForm(prev => ({ ...prev, cep }))
 
     // Buscar automaticamente quando CEP estiver completo
-    const cleanCep = cep.replace(/\D/g, '');
+    const cleanCep = cep.replace(/\D/g, '')
     if (cleanCep.length === 8) {
-      setBuscandoCep(true);
+      setBuscandoCep(true)
       try {
-        const addressData = await fetchAddressByCep(cleanCep);
+        const addressData = await fetchAddressByCep(cleanCep)
         if (addressData) {
           setForm(prev => ({
             ...prev,
@@ -78,81 +78,81 @@ export default function EnderecoStep() {
             bairro: addressData.bairro,
             cidade: addressData.cidade,
             estado: addressData.estado
-          } catch (error) { console.error('Error:', error); }));
+          } catch (error) { console.error('Error:', error) }))
         }
       } catch (err) {
-        console.error('Erro ao buscar CEP:', err);
+        console.error('Erro ao buscar CEP:', err)
       } finally {
-        setBuscandoCep(false);
+        setBuscandoCep(false)
 
 
   };
 
   // Função para buscar coordenadas do endereço usando a API do Google Maps
   const buscarCoordenadasEndereco = async () => {
-    if (!form.logradouro || !form.cidade || !form.estado) {;
-      alert('Preencha pelo menos logradouro, cidade e estado para buscar as coordenadas');
+    if (!form.logradouro || !form.cidade || !form.estado) {
+      alert('Preencha pelo menos logradouro, cidade e estado para buscar as coordenadas')
       return;
 
 
-    setBuscandoEndereco(true);
+    setBuscandoEndereco(true)
     try {
-      const enderecoCompleto = `${form.logradouro} catch (error) { console.error('Error:', error); }, ${form.numero}, ${form.bairro}, ${form.cidade}, ${form.estado}`;
-      console.log('Buscando coordenadas para:', enderecoCompleto);
+      const enderecoCompleto = `${form.logradouro} catch (error) { console.error('Error:', error) }, ${form.numero}, ${form.bairro}, ${form.cidade}, ${form.estado}`;
+      console.log('Buscando coordenadas para:', enderecoCompleto)
 
       // Verificar se temos a API key
       if (!apiKey) {
-        alert('API key do Google Maps não configurada');
+        alert('API key do Google Maps não configurada')
         return;
 
 
-      const encodedAddress = encodeURIComponent(enderecoCompleto + ', Brasil');
+      const encodedAddress = encodeURIComponent(enderecoCompleto + ', Brasil')
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`;
       
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await fetch(url)
+      const data = await response.json()
       
       if (data.status === 'OK' && data.results.length > 0) {
         const location = data.results[0].geometry.location;
         const novasCoordenadas = { lat: location.lat, lng: location.lng };
         
-        setCoordenadas(novasCoordenadas);
+        setCoordenadas(novasCoordenadas)
         setForm(prev => ({
           ...prev,
           latitude: location.lat.toString(),
           longitude: location.lng.toString()
-        }));
+        }))
         
-        console.log('Coordenadas encontradas:', novasCoordenadas);
-        console.log('Endereço formatado pelo Google:', data.results[0].formatted_address);
+        console.log('Coordenadas encontradas:', novasCoordenadas)
+        console.log('Endereço formatado pelo Google:', data.results[0].formatted_address)
       } else {
-        console.warn('Google Maps API status:', data.status);
-        console.warn('Google Maps API error:', data.error_message);
+        console.warn('Google Maps API status:', data.status)
+        console.warn('Google Maps API error:', data.error_message)
         
         if (data.status === 'ZERO_RESULTS') {
-          alert('Endereço não encontrado. Verifique se o endereço está correto.');
+          alert('Endereço não encontrado. Verifique se o endereço está correto.')
         } else if (data.status === 'OVER_QUERY_LIMIT') {
-          alert('Limite de consultas à API excedido. Tente novamente mais tarde.');
+          alert('Limite de consultas à API excedido. Tente novamente mais tarde.')
         } else {
-          alert('Não foi possível encontrar as coordenadas para este endereço. Verifique se está correto.');
+          alert('Não foi possível encontrar as coordenadas para este endereço. Verifique se está correto.')
         }
       }
     } catch (error) {
-      console.error('Erro ao buscar coordenadas:', error);
-      alert('Erro ao buscar coordenadas. Tente novamente.');
+      console.error('Erro ao buscar coordenadas:', error)
+      alert('Erro ao buscar coordenadas. Tente novamente.')
     } finally {
-      setBuscandoEndereco(false);
+      setBuscandoEndereco(false)
 
   };
 
   const handleSalvar = async () => {
-    if (!companyId) {;
-      console.error('Company ID não encontrado');
+    if (!companyId) {
+      console.error('Company ID não encontrado')
       return;
 
 
-    console.log('Iniciando salvamento do endereço');
-    setSalvo(true);
+    console.log('Iniciando salvamento do endereço')
+    setSalvo(true)
     
     const addressData = {
       cep: form.cep.trim(),
@@ -169,15 +169,15 @@ export default function EnderecoStep() {
       longitude: form.longitude ? parseFloat(form.longitude) : undefined;
     };
     
-    console.log('Dados do formulário a serem salvos:', addressData);
+    console.log('Dados do formulário a serem salvos:', addressData)
     
-    const success = await saveAddress(addressData);
+    const success = await saveAddress(addressData)
     if (success) {
-      console.log('Endereço salvo com sucesso');
-      setTimeout(() => setSalvo(false), 3000);
+      console.log('Endereço salvo com sucesso')
+      setTimeout(() => setSalvo(false), 3000)
     } else {
-      console.error('Erro ao salvar endereço');
-      setSalvo(false);
+      console.error('Erro ao salvar endereço')
+      setSalvo(false)
 
   };
 
@@ -536,5 +536,5 @@ export default function EnderecoStep() {
         )}
       </div>
     </div>
-  );
+  )
 

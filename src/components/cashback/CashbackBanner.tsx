@@ -14,14 +14,14 @@ export const CashbackBanner: React.FC<CashbackBannerProps> = ({
   className = '',
   variant = 'default'
 }) => {
-  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId);
+  const { data: cashbackConfig, isLoading } = useCashbackConfig(companyId)
 
   // Se não há configuração ou não está ativo, não renderiza
   if (!cashbackConfig || !cashbackConfig.is_active || isLoading) {
     return null;
   }
 
-  const percentual = Number(cashbackConfig.percentual_cashback).toFixed(0);
+  const percentual = Number(cashbackConfig.percentual_cashback).toFixed(0)
 
   if (variant === 'minimal') {
     return (
@@ -33,7 +33,7 @@ export const CashbackBanner: React.FC<CashbackBannerProps> = ({
           </span>
         </div>
       </div>
-    );
+    )
   }
 
   if (variant === 'prominent') {
@@ -59,7 +59,7 @@ export const CashbackBanner: React.FC<CashbackBannerProps> = ({
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // Variant default
@@ -82,5 +82,5 @@ export const CashbackBanner: React.FC<CashbackBannerProps> = ({
         </div>
       </div>
     </div>
-  );
+  )
 };

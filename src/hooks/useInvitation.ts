@@ -2,9 +2,9 @@ import { useState } from 'react';
 // SUPABASE REMOVIDO
 import { useToast } from '@/hooks/use-toast';
 
-export const useInvitation = () => {;
-  const { toast } = useToast();
-  const [isSending, setIsSending] = useState(false);
+export const useInvitation = () => {
+  const { toast } = useToast()
+  const [isSending, setIsSending] = useState(false)
 
   const sendInvitation = async (email: string, companyId: string, role = 'admin') => {
     if (!email || !companyId) {
@@ -12,44 +12,44 @@ export const useInvitation = () => {;
         title: 'Erro',
         description: 'Email e ID da empresa são obrigatórios',
         variant: 'destructive',;
-      });
+      })
       return false;
     }
 
-    setIsSending(true);
+    setIsSending(true)
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+      const { data, error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
         body: {
           email,
           companyId,
           role
         }
-      });
+      })
 
       if (error) throw error;
 
       toast({
         title: 'Convite enviado!',
         description: `Convite enviado para ${email}. O usuário receberá um email para criar sua conta.`,
-      });
+      })
 
       return true;
     } catch (error: any) {
-      console.error('Erro ao enviar convite:', error);
+      console.error('Erro ao enviar convite:', error)
       toast({
         title: 'Erro ao enviar convite',
         description: error.message || 'Não foi possível enviar o convite. Tente novamente.',
         variant: 'destructive',
-      });
+      })
       return false;
     } finally {
-      setIsSending(false);
+      setIsSending(false)
     }
   };
 
   const fetchExistingEmail = async (companyId: string): Promise<string | null> => {
-    try {;
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+    try {
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -62,7 +62,7 @@ export const useInvitation = () => {;
       }
       return null;
     } catch (error) {
-      console.log('Nenhum usuário encontrado para esta empresa');
+      console.log('Nenhum usuário encontrado para esta empresa')
       return null;
     }
   };

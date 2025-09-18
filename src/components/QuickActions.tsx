@@ -70,5 +70,5 @@ export const QuickActions = () => {
         </div>
       </CardContent>
     </Card>;
-  );
+  )
 };

@@ -11,22 +11,22 @@ export interface DeliveryOptionsService {
 }
 
 class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
-  private cache = new Map<string, { data: DeliveryOptions; timestamp: number }>();
+  private cache = new Map<string, { data: DeliveryOptions; timestamp: number }>()
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
   async getDeliveryOptions(companyId: string): Promise<DeliveryOptions> {
     if (!companyId) {
-      throw new Error('Company ID is required');
+      throw new Error('Company ID is required')
     }
 
     // Verificar cache
-    const cached = this.cache.get(companyId);
+    const cached = this.cache.get(companyId)
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       return cached.data;
     }
 
     try {
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -44,7 +44,7 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
           this.cache.set(companyId, {
             data: defaultOptions,
             timestamp: Date.now()
-          });
+          })
           
           return defaultOptions;
 
@@ -58,17 +58,17 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
       };
 
       if (!this.validateDeliveryOptions(options)) {
-        console.warn(`Company ${companyId} has no delivery options enabled`);
+        console.warn(`Company ${companyId} has no delivery options enabled`)
 
 
       this.cache.set(companyId, {
         data: options,
         timestamp: Date.now()
-      });
+      })
 
       return options;
     } catch (error) {
-      console.error('Error fetching delivery options:', error);
+      console.error('Error fetching delivery options:', error)
       
       const fallbackOptions: DeliveryOptions = {
         delivery: false,
@@ -89,13 +89,13 @@ class DeliveryOptionsServiceImpl implements DeliveryOptionsService {
 
 
   clearCache(): void {
-    this.cache.clear();
+    this.cache.clear()
 
 
   async forceRefresh(companyId: string): Promise<DeliveryOptions> {
-    this.invalidateCache(companyId);
-    return this.getDeliveryOptions(companyId);
+    this.invalidateCache(companyId)
+    return this.getDeliveryOptions(companyId)
 
 }
 
-export const deliveryOptionsService = new DeliveryOptionsServiceImpl();
+export const deliveryOptionsService = new DeliveryOptionsServiceImpl()

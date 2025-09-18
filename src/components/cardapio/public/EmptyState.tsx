@@ -39,5 +39,5 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         </Button>
       )}
     </div>
-  );
+  )
 };

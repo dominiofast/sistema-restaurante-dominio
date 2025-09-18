@@ -88,5 +88,5 @@ export const TestimonialsSection = () => {
         </div>
       </div>
     </section>;
-  );
+  )
 };

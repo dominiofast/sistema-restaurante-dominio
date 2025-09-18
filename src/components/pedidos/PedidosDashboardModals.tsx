@@ -24,11 +24,11 @@ export const PedidosDashboardModals: React.FC<PedidosDashboardModalsProps> = ({
   setMostrarFiltros,
   setFiltrosAtivos
 }) => {
-  const pedidoSelecionadoData = useMemo(() => {;
+  const pedidoSelecionadoData = useMemo(() => {
     if (!pedidoSelecionado) return null;
-    const pedido = pedidos.find(p => p.id === pedidoSelecionado);
+    const pedido = pedidos.find(p => p.id === pedidoSelecionado)
     return pedido ? getPedidoWithItens(pedido) : null;
-  }, [pedidoSelecionado, pedidos]);
+  }, [pedidoSelecionado, pedidos])
 
   return (
     <>
@@ -44,10 +44,10 @@ export const PedidosDashboardModals: React.FC<PedidosDashboardModalsProps> = ({
         <FiltrosAvancados 
           onClose={() => setMostrarFiltros(false)}
           onApplyFilters={(filters) => {
-            setFiltrosAtivos(true);
+            setFiltrosAtivos(true)
           }}
         />
       )}
     </>
-  );
+  )
 };

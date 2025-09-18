@@ -30,7 +30,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         </div>
       )}
     </div>
-  );
+  )
 };
 
 interface GlobalLoadingProps {
@@ -51,7 +51,7 @@ export const GlobalLoading: React.FC<GlobalLoadingProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default LoadingSpinner;

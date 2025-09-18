@@ -210,7 +210,7 @@ const DemoNavigationPage: React.FC = () => {
         </div>
       </main>
     </div>
-  );
+  )
 };
 
 export default DemoNavigationPage;

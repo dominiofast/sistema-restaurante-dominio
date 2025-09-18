@@ -19,17 +19,17 @@ export interface Turno {
 
 
 export function useTurnos() {
-  const { toast } = useToast();
-  const { currentCompany } = useAuth();
-  const [turnoAtual, setTurnoAtual] = useState<Turno | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast()
+  const { currentCompany } = useAuth()
+  const [turnoAtual, setTurnoAtual] = useState<Turno | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const companyId = currentCompany?.id;
 
   // Buscar turno ativo atual
-  const buscarTurnoAtual = async () => {;
-    console.log('⚠️ buscarTurnoAtual desabilitado - sistema migrado para PostgreSQL');
-    return Promise.resolve([]);
+  const buscarTurnoAtual = async () => {
+    console.log('⚠️ buscarTurnoAtual desabilitado - sistema migrado para PostgreSQL')
+    return Promise.resolve([])
   } = 
         
         
@@ -40,15 +40,15 @@ export function useTurnos() {
         
 
       if (error) {
-        console.error('Erro ao buscar turno atual:', error);
+        console.error('Erro ao buscar turno atual:', error)
         return;
       }
 
-      setTurnoAtual(data);
+      setTurnoAtual(data)
     } catch (error) {
-      console.error('Erro ao buscar turno atual:', error);
+      console.error('Erro ao buscar turno atual:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
@@ -59,18 +59,18 @@ export function useTurnos() {
         title: "Erro",
         description: "Empresa não identificada",
         variant: "destructive",;
-      });
+      })
       return;
 
 
-    setLoading(true);
+    setLoading(true)
     try {
       // Fechar turno anterior se existir
       if (turnoAtual) {
-        await fecharTurno(turnoAtual.id);
+        await fecharTurno(turnoAtual.id)
       }
 
-       catch (error) { console.error('Error:', error); }// Buscar próximo número de turno
+       catch (error) { console.error('Error:', error) }// Buscar próximo número de turno
       const proximoNumero = null as any; const numeroError = null as any;
 
       if (numeroError) {
@@ -92,31 +92,31 @@ export function useTurnos() {
         throw error;
       }
 
-      setTurnoAtual(data);
+      setTurnoAtual(data)
       
       toast({
         title: "Turno Aberto",
         description: `Turno ${proximoNumero} iniciado com sucesso!`,
-      });
+      })
 
       return data;
     } catch (error) {
-      console.error('Erro ao abrir turno:', error);
+      console.error('Erro ao abrir turno:', error)
       toast({
         title: "Erro",
         description: "Erro ao abrir turno",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   // Fechar turno
-  const fecharTurno = async (turnoId: string, observacoes?: string) => {;
-    setLoading(true);
+  const fecharTurno = async (turnoId: string, observacoes?: string) => {
+    setLoading(true)
     try {
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
           status: 'fechado',
@@ -130,35 +130,35 @@ export function useTurnos() {
         throw error;
       }
 
-      setTurnoAtual(null);
+      setTurnoAtual(null)
       
       toast({
         title: "Turno Fechado",
         description: "Turno encerrado com sucesso!",
-      });
+      })
     } catch (error) {
-      console.error('Erro ao fechar turno:', error);
+      console.error('Erro ao fechar turno:', error)
       toast({
         title: "Erro",
         description: "Erro ao fechar turno",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   // Verificar se há turno ativo
-  const temTurnoAtivo = (): boolean => {;
+  const temTurnoAtivo = (): boolean => {
     return turnoAtual !== null && turnoAtual.status === 'aberto';
   };
 
   // Buscar turno atual quando a empresa mudar
   useEffect(() => {
     if (companyId) {
-      buscarTurnoAtual();
+      buscarTurnoAtual()
 
-  }, [companyId]);
+  }, [companyId])
 
   return {
     turnoAtual,

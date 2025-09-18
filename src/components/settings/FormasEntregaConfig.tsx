@@ -15,28 +15,28 @@ interface DeliveryMethods {
 }
 
 export const FormasEntregaConfig: React.FC = () => {
-  const { currentCompany } = useAuth();
-  const queryClient = useQueryClient();
+  const { currentCompany } = useAuth()
+  const queryClient = useQueryClient()
   const [formas, setFormas] = useState<DeliveryMethods>({
     delivery: false,
     pickup: true,
     eat_in: false,
-  });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (currentCompany?.id) {
-      loadDeliveryMethods();
+      loadDeliveryMethods()
     }
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   const loadDeliveryMethods = async () => {
-    try {;
-      setLoading(true);
-      const { data, error }  catch (error) { console.error('Error:', error); }= 
+    try {
+      setLoading(true)
+      const { data, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -45,7 +45,7 @@ export const FormasEntregaConfig: React.FC = () => {
       if (error) {
         if (error.code === 'PGRST116') {
           // Não encontrou registro, criar um padrão
-          await createDefaultDeliveryMethods();
+          await createDefaultDeliveryMethods()
         } else {
           throw error;
         }
@@ -54,13 +54,13 @@ export const FormasEntregaConfig: React.FC = () => {
           delivery: data.delivery,
           pickup: data.pickup,
           eat_in: data.eat_in
-        });
+        })
 
     } catch (err) {
-      console.error('Erro ao carregar formas de entrega:', err);
-      setError('Erro ao carregar configurações');
+      console.error('Erro ao carregar formas de entrega:', err)
+      setError('Erro ao carregar configurações')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -74,7 +74,7 @@ export const FormasEntregaConfig: React.FC = () => {
       
       
 
-    if (error) {;
+    if (error) {
       throw error;
     }
 
@@ -82,17 +82,17 @@ export const FormasEntregaConfig: React.FC = () => {
       delivery: data.delivery,
       pickup: data.pickup,
       eat_in: data.eat_in
-    });
+    })
   };
 
-  const handleSave = async () => {;
+  const handleSave = async () => {
     if (!currentCompany?.id) return;
 
     try {
-      setSaving(true);
-      setError(null);
+      setSaving(true)
+      setError(null)
 
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
           delivery: formas.delivery,
@@ -106,36 +106,36 @@ export const FormasEntregaConfig: React.FC = () => {
 
 
       // Invalidar cache do serviço de delivery options
-      deliveryOptionsService.invalidateCache(currentCompany.id);
+      deliveryOptionsService.invalidateCache(currentCompany.id)
       
       // Invalidar cache do React Query - TODAS as queries relacionadas
       await queryClient.invalidateQueries({
         queryKey: ['delivery-options', currentCompany.id]
-      });
+      })
       
       await queryClient.invalidateQueries({
         queryKey: ['delivery-methods', currentCompany.id]
-      });
+      })
       
       // Forçar refetch imediato
       await queryClient.refetchQueries({
         queryKey: ['delivery-methods', currentCompany.id]
-      });
+      })
 
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
     } catch (err) {
-      console.error('Erro ao salvar:', err);
-      setError('Erro ao salvar configurações');
+      console.error('Erro ao salvar:', err)
+      setError('Erro ao salvar configurações')
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
   };
 
-  const handleChange = (key: keyof DeliveryMethods, value: boolean) => {;
-    setFormas(prev => ({ ...prev, [key]: value }));
-    setSaved(false);
-    setError(null);
+  const handleChange = (key: keyof DeliveryMethods, value: boolean) => {
+    setFormas(prev => ({ ...prev, [key]: value }))
+    setSaved(false)
+    setError(null)
   };
 
   if (loading) {
@@ -144,7 +144,7 @@ export const FormasEntregaConfig: React.FC = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-2">Carregando configurações...</span>
       </div>
-    );
+    )
 
 
   return (
@@ -222,5 +222,5 @@ export const FormasEntregaConfig: React.FC = () => {
         </div>
       )}
     </div>
-  );
+  )
 };

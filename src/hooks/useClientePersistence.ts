@@ -25,31 +25,31 @@ export const useClientePersistence = (companyId?: string) => {
       pagamento: 'dinheiro',
       taxaEntrega: 0;
     };
-  });
+  })
   
-  const [isInitialized, setIsInitialized] = useState(false);
-  const { isVisible } = usePageVisibility();
-  const lastSaveTime = useRef<number>(0);
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false)
+  const { isVisible } = usePageVisibility()
+  const lastSaveTime = useRef<number>(0)
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const getStorageKey = () => {;
+  const getStorageKey = () => {
     return `pdv_cliente_${companyId || 'default'}`;
   };
 
   // Função de salvamento otimizada com debounce
-  const saveToStorage = (clienteData: ClienteData) => {;
-    const storageKey = getStorageKey();
-    const now = Date.now();
+  const saveToStorage = (clienteData: ClienteData) => {
+    const storageKey = getStorageKey()
+    const now = Date.now()
     
     // Evitar salvamentos muito frequentes (debounce de 1 segundo)
     if (now - lastSaveTime.current < 1000) {
       if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
+        clearTimeout(saveTimeoutRef.current)
       }
       
       saveTimeoutRef.current = setTimeout(() => {
-        saveToStorage(clienteData);
-      }, 1000);
+        saveToStorage(clienteData)
+      }, 1000)
       return;
     }
     
@@ -59,11 +59,11 @@ export const useClientePersistence = (companyId?: string) => {
     const hasData = clienteData.nome || clienteData.telefone || clienteData.endereco;
     
     if (hasData) {
-      localStorage.setItem(storageKey, JSON.stringify(clienteData));
-      console.log('👤 Dados do cliente salvos no localStorage');
+      localStorage.setItem(storageKey, JSON.stringify(clienteData))
+      console.log('👤 Dados do cliente salvos no localStorage')
     } else {
-      localStorage.removeItem(storageKey);
-      console.log('👤 Dados do cliente removidos do localStorage (vazios)');
+      localStorage.removeItem(storageKey)
+      console.log('👤 Dados do cliente removidos do localStorage (vazios)')
     }
   };
 
@@ -71,22 +71,22 @@ export const useClientePersistence = (companyId?: string) => {
   useEffect(() => {
     if (isInitialized || !companyId) return;
     
-    const storageKey = getStorageKey();
-    const savedCliente = localStorage.getItem(storageKey);
+    const storageKey = getStorageKey()
+    const savedCliente = localStorage.getItem(storageKey)
     
     if (savedCliente) {
       try {
-        const parsedCliente = JSON.parse(savedCliente);
-        console.log('👤 Dados do cliente carregados do localStorage');
-        setCliente(parsedCliente);
+        const parsedCliente = JSON.parse(savedCliente)
+        console.log('👤 Dados do cliente carregados do localStorage')
+        setCliente(parsedCliente)
       } catch (error) {
-        console.error('❌ Erro ao carregar dados do cliente:', error);
-        localStorage.removeItem(storageKey);
+        console.error('❌ Erro ao carregar dados do cliente:', error)
+        localStorage.removeItem(storageKey)
       }
     }
     
-    setIsInitialized(true);
-  }, [companyId, isInitialized]);
+    setIsInitialized(true)
+  }, [companyId, isInitialized])
 
   // Salvar dados do cliente sempre que mudarem
   useEffect(() => {
@@ -94,21 +94,21 @@ export const useClientePersistence = (companyId?: string) => {
     
     // Só salvar se a página estiver visível ou se for uma limpeza
     if (isVisible || (!cliente.nome && !cliente.telefone && !cliente.endereco)) {
-      saveToStorage(cliente);
+      saveToStorage(cliente)
     }
-  }, [cliente, isInitialized, isVisible]);
+  }, [cliente, isInitialized, isVisible])
 
   // Cleanup do timeout ao desmontar
   useEffect(() => {
     return () => {
       if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
+        clearTimeout(saveTimeoutRef.current)
       }
     };
-  }, []);
+  }, [])
 
-  const limparCliente = () => {;
-    console.log('🗑️ Limpando dados do cliente...');
+  const limparCliente = () => {
+    console.log('🗑️ Limpando dados do cliente...')
     setCliente({
       nome: '',
       telefone: '',
@@ -116,11 +116,11 @@ export const useClientePersistence = (companyId?: string) => {
       entrega: 'balcao',
       pagamento: 'dinheiro',
       taxaEntrega: 0
-    });
+    })
   };
 
-  const updateCliente = (updates: Partial<ClienteData>) => {;
-    setCliente(prev => ({ ...prev, ...updates }));
+  const updateCliente = (updates: Partial<ClienteData>) => {
+    setCliente(prev => ({ ...prev, ...updates }))
   };
 
   return {

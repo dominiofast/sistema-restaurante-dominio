@@ -4,8 +4,8 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
-const AppContent = () => {;
-  const { user, isLoading } = useAuth();
+const AppContent = () => {
+  const { user, isLoading } = useAuth()
 
   if (isLoading) {
     return (
@@ -40,7 +40,7 @@ const AppContent = () => {;
           </div>
         </div>
       </div>
-    );
+    )
 
 
   // Se o usuário não está logado, redireciona para login
@@ -71,7 +71,7 @@ const Index = () => {
     <AuthProvider>
       <AppContent />
     </AuthProvider>;
-  );
+  )
 };
 
 export default Index;

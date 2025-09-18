@@ -32,14 +32,14 @@ interface Company {
   name: string;
 
 
-const SuperAdminIFoodIntegrations = () => {;
-  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([]);
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [loading, setLoading] = useState(true);
+const SuperAdminIFoodIntegrations = () => {
+  const [integrations, setIntegrations] = useState<IFoodIntegration[]>([])
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [loading, setLoading] = useState(true)
   
   // Integration states
-  const [integrationDialogOpen, setIntegrationDialogOpen] = useState(false);
-  const [editingIntegration, setEditingIntegration] = useState<IFoodIntegration | null>(null);
+  const [integrationDialogOpen, setIntegrationDialogOpen] = useState(false)
+  const [editingIntegration, setEditingIntegration] = useState<IFoodIntegration | null>(null)
   const [integrationFormData, setIntegrationFormData] = useState({
     company_id: '',
     merchant_id: '',
@@ -49,27 +49,27 @@ const SuperAdminIFoodIntegrations = () => {;
     webhook_secret: '',
     is_active: true,
     notes: ''
-  });
+  })
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const fetchData = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       // Buscar empresas
       const companiesData = null as any; const companiesError = null as any;
-      setCompanies(companiesData || []);
+      setCompanies(companiesData || [])
 
       // Buscar integrações
       const integrationsData = null as any; const integrationsError = null as any;
       
       // Buscar nomes das empresas
       const integrationsWithCompanyName = await Promise.all(
-        (integrationsData || []).map(async (integration) => {;
-          const { data: companyData }  catch (error) { console.error('Error:', error); }= 
+        (integrationsData || []).map(async (integration) => {
+          const { data: companyData }  catch (error) { console.error('Error:', error) }= 
             
             
             
@@ -80,47 +80,47 @@ const SuperAdminIFoodIntegrations = () => {;
             company_name: companyData?.name || 'Empresa não encontrada'
           };
         })
-      );
+      )
 
-      setIntegrations(integrationsWithCompanyName);
+      setIntegrations(integrationsWithCompanyName)
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
-      toast.error('Erro ao carregar dados');
+      console.error('Erro ao carregar dados:', error)
+      toast.error('Erro ao carregar dados')
     } finally {
-      setLoading(false);
+      setLoading(false)
 
   };
 
   // Integration functions
-  const handleIntegrationSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleIntegrationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     
     try {
       if (editingIntegration) {
-        const { error }  catch (error) { console.error('Error:', error); }= 
+        const { error }  catch (error) { console.error('Error:', error) }= 
           
           
           
 
         if (error) throw error;
-        toast.success('Integração atualizada!');
+        toast.success('Integração atualizada!')
       } else {
         const { error  } = null as any;
         if (error) throw error;
-        toast.success('Integração criada!');
+        toast.success('Integração criada!')
 
 
-      setIntegrationDialogOpen(false);
-      resetIntegrationForm();
-      fetchData();
+      setIntegrationDialogOpen(false)
+      resetIntegrationForm()
+      fetchData()
     } catch (error) {
-      console.error('Erro ao salvar integração:', error);
-      toast.error('Erro ao salvar integração');
+      console.error('Erro ao salvar integração:', error)
+      toast.error('Erro ao salvar integração')
 
   };
 
-  const handleEditIntegration = (integration: IFoodIntegration) => {;
-    setEditingIntegration(integration);
+  const handleEditIntegration = (integration: IFoodIntegration) => {
+    setEditingIntegration(integration)
     setIntegrationFormData({
       company_id: integration.company_id,
       merchant_id: integration.merchant_id || '',
@@ -130,25 +130,25 @@ const SuperAdminIFoodIntegrations = () => {;
       webhook_secret: integration.webhook_secret || '',
       is_active: integration.is_active,
       notes: integration.notes || ''
-    });
-    setIntegrationDialogOpen(true);
+    })
+    setIntegrationDialogOpen(true)
   };
 
-  const handleDeleteIntegration = async (id: string) => {;
+  const handleDeleteIntegration = async (id: string) => {
     if (!confirm('Tem certeza que deseja excluir esta integração?')) return;
 
     try {
-      const { error }  catch (error) { console.error('Error:', error); }= 
+      const { error }  catch (error) { console.error('Error:', error) }= 
         
         
         
 
       if (error) throw error;
-      toast.success('Integração excluída!');
-      fetchData();
+      toast.success('Integração excluída!')
+      fetchData()
     } catch (error) {
-      console.error('Erro ao excluir:', error);
-      toast.error('Erro ao excluir integração');
+      console.error('Erro ao excluir:', error)
+      toast.error('Erro ao excluir integração')
 
   };
 
@@ -162,8 +162,8 @@ const SuperAdminIFoodIntegrations = () => {;
       webhook_secret: '',
       is_active: true,
       notes: '';
-    });
-    setEditingIntegration(null);
+    })
+    setEditingIntegration(null)
   };
 
   if (loading) {
@@ -171,7 +171,7 @@ const SuperAdminIFoodIntegrations = () => {;
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
 
 
   return (
@@ -406,7 +406,7 @@ const SuperAdminIFoodIntegrations = () => {;
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default SuperAdminIFoodIntegrations;

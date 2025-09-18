@@ -59,43 +59,43 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
   inscricao,
   onUpdateStatus
 }) => {
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false)
 
   if (!inscricao) return null;
 
   const handleViewCurriculo = () => {
-    if (!inscricao.curriculo_url) {;
-      toast.error('URL do currículo não encontrada');
+    if (!inscricao.curriculo_url) {
+      toast.error('URL do currículo não encontrada')
       return;
     }
 
-    console.log('🔍 Tentando abrir currículo:', inscricao.curriculo_url);
+    console.log('🔍 Tentando abrir currículo:', inscricao.curriculo_url)
     
     try {
-      const newWindow = window.open(inscricao.curriculo_url, '_blank', 'noopener,noreferrer');
+      const newWindow = window.open(inscricao.curriculo_url, '_blank', 'noopener,noreferrer')
       if (!newWindow) {
         toast.warning('Pop-up bloqueado! Tentando download...', {
           description: 'Habilite pop-ups ou use o botão Download'
-        } catch (error) { console.error('Error:', error); });
-        handleDownloadCurriculo();
+        } catch (error) { console.error('Error:', error) })
+        handleDownloadCurriculo()
       } else {
-        toast.success('Abrindo currículo em nova aba');
+        toast.success('Abrindo currículo em nova aba')
       }
     } catch (error) {
-      console.error('Erro ao abrir currículo:', error);
-      toast.error('Erro ao abrir. Tentando download...');
-      handleDownloadCurriculo();
+      console.error('Erro ao abrir currículo:', error)
+      toast.error('Erro ao abrir. Tentando download...')
+      handleDownloadCurriculo()
     }
   };
 
   const handleDownloadCurriculo = async () => {
-    if (!inscricao.curriculo_url) {;
-      toast.error('URL do currículo não encontrada');
+    if (!inscricao.curriculo_url) {
+      toast.error('URL do currículo não encontrada')
       return;
     }
 
-    setIsDownloading(true);
-    console.log('📥 Iniciando download:', inscricao.curriculo_url);
+    setIsDownloading(true)
+    console.log('📥 Iniciando download:', inscricao.curriculo_url)
 
     try {
       // Primeiro, tentar fetch com blob
@@ -105,91 +105,91 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
         headers: {
           'Accept': 'application/pdf,application/octet-stream,*/*'
         };
-       catch (error) { console.error('Error:', error); }});
+       catch (error) { console.error('Error:', error) }})
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
-      const blob = await response.blob();
-      console.log('📦 Blob criado:', { size: blob.size, type: blob.type });
+      const blob = await response.blob()
+      console.log('📦 Blob criado:', { size: blob.size, type: blob.type })
 
       if (blob.size === 0) {
-        throw new Error('Arquivo vazio (0 bytes)');
+        throw new Error('Arquivo vazio (0 bytes)')
       }
 
       // Criar download
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
       link.href = downloadUrl;
       link.download = inscricao.curriculo_nome || `curriculo_${inscricao.nome_completo.replace(/\s+/g, '_')}.pdf`;
       link.style.display = 'none';
       
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       
       // Limpar URL após um tempo
-      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 1000);
+      setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 1000)
       
-      toast.success(`Download iniciado! (${Math.round(blob.size / 1024)} KB)`);
+      toast.success(`Download iniciado! (${Math.round(blob.size / 1024)} KB)`)
 
     } catch (error: any) {
-      console.error('❌ Erro no download via fetch:', error);
+      console.error('❌ Erro no download via fetch:', error)
       
       // Fallback: download direto
       try {
-        const link = document.createElement('a');
+        const link = document.createElement('a')
         link.href = inscricao.curriculo_url;
         link.download = inscricao.curriculo_nome || 'curriculo.pdf';
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
         
         toast.warning('Download iniciado (método alternativo)', {
           description: 'Se não funcionar, copie a URL e cole no navegador'
-        } catch (error) { console.error('Error:', error); });
+        } catch (error) { console.error('Error:', error) })
         
       } catch (directError) {
-        console.error('❌ Erro no download direto:', directError);
+        console.error('❌ Erro no download direto:', directError)
         toast.error(`Erro no download: ${error.message}`, {
           description: 'Tente copiar a URL e abrir manualmente'
-        });
+        })
       }
     } finally {
-      setIsDownloading(false);
+      setIsDownloading(false)
     }
   };
 
   const handleCopyUrl = async () => {
-    if (!inscricao.curriculo_url) {;
-      toast.error('URL do currículo não encontrada');
+    if (!inscricao.curriculo_url) {
+      toast.error('URL do currículo não encontrada')
       return;
     }
 
     try {
-      await navigator.clipboard.writeText(inscricao.curriculo_url);
+      await navigator.clipboard.writeText(inscricao.curriculo_url)
       toast.success('URL copiada para a área de transferência!', {
         description: 'Cole em uma nova aba do navegador para acessar'
-      } catch (error) { console.error('Error:', error); });
+      } catch (error) { console.error('Error:', error) })
     } catch (error) {
-      console.error('Erro ao copiar URL:', error);
-      toast.error('Erro ao copiar URL. Tente selecionar manualmente.');
+      console.error('Erro ao copiar URL:', error)
+      toast.error('Erro ao copiar URL. Tente selecionar manualmente.')
     }
   };
 
-  const getFileExtension = (fileName?: string) => {;
+  const getFileExtension = (fileName?: string) => {
     if (!fileName) return 'arquivo';
-    const ext = fileName.split('.').pop()?.toLowerCase();
+    const ext = fileName.split('.').pop()?.toLowerCase()
     return ext || 'arquivo';
   };
 
-  const isImageFile = (fileName?: string) => {;
-    const ext = getFileExtension(fileName);
-    return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
+  const isImageFile = (fileName?: string) => {
+    const ext = getFileExtension(fileName)
+    return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)
   };
 
   return (
@@ -372,5 +372,5 @@ export const InscricaoDetailsDialog: React.FC<InscricaoDetailsDialogProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 };

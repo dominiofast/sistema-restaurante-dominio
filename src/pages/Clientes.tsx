@@ -54,17 +54,17 @@ interface FilterState {
   pedidosRange: PedidosRange;
 
 
-const Clientes = () => {;
-  const { currentCompany } = useAuth();
-  const [clientes, setClientes] = useState<Cliente[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [showImportModal, setShowImportModal] = useState(false);
-  const [showCashbackModal, setShowCashbackModal] = useState(false);
-  const [selectedClienteForCashback, setSelectedClienteForCashback] = useState<Cliente | null>(null);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchQuery, setSearchQuery] = useState(''); // Termo real usado na busca
+const Clientes = () => {
+  const { currentCompany } = useAuth()
+  const [clientes, setClientes] = useState<Cliente[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [showImportModal, setShowImportModal] = useState(false)
+  const [showCashbackModal, setShowCashbackModal] = useState(false)
+  const [selectedClienteForCashback, setSelectedClienteForCashback] = useState<Cliente | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchQuery, setSearchQuery] = useState('') // Termo real usado na busca
   const [filters, setFilters] = useState<FilterState>({
     cadastroDateFrom: '',
     cadastroDateTo: '',
@@ -75,7 +75,7 @@ const Clientes = () => {;
     nascimentoDateTo: '',
     apenasNegativos: false,
     pedidosRange: 'todos'
-  });
+  })
   const [formData, setFormData] = useState<Partial<Cliente>>({
     nome: '',
     email: '',
@@ -86,55 +86,55 @@ const Clientes = () => {;
     estado: '',
     cep: '',
     status: 'ativo'
-  });
+  })
 
-  const { createCliente, updateCliente, deleteCliente } = useClienteOperations();
+  const { createCliente, updateCliente, deleteCliente } = useClienteOperations()
 
   // Paginação e contadores reais
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalCurrentTabCount, setTotalCurrentTabCount] = useState(0);
-  const [counts, setCounts] = useState({ total: 0 });
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [totalCurrentTabCount, setTotalCurrentTabCount] = useState(0)
+  const [counts, setCounts] = useState({ total: 0 })
 
   const updateClientStatus = async () => {
-    try {;
-      console.log('🔄 Atualizando status dos clientes...');
-      const { error }  catch (error) { console.error('Error:', error); }= await Promise.resolve();
+    try {
+      console.log('🔄 Atualizando status dos clientes...')
+      const { error }  catch (error) { console.error('Error:', error) }= await Promise.resolve()
       if (error) throw error;
       
-      console.log('✅ Status dos clientes atualizado com sucesso');
-      fetchClientes();
+      console.log('✅ Status dos clientes atualizado com sucesso')
+      fetchClientes()
     } catch (error) {
-      console.error('❌ Erro ao atualizar status:', error);
+      console.error('❌ Erro ao atualizar status:', error)
     }
   };
 
   useEffect(() => {
-    console.log('🔄 useEffect disparado - currentCompany:', currentCompany?.id);
+    console.log('🔄 useEffect disparado - currentCompany:', currentCompany?.id)
     if (currentCompany?.id) {
-      setClientes([]);
-      setLoading(true);
+      setClientes([])
+      setLoading(true)
       // Reiniciar para primeira página ao trocar de empresa
-      setPage(1);
-      fetchCounts();
-      fetchCurrentTabCount();
-      fetchClientes();
+      setPage(1)
+      fetchCounts()
+      fetchCurrentTabCount()
+      fetchClientes()
     }
-  }, [currentCompany?.id]);
+  }, [currentCompany?.id])
 
   // Recarregar dados ao mudar pageSize
   useEffect(() => {
     if (!currentCompany?.id) return;
-    setPage(1);
-  }, [pageSize]);
+    setPage(1)
+  }, [pageSize])
 
   // Função para executar busca manual
-  const handleSearch = () => {;
+  const handleSearch = () => {
     if (!currentCompany?.id) return;
-    setSearchQuery(searchTerm);
-    setPage(1);
-    fetchCurrentTabCount();
-    fetchClientes();
+    setSearchQuery(searchTerm)
+    setPage(1)
+    fetchCurrentTabCount()
+    fetchClientes()
   };
 
 
@@ -142,11 +142,11 @@ const Clientes = () => {;
   useEffect(() => {
     if (!currentCompany?.id) return;
     // Executa quando page muda, searchQuery muda, ou filters mudam
-    fetchCurrentTabCount();
-    fetchClientes();
-  }, [page, searchQuery, filters]); // Adicionado filters às dependências
+    fetchCurrentTabCount()
+    fetchClientes()
+  }, [page, searchQuery, filters]) // Adicionado filters às dependências
 
-  const buildBaseQuery = (forCount = false) => {;
+  const buildBaseQuery = (forCount = false) => {
     if (!currentCompany?.id) return null as any;
     
     console.log('🔍 buildBaseQuery - Filtros aplicados:', {
@@ -154,7 +154,7 @@ const Clientes = () => {;
       searchQuery,
       filters,
       companyId: currentCompany.id
-    });
+    })
     
     let query = supabase
       
@@ -163,62 +163,62 @@ const Clientes = () => {;
 
     // Aplicar filtro de busca
     if (searchQuery && searchQuery.trim()) {
-      const term = searchQuery.trim();
-      query = query.or(`nome.ilike.%${term}%,email.ilike.%${term}%,telefone.ilike.%${term}%,documento.ilike.%${term}%`);
-      console.log('🔍 Aplicando filtro de busca:', term);
+      const term = searchQuery.trim()
+      query = query.or(`nome.ilike.%${term}%,email.ilike.%${term}%,telefone.ilike.%${term}%,documento.ilike.%${term}%`)
+      console.log('🔍 Aplicando filtro de busca:', term)
     }
 
     // Aplicar filtros de data de cadastro
     if (filters.cadastroDateFrom) {
-      query = query.gte('data_cadastro', filters.cadastroDateFrom);
-      console.log('🔍 Aplicando filtro data cadastro FROM:', filters.cadastroDateFrom);
+      query = query.gte('data_cadastro', filters.cadastroDateFrom)
+      console.log('🔍 Aplicando filtro data cadastro FROM:', filters.cadastroDateFrom)
     }
     if (filters.cadastroDateTo) {
-      query = query.lte('data_cadastro', filters.cadastroDateTo);
-      console.log('🔍 Aplicando filtro data cadastro TO:', filters.cadastroDateTo);
+      query = query.lte('data_cadastro', filters.cadastroDateTo)
+      console.log('🔍 Aplicando filtro data cadastro TO:', filters.cadastroDateTo)
     }
 
     // Aplicar filtros de status de atividade (OR logic)
     const statusFilters = [];
-    if (filters.statusAtivos) statusFilters.push('ativo');
-    if (filters.statusInativos) statusFilters.push('inativo');
-    if (filters.statusPotenciais) statusFilters.push('potencial');
+    if (filters.statusAtivos) statusFilters.push('ativo')
+    if (filters.statusInativos) statusFilters.push('inativo')
+    if (filters.statusPotenciais) statusFilters.push('potencial')
     
     if (statusFilters.length > 0 && statusFilters.length < 3) {
       // Se nem todos os status estão selecionados, aplicar filtro
-      query = query.in('status', statusFilters);
-      console.log('🔍 Aplicando filtro de status:', statusFilters);
+      query = query.in('status', statusFilters)
+      console.log('🔍 Aplicando filtro de status:', statusFilters)
     }
     // Se todos estão selecionados ou nenhum está selecionado, não aplicar filtro de status
 
     // Aplicar filtros de data de nascimento
     if (filters.nascimentoDateFrom) {
-      query = query.gte('data_nascimento', filters.nascimentoDateFrom);
-      console.log('🔍 Aplicando filtro nascimento FROM:', filters.nascimentoDateFrom);
+      query = query.gte('data_nascimento', filters.nascimentoDateFrom)
+      console.log('🔍 Aplicando filtro nascimento FROM:', filters.nascimentoDateFrom)
     }
     if (filters.nascimentoDateTo) {
-      query = query.lte('data_nascimento', filters.nascimentoDateTo);
-      console.log('🔍 Aplicando filtro nascimento TO:', filters.nascimentoDateTo);
+      query = query.lte('data_nascimento', filters.nascimentoDateTo)
+      console.log('🔍 Aplicando filtro nascimento TO:', filters.nascimentoDateTo)
     }
 
     // Aplicar filtro de saldos negativos
     if (filters.apenasNegativos) {
-      query = query.lt('saldo', 0);
-      console.log('🔍 Aplicando filtro saldos negativos');
+      query = query.lt('saldo', 0)
+      console.log('🔍 Aplicando filtro saldos negativos')
     }
 
     // Aplicar filtro de quantidade de pedidos
     if (filters.pedidosRange !== 'todos') {
-      console.log('🔍 Aplicando filtro quantidade pedidos:', filters.pedidosRange);
+      console.log('🔍 Aplicando filtro quantidade pedidos:', filters.pedidosRange)
       switch (filters.pedidosRange) {
         case 'nenhum':
-          query = query.or('total_pedidos.is.null,total_pedidos.eq.0');
+          query = query.or('total_pedidos.is.null,total_pedidos.eq.0')
           break;
         case '1-5':
-          query = query.gte('total_pedidos', 1).lte('total_pedidos', 5);
+          query = query.gte('total_pedidos', 1).lte('total_pedidos', 5)
           break;
         case '5+':
-          query = query.gt('total_pedidos', 5);
+          query = query.gt('total_pedidos', 5)
           break;
       }
     }
@@ -227,76 +227,76 @@ const Clientes = () => {;
   };
 
   const fetchClientes = async () => {
-    try {;
-      setLoading(true);
+    try {
+      setLoading(true)
       
       if (!currentCompany?.id) {
-        console.warn('❌ Empresa não encontrada');
-        setClientes([]);
+        console.warn('❌ Empresa não encontrada')
+        setClientes([])
         return;
       }
 
-       catch (error) { console.error('Error:', error); }console.log('🔍 Buscando clientes para empresa:', currentCompany.id, 'page:', page, 'pageSize:', pageSize, 'search:', searchQuery);
+       catch (error) { console.error('Error:', error) }console.log('🔍 Buscando clientes para empresa:', currentCompany.id, 'page:', page, 'pageSize:', pageSize, 'search:', searchQuery)
       
       // DEBUG: Verificar autenticação
-      const { data: { user } } = await Promise.resolve();
-      console.log('🔐 Usuário autenticado:', user?.id, user?.email);
+      const { data: { user } } = await Promise.resolve()
+      console.log('🔐 Usuário autenticado:', user?.id, user?.email)
       
       // DEBUG: Verificar session 
-      const { data: { session } } = await Promise.resolve();
-      console.log('🎫 Session ativa:', !!session, session?.user?.id);
+      const { data: { session } } = await Promise.resolve()
+      console.log('🎫 Session ativa:', !!session, session?.user?.id)
       
       // DEBUG: Testar RPC direto
-      console.log('🧪 Testando RPC get_user_company_id...');
+      console.log('🧪 Testando RPC get_user_company_id...')
       const companyId = null as any; const rpcError = null as any;
       
       // DEBUG: Testar consulta direta primeiro
-      console.log('🧪 Testando consulta direta...');
+      console.log('🧪 Testando consulta direta...')
       const testData = null as any; const testError = null as any;
       
       const from = (page - 1) * pageSize;
       const to = from + pageSize - 1;
-      let query = buildBaseQuery(false);
+      let query = buildBaseQuery(false)
       if (!query) return;
       const { data, error } = await query
         
-        .range(from, to);
+        .range(from, to)
 
       if (error) {
-        console.error('❌ Erro ao buscar clientes:', error);
+        console.error('❌ Erro ao buscar clientes:', error)
         throw error;
       }
       
       const clientesData = data || [];
-      console.log('✅ Clientes carregados:', clientesData.length);
+      console.log('✅ Clientes carregados:', clientesData.length)
       
-      setClientes(clientesData);
+      setClientes(clientesData)
     } catch (error) {
-      console.error('Erro ao buscar clientes:', error);
-      setClientes([]);
+      console.error('Erro ao buscar clientes:', error)
+      setClientes([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
-  const fetchCurrentTabCount = async () => {;
+  const fetchCurrentTabCount = async () => {
     if (!currentCompany?.id) return;
     try {
-      let countQuery = buildBaseQuery(true);
+      let countQuery = buildBaseQuery(true)
       if (!countQuery) return;
-      const { count, error }  catch (error) { console.error('Error:', error); }= await countQuery;
+      const { count, error }  catch (error) { console.error('Error:', error) }= await countQuery;
       if (error) throw error as any;
-      setTotalCurrentTabCount(count || 0);
+      setTotalCurrentTabCount(count || 0)
     } catch (err) {
-      console.error('Erro ao contar registros:', err);
-      setTotalCurrentTabCount(0);
+      console.error('Erro ao contar registros:', err)
+      setTotalCurrentTabCount(0)
     }
   };
 
-  const fetchCounts = async () => {;
+  const fetchCounts = async () => {
     if (!currentCompany?.id) return;
     try {
-      const { count, error }  catch (error) { console.error('Error:', error); }= 
+      const { count, error }  catch (error) { console.error('Error:', error) }= 
         
         
         
@@ -305,15 +305,15 @@ const Clientes = () => {;
 
       setCounts({
         total: count || 0
-      });
+      })
     } catch (err) {
-      console.error('Erro ao buscar contadores:', err);
-      setCounts({ total: 0 });
+      console.error('Erro ao buscar contadores:', err)
+      setCounts({ total: 0 })
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {;
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     
     if (!formData.nome?.trim()) {
       return;
@@ -321,29 +321,29 @@ const Clientes = () => {;
 
     let success = false;
     if (editingId) {
-      success = await updateCliente(editingId, formData);
+      success = await updateCliente(editingId, formData)
     } else {
-      success = await createCliente(formData);
+      success = await createCliente(formData)
     }
 
     if (success) {
-      resetForm();
-      await Promise.all([fetchCounts(), fetchCurrentTabCount()]);
-      fetchClientes();
+      resetForm()
+      await Promise.all([fetchCounts(), fetchCurrentTabCount()])
+      fetchClientes()
     }
   };
 
-  const handleEdit = (cliente: Cliente) => {;
-    setFormData(cliente);
-    setEditingId(cliente.id);
-    setShowForm(true);
+  const handleEdit = (cliente: Cliente) => {
+    setFormData(cliente)
+    setEditingId(cliente.id)
+    setShowForm(true)
   };
 
-  const handleDelete = async (id: number) => {;
-    const success = await deleteCliente(id);
+  const handleDelete = async (id: number) => {
+    const success = await deleteCliente(id)
     if (success) {
-      await Promise.all([fetchCounts(), fetchCurrentTabCount()]);
-      fetchClientes();
+      await Promise.all([fetchCounts(), fetchCurrentTabCount()])
+      fetchClientes()
     }
   };
 
@@ -358,9 +358,9 @@ const Clientes = () => {;
       estado: '',
       cep: '',
       status: 'ativo';
-    });
-    setEditingId(null);
-    setShowForm(false);
+    })
+    setEditingId(null)
+    setShowForm(false)
   };
 
   const handleClearFilters = () => {
@@ -374,13 +374,13 @@ const Clientes = () => {;
       nascimentoDateTo: '',
       apenasNegativos: false,
       pedidosRange: 'todos';
-    });
-    setPage(1);
+    })
+    setPage(1)
   };
 
-  const handleFiltersChange = (newFilters: FilterState) => {;
-    setFilters(newFilters);
-    setPage(1); // Reset to first page when filters change
+  const handleFiltersChange = (newFilters: FilterState) => {
+    setFilters(newFilters)
+    setPage(1) // Reset to first page when filters change
   };
 
   const filteredClientes = clientes; // já filtrados/paginados no servidor
@@ -393,7 +393,7 @@ const Clientes = () => {;
           <p className="text-gray-700 text-lg font-medium">Carregando clientes...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -483,8 +483,8 @@ const Clientes = () => {;
         onEdit={handleEdit}
         onDelete={handleDelete}
         onAddCashback={(cliente) => {
-          setSelectedClienteForCashback(cliente);
-          setShowCashbackModal(true);
+          setSelectedClienteForCashback(cliente)
+          setShowCashbackModal(true)
         }}
         searchTerm={searchTerm}
       />
@@ -531,7 +531,7 @@ const Clientes = () => {;
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default Clientes;

@@ -8,57 +8,57 @@ import { useEffect, useRef } from 'react';
  */
 
 // Função utilitária para limpeza completa do estado de auth
-export const cleanupAuthState = () => {;
-  console.log('🧹 Iniciando limpeza completa do estado de autenticação...');
+export const cleanupAuthState = () => {
+  console.log('🧹 Iniciando limpeza completa do estado de autenticação...')
   
   // Limpar todas as chaves do Supabase no localStorage
   Object.keys(localStorage).forEach((key) => {
     if (key.startsWith('supabase.') || key.startsWith('sb-')) {
-      localStorage.removeItem(key);
-      console.log(`🗑️ Removido localStorage: ${key}`);
+      localStorage.removeItem(key)
+      console.log(`🗑️ Removido localStorage: ${key}`)
     }
-  });
+  })
 
   // Limpar sessionStorage se existir
   if (typeof sessionStorage !== 'undefined') {
     Object.keys(sessionStorage).forEach((key) => {
       if (key.startsWith('supabase.') || key.startsWith('sb-')) {
-        sessionStorage.removeItem(key);
-        console.log(`🗑️ Removido sessionStorage: ${key}`);
+        sessionStorage.removeItem(key)
+        console.log(`🗑️ Removido sessionStorage: ${key}`)
       }
-    });
+    })
 
 
-  console.log('✅ Limpeza de autenticação concluída');
+  console.log('✅ Limpeza de autenticação concluída')
 };
 
-export const useAuthCleanup = () => {;
-  const mountedRef = useRef(true);
-  const timeoutsRef = useRef<Set<NodeJS.Timeout>>(new Set());
-  const subscriptionsRef = useRef<Set<any>>(new Set());
+export const useAuthCleanup = () => {
+  const mountedRef = useRef(true)
+  const timeoutsRef = useRef<Set<NodeJS.Timeout>>(new Set())
+  const subscriptionsRef = useRef<Set<any>>(new Set())
 
   // Função para registrar timeouts
-  const registerTimeout = (timeout: NodeJS.Timeout) => {;
-    timeoutsRef.current.add(timeout);
+  const registerTimeout = (timeout: NodeJS.Timeout) => {
+    timeoutsRef.current.add(timeout)
     return timeout;
   };
 
   // Função para registrar subscriptions
-  const registerSubscription = (subscription: any) => {;
-    subscriptionsRef.current.add(subscription);
+  const registerSubscription = (subscription: any) => {
+    subscriptionsRef.current.add(subscription)
     return subscription;
   };
 
   // Função para limpar um timeout específico
-  const clearRegisteredTimeout = (timeout: NodeJS.Timeout) => {;
-    clearTimeout(timeout);
+  const clearRegisteredTimeout = (timeout: NodeJS.Timeout) => {
+    clearTimeout(timeout)
     timeoutsRef.current
   };
 
   // Função para limpar uma subscription específica
   const clearRegisteredSubscription = (subscription: any) => {
-    if (subscription && typeof subscription.unsubscribe === 'function') {;
-      subscription.unsubscribe();
+    if (subscription && typeof subscription.unsubscribe === 'function') {
+      subscription.unsubscribe()
     }
     subscriptionsRef.current
   };
@@ -75,19 +75,19 @@ export const useAuthCleanup = () => {;
 
       // Limpar todos os timeouts registrados
       timeoutsRef.current.forEach(timeout => {
-        clearTimeout(timeout);
-      });
-      timeoutsRef.current.clear();
+        clearTimeout(timeout)
+      })
+      timeoutsRef.current.clear()
 
       // Limpar todas as subscriptions registradas
       subscriptionsRef.current.forEach(subscription => {
         if (subscription && typeof subscription.unsubscribe === 'function') {
-          subscription.unsubscribe();
+          subscription.unsubscribe()
         }
-      });
-      subscriptionsRef.current.clear();
+      })
+      subscriptionsRef.current.clear()
     };
-  }, []);
+  }, [])
 
   return {
     isMounted,

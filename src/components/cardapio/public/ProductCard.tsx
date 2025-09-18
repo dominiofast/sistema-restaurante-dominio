@@ -3,16 +3,16 @@ import { Produto } from '@/types/cardapio';
 import { formatPriceDisplay } from '@/utils/priceCalculation';
 
 // Função para aplicar opacidade nas cores
-const applyOpacity = (color: string, opacity: number) => {;
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+const applyOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '')
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
 // Função para otimizar URLs de imagem do Supabase
-const getOptimizedImageUrl = (url: string | undefined, width: number = 250): string => {;
+const getOptimizedImageUrl = (url: string | undefined, width: number = 250): string => {
   if (!url) return '';
   
   // Se for uma URL do Supabase, adicionar transformação de tamanho
@@ -58,7 +58,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center gap-2">
           <div className="h-4 w-16 bg-gray-200 animate-pulse rounded"></div>
         </div>;
-      );
+      )
     }
 
     // Não renderizar preço se for R$ 0,00
@@ -72,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       // Calcular percentual de desconto apenas se houver diferença real entre os preços e preços > 0
       const discountPercentage = produto.promotional_price < produto.price && produto.price > 0 && produto.promotional_price > 0
-        ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100);
+        ? Math.round(((produto.price - produto.promotional_price) / produto.price) * 100)
         : null;
 
       return (
@@ -86,7 +86,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {priceValue}
           </span>
         </div>
-      );
+      )
     }
 
     if (produto.price === 0) {
@@ -101,7 +101,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {priceValue}
         </span>
       </div>
-    );
+    )
   };
 
   return (
@@ -164,5 +164,5 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };
