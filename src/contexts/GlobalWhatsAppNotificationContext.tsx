@@ -24,7 +24,7 @@ interface GlobalWhatsAppNotificationContextType {
 
 const GlobalWhatsAppNotificationContext = createContext<GlobalWhatsAppNotificationContextType | undefined>(undefined);
 
-export const useGlobalWhatsAppNotification = () => {;
+export const useGlobalWhatsAppNotification = () => {
   const context = useContext(GlobalWhatsAppNotificationContext);
   if (!context) {
     throw new Error('useGlobalWhatsAppNotification deve ser usado dentro de GlobalWhatsAppNotificationProvider');
@@ -46,7 +46,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
   
   // Auto-hide notification after 5 seconds
   const scheduleAutoHide = useCallback(() => {
-    if (notificationTimeoutRef.current) {;
+    if (notificationTimeoutRef.current) {
       clearTimeout(notificationTimeoutRef.current);
     }
     notificationTimeoutRef.current = setTimeout(() => {
@@ -54,7 +54,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
     }, 5000);
   }, []);
 
-  const showNotification = useCallback((message: NotificationMessage) => {;
+  const showNotification = useCallback((message: NotificationMessage) => {
     if (!isEnabled) return;
     
     // Se a página está visível, mostrar popup personalizado
@@ -65,12 +65,12 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
     // Se a página não está visível e tem permissão, mostrar notificação do navegador
     else if (browserNotificationPermission === 'granted' && 'Notification' in window) {
       try {
-        const browserNotification = new Notification(`${message.companyName}  catch (error) { console.error('Error:', error); }- ${message.senderName}`, {
+        const browserNotification = new Notification(`${message.companyName} - ${message.senderName}`, {
           body: message.content.length > 100 ? message.content.substring(0, 100) + '...' : message.content,
           icon: message.senderAvatar || '/whatsapp-icon.png',
           badge: '/whatsapp-badge.png',
           tag: message.chatId, // Prevent duplicate notifications for same chat
-// requireInteraction: false,
+          // requireInteraction: false,
           silent: false
         });
 
@@ -112,7 +112,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
   }, [isEnabled, scheduleAutoHide, browserNotificationPermission]);
 
   const hideNotification = useCallback(() => {
-    if (notificationTimeoutRef.current) {;
+    if (notificationTimeoutRef.current) {
       clearTimeout(notificationTimeoutRef.current);
     }
     setCurrentNotification(null);
@@ -121,7 +121,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
   // Request browser notification permission
   const requestNotificationPermission = useCallback(async () => {
     if ('Notification' in window) {
-      try {;
+      try {
         const permission = await Notification.requestPermission();
         setBrowserNotificationPermission(permission);
         return permission;
@@ -135,12 +135,12 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
 
   const setEnabled = useCallback(async (enabled: boolean) => {
     if (enabled) {
-      // Request permission when enabling notifications;
+      // Request permission when enabling notifications
       const permission = await requestNotificationPermission();
       if (permission === 'denied') {
         // If permission denied, show warning but still enable popup notifications
         console.warn('Permissão de notificação negada. Apenas popups serão exibidos.');
-
+      }
     }
     
     setIsEnabled(enabled);
@@ -163,7 +163,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
         setIsEnabled(JSON.parse(stored));
       } catch {
         // Invalid JSON, keep default
-
+      }
     }
 
     // Auto-request permission if notifications are enabled
@@ -179,7 +179,7 @@ export const GlobalWhatsAppNotificationProvider: React.FC<GlobalWhatsAppNotifica
     return () => {
       if (notificationTimeoutRef.current) {
         clearTimeout(notificationTimeoutRef.current);
-
+      }
     };
   }, []);
 

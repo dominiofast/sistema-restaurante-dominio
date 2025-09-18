@@ -37,7 +37,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
   const [lastConnectionCheck, setLastConnectionCheck] = useState<Date>();
 
   // Verificar se QZ Tray está disponível
-  const checkQZAvailability = useCallback(() => {;
+  const checkQZAvailability = useCallback(() => {
     return typeof window !== 'undefined' && window.qz && typeof window.qz.websocket !== 'undefined';
   }, []);
 
@@ -129,17 +129,17 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
       return false;
     } finally {
       setIsConnecting(false);
-
+    }
   }, [isConnecting, isConnected, checkQZAvailability, checkConnection]);
 
   // Desconectar do QZ Tray
   const disconnectFromQZ = useCallback(async (): Promise<void> => {
     try {
-      if (checkQZAvailability() && window.qz.websocket.isActive()) {;
+      if (checkQZAvailability() && window.qz.websocket.isActive()) {
         await window.qz.websocket.disconnect();
       }
       
-       catch (error) { console.error('Error:', error); }setIsConnected(false);
+      setIsConnected(false);
       setConnectionVersion(undefined);
       setLastConnectionCheck(new Date());
       
@@ -152,18 +152,18 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
     } catch (error: any) {
       console.error('Erro ao desconectar QZ Tray:', error);
       toast.error(`Erro ao desconectar: ${error.message}`);
-
+    }
   }, [checkQZAvailability]);
 
   // Obter lista de impressoras
   const getPrinters = useCallback(async (): Promise<string[]> => {
     try {
-      if (!isConnected) {;
+      if (!isConnected) {
         const connected = await connectToQZ();
         if (!connected) {
           throw new Error('Não foi possível conectar ao QZ Tray');
         }
-       catch (error) { console.error('Error:', error); }}
+      }
 
       const printers = await window.qz.printers.find();
       return printers;
@@ -187,18 +187,18 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
       }
       
       return [];
-
+    }
   }, [isConnected, connectToQZ]);
 
   // Imprimir dados
   const printData = useCallback(async (printerName: string, data: any[]): Promise<boolean> => {
     try {
-      if (!isConnected) {;
+      if (!isConnected) {
         const connected = await connectToQZ();
         if (!connected) {
           throw new Error('Não foi possível conectar ao QZ Tray');
         }
-       catch (error) { console.error('Error:', error); }}
+      }
 
       const config = window.qz.configs.create(printerName);
       await window.qz.print(config, data);
@@ -209,13 +209,13 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
       console.error('Erro na impressão:', error);
       toast.error(`Erro na impressão: ${error.message}`);
       return false;
-
+    }
   }, [isConnected, connectToQZ]);
 
   // Verificação periódica da conexão
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (isConnected) {;
+      if (isConnected) {
         await checkConnection();
       }
     }, 30000); // Verificar a cada 30 segundos
@@ -226,7 +226,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
   // Tentar reconectar automaticamente na inicialização
   useEffect(() => {
     const initializeConnection = async () => {
-      // Aguardar um pouco para garantir que a biblioteca foi carregada;
+      // Aguardar um pouco para garantir que a biblioteca foi carregada
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const wasConnected = localStorage.getItem('qz-tray-connected') === 'true';
@@ -268,7 +268,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
         setIsConnected(false);
         setConnectionVersion(undefined);
       });
-
+    }
   }, [checkQZAvailability]);
 
   const value: QZTrayContextType = {
@@ -290,7 +290,7 @@ export const QZTrayProvider: React.FC<QZTrayProviderProps> = ({ children }) => {
   );
 };
 
-export const useQZTray = (): QZTrayContextType => {;
+export const useQZTray = (): QZTrayContextType => {
   const context = useContext(QZTrayContext);
   if (context === undefined) {
     throw new Error('useQZTray deve ser usado dentro de um QZTrayProvider');

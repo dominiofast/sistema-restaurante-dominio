@@ -64,10 +64,6 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
         return convertToStoreInfo(validatedCompany);
       }
       
-      } catch (error) {
-        console.error('Error:', error);
-      }
-      
       if (currentCompany) {
         return convertToStoreInfo(currentCompany);
       }
@@ -78,6 +74,8 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       
       return null;
     } catch (error) {
+      console.error('Error:', error);
+      
       if (currentCompany) {
         return convertToStoreInfo(currentCompany);
       }
@@ -94,13 +92,13 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
       setSelectedStoreState(null);
       localStorage.removeItem('selectedCompany');
       return;
-
+    }
     
     // ENHANCED VALIDATION
     if (!userCompanies.some((c: Company) => c.id === company.id)) {
       console.error('❌ Invalid company selection', { company, userCompanies });
       return;
-
+    }
     
     console.log('✅ Selecting company:', company.name, 'ID:', company.id);
     setSelectedStoreState(company);
@@ -134,10 +132,10 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
   );
 };
 
-export const useStore = () => {;
+export const useStore = () => {
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw new Error('useStore must be used within a StoreProvider');
-
+  }
   return context;
 };
