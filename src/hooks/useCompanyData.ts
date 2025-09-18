@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface PublicCategoria {
   id: string;
@@ -56,87 +55,56 @@ export const useCompanyData = (company_slug: string) => {
     setLoadingData(true);
     
     try {
-      console.log('🔍 Buscando empresa com slug:', company_slug);
+      console.log('🔍 useCompanyData: Buscando empresa com slug via API Neon:', company_slug);
       
-      // Buscar empresa usando slug ou domain (priorizar slug, depois domain)
-      let companyQuery = supabase
-        .from('companies')
-        .select('*')
-        .eq('status', 'active');
-
-      // Verificar se é UUID
-      if (company_slug.length === 36 && company_slug.includes('-')) {
-        console.log('🔍 useCompanyData - Buscando por ID (UUID):', company_slug);
-        companyQuery = companyQuery.eq('id', company_slug);
-      } else {
-        console.log('🔍 useCompanyData - Buscando por slug/domain:', company_slug);
-        companyQuery = companyQuery.or(`slug.eq."${company_slug}",domain.eq."${company_slug}"`);
+      // Buscar empresa via API /api/companies
+      const companyResponse = await fetch('/api/companies');
+      const companyResult = await companyResponse.json();
+      
+      if (!companyResponse.ok || !companyResult.success) {
+        throw new Error(companyResult.error || 'Erro ao carregar empresas');
       }
-
-      const { data: companyData, error: companyError } = await companyQuery.maybeSingle();
-
-      if (companyError) {
-        console.error('❌ Erro ao buscar empresa:', companyError);
-        throw new Error(`Erro ao carregar empresa: ${companyError.message}`);
-      }
+      
+      // Procurar empresa por slug/domain
+      const companyData = companyResult.data?.find((company: any) => {
+        return company.slug === company_slug || 
+               company.domain === company_slug ||
+               company.id === company_slug;
+      });
 
       if (!companyData) {
         console.error('❌ Empresa não encontrada para slug:', company_slug);
         throw new Error(`Empresa '${company_slug}' não encontrada ou inativa`);
       }
 
-      console.log('✅ Empresa encontrada:', companyData.name);
+      console.log('✅ useCompanyData: Empresa encontrada via API:', companyData.name);
       setCompany(companyData);
 
-      // Buscar categorias ativas da empresa
-      const { data: categoriasData, error: categoriasError } = await supabase
-        .from('categorias')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .eq('is_active', true)
-        .order('order_position', { ascending: true });
-
-      if (categoriasError) {
-        console.error('❌ Erro ao buscar categorias:', categoriasError);
-        throw new Error(`Erro ao carregar categorias: ${categoriasError.message}`);
+      // Buscar categorias via API /api/categorias
+      const categoriasResponse = await fetch(`/api/categorias?company_id=${companyData.id}`);
+      const categoriasResult = await categoriasResponse.json();
+      
+      if (!categoriasResponse.ok || !categoriasResult.success) {
+        throw new Error(categoriasResult.error || 'Erro ao carregar categorias');
       }
 
-      console.log('✅ Categorias carregadas:', categoriasData?.length || 0);
-      setCategorias(categoriasData || []);
+      console.log('✅ useCompanyData: Categorias carregadas via API:', categoriasResult.data?.length || 0);
+      setCategorias(categoriasResult.data || []);
 
-      // Buscar produtos ativos da empresa - APENAS campos necessários para performance
-      const { data: produtosData, error: produtosError } = await supabase
-        .from('produtos')
-        .select(`
-          id,
-          name,
-          description,
-          price,
-          promotional_price,
-          is_promotional,
-          image,
-          categoria_id,
-          preparation_time,
-          order_position,
-          is_available,
-          destaque,
-          company_id
-        `)
-        .eq('company_id', companyData.id)
-        .eq('is_available', true)
-        .order('order_position', { ascending: true });
-
-      if (produtosError) {
-        console.error('❌ Erro ao buscar produtos:', produtosError);
-        throw new Error(`Erro ao carregar produtos: ${produtosError.message}`);
+      // Buscar produtos via API /api/produtos
+      const produtosResponse = await fetch(`/api/produtos?company_id=${companyData.id}`);
+      const produtosResult = await produtosResponse.json();
+      
+      if (!produtosResponse.ok || !produtosResult.success) {
+        throw new Error(produtosResult.error || 'Erro ao carregar produtos');
       }
 
-      console.log('✅ Produtos carregados:', produtosData?.length || 0);
-      setProdutos(produtosData || []);
+      console.log('✅ useCompanyData: Produtos carregados via API:', produtosResult.data?.length || 0);
+      setProdutos(produtosResult.data || []);
       
       setError(null);
     } catch (err) {
-      console.error('❌ Erro ao carregar dados:', err);
+      console.error('❌ useCompanyData: Erro ao carregar dados:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
       setLoadingData(false);

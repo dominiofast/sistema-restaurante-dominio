@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface Categoria {
   id: string;
@@ -35,11 +34,11 @@ export const useCardapioData = (companyId: string | undefined) => {
 
   useEffect(() => {
     async function fetchData() {
-      console.log('🔄 useCardapioData: Iniciando fetchData');
+      console.log('🔄 useCardapioData: Iniciando fetchData via API Neon');
       console.log('🏢 Company ID:', companyId);
       
       if (!companyId) {
-        console.log('❌ Nenhuma empresa fornecida, aguardando...');
+        console.log('❌ useCardapioData: Nenhuma empresa fornecida, aguardando...');
         setLoading(false);
         return;
       }
@@ -50,51 +49,41 @@ export const useCardapioData = (companyId: string | undefined) => {
 
         // Safety timeout to avoid loading infinito
         const timeoutId = setTimeout(() => {
-          console.error('⏳ Tempo limite ao carregar cardápio. Exibindo fallback.');
+          console.error('⏳ useCardapioData: Tempo limite ao carregar cardápio. Exibindo fallback.');
           setError('Não conseguimos carregar o cardápio agora. Tente novamente.');
           setLoading(false);
         }, 10000);
         
-        console.log('📋 Buscando categorias para empresa:', companyId);
-        // Buscar categorias
-        const { data: cats, error: catsError } = await supabase
-          .from('categorias')
-          .select('*')
-          .eq('company_id', companyId)
-          .eq('is_active', true)
-          .order('order_position', { ascending: true });
-          
-        if (catsError) {
-          console.error('❌ Erro ao buscar categorias:', catsError);
-          throw new Error(`Erro ao carregar categorias: ${catsError.message}`);
+        console.log('📋 useCardapioData: Buscando categorias para empresa via API:', companyId);
+        // Buscar categorias via API
+        const categoriasResponse = await fetch(`/api/categorias?company_id=${companyId}`);
+        const categoriasResult = await categoriasResponse.json();
+        
+        if (!categoriasResponse.ok || !categoriasResult.success) {
+          throw new Error(categoriasResult.error || 'Erro ao carregar categorias');
         }
 
-        console.log('✅ Categorias encontradas:', cats?.length || 0, cats);
-        setCategorias(cats || []);
+        console.log('✅ useCardapioData: Categorias encontradas via API:', categoriasResult.data?.length || 0, categoriasResult.data);
+        setCategorias(categoriasResult.data || []);
 
-        console.log('🍽️ Buscando produtos para empresa:', companyId);
-        // Buscar produtos
-        const { data: prods, error: prodsError } = await supabase
-          .from('produtos')
-          .select('*')
-          .eq('company_id', companyId)
-          .eq('is_available', true)
-          .order('name', { ascending: true });
-          
-        if (prodsError) {
-          console.error('❌ Erro ao buscar produtos:', prodsError);
-          throw new Error(`Erro ao carregar produtos: ${prodsError.message}`);
+        console.log('🍽️ useCardapioData: Buscando produtos para empresa via API:', companyId);
+        // Buscar produtos via API
+        const produtosResponse = await fetch(`/api/produtos?company_id=${companyId}`);
+        const produtosResult = await produtosResponse.json();
+        
+        if (!produtosResponse.ok || !produtosResult.success) {
+          throw new Error(produtosResult.error || 'Erro ao carregar produtos');
         }
 
-        console.log('✅ Produtos encontrados:', prods?.length || 0, prods);
-        setProdutos(prods || []);
+        console.log('✅ useCardapioData: Produtos encontrados via API:', produtosResult.data?.length || 0, produtosResult.data);
+        setProdutos(produtosResult.data || []);
         
         clearTimeout(timeoutId);
       } catch (error) {
-        console.error('💥 Erro geral no carregamento:', error);
+        console.error('💥 useCardapioData: Erro geral no carregamento:', error);
         setError(error instanceof Error ? error.message : 'Erro desconhecido ao carregar dados');
       } finally {
-        console.log('✅ Finalizando loading');
+        console.log('✅ useCardapioData: Finalizando loading');
         setLoading(false);
       }
     }

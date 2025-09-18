@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           c.name as categoria_name
         FROM produtos p
         LEFT JOIN categorias c ON p.categoria_id = c.id
-        WHERE p.company_id = $1
+        WHERE p.company_id = $1 AND p.is_available = true
         ORDER BY p.order_position ASC NULLS LAST, p.name ASC
       `;
 
