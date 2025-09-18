@@ -39,10 +39,10 @@ export class DynamicMetaTagsService {
         return null;
       }
       
-       catch (error) { console.error('Error:', error) }// Procurar empresa por slug/domain/id
+      // Procurar empresa por slug/domain/id
       const company = result.data?.find((comp: any) => {
         return comp.slug === slugOrId || 
-               comp.domain === slugOrId ||;
+               comp.domain === slugOrId ||
                comp.id === slugOrId;
       })
 
