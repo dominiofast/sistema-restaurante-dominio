@@ -192,8 +192,8 @@ const AccountRoutes = () => {
       {/* Rota não encontrada */}
       <Route path="*" element={<NotFound />} />
     </Routes>
-    </Suspense>;
-  )
+    </Suspense>
+  );
 };
 
 export default AccountRoutes;

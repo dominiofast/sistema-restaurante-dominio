@@ -28,9 +28,9 @@ export const WhatsAppGlobalMonitor: React.FC = () => {
         timestamp: new Date(message.timestamp || Date.now())
       };
 
-      showNotification(notification)
+      showNotification(notification);
 
-  })
+  });
 
   return null; // Este componente não renderiza nada
 };

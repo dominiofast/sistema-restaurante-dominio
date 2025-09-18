@@ -40,10 +40,10 @@ export const WhatsAppGlobalNotification: React.FC<WhatsAppGlobalNotificationProp
       
       return () => clearTimeout(timer)
     } else {
-      setIsVisible(false)
-      setIsAnimating(false)
-
-  }, [notification])
+      setIsVisible(false);
+      setIsAnimating(false);
+    }
+  }, [notification]);
 
   if (!notification || !isVisible) return null;
 
