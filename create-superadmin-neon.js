@@ -1,6 +1,10 @@
 // Script para criar superadmin no Neon DB
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
+import dotenv from 'dotenv';
+
+// Carregar variáveis de ambiente
+dotenv.config();
 
 // Configurar WebSocket para Neon DB
 neonConfig.webSocketConstructor = ws;
@@ -47,7 +51,7 @@ async function createSuperadminInNeon() {
       'contato@dominio.tech',
       'Super Admin',
       'super_admin',
-      '$2b$12$4oSZ5n71CDm/rytk1RgTLOvg3ktRXjOjsYBU5XAY8th0tsUFACMZ6' // Hash para 'SuperAdmin2024!'
+      '$2a$10$N9qo8uLOickgx2ZMRt/M3OHSCi80qji6uIL75xPaELGqn7mFbP4mS' // Hash para '123456'
     ]);
 
     console.log('✅ Superadmin criado com sucesso no Neon DB:', result.rows[0]);
