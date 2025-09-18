@@ -38,13 +38,17 @@ export const useCompanies = () => {
   } = useQuery({
     queryKey: ['companies'],
     queryFn: async (): Promise<Company[]> => {
-      const { data, error } = await supabase
-        .from('companies')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data || [];
+      console.log('🏢 useCompanies: Buscando empresas via API...');
+      
+      const response = await fetch('/api/companies');
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao buscar empresas');
+      }
+      
+      console.log(`✅ useCompanies: ${result.data.length} empresas encontradas`);
+      return result.data || [];
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -52,9 +56,14 @@ export const useCompanies = () => {
   // Create company mutation
   const createCompanyMutation = useMutation({
     mutationFn: async (companyData: CompanyFormData) => {
-      const { data, error } = await supabase
-        .from('companies')
-        .insert({
+      console.log('🏢 useCompanies: Criando empresa via API...');
+      
+      const response = await fetch('/api/companies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: companyData.name,
           domain: companyData.domain,
           logo: companyData.logo || null,
@@ -62,11 +71,15 @@ export const useCompanies = () => {
           status: companyData.status,
           user_count: companyData.user_count,
         })
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Erro ao criar empresa');
+      }
+      
+      return result.data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['companies'] });
