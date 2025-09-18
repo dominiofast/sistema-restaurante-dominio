@@ -4,13 +4,25 @@ import AccountRoutes from './AccountRoutes';
 import PublicRoutes from './PublicRoutes';
 import MainRoutes from './MainRoutes';
 import VagasRoutes from './VagasRoutes';
+import { useAuth } from '../contexts/AuthContext';
 
 const AppRouter: React.FC = () => {
   const hostname = window.location.hostname;
   const path = window.location.pathname;
   
+  // Verificar se há usuário autenticado (apenas em contextos que têm AuthProvider)
+  let user = null;
+  try {
+    const auth = useAuth();
+    user = auth?.user;
+  } catch {
+    // Ignorar erro se não houver AuthProvider (páginas de landing)
+    user = null;
+  }
+  
   console.log('🔄 AppRouter - hostname:', hostname);
   console.log('🔄 AppRouter - path:', path);
+  console.log('🔐 AppRouter - usuário logado:', !!user, user?.email || 'não logado');
 
   // Em ambiente de desenvolvimento e Replit preview
   if (hostname === 'localhost' || hostname.includes('127.0.0.1') || hostname.includes('replit.dev')) {
@@ -49,8 +61,14 @@ const AppRouter: React.FC = () => {
       console.log('🎯 DIRECIONANDO PARA PUBLICROUTES - OUTROS');
       return <PublicRoutes />;
     }
-    console.log('🎯 Direcionando para AccountRoutes como fallback');
-    return <AccountRoutes />;
+    // Verificar se há usuário logado antes do fallback
+    if (user) {
+      console.log('🎯 Usuário logado detectado, direcionando para AccountRoutes');
+      return <AccountRoutes />;
+    } else {
+      console.log('🎯 Usuário NÃO logado, direcionando para MainRoutes (landing)');
+      return <MainRoutes />;
+    }
   }
 
   // Para domínios de preview do Lovable (*.lovableproject.com e *.lovable.app)
