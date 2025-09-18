@@ -86,8 +86,8 @@ export const diagnoseSignatureIssues = async () => {
     try {
       if (!window.qz.websocket.isActive()) {
         await window.qz.websocket.connect()
-
-       catch (error) { console.error('Error:', error) }console.log('✅ Conexão testada com sucesso')
+      }
+      console.log('✅ Conexão testada com sucesso')
     } catch (error) {
       issues.push('Erro na conexão: ' + error.message)
       solutions.push('Verifique se o QZ Tray está rodando na porta correta (8181/8182)')
