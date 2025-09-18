@@ -618,11 +618,11 @@ export async function getCategoriasAdicionais(companyId) {
     console.log('🔍 Buscando categorias adicionais para empresa:', companyId);
     
     const query = `
-      SELECT id, company_id, name, description, is_required, is_multiple_choice, 
-             max_selections, min_selections, order_position, created_at, updated_at
+      SELECT id, company_id, name, description, is_required, selection_type, 
+             max_selection, min_selection, created_at, updated_at
       FROM categorias_adicionais 
       WHERE company_id = $1
-      ORDER BY order_position ASC, name ASC
+      ORDER BY name ASC
     `;
     
     const result = await getPool().query(query, [companyId]);
