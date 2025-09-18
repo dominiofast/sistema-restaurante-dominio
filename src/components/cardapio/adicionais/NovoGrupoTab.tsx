@@ -6,9 +6,26 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Plus } from 'lucide-react';
-// SUPABASE REMOVIDO
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useCardapio } from '@/hooks/useCardapio';
+
+// Função para fazer requests à API
+async function apiRequest(url: string, options: RequestInit = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
 
 interface NovoGrupoTabProps {
   currentCompany: { id: string };
@@ -36,20 +53,16 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
     try {
       console.log('🔗 Iniciando associação categoria-produto:', { categoriaId, produtoId: produto.id });
       
-      const { error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'produto_categorias_adicionais')
-        /* .insert\( REMOVIDO */ ; //[{
+      const { error } = await supabase
+        .from('produto_categorias_adicionais')
+        .insert([{
           produto_id: produto.id,
           categoria_adicional_id: categoriaId,
           is_required: false,
           min_selection: 0,
           max_selection: 1
-        }]);
-
-      if (error) {
-        console.error('❌ Erro na associação categoria-produto:', error);
-        throw error;
-      }
+        })
+      });
       
       console.log('✅ Associação categoria-produto criada com sucesso');
       onRefresh();
@@ -87,7 +100,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
 
     try {
       setLoading(true);
-      console.log('📤 Enviando dados para o Supabase...');
+      console.log('📤 Enviando dados para a API PostgreSQL...');
       
       // Inferir selection_type automaticamente baseado em min/max
       const selection_type = 
@@ -102,11 +115,11 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
       
       console.log('📊 Dados finais para inserção:', dadosParaInserir);
 
-      const { data, error } = /* await supabase REMOVIDO */ null
-        /* .from REMOVIDO */ ; //'categorias_adicionais')
-        /* .insert\( REMOVIDO */ ; //[dadosParaInserir])
-        /* .select\( REMOVIDO */ ; //)
-        /* .single\( REMOVIDO */ ; //);
+      const { data, error } = await supabase
+        .from('categorias_adicionais')
+        .insert([dadosParaInserir])
+        .select()
+        .single();
 
       if (error) {
         console.error('❌ Erro do Supabase ao criar categoria:', error);
@@ -129,7 +142,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
       
       toast({
         title: "Sucesso",
-        description: `Grupo "${data.name}" criado com sucesso!`,
+        description: `Grupo "${data.name || novaCategoriaAdicional.name}" criado com sucesso!`,
       });
 
       // Limpar formulário
@@ -142,7 +155,7 @@ export const NovoGrupoTab: React.FC<NovoGrupoTabProps> = ({
       });
 
       console.log('🔗 Iniciando associação com produto...');
-      await associarCategoriaAoProduto(data.id);
+      await associarCategoriaAoProduto(data.id || data.categoria_id);
       
       // Atualizar o estado global das categorias de adicionais
       await fetchCategoriasAdicionais();

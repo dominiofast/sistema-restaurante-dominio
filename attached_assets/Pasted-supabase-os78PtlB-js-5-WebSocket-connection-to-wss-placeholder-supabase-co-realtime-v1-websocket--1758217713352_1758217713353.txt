@@ -1,0 +1,58 @@
+supabase-os78PtlB.js:5 WebSocket connection to 'wss://placeholder.supabase.co/realtime/v1/websocket?apikey=placeholder-key&vsn=1.0.0' failed: 
+createWebSocket @ supabase-os78PtlB.js:5
+connect @ supabase-os78PtlB.js:10
+(anonymous) @ supabase-os78PtlB.js:23Understand this error
+index-CRJqFFIC.js:740 📡 Status da subscrição do canal: CHANNEL_ERROR
+index-CRJqFFIC.js:740 📡 Status da subscrição do canal: CHANNEL_ERROR
+supabase-os78PtlB.js:5 WebSocket connection to 'wss://placeholder.supabase.co/realtime/v1/websocket?apikey=placeholder-key&vsn=1.0.0' failed: 
+createWebSocket @ supabase-os78PtlB.js:5
+connect @ supabase-os78PtlB.js:10
+(anonymous) @ supabase-os78PtlB.js:23Understand this error
+index-CRJqFFIC.js:740 📡 Status da subscrição do canal: CHANNEL_ERROR
+index-CRJqFFIC.js:740 📡 Status da subscrição do canal: CHANNEL_ERROR
+index-CRJqFFIC.js:936 🚀 Iniciando criação de grupo de adicionais...
+index-CRJqFFIC.js:936 📋 Dados do formulário: {name: 'Teste', description: 'teste categorias', is_required: true, min_selection: 0, max_selection: 1}
+index-CRJqFFIC.js:936 🏢 Empresa atual: {id: '550e8400-e29b-41d4-a716-446655440001', name: 'Domínio Pizzas', domain: 'dominiopizzas', plan: 'enterprise', status: 'active', …}
+index-CRJqFFIC.js:936 🍕 Produto: {id: 'cbc75df6-fc30-41ac-b83a-aff24693571e', name: 'Combo Domínio Pizza Grande + Refri 1,5l', description: 'Saboreie a combinação perfeita com o Combo Domínio…. O sabor que domina a sua fome em grande estilo!', price: 99.89, promotional_price: 59.9, …}
+index-CRJqFFIC.js:936 📤 Enviando dados para o Supabase...
+index-CRJqFFIC.js:936 📊 Dados finais para inserção: {name: 'Teste', description: 'teste categorias', is_required: true, min_selection: 0, max_selection: 1, …}
+supabase-os78PtlB.js:23  POST https://placeholder.supabase.co/rest/v1/categorias_adicionais?columns=%22name%22%2C%22description%22%2C%22is_required%22%2C%22min_selection%22%2C%22max_selection%22%2C%22selection_type%22%2C%22company_id%22&select=* net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ supabase-os78PtlB.js:23
+(anonymous) @ supabase-os78PtlB.js:23
+a @ supabase-os78PtlB.js:23
+Promise.then
+h @ supabase-os78PtlB.js:23
+(anonymous) @ supabase-os78PtlB.js:23
+Ks @ supabase-os78PtlB.js:23
+(anonymous) @ supabase-os78PtlB.js:23
+then @ supabase-os78PtlB.js:1Understand this error
+index-CRJqFFIC.js:936 ❌ Erro do Supabase ao criar categoria: {message: 'TypeError: Failed to fetch', details: 'TypeError: Failed to fetch\n    at https://conta.do…ominio.tech/assets/supabase-os78PtlB.js:23:22031)', hint: '', code: ''}
+p @ index-CRJqFFIC.js:936
+await in p
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anonymous) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29Understand this error
+index-CRJqFFIC.js:936 📋 Detalhes do erro: {code: '', message: 'TypeError: Failed to fetch', details: 'TypeError: Failed to fetch\n    at https://conta.do…ominio.tech/assets/supabase-os78PtlB.js:23:22031)', hint: ''}
+p @ index-CRJqFFIC.js:936
+await in p
+pf @ vendor-Df1aHK0Z.js:29
+mf @ vendor-Df1aHK0Z.js:29
+vf @ vendor-Df1aHK0Z.js:29
+Ni @ vendor-Df1aHK0Z.js:29
+Ss @ vendor-Df1aHK0Z.js:29
+(anonymous) @ vendor-Df1aHK0Z.js:29
+$o @ vendor-Df1aHK0Z.js:32
+Ha @ vendor-Df1aHK0Z.js:29
+Hl @ vendor-Df1aHK0Z.js:29
+po @ vendor-Df1aHK0Z.js:29
+Of @ vendor-Df1aHK0Z.js:29Understand this error
+index-CRJqFFIC.js:936 🏁 Processo finalizado, loading = false
+index-CRJqFFIC.js:689 [FacebookPixel] Skipping injection: config 
