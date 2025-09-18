@@ -317,21 +317,21 @@ export const useWhatsAppRealtime = ({
       // )
       // .on( // DESABILITADO
       //   'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'whatsapp_messages'
-        },
-        (payload) => {
-          if (isUnmountedRef.current) return;
-          
-          // Filtrar manualmente por company_id
-          if (payload.new?.company_id === companyId) {
-            console.log('⚡ ATUALIZAÇÃO DE MENSAGEM VIA REALTIME:', payload.new);
-            debouncedMessageHandler(payload.new);
-          }
-        }
-      );
+      //   {
+      //     event: 'UPDATE',
+      //     schema: 'public',
+      //     table: 'whatsapp_messages'
+      //   },
+      //   (payload) => {
+      //     if (isUnmountedRef.current) return;
+      //     
+      //     // Filtrar manualmente por company_id
+      //     if (payload.new?.company_id === companyId) {
+      //       console.log('⚡ ATUALIZAÇÃO DE MENSAGEM VIA REALTIME:', payload.new);
+      //       debouncedMessageHandler(payload.new);
+      //     }
+      //   }
+      // );
 
     // Canal para chats
     const chatsChannel = supabase
