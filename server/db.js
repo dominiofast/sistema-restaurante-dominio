@@ -257,6 +257,124 @@ export async function createPedidoItemAdicional(adicionalData) {
   }
 }
 
+// 📋 BUSCAR PEDIDOS COM ITENS
+export async function getPedidosByCompany(companyId) {
+  try {
+    const query = `
+      SELECT 
+        p.*,
+        pi.id as item_id,
+        pi.nome_produto,
+        pi.quantidade,
+        pi.valor_unitario,
+        pi.valor_total,
+        pi.observacoes as item_observacoes,
+        pia.id as adicional_id,
+        pia.categoria_nome,
+        pia.nome_adicional,
+        pia.quantidade as adicional_quantidade,
+        pia.valor_unitario as adicional_valor_unitario
+      FROM pedidos p
+      LEFT JOIN pedido_itens pi ON p.id = pi.pedido_id
+      LEFT JOIN pedido_item_adicionais pia ON pi.id = pia.pedido_item_id
+      WHERE p.company_id = $1
+      ORDER BY p.created_at DESC, pi.id, pia.id
+    `;
+    
+    const result = await getPool().query(query, [companyId]);
+    
+    // Agrupar resultados por pedido
+    const pedidosMap = new Map();
+    
+    result.rows.forEach(row => {
+      // Obter ou criar pedido
+      if (!pedidosMap.has(row.id)) {
+        pedidosMap.set(row.id, {
+          id: row.id,
+          numero_pedido: row.numero_pedido,
+          company_id: row.company_id,
+          nome: row.nome,
+          telefone: row.telefone,
+          endereco: row.endereco,
+          status: row.status,
+          tipo: row.tipo,
+          total: parseFloat(row.total) || 0,
+          pagamento: row.pagamento,
+          observacoes: row.observacoes,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+          horario: row.horario,
+          origem: row.origem,
+          pedido_itens: []
+        });
+      }
+      
+      const pedido = pedidosMap.get(row.id);
+      
+      // Adicionar item se existir e não foi adicionado ainda
+      if (row.item_id && !pedido.pedido_itens.find(item => item.id === row.item_id)) {
+        pedido.pedido_itens.push({
+          id: row.item_id,
+          nome_produto: row.nome_produto,
+          quantidade: row.quantidade,
+          valor_unitario: parseFloat(row.valor_unitario) || 0,
+          valor_total: parseFloat(row.valor_total) || 0,
+          observacoes: row.item_observacoes,
+          pedido_item_adicionais: []
+        });
+      }
+      
+      // Adicionar adicional se existir
+      if (row.adicional_id && row.item_id) {
+        const item = pedido.pedido_itens.find(item => item.id === row.item_id);
+        if (item) {
+          item.pedido_item_adicionais.push({
+            id: row.adicional_id,
+            categoria_nome: row.categoria_nome,
+            nome_adicional: row.nome_adicional,
+            quantidade: row.adicional_quantidade,
+            valor_unitario: parseFloat(row.adicional_valor_unitario) || 0
+          });
+        }
+      }
+    });
+    
+    const pedidos = Array.from(pedidosMap.values());
+    console.log(`✅ Buscados ${pedidos.length} pedidos da empresa ${companyId}`);
+    
+    return pedidos;
+    
+  } catch (error) {
+    console.error('❌ Erro ao buscar pedidos no SEU Neon:', error);
+    throw error;
+  }
+}
+
+// 🔄 ATUALIZAR STATUS DO PEDIDO
+export async function updatePedidoStatus(pedidoId, status) {
+  try {
+    const query = `
+      UPDATE pedidos 
+      SET status = $1, updated_at = NOW()
+      WHERE id = $2
+      RETURNING id, status, updated_at
+    `;
+    
+    const result = await getPool().query(query, [status, pedidoId]);
+    
+    if (result.rows.length === 0) {
+      throw new Error(`Pedido ${pedidoId} não encontrado`);
+    }
+    
+    console.log(`✅ Status do pedido ${pedidoId} atualizado para: ${status}`);
+    return result.rows[0];
+    
+  } catch (error) {
+    console.error('❌ Erro ao atualizar status no SEU Neon:', error);
+    throw error;
+  }
+}
+
 // 📊 HEALTH CHECK
 export function hasDatabase() {
   return !!process.env.DATABASE_URL;
